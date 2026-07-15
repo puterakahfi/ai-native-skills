@@ -1,6 +1,11 @@
 hermes:
   skills:
     runtime_adapters:
+      - id: "native-ai-engineer"
+        runtime: "hermes"
+        source: "https://github.com/puterakahfi/native-ai-skills/adapters/hermes/native-ai-engineer"
+        compat: "https://github.com/puterakahfi/native-ai-skills/compat/native-ai-engineer.compat.yaml"
+        installed_as: "native-ai-engineer"
       - id: "master-design"
         runtime: "hermes"
         source: "https://github.com/puterakahfi/native-ai-skills/adapters/hermes/master-design"
