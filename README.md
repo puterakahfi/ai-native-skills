@@ -17,11 +17,13 @@ adapters/hermes/master-design/SKILL.md
 adapters/hermes/master-engineer/SKILL.md
 adapters/hermes/diagram-architect/SKILL.md
 adapters/hermes/native-ai-engineer/SKILL.md
+adapters/hermes/native-ai-runtime-ops/SKILL.md
 adapters/hermes/native-ai-runtime-agent/SKILL.md
 compat/master-design.compat.yaml
 compat/master-engineer.compat.yaml
 compat/diagram-architect.compat.yaml
 compat/native-ai-engineer.compat.yaml
+compat/native-ai-runtime-ops.compat.yaml
 compat/native-ai-runtime-agent.compat.yaml
 ```
 
@@ -46,6 +48,7 @@ Example:
 ~/.hermes/profiles/<profile>/skills/creative/master-design/SKILL.md
 ~/.hermes/profiles/<profile>/skills/creative/diagram-architect/SKILL.md
 ~/.hermes/profiles/<profile>/skills/software-development/master-engineer/SKILL.md
+~/.hermes/profiles/<profile>/skills/software-development/native-ai-runtime-ops/SKILL.md
 ~/.hermes/profiles/<profile>/skills/software-development/native-ai-runtime-agent/SKILL.md
 ```
 
