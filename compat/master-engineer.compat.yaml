@@ -1,0 +1,21 @@
+skill_adapter:
+  id: master-engineer
+  runtime: hermes
+  version: "1.0.0"
+  adapter_path: "adapters/hermes/master-engineer/SKILL.md"
+  installed_as: "master-engineer"
+  implements:
+    contract:
+      id: master-engineer
+      source: "https://github.com/puterakahfi/native-ai-core/contracts/skills/software-engineering/master-engineer.contract.yaml"
+      version: "^0.1.0"
+  category: software-development
+  capabilities:
+    - architecture_decision
+    - design_critique
+    - system_design
+    - refactor_strategy
+    - engineering_contract_update
+    - implementation_handoff
+  notes:
+    - "Product-specific constraints must be layered by the app adapter."
