@@ -1,0 +1,21 @@
+skill_adapter:
+  id: native-ai-runtime-agent
+  runtime: hermes
+  version: "1.0.0"
+  adapter_path: "adapters/hermes/native-ai-runtime-agent/SKILL.md"
+  installed_as: "native-ai-runtime-agent"
+  implements:
+    runtime_protocol:
+      id: native-ai-runtime-agent
+      source: "https://github.com/puterakahfi/native-ai-skills/adapters/hermes/native-ai-runtime-agent/SKILL.md"
+      version: "^1.0.0"
+  category: software-development
+  capabilities:
+    - runtime_binding_boot
+    - product_context_loading
+    - native_ai_app_adapter_execution
+    - verification_policy_enforcement
+    - learning_capture_routing
+  notes:
+    - "Use when Hermes operates a Native AI app/product adapter such as native-ai-fw."
+    - "Core/product/runtime boundaries remain governed by native-ai-core and app runtime binding files."

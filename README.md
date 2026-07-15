@@ -16,9 +16,11 @@ This repo owns **how a runtime performs a skill**. It does not own product-speci
 adapters/hermes/master-design/SKILL.md
 adapters/hermes/master-engineer/SKILL.md
 adapters/hermes/native-ai-engineer/SKILL.md
+adapters/hermes/native-ai-runtime-agent/SKILL.md
 compat/master-design.compat.yaml
 compat/master-engineer.compat.yaml
 compat/native-ai-engineer.compat.yaml
+compat/native-ai-runtime-agent.compat.yaml
 ```
 
 ## Contract Relationship
@@ -41,6 +43,7 @@ Example:
 ```text
 ~/.hermes/profiles/<profile>/skills/creative/master-design/SKILL.md
 ~/.hermes/profiles/<profile>/skills/software-development/master-engineer/SKILL.md
+~/.hermes/profiles/<profile>/skills/software-development/native-ai-runtime-agent/SKILL.md
 ```
 
 The app adapter should bind both contract and adapter source:
