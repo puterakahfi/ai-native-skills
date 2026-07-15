@@ -15,8 +15,10 @@ This repo owns **how a runtime performs a skill**. It does not own product-speci
 ```text
 adapters/hermes/master-design/SKILL.md
 adapters/hermes/master-engineer/SKILL.md
+adapters/hermes/native-ai-engineer/SKILL.md
 compat/master-design.compat.yaml
 compat/master-engineer.compat.yaml
+compat/native-ai-engineer.compat.yaml
 ```
 
 ## Contract Relationship
