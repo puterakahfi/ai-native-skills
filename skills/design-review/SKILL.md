@@ -160,6 +160,79 @@ These outputs from AI agents justify an immediate design review request:
 - Component that hardcodes colors, spacing, and font sizes inline
 - UI generated from a generic template prompt, not from the design contract
 
+## Typographic Scale Gate
+
+Before approving any design, verify font sizes follow a modular scale:
+
+```
+Check: are font sizes from a declared scale (1.25x or 1.333x ratio)?
+Check: H1-to-body ratio ≤ 3.5x on mobile?
+Check: no arbitrary pixel values outside the scale?
+
+Fail signal: font sizes not in ratio (14px, 18px, 26px, 36px all together)
+→ picked by feel, not system.
+```
+
+## Color Semantic Gate
+
+```
+Map every used color → its semantic role:
+  Is accent used for more than one purpose? → FAIL
+
+Signs of semantic collapse:
+  Same color: logo + status indicator + hover + CTA
+  → user cannot learn what color means
+
+Declare semantic table before designing:
+  accent:  one role ONLY (e.g. LIVE status)
+  bright:  headings / primary content
+  text:    body / secondary
+  subtle:  supporting info
+  muted:   decorative / disabled
+```
+
+## Whitespace Rhythm Gate
+
+```
+Every section same top/bottom padding? → FAIL
+
+Section weight must match content importance:
+  Hero:    maximum space — statement
+  Content: tighter — scanning mode
+  Contact: minimal — closing quietly
+
+Verify: padding varies intentionally across sections.
+```
+
+## Empty State Gate
+
+```
+Any grid with ≤ 50% columns filled?
+  2 cards in 2-col grid → OK
+  2 cards in 4-col grid → FAIL (looks broken)
+  2 cards in 1-col stack → OK (intentional)
+
+Fix layout to match actual content count before approving.
+```
+
+## First Impression Gate (50ms)
+
+```
+Read hero H1 quickly. What do you remember?
+
+FAIL:
+  "Full Stack Engineer specializing in X" → resume line
+  "Building solutions for modern businesses" → meaningless
+  "[Name] — [Title] at [Location]" → directory entry
+
+PASS:
+  One surprising or specific idea
+  A stance, not a description
+  Something that makes you curious or relate immediately
+
+Test: cover name and photo. Does copy still work? If no → too generic.
+```
+
 ## Common Anti-Patterns (Auto-Fail)
 
 | Anti-Pattern | Why It Fails |
@@ -171,6 +244,12 @@ These outputs from AI agents justify an immediate design review request:
 | Copy-pasted landing page hero in dashboard | Template slop |
 | `font-size: 13px` inline | Typography token violation |
 | "AI generated it, looks good to me" | Design contract not consulted |
+| Arbitrary font sizes not in modular scale | Typographic scale gate fail |
+| Accent color used for 3+ different meanings | Color semantic gate fail |
+| Every section identical padding | Whitespace rhythm gate fail |
+| Hero copy = job description | First impression gate fail |
+| 2 items in 4-column grid | Empty state gate fail |
+| Flat single-color bg with no depth/texture | Figure/ground violation |
 
 ## Intentionality Test
 

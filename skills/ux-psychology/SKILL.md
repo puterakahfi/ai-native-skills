@@ -152,6 +152,52 @@ P3: <nice to have>
 
 ---
 
+## Figure/Ground — Gestalt Extended
+
+Figure/ground is not just about contrast — it is about depth and separation:
+
+```
+Flat background problem:
+  Single color background (#0a0a0a) with text = no depth
+  Eye cannot distinguish "canvas" from "content plane"
+  Everything feels on the same layer
+
+Solutions:
+  A) Subtle texture (noise, grain, dot grid) — establishes ground plane
+  B) Section backgrounds alternate slightly (#0a0a0a vs #0f0f0f)
+  C) Cards with 1px border create figure on ground
+  D) Gradient from #0a0a0a to #111111 top-to-bottom = subtle depth
+
+Test: squint at the design — can you still tell what is foreground vs background?
+If no → figure/ground is failing.
+```
+
+---
+
+## Color Psychology in UI
+
+Colors carry meaning before content is read:
+
+```
+Dark backgrounds:
+  Pure black (#000)     → harsh, contrast fatigue on long reads
+  Near black (#0a0a0a)  → sophisticated, intentional
+  Dark grey (#111)      → neutral, readable
+
+Accent color semantic rules:
+  Green     → live, success, go, nature, positive
+  Blue      → trust, information, interactive, calm
+  Amber     → warning, energy, attention
+  White     → clean, minimal, clarity
+
+Danger: green accent used for BOTH live status AND logo dot AND hover state
+        → user maps green to 3 meanings → semantic collapse
+
+One accent = one signal. Always.
+```
+
+---
+
 ## Common Anti-Patterns
 
 | Anti-Pattern | Principle Violated |
@@ -163,3 +209,8 @@ P3: <nice to have>
 | Empty state with no guidance | Visibility of system status |
 | Onboarding that skips the habit trigger | Habit loop — no trigger = no return |
 | 8px touch targets | Fitts's Law — impossible on mobile |
+| Flat single-color background, no texture/depth | Figure/ground — no separation between canvas and content |
+| Accent color with 3+ semantic roles | Color psychology — meaning collapses |
+| Uniform padding on every section | Cognitive load — hierarchy disappears |
+| Hero copy = job description | First impression 50ms — captures nothing memorable |
+| 2 items in 4-column grid | Gestalt completion — looks broken, not intentionally minimal |
