@@ -4,7 +4,7 @@ description: Intent detection and automatic role composition — reads a user re
 version: 1.0.0
 author: puterakahfi
 license: MIT
-type: skill
+type: meta-skill
 implements: ai-native-core/contracts/skills/domain-architecture/role-switcher.contract.yaml
 ---
 
