@@ -10,6 +10,46 @@ implements: ai-native-core/contracts/skills/experience-design/master-design.cont
 
 # Master Design
 
+## The Eight Universal Design Rules
+
+"Eight rules that hold across every theme. None of them are settings."
+
+```
+1. TYPE       Pair a display face with a body face. Never one font doing both jobs.
+              Display = personality. Body = readability. Same font family for both = neither.
+              Gate: H1 font ≠ body font role — different weight alone is NOT enough.
+
+2. COLOUR     OKLCH palettes. One anchor hue. Accent stays under 5% of surface area.
+              Never more than 1 accent color. Accent = CTA or status signal only.
+              Gate: accent color surface area < 5% of total visible page.
+
+3. SPACE      A named scale. Multiples of 4. No arbitrary 17px paddings.
+              Token names (--sp-1…--sp-9) must map to 4px grid: 4,8,12,16,20,24,32,40,64.
+              Gate: every padding/margin/gap is a named token — no raw px values in CSS.
+
+4. MOTION     Exponential ease-out. Reduced-motion alternative for every animation.
+              Ease-in = leaving. Ease-out = entering. Standard = ease-in-out.
+              Gate: every @keyframes or transition has a prefers-reduced-motion override.
+
+5. VOICE      Distinct register per theme/page. Never the SaaS-default neutral middle.
+              Personal landing = direct, specific, no hedging verbs.
+              Gate: no buzzwords — "passionate", "innovative", "leverage", "synergy" → FAIL.
+
+6. LAYOUT     Bias the page. Asymmetric is intentional. Centred everything is a tell.
+              Full center-alignment = no opinion = forgettable.
+              Gate: at least one axis is intentionally off-center or asymmetric.
+
+7. HIERARCHY  Display, body, label. A weight ladder you can read in two seconds.
+              Max 3 levels: dominant (H1) → supporting (H2/body) → accent (label/meta).
+              Gate: H2 ≤ 60% H1 size. No two elements same visual weight competing.
+
+8. RESTRAINT  Better nothing than bad something. The strongest fail-state is silence.
+              If an element has no named role → remove it. Don't fill space.
+              Gate: every visible element has a declared role: anchor/supporting/accent/label/structural.
+```
+
+---
+
 ## Overview
 
 Use this skill when Hermes should operate as a senior product design partner: product designer, SaaS UI/UX designer, design systems specialist, and frontend art director.

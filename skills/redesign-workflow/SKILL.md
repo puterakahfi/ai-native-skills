@@ -446,7 +446,17 @@ Gate 16: Semantic Structure
   Score: __ / 10
 Gate 17: Interactive A11y   (descriptive links, focus states visible)  Score: __ / 10
 
-── COMPOSITION + VISUAL HIERARCHY ──────────────
+── EIGHT UNIVERSAL RULES (from master-design skill) ────────────────
+Gate R1: Type          H1 font ≠ body font role (not just weight difference)     Score: __ / 10
+Gate R2: Colour        Accent < 5% surface area, max 1 accent hue                Score: __ / 10
+Gate R3: Space         All spacing = named token on 4px grid, no raw px          Score: __ / 10
+Gate R4: Motion        Every animation has prefers-reduced-motion override        Score: __ / 10
+Gate R5: Voice         No buzzwords, distinct register, no neutral middle         Score: __ / 10
+Gate R6: Layout        At least one axis intentionally asymmetric, not all-center Score: __ / 10
+Gate R7: Hierarchy     H2 ≤ 60% H1, max 3 visual weight levels                  Score: __ / 10
+Gate R8: Restraint     Every element has named role, nothing fills space blindly  Score: __ / 10
+
+
 Gate C1: Focal Point Above-Fold
   □ H1/name visible within first 100vh
   □ Sits at ≤ 50% from top (optical center)
