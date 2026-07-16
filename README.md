@@ -24,14 +24,15 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 ---
 
-## Skills
+## Skills (18)
 
 Atomic, reusable capabilities. Load individually or composed inside workflows.
 
 | Skill | Description |
 |---|---|
 | [`architecture-review`](#architecture-review) | Engineering contract compliance reviewer — stack, layers, dependencies, ADR |
-| [`context-manager`](#context-manager) | Build context packs for agents — resolve rules, skills, spec before execution |
+| [`context-engineering`](#context-engineering) | Author AGENTS.md, .cursorrules, and context packs that encode architecture constraints into the AI workspace |
+| [`context-manager`](#context-manager) | Resolve and validate context packs before agent execution — rules, skills, spec |
 | [`design-review`](#design-review) | Design system compliance + AI slop detector — token, layout, visual direction |
 | [`diagram-architect`](#diagram-architect) | Architecture, workflow, and contract diagrams — renderer-agnostic |
 | [`git-workflow`](#git-workflow) | Source control — branching, commits, PR/MR, merge. All conventions product-defined |
@@ -45,13 +46,12 @@ Atomic, reusable capabilities. Load individually or composed inside workflows.
 | [`rule-manager`](#rule-manager) | Author and validate AGENTS.md, .cursorrules, per-product rules |
 | [`security-review`](#security-review) | Security baseline validation — secrets, injection, auth, dependencies |
 | [`spike`](#spike) | Throwaway experiments to validate an idea — verdict, not production code |
-| [`systematic-debugging`](#systematic-debugging) | 4-phase root cause debugging — investigate before fixing |
+| [`systematic-debugging`](#systematic-debugging) | 4-phase root cause debugging — investigate before fixing. Includes agent thrashing detection |
 | [`test-driven-development`](#test-driven-development) | TDD: RED-GREEN-REFACTOR — tests written before implementation |
-
-### Install a skill
 
 ```bash
 npx skills add puterakahfi/ai-native-skills@architecture-review -g -y
+npx skills add puterakahfi/ai-native-skills@context-engineering -g -y
 npx skills add puterakahfi/ai-native-skills@context-manager -g -y
 npx skills add puterakahfi/ai-native-skills@design-review -g -y
 npx skills add puterakahfi/ai-native-skills@diagram-architect -g -y
@@ -72,43 +72,56 @@ npx skills add puterakahfi/ai-native-skills@test-driven-development -g -y
 
 ---
 
-## Workflows
+## Workflows (5)
 
 Sequenced processes that compose skills. Load a workflow — it declares which skills to load at each phase.
 
 | Workflow | Phases | Skills Used |
 |---|---|---|
+| [`spec-workflow`](#spec-workflow) | constitution → specify → plan → tasks → implement | `native-ai-engineer`, `master-engineer`, `product-manager`, `plan`, `context-manager`, `rule-manager` |
+| [`new-feature-workflow`](#new-feature-workflow) | plan → design → implement → verify → submit → review | `master-engineer`, `master-design`, `architecture-review`, `design-review` |
 | [`bugfix-workflow`](#bugfix-workflow) | reproduce → investigate → fix → verify → submit → review | `systematic-debugging`, `architecture-review` |
 | [`code-review-workflow`](#code-review-workflow) | load-context → architecture → design → logic → verdict | `architecture-review`, `design-review`, `master-engineer` |
 | [`deployment-workflow`](#deployment-workflow) | pre-deploy → context → deploy → verify → confirm/rollback | `security-review`, `context-manager` |
-| [`new-feature-workflow`](#new-feature-workflow) | plan → design → implement → verify → submit → review | `master-engineer`, `architecture-review`, `design-review` |
-
-### Install a workflow
 
 ```bash
+npx skills add puterakahfi/ai-native-skills@spec-workflow -g -y
+npx skills add puterakahfi/ai-native-skills@new-feature-workflow -g -y
 npx skills add puterakahfi/ai-native-skills@bugfix-workflow -g -y
 npx skills add puterakahfi/ai-native-skills@code-review-workflow -g -y
 npx skills add puterakahfi/ai-native-skills@deployment-workflow -g -y
-npx skills add puterakahfi/ai-native-skills@new-feature-workflow -g -y
 ```
 
 ---
 
-## How Skills and Workflows Relate
+## Full Delivery Loop
+
+These workflows compose into a complete spec-to-production pipeline:
 
 ```
-Workflow: new-feature-workflow
-  Phase 1: plan       → load master-engineer
-  Phase 2: design     → load master-engineer, diagram-architect, master-design, design-review
-  Phase 3: implement  → load master-engineer
-  Phase 6: review     → load architecture-review, design-review
-
-Skill: architecture-review
-  → standalone — use directly in any review context
-  → also composed by: bugfix-workflow, new-feature-workflow, code-review-workflow
+spec-workflow            ← input quality: no vague prompts, no implementation without spec
+  ↓
+new-feature-workflow     ← team process: design → implement → submit
+  ↓
+code-review-workflow     ← output quality: architecture + design + logic gates
+  ↓
+deployment-workflow      ← deploy gate: security → context → deploy → verify
 ```
 
-Skills are standalone. Workflows are orchestrators.
+Each workflow is independent — use any subset that fits your team's process.
+
+---
+
+## Context Engineering vs Context Manager
+
+Two related but distinct skills:
+
+| | `context-manager` | `context-engineering` |
+|---|---|---|
+| **What** | Resolves context before a task runs | Authors context that persists across all tasks |
+| **When** | Per-task, just-in-time | One-time setup, updated on contract changes |
+| **Output** | Context pack for agent | AGENTS.md, .cursorrules, context templates |
+| **Analogy** | Pull the right files from the shelf | Design and organize the shelf |
 
 ---
 
@@ -117,12 +130,12 @@ Skills are standalone. Workflows are orchestrators.
 Product-specific skills extend public skills via `extends` in frontmatter:
 
 ```yaml
-# In your private Hermes profile or product repo
+# In your Hermes profile or product repo
 name: my-team-git-workflow
 extends: puterakahfi/ai-native-skills@git-workflow
 ```
 
-Override only what's team-specific — branch strategy, issue tracker, approval policy. The base skill handles the invariant parts.
+Override only what's team-specific — branch strategy, issue tracker, approval policy.
 
 ---
 
