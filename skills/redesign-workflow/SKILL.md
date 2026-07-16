@@ -6,18 +6,22 @@ author: puterakahfi
 license: MIT
 type: workflow
 implements: ai-native-core/contracts/workflows/redesign.contract.yaml
-related_skills: [master-design, ux-psychology, design-review, design-system, ux-ui-patterns, readability, responsiveness, accessibility, motion-design]
+related_skills: [master-design, ux-psychology, design-review, design-system, ux-ui-patterns, readability, responsiveness, accessibility, motion-design, design-genre, macrostructures, content-strategy, web-performance]
 skill_load_order:
+  - phase: preflight
+    skills: [design-genre, macrostructures, information-architecture]
   - phase: audit
-    skills: [ux-psychology, accessibility, readability, responsiveness]
+    skills: [ux-psychology, accessibility, readability, responsiveness, web-performance]
   - phase: spec
-    skills: [product-manager, master-design, ux-ui-patterns]
+    skills: [product-manager, master-design, content-strategy]
   - phase: produce
-    skills: [design-system, ux-ui-patterns, master-design, motion-design]
+    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, motion-design]
+  - phase: pre-emit-critique
+    skills: [master-design, ux-psychology]
   - phase: review
-    skills: [design-review, readability, responsiveness, accessibility, motion-design]
+    skills: [design-review, readability, responsiveness, accessibility, motion-design, web-performance, content-strategy]
   - phase: fix
-    skills: [design-system, ux-ui-patterns, master-design, readability, responsiveness, motion-design]
+    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, readability, responsiveness, motion-design, content-strategy]
 ---
 
 # Redesign Workflow
@@ -50,7 +54,52 @@ On max_iterations: deliver best attempt + explicit gate failure report
 
 ---
 
-## Phase 1: AUDIT
+## Phase 0: PRE-FLIGHT
+
+Before anything — scan the target for existing design context:
+
+```
+Pre-flight scan (in order):
+  1. design.md / DESIGN.md at project root → locked design system, overrides all picks
+  2. CSS custom properties (:root vars) → existing palette + type scale
+  3. package.json deps → framework, motion libs, font packages
+  4. Existing macrostructure stamp: /* macrostructure: <name> */ in any CSS
+  5. Deployed site: browser_navigate → browser_vision → capture palette, fonts, layout
+
+Output (emit once):
+  Pre-flight findings:
+  · Existing palette: [found | not found]
+  · Existing font stack: [found | not found]
+  · Motion stance: [motion-on | motion-cut] (based on deps)
+  · Macrostructure in use: [name | none]
+  · Design system locked: [yes (design.md) | no]
+
+  Hallmark will preserve: [list]
+  Will introduce: [list]
+  If wrong: correct me before I proceed.
+
+If no signals found: "No pre-flight signals — proceeding with full stack."
+```
+
+## Phase 0.5: GENRE + MACROSTRUCTURE PICK
+
+Load `design-genre` skill. Detect genre from brief signals.
+Load `macrostructures` skill. Pick ONE macrostructure.
+
+```
+State out loud before writing any code:
+
+Genre: [editorial | modern-minimal | atmospheric | playful]
+Signal: [what triggered it | default]
+Macrostructure: [name]
+Layout lead: [type-led | image-led | grid-led | document-led]
+Differs from last on: [axes | first build]
+
+If unsure between 2 macrostructures: offer 3 from categorically different groups,
+let user pick, or pick the most distant from default (not Specimen, not Marquee Hero).
+```
+
+
 
 ```
 1. browser_navigate(url)
@@ -106,6 +155,58 @@ Nav:      Work · About · Contact
 ---
 
 ## Phase 3: PRODUCE
+
+Produce HTML prototype. Apply design in this order:
+1. Genre tokens (from `design-genre` skill — voice, color family, motion stance)
+2. Macrostructure structure (from `macrostructures` skill — layout, heading, dividers)
+3. Design system tokens (from `design-system` skill — spacing, type scale, color semantic)
+4. Motion (from `motion-design` skill — only if motion-on)
+5. Content (from `content-strategy` skill — microcopy, button labels, empty states)
+
+Stamp at top of CSS (mandatory):
+```css
+/*
+ * macrostructure: [name]
+ * genre: [genre]
+ * theme: [theme name | custom]
+ * iteration: [N]
+ */
+```
+
+### Pre-Emit Self-Critique (run BEFORE delivering output)
+
+Score 1–5 on six axes. Anything < 3 = revision pass before emit.
+
+```
+Pre-emit critique:
+  P (Philosophy):  Does every element have a reason to exist?        __ / 5
+  H (Hierarchy):   Is the visual hierarchy immediately readable?     __ / 5
+  E (Execution):   Are spacing, scale, alignment consistent?         __ / 5
+  S (Specificity): Is copy specific, not generic? No AI slop?        __ / 5
+  R (Restraint):   Is anything decorative that could be removed?     __ / 5
+  V (Variety):     Does this differ structurally from last output?   __ / 5
+
+Revision trigger: any axis < 3
+Fix the lowest axis before delivering.
+
+Stamp in CSS: /* pre-emit: P_ H_ E_ S_ R_ V_ */
+```
+
+### Slop Red List (auto-revision if any present)
+
+```
+❌ "Get started for free" as primary CTA (unless product requires it)
+❌ Hero with H1 + 3 bullet features + CTA button (template pattern)
+❌ "Trusted by X companies" with logo row in hero
+❌ Testimonial grid with star ratings
+❌ Gradient mesh background behind text
+❌ Generic stock photo of diverse people in office
+❌ "Seamless", "leverage", "world-class", "cutting-edge" in copy
+❌ 6+ feature cards in equal-size grid
+❌ Login button in hero for first-time visitor page
+❌ All-caps nav with 5+ items
+```
+
 
 Generate complete, self-contained HTML file.
 
