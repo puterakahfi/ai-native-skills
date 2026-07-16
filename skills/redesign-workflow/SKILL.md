@@ -682,6 +682,29 @@ After fix: goto Phase 4 (review). Do NOT skip review after fix.
 
 Only when: all 8 gates PASS (or max_iterations=3 reached).
 
+## PITFALLS
+
+### CSS patch corruption — most common failure
+Applying 3+ micro-patches to one CSS block causes rules to nest inside wrong selectors.
+Symptom: page goes white, `document.styleSheets.length === 0`.
+Rule: after 2 failed patches on same file region → full rewrite with `write_file`. Never a 3rd patch.
+
+### Mandatory CSS verification snippet (run after EVERY CSS change)
+```js
+const ok = {
+  bg: getComputedStyle(document.body).backgroundColor,      // NOT rgba(0,0,0,0)
+  sheets: document.styleSheets.length,                      // > 0
+  touchFail: [...document.querySelectorAll('a,button')]
+    .filter(el=>{const b=el.getBoundingClientRect();
+      return b.width>0&&b.height<44;}).length,              // === 0
+  h1TopPct: Math.round(document.querySelector('h1')
+    .getBoundingClientRect().top/window.innerHeight*100),   // < 50
+};
+```
+All 4 must pass before claiming CSS is working.
+
+
+
 ```
 Output:
 1. Save HTML to output_path
