@@ -111,23 +111,17 @@ When NOT:       Documentation, complex product with many features
   /* Marquee Hero = TOP-ANCHORED, not centered */
   /* Void below content = intentional breathing room. Void above = dead space = FAIL. */
   .hero {
-    min-height: 100vh;
-    display: block;                              /* NOT grid, NOT flex-center */
-    padding-top: clamp(120px, 16vh, 180px);     /* nav(64px) + breathing above name */
-    padding-bottom: clamp(80px, 12vh, 160px);   /* breathing below content */
+    /* NO min-height: 100vh — forces void when content is sparse */
+    display: block;
+    padding-top: clamp(120px, 16vh, 180px);
+    padding-bottom: clamp(80px, 14vh, 140px); /* generous but not full viewport */
     padding-left: var(--sp-8);
     padding-right: var(--sp-8);
     position: relative;
     border-bottom: 1px solid var(--border);
   }
-  .hero-content {
-    max-width: 1280px;
-    margin: 0 auto;
-    width: 100%;
-  }
-  /* Result: name lands at ~16vh from top → optical center ✅ */
-  /* Void below content = intentional, guides eye to scroll cue */
-
+  /* HARD RULE: min-height:100vh + sparse content = void = FAIL */
+  /* Use generous padding-bottom instead — breathing room without dead space */
   /* HARD RULE: justify-content:center → content floats in tall 1fr row → void above AND below → FAIL */
   /* HARD RULE: grid-template-rows with 1fr → same problem at tall viewports → FAIL */
   /* HARD RULE: flex-end → name at 75%+ → dead space above → FAIL */
