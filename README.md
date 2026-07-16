@@ -24,30 +24,32 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 ---
 
-## Skills (18)
+## Skills (20)
 
 Atomic, reusable capabilities. Load individually or composed inside workflows.
 
 | Skill | Description |
 |---|---|
-| [`architecture-review`](#architecture-review) | Engineering contract compliance reviewer — stack, layers, dependencies, ADR |
-| [`context-engineering`](#context-engineering) | Author AGENTS.md, .cursorrules, and context packs that encode architecture constraints into the AI workspace |
-| [`context-manager`](#context-manager) | Resolve and validate context packs before agent execution — rules, skills, spec |
-| [`design-review`](#design-review) | Design system compliance + AI slop detector — token, layout, visual direction |
-| [`diagram-architect`](#diagram-architect) | Architecture, workflow, and contract diagrams — renderer-agnostic |
-| [`git-workflow`](#git-workflow) | Source control — branching, commits, PR/MR, merge. All conventions product-defined |
+| [`architecture-review`](#architecture-review) | Engineering contract compliance — stack, layers, dependencies, ADR |
+| [`context-engineering`](#context-engineering) | Author AGENTS.md, .cursorrules, context packs that encode architecture constraints |
+| [`context-manager`](#context-manager) | Resolve and validate context packs before agent execution |
+| [`design-review`](#design-review) | Design system compliance + AI slop detection |
+| [`diagram-architect`](#diagram-architect) | Architecture, workflow, and contract diagrams |
+| [`git-workflow`](#git-workflow) | Source control — branching, commits, PR/MR. All conventions product-defined |
 | [`master-design`](#master-design) | Senior Product Designer — wireframes, mockups, interaction contracts, design systems |
 | [`master-engineer`](#master-engineer) | Senior Software Engineer — architecture decisions, system design, patterns |
 | [`native-ai-engineer`](#native-ai-engineer) | AI-native domain contract architect — layer placement, runtime boundaries |
 | [`native-ai-runtime-agent`](#native-ai-runtime-agent) | Runtime agent for ai-native-fw product adapters |
 | [`native-ai-runtime-ops`](#native-ai-runtime-ops) | Ops for AI-native runtime hosts — SSH, bootstrap, gateway, backup |
-| [`plan`](#plan) | Write actionable markdown plans with exact file paths before execution |
+| [`plan`](#plan) | Actionable markdown plans with exact file paths before execution |
 | [`product-manager`](#product-manager) | PRDs, acceptance criteria, task breakdown, prioritization |
+| [`role-switcher`](#role-switcher) | Detects intent → activates the right role combination → multi-lens analysis |
 | [`rule-manager`](#rule-manager) | Author and validate AGENTS.md, .cursorrules, per-product rules |
-| [`security-review`](#security-review) | Security baseline validation — secrets, injection, auth, dependencies |
+| [`security-review`](#security-review) | Security baseline — secrets, injection, auth, dependencies |
 | [`spike`](#spike) | Throwaway experiments to validate an idea — verdict, not production code |
-| [`systematic-debugging`](#systematic-debugging) | 4-phase root cause debugging — investigate before fixing. Includes agent thrashing detection |
-| [`test-driven-development`](#test-driven-development) | TDD: RED-GREEN-REFACTOR — tests written before implementation |
+| [`systematic-debugging`](#systematic-debugging) | 4-phase root cause debugging + agent thrashing detection |
+| [`test-driven-development`](#test-driven-development) | TDD: RED-GREEN-REFACTOR — tests before implementation |
+| [`ux-psychology`](#ux-psychology) | Cognitive load, habit loops, heuristics, Fitts/Hick, gestalt — why users struggle |
 
 ```bash
 npx skills add puterakahfi/ai-native-skills@architecture-review -g -y
@@ -63,22 +65,24 @@ npx skills add puterakahfi/ai-native-skills@native-ai-runtime-agent -g -y
 npx skills add puterakahfi/ai-native-skills@native-ai-runtime-ops -g -y
 npx skills add puterakahfi/ai-native-skills@plan -g -y
 npx skills add puterakahfi/ai-native-skills@product-manager -g -y
+npx skills add puterakahfi/ai-native-skills@role-switcher -g -y
 npx skills add puterakahfi/ai-native-skills@rule-manager -g -y
 npx skills add puterakahfi/ai-native-skills@security-review -g -y
 npx skills add puterakahfi/ai-native-skills@spike -g -y
 npx skills add puterakahfi/ai-native-skills@systematic-debugging -g -y
 npx skills add puterakahfi/ai-native-skills@test-driven-development -g -y
+npx skills add puterakahfi/ai-native-skills@ux-psychology -g -y
 ```
 
 ---
 
 ## Workflows (5)
 
-Sequenced processes that compose skills. Load a workflow — it declares which skills to load at each phase.
+Sequenced processes that compose skills. Each workflow declares which skills to load at each phase.
 
-| Workflow | Phases | Skills Used |
+| Workflow | Phases | Key Skills |
 |---|---|---|
-| [`spec-workflow`](#spec-workflow) | constitution → specify → plan → tasks → implement | `native-ai-engineer`, `master-engineer`, `product-manager`, `plan`, `context-manager`, `rule-manager` |
+| [`spec-workflow`](#spec-workflow) | constitution → specify → plan → tasks → implement | `product-manager`, `plan`, `context-manager`, `master-engineer` |
 | [`new-feature-workflow`](#new-feature-workflow) | plan → design → implement → verify → submit → review | `master-engineer`, `master-design`, `architecture-review`, `design-review` |
 | [`bugfix-workflow`](#bugfix-workflow) | reproduce → investigate → fix → verify → submit → review | `systematic-debugging`, `architecture-review` |
 | [`code-review-workflow`](#code-review-workflow) | load-context → architecture → design → logic → verdict | `architecture-review`, `design-review`, `master-engineer` |
@@ -96,8 +100,6 @@ npx skills add puterakahfi/ai-native-skills@deployment-workflow -g -y
 
 ## Full Delivery Loop
 
-These workflows compose into a complete spec-to-production pipeline:
-
 ```
 spec-workflow            ← input quality: no vague prompts, no implementation without spec
   ↓
@@ -108,13 +110,31 @@ code-review-workflow     ← output quality: architecture + design + logic gates
 deployment-workflow      ← deploy gate: security → context → deploy → verify
 ```
 
-Each workflow is independent — use any subset that fits your team's process.
+---
+
+## Multi-Role Analysis with role-switcher
+
+`role-switcher` detects intent from a request and activates the right combination of role skills automatically.
+
+```
+Request: "audit this design — what's missing?"
+
+role-switcher detects: design audit
+→ activates: master-design + ux-psychology + product-manager + design-review
+
+Response:
+  ## Product Lens      ← product-manager
+  ## Design Lens       ← master-design
+  ## Psychology Lens   ← ux-psychology (cognitive load, habit loop, heuristics)
+  ## AI Slop Check     ← design-review
+  ## Synthesis         ← P1/P2/P3 cross-lens priority
+```
+
+Role map covers: design audits, code reviews, product gaps, UX analysis, full-stack audits.
 
 ---
 
 ## Context Engineering vs Context Manager
-
-Two related but distinct skills:
 
 | | `context-manager` | `context-engineering` |
 |---|---|---|
@@ -127,28 +147,25 @@ Two related but distinct skills:
 
 ## Extending Skills (Inheritance)
 
-Product-specific skills extend public skills via `extends` in frontmatter:
-
 ```yaml
 # In your Hermes profile or product repo
 name: my-team-git-workflow
 extends: puterakahfi/ai-native-skills@git-workflow
 ```
 
-Override only what's team-specific — branch strategy, issue tracker, approval policy.
+Override only what's team-specific. The base skill handles the invariant parts.
 
 ---
 
 ## Contract Traceability
 
-Every skill and workflow traces to a contract in [ai-native-core](https://github.com/puterakahfi/ai-native-core):
+Every skill traces to a contract in [ai-native-core](https://github.com/puterakahfi/ai-native-core):
 
 ```yaml
-# In every SKILL.md frontmatter
 implements: ai-native-core/contracts/skills/quality-control/architecture-review.contract.yaml
 ```
 
-Contracts define: capability, quality gates, required inputs/outputs, adapter requirements.
+Contracts define: capability, quality gates, inputs/outputs, adapter requirements.
 Skills define: how to fulfill the contract as an executable agent procedure.
 
 ---
