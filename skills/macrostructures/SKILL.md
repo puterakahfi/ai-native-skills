@@ -218,43 +218,53 @@ When NOT:       Text-heavy content, SaaS product, personal blog
 Failing to follow these causes gray void and broken balance — most common Studio bug.
 
 ```
+Hero wrapper (outer):
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+
 Hero grid:
+  flex: 1;                      ← fill remaining height after nav
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
-  align-items: center;      ← NOT stretch — center both panels vertically
+  align-items: stretch;         ← STRETCH both panels to full grid height
+
+Nav clearance:
+  Add padding-top to hero-left content ONLY — not to the grid
+  This way right panel starts from true top of viewport
 
 Left panel:
-  align-self: stretch;      ← stretch ONLY left so border runs full height
   display: flex; flex-direction: column; justify-content: center;
   border-right: 1px solid var(--border);
-  padding: var(--sp-9) var(--sp-8);
+  padding: calc(80px + var(--sp-9)) var(--sp-8) var(--sp-9);
+  /* 80px = nav height clearance, built into left padding only */
 
 Right panel (work list):
   display: flex; flex-direction: column;
   gap: 1px;
-  background: var(--border);   ← gap color via background bleed
-  padding: 0;                  ← ZERO outer padding — label + cards flush to edge
+  background: var(--border);
+  padding: 0;
+  padding-top: 80px;            ← right panel needs same nav clearance at top
 
 Section label inside right panel:
   padding: var(--sp-6) var(--sp-6) var(--sp-5);
-  background: var(--bg-alt);   ← must match card bg so border gap reads cleanly
+  background: var(--bg-alt);
 
 Project cards:
-  flex: 1;                     ← REQUIRED — fills remaining height equally
+  flex: 1;                      ← REQUIRED — fills remaining height equally
   padding: var(--sp-8) var(--sp-6);
   background: var(--bg-alt);
 ```
 
+**Why outer wrapper + flex:1 on grid (not min-height on grid):**
+- `min-height: 100vh` + `padding-top: 80px` on grid = grid is 100vh + 80px tall → overflow
+- Better: wrapper = 100vh flex column, grid = flex:1 fills remaining → exact 100vh total
+- Right panel padding-top: 80px mirrors the nav clearance so label aligns with left content
+
 **Why `flex: 1` is mandatory on cards:**
 - Without it → cards take natural height → gray void below last card
-- Adding outer padding to right panel makes it worse → void at top + bottom
-- Fix: `flex: 1` on cards + `padding: 0` on panel = cards fill height cleanly
 
 **Section label spacing rule:**
-- Label must have internal padding (`padding: var(--sp-6) var(--sp-6) var(--sp-5)`)
-- NOT `padding: 0` — zero padding causes label text to nempel ke cards below
-- The `gap: 1px` on panel + `background: var(--border)` creates the separator line automatically
+- Label needs internal padding — never 0 when adjacent to cards below
 
 ---
 
