@@ -2,7 +2,9 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**48 skills · 5 workflows · 2 meta-skills**
+**62 skills · 6 workflows · 2 meta-skills**
+
+See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern.
 
 ---
 
@@ -21,12 +23,13 @@ npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 
 ## Skill Type Taxonomy
 
+`ai-native-skills` uses three official `type:` values in `SKILL.md` frontmatter. See [docs/skills.md](docs/skills.md) for definitions, decision rules, and the adapter pattern.
+
 | Type | Description | Examples |
 |---|---|---|
-| `skill` | Atomic capability — standalone, single domain | `systematic-debugging`, `threat-modeling` |
-| `workflow` | Sequenced phases — composes skills | `bugfix-workflow`, `deployment-workflow` |
-| `meta-skill` | Orchestrates other skills dynamically | `role-switcher`, `workflow-router` |
-| `skill-adapter` | Extends base skill for product-specific context | `arbiter-git-workflow extends git-workflow` |
+| `skill` | Atomic capability — standalone, reusable domain capability or expert lens | `systematic-debugging`, `threat-modeling` |
+| `workflow` | Sequenced phases — lifecycle with gates, often composing skills | `bugfix-workflow`, `redesign-workflow` |
+| `meta-skill` | Router/composer — selects workflows or skill combinations before execution | `role-switcher`, `workflow-router` |
 
 ---
 
@@ -41,7 +44,7 @@ Load these first — they route and compose everything else.
 
 ---
 
-## Workflows (5)
+## Workflows (6)
 
 | Workflow | Phases |
 |---|---|
@@ -50,10 +53,11 @@ Load these first — they route and compose everything else.
 | `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review |
 | `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict |
 | `deployment-workflow` | pre-deploy → deploy → health-verify → rollback |
+| `redesign-workflow` | audit → spec → prototype → design-review gates → iterate → deliver |
 
 ---
 
-## Skills (48)
+## Skills (62)
 
 ### Domain Architecture
 
@@ -207,15 +211,17 @@ role-switcher   → compose: which lenses for this task?
 
 ---
 
-## Inheritance Pattern
+## Adapter Pattern
+
+Adapter behavior is a pattern, not a separate official `type:` value today. Use `type: skill` plus `implements:` and `compat/*.compat.yaml` when a skill implements a Native AI Core contract.
 
 ```yaml
-# skill-adapter extends public base skill
-name: arbiter-git-workflow
-type: skill-adapter
-extends: puterakahfi/ai-native-skills@git-workflow
-# Override only what's product-specific
+name: native-ai-runtime-agent
+type: skill
+implements: ai-native-core/contracts/skills/runtime-agent/native-ai-runtime-agent.contract.yaml
 ```
+
+See [docs/skills.md](docs/skills.md#adapter-pattern) for details.
 
 ---
 
