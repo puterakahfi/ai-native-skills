@@ -515,7 +515,107 @@ STATUS: PASS (deliver) | FAIL (fix → re-review)
 
 ---
 
-## Phase 5: FIX (if gates fail)
+## Phase 5: FIX (Skill-First Mandatory)
+
+When any gate scores < 8.0, run this sequence IN ORDER. Skipping step A is NOT allowed.
+
+```
+Step A — Root cause classification (mandatory before any fix):
+
+  For each failing gate, answer:
+    1. Which skill encodes the rule for this gate?
+    2. Is the rule present in that skill? (yes/no)
+    3. If no → the skill is the root cause → patch skill first
+    4. If yes → was the rule followed in the output? (yes/no)
+    5. If no → the output violated an existing rule → still patch skill
+       (add a "common violation" or "pitfall" note to the relevant rule)
+    6. Document: SKILL: [name] | RULE: [quoted] | GAP: [what was missing]
+
+Step B — Patch the skill:
+
+  For each root cause identified in Step A:
+    - Open the relevant skill file
+    - Add/strengthen the missing rule, example, or pitfall
+    - Be specific: not "use proper spacing" but "section-label padding must be
+      var(--sp-6) var(--sp-6) var(--sp-5) — never 0 when adjacent to cards"
+    - Commit the patch to skill before producing new output
+
+Step C — Reproduce from patched skill:
+
+  Re-run Phase 3 (PRODUCE) with the patched skill loaded.
+  Do NOT patch the HTML output directly — reproduce from skill.
+  This is the only way to verify the skill fix actually works.
+
+Step D — Re-score:
+
+  Re-run Phase 4 (REVIEW) on the new output.
+  Compare scores iteration-to-iteration.
+  If a gate that previously passed now fails → skill patch introduced regression → fix.
+```
+
+## Phase 6: AUTONOMOUS LOOP
+
+Run Phases 3→4→5 autonomously until exit condition.
+
+```
+LOOP STATE:
+  iteration:     1
+  max:           5 (default, configurable)
+  skill_patches: []   ← log every skill patched this session
+  score_history: []   ← [iter1_score, iter2_score, ...]
+
+LOOP BODY (repeat):
+  1. Phase 3: PRODUCE
+     → Write HTML from current skill state
+     → Stamp: macrostructure, genre, iteration N, pre-emit scores
+
+  2. Phase 4: REVIEW
+     → Score all 22 gates
+     → Compute overall average
+     → Log: score_history.append(avg)
+
+  3. Check exit:
+     IF avg >= 8.0 → EXIT → Phase 7: DELIVER
+     IF iteration >= max → EXIT → Phase 7: DELIVER (with gap report)
+
+  4. Phase 5: FIX (skill-first mandatory)
+     → Root cause → patch skill → log skill_patches
+     → iteration++
+     → go to step 1
+
+LOOP REPORT (emit at exit):
+  ════════════════════════════════
+  Autonomous loop complete: N iterations
+  Score progression: [8.0 → 8.4 → 9.1 → 9.6]
+  Skills patched this session:
+    - macrostructures: Studio split-panel rules
+    - redesign-workflow: Gate 5 whitespace proximity
+    - master-design: section label padding
+  Final score: 9.6 / 10
+  Status: ✅ PASS (>= 8.0)
+
+  Residual gaps (if max reached before 8.0):
+    Gate N: [description] — [score] — [why not fixed in N iterations]
+    Recommendation: extend loop or manual review
+  ════════════════════════════════
+
+EXTENSION PROMPT (if max reached, score < 8.0):
+  "Loop reached max N iterations. Score: X.X / 10.
+   Residual gaps: [list]. Extend loop? (Y = 3 more iterations)"
+```
+
+### Why skill-first loop beats output-first loop
+
+```
+Output-first loop (wrong):           Skill-first loop (correct):
+  Iter 1: produce bad output           Iter 1: produce → review → gap found
+  Iter 1: fix HTML directly            Iter 1: patch SKILL → reproduce
+  Iter 2: produce from same skill      Iter 2: produce from BETTER skill
+  Iter 2: same mistake, fix again      Iter 2: mistake doesn't recur
+  Iter 3: same mistake, fix again      Iter 3: new gap → patch skill
+  → skill never improves               → skill accumulates knowledge
+  → mistakes repeat across sessions    → mistakes do not repeat across sessions
+``` (if gates fail)
 
 For each failed gate — apply specific fix, do not rewrite from scratch:
 
