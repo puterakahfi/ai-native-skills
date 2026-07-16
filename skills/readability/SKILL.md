@@ -175,6 +175,22 @@ Heading line-height:
 
 ## Dimension 5: Density
 
+**Dead space vs Breathing Room — NOT the same:**
+
+```
+Dead space (FAIL):
+  - Void with no visual purpose above hero focal point
+  - Eye enters void first, searches for anchor, fatigues
+  - Caused by: justify-content:flex-end on 100vh hero
+
+Breathing room (PASS):
+  - Intentional whitespace BETWEEN sections
+  - Lives between sections, NEVER before first hero content
+  - Has rhythm: multiples of 8px base unit
+```
+
+
+
 **Information density scoring:**
 
 ```

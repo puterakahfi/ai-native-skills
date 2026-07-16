@@ -15,13 +15,13 @@ skill_load_order:
   - phase: spec
     skills: [product-manager, master-design, content-strategy]
   - phase: produce
-    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, motion-design]
+    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, motion-design, composition, visual-hierarchy]
   - phase: pre-emit-critique
-    skills: [master-design, ux-psychology]
+    skills: [master-design, ux-psychology, composition, visual-hierarchy]
   - phase: review
-    skills: [design-review, readability, responsiveness, accessibility, motion-design, web-performance, content-strategy]
+    skills: [design-review, readability, responsiveness, accessibility, motion-design, web-performance, content-strategy, composition, visual-hierarchy]
   - phase: fix
-    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, readability, responsiveness, motion-design, content-strategy]
+    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, readability, responsiveness, motion-design, content-strategy, composition, visual-hierarchy]
 ---
 
 # Redesign Workflow
@@ -446,7 +446,37 @@ Gate 16: Semantic Structure
   Score: __ / 10
 Gate 17: Interactive A11y   (descriptive links, focus states visible)  Score: __ / 10
 
-── MOTION DESIGN (from motion-design skill) ────────
+── COMPOSITION + VISUAL HIERARCHY ──────────────
+Gate C1: Focal Point Above-Fold
+  □ H1/name visible within first 100vh
+  □ Sits at ≤ 50% from top (optical center)
+  □ No unframed dead space above focal point
+  Common violation: justify-content:flex-end on 100vh → H1 at 80% → void above → FAIL
+  Score: __ / 10
+
+Gate C2: Visual Weight Distribution
+  □ One heavy (H1), one supporting (H2), one accent (label) — identifiable
+  □ No two elements compete for dominance
+  Score: __ / 10
+
+Gate C3: Alignment & Anchoring
+  □ Every element aligned to grid column, sibling edge, or center axis
+  □ No magic-number positioning
+  □ Spacing multiples of 8px base unit
+  □ No floating/unanchored elements ("ngambang")
+  Score: __ / 10
+
+Gate H1: Dominant/Supporting Ratio
+  □ Supporting H2 ≤ 60% of H1 size
+  □ No H2 larger than H1
+  Score: __ / 10
+
+Gate H2: Inter-Section Weight Decay
+  □ No section heading carries more visual weight than hero H1
+  □ About/manifesto H2 sized as STATEMENT (< H1), not ANCHOR
+  Score: __ / 10
+
+
 Gate 18: Motion Purpose     (every animation = user signal)            Score: __ / 10
 Gate 19: Duration + Easing  (hover≤200ms, ease-out enter, ease-in exit) Score: __ / 10
 Gate 20: GPU Performance    (transform+opacity only, will-change)      Score: __ / 10
