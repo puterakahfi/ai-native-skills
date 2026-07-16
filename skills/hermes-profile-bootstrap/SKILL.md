@@ -279,6 +279,25 @@ skills:
     - context-manager
     - rule-manager
     - response-contract
+  engineering_quality:
+    - systematic-debugging
+    - test-driven-development
+    - refactoring
+    - architecture-review
+    - security-review
+    - threat-modeling
+    - git-workflow
+    - plan
+    - spike
+    - skill-eval
+  architecture:
+    - domain-driven-design
+    - ports-and-adapters
+    - api-contract
+    - event-driven-design
+    - service-design
+    - systems-thinking
+    - adr
 ```
 
 Generators may add version pins later, but the initial skeleton should stay readable and editable.
