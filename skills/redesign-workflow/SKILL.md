@@ -407,7 +407,10 @@ Gate 1: Token Completeness
   Score: __ / 10
 
 ── VISUAL DESIGN ──────────────────────────────────
-Gate 2: Typographic Scale   (1.333 modular, H1/body ≤ 3.5x mobile)   Score: __ / 10
+Gate 2: Typographic Scale   (1.333 modular, H1/body ≤ 3.5x DESKTOP, ≤ 3.0x MOBILE)
+  Common violation: clamp hero to 7rem (112px) with 21px body = 5.3x → FAIL
+  Fix: clamp max ≤ 4.5rem for hero, or raise body size proportionally
+  Score: __ / 10
 Gate 3: Color Semantic      (one token = one role, no collapse)        Score: __ / 10
 Gate 4: Figure/Ground       (bg depth: texture/gradient/alt)           Score: __ / 10
 Gate 5: Whitespace Rhythm   (hero ≠ content ≠ contact padding)        Score: __ / 10
@@ -418,7 +421,11 @@ Gate 7: Layout Grid         (column count matches content count)       Score: __
 Gate 8: First Impression    (50ms: stance not job description)         Score: __ / 10
 
 ── READABILITY ─────────────────────────────────────
-Gate 9:  Line Length        (body ≤ 65ch, no full-width prose)        Score: __ / 10
+Gate 9:  Line Length
+  □ Hero stance/bio: max-width 44ch (NOT px — px exceeds 65 CPL at large viewport)
+  □ Body prose: max-width 65ch
+  Common violation: max-width:553px → 72 CPL at 21px font → FAIL
+  Score: __ / 10
 Gate 10: Contrast Ratio     (primary ≥ 4.5:1, secondary ≥ 3:1)       Score: __ / 10
 Gate 11: Type Size          (body ≥ 16px, smallest ≥ 12px)           Score: __ / 10
 Gate 12: Cognitive Ease     (H1 ≤ 8 words, ≤ 4 sentences/para)       Score: __ / 10
@@ -429,7 +436,14 @@ Gate 14: Touch Targets      (interactive ≥ 44×44px)                   Score: 
 Gate 15: Type Scaling       (clamp() or mobile cap, ratio ≤ 3.5x)    Score: __ / 10
 
 ── ACCESSIBILITY ───────────────────────────────────
-Gate 16: Semantic Structure (nav/main/section/footer, H1→H2→H3)      Score: __ / 10
+Gate 16: Semantic Structure
+  □ main, nav[aria-label], footer, sections with aria-labelledby
+  □ H1→H2→H3 — no heading level skips
+  □ Work/product list: must have H2 even if visually-hidden
+  Common violation: work section uses div+div, no H2 → heading outline broken
+  Fix: .sr-only { position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0); }
+       Add <h2 class="sr-only">Selected work</h2> inside section
+  Score: __ / 10
 Gate 17: Interactive A11y   (descriptive links, focus states visible)  Score: __ / 10
 
 ── MOTION DESIGN (from motion-design skill) ────────
