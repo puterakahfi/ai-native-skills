@@ -6,18 +6,18 @@ author: puterakahfi
 license: MIT
 type: workflow
 implements: ai-native-core/contracts/workflows/redesign.contract.yaml
-related_skills: [master-design, ux-psychology, design-review, spec-workflow, accessibility]
+related_skills: [master-design, ux-psychology, design-review, design-system, ux-ui-patterns, readability, responsiveness, accessibility]
 skill_load_order:
   - phase: audit
-    skills: [ux-psychology, accessibility]
+    skills: [ux-psychology, accessibility, readability, responsiveness]
   - phase: spec
-    skills: [product-manager, master-design]
+    skills: [product-manager, master-design, ux-ui-patterns]
   - phase: produce
-    skills: [master-design]
+    skills: [design-system, ux-ui-patterns, master-design]
   - phase: review
-    skills: [design-review, ux-psychology, accessibility]
+    skills: [design-review, readability, responsiveness, accessibility]
   - phase: fix
-    skills: [master-design, ux-psychology]
+    skills: [design-system, ux-ui-patterns, master-design, readability, responsiveness]
 ---
 
 # Redesign Workflow
@@ -185,9 +185,65 @@ PASS: "One codebase. Five products." / "I build systems meant to last."
 
 ---
 
-## Phase 4: REVIEW (Gate Check)
+## Phase 4: REVIEW (Scored Gate Check)
 
-Run ALL gates. Record pass/fail for each:
+Run ALL 17 gates across 6 skill dimensions. Every gate scored 0–10. Minimum **8.0 average** to pass.
+
+```
+DESIGN REVIEW — Iteration N
+════════════════════════════════════════════════════
+
+── DESIGN SYSTEM ──────────────────────────────────
+Gate 1: Token Completeness
+  □ All colors from declared semantic token table?
+  □ All spacing from 8px grid tokens?
+  □ All font-sizes from modular scale?
+  □ No hardcoded hex/px outside token table?
+  Score: __ / 10
+
+── VISUAL DESIGN ──────────────────────────────────
+Gate 2: Typographic Scale   (1.333 modular, H1/body ≤ 3.5x mobile)   Score: __ / 10
+Gate 3: Color Semantic      (one token = one role, no collapse)        Score: __ / 10
+Gate 4: Figure/Ground       (bg depth: texture/gradient/alt)           Score: __ / 10
+Gate 5: Whitespace Rhythm   (hero ≠ content ≠ contact padding)        Score: __ / 10
+
+── UX/UI PATTERNS ─────────────────────────────────
+Gate 6: Hero Pattern        (correct pattern for page goal, spec met)  Score: __ / 10
+Gate 7: Layout Grid         (column count matches content count)       Score: __ / 10
+Gate 8: First Impression    (50ms: stance not job description)         Score: __ / 10
+
+── READABILITY ─────────────────────────────────────
+Gate 9:  Line Length        (body ≤ 65ch, no full-width prose)        Score: __ / 10
+Gate 10: Contrast Ratio     (primary ≥ 4.5:1, secondary ≥ 3:1)       Score: __ / 10
+Gate 11: Type Size          (body ≥ 16px, smallest ≥ 12px)           Score: __ / 10
+Gate 12: Cognitive Ease     (H1 ≤ 8 words, ≤ 4 sentences/para)       Score: __ / 10
+
+── RESPONSIVENESS ──────────────────────────────────
+Gate 13: Mobile Layout      (1-col, no overflow)                       Score: __ / 10
+Gate 14: Touch Targets      (interactive ≥ 44×44px)                   Score: __ / 10
+Gate 15: Type Scaling       (clamp() or mobile cap, ratio ≤ 3.5x)    Score: __ / 10
+
+── ACCESSIBILITY ───────────────────────────────────
+Gate 16: Semantic Structure (nav/main/section/footer, H1→H2→H3)      Score: __ / 10
+Gate 17: Interactive A11y   (descriptive links, focus states visible)  Score: __ / 10
+
+════════════════════════════════════════════════════
+CLUSTER SCORES:
+  Design System:    G1         = __ / 10
+  Visual Design:    G2–5  avg  = __ / 10
+  UX/UI Patterns:   G6–8  avg  = __ / 10
+  Readability:      G9–12 avg  = __ / 10
+  Responsiveness:   G13–15 avg = __ / 10
+  Accessibility:    G16–17 avg = __ / 10
+
+OVERALL: __ / 10   MINIMUM: 8.0
+STATUS: ✅ PASS → deliver  |  ❌ FAIL → fix lowest scoring gates → re-review
+════════════════════════════════════════════════════
+Failing gates (< 8):
+  Gate __ [name]: score __ — fix: [specific action]
+```
+
+Run all gates before any other action:
 
 ```
 DESIGN REVIEW — Iteration N
