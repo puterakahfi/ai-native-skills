@@ -2,20 +2,19 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**41 skills · 5 workflows · 2 meta-skills**
+**48 skills · 5 workflows · 2 meta-skills**
 
 ---
 
 ## Install
 
 ```bash
-# single skill
 npx skills add puterakahfi/ai-native-skills@<skill-name> -g -y
 
 # examples
 npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
-npx skills add puterakahfi/ai-native-skills@domain-driven-design -g -y
-npx skills add puterakahfi/ai-native-skills@systematic-debugging -g -y
+npx skills add puterakahfi/ai-native-skills@systems-thinking -g -y
+npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 ```
 
 ---
@@ -24,14 +23,14 @@ npx skills add puterakahfi/ai-native-skills@systematic-debugging -g -y
 
 | Type | Description | Examples |
 |---|---|---|
-| `skill` | Atomic capability — standalone, single domain | `systematic-debugging`, `security-review` |
+| `skill` | Atomic capability — standalone, single domain | `systematic-debugging`, `threat-modeling` |
 | `workflow` | Sequenced phases — composes skills | `bugfix-workflow`, `deployment-workflow` |
 | `meta-skill` | Orchestrates other skills dynamically | `role-switcher`, `workflow-router` |
 | `skill-adapter` | Extends base skill for product-specific context | `arbiter-git-workflow extends git-workflow` |
 
 ---
 
-## Meta-Skills
+## Meta-Skills (2)
 
 Load these first — they route and compose everything else.
 
@@ -40,196 +39,194 @@ Load these first — they route and compose everything else.
 | `workflow-router` | Detects task type (bug/feature/review/deploy) → loads correct workflow automatically |
 | `role-switcher` | Detects intent → composes role lenses (design audit → master-design + ux-psychology + product-manager) |
 
-```bash
-npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
-npx skills add puterakahfi/ai-native-skills@role-switcher -g -y
-```
-
 ---
 
 ## Workflows (5)
 
-Sequenced multi-phase processes that compose atomic skills.
-
-| Workflow | Phases | Skills Used |
-|---|---|---|
-| `spec-workflow` | constitution → specify → plan → tasks → implement | plan, product-manager, master-engineer |
-| `new-feature-workflow` | plan → design → implement → verify → submit → review | spec-workflow, plan, tdd, master-engineer, architecture-review |
-| `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review | systematic-debugging, architecture-review, git-workflow |
-| `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict | architecture-review, design-review, security-review |
-| `deployment-workflow` | pre-deploy → deploy → health-verify → rollback | security-review, architecture-review |
+| Workflow | Phases |
+|---|---|
+| `spec-workflow` | constitution → specify → plan → tasks → implement |
+| `new-feature-workflow` | plan → design → implement → verify → submit → review |
+| `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review |
+| `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict |
+| `deployment-workflow` | pre-deploy → deploy → health-verify → rollback |
 
 ---
 
-## Skills (34)
+## Skills (48)
 
 ### Domain Architecture
 
 | Skill | Description |
 |---|---|
-| `domain-driven-design` | Bounded contexts, aggregates, value objects, domain events, ubiquitous language, repository pattern |
-| `ports-and-adapters` | Hexagonal architecture — port definition, adapter implementation, domain isolation, testable domain |
-| `design-patterns` | GoF creational/structural/behavioral + CQRS, Saga, Outbox — forces-first selection |
-| `service-design` | Service boundary by bounded context, sync vs async justification, data ownership, strangler fig |
-| `api-contract` | OpenAPI spec, versioning, breaking change detection, consumer-driven contract testing, deprecation |
-| `event-driven-design` | Event schema, producer/consumer contracts, saga patterns, idempotency, DLQ, Outbox, CQRS flow |
-| `micro-frontend` | Module federation, MFE boundary by bounded context, shell contract, CSS isolation, independent deploy |
-| `adr` | Architecture Decision Records — immutable, status lifecycle, superseding pattern, tradeoff-honest |
+| `domain-driven-design` | Bounded contexts, aggregates, value objects, domain events, ubiquitous language |
+| `ports-and-adapters` | Hexagonal architecture — port definition, adapter implementation, domain isolation |
+| `design-patterns` | GoF creational/structural/behavioral + CQRS, Saga, Outbox |
+| `service-design` | Service boundary by bounded context, sync vs async, data ownership |
+| `api-contract` | OpenAPI, versioning, breaking change detection, consumer-driven contract testing |
+| `event-driven-design` | Event schema, saga, idempotency, DLQ, Outbox, CQRS flow |
+| `micro-frontend` | Module federation, MFE boundary, shell contract, CSS isolation |
+| `adr` | Architecture Decision Records — immutable, superseding pattern, tradeoff-honest |
+| `ai-system-design` | RAG, agent memory, LLM evals, prompt injection defense, graceful degradation |
+| `systems-thinking` | Feedback loops, second-order effects, Conway's Law, Goodhart's Law, leverage points |
 
 ### Engineering Quality
 
 | Skill | Description |
 |---|---|
-| `architecture-review` | Contract compliance — stack violations, layer boundaries, DDD gates, dependency drift |
-| `systematic-debugging` | 4-phase root cause — investigate, analyze, hypothesize, fix. Agent thrashing detection |
-| `security-review` | OWASP baseline, secrets detection, injection vectors, auth gaps, pre-deploy security gate |
-| `refactoring` | Named code smells, green-first, small steps, one type per commit — no behavior change |
-| `test-driven-development` | RED-GREEN-REFACTOR cycle — tests before implementation, every time |
-| `skill-eval` | APPLIED/PARTIAL/GHOST classification — verify skills are actually applied, not just loaded |
+| `architecture-review` | Contract compliance — layer violations, DDD gates, dependency drift |
+| `systematic-debugging` | 4-phase root cause — investigate, analyze, hypothesize, fix |
+| `security-review` | OWASP baseline, secrets detection, injection vectors, auth gaps |
+| `threat-modeling` | STRIDE per trust boundary, data flow mapping, risk rating, proactive security |
+| `resilience-engineering` | Failure mode analysis, circuit breakers, chaos engineering, RTO/RPO |
+| `incident-response` | Structured incident lifecycle, blameless postmortem, 5 Whys to systemic cause |
+| `refactoring` | Named code smells, green-first, small steps, one type per commit |
+| `test-driven-development` | RED-GREEN-REFACTOR — tests before implementation, every time |
+| `skill-eval` | APPLIED/PARTIAL/GHOST — verify skills are actually applied, not just loaded |
 
 ### Experience Design
 
 | Skill | Description |
 |---|---|
-| `master-design` | Senior Product Designer — UI/UX, wireframes, design systems, interaction design |
-| `design-review` | Design system compliance, AI slop detection, accessibility, visual hierarchy gates |
-| `ux-psychology` | Cognitive load, habit loops, Fitts's Law, Hick's Law, gestalt, Nielsen heuristics |
-| `micro-frontend` | MFE architecture — see Domain Architecture above |
+| `master-design` | Senior Product Designer — UI/UX, wireframes, design systems |
+| `design-review` | Design system compliance, AI slop detection, visual hierarchy gates |
+| `ux-psychology` | Cognitive load, habit loops, Fitts's Law, Nielsen heuristics |
+| `accessibility` | WCAG 2.1 AA — semantic HTML, ARIA, keyboard nav, screen reader, cognitive |
+| `micro-frontend` | MFE architecture — see Domain Architecture |
 
 ### Observability & Operations
 
 | Skill | Description |
 |---|---|
-| `observability-design` | Logs + metrics + traces — three pillars, four golden signals, SLO, alerts, cardinality control |
-| `deployment-workflow` | See Workflows above |
+| `observability-design` | Logs + metrics + traces — three pillars, four golden signals, SLO, alerts |
+| `incident-response` | See Engineering Quality |
 
 ### Context & Prompt Engineering
 
 | Skill | Description |
 |---|---|
-| `prompt-optimizer` | Transform vague intent → precise prompt: scope, constraint, output format, stop condition |
+| `prompt-optimizer` | Vague intent → precise prompt: scope, constraint, output format, stop condition |
 | `response-contract` | Persistent output verbosity via AGENTS.md — no filler, answer-first, code exact |
-| `context-engineering` | AGENTS.md authoring — encode architecture constraints, guardrails, domain knowledge |
+| `context-engineering` | AGENTS.md authoring — encode constraints, guardrails, domain knowledge |
 | `context-manager` | Context pack resolution — build precise context before agent execution |
 
-### Process & Workflows
+### Process & Developer Experience
 
 | Skill | Description |
 |---|---|
-| `spec-workflow` | See Workflows above |
-| `plan` | Actionable markdown plan with exact file paths before any implementation |
-| `spike` | Throwaway experiment — validate idea, produce verdict, not production code |
+| `spec-workflow` | See Workflows |
+| `plan` | Actionable markdown plan with exact file paths |
+| `spike` | Throwaway experiment — validate idea, produce verdict |
 | `onboarding` | Bootstrap agent/engineer context — recon codebase, produce AGENTS.md |
 
-### Standards & Governance
+### Governance & Standards
 
 | Skill | Description |
 |---|---|
-| `language-standards` | Consistent declared language across artifacts — code, commits, PRs, skills |
-| `rule-manager` | AGENTS.md/.cursorrules authoring, validation, and enforcement |
-| `git-workflow` | Branch, commit, PR, merge — generic source control workflow |
-| `adr` | See Domain Architecture above |
+| `ethics-responsible-ai` | Fairness audit, harm assessment, transparency, consent, accountability, power asymmetry |
+| `threat-modeling` | See Engineering Quality |
+| `language-standards` | Consistent declared language across artifacts |
+| `rule-manager` | AGENTS.md/.cursorrules authoring and enforcement |
+| `git-workflow` | Branch, commit, PR, merge — generic source control |
+| `adr` | See Domain Architecture |
 
 ### Native AI Ecosystem
 
 | Skill | Description |
 |---|---|
-| `native-ai-engineer` | Layer placement, runtime boundary, contract authoring for ai-native systems |
-| `native-ai-runtime-agent` | Runtime agent operations in ai-native-fw product adapters |
+| `native-ai-engineer` | Layer placement, runtime boundary, contract authoring |
+| `native-ai-runtime-agent` | Runtime agent in ai-native-fw product adapters |
 | `native-ai-runtime-ops` | Ops for AI-native canonical runtime hosts |
 
 ### Roles
 
 | Skill | Description |
 |---|---|
-| `master-engineer` | Senior Software Engineer — system design, architecture decisions, over-engineering checks |
-| `product-manager` | PRD authoring, acceptance criteria, task breakdown, Jira-ready specs |
-| `diagram-architect` | Architecture diagrams — SVG, Excalidraw, Mermaid, system/context/component level |
+| `master-engineer` | Senior Software Engineer — system design, architecture decisions |
+| `product-manager` | PRD authoring, acceptance criteria, task breakdown |
+| `diagram-architect` | Architecture diagrams — SVG, Excalidraw, Mermaid |
+
+---
+
+## Coverage Map
+
+```
+Input quality:
+  prompt-optimizer → response-contract → spec-workflow → threat-modeling
+
+Domain modeling:
+  domain-driven-design → ports-and-adapters → design-patterns → adr
+
+Distributed systems:
+  service-design → api-contract → event-driven-design
+
+Frontend:
+  micro-frontend → accessibility → ux-psychology
+
+AI systems:
+  ai-system-design → ethics-responsible-ai → systems-thinking
+
+Quality gates:
+  architecture-review → security-review → code-review-workflow → skill-eval
+
+Reliability:
+  observability-design → resilience-engineering → incident-response
+
+Process:
+  spec-workflow → new-feature-workflow → bugfix-workflow → deployment-workflow
+
+Philosophy:
+  systems-thinking → ethics-responsible-ai → adr
+```
 
 ---
 
 ## Full Delivery Loop
 
 ```
-spec-workflow          ← input quality gate (spec before code)
+spec-workflow          ← spec before code
     ↓
-new-feature-workflow   ← team process (design → implement → submit)
+threat-modeling        ← security before implementation
     ↓
-code-review-workflow   ← output quality gate (before merge)
+new-feature-workflow   ← team process
     ↓
-deployment-workflow    ← deploy gate (before prod)
+code-review-workflow   ← gate before merge
+    ↓
+deployment-workflow    ← gate before prod
+    ↓
+observability-design   ← monitor after deploy
+    ↓
+incident-response      ← when things go wrong
 ```
 
-With meta-skills:
+With meta-skills routing:
 ```
-workflow-router        ← auto-detect: bug? feature? review? deploy?
-role-switcher          ← auto-compose: which lenses for this task?
+workflow-router → detect: bug? feature? review? deploy?
+role-switcher   → compose: which lenses for this task?
 ```
 
 ---
 
-## Distributed Systems Coverage
-
-```
-Monolith layer:
-  domain-driven-design → ports-and-adapters → design-patterns
-
-Distributed layer:
-  service-design → api-contract → event-driven-design
-
-Frontend layer:
-  micro-frontend (module federation, shell contract, CSS isolation)
-
-Observability layer:
-  observability-design (logs + metrics + traces, four golden signals)
-```
-
----
-
-## Inheritance Pattern (Skill Adapters)
-
-Extend public skills for team-specific context:
+## Inheritance Pattern
 
 ```yaml
-# ~/.hermes/profiles/<team>/skills/<team>/arbiter-git-workflow/SKILL.md
----
+# skill-adapter extends public base skill
 name: arbiter-git-workflow
 type: skill-adapter
 extends: puterakahfi/ai-native-skills@git-workflow
----
-# Override only what's team-specific. Base skill handles invariant behavior.
-```
-
----
-
-## Contract Traceability
-
-Every skill implements a contract in [ai-native-core](https://github.com/puterakahfi/ai-native-core):
-
-```
-skills/domain-driven-design/SKILL.md
-  implements: ai-native-core/contracts/skills/domain-architecture/domain-driven-design.contract.yaml
-
-skills/workflow-router/SKILL.md
-  implements: ai-native-core/contracts/skills/domain-architecture/workflow-router.contract.yaml
+# Override only what's product-specific
 ```
 
 ---
 
 ## Skill Evaluation
 
-Test whether skills are actually applied vs loaded-and-ignored:
-
 ```bash
-# run eval against agent output
 python ai-native-core/scripts/run-eval.py \
   --skill role-switcher \
   --output-file /tmp/agent-output.txt
-
 # verdict: APPLIED | PARTIAL | GHOST
 ```
-
-Test cases in `ai-native-core/contracts/tests/*.test.yaml`.
 
 ---
 
