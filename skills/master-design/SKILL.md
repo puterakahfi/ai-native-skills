@@ -17,7 +17,16 @@ implements: ai-native-core/contracts/skills/experience-design/master-design.cont
 ```
 1. TYPE       Pair a display face with a body face. Never one font doing both jobs.
               Display = personality. Body = readability. Same font family for both = neither.
-              Gate: H1 font ≠ body font role — different weight alone is NOT enough.
+              Gate: H1 font-family ≠ body font-family (different weight alone is NOT enough).
+
+              Recommended pairings (editorial dark genre):
+                Display: 'Fraunces' (serif, editorial) + Body: 'Inter' (sans, readable)
+                Display: 'Playfair Display' (serif, elegant) + Body: 'Inter'
+                Display: 'DM Serif Display' + Body: 'DM Sans'
+                Display: 'Cabinet Grotesk' (geometric, bold) + Body: 'Inter'
+              
+              pkahfi.com: H1 uses Inter 800 = body font = R1 FAIL
+              Fix: swap H1 to Fraunces or DM Serif Display for display role
 
 2. COLOUR     OKLCH palettes. One anchor hue. Accent stays under 5% of surface area.
               Never more than 1 accent color. Accent = CTA or status signal only.
