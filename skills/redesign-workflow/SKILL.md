@@ -83,6 +83,110 @@ If no signals found: "No pre-flight signals — proceeding with full stack."
 
 ## Phase 0.5: GENRE + MACROSTRUCTURE PICK
 
+This phase has two gates. Both must pass before Phase 1.
+
+---
+
+### Gate A: Genre Detection (from `design-genre` skill)
+
+Read signals from brief + pre-flight. Assign one genre.
+
+```
+Signal → Genre mapping:
+  personal page + no CTA + showcase only     → editorial
+  SaaS product + pricing + CTAs              → modern-minimal
+  creative portfolio + visual work           → atmospheric
+  game / toy / consumer app                  → playful
+```
+
+State explicitly:
+```
+Genre: [name]
+Signals matched: [list signals from brief that confirm this genre]
+```
+
+---
+
+### Gate B: Macrostructure Pick (from `macrostructures` skill)
+
+**Step 1 — Extract brief signals:**
+```
+□ Primary goal:      [convert | showcase | inform | entertain]
+□ Identity weight:   [high = person/brand leads | low = work leads]
+□ Content volume:    [N products / N sections / N words]
+□ Audience:          [hiring manager | client | developer | general]
+□ CTA present:       [yes | no]
+□ Visual assets:     [yes = images/screenshots | no = text only]
+```
+
+**Step 2 — Match signals to pattern:**
+
+| Goal | Identity | Content vol | Audience | Best macrostructure |
+|---|---|---|---|---|
+| showcase | high | low (≤3) | hiring manager | Marquee Hero or Specimen |
+| showcase | high | low (≤3) | creative client | Studio or Atelier |
+| showcase | low | high (4+) | any | Bento or Workbench |
+| inform | low | high | developer | Long Document or Almanac |
+| convert | low | medium | general | Newsprint or Manifesto |
+| brand | high | low | general | Manifesto or Lumen |
+
+**Step 3 — Diversification check (secondary, not primary):**
+```
+Previous macrostructure: [name from last iteration or "none"]
+Candidate macrostructure: [name]
+Axes that differ: [list — layout lead / heading / divider / button / image / reveal]
+Must differ on ≥2 axes IF previous exists.
+If brief-match and diversification conflict → brief-match WINS.
+```
+
+**Step 4 — State your pick with justification:**
+```
+Macrostructure: [name]
+Genre: [name]
+
+Justified by brief signals:
+  - [signal 1] → [why this supports the pick]
+  - [signal 2] → [why this supports the pick]
+  - [signal N] → ...
+
+NOT chosen [alternative] because:
+  - [reason 1]
+  - [reason 2]
+
+Diversification: differs from [previous] on [N] axes: [list axes]
+```
+
+**Justification is mandatory.** "Differs from previous" alone is NOT sufficient.
+If you cannot justify from brief signals, revisit Step 2 before proceeding.
+
+---
+
+### pkahfi.com example (reference)
+
+```
+Brief signals:
+  Primary goal:   showcase
+  Identity:       high — personal landing page, person leads
+  Content vol:    low — 2 LIVE products only
+  Audience:       hiring manager / fellow engineer
+  CTA:            none
+  Visual assets:  none (text-led)
+
+Signal → pattern match:
+  showcase + identity high + content low + hiring manager → Marquee Hero or Specimen
+
+Pick: Marquee Hero
+  - Identity high: full-width name above fold, work below
+  - 2 products: stacked list, not grid (low volume = list beats grid)
+  - No CTA: hero does not need action urgency layout
+  - Hiring manager: credibility via copy, not visual flair
+
+NOT Studio:
+  - Studio = 50/50 split → identity and work equal weight
+  - pkahfi.com identity should lead, work is secondary
+  - Studio better for creative agency where work IS the identity
+```
+
 Load `design-genre` skill. Detect genre from brief signals.
 Load `macrostructures` skill. Pick ONE macrostructure.
 
