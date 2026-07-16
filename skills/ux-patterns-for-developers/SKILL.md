@@ -27,25 +27,36 @@ Do NOT improvise behavior from scratch when a proven pattern exists.
 
 ---
 
-## How to Delegate (agent workflow)
+## How to Use (Two Methods)
 
-```
-1. Identify component needed (navbar, modal, tooltip, etc.)
-2. Look up category + slug from catalog below
-3. Fetch: https://ux-patterns-for-developers.com/patterns/{category}/{slug}
-4. Extract: behavior spec, a11y requirements, edge cases, CSS structure
-5. Apply to your component — do not invent what the pattern already defines
+### Method 1: Use installed skills (preferred)
+```bash
+# Install a specific pattern as a skill
+npx skills add https://github.com/thedaviddias/ux-patterns-for-developers --skill <name> --yes --global
+
+# Examples
+npx skills add https://github.com/thedaviddias/ux-patterns-for-developers --skill navigation-menu --yes --global
+npx skills add https://github.com/thedaviddias/ux-patterns-for-developers --skill list-view --yes --global
+npx skills add https://github.com/thedaviddias/ux-patterns-for-developers --skill back-to-top --yes --global
+
+# Installed skills live at ~/.agents/skills/<name>
+# Hermes auto-symlinks them — available immediately
 ```
 
-### Example — Navbar
+### Method 2: Use `npx skills use` without installing
+```bash
+# Generate a prompt for one skill without installing
+npx skills use thedaviddias/ux-patterns-for-developers@navigation-menu
 ```
-Need: navigation bar with hamburger mobile
-→ fetch https://ux-patterns-for-developers.com/patterns/navigation/navigation-menu
-→ fetch https://ux-patterns-for-developers.com/patterns/navigation/hambuger-menu
-   (note: typo in URL — "hambuger" not "hamburger")
-→ extract: scroll behavior, mobile breakpoint, focus trap, aria roles
-→ apply to .nav component
+
+### Method 3: Fetch raw MDX directly
+```bash
+curl https://raw.githubusercontent.com/thedaviddias/ux-patterns-for-developers/main/apps/web/content/patterns/<category>/<slug>.mdx
+# Note: website domain ux-patterns-for-developers.com may be down — use raw GitHub instead
 ```
+
+### Note on MCP
+MCP endpoint exists at https://uxpatterns.dev/mcp but requires auth — use skills CLI instead.
 
 ---
 

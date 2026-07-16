@@ -78,8 +78,31 @@ nav#site-nav.scrolled {
 ### Behavior
 ```
 scroll > 40px  → add .scrolled to nav
-hamburger click → toggle #nav-mobile .open
-mobile nav link click → close mobile nav
+scroll > 40px  → save scrollY, lock body scroll if mobile drawer open
+hamburger click → toggle #nav-mobile .open + aria-expanded true/false
+mobile nav link click → close mobile nav, restore scroll position
+focus: mobile drawer open → TRAP focus inside drawer (modal behavior)
+focus: mobile drawer close → return focus to hamburger button
+Tab/Shift+Tab → sequential through nav links
+Escape → close submenu / mobile drawer, return focus to trigger
+aria-current="page" → set on active link (update on route change)
+skip link → first focusable element: <a href="#main">Skip to content</a>
+```
+
+### A11y (from W3C APG)
+```
+<nav aria-label="Main">     ← NOT role="menubar" — that's for app menus
+  <ul>                      ← native list, not role="list"
+    <li><a aria-current="page">Work</a></li>
+  </ul>
+</nav>
+<button aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
+  ← hamburger: aria-expanded toggles true/false
+  ← aria-label required (no visible text)
+</button>
+Body scroll lock when drawer open: overflow:hidden on <body>
+iOS scroll lock: touch-action:none on drawer overlay
+Restore scrollY exactly on drawer close
 ```
 
 ### JS
@@ -288,6 +311,31 @@ section {
   font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
   color: var(--bright);
 }
+```
+
+---
+
+### A11y (from W3C APG + WCAG 2.1)
+```
+Container:  <ul> or <ol> native — NOT role="list" redundantly
+Each row:   <li> with <a> wrapping entire row (preferred over role="link" on div)
+Status dot: <span aria-label="Status: Live"> — color alone = WCAG 1.4.1 FAIL
+Hover:      Must NOT be sole focus indicator — :focus-visible required separately
+Keyboard:   Tab → first interactive element in row → next row
+            Enter/Space → activate row
+            Escape → dismiss open action menu
+Nested btn: stopPropagation() on child buttons — row click must not fire
+Event:      Full row clickable, min 44×44px touch target (WCAG 2.5.5)
+```
+
+### Behavior
+```
+Row hover:   background: var(--surface) + arrow translate(4px,-4px)
+Row click:   navigate to URL (entire <a> wraps row)
+Child click: stopPropagation — tag clicks, action buttons don't trigger row nav
+Status:      aria-label="Status: Live" on dot — not color alone
+Empty state: role="status" + message — "No work yet"
+Loading:     aria-busy="true" on container + skeleton rows
 ```
 
 ---
