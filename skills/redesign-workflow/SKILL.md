@@ -1,6 +1,6 @@
 ---
 name: redesign-workflow
-description: Autonomous landing page redesign loop — audit site, confirm spec, produce HTML prototype, run design-review gates, fix failures, deliver only when all gates pass. Self-correcting loop, max 3 iterations.
+description: Autonomous UI/UX redesign and refinement loop — audit an existing surface, confirm spec, produce prototype or patch, run design-review gates, fix failures, deliver only when all gates pass. Use for landing pages, dashboards, app screens, onboarding flows, pricing pages, and portfolios.
 license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
@@ -29,16 +29,41 @@ On max_iterations: deliver best attempt + explicit gate failure report
 
 ---
 
+## When to Use
+
+Use this workflow for **existing UI/UX surfaces** that need refinement, redesign, polish, or conversion/readability/accessibility improvement.
+
+Good fits:
+
+- landing pages, personal sites, portfolios, pricing pages, docs homepages
+- dashboards, admin panels, app screens, onboarding flows, checkout flows
+- copy/hierarchy/CTA/CRO refinement on an existing surface
+- visual polish where the product goal already exists
+- design audit followed by prototype or patch
+
+Do not use for:
+
+- product idea from zero; use `product-development-workflow`
+- non-visual feature implementation; use `new-feature-workflow`
+- bug isolation; use `bugfix-workflow`
+- deploy/release only; use `deployment-workflow`
+
+Surface-specific details belong in the prompt, not in new workflow names.
+
+---
+
 ## Parameters
 
 | Param | Required | Description |
 |---|---|---|
-| `url` | YES | URL to audit and redesign |
-| `goal` | YES | What the page should achieve |
-| `products` | NO | List of LIVE products to show (skip DEV) |
+| `target` | YES | URL, screenshot, repo path, route, or app surface to audit and refine |
+| `surface_type` | NO | `landing-page`, `dashboard`, `app-screen`, `onboarding-flow`, `pricing-page`, `portfolio`, `docs`, or product-defined |
+| `goal` | YES | What the surface should achieve |
+| `content_inventory` | NO | Existing content/products/features to preserve or prioritize; for product showcases, list LIVE products only |
 | `cta` | NO | Primary CTA — default: none |
 | `audience` | NO | Target audience — default: general |
-| `output_path` | NO | Where to save HTML — default: /tmp/{domain}-redesign.html |
+| `output_mode` | NO | `audit-only`, `spec-only`, `prototype`, or `patch`; default: `prototype` unless user asks to stop for approval |
+| `output_path` | NO | Where to save prototype/output — default: `/tmp/{target}-redesign.html` when producing HTML |
 
 ---
 
@@ -52,7 +77,7 @@ Pre-flight scan (in order):
   2. CSS custom properties (:root vars) → existing palette + type scale
   3. package.json deps → framework, motion libs, font packages
   4. Existing macrostructure stamp: /* macrostructure: <name> */ in any CSS
-  5. Deployed site: browser_navigate → browser_vision → capture palette, fonts, layout
+  5. Existing surface: browser_navigate/browser_vision for URLs, or inspect local files/screenshots when provided
 
 Output (emit once):
   Pre-flight findings:
@@ -222,7 +247,8 @@ Before producing — align on constraints. Extract from params or ask:
 ```
 spec = {
   goal:      "personal landing page" | "portfolio" | "SaaS marketing" | ...,
-  products:  [list of LIVE products only — no DEV],
+  surface_type: "landing-page" | "dashboard" | "app-screen" | "onboarding-flow" | "pricing-page" | "portfolio" | ...,
+  content_inventory: [existing content/products/features to preserve or prioritize],
   cta:       "hire me" | "contact" | null,
   audience:  "hiring manager" | "client" | "developer" | "general",
   nav_items: derived from goal (3 max for personal),
@@ -230,15 +256,16 @@ spec = {
 }
 ```
 
-If `products` not provided → extract from audit, keep LIVE only.
+If `content_inventory` is not provided → extract from audit. For product showcases, keep LIVE products only.
 If `cta` not provided → default null (showcase only).
 
 State spec explicitly before proceeding:
 ```
 SPEC CONFIRMED
 ──────────────
-Goal:     personal landing page — showcase only
-Products: Blog (LIVE), Blueprint (LIVE)
+Surface:  personal landing page
+Goal:     showcase only
+Content:  Blog (LIVE), Blueprint (LIVE)
 CTA:      none
 Audience: general / developer community
 Nav:      Work · About · Contact
@@ -248,7 +275,7 @@ Nav:      Work · About · Contact
 
 ## Phase 3: PRODUCE
 
-Produce HTML prototype. Apply design in this order:
+Produce the requested output (`prototype` or `patch`). For HTML prototypes, apply design in this order:
 1. Genre tokens (from `design-genre` skill — voice, color family, motion stance)
 2. Macrostructure structure (from `macrostructures` skill — layout, heading, dividers)
 3. Design system tokens (from `design-system` skill — spacing, type scale, color semantic)
@@ -300,7 +327,7 @@ Stamp in CSS: /* pre-emit: P_ H_ E_ S_ R_ V_ */
 ```
 
 
-Generate complete, self-contained HTML file.
+When `output_mode=prototype`, generate a complete, self-contained HTML file. When `output_mode=patch`, modify the existing surface directly and run the same gates against the result.
 
 ### Mandatory Design System (apply every time)
 
@@ -714,7 +741,7 @@ Output:
 
 Delivery format:
 ```
-REDESIGN COMPLETE — pkahfi.com
+REDESIGN COMPLETE — <target>
 ──────────────────────────────
 Gates: 8/8 passing
 Iterations: N

@@ -1,13 +1,13 @@
 ---
 name: workflow-router
-description: Detect task type from user request and route to the correct workflow automatically — bug vs feature vs review vs deploy vs spike. Explicit routing before execution. Meta-skill that composes workflow skills.
+description: Detect task type from user request and route to the correct workflow automatically — product-from-zero, UI/UX refinement, bug, feature, review, deploy, or spike. Explicit routing before execution. Meta-skill that composes workflow skills.
 license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/workflow-router.contract.yaml
-  ai-native-skills.related_skills: '[''role-switcher'', ''bugfix-workflow'', ''new-feature-workflow'', ''code-review-workflow'', ''deployment-workflow'', ''spec-workflow'']'
+  ai-native-skills.related_skills: '[''role-switcher'', ''product-development-workflow'', ''redesign-workflow'', ''bugfix-workflow'', ''new-feature-workflow'', ''code-review-workflow'', ''deployment-workflow'', ''spec-workflow'']'
 ---
 
 # Workflow Router
@@ -34,11 +34,13 @@ No execution before routing. Routing must be stated explicitly.
 
 | Signals | Workflow | Skills Loaded |
 |---|---|---|
+| "build product from zero", "develop product idea", "MVP from scratch", "idea to launch", "no PRD yet" | `product-development-workflow` | product-development-workflow, product-requirements, user-research, model-selection |
+| "refine UI", "redesign", "polish", "landing page", "dashboard UX", "improve hierarchy", "CRO", "visual audit", "UX review" | `redesign-workflow` | redesign-workflow, master-design, design-review, content-strategy, cro |
 | "fix bug", "error", "broken", "crash", "not working", "TICKET-ID" | `bugfix-workflow` | systematic-debugging, architecture-review, git-workflow |
-| "add feature", "implement", "build", "new endpoint", "TICKET-ID (feat)" | `new-feature-workflow` | spec-workflow, plan, master-engineer, tdd |
+| "add feature", "implement", "build endpoint", "new endpoint", "TICKET-ID (feat)" | `new-feature-workflow` | spec-workflow, plan, master-engineer, tdd |
 | "review PR", "review code", "check this", "before merge" | `code-review-workflow` | architecture-review, design-review, security-review |
 | "deploy", "release", "ship to", "go to prod" | `deployment-workflow` | security-review, architecture-review |
-| "audit design", "UX review", "what's wrong with this UI" | `role-switcher` → design roles | master-design, ux-psychology, product-manager, design-review |
+| "audit design", "UX review", "what's wrong with this UI" | `redesign-workflow` for existing surface, else `role-switcher` → design roles | redesign-workflow, master-design, ux-psychology, product-manager, design-review |
 | "refactor", "clean up", "technical debt" | `refactoring` + `bugfix-workflow` | refactoring, systematic-debugging |
 | "try this idea", "explore", "validate", "spike" | `spike` | spike, plan |
 | "plan this", "break down", "estimate" | `spec-workflow` | spec-workflow, product-manager, plan |
@@ -111,7 +113,15 @@ Contains symptom words? (error, crash, broken, not working, 500, null, undefined
     ├─ YES → bugfix-workflow
     └─ NO → continue
     ↓
-Contains build words? (add, implement, build, create, new)
+Contains product-from-zero words? (idea, MVP, digital product, from zero, no PRD, launch)
+    ├─ YES → product-development-workflow
+    └─ NO → continue
+    ↓
+Contains UI/UX refinement words? (refine, redesign, polish, landing page, dashboard, UX, hierarchy, CTA, CRO)
+    ├─ YES → redesign-workflow
+    └─ NO → continue
+    ↓
+Contains build words? (add, implement, build endpoint, create feature, new endpoint)
     ├─ YES → new-feature-workflow (check: needs spec? → spec-workflow first)
     └─ NO → continue
     ↓
@@ -164,11 +174,11 @@ They compose:
 ```
 Request: "Audit this checkout design before we ship"
 
-workflow-router: review + design + before ship → code-review-workflow
+workflow-router: existing UI surface + audit/refine → redesign-workflow
 role-switcher:   design audit → master-design + ux-psychology + product-manager
 
 Combined:
-  Workflow: code-review-workflow
+  Workflow: redesign-workflow
   Roles: master-design, ux-psychology, product-manager, design-review
-  Phases: load-context → design-check → logic-check → verdict
+  Phases: audit → spec → produce/propose → review → fix → deliver
 ```

@@ -40,7 +40,8 @@ Do not use when:
 - the PRD/spec already exists and the user only wants implementation; use `spec-workflow` or `new-feature-workflow`
 - the task is only a bugfix; use `bugfix-workflow`
 - the task is only deployment; use `deployment-workflow`
-- the task is only design iteration; use `redesign-workflow`
+- the task is refinement/redesign of an existing UI surface; use `redesign-workflow`
+- the task is only design iteration, landing page polish, dashboard UX improvement, copy/CTA/CRO refinement, or visual audit; use `redesign-workflow`
 
 ## One-Line Invocation
 

@@ -46,7 +46,7 @@ What it creates/checks:
 
 - `SOUL.md`, `skills.lock.yaml`, bootstrap docs, install/verify scripts, and `.gitignore`
 - required meta-skills: `workflow-router`, `role-switcher`
-- required workflows: `spec-workflow`, `new-feature-workflow`, `bugfix-workflow`, `code-review-workflow`, `deployment-workflow`
+- required workflows: `product-development-workflow`, `spec-workflow`, `new-feature-workflow`, `bugfix-workflow`, `code-review-workflow`, `deployment-workflow`
 - required Native AI, engineering quality, and architecture foundation skills
 - correct `metadata["ai-native-skills.type"]` for meta-skills and workflows
 - no secrets, credentials, or live Hermes state in the reusable skeleton
@@ -81,7 +81,7 @@ Load these first — they route and compose everything else.
 
 | Skill | Description |
 |---|---|
-| `workflow-router` | Detects task type (bug/feature/review/deploy) → loads correct workflow automatically |
+| `workflow-router` | Detects task type (product-from-zero/refinement/bug/feature/review/deploy) → loads correct workflow automatically |
 | `role-switcher` | Detects intent → composes role lenses (design audit → master-design + ux-psychology + product-manager) |
 
 ---
@@ -95,8 +95,31 @@ Load these first — they route and compose everything else.
 | `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review |
 | `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict |
 | `deployment-workflow` | pre-deploy → deploy → health-verify → rollback |
-| `redesign-workflow` | audit → spec → prototype → design-review gates → iterate → deliver |
+| `redesign-workflow` | existing UI/UX surface refinement — audit → spec → prototype/patch → design-review gates → iterate → deliver |
 | `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |
+
+### Workflow entry points
+
+Use broad lifecycle workflows, not surface-specific workflow variants:
+
+| User intent | Start with |
+|---|---|
+| Build a product from zero, no PRD yet | `product-development-workflow` |
+| Refine/redesign/polish an existing landing page, dashboard, app screen, onboarding flow, pricing page, or portfolio | `redesign-workflow` |
+| Build a new capability in an existing product | `new-feature-workflow` |
+| Fix broken behavior or regression | `bugfix-workflow` |
+| Review before merge/ship | `code-review-workflow` |
+| Deploy/release/rollback | `deployment-workflow` |
+
+Examples:
+
+```bash
+hermes chat -s product-development-workflow -q \
+  "Develop a digital product for affiliators from zero. Start with discovery and stop after PRD/MVP recommendation for approval."
+
+hermes chat -s redesign-workflow -q \
+  "Refine https://pkahfi.com. Start with audit and redesign spec, then stop for approval before producing code."
+```
 
 ---
 
@@ -218,7 +241,7 @@ Distributed systems:
   service-design → api-contract → event-driven-design
 
 Frontend:
-  micro-frontend → accessibility → ux-psychology
+  redesign-workflow → micro-frontend → accessibility → ux-psychology
 
 AI systems:
   ai-system-design → ethics-responsible-ai → systems-thinking

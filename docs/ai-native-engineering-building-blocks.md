@@ -25,7 +25,7 @@ Use it to decide which capabilities are already covered, which gaps are intentio
 - `native-ai-runtime-agent` — runtime agent behavior and product adapter boundary.
 - `native-ai-runtime-ops` — canonical runtime host operations.
 - `hermes-profile-bootstrap` — Hermes profile skeleton and skill preset adapter.
-- `workflow-router` / `role-switcher` — request routing and role composition.
+- `workflow-router` / `role-switcher` — request routing and role composition, including product-from-zero versus existing UI/UX refinement routing.
 
 ### Gaps
 
@@ -86,7 +86,7 @@ Use it to decide which capabilities are already covered, which gaps are intentio
 
 - workflow compliance checking: prove phases were followed
 - human review gate: when approval is mandatory
-- methodology selection matrix beyond current router behavior
+- methodology selection matrix beyond current router behavior; current router now covers product-from-zero and existing UI/UX refinement, but compliance evidence is still separate
 
 ### Candidate additions
 
