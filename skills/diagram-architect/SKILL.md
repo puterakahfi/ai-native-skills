@@ -4,6 +4,7 @@ description: Turns architecture, workflows, runtime state, contracts, ownership,
 version: 1.0.0
 author: puterakahfi
 license: MIT
+implements: ai-native-core/contracts/skills/visual-thinking/diagram-architect.contract.yaml
 ---
 
 # Diagram Architect

@@ -4,6 +4,7 @@ description: Runtime agent skill for ai-native-fw product adapters — loads rep
 version: 1.0.0
 author: puterakahfi
 license: MIT
+implements: ai-native-core/contracts/skills/runtime-agent/native-ai-runtime-agent.contract.yaml
 ---
 
 # Native AI Runtime Agent
