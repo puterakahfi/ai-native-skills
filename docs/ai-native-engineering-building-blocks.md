@@ -15,7 +15,7 @@ Use it to decide which capabilities are already covered, which gaps are intentio
 | Agent | The hand: active participant that uses tools and changes systems | `native-ai-runtime-agent`, `native-ai-runtime-ops`, `hermes-profile-bootstrap`, `workflow-router`, `role-switcher` | Partial | execution/tool governance |
 | Model | The brain: cognitive capability and reasoning resource | `model-selection`, `ai-system-design`, `skill-eval`, `prompt-optimizer` | Emerging | routing/capability matrix/evals |
 | Methodology | The path: lifecycle and quality process | workflows, TDD, debugging, review, deployment, refactoring | Strong | compliance gates and human review policy |
-| Spec | The what: intent, contracts, architecture constraints | `spec-workflow`, contracts, `api-contract`, ADR, product/design skills | Strong | traceability and acceptance verification |
+| Spec | The what: intent, contracts, architecture constraints | `product-requirements`, `spec-workflow`, contracts, `api-contract`, ADR, product/design skills | Strong | traceability and acceptance verification |
 | Context | The how: instructions, knowledge, guardrails | `context-engineering`, `context-manager`, `rule-manager`, `response-contract` | Partial | hierarchy, freshness, security |
 
 ## Agent
@@ -98,6 +98,7 @@ Use it to decide which capabilities are already covered, which gaps are intentio
 ### Covered
 
 - `spec-workflow`
+- `product-requirements`
 - `api-contract`
 - `adr`
 - `product-manager`

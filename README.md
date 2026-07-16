@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**64 skills · 6 workflows · 2 meta-skills**
+**65 skills · 6 workflows · 2 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -99,7 +99,7 @@ Load these first — they route and compose everything else.
 
 ---
 
-## Skills (64)
+## Skills (65)
 
 ### Domain Architecture
 
@@ -165,6 +165,14 @@ Load these first — they route and compose everything else.
 | `plan` | Actionable markdown plan with exact file paths |
 | `spike` | Throwaway experiment — validate idea, produce verdict |
 | `onboarding` | Bootstrap agent/engineer context — recon codebase, produce AGENTS.md |
+
+### Product Management
+
+| Skill | Description |
+|---|---|
+| `product-requirements` | PRD authoring — goals, non-goals, scope, metrics, requirements, acceptance criteria, launch readiness |
+| `product-manager` | PRD authoring, acceptance criteria, task breakdown, scope, and prioritization |
+| `user-research` | User interviews, synthesis, insights, personas, JTBD, and research-backed decisions |
 
 ### Governance & Standards
 
@@ -232,6 +240,8 @@ Philosophy:
 ## Full Delivery Loop
 
 ```
+product-requirements    ← PRD: goals, non-goals, scope, metrics, acceptance criteria
+    ↓
 spec-workflow          ← spec before code
     ↓
 threat-modeling        ← security before implementation

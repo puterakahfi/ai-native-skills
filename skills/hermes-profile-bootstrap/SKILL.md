@@ -172,6 +172,7 @@ Install for `product` and `full`:
 
 ```text
 product-manager
+product-requirements
 master-design
 design-review
 design-system
