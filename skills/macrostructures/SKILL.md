@@ -106,28 +106,40 @@ When NOT:       Documentation, complex product with many features
 ```css
 .hero {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;    /* OPTICAL CENTER — never flex-end, never flex-start */
-  padding-top: 80px;          /* nav clearance — shrinks available center space correctly */
-  padding-bottom: var(--sp-9);
-  padding-left: var(--sp-8);
-  padding-right: var(--sp-8);
-  border-bottom: 1px solid var(--border);
-  position: relative;         /* for scroll-cue absolute positioning */
-}
-/* Result: name lands at ~42% from top of viewport → optical center ✅ */
+  **Mandatory CSS pattern — NEVER improvise:**
+  ```css
+  /* Marquee Hero = TOP-ANCHORED, not centered */
+  /* Void below content = intentional breathing room. Void above = dead space = FAIL. */
+  .hero {
+    min-height: 100vh;
+    display: block;                              /* NOT grid, NOT flex-center */
+    padding-top: clamp(120px, 16vh, 180px);     /* nav(64px) + breathing above name */
+    padding-bottom: clamp(80px, 12vh, 160px);   /* breathing below content */
+    padding-left: var(--sp-8);
+    padding-right: var(--sp-8);
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  /* Result: name lands at ~16vh from top → optical center ✅ */
+  /* Void below content = intentional, guides eye to scroll cue */
 
-/* HARD RULE: justify-content:flex-end → H1 at 75%+ → dead space above → Gate C1 FAIL */
-/* HARD RULE: scroll cue must be position:absolute — not part of flex flow */
+  /* HARD RULE: justify-content:center → content floats in tall 1fr row → void above AND below → FAIL */
+  /* HARD RULE: grid-template-rows with 1fr → same problem at tall viewports → FAIL */
+  /* HARD RULE: flex-end → name at 75%+ → dead space above → FAIL */
+  /* CORRECT: block + padding-top:clamp() → name anchored near top, void only below */
 
-.scroll-cue {
-  position: absolute;
-  bottom: var(--sp-7);
-  left: 50%;
-  transform: translateX(-50%);
-}
-```
+  .scroll-cue {
+    position: absolute;
+    bottom: var(--sp-7);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  ```
 
 **Eye flow: eyebrow (top of flex) → name (dominant) → stance (below) → meta (right) → scroll cue (bottom)**
 
