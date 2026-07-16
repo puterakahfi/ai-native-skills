@@ -4,6 +4,7 @@ description: Design system compliance reviewer and AI slop detector — checks U
 version: 1.0.0
 author: puterakahfi
 license: MIT
+type: skill
 implements: ai-native-core/contracts/skills/experience-design/design-review.contract.yaml
 ---
 

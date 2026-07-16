@@ -4,6 +4,7 @@ description: 4-phase root cause debugging — investigate, analyze, hypothesize,
 version: 1.0.0
 author: puterakahfi
 license: MIT
+type: skill
 implements: ai-native-core/contracts/skills/quality-control/systematic-debugging.contract.yaml
 ---
 

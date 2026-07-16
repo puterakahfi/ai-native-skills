@@ -4,6 +4,7 @@ description: Guided bugfix workflow — reproduce, investigate, fix, verify, sub
 version: 1.1.0
 author: puterakahfi
 license: MIT
+type: workflow
 implements: ai-native-core/contracts/workflows/bugfix.contract.yaml
 skills:
   required:

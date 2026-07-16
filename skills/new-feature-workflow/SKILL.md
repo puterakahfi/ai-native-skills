@@ -4,6 +4,7 @@ description: Guided new feature workflow — plan, design, implement, verify, su
 version: 1.1.0
 author: puterakahfi
 license: MIT
+type: workflow
 implements: ai-native-core/contracts/workflows/new-feature.contract.yaml
 skills:
   required:

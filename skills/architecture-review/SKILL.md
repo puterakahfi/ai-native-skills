@@ -4,6 +4,7 @@ description: Engineering contract compliance reviewer — checks code, PRs, and 
 version: 1.0.0
 author: puterakahfi
 license: MIT
+type: skill
 implements: ai-native-core/contracts/skills/quality-control/architecture-review.contract.yaml
 ---
 

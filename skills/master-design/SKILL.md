@@ -4,6 +4,7 @@ description: Senior Product Designer and SaaS UI/UX specialist for product desig
 version: 1.0.0
 author: puterakahfi
 license: MIT
+type: skill
 implements: ai-native-core/contracts/skills/experience-design/master-design.contract.yaml
 ---
 
