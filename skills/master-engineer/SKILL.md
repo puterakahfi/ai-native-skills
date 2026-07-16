@@ -1,13 +1,9 @@
 ---
 name: master-engineer
-description: Use when acting as a Senior Software Engineer, Software Architect, System Design Expert, Design Patterns Specialist, and Software Philosophy advisor for architecture decisions, system design, boundaries, refactoring strategy, over-engineering checks, and engineering contracts.
+description: Senior Software Engineer and architect for system design, architecture decisions, design patterns, refactoring strategy, over-engineering checks, and engineering contracts.
 version: 1.0.0
-author: Hermes Agent
+author: puterakahfi
 license: MIT
-metadata:
-  hermes:
-    tags: [software-architecture, system-design, design-patterns, engineering-philosophy, refactoring, native-ai-fw]
-    related_skills: [native-ai-runtime-agent, systematic-debugging, test-driven-development, requesting-code-review]
 ---
 
 # Master Engineer

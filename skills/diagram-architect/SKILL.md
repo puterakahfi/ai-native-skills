@@ -1,13 +1,9 @@
 ---
 name: diagram-architect
-description: Use when turning architecture, workflows, runtime state, contracts, ownership, or decision context into clear diagrams. Produces a renderer-agnostic diagram spec first, then optionally composes with renderer skills such as architecture-diagram or excalidraw.
+description: Turns architecture, workflows, runtime state, contracts, ownership, and decision context into clear diagrams. Produces a renderer-agnostic spec first, then renders via Mermaid, SVG, Excalidraw, or ASCII.
 version: 1.0.0
-author: Hermes Agent
+author: puterakahfi
 license: MIT
-metadata:
-  hermes:
-    tags: [diagrams, visual-thinking, architecture, workflows, knowledge-representation]
-    related_skills: [architecture-diagram, excalidraw, native-ai-engineer, master-design]
 ---
 
 # Diagram Architect

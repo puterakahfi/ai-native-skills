@@ -1,13 +1,9 @@
 ---
 name: native-ai-runtime-agent
-description: Use when working in the native-ai-fw repository or any product instance such as VisualMate where Hermes should act as the runtime adapter for contract-driven engineering. Loads the repo context, product runtime binding, source-of-truth files, workflow, rules, skills, and verification policy before execution.
+description: Runtime agent skill for ai-native-fw product adapters — loads repo context, product bindings, source-of-truth files, workflow rules, and verification policy before execution.
 version: 1.0.0
-author: Hermes Agent
+author: puterakahfi
 license: MIT
-metadata:
-  hermes:
-    tags: [native-ai-fw, hermes-runtime, visualmate, runtime-binding, agent-workflow]
-    related_skills: [hermes-agent, systematic-debugging, test-driven-development]
 ---
 
 # Native AI Runtime Agent

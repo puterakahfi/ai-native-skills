@@ -1,13 +1,9 @@
 ---
 name: native-ai-engineer
-description: Use when deciding Native AI core/app/skills/runtime boundaries, designing domain contracts, mapping runtimes like Hermes to abstract ports, or answering where concepts such as Hermes Agent belong in native-ai-core versus adapters.
+description: Domain contract architect for AI-native systems — layer placement, runtime boundaries, adapter design, and mapping AI runtimes to abstract ports.
 version: 1.0.0
-author: Hermes Agent
+author: puterakahfi
 license: MIT
-metadata:
-  hermes:
-    tags: [native-ai, domain-contracts, runtime-boundaries, agent-architecture, adapters]
-    related_skills: [master-engineer, native-ai-runtime-agent, hermes-agent]
 ---
 
 # Native AI Engineer

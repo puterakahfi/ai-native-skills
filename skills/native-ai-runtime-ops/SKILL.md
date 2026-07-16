@@ -1,13 +1,9 @@
 ---
 name: native-ai-runtime-ops
-description: Use when operating a Native AI canonical runtime host: SSH/Tencent Cloud/VPS access, Hermes profile bootstrap, tmux/gateway service setup, project checkout, backup/restore, and single-writer session-state safety.
+description: Ops skill for AI-native runtime hosts — SSH/VPS access, agent profile bootstrap, gateway service setup, project checkout, backup/restore, and session-state safety.
 version: 1.0.0
-author: Hermes Agent
+author: puterakahfi
 license: MIT
-metadata:
-  hermes:
-    tags: [native-ai, runtime-ops, ssh, cloud, hermes-profile, backup, sessions]
-    related_skills: [native-ai-engineer, native-ai-runtime-agent, hermes-agent]
 ---
 
 # Native AI Runtime Ops

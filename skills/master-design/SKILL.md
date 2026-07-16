@@ -1,13 +1,9 @@
 ---
 name: master-design
-description: Use when acting as a Senior Product Designer, SaaS UI/UX Designer, Design Systems Specialist, and Frontend Art Director for product design, wireframes, mockups, interaction contracts, SaaS dashboards, or rendered UI critique.
+description: Senior Product Designer and SaaS UI/UX specialist for product design, wireframes, mockups, interaction contracts, design systems, and SaaS dashboard critique.
 version: 1.0.0
-author: Hermes Agent
+author: puterakahfi
 license: MIT
-metadata:
-  hermes:
-    tags: [design, ui-ux, saas, design-systems, frontend-art-direction, mockups]
-    related_skills: [native-ai-runtime-agent, popular-web-designs, sketch, shadcn-ui]
 ---
 
 # Master Design
