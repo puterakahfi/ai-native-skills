@@ -1,11 +1,12 @@
 ---
 name: native-ai-runtime-ops
 description: Ops skill for AI-native runtime hosts — SSH/VPS access, agent profile bootstrap, gateway service setup, project checkout, backup/restore, and session-state safety.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/runtime-operations/native-ai-runtime-ops.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-operations/native-ai-runtime-ops.contract.yaml
 ---
 
 # Native AI Runtime Ops

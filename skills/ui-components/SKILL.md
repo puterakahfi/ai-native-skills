@@ -1,13 +1,13 @@
 ---
 name: ui-components
-version: 1.0.0
-type: skill
-description: >
-  UI component patterns — exact CSS templates, behavior specs, interaction states,
-  and composition rules for Navbar, Hero, Section, Work/List rows, About, Contact, Footer.
-  Template-based: copy-paste, do NOT improvise.
-tags: [ui, components, patterns, templates, css, behavior]
-implements: ai-native-core/contracts/skills/experience-design/ui-components.contract.yaml
+description: 'UI component patterns — exact CSS templates, behavior specs, interaction states, and composition rules for Navbar, Hero, Section, Work/List rows, About, Contact, Footer. Template-based: copy-paste, do NOT improvise.
+
+  '
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/ui-components.contract.yaml
+  ai-native-skills.tags: '[''ui'', ''components'', ''patterns'', ''templates'', ''css'', ''behavior'']'
 ---
 
 # UI Components

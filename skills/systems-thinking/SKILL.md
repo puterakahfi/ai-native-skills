@@ -1,12 +1,13 @@
 ---
 name: systems-thinking
 description: Analyze systems as wholes — feedback loops, emergence, second-order effects, Conway's Law, Goodhart's Law, unintended consequences, and leverage points. The "whether" question before the "how" question.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/domain-architecture/systems-thinking.contract.yaml
-related_skills: [adr, architecture-review, ethics-responsible-ai, product-manager, master-engineer]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/systems-thinking.contract.yaml
+  ai-native-skills.related_skills: '[''adr'', ''architecture-review'', ''ethics-responsible-ai'', ''product-manager'', ''master-engineer'']'
 ---
 
 # Systems Thinking

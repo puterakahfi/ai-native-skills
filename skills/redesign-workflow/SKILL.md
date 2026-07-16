@@ -1,27 +1,15 @@
 ---
 name: redesign-workflow
 description: Autonomous landing page redesign loop — audit site, confirm spec, produce HTML prototype, run design-review gates, fix failures, deliver only when all gates pass. Self-correcting loop, max 3 iterations.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: workflow
-implements: ai-native-core/contracts/workflows/redesign.contract.yaml
-related_skills: [master-design, ux-psychology, design-review, design-system, ux-ui-patterns, readability, responsiveness, accessibility, motion-design, design-genre, macrostructures, content-strategy, web-performance]
-skill_load_order:
-  - phase: preflight
-    skills: [design-genre, macrostructures, information-architecture]
-  - phase: audit
-    skills: [ux-psychology, accessibility, readability, responsiveness, web-performance]
-  - phase: spec
-    skills: [product-manager, master-design, content-strategy]
-  - phase: produce
-    skills: [design-genre, macrostructures, ui-components, ux-patterns-for-developers, design-system, ux-ui-patterns, master-design, motion-design, composition, visual-hierarchy, copywriting, cro]
-  - phase: pre-emit-critique
-    skills: [master-design, ux-psychology, composition, visual-hierarchy, copywriting, cro]
-  - phase: review
-    skills: [design-review, readability, responsiveness, accessibility, motion-design, web-performance, content-strategy, composition, visual-hierarchy, copywriting, cro]
-  - phase: fix
-    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, readability, responsiveness, motion-design, content-strategy, composition, visual-hierarchy, copywriting, cro]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: workflow
+  ai-native-skills.implements: ai-native-core/contracts/workflows/redesign.contract.yaml
+  ai-native-skills.related_skills: '[''master-design'', ''ux-psychology'', ''design-review'', ''design-system'', ''ux-ui-patterns'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''design-genre'', ''macrostructures'', ''content-strategy'', ''web-performance'']'
+  ai-native-skills.skill_load_order: '[{''phase'': ''preflight'', ''skills'': [''design-genre'', ''macrostructures'', ''information-architecture'']}, {''phase'': ''audit'', ''skills'': [''ux-psychology'', ''accessibility'', ''readability'', ''responsiveness'', ''web-performance'']}, {''phase'': ''spec'', ''skills'': [''product-manager'', ''master-design'', ''content-strategy'']}, {''phase'': ''produce'', ''skills'': [''design-genre'', ''macrostructures'', ''ui-components'', ''ux-patterns-for-developers'', ''design-system'', ''ux-ui-patterns'', ''master-design'', ''motion-design'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''pre-emit-critique'', ''skills'': [''master-design'', ''ux-psychology'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''review'', ''skills'': [''design-review'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''web-performance'', ''content-strategy'', ''composition'', ''visual-hierarchy'',
+    ''copywriting'', ''cro'']}, {''phase'': ''fix'', ''skills'': [''design-genre'', ''macrostructures'', ''design-system'', ''ux-ui-patterns'', ''master-design'', ''readability'', ''responsiveness'', ''motion-design'', ''content-strategy'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}]'
 ---
 
 # Redesign Workflow

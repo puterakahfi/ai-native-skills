@@ -1,11 +1,12 @@
 ---
 name: language-standards
 description: Enforces consistent language usage across engineering artifacts — code, commits, PRs, issues, comments, skills, and test cases. The artifact language is product-defined; this skill enforces that the choice is explicit, consistent, and documented.
-version: 1.1.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/rule-management/language-standards.contract.yaml
+metadata:
+  ai-native-skills.version: 1.1.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/rule-management/language-standards.contract.yaml
 ---
 
 # Language Standards

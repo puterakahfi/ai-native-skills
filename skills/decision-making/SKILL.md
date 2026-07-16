@@ -1,12 +1,13 @@
 ---
 name: decision-making
 description: Engineering decision-making frameworks — reversibility classification, pre-mortem, OODA loop, options thinking, epistemic humility, and decision traceability. For making better decisions faster, and knowing when to delay.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/engineering/decision-making.contract.yaml
-related_skills: [systems-thinking, adr, ethics-responsible-ai, risk-modeling]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/engineering/decision-making.contract.yaml
+  ai-native-skills.related_skills: '[''systems-thinking'', ''adr'', ''ethics-responsible-ai'', ''risk-modeling'']'
 ---
 
 # Decision Making Skill

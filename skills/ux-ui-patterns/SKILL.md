@@ -1,12 +1,13 @@
 ---
 name: ux-ui-patterns
 description: UI/UX pattern library for making layout decisions — which hero pattern fits the goal, which card pattern fits the content, which nav pattern fits the context. Decision tree for pattern selection, not just a list of patterns.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/ux-ui-patterns.contract.yaml
-related_skills: [master-design, ux-psychology, design-system, readability]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/ux-ui-patterns.contract.yaml
+  ai-native-skills.related_skills: '[''master-design'', ''ux-psychology'', ''design-system'', ''readability'']'
 ---
 
 # UX/UI Patterns Skill

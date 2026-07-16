@@ -1,12 +1,13 @@
 ---
 name: data-modeling
 description: Data modeling skill — schema design, normalization tradeoffs, migration patterns, polyglot persistence decisions, index strategy, and soft delete governance. For engineers who need to decide WHERE and HOW data lives.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/engineering/data-modeling.contract.yaml
-related_skills: [domain-driven-design, refactoring, technical-debt-governance]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/engineering/data-modeling.contract.yaml
+  ai-native-skills.related_skills: '[''domain-driven-design'', ''refactoring'', ''technical-debt-governance'']'
 ---
 
 # Data Modeling Skill

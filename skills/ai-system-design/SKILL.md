@@ -1,12 +1,13 @@
 ---
 name: ai-system-design
 description: Design AI-powered systems — RAG architecture, agent memory patterns, LLM eval framework, prompt injection defense, human-in-the-loop, graceful degradation, and context window budget management.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/domain-architecture/ai-system-design.contract.yaml
-related_skills: [native-ai-engineer, service-design, observability-design, ethics-responsible-ai, threat-modeling]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/ai-system-design.contract.yaml
+  ai-native-skills.related_skills: '[''native-ai-engineer'', ''service-design'', ''observability-design'', ''ethics-responsible-ai'', ''threat-modeling'']'
 ---
 
 # AI System Design

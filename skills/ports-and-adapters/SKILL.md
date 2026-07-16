@@ -1,11 +1,12 @@
 ---
 name: ports-and-adapters
 description: Design hexagonal architecture with explicit ports and adapters — domain isolation, dependency inversion, testable domain without infrastructure. Foundation pattern for DDD, microservices, and clean architecture.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/domain-architecture/ports-and-adapters.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/ports-and-adapters.contract.yaml
 ---
 
 # Ports and Adapters (Hexagonal Architecture)

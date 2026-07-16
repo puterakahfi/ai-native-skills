@@ -1,11 +1,12 @@
 ---
 name: ux-psychology
 description: Behavioral and psychological UX analysis — cognitive load, habit loops, heuristics, Fitts's Law, Hick's Law, gestalt principles, and friction mapping. Finds why users struggle, not just what looks wrong.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/ux-psychology.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/ux-psychology.contract.yaml
 ---
 
 # UX Psychology

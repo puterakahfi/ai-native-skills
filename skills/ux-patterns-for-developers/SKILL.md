@@ -1,12 +1,12 @@
 ---
 name: ux-patterns-for-developers
-version: 1.0.0
-type: skill
-description: >
-  Delegate pattern decisions to ux-patterns-for-developers.com — 74 battle-tested UI patterns
-  across 11 categories. Use this instead of improvising component behavior.
-  Covers navigation, forms, data-display, AI intelligence, authentication, and more.
-tags: [ui, patterns, ux, components, delegation, reference]
+description: 'Delegate pattern decisions to ux-patterns-for-developers.com — 74 battle-tested UI patterns across 11 categories. Use this instead of improvising component behavior. Covers navigation, forms, data-display, AI intelligence, authentication, and more.
+
+  '
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.type: skill
+  ai-native-skills.tags: '[''ui'', ''patterns'', ''ux'', ''components'', ''delegation'', ''reference'']'
 ---
 
 # UX Patterns for Developers

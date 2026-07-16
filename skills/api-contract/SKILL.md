@@ -1,12 +1,13 @@
 ---
 name: api-contract
 description: Design, enforce, and version API contracts between services — OpenAPI spec, consumer-driven contract testing, breaking change detection, versioning strategy, and deprecation lifecycle.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/domain-architecture/api-contract.contract.yaml
-related_skills: [service-design, event-driven-design, security-review]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/api-contract.contract.yaml
+  ai-native-skills.related_skills: '[''service-design'', ''event-driven-design'', ''security-review'']'
 ---
 
 # API Contract

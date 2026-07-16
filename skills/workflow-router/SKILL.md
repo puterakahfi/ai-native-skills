@@ -1,12 +1,13 @@
 ---
 name: workflow-router
 description: Detect task type from user request and route to the correct workflow automatically — bug vs feature vs review vs deploy vs spike. Explicit routing before execution. Meta-skill that composes workflow skills.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: meta-skill
-implements: ai-native-core/contracts/skills/domain-architecture/workflow-router.contract.yaml
-related_skills: [role-switcher, bugfix-workflow, new-feature-workflow, code-review-workflow, deployment-workflow, spec-workflow]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: meta-skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/workflow-router.contract.yaml
+  ai-native-skills.related_skills: '[''role-switcher'', ''bugfix-workflow'', ''new-feature-workflow'', ''code-review-workflow'', ''deployment-workflow'', ''spec-workflow'']'
 ---
 
 # Workflow Router

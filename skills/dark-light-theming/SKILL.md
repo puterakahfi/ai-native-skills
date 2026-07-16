@@ -1,12 +1,13 @@
 ---
 name: dark-light-theming
 description: Dual-theme system design — semantic token mapping, system preference detection, flash-of-wrong-theme prevention, color inversion pitfalls, and mid-session toggle. One token table, two primitive maps.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/dark-light-theming.contract.yaml
-related_skills: [design-system, accessibility, readability]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/dark-light-theming.contract.yaml
+  ai-native-skills.related_skills: '[''design-system'', ''accessibility'', ''readability'']'
 ---
 
 # Dark/Light Theming Skill

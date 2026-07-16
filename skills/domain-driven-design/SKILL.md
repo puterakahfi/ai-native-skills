@@ -1,11 +1,12 @@
 ---
 name: domain-driven-design
 description: Model complex domains using DDD building blocks — bounded contexts, aggregates, value objects, domain events, ubiquitous language, and repository pattern. Strategic and tactical design.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/domain-architecture/domain-driven-design.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/domain-driven-design.contract.yaml
 ---
 
 # Domain-Driven Design

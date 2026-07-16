@@ -1,11 +1,12 @@
 ---
 name: design-patterns
 description: Identify and apply appropriate design patterns — GoF creational, structural, behavioral, and modern architectural patterns (CQRS, Saga, Outbox). Pattern selection justified by forces, not preference.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/domain-architecture/design-patterns.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/design-patterns.contract.yaml
 ---
 
 # Design Patterns

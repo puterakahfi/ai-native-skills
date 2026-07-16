@@ -1,12 +1,13 @@
 ---
 name: incident-response
 description: Structured incident lifecycle and blameless postmortem — detect, triage, mitigate, resolve, postmortem, prevent. 5 Whys to systemic cause, action items with owner and deadline, prevention at class level.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/runtime-ops/incident-response.contract.yaml
-related_skills: [systematic-debugging, observability-design, deployment-workflow, adr]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-ops/incident-response.contract.yaml
+  ai-native-skills.related_skills: '[''systematic-debugging'', ''observability-design'', ''deployment-workflow'', ''adr'']'
 ---
 
 # Incident Response

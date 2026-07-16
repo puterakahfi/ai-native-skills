@@ -1,12 +1,13 @@
 ---
 name: content-strategy
 description: Content strategy for digital products — microcopy, tone of voice, content hierarchy, onboarding copy, empty states, and error messages. The words are the design. Scored 0–10, minimum 8 to pass.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/content-strategy.contract.yaml
-related_skills: [ux-psychology, readability, master-design, ux-ui-patterns]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/content-strategy.contract.yaml
+  ai-native-skills.related_skills: '[''ux-psychology'', ''readability'', ''master-design'', ''ux-ui-patterns'']'
 ---
 
 # Content Strategy Skill

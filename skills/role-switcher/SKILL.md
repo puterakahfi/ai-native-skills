@@ -1,11 +1,12 @@
 ---
 name: role-switcher
 description: Intent detection and automatic role composition — reads a user request, detects the task type, and loads the right combination of role skills to respond from multiple expert lenses simultaneously.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: meta-skill
-implements: ai-native-core/contracts/skills/domain-architecture/role-switcher.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: meta-skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/role-switcher.contract.yaml
 ---
 
 # Role Switcher

@@ -1,12 +1,13 @@
 ---
 name: threat-modeling
 description: Proactive security threat identification before implementation — STRIDE analysis per trust boundary, data flow mapping, mitigation planning, and risk rating. Security gate before any feature goes to code.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/quality-control/threat-modeling.contract.yaml
-related_skills: [security-review, architecture-review, spec-workflow, adr]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/threat-modeling.contract.yaml
+  ai-native-skills.related_skills: '[''security-review'', ''architecture-review'', ''spec-workflow'', ''adr'']'
 ---
 
 # Threat Modeling

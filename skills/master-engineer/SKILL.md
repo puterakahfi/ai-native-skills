@@ -1,11 +1,12 @@
 ---
 name: master-engineer
 description: Senior Software Engineer and architect for system design, architecture decisions, design patterns, refactoring strategy, over-engineering checks, and engineering contracts.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/software-engineering/master-engineer.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/software-engineering/master-engineer.contract.yaml
 ---
 
 # Master Engineer

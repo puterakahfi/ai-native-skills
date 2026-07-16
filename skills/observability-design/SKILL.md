@@ -1,12 +1,13 @@
 ---
 name: observability-design
 description: Design logs, metrics, and traces stack for distributed systems — three pillars, four golden signals, SLO definitions, alert strategy, structured logging, trace propagation, and cardinality control.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/runtime-ops/observability-design.contract.yaml
-related_skills: [service-design, deployment-workflow, systematic-debugging]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-ops/observability-design.contract.yaml
+  ai-native-skills.related_skills: '[''service-design'', ''deployment-workflow'', ''systematic-debugging'']'
 ---
 
 # Observability Design

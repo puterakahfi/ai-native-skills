@@ -1,12 +1,13 @@
 ---
 name: design-system
 description: Design token decisions and system construction — when to use which spacing scale, type scale, color role, elevation level, and motion token. Produces a declaration table before any pixel is designed. The design system is the single source of truth; all design decisions trace back to it.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/design-system.contract.yaml
-related_skills: [master-design, ux-ui-patterns, accessibility, design-review]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-system.contract.yaml
+  ai-native-skills.related_skills: '[''master-design'', ''ux-ui-patterns'', ''accessibility'', ''design-review'']'
 ---
 
 # Design System Skill

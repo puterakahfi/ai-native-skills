@@ -1,12 +1,13 @@
 ---
 name: web-performance
 description: Web performance skill — Core Web Vitals scoring, LCP/CLS/INP optimization, font loading, critical CSS, image strategy, and JS bundle analysis. Design decisions that directly affect Lighthouse score and user experience.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/engineering/web-performance.contract.yaml
-related_skills: [design-system, accessibility, responsiveness]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/engineering/web-performance.contract.yaml
+  ai-native-skills.related_skills: '[''design-system'', ''accessibility'', ''responsiveness'']'
 ---
 
 # Web Performance Skill

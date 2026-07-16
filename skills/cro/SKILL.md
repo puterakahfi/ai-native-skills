@@ -1,11 +1,12 @@
 ---
 name: cro
-version: 1.0.0
-type: skill
-description: >
-  Conversion Rate Optimization — attention flow, trust signals, friction audit,
-  above-fold optimization, and persuasion architecture for landing pages.
-tags: [cro, conversion, persuasion, trust, attention, landing-page]
+description: 'Conversion Rate Optimization — attention flow, trust signals, friction audit, above-fold optimization, and persuasion architecture for landing pages.
+
+  '
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.type: skill
+  ai-native-skills.tags: '[''cro'', ''conversion'', ''persuasion'', ''trust'', ''attention'', ''landing-page'']'
 ---
 
 # CRO — Conversion Rate Optimization

@@ -4,7 +4,7 @@ Reusable agent skills and workflows for AI-native engineering. Works with any ag
 
 **62 skills · 6 workflows · 2 meta-skills**
 
-See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern.
+See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
 ---
 
@@ -23,7 +23,7 @@ npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 
 ## Skill Type Taxonomy
 
-`ai-native-skills` uses three official `type:` values in `SKILL.md` frontmatter. See [docs/skills.md](docs/skills.md) for definitions, decision rules, and the adapter pattern.
+`ai-native-skills` uses three official category values under `metadata["ai-native-skills.type"]`. See [docs/skills.md](docs/skills.md) for definitions, decision rules, and the adapter pattern.
 
 | Type | Description | Examples |
 |---|---|---|
@@ -213,12 +213,13 @@ role-switcher   → compose: which lenses for this task?
 
 ## Adapter Pattern
 
-Adapter behavior is a pattern, not a separate official `type:` value today. Use `type: skill` plus `implements:` and `compat/*.compat.yaml` when a skill implements a Native AI Core contract.
+Adapter behavior is a pattern, not a separate official category value today. Use `metadata["ai-native-skills.type"]: skill` plus `metadata["ai-native-skills.implements"]` and `compat/*.compat.yaml` when a skill implements a Native AI Core contract.
 
 ```yaml
 name: native-ai-runtime-agent
-type: skill
-implements: ai-native-core/contracts/skills/runtime-agent/native-ai-runtime-agent.contract.yaml
+metadata:
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-agent/native-ai-runtime-agent.contract.yaml
 ```
 
 See [docs/skills.md](docs/skills.md#adapter-pattern) for details.

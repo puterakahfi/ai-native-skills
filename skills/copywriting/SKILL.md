@@ -1,11 +1,12 @@
 ---
 name: copywriting
-version: 1.0.0
-type: skill
-description: >
-  Copywriting fundamentals — messaging hierarchy, headline formulas, value proposition,
-  microcopy, tone calibration, and content audit gates.
-tags: [content, copywriting, messaging, ux-writing, tone-of-voice]
+description: 'Copywriting fundamentals — messaging hierarchy, headline formulas, value proposition, microcopy, tone calibration, and content audit gates.
+
+  '
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.type: skill
+  ai-native-skills.tags: '[''content'', ''copywriting'', ''messaging'', ''ux-writing'', ''tone-of-voice'']'
 ---
 
 # Copywriting

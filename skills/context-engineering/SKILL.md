@@ -1,11 +1,12 @@
 ---
 name: context-engineering
 description: Institutional context authoring and curation — write AGENTS.md, .cursorrules, and context packs that encode architecture constraints, guardrails, and domain knowledge into the AI workspace.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/context-management/context-engineering.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/context-management/context-engineering.contract.yaml
 ---
 
 # Context Engineering

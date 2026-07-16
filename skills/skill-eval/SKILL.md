@@ -1,11 +1,12 @@
 ---
 name: skill-eval
 description: Skill application verifier — tests whether a skill was actually applied (behavior + gate compliance) or just loaded and ignored. Produces PASS/FAIL per quality gate.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/quality-control/skill-eval.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/skill-eval.contract.yaml
 ---
 
 # Skill Eval

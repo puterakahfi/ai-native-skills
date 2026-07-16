@@ -1,22 +1,14 @@
 ---
 name: deployment-workflow
 description: Guided deployment workflow — pre-deploy checks, context load, deploy, health verify, confirm or rollback. Security review and approval required before production.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: workflow
-implements: ai-native-core/contracts/workflows/deployment.contract.yaml
-skills:
-  required:
-    - security-review
-    - context-manager
-  optional:
-    - architecture-review
-skill_load_order:
-  - phase: pre-deploy-check
-    load: [security-review, architecture-review]
-  - phase: context-load
-    load: [context-manager]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: workflow
+  ai-native-skills.implements: ai-native-core/contracts/workflows/deployment.contract.yaml
+  ai-native-skills.skill_load_order: '[{''phase'': ''pre-deploy-check'', ''load'': [''security-review'', ''architecture-review'']}, {''phase'': ''context-load'', ''load'': [''context-manager'']}]'
+  ai-native-skills.skills: '{''required'': [''security-review'', ''context-manager''], ''optional'': [''architecture-review'']}'
 ---
 
 # Deployment Workflow

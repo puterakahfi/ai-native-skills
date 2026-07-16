@@ -1,12 +1,13 @@
 ---
 name: service-design
 description: Design service boundaries and inter-service communication — decompose by bounded context, justify sync vs async, own your data, avoid distributed monolith. Forces-first decomposition.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/domain-architecture/service-design.contract.yaml
-related_skills: [domain-driven-design, api-contract, event-driven-design, ports-and-adapters]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/service-design.contract.yaml
+  ai-native-skills.related_skills: '[''domain-driven-design'', ''api-contract'', ''event-driven-design'', ''ports-and-adapters'']'
 ---
 
 # Service Design

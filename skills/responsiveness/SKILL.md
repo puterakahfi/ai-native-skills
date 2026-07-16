@@ -1,12 +1,13 @@
 ---
 name: responsiveness
 description: Responsive design strategy — breakpoint system, fluid grid, fluid typography, touch targets, viewport adaptation, and performance. Scores responsiveness 0–10 per dimension. Minimum score 8 required to pass.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/responsiveness.contract.yaml
-related_skills: [design-system, ux-ui-patterns, accessibility, readability]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/responsiveness.contract.yaml
+  ai-native-skills.related_skills: '[''design-system'', ''ux-ui-patterns'', ''accessibility'', ''readability'']'
 ---
 
 # Responsiveness Skill

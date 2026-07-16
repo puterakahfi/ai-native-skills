@@ -1,12 +1,13 @@
 ---
 name: user-research
 description: User research methodology — interview techniques, usability testing, jobs-to-be-done framework, affinity mapping, and tracing insights to design decisions. For validating assumptions before building.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/product/user-research.contract.yaml
-related_skills: [product-manager, ux-psychology, information-architecture, content-strategy]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/product/user-research.contract.yaml
+  ai-native-skills.related_skills: '[''product-manager'', ''ux-psychology'', ''information-architecture'', ''content-strategy'']'
 ---
 
 # User Research Skill

@@ -1,12 +1,13 @@
 ---
 name: event-driven-design
 description: Design event schema, producer/consumer contracts, saga patterns, and idempotency strategy for event-driven and async systems. Covers at-least-once delivery, dead letter queues, schema evolution, and CQRS flow.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/domain-architecture/event-driven-design.contract.yaml
-related_skills: [domain-driven-design, service-design, design-patterns, api-contract]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/event-driven-design.contract.yaml
+  ai-native-skills.related_skills: '[''domain-driven-design'', ''service-design'', ''design-patterns'', ''api-contract'']'
 ---
 
 # Event-Driven Design

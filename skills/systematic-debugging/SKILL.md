@@ -1,11 +1,12 @@
 ---
 name: systematic-debugging
 description: 4-phase root cause debugging — investigate, analyze, hypothesize, fix. Enforces finding root cause before attempting any fix.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/quality-control/systematic-debugging.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/systematic-debugging.contract.yaml
 ---
 
 # Systematic Debugging

@@ -1,11 +1,12 @@
 ---
 name: architecture-review
 description: Engineering contract compliance reviewer — checks code, PRs, and system design against the product engineering contract. Catches stack violations, layer boundary breaks, unauthorized dependencies, and architecture drift before merge.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/quality-control/architecture-review.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/architecture-review.contract.yaml
 ---
 
 # Architecture Review

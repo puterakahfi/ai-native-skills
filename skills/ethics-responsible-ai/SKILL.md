@@ -1,12 +1,13 @@
 ---
 name: ethics-responsible-ai
 description: Ethical analysis and responsible AI governance — fairness audit, harm assessment, transparency requirements, consent and data governance, accountability mapping, and power asymmetry analysis.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/quality-control/ethics-responsible-ai.contract.yaml
-related_skills: [ai-system-design, threat-modeling, accessibility, product-manager]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/ethics-responsible-ai.contract.yaml
+  ai-native-skills.related_skills: '[''ai-system-design'', ''threat-modeling'', ''accessibility'', ''product-manager'']'
 ---
 
 # Ethics & Responsible AI

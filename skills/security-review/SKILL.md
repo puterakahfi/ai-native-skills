@@ -1,11 +1,12 @@
 ---
 name: security-review
 description: Security baseline validation skill — detect secrets, injection vectors, auth gaps, and dependency vulnerabilities before merge or deploy. Blocks deployment until security gate passes.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/quality-control/security-review.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/security-review.contract.yaml
 ---
 
 # Security Review

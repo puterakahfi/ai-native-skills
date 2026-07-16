@@ -1,34 +1,14 @@
 ---
 name: spec-workflow
-description: "Spec-driven development workflow — constitution → specify → plan → tasks → implement. Eliminates vibe coding at the input layer: no implementation without a precise, agent-executable spec."
-version: 1.0.0
-author: puterakahfi
+description: 'Spec-driven development workflow — constitution → specify → plan → tasks → implement. Eliminates vibe coding at the input layer: no implementation without a precise, agent-executable spec.'
 license: MIT
-type: workflow
-implements: ai-native-core/contracts/workflows/spec-driven.contract.yaml
-skills:
-  required:
-    - product-manager
-    - plan
-    - context-manager
-    - rule-manager
-    - master-engineer
-    - native-ai-engineer
-  optional:
-    - test-driven-development
-    - spike
-    - diagram-architect
-skill_load_order:
-  - phase: constitution
-    load: [native-ai-engineer, master-engineer]
-  - phase: specify
-    load: [product-manager]
-  - phase: plan
-    load: [plan]
-  - phase: tasks
-    load: [context-manager, rule-manager]
-  - phase: implement
-    load: [master-engineer, test-driven-development]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: workflow
+  ai-native-skills.implements: ai-native-core/contracts/workflows/spec-driven.contract.yaml
+  ai-native-skills.skill_load_order: '[{''phase'': ''constitution'', ''load'': [''native-ai-engineer'', ''master-engineer'']}, {''phase'': ''specify'', ''load'': [''product-manager'']}, {''phase'': ''plan'', ''load'': [''plan'']}, {''phase'': ''tasks'', ''load'': [''context-manager'', ''rule-manager'']}, {''phase'': ''implement'', ''load'': [''master-engineer'', ''test-driven-development'']}]'
+  ai-native-skills.skills: '{''required'': [''product-manager'', ''plan'', ''context-manager'', ''rule-manager'', ''master-engineer'', ''native-ai-engineer''], ''optional'': [''test-driven-development'', ''spike'', ''diagram-architect'']}'
 ---
 
 # Spec-Driven Development Workflow

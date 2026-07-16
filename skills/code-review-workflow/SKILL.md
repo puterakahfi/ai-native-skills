@@ -1,25 +1,14 @@
 ---
 name: code-review-workflow
 description: Structured code review workflow — load contracts, architecture check, design check, logic check, verdict. Enforces engineering contract and design system compliance before any merge.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: workflow
-implements: ai-native-core/contracts/workflows/code-review.contract.yaml
-skills:
-  required:
-    - architecture-review
-  optional:
-    - design-review
-    - systematic-debugging
-    - master-engineer
-skill_load_order:
-  - phase: architecture-check
-    load: [architecture-review]
-  - phase: design-check
-    load: [design-review]
-  - phase: logic-check
-    load: [systematic-debugging, master-engineer]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: workflow
+  ai-native-skills.implements: ai-native-core/contracts/workflows/code-review.contract.yaml
+  ai-native-skills.skill_load_order: '[{''phase'': ''architecture-check'', ''load'': [''architecture-review'']}, {''phase'': ''design-check'', ''load'': [''design-review'']}, {''phase'': ''logic-check'', ''load'': [''systematic-debugging'', ''master-engineer'']}]'
+  ai-native-skills.skills: '{''required'': [''architecture-review''], ''optional'': [''design-review'', ''systematic-debugging'', ''master-engineer'']}'
 ---
 
 # Code Review Workflow

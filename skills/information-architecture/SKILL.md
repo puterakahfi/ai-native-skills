@@ -1,12 +1,13 @@
 ---
 name: information-architecture
 description: Information architecture for digital products — site map design, navigation hierarchy, content grouping, URL structure, and search vs browse decisions. Foundation skill that runs before design starts.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/information-architecture.contract.yaml
-related_skills: [ux-psychology, ux-ui-patterns, content-strategy, product-manager]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/information-architecture.contract.yaml
+  ai-native-skills.related_skills: '[''ux-psychology'', ''ux-ui-patterns'', ''content-strategy'', ''product-manager'']'
 ---
 
 # Information Architecture Skill

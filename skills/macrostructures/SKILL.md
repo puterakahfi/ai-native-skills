@@ -1,12 +1,13 @@
 ---
 name: macrostructures
 description: 21 named page shapes — each bundles heading placement, body composition, divider language, button voice, image treatment, and reveal into a single named choice. Pick ONE before designing. Prevents structural sameness across consecutive outputs. Adapted from Hallmark (Nutlope) for ai-native-skills ecosystem.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/macrostructures.contract.yaml
-related_skills: [design-genre, ux-ui-patterns, master-design, redesign-workflow]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/macrostructures.contract.yaml
+  ai-native-skills.related_skills: '[''design-genre'', ''ux-ui-patterns'', ''master-design'', ''redesign-workflow'']'
 ---
 
 # Macrostructures Skill

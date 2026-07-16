@@ -1,11 +1,12 @@
 ---
 name: plan
-description: "Plan mode: write an actionable markdown plan with exact file paths and bite-sized steps before any execution starts."
-version: 1.0.0
-author: puterakahfi
+description: 'Plan mode: write an actionable markdown plan with exact file paths and bite-sized steps before any execution starts.'
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/software-engineering/plan.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/software-engineering/plan.contract.yaml
 ---
 
 # Plan Mode

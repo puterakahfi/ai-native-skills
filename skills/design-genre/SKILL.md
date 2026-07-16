@@ -1,12 +1,13 @@
 ---
 name: design-genre
 description: Design genre classification — editorial, modern-minimal, atmospheric, playful. Determines theme cluster, voice fixtures, nav/footer defaults, and which slop gates apply. Run before any design decision. Borrowed concept from Hallmark (Nutlope), adapted for ai-native-skills ecosystem.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/design-genre.contract.yaml
-related_skills: [ux-ui-patterns, design-system, master-design, redesign-workflow]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-genre.contract.yaml
+  ai-native-skills.related_skills: '[''ux-ui-patterns'', ''design-system'', ''master-design'', ''redesign-workflow'']'
 ---
 
 # Design Genre Skill

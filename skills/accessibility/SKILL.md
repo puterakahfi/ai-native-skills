@@ -1,12 +1,13 @@
 ---
 name: accessibility
 description: WCAG 2.1 AA compliance and inclusive design — semantic HTML, ARIA roles, color contrast, keyboard navigation, focus management, screen reader compatibility, cognitive accessibility.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/accessibility.contract.yaml
-related_skills: [design-review, ux-psychology, master-design, ethics-responsible-ai]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/accessibility.contract.yaml
+  ai-native-skills.related_skills: '[''design-review'', ''ux-psychology'', ''master-design'', ''ethics-responsible-ai'']'
 ---
 
 # Accessibility (A11y)

@@ -1,12 +1,13 @@
 ---
 name: micro-frontend
 description: Design micro-frontend architecture with module federation — MFE boundary by bounded context, shell app contract, CSS isolation, shared dependency strategy, independent deployability, and fallback strategy.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/micro-frontend.contract.yaml
-related_skills: [service-design, domain-driven-design, design-patterns, api-contract]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/micro-frontend.contract.yaml
+  ai-native-skills.related_skills: '[''service-design'', ''domain-driven-design'', ''design-patterns'', ''api-contract'']'
 ---
 
 # Micro-Frontend (MFE)

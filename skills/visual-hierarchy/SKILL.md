@@ -1,11 +1,12 @@
 ---
 name: visual-hierarchy
-version: 1.0.0
-type: skill
-description: >
-  Visual hierarchy system — dominant/supporting/accent triad, inter-section
-  weight decay, heading competition prevention.
-tags: [design, hierarchy, typography, weight, contrast]
+description: 'Visual hierarchy system — dominant/supporting/accent triad, inter-section weight decay, heading competition prevention.
+
+  '
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.type: skill
+  ai-native-skills.tags: '[''design'', ''hierarchy'', ''typography'', ''weight'', ''contrast'']'
 ---
 
 # Visual Hierarchy

@@ -1,11 +1,12 @@
 ---
 name: composition
-version: 1.0.0
-type: skill
-description: >
-  Above-the-fold composition — focal point, visual weight, eye-flow, anchoring.
-  Prevents floating/unanchored layouts and dead-space voids.
-tags: [design, composition, visual-weight, focal-point, alignment]
+description: 'Above-the-fold composition — focal point, visual weight, eye-flow, anchoring. Prevents floating/unanchored layouts and dead-space voids.
+
+  '
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.type: skill
+  ai-native-skills.tags: '[''design'', ''composition'', ''visual-weight'', ''focal-point'', ''alignment'']'
 ---
 
 # Composition

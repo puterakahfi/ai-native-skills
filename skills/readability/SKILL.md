@@ -1,12 +1,13 @@
 ---
 name: readability
 description: Text readability scoring and optimization — line length, contrast ratio, type size, line height, density, and cognitive ease. Produces a readability score 0–10 per dimension. Minimum score 8 required before design passes.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/readability.contract.yaml
-related_skills: [design-system, accessibility, ux-psychology, master-design]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/readability.contract.yaml
+  ai-native-skills.related_skills: '[''design-system'', ''accessibility'', ''ux-psychology'', ''master-design'']'
 ---
 
 # Readability Skill

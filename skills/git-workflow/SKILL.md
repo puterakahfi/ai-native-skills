@@ -1,11 +1,12 @@
 ---
 name: git-workflow
 description: Source control operations — branching, committing, PR/MR submission, and merge. Branch strategy, naming convention, commit format, and protected branch policy are product-defined.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/source-control/git-workflow.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/source-control/git-workflow.contract.yaml
 ---
 
 # Git Workflow

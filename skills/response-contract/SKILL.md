@@ -1,11 +1,12 @@
 ---
 name: response-contract
 description: Persistent output verbosity standard — eliminates filler, enforces answer-first, keeps code exact. Set once in AGENTS.md, applies to every response forever. Works on both sides of the token equation with prompt-optimizer.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/context-management/response-contract.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/context-management/response-contract.contract.yaml
 ---
 
 # Response Contract

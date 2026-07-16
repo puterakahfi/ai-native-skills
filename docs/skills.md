@@ -1,6 +1,6 @@
 # Skills Taxonomy
 
-This document defines the official skill types used in `ai-native-skills`.
+This document defines the official skill categories used in `ai-native-skills` while staying compatible with the [Agent Skills specification](https://agentskills.io/specification).
 
 The goal is to keep skill authoring decisions consistent: when to create an atomic skill, when to create a workflow, and when to create a meta-skill that routes or composes other skills.
 
@@ -15,7 +15,9 @@ Current repository inventory:
 
 ## Official Types
 
-`ai-native-skills` currently uses three official `type:` values in `SKILL.md` frontmatter:
+Agent Skills standard frontmatter only allows `name`, `description`, `license`, `compatibility`, `allowed-tools`, and `metadata`. Repository-specific classification therefore lives in namespaced metadata keys such as `ai-native-skills.type` rather than a top-level `type:` field.
+
+`ai-native-skills` currently uses three official category values:
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
@@ -23,7 +25,7 @@ Current repository inventory:
 | `workflow` | Run a sequenced task lifecycle | “What phases must this task follow?” | `bugfix-workflow`, `deployment-workflow`, `redesign-workflow` |
 | `meta-skill` | Route or compose other skills/workflows | “Which skills/workflows should be loaded?” | `workflow-router`, `role-switcher` |
 
-Do not introduce a new `type:` value unless the README, this document, and existing tooling are updated together.
+Do not introduce a new category value unless the README, this document, and existing tooling are updated together.
 
 ---
 
@@ -31,7 +33,7 @@ Do not introduce a new `type:` value unless the README, this document, and exist
 
 A `skill` is an atomic, reusable capability or expert lens.
 
-Use `type: skill` when the artifact teaches the agent how to perform one coherent capability with quality gates, examples, pitfalls, and verification criteria.
+Use `metadata["ai-native-skills.type"]: skill` when the artifact teaches the agent how to perform one coherent capability with quality gates, examples, pitfalls, and verification criteria.
 
 ### Use when
 
@@ -72,7 +74,7 @@ A good `skill` should define:
 
 A `workflow` is a sequenced execution process for a task class.
 
-Use `type: workflow` when the main value is the ordering of phases, gates, and handoffs. A workflow may compose many skills, but the workflow itself owns the lifecycle.
+Use `metadata["ai-native-skills.type"]: workflow` when the main value is the ordering of phases, gates, and handoffs. A workflow may compose many skills, but the workflow itself owns the lifecycle.
 
 ### Use when
 
@@ -116,7 +118,7 @@ A good `workflow` should define:
 
 A `meta-skill` routes, selects, or composes other skills and workflows.
 
-Use `type: meta-skill` when the artifact’s job is not to perform the domain work directly, but to decide which capabilities should be loaded and in what combination.
+Use `metadata["ai-native-skills.type"]: meta-skill` when the artifact’s job is not to perform the domain work directly, but to decide which capabilities should be loaded and in what combination.
 
 ### Use when
 
@@ -153,11 +155,11 @@ A good `meta-skill` should define:
 
 ## Adapter Pattern
 
-`skill-adapter` is currently a pattern, not an official `type:` value in this repository.
+`skill-adapter` is currently a pattern, not an official category value in this repository.
 
-The README previously described `skill-adapter` as a taxonomy item, but no current `SKILL.md` uses `type: skill-adapter`. Adapter behavior is represented through:
+The README previously described `skill-adapter` as a taxonomy item, but no current `SKILL.md` uses `metadata["ai-native-skills.type"]: skill-adapter`. Adapter behavior is represented through:
 
-- `implements:` frontmatter, linking a skill to a Native AI Core contract.
+- `metadata["ai-native-skills.implements"]`, linking a skill to a Native AI Core contract.
 - `compat/*.compat.yaml`, describing compatibility between runtime skill implementations and core contracts.
 - Product or runtime bindings that install or load the skill in a specific execution context.
 
@@ -169,7 +171,7 @@ In practice, it remains executable as a normal `skill` unless the repo formally 
 
 ### Examples
 
-These are adapter-like skills because they implement Native AI Core contracts while remaining `type: skill`:
+These are adapter-like skills because they implement Native AI Core contracts while remaining `metadata["ai-native-skills.type"]: skill`:
 
 - `native-ai-engineer`
 - `native-ai-runtime-agent`
@@ -177,7 +179,7 @@ These are adapter-like skills because they implement Native AI Core contracts wh
 
 ### When to use the adapter pattern
 
-Use `type: skill` plus adapter metadata when:
+Use `metadata["ai-native-skills.type"]: skill` plus adapter metadata when:
 
 - The skill implements a Native AI Core contract.
 - A runtime binding needs to reference the executable skill.
@@ -190,10 +192,10 @@ Use `type: skill` plus adapter metadata when:
 
 | If you are creating... | Use |
 |---|---|
-| One reusable capability or expert lens | `type: skill` |
-| A multi-phase lifecycle with gates | `type: workflow` |
-| An intent router or skill composer | `type: meta-skill` |
-| A runtime/product implementation of a core contract | `type: skill` + adapter pattern |
+| One reusable capability or expert lens | `metadata["ai-native-skills.type"]: skill` |
+| A multi-phase lifecycle with gates | `metadata["ai-native-skills.type"]: workflow` |
+| An intent router or skill composer | `metadata["ai-native-skills.type"]: meta-skill` |
+| A runtime/product implementation of a core contract | `metadata["ai-native-skills.type"]: skill` + adapter pattern |
 | A product-specific override | Product/app adapter layer, not this repo by default |
 | A temporary idea or scratch note | Do not put it in `skills/` |
 
@@ -201,31 +203,50 @@ Use `type: skill` plus adapter metadata when:
 
 ## Frontmatter Contract
 
-Every `SKILL.md` must declare its type explicitly:
+Every `SKILL.md` must be valid Agent Skills frontmatter. Keep standard fields at the top level and put repo-specific fields under namespaced `metadata` keys.
+
+Top-level fields allowed by the Agent Skills spec:
+
+- `name` — required, max 64 chars, lowercase/hyphenated, must match the skill directory name.
+- `description` — required, max 1024 chars, explains what the skill does and when to use it.
+- `license` — optional.
+- `compatibility` — optional, max 500 chars, for environment requirements.
+- `allowed-tools` — optional experimental field.
+- `metadata` — optional extension map.
+
+Basic skill example:
 
 ```yaml
 ---
 name: example-skill
 description: Short trigger-focused description.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
 ---
 ```
 
-For Native AI contract-backed skills, include `implements:`:
+For Native AI contract-backed skills, include `metadata["ai-native-skills.implements"]`:
 
 ```yaml
 ---
 name: native-ai-runtime-agent
 description: Runtime agent skill for ai-native-fw product adapters.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/runtime-agent/native-ai-runtime-agent.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-agent/native-ai-runtime-agent.contract.yaml
 ---
+```
+
+Validate compatibility with the Agent Skills reference validator:
+
+```bash
+skills-ref validate skills/<skill-name>
 ```
 
 ---
@@ -235,7 +256,7 @@ implements: ai-native-core/contracts/skills/runtime-agent/native-ai-runtime-agen
 1. **Calling everything a skill.** If phase order matters, create a workflow.
 2. **Calling a router a workflow.** If it only selects another process, create a meta-skill.
 3. **Creating product-specific base skills.** Product-specific behavior belongs in product/app adapters unless it is broadly reusable.
-4. **Inventing a new type casually.** A new `type:` value affects README, docs, validation, examples, and downstream consumers.
-5. **Using adapter as a type before tooling supports it.** Keep adapter semantics in `implements:` and `compat/` until the repo formally adopts `type: skill-adapter`.
+4. **Inventing a new category casually.** A new category value affects README, docs, validation, examples, and downstream consumers.
+5. **Using adapter as a type before tooling supports it.** Keep adapter semantics in `metadata["ai-native-skills.implements"]` and `compat/` until the repo formally adopts `skill-adapter`.
 6. **Writing no-op skills.** If the document does not change agent behavior or quality gates, it should not be a skill.
 7. **Mixing routing and execution.** Meta-skills decide the route; workflows and skills perform the work.

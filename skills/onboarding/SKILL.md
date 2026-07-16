@@ -1,12 +1,13 @@
 ---
 name: onboarding
 description: Bootstrap agent and engineer context for an existing codebase — harvest architecture, entry points, conventions, test commands, and gotchas. Produces AGENTS.md as primary output.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/runtime-agent/onboarding.contract.yaml
-related_skills: [context-engineering, context-manager, rule-manager, architecture-review]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-agent/onboarding.contract.yaml
+  ai-native-skills.related_skills: '[''context-engineering'', ''context-manager'', ''rule-manager'', ''architecture-review'']'
 ---
 
 # Onboarding

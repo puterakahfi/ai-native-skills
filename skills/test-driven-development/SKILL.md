@@ -1,11 +1,12 @@
 ---
 name: test-driven-development
-description: "TDD: enforce RED-GREEN-REFACTOR cycle — tests written before implementation, every time."
-version: 1.0.0
-author: puterakahfi
+description: 'TDD: enforce RED-GREEN-REFACTOR cycle — tests written before implementation, every time.'
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/software-engineering/test-driven-development.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/software-engineering/test-driven-development.contract.yaml
 ---
 
 # Test-Driven Development (TDD)

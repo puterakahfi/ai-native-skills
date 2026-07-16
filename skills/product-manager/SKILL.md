@@ -1,11 +1,12 @@
 ---
 name: product-manager
 description: Product management skill — write PRDs, define acceptance criteria, break down tasks, set scope, and prioritize. Ensures every feature has testable criteria and explicit scope before implementation starts.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/product-management/product-manager.contract.yaml
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/product-management/product-manager.contract.yaml
 ---
 
 # Product Manager

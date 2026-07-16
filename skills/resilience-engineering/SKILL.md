@@ -1,12 +1,13 @@
 ---
 name: resilience-engineering
 description: Design for failure before failure happens — failure mode analysis, chaos engineering, circuit breakers, graceful degradation, blast radius minimization, RTO/RPO design, and load shedding.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/quality-control/resilience-engineering.contract.yaml
-related_skills: [observability-design, incident-response, service-design, deployment-workflow]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/resilience-engineering.contract.yaml
+  ai-native-skills.related_skills: '[''observability-design'', ''incident-response'', ''service-design'', ''deployment-workflow'']'
 ---
 
 # Resilience Engineering

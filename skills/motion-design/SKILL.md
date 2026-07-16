@@ -1,12 +1,13 @@
 ---
 name: motion-design
 description: Motion design system — micro-interactions, state transitions, scroll-driven animation, staggered entrance, and cinematic narrative motion. Decision tree for choosing the right motion type. Scores motion quality 0–10. Minimum 8 to pass. Always respects prefers-reduced-motion.
-version: 1.0.0
-author: puterakahfi
 license: MIT
-type: skill
-implements: ai-native-core/contracts/skills/experience-design/motion-design.contract.yaml
-related_skills: [design-system, ux-psychology, ux-ui-patterns, accessibility, master-design]
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/motion-design.contract.yaml
+  ai-native-skills.related_skills: '[''design-system'', ''ux-psychology'', ''ux-ui-patterns'', ''accessibility'', ''master-design'']'
 ---
 
 # Motion Design Skill
