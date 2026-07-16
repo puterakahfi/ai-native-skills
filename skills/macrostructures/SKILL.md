@@ -220,51 +220,51 @@ Failing to follow these causes gray void and broken balance — most common Stud
 ```
 Hero wrapper (outer):
   min-height: 100vh;
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;            ← nav clearance here ONCE — not inside panels
 
 Hero grid:
-  flex: 1;                      ← fill remaining height after nav
+  flex: 1;                      ← fills remaining height (100vh - 80px)
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: stretch;         ← STRETCH both panels to full grid height
-
-Nav clearance:
-  Add padding-top to hero-left content ONLY — not to the grid
-  This way right panel starts from true top of viewport
+  align-items: stretch;
 
 Left panel:
   display: flex; flex-direction: column; justify-content: center;
   border-right: 1px solid var(--border);
-  padding: calc(80px + var(--sp-9)) var(--sp-8) var(--sp-9);
-  /* 80px = nav height clearance, built into left padding only */
+  padding: var(--sp-9) var(--sp-8);
+  /* equal top/bottom padding → justify-content:center works correctly */
+  /* DO NOT add extra top padding here — it shifts center down */
 
 Right panel (work list):
   display: flex; flex-direction: column;
   gap: 1px;
   background: var(--border);
   padding: 0;
-  padding-top: 80px;            ← right panel needs same nav clearance at top
+  /* no padding-top — wrapper already handles nav clearance */
 
 Section label inside right panel:
   padding: var(--sp-6) var(--sp-6) var(--sp-5);
   background: var(--bg-alt);
 
 Project cards:
-  flex: 1;                      ← REQUIRED — fills remaining height equally
+  flex: 1;                      ← fills remaining height equally
   padding: var(--sp-8) var(--sp-6);
   background: var(--bg-alt);
+  /* card content won't fill full card height — that's expected, bg color fills it */
 ```
 
-**Why outer wrapper + flex:1 on grid (not min-height on grid):**
-- `min-height: 100vh` + `padding-top: 80px` on grid = grid is 100vh + 80px tall → overflow
-- Better: wrapper = 100vh flex column, grid = flex:1 fills remaining → exact 100vh total
-- Right panel padding-top: 80px mirrors the nav clearance so label aligns with left content
+**Why nav clearance belongs on wrapper, not panels:**
+- Clearance inside left panel only → asymmetric padding → justify-content:center shifts down
+- Clearance inside right panel only → label not aligned with left content
+- Clearance on wrapper → both panels start at same baseline, left content truly centered
 
-**Why `flex: 1` is mandatory on cards:**
-- Without it → cards take natural height → gray void below last card
-
-**Section label spacing rule:**
-- Label needs internal padding — never 0 when adjacent to cards below
+**Why void inside cards is acceptable:**
+- `flex: 1` = equal height distribution, not content-fill
+- Cards taller than content → bottom of card has breathing room
+- This is correct behavior — bg color fills, content sits at top of card
+- Gate check: verify card background fills (no raw html background showing), not that content fills
 
 ---
 
