@@ -1,10 +1,27 @@
 ---
 name: new-feature-workflow
 description: Guided new feature workflow — plan, design, implement, verify, submit, review. Spec must exist before implementation. Branch strategy, issue tracker, and approval policy are product-defined.
-version: 1.0.0
+version: 1.1.0
 author: puterakahfi
 license: MIT
 implements: ai-native-core/contracts/workflows/new-feature.contract.yaml
+skills:
+  required:
+    - master-engineer
+    - architecture-review
+  optional:
+    - diagram-architect
+    - master-design
+    - design-review
+skill_load_order:
+  - phase: plan
+    load: [master-engineer]
+  - phase: design
+    load: [master-engineer, diagram-architect, master-design, design-review]
+  - phase: implement
+    load: [master-engineer]
+  - phase: review
+    load: [architecture-review, design-review]
 ---
 
 # New Feature Workflow
@@ -12,6 +29,19 @@ implements: ai-native-core/contracts/workflows/new-feature.contract.yaml
 ## Overview
 
 A structured new feature workflow that enforces the right sequence and gates. The core rule: **spec must exist before implementation**. What varies per team (branch strategy, spec format, issue tracker, approval) is declared by the product adapter.
+
+## Required Skills
+
+Load these skills before executing the workflow:
+
+| Phase | Load Skill |
+|---|---|
+| Phase 1: Plan | `master-engineer` |
+| Phase 2: Design | `master-engineer` + `diagram-architect` (if system design) + `master-design` (if UI) + `design-review` (if UI review) |
+| Phase 3: Implement | `master-engineer` |
+| Phase 6: Review | `architecture-review` + `design-review` (if UI involved) |
+
+> Agent instruction: when entering each phase, load the listed skills and follow their process before proceeding.
 
 ## Required Skill
 

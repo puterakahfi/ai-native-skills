@@ -1,10 +1,23 @@
 ---
 name: bugfix-workflow
 description: Guided bugfix workflow — reproduce, investigate, fix, verify, submit, review. Phases and gates are invariant; branch strategy, issue tracker, and approval policy are product-defined.
-version: 1.0.0
+version: 1.1.0
 author: puterakahfi
 license: MIT
 implements: ai-native-core/contracts/workflows/bugfix.contract.yaml
+skills:
+  required:
+    - systematic-debugging
+    - architecture-review
+  optional:
+    - master-engineer
+skill_load_order:
+  - phase: investigate
+    load: [systematic-debugging]
+  - phase: fix
+    load: [systematic-debugging]
+  - phase: review
+    load: [architecture-review]
 ---
 
 # Bugfix Workflow
@@ -12,6 +25,18 @@ implements: ai-native-core/contracts/workflows/bugfix.contract.yaml
 ## Overview
 
 A structured bugfix workflow that enforces the right sequence and gates. The phases are invariant across teams — what varies (branch strategy, issue tracker, approval policy) is declared by the product adapter.
+
+## Required Skills
+
+Load these skills before executing the workflow:
+
+| Phase | Load Skill |
+|---|---|
+| Phase 2: Investigate | `systematic-debugging` |
+| Phase 3: Fix | `systematic-debugging` |
+| Phase 6: Review | `architecture-review` |
+
+> Agent instruction: when entering each phase, load the listed skill and follow its process before proceeding.
 
 ## Required Skill
 
