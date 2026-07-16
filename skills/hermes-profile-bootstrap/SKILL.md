@@ -118,9 +118,10 @@ context-engineering
 context-manager
 rule-manager
 response-contract
+model-selection
 ```
 
-Purpose: keep core/app/runtime/product/profile boundaries explicit and make profile behavior repeatable.
+Purpose: keep core/app/runtime/product/profile boundaries explicit, make profile behavior repeatable, and require model choice to be intentional.
 
 ### Engineering quality foundation
 
@@ -279,6 +280,7 @@ skills:
     - context-manager
     - rule-manager
     - response-contract
+    - model-selection
   engineering_quality:
     - systematic-debugging
     - test-driven-development
@@ -340,8 +342,8 @@ Minimum JSON summary:
   "profile": "my-profile",
   "preset": "engineering",
   "path": "~/.hermes/profiles/my-profile",
-  "skills_requested": 31,
-  "skills_installed": 31,
+  "skills_requested": 32,
+  "skills_installed": 32,
   "verification": "passed"
 }
 ```

@@ -2,9 +2,9 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**63 skills · 6 workflows · 2 meta-skills**
+**64 skills · 6 workflows · 2 meta-skills**
 
-See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
+See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
 ---
 
@@ -99,7 +99,7 @@ Load these first — they route and compose everything else.
 
 ---
 
-## Skills (63)
+## Skills (64)
 
 ### Domain Architecture
 
@@ -152,6 +152,7 @@ Load these first — they route and compose everything else.
 | Skill | Description |
 |---|---|
 | `prompt-optimizer` | Vague intent → precise prompt: scope, constraint, output format, stop condition |
+| `model-selection` | Select model class by task intent, risk, capabilities, context, fallback, and verification needs |
 | `response-contract` | Persistent output verbosity via AGENTS.md — no filler, answer-first, code exact |
 | `context-engineering` | AGENTS.md authoring — encode constraints, guardrails, domain knowledge |
 | `context-manager` | Context pack resolution — build precise context before agent execution |
