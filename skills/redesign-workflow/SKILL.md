@@ -15,13 +15,13 @@ skill_load_order:
   - phase: spec
     skills: [product-manager, master-design, content-strategy]
   - phase: produce
-    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, motion-design, composition, visual-hierarchy]
+    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, motion-design, composition, visual-hierarchy, copywriting, cro]
   - phase: pre-emit-critique
-    skills: [master-design, ux-psychology, composition, visual-hierarchy]
+    skills: [master-design, ux-psychology, composition, visual-hierarchy, copywriting, cro]
   - phase: review
-    skills: [design-review, readability, responsiveness, accessibility, motion-design, web-performance, content-strategy, composition, visual-hierarchy]
+    skills: [design-review, readability, responsiveness, accessibility, motion-design, web-performance, content-strategy, composition, visual-hierarchy, copywriting, cro]
   - phase: fix
-    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, readability, responsiveness, motion-design, content-strategy, composition, visual-hierarchy]
+    skills: [design-genre, macrostructures, design-system, ux-ui-patterns, master-design, readability, responsiveness, motion-design, content-strategy, composition, visual-hierarchy, copywriting, cro]
 ---
 
 # Redesign Workflow
