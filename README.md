@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**66 skills · 7 workflows · 2 meta-skills**
+**67 skills · 7 workflows · 2 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -123,7 +123,7 @@ hermes chat -s redesign-workflow -q \
 
 ---
 
-## Skills (66)
+## Skills (67)
 
 ### Domain Architecture
 
@@ -196,6 +196,7 @@ hermes chat -s redesign-workflow -q \
 |---|---|
 | `product-requirements` | PRD authoring — goals, non-goals, scope, metrics, requirements, acceptance criteria, launch readiness |
 | `business-value-alignment` | Business Value Alignment — user value, business value, metrics, assumptions, risks, and continue/narrow/experiment/stop verdict |
+| `experiment-design` | Experiment Design — hypothesis, riskiest assumption, smallest test, success/guardrail criteria, and pass/partial/fail decision rule |
 | `product-manager` | PRD authoring, acceptance criteria, task breakdown, scope, and prioritization |
 | `user-research` | User interviews, synthesis, insights, personas, JTBD, and research-backed decisions |
 
@@ -233,7 +234,7 @@ hermes chat -s redesign-workflow -q \
 
 ```
 Input quality:
-  prompt-optimizer → business-value-alignment → response-contract → spec-workflow → threat-modeling
+  prompt-optimizer → business-value-alignment → experiment-design → response-contract → spec-workflow → threat-modeling
 
 Domain modeling:
   domain-driven-design → ports-and-adapters → design-patterns → adr
@@ -266,6 +267,8 @@ Philosophy:
 
 ```
 business-value-alignment ← value: user value, business value, metrics, assumptions, verdict
+    ↓
+experiment-design      ← learning: hypothesis, riskiest assumption, smallest test, decision rule
     ↓
 product-requirements    ← PRD: goals, non-goals, scope, metrics, acceptance criteria
     ↓

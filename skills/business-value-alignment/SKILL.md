@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/business/business-value-alignment.contract.yaml
-  ai-native-skills.related_skills: '[''product-manager'', ''product-requirements'', ''decision-making'', ''user-research'', ''cro'', ''observability-design'']'
+  ai-native-skills.related_skills: '[''experiment-design'', ''product-manager'', ''product-requirements'', ''decision-making'', ''user-research'', ''cro'', ''observability-design'']'
 ---
 
 # Business Value Alignment
@@ -83,7 +83,7 @@ Always produce this compact brief before recommending execution:
 ## Recommendation
 Verdict: CONTINUE | NARROW_SCOPE | EXPERIMENT_FIRST | STOP
 Rationale: <why>
-Next gate: <approval/PRD/spec/experiment/implementation gate>
+Next gate: <approval/experiment-design/PRD/spec/implementation gate>
 ```
 
 ## Value Types
@@ -140,7 +140,7 @@ ASSUMED = plausible but not yet verified
 UNKNOWN = material uncertainty that should affect scope or sequencing
 ```
 
-If the core value claim is mostly `UNKNOWN`, do not recommend a full build. Recommend discovery or an experiment first.
+If the core value claim is mostly `UNKNOWN`, do not recommend a full build. Recommend discovery or load `experiment-design` first.
 
 ## Verdict Rules
 
@@ -148,7 +148,7 @@ If the core value claim is mostly `UNKNOWN`, do not recommend a full build. Reco
 |---|---|---|
 | `CONTINUE` | Value is clear enough, metrics are defined, risk is acceptable | PRD/spec/implementation gate |
 | `NARROW_SCOPE` | Value is real but requested scope is too broad | reduced MVP/slice approval |
-| `EXPERIMENT_FIRST` | Value is plausible but key assumptions are unverified | experiment design or discovery |
+| `EXPERIMENT_FIRST` | Value is plausible but key assumptions are unverified | `experiment-design` or discovery |
 | `STOP` | Value is weak, not strategic, not measurable, or risk/cost dominates | explain why and suggest alternatives |
 
 ## Workflow Integration
@@ -158,10 +158,10 @@ If the core value claim is mostly `UNKNOWN`, do not recommend a full build. Reco
 In `product-development-workflow`, run this during discovery before PRD:
 
 ```text
-opportunity discovery → business-value-alignment → PRD/MVP recommendation
+opportunity discovery → business-value-alignment → experiment-design when needed → PRD/MVP recommendation
 ```
 
-Do not produce a PRD until the value hypothesis and success metrics are explicit.
+Do not produce a PRD until the value hypothesis and success metrics are explicit. If the verdict is `EXPERIMENT_FIRST`, produce an experiment design before PRD/build.
 
 ### Existing UI/UX refinement
 
