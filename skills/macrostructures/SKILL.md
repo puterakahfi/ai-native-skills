@@ -201,17 +201,60 @@ Example:
 ## 07 · Studio
 
 ```
-Layout lead:    image-led, left-aligned
+Layout lead:    image-led, left-aligned, split 50/50
 Heading:        Left, stacked — name then descriptor
-Body:           Project grid — large images with hover overlay
-Dividers:       Minimal — images carry the visual weight
-Button voice:   Arrow links ("View project →"), not buttons
+Body:           Project list — cards on right panel, identity on left
+Dividers:       Minimal — 1px border between left/right panels, between cards
+Button voice:   Arrow links (↗), not buttons
 Image:          Central — full-width project screenshots or photos
-Reveal:         Stagger project cards on scroll
+Reveal:         Stagger left sequence first, then right cards
 
-When to use:    Agency portfolio, creative studio, photographer, designer
+When to use:    Portfolio, personal page, creative studio, photographer
 When NOT:       Text-heavy content, SaaS product, personal blog
 ```
+
+### Studio split-panel layout rules (MANDATORY)
+
+Failing to follow these causes gray void and broken balance — most common Studio bug.
+
+```
+Hero grid:
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  align-items: center;      ← NOT stretch — center both panels vertically
+
+Left panel:
+  align-self: stretch;      ← stretch ONLY left so border runs full height
+  display: flex; flex-direction: column; justify-content: center;
+  border-right: 1px solid var(--border);
+  padding: var(--sp-9) var(--sp-8);
+
+Right panel (work list):
+  display: flex; flex-direction: column;
+  gap: 1px;
+  background: var(--border);   ← gap color via background bleed
+  padding: 0;                  ← ZERO outer padding — label + cards flush to edge
+
+Section label inside right panel:
+  padding: var(--sp-6) var(--sp-6) var(--sp-5);
+  background: var(--bg-alt);   ← must match card bg so border gap reads cleanly
+
+Project cards:
+  flex: 1;                     ← REQUIRED — fills remaining height equally
+  padding: var(--sp-8) var(--sp-6);
+  background: var(--bg-alt);
+```
+
+**Why `flex: 1` is mandatory on cards:**
+- Without it → cards take natural height → gray void below last card
+- Adding outer padding to right panel makes it worse → void at top + bottom
+- Fix: `flex: 1` on cards + `padding: 0` on panel = cards fill height cleanly
+
+**Section label spacing rule:**
+- Label must have internal padding (`padding: var(--sp-6) var(--sp-6) var(--sp-5)`)
+- NOT `padding: 0` — zero padding causes label text to nempel ke cards below
+- The `gap: 1px` on panel + `background: var(--border)` creates the separator line automatically
 
 ---
 

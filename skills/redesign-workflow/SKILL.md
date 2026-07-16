@@ -373,8 +373,12 @@ Gate 3: Figure/Ground
   □ Squint test: foreground separates from background?
   Result: PASS | FAIL (reason)
 
-Gate 4: Whitespace Rhythm
-  □ Sections have different padding weights?
+Gate 5: Whitespace Rhythm
+  □ Section label to first content item: minimum 24px gap (not 0)
+  □ Label must have internal padding — never padding:0 when adjacent to cards
+  □ No gray void: flex panels use flex:1 on children, not justify-content:center
+  □ Split-panel: right panel padding=0, spacing via internal card padding only
+  □ Section padding: each section has differentiated top/bottom — no two sections same weight
   □ Hero ≠ content section padding?
   Result: PASS | FAIL (reason)
 
