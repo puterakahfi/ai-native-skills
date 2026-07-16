@@ -15,7 +15,7 @@ skill_load_order:
   - phase: spec
     skills: [product-manager, master-design, content-strategy]
   - phase: produce
-    skills: [design-genre, macrostructures, ui-components, design-system, ux-ui-patterns, master-design, motion-design, composition, visual-hierarchy, copywriting, cro]
+    skills: [design-genre, macrostructures, ui-components, ux-patterns-for-developers, design-system, ux-ui-patterns, master-design, motion-design, composition, visual-hierarchy, copywriting, cro]
   - phase: pre-emit-critique
     skills: [master-design, ux-psychology, composition, visual-hierarchy, copywriting, cro]
   - phase: review
