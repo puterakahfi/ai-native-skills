@@ -6,18 +6,18 @@ author: puterakahfi
 license: MIT
 type: workflow
 implements: ai-native-core/contracts/workflows/redesign.contract.yaml
-related_skills: [master-design, ux-psychology, design-review, design-system, ux-ui-patterns, readability, responsiveness, accessibility]
+related_skills: [master-design, ux-psychology, design-review, design-system, ux-ui-patterns, readability, responsiveness, accessibility, motion-design]
 skill_load_order:
   - phase: audit
     skills: [ux-psychology, accessibility, readability, responsiveness]
   - phase: spec
     skills: [product-manager, master-design, ux-ui-patterns]
   - phase: produce
-    skills: [design-system, ux-ui-patterns, master-design]
+    skills: [design-system, ux-ui-patterns, master-design, motion-design]
   - phase: review
-    skills: [design-review, readability, responsiveness, accessibility]
+    skills: [design-review, readability, responsiveness, accessibility, motion-design]
   - phase: fix
-    skills: [design-system, ux-ui-patterns, master-design, readability, responsiveness]
+    skills: [design-system, ux-ui-patterns, master-design, readability, responsiveness, motion-design]
 ---
 
 # Redesign Workflow
@@ -227,6 +227,13 @@ Gate 15: Type Scaling       (clamp() or mobile cap, ratio ≤ 3.5x)    Score: __
 Gate 16: Semantic Structure (nav/main/section/footer, H1→H2→H3)      Score: __ / 10
 Gate 17: Interactive A11y   (descriptive links, focus states visible)  Score: __ / 10
 
+── MOTION DESIGN (from motion-design skill) ────────
+Gate 18: Motion Purpose     (every animation = user signal)            Score: __ / 10
+Gate 19: Duration + Easing  (hover≤200ms, ease-out enter, ease-in exit) Score: __ / 10
+Gate 20: GPU Performance    (transform+opacity only, will-change)      Score: __ / 10
+Gate 21: Reduced Motion     (HARD GATE — 0 or 10)                     Score: __ / 10
+Gate 22: Cinematic Ratio    (hero=max, contact=min, decreasing)        Score: __ / 10
+
 ════════════════════════════════════════════════════
 CLUSTER SCORES:
   Design System:    G1         = __ / 10
@@ -235,9 +242,10 @@ CLUSTER SCORES:
   Readability:      G9–12 avg  = __ / 10
   Responsiveness:   G13–15 avg = __ / 10
   Accessibility:    G16–17 avg = __ / 10
+  Motion Design:    G18–22 avg = __ / 10  (G21 hard gate)
 
 OVERALL: __ / 10   MINIMUM: 8.0
-STATUS: ✅ PASS → deliver  |  ❌ FAIL → fix lowest scoring gates → re-review
+Gate 21 (Reduced Motion) = non-negotiable: score 0 = automatic full fail
 ════════════════════════════════════════════════════
 Failing gates (< 8):
   Gate __ [name]: score __ — fix: [specific action]
