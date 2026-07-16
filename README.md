@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**62 skills · 6 workflows · 2 meta-skills**
+**63 skills · 6 workflows · 2 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -57,7 +57,7 @@ Load these first — they route and compose everything else.
 
 ---
 
-## Skills (62)
+## Skills (63)
 
 ### Domain Architecture
 
@@ -141,6 +141,7 @@ Load these first — they route and compose everything else.
 | `native-ai-engineer` | Layer placement, runtime boundary, contract authoring |
 | `native-ai-runtime-agent` | Runtime agent in ai-native-fw product adapters |
 | `native-ai-runtime-ops` | Ops for AI-native canonical runtime hosts |
+| `ai-native-profile-bootstrap` | Bootstrap Hermes profiles with AI-native meta-skills, workflows, foundation skills, and verification policy |
 
 ### Roles
 
