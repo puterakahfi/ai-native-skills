@@ -1,82 +1,51 @@
-# Native AI Skills
+# AI Native Skills
 
-Native AI Skills is the public runtime-adapter skill library for Native AI Core contracts.
+[![skills.sh](https://skills.sh/b/puterakahfi/ai-native-skills)](https://skills.sh/puterakahfi/ai-native-skills)
 
-```text
-native-ai-core    = public core/domain/contracts/philosophy
-native-ai-app     = app/product adapter that consumes core contracts
-native-ai-skills  = runtime skill adapters that implement core skill contracts
+Reusable AI agent skills for the AI-native engineering ecosystem. Compatible with any agent that supports the [skills.sh](https://skills.sh) standard — Claude Code, Hermes, Cursor, Codex, and more.
+
+## Install
+
+```bash
+# Install a single skill
+npx skills add puterakahfi/ai-native-skills@diagram-architect
+
+# Install all skills
+npx skills add puterakahfi/ai-native-skills
 ```
 
-This repo owns **how a runtime performs a skill**. It does not own product-specific context and it does not redefine the core contract.
+## Available Skills
 
-## Current Adapters
+| Skill | Description |
+|---|---|
+| `diagram-architect` | Turn architecture, workflows, and contracts into clear diagrams |
+| `master-design` | Senior Product Designer / SaaS UI/UX workflows |
+| `master-engineer` | Senior Software Engineer best practices and code quality |
+| `native-ai-engineer` | AI-native domain contracts, runtime boundaries, layer placement |
+| `native-ai-runtime-agent` | Work inside an ai-native-fw product adapter repository |
+| `native-ai-runtime-ops` | Operate a Native AI canonical runtime host |
 
-```text
-adapters/hermes/master-design/SKILL.md
-adapters/hermes/master-engineer/SKILL.md
-adapters/hermes/diagram-architect/SKILL.md
-adapters/hermes/native-ai-engineer/SKILL.md
-adapters/hermes/native-ai-runtime-ops/SKILL.md
-adapters/hermes/native-ai-runtime-agent/SKILL.md
-compat/master-design.compat.yaml
-compat/master-engineer.compat.yaml
-compat/diagram-architect.compat.yaml
-compat/native-ai-engineer.compat.yaml
-compat/native-ai-runtime-ops.compat.yaml
-compat/native-ai-runtime-agent.compat.yaml
+## Structure
+
+```
+skills/
+├── diagram-architect/
+│   └── SKILL.md
+├── master-design/
+│   └── SKILL.md
+├── master-engineer/
+│   └── SKILL.md
+├── native-ai-engineer/
+│   └── SKILL.md
+├── native-ai-runtime-agent/
+│   └── SKILL.md
+└── native-ai-runtime-ops/
+    └── SKILL.md
 ```
 
-## Contract Relationship
+## About
 
-Each adapter declares compatibility with a skill contract from `native-ai-core`:
+Skills are runtime-agnostic — the same `SKILL.md` works across all supported agents. No adapter layer needed.
 
-```text
-native-ai-core/contracts/skills/.../*.contract.yaml
-  -> native-ai-skills/adapters/<runtime>/<skill>/SKILL.md
-  -> app adapter runtime.binding.yaml
-  -> installed runtime skill
-```
-
-## Installation Pattern
-
-For Hermes, copy or sync the adapter directory into a Hermes profile skill directory, then list the installed skill in the app adapter runtime binding.
-
-Example:
-
-```text
-~/.hermes/profiles/<profile>/skills/creative/master-design/SKILL.md
-~/.hermes/profiles/<profile>/skills/creative/diagram-architect/SKILL.md
-~/.hermes/profiles/<profile>/skills/software-development/master-engineer/SKILL.md
-~/.hermes/profiles/<profile>/skills/software-development/native-ai-runtime-ops/SKILL.md
-~/.hermes/profiles/<profile>/skills/software-development/native-ai-runtime-agent/SKILL.md
-```
-
-The app adapter should bind both contract and adapter source:
-
-```yaml
-skills:
-  contracts:
-    - id: master-engineer
-      source: native-ai-core/contracts/skills/software-engineering/master-engineer.contract.yaml
-  runtime_adapters:
-    hermes:
-      - id: master-engineer
-        source: https://github.com/puterakahfi/native-ai-skills/adapters/hermes/master-engineer
-        installed_as: master-engineer
-```
-
-## What Belongs Here
-
-- Generic runtime skill implementations
-- Compatibility manifests
-- Runtime-specific install notes
-- Generic examples with fake/non-private context
-
-## What Does Not Belong Here
-
-- Product-specific rules
-- Private customer/product context
-- Deployment secrets
-- App-specific runtime bindings
-- Core contract definitions
+- Core contracts live in [ai-native-core](https://github.com/puterakahfi/ai-native-core)
+- App/product adapter lives in [ai-native-fw](https://github.com/puterakahfi/ai-native-fw)
