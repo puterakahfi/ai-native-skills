@@ -94,6 +94,7 @@ Install in every preset:
 
 ```text
 spec-workflow
+product-development-workflow
 new-feature-workflow
 bugfix-workflow
 code-review-workflow
@@ -269,6 +270,7 @@ skills:
     - role-switcher
   workflows:
     - spec-workflow
+    - product-development-workflow
     - new-feature-workflow
     - bugfix-workflow
     - code-review-workflow
@@ -343,8 +345,8 @@ Minimum JSON summary:
   "profile": "my-profile",
   "preset": "engineering",
   "path": "~/.hermes/profiles/my-profile",
-  "skills_requested": 32,
-  "skills_installed": 32,
+  "skills_requested": 33,
+  "skills_installed": 33,
   "verification": "passed"
 }
 ```

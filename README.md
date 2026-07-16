@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**65 skills · 6 workflows · 2 meta-skills**
+**65 skills · 7 workflows · 2 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -86,7 +86,7 @@ Load these first — they route and compose everything else.
 
 ---
 
-## Workflows (6)
+## Workflows (7)
 
 | Workflow | Phases |
 |---|---|
@@ -96,6 +96,7 @@ Load these first — they route and compose everything else.
 | `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict |
 | `deployment-workflow` | pre-deploy → deploy → health-verify → rollback |
 | `redesign-workflow` | audit → spec → prototype → design-review gates → iterate → deliver |
+| `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |
 
 ---
 
@@ -229,7 +230,7 @@ Reliability:
   observability-design → resilience-engineering → incident-response
 
 Process:
-  spec-workflow → new-feature-workflow → bugfix-workflow → deployment-workflow
+  product-development-workflow → spec-workflow → new-feature-workflow → bugfix-workflow → deployment-workflow
 
 Philosophy:
   systems-thinking → ethics-responsible-ai → adr
@@ -241,6 +242,8 @@ Philosophy:
 
 ```
 product-requirements    ← PRD: goals, non-goals, scope, metrics, acceptance criteria
+    ↓
+product-development-workflow ← umbrella flow from discovery to launch
     ↓
 spec-workflow          ← spec before code
     ↓

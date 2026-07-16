@@ -7,9 +7,9 @@ The goal is to keep skill authoring decisions consistent: when to create an atom
 Current repository inventory:
 
 - `skill`: 65
-- `workflow`: 6
+- `workflow`: 7
 - `meta-skill`: 2
-- Total executable skills: 73
+- Total executable skills: 74
 
 ---
 
