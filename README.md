@@ -21,6 +21,48 @@ npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 
 ---
 
+## Hermes Profile Bootstrap
+
+Use `hermes-profile-bootstrap` when Hermes is already installed and you want to create a ready-to-use AI-native engineering profile skeleton.
+
+Install the bootstrap skill into Hermes:
+
+```bash
+npx --yes skills add puterakahfi/ai-native-skills \
+  --skill hermes-profile-bootstrap \
+  --agent hermes-agent \
+  --global \
+  --yes
+```
+
+Then ask Hermes to bootstrap the profile:
+
+```bash
+hermes chat -s hermes-profile-bootstrap -q \
+  "Bootstrap profile ai-native-engineering pakai preset engineering. Buat skeleton lengkap dan verify required skills/workflows/meta-skills beneran ada."
+```
+
+What it creates/checks:
+
+- `SOUL.md`, `skills.lock.yaml`, bootstrap docs, install/verify scripts, and `.gitignore`
+- required meta-skills: `workflow-router`, `role-switcher`
+- required workflows: `spec-workflow`, `new-feature-workflow`, `bugfix-workflow`, `code-review-workflow`, `deployment-workflow`
+- required Native AI, engineering quality, and architecture foundation skills
+- correct `metadata["ai-native-skills.type"]` for meta-skills and workflows
+- no secrets, credentials, or live Hermes state in the reusable skeleton
+
+One-shot mode without installing the skill permanently:
+
+```bash
+hermes chat -q "$(npx --yes skills use puterakahfi/ai-native-skills@hermes-profile-bootstrap)
+
+Bootstrap profile ai-native-engineering pakai preset engineering. Verify required skill packs before claiming done."
+```
+
+This is a Hermes adapter skill for the runtime-agnostic profile-bootstrap contract in [`ai-native-core`](https://github.com/puterakahfi/ai-native-core). It is not a standalone `hermes-generate` binary yet.
+
+---
+
 ## Skill Type Taxonomy
 
 `ai-native-skills` uses three official category values under `metadata["ai-native-skills.type"]`. See [docs/skills.md](docs/skills.md) for definitions, decision rules, and the adapter pattern.
