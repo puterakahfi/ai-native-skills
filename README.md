@@ -39,7 +39,7 @@ Then ask Hermes to bootstrap the profile:
 
 ```bash
 hermes chat -s hermes-profile-bootstrap -q \
-  "Bootstrap profile ai-native-engineering pakai preset engineering. Buat skeleton lengkap dan verify required skills/workflows/meta-skills beneran ada."
+  "Bootstrap the ai-native-engineering profile using the engineering preset. Create the complete skeleton and verify that required skills, workflows, and meta-skills exist."
 ```
 
 What it creates/checks:
@@ -56,7 +56,7 @@ One-shot mode without installing the skill permanently:
 ```bash
 hermes chat -q "$(npx --yes skills use puterakahfi/ai-native-skills@hermes-profile-bootstrap)
 
-Bootstrap profile ai-native-engineering pakai preset engineering. Verify required skill packs before claiming done."
+Bootstrap the ai-native-engineering profile using the engineering preset. Verify required skill packs before claiming done."
 ```
 
 This is a Hermes adapter skill for the runtime-agnostic profile-bootstrap contract in [`ai-native-core`](https://github.com/puterakahfi/ai-native-core). It is not a standalone `hermes-generate` binary yet.
