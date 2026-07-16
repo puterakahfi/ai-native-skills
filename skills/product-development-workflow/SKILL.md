@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/product-development.contract.yaml
-  ai-native-skills.skill_load_order: '[{''phase'': ''discovery'', ''load'': [''model-selection'', ''user-research'', ''product-manager'', ''decision-making'']}, {''phase'': ''requirements'', ''load'': [''product-requirements'', ''product-manager'']}, {''phase'': ''mvp_slice'', ''load'': [''product-manager'', ''decision-making'', ''spike'']}, {''phase'': ''technical_spec'', ''load'': [''spec-workflow'', ''native-ai-engineer'', ''master-engineer'', ''api-contract'', ''data-modeling'']}, {''phase'': ''implementation'', ''load'': [''new-feature-workflow'', ''test-driven-development'', ''master-engineer'', ''systematic-debugging'']}, {''phase'': ''acceptance_verification'', ''load'': [''skill-eval'', ''code-review-workflow'', ''security-review'', ''design-review'', ''web-performance'']}, {''phase'': ''release'', ''load'': [''git-workflow'', ''deployment-workflow'']}, {''phase'': ''deploy'', ''load'': [''deployment-workflow'', ''observability-design'', ''resilience-engineering'']}, {''phase'': ''launch'', ''load'': [''product-manager'', ''content-strategy'', ''copywriting'', ''cro'', ''observability-design'']}, {''phase'': ''learn'', ''load'': [''product-manager'', ''observability-design'', ''user-research'', ''decision-making'']}]'
+  ai-native-skills.skill_load_order: '[{''phase'': ''discovery'', ''load'': [''model-selection'', ''user-research'', ''business-value-alignment'', ''product-manager'', ''decision-making'']}, {''phase'': ''requirements'', ''load'': [''product-requirements'', ''product-manager'']}, {''phase'': ''mvp_slice'', ''load'': [''business-value-alignment'', ''product-manager'', ''decision-making'', ''spike'']}, {''phase'': ''technical_spec'', ''load'': [''spec-workflow'', ''native-ai-engineer'', ''master-engineer'', ''api-contract'', ''data-modeling'']}, {''phase'': ''implementation'', ''load'': [''new-feature-workflow'', ''test-driven-development'', ''master-engineer'', ''systematic-debugging'']}, {''phase'': ''acceptance_verification'', ''load'': [''skill-eval'', ''code-review-workflow'', ''security-review'', ''design-review'', ''web-performance'']}, {''phase'': ''release'', ''load'': [''git-workflow'', ''deployment-workflow'']}, {''phase'': ''deploy'', ''load'': [''deployment-workflow'', ''observability-design'', ''resilience-engineering'']}, {''phase'': ''launch'', ''load'': [''business-value-alignment'', ''product-manager'', ''content-strategy'', ''copywriting'', ''cro'', ''observability-design'']}, {''phase'': ''learn'', ''load'': [''business-value-alignment'', ''product-manager'', ''observability-design'', ''user-research'', ''decision-making'']}]'
 ---
 
 # Product Development Workflow
@@ -80,6 +80,7 @@ Load conceptually:
 ```text
 model-selection
 user-research
+business-value-alignment
 product-manager
 decision-making
 ```
@@ -92,12 +93,13 @@ Produce:
 - pain points
 - existing alternatives/workarounds
 - opportunity list
+- business value alignment brief
 - ranked recommendation
 ```
 
-**Gate:** Opportunity must be ranked before PRD.
+**Gate:** Opportunity and business value must be explicit before PRD.
 
-**Done when:** one MVP direction is recommended with rationale and open assumptions.
+**Done when:** one MVP direction is recommended with user value, business value, metrics, rationale, and open assumptions.
 
 ### Phase 2 — Requirements / PRD
 
@@ -107,6 +109,7 @@ Load conceptually:
 
 ```text
 product-requirements
+business-value-alignment
 product-manager
 ```
 
@@ -116,6 +119,7 @@ Produce:
 - problem statement
 - target users
 - goals and non-goals
+- user value and business value
 - success metrics
 - scope in/out
 - user stories or JTBD
@@ -137,6 +141,7 @@ Produce:
 Load conceptually:
 
 ```text
+business-value-alignment
 product-manager
 decision-making
 spike
@@ -145,11 +150,11 @@ spike
 Produce:
 
 ```text
-- MVP scope
-- non-MVP deferred scope
-- highest-risk assumptions
+- MVP scope in/out
+- value-aligned release slice
+- deferred scope
 - validation plan
-- build sequence
+- risks and assumptions
 ```
 
 **Gate:** MVP scope must be smaller than the full product and must map to success metrics.

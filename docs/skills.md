@@ -6,10 +6,10 @@ The goal is to keep skill authoring decisions consistent: when to create an atom
 
 Current repository inventory:
 
-- `skill`: 65
+- `skill`: 66
 - `workflow`: 7
 - `meta-skill`: 2
-- Total executable skills: 74
+- Total executable skills: 75
 
 ---
 
@@ -21,7 +21,7 @@ Agent Skills standard frontmatter only allows `name`, `description`, `license`, 
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
-| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `accessibility`, `master-design` |
+| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `accessibility`, `business-value-alignment`, `master-design` |
 | `workflow` | Run a sequenced task lifecycle | “What phases must this task follow?” | `bugfix-workflow`, `deployment-workflow`, `redesign-workflow` |
 | `meta-skill` | Route or compose other skills/workflows | “Which skills/workflows should be loaded?” | `workflow-router`, `role-switcher` |
 
@@ -65,6 +65,7 @@ A good `skill` should define:
 - `systematic-debugging` — root-cause investigation discipline.
 - `accessibility` — WCAG-oriented UI quality gate.
 - `master-design` — senior product design lens.
+- `business-value-alignment` — value framing and metric alignment before execution.
 - `copywriting` — product messaging capability.
 - `native-ai-engineer` — Native AI layer-boundary and contract reasoning.
 

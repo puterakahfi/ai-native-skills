@@ -7,8 +7,8 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/redesign.contract.yaml
-  ai-native-skills.related_skills: '[''master-design'', ''ux-psychology'', ''design-review'', ''design-system'', ''dark-light-theming'', ''ux-ui-patterns'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''design-genre'', ''macrostructures'', ''content-strategy'', ''web-performance'']'
-  ai-native-skills.skill_load_order: '[{''phase'': ''preflight'', ''skills'': [''design-genre'', ''macrostructures'', ''information-architecture'', ''dark-light-theming'']}, {''phase'': ''audit'', ''skills'': [''ux-psychology'', ''accessibility'', ''readability'', ''responsiveness'', ''web-performance'', ''dark-light-theming'']}, {''phase'': ''spec'', ''skills'': [''product-manager'', ''master-design'', ''content-strategy'', ''dark-light-theming'']}, {''phase'': ''produce'', ''skills'': [''design-genre'', ''macrostructures'', ''ui-components'', ''ux-patterns-for-developers'', ''design-system'', ''dark-light-theming'', ''ux-ui-patterns'', ''master-design'', ''motion-design'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''pre-emit-critique'', ''skills'': [''master-design'', ''ux-psychology'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''review'', ''skills'': [''design-review'', ''dark-light-theming'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''web-performance'', ''content-strategy'', ''composition'', ''visual-hierarchy'',
+  ai-native-skills.related_skills: '[''business-value-alignment'', ''master-design'', ''ux-psychology'', ''design-review'', ''design-system'', ''dark-light-theming'', ''ux-ui-patterns'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''design-genre'', ''macrostructures'', ''content-strategy'', ''web-performance'']'
+  ai-native-skills.skill_load_order: '[{''phase'': ''preflight'', ''skills'': [''design-genre'', ''macrostructures'', ''information-architecture'', ''dark-light-theming'']}, {''phase'': ''audit'', ''skills'': [''ux-psychology'', ''accessibility'', ''readability'', ''responsiveness'', ''web-performance'', ''dark-light-theming'']}, {''phase'': ''value_alignment'', ''skills'': [''business-value-alignment'', ''product-manager'', ''content-strategy'', ''cro'']}, {''phase'': ''spec'', ''skills'': [''product-manager'', ''master-design'', ''content-strategy'', ''dark-light-theming'']}, {''phase'': ''produce'', ''skills'': [''design-genre'', ''macrostructures'', ''ui-components'', ''ux-patterns-for-developers'', ''design-system'', ''dark-light-theming'', ''ux-ui-patterns'', ''master-design'', ''motion-design'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''pre-emit-critique'', ''skills'': [''master-design'', ''ux-psychology'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''review'', ''skills'': [''design-review'', ''dark-light-theming'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''web-performance'', ''content-strategy'', ''composition'', ''visual-hierarchy'',
     ''copywriting'', ''cro'']}, {''phase'': ''fix'', ''skills'': [''design-genre'', ''macrostructures'', ''design-system'', ''dark-light-theming'', ''ux-ui-patterns'', ''master-design'', ''readability'', ''responsiveness'', ''motion-design'', ''content-strategy'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}]'
 ---
 
@@ -40,7 +40,7 @@ Good fits:
 
 - landing pages, personal sites, portfolios, pricing pages, docs homepages
 - dashboards, admin panels, app screens, onboarding flows, checkout flows
-- copy/hierarchy/CTA/CRO refinement on an existing surface
+- copy/hierarchy/CTA/CRO refinement on an existing surface with explicit business value
 - visual polish where the product goal already exists
 - design audit followed by prototype or patch
 
@@ -426,7 +426,19 @@ Output: `audit_report` object with findings per gate.
 
 ---
 
-## Phase 2: SPEC CONFIRM
+## Phase 2: VALUE ALIGNMENT
+
+Before producing a redesign spec, run `business-value-alignment`:
+
+```text
+audit findings → user value → business value → leading/lagging/guardrail metrics → continue/narrow/experiment/stop verdict
+```
+
+Do not proceed to decorative redesign when the value is unclear. Narrow the scope to clarity, credibility, conversion, accessibility, or performance outcomes.
+
+---
+
+## Phase 3: SPEC CONFIRM
 
 Before producing — align on constraints. Extract from params or ask:
 
@@ -465,7 +477,7 @@ Nav:      Work · About · Contact
 
 ---
 
-## Phase 3: PRODUCE
+## Phase 4: PRODUCE
 
 Produce the requested output (`prototype` or `patch`). For HTML prototypes, apply design in this order:
 1. Genre tokens (from `design-genre` skill — voice, color family, motion stance)
@@ -620,7 +632,7 @@ PASS: "One codebase. Five products." / "I build systems meant to last."
 
 ---
 
-## Phase 4: REVIEW (Scored Gate Check)
+## Phase 5: REVIEW (Scored Gate Check)
 
 ### Verification cadence for visual loops
 
@@ -891,7 +903,7 @@ STATUS: PASS (deliver) | FAIL (fix → re-review)
 
 ---
 
-## Phase 5: FIX (Skill-First Mandatory)
+## Phase 6: FIX (Skill-First Mandatory)
 
 When any gate scores < 8.0, run this sequence IN ORDER. Skipping step A is NOT allowed.
 
@@ -1019,7 +1031,7 @@ After fix: goto Phase 4 (review). Do NOT skip review after fix.
 
 ---
 
-## Phase 6: DELIVER
+## Phase 7: DELIVER
 
 Only when: all 8 gates PASS (or max_iterations=3 reached).
 

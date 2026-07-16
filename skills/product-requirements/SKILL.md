@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product-management/product-requirements.contract.yaml
-  ai-native-skills.related_skills: '[''product-manager'', ''user-research'', ''spec-workflow'', ''decision-making'', ''api-contract'']'
+  ai-native-skills.related_skills: '[''business-value-alignment'', ''product-manager'', ''user-research'', ''spec-workflow'', ''decision-making'', ''api-contract'']'
 ---
 
 # Product Requirements
@@ -30,7 +30,7 @@ Use when the user asks to:
 
 - write a PRD
 - turn discovery notes into product requirements
-- define product goals, non-goals, scope, success metrics, and launch criteria
+- define product goals, non-goals, user value, business value, scope, success metrics, and launch criteria
 - create testable acceptance criteria before implementation
 - review whether a feature request is ready for technical spec or MVP planning
 - convert product intent into requirements without jumping into implementation
@@ -72,20 +72,25 @@ release / launch
 - Secondary users: <who, if any>
 - Excluded users: <who this does not optimize for>
 
-## 3. Goals
+## 3. User and Business Value
+- User value: <who benefits and how>
+- Business value: <revenue | activation | retention | credibility | efficiency | risk reduction | learning | strategic option>
+- Value confidence: <High | Medium | Low>
+
+## 4. Goals
 - G1: <measurable outcome>
 - G2: <measurable outcome>
 
-## 4. Non-Goals
+## 5. Non-Goals
 - NG1: <explicitly out of scope>
 - NG2: <explicitly out of scope>
 
-## 5. Success Metrics
+## 6. Success Metrics
 - North-star / primary metric: <metric + target>
 - Guardrail metric: <metric + threshold>
 - Adoption / activation metric: <metric + target>
 
-## 6. Scope
+## 7. Scope
 ### In Scope
 - <included capability>
 
