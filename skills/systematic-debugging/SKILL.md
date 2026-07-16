@@ -155,6 +155,27 @@ Each fix revealing new coupling in a different place = wrong architecture, not a
 
 ---
 
+## Agent Thrashing — Anti-Loop Pattern
+
+Agent thrashing = AI stuck in an infinite self-correction loop, making repeated attempts without diagnosing the root cause.
+
+**Signs of thrashing:**
+- Same error after 3+ different "fixes"
+- Each fix introduces a new error in a different place
+- Agent keeps trying variations without re-reading error
+- Output getting longer and more complex each iteration
+
+**Intervention:**
+1. **STOP all fix attempts**
+2. Return to Phase 1 — re-read the original error fresh
+3. Run: *"What is the single closest cause of this error right now?"*
+4. Do NOT look at previous fix attempts — start clean
+5. If still stuck after Phase 1-3: escalate to human — this is an architecture boundary
+
+**Rule:** If an agent has attempted the same class of fix 3 times, it does not need another attempt. It needs better diagnosis.
+
+---
+
 ## Red Flags — STOP and Return to Phase 1
 
 - "Quick fix for now, investigate later"
