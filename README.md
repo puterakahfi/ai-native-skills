@@ -1,100 +1,147 @@
 # ai-native-skills
 
-Reusable agent skills for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, and more.
+Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, and more.
 
-## What is AI-native?
-
-AI-native is a software paradigm where AI agents are first-class citizens — not bolted on top, but built into the engineering workflow from the ground up. This repo provides the skills that power that workflow.
+Part of the [AI-Native Engineering](https://github.com/puterakahfi/ai-native-core) ecosystem.
 
 ```
-ai-native-core    → domain contracts and philosophy
-ai-native-skills  → agent skills implementing those contracts  ← you are here
-ai-native-fw      → app/product adapters
+ai-native-core        → domain contracts (what)
+ai-native-skills      → agent implementations (how)  ← you are here
+ai-native-fw          → product adapters (where)
 ```
+
+---
 
 ## Install
 
 ```bash
-# Single skill
-npx skills add puterakahfi/ai-native-skills@diagram-architect
+# single skill
+npx skills add puterakahfi/ai-native-skills@<skill-name> -g -y
 
-# Pick from interactive list
-npx skills add puterakahfi/ai-native-skills
-
-# All skills, no prompt
+# all skills
 npx skills add puterakahfi/ai-native-skills -g -y
 ```
 
+---
+
 ## Skills
 
-### `native-ai-engineer`
-Domain contract architect for AI-native systems — layer placement, runtime boundaries, adapter design, and mapping AI runtimes to abstract ports.
+Atomic, reusable capabilities. Load individually or composed inside workflows.
 
-> Use when deciding where something belongs: core, app adapter, skill, product instance, or runtime binding.
+| Skill | Description |
+|---|---|
+| [`architecture-review`](#architecture-review) | Engineering contract compliance reviewer — stack, layers, dependencies, ADR |
+| [`context-manager`](#context-manager) | Build context packs for agents — resolve rules, skills, spec before execution |
+| [`design-review`](#design-review) | Design system compliance + AI slop detector — token, layout, visual direction |
+| [`diagram-architect`](#diagram-architect) | Architecture, workflow, and contract diagrams — renderer-agnostic |
+| [`git-workflow`](#git-workflow) | Source control — branching, commits, PR/MR, merge. All conventions product-defined |
+| [`master-design`](#master-design) | Senior Product Designer — wireframes, mockups, interaction contracts, design systems |
+| [`master-engineer`](#master-engineer) | Senior Software Engineer — architecture decisions, system design, patterns |
+| [`native-ai-engineer`](#native-ai-engineer) | AI-native domain contract architect — layer placement, runtime boundaries |
+| [`native-ai-runtime-agent`](#native-ai-runtime-agent) | Runtime agent for ai-native-fw product adapters |
+| [`native-ai-runtime-ops`](#native-ai-runtime-ops) | Ops for AI-native runtime hosts — SSH, bootstrap, gateway, backup |
+| [`plan`](#plan) | Write actionable markdown plans with exact file paths before execution |
+| [`product-manager`](#product-manager) | PRDs, acceptance criteria, task breakdown, prioritization |
+| [`rule-manager`](#rule-manager) | Author and validate AGENTS.md, .cursorrules, per-product rules |
+| [`security-review`](#security-review) | Security baseline validation — secrets, injection, auth, dependencies |
+| [`spike`](#spike) | Throwaway experiments to validate an idea — verdict, not production code |
+| [`systematic-debugging`](#systematic-debugging) | 4-phase root cause debugging — investigate before fixing |
+| [`test-driven-development`](#test-driven-development) | TDD: RED-GREEN-REFACTOR — tests written before implementation |
 
-```bash
-npx skills add puterakahfi/ai-native-skills@native-ai-engineer -g -y
-```
-
----
-
-### `native-ai-runtime-agent`
-Runtime agent skill for ai-native-fw product adapters — loads repo context, product bindings, source-of-truth files, workflow rules, and verification policy before execution.
-
-> Use when working inside an ai-native-fw product repository.
-
-```bash
-npx skills add puterakahfi/ai-native-skills@native-ai-runtime-agent -g -y
-```
-
----
-
-### `native-ai-runtime-ops`
-Ops skill for AI-native runtime hosts — SSH/VPS access, agent profile bootstrap, gateway service setup, project checkout, backup/restore, and session-state safety.
-
-> Use when operating or onboarding a Native AI runtime server.
+### Install a skill
 
 ```bash
-npx skills add puterakahfi/ai-native-skills@native-ai-runtime-ops -g -y
-```
-
----
-
-### `master-engineer`
-Senior Software Engineer and architect for system design, architecture decisions, design patterns, refactoring strategy, over-engineering checks, and engineering contracts.
-
-> Use when making architecture decisions or reviewing system design.
-
-```bash
-npx skills add puterakahfi/ai-native-skills@master-engineer -g -y
-```
-
----
-
-### `master-design`
-Senior Product Designer and SaaS UI/UX specialist for product design, wireframes, mockups, interaction contracts, design systems, and SaaS dashboard critique.
-
-> Use when designing product UI, wireframes, or critiquing existing interfaces.
-
-```bash
-npx skills add puterakahfi/ai-native-skills@master-design -g -y
-```
-
----
-
-### `diagram-architect`
-Turns architecture, workflows, runtime state, contracts, ownership, and decision context into clear diagrams. Produces a renderer-agnostic spec first, then renders via Mermaid, SVG, Excalidraw, or ASCII.
-
-> Use when visualizing any system, contract, or architecture before building.
-
-```bash
+npx skills add puterakahfi/ai-native-skills@architecture-review -g -y
+npx skills add puterakahfi/ai-native-skills@context-manager -g -y
+npx skills add puterakahfi/ai-native-skills@design-review -g -y
 npx skills add puterakahfi/ai-native-skills@diagram-architect -g -y
+npx skills add puterakahfi/ai-native-skills@git-workflow -g -y
+npx skills add puterakahfi/ai-native-skills@master-design -g -y
+npx skills add puterakahfi/ai-native-skills@master-engineer -g -y
+npx skills add puterakahfi/ai-native-skills@native-ai-engineer -g -y
+npx skills add puterakahfi/ai-native-skills@native-ai-runtime-agent -g -y
+npx skills add puterakahfi/ai-native-skills@native-ai-runtime-ops -g -y
+npx skills add puterakahfi/ai-native-skills@plan -g -y
+npx skills add puterakahfi/ai-native-skills@product-manager -g -y
+npx skills add puterakahfi/ai-native-skills@rule-manager -g -y
+npx skills add puterakahfi/ai-native-skills@security-review -g -y
+npx skills add puterakahfi/ai-native-skills@spike -g -y
+npx skills add puterakahfi/ai-native-skills@systematic-debugging -g -y
+npx skills add puterakahfi/ai-native-skills@test-driven-development -g -y
 ```
+
+---
+
+## Workflows
+
+Sequenced processes that compose skills. Load a workflow — it declares which skills to load at each phase.
+
+| Workflow | Phases | Skills Used |
+|---|---|---|
+| [`bugfix-workflow`](#bugfix-workflow) | reproduce → investigate → fix → verify → submit → review | `systematic-debugging`, `architecture-review` |
+| [`code-review-workflow`](#code-review-workflow) | load-context → architecture → design → logic → verdict | `architecture-review`, `design-review`, `master-engineer` |
+| [`deployment-workflow`](#deployment-workflow) | pre-deploy → context → deploy → verify → confirm/rollback | `security-review`, `context-manager` |
+| [`new-feature-workflow`](#new-feature-workflow) | plan → design → implement → verify → submit → review | `master-engineer`, `architecture-review`, `design-review` |
+
+### Install a workflow
+
+```bash
+npx skills add puterakahfi/ai-native-skills@bugfix-workflow -g -y
+npx skills add puterakahfi/ai-native-skills@code-review-workflow -g -y
+npx skills add puterakahfi/ai-native-skills@deployment-workflow -g -y
+npx skills add puterakahfi/ai-native-skills@new-feature-workflow -g -y
+```
+
+---
+
+## How Skills and Workflows Relate
+
+```
+Workflow: new-feature-workflow
+  Phase 1: plan       → load master-engineer
+  Phase 2: design     → load master-engineer, diagram-architect, master-design, design-review
+  Phase 3: implement  → load master-engineer
+  Phase 6: review     → load architecture-review, design-review
+
+Skill: architecture-review
+  → standalone — use directly in any review context
+  → also composed by: bugfix-workflow, new-feature-workflow, code-review-workflow
+```
+
+Skills are standalone. Workflows are orchestrators.
+
+---
+
+## Extending Skills (Inheritance)
+
+Product-specific skills extend public skills via `extends` in frontmatter:
+
+```yaml
+# In your private Hermes profile or product repo
+name: my-team-git-workflow
+extends: puterakahfi/ai-native-skills@git-workflow
+```
+
+Override only what's team-specific — branch strategy, issue tracker, approval policy. The base skill handles the invariant parts.
+
+---
+
+## Contract Traceability
+
+Every skill and workflow traces to a contract in [ai-native-core](https://github.com/puterakahfi/ai-native-core):
+
+```yaml
+# In every SKILL.md frontmatter
+implements: ai-native-core/contracts/skills/quality-control/architecture-review.contract.yaml
+```
+
+Contracts define: capability, quality gates, required inputs/outputs, adapter requirements.
+Skills define: how to fulfill the contract as an executable agent procedure.
 
 ---
 
 ## Related
 
-- [ai-native-core](https://github.com/puterakahfi/ai-native-core) — domain contracts and philosophy
-- [ai-native-fw](https://github.com/puterakahfi/ai-native-fw) — Engineering OS app and product adapters
-- [skills.sh](https://skills.sh) — open agent skills ecosystem
+- [ai-native-core](https://github.com/puterakahfi/ai-native-core) — domain contracts
+- [ai-native-fw](https://github.com/puterakahfi/ai-native-fw) — product adapters
+- [skills.sh](https://skills.sh) — open agent skills registry
