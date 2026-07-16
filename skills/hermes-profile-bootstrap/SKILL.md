@@ -212,7 +212,7 @@ A generated profile should produce this shape under `~/.hermes/profiles/<profile
 └── .gitignore                      # excludes state/secrets/logs if this is a distribution repo
 ```
 
-Never generate or commit:
+Never include these in a reusable profile distribution or generated template:
 
 ```text
 state.db
@@ -230,6 +230,8 @@ secrets/
 tokens/
 credentials/
 ```
+
+Hermes itself may create a local `.env` inside a live profile during `hermes profile create`; keep that file local, uncommitted, and free of template-owned secrets.
 
 ## Generation Procedure
 
