@@ -75,12 +75,15 @@ Role: SECTION     → H2. Navigational. "What this section is about."
 Role: STATEMENT   → H2 styled differently. Bold claim. Used in About/manifesto.
                      DANGER: competes with H1 if same size. Must be smaller.
 Role: LABEL       → Not a heading. Use <div class="section-label">. Decorative.
-
+```
 pkahfi.com heading map:
-  Hero:     "Putera Kahfi."        → ANCHOR   (H1)
-  Work:     "Selected work"        → LABEL    (sr-only H2, visible div)
-  About:    "One codebase..."      → STATEMENT (H2, must be < H1 size)
-  Contact:  "Let's talk."          → SECTION  (H2, directional)
+  Hero:     "Putera Kahfi."        → ANCHOR    (H1, clamp max 3.5rem)
+  Work:     "Selected work"        → LABEL     (sr-only H2, visible div)
+  About:    "One codebase..."      → STATEMENT (H2, clamp max 2rem — MUST be < H1 max)
+  Contact:  "Let's talk."          → SECTION   (H2, clamp max 2.5rem, directional)
+
+VIOLATION: About H2 clamp(2.5rem,...,4rem) > H1 clamp max → hierarchy inverted → FAIL
+FIX: About STATEMENT H2 max = 60% of H1 max. If H1 max = 3.5rem → About H2 max = 2.1rem
 ```
 
 ---

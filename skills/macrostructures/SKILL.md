@@ -91,24 +91,60 @@ Example structure:
 
 ```
 Layout lead:    image-led (or full-bleed video/color)
-Heading:        Centered, very large, 100vh section
+Heading:        Left-aligned, very large, optical center of 100vh
 Body:           Brief — 1–2 sentences below headline
 Dividers:       Section breaks via background color change
 Button voice:   Ghost or outline on dark, solid on light
 Image:          Full-bleed background, or large centered image below headline
 Reveal:         Hero entrance stagger (cinematic), scroll reveal below
 
-When to use:    Campaign landing, atmospheric brand, product launch, personal landing
+When to use:    Personal landing, campaign landing, atmospheric brand, product launch
 When NOT:       Documentation, complex product with many features
+```
 
+**Mandatory CSS pattern — NEVER improvise:**
+```css
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;    /* OPTICAL CENTER — never flex-end, never flex-start */
+  padding-top: 80px;          /* nav clearance — shrinks available center space correctly */
+  padding-bottom: var(--sp-9);
+  padding-left: var(--sp-8);
+  padding-right: var(--sp-8);
+  border-bottom: 1px solid var(--border);
+  position: relative;         /* for scroll-cue absolute positioning */
+}
+/* Result: name lands at ~42% from top of viewport → optical center ✅ */
+
+/* HARD RULE: justify-content:flex-end → H1 at 75%+ → dead space above → Gate C1 FAIL */
+/* HARD RULE: scroll cue must be position:absolute — not part of flex flow */
+
+.scroll-cue {
+  position: absolute;
+  bottom: var(--sp-7);
+  left: 50%;
+  transform: translateX(-50%);
+}
+```
+
+**Eye flow: eyebrow (top of flex) → name (dominant) → stance (below) → meta (right) → scroll cue (bottom)**
+
+```
 Example structure:
   ┌──────────────────────────────────┐
-  │  [full-bleed bg image/color]     │  100vh
-  │         Very Large Heading       │
-  │       Subtitle one sentence      │
-  │          [ghost button]          │
+  │  — ENGINEER · YOGYAKARTA         │  eyebrow — first child of flex
+  │                                  │
+  │  Very Large                      │  H1 — dominant anchor
+  │  Name.                           │
+  │                                  │
+  │  Stance sentence. One sentence.  │  supporting
+  │                            Meta  │  accent
+  │                                  │
+  │              ↓ scroll            │  cue — absolute
   └──────────────────────────────────┘
-  [content sections below]
+  [work section below]
 ```
 
 ---
