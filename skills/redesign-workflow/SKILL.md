@@ -23,6 +23,9 @@ No delivery before gates are green.
 Loop:
   audit → spec → produce → review → fix (if fail) → review → ... → deliver
 
+Layer order:
+  strategy → UI → UX → voice → interaction → delight/expression → verification
+
 Exit condition: all gates pass OR max_iterations (3) reached
 On max_iterations: deliver best attempt + explicit gate failure report
 ```
@@ -217,6 +220,186 @@ Differs from last on: [axes | first build]
 
 If unsure between 2 macrostructures: offer 3 from categorically different groups,
 let user pick, or pick the most distant from default (not Specimen, not Marquee Hero).
+```
+
+---
+
+## Phase 0.75: LAYERED REDESIGN PLAN
+
+Before producing, classify the work into layers. Redesign is not one undifferentiated "make it better" pass. Each iteration must name which layer it is improving and which layers are intentionally left alone.
+
+```
+Layered plan:
+  0. Strategy Layer
+  1. UI Layer
+  2. UX Layer
+  3. Voice Layer
+  4. Interaction Layer
+  5. Delight / Expression Layer
+  6. Verification Layer
+```
+
+### Layer 0 — Strategy / Positioning
+
+Focus: why the surface exists and what should be remembered first.
+
+Questions:
+```
+□ What is the surface trying to become? portfolio, SaaS page, docs home, app screen, dashboard?
+□ Who is the primary audience?
+□ What should be understood in 5 seconds?
+□ Which content is primary, secondary, hidden, or deferred?
+□ Is there a CTA, or is this a showcase/informational surface?
+```
+
+Output:
+```
+Strategy: [one sentence]
+Primary audience: [audience]
+First impression: [one idea]
+Content priority: [ordered list]
+Non-goals: [what the page must NOT feel like]
+```
+
+### Layer 1 — UI
+
+Focus: visual structure and aesthetic quality.
+
+Scope:
+```
+layout, grid, typography, spacing, hierarchy, color, light/dark theme,
+visual density, responsive layout, component consistency
+```
+
+UI gates:
+```
+□ Visual hierarchy is readable at a glance
+□ Typography scale is deliberate, not arbitrary
+□ Layout matches content count and priority
+□ Theme is visually coherent in every supported mode
+□ Cards, badges, nav, CTA, and section rhythm feel from one system
+□ No visual slop: generic gradients, equal-card filler, random icon use
+```
+
+### Layer 2 — UX
+
+Focus: what the user experiences when they read, choose, click, toggle, or move through the surface.
+
+Scope:
+```
+navigation flow, CTA clarity, theme-switcher behavior, hover/focus/tap states,
+user feedback, link target correctness, empty states, labels/messages,
+accessibility behavior, route/hash correctness
+```
+
+UX gates:
+```
+□ Every click target leads where the user expects
+□ CTAs are clear, not competing or fake
+□ Theme toggle works both ways and communicates next action
+□ Focus, hover, active, loading, empty, and disabled states are understandable
+□ Messages and labels explain state without jargon
+□ Keyboard and screen-reader behavior are preserved
+```
+
+### Layer 3 — Voice / Copy
+
+Focus: what the interface says and how specific it feels.
+
+Scope:
+```
+headline, subcopy, CTA label, project description, status wording,
+microcopy, error/empty messages, tone/register
+```
+
+Voice gates:
+```
+□ H1 is a stance, not a job title or generic claim
+□ Copy is specific to the product/person/domain
+□ CTA labels describe the action, not vague marketing
+□ Status language is honest: live, planned, lab, private, archived
+□ No filler words: seamless, leverage, cutting-edge, world-class, modern solution
+```
+
+### Layer 4 — Interaction
+
+Focus: how the interface responds over time.
+
+Scope:
+```
+hover, focus, active, pressed, selected, scroll behavior, theme transition,
+navigation transition, keyboard interaction, reduced motion
+```
+
+Interaction gates:
+```
+□ Interactive states provide useful feedback
+□ Focus is visible and not overridden
+□ Motion uses transform/opacity and respects prefers-reduced-motion
+□ Hover-only affordances have touch/keyboard equivalents
+□ State changes are reversible or clearly final
+```
+
+### Layer 5 — Delight / Expression
+
+Formal name for "pemanis". Add only after strategy/UI/UX/voice are coherent.
+
+Scope:
+```
+motion, illustration, icon treatment, decorative texture, diagrams,
+ambient backgrounds, mascot/visual metaphor, empty-state illustration,
+signature visual motif
+```
+
+Delight gates:
+```
+□ The enhancement clarifies character, meaning, or memory
+□ It is not hiding weak copy, weak hierarchy, or missing content
+□ It has a named role: orientation, affordance, emphasis, atmosphere, reward
+□ It can be removed without breaking comprehension, but keeping it improves recall
+□ It is lightweight and does not hurt accessibility or performance
+```
+
+### Layer 6 — Verification
+
+Focus: prove the redesign works without breaking the user's iteration flow.
+
+During active visual loops:
+```
+□ browser visual check
+□ console/DOM probes
+□ route/hash/link click checks
+□ theme checks in all supported modes
+□ git diff --check on changed files
+```
+
+Only when approved / ready to deploy:
+```
+□ full lint
+□ full build
+□ typecheck/test where relevant
+□ performance/a11y audits if release-critical
+```
+
+### Iteration Declaration
+
+Every iteration must start with a short declaration:
+
+```
+Iteration N focus:
+  Primary layer: [strategy | UI | UX | voice | interaction | delight | verification]
+  Secondary layer(s): [optional]
+  Not touching: [layers intentionally deferred]
+  Success criteria: [specific checks]
+```
+
+If a layer fails, do not jump to delight. Fix the failed lower layer first:
+
+```
+Strategy failure blocks UI polish.
+UI failure blocks delight.
+UX failure blocks final verification.
+Voice failure blocks motion/illustration polish.
 ```
 
 
@@ -494,6 +677,19 @@ Run ALL gates across 7 skill dimensions plus universal composition/hierarchy/mot
 DESIGN REVIEW — Iteration N
 ════════════════════════════════════════════════════
 
+── LAYER FOCUS ────────────────────────────────────
+Primary layer: [strategy | UI | UX | voice | interaction | delight | verification]
+Secondary layers: [list]
+Deferred layers: [list]
+Layer verdict:
+  Strategy:    PASS | FAIL | DEFERRED
+  UI:          PASS | FAIL | DEFERRED
+  UX:          PASS | FAIL | DEFERRED
+  Voice:       PASS | FAIL | DEFERRED
+  Interaction: PASS | FAIL | DEFERRED
+  Delight:     PASS | FAIL | DEFERRED
+  Verification:PASS | FAIL | DEFERRED
+
 ── DESIGN SYSTEM ──────────────────────────────────
 Gate 1: Token Completeness
   □ All colors from declared semantic token table?
@@ -741,18 +937,27 @@ Run Phases 3→4→5 autonomously until exit condition.
 LOOP STATE:
   iteration:     1
   max:           5 (default, configurable)
+  active_layer:  [strategy | UI | UX | voice | interaction | delight | verification]
   skill_patches: []   ← log every skill patched this session
   score_history: []   ← [iter1_score, iter2_score, ...]
+  layer_history: []   ← [{iter: 1, layer: "UI", verdict: "PASS"}, ...]
 
 LOOP BODY (repeat):
+  0. Declare active layer
+     → Pick exactly one primary layer for this iteration
+     → Name any secondary layers and deferred layers
+     → If a lower layer is failing, do not skip ahead to delight/expression
+
   1. Phase 3: PRODUCE
-     → Write HTML from current skill state
+     → Produce changes for the declared active layer
      → Stamp: macrostructure, genre, iteration N, pre-emit scores
 
   2. Phase 4: REVIEW
-     → Score all 22 gates
+     → Score all applicable gates
+     → Score the active layer and any touched secondary layers
      → Compute overall average
      → Log: score_history.append(avg)
+     → Log: layer_history.append({iter, layer, verdict})
 
   3. Check exit:
      IF avg >= 8.0 → EXIT → Phase 7: DELIVER
