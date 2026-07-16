@@ -7,9 +7,9 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/redesign.contract.yaml
-  ai-native-skills.related_skills: '[''master-design'', ''ux-psychology'', ''design-review'', ''design-system'', ''ux-ui-patterns'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''design-genre'', ''macrostructures'', ''content-strategy'', ''web-performance'']'
-  ai-native-skills.skill_load_order: '[{''phase'': ''preflight'', ''skills'': [''design-genre'', ''macrostructures'', ''information-architecture'']}, {''phase'': ''audit'', ''skills'': [''ux-psychology'', ''accessibility'', ''readability'', ''responsiveness'', ''web-performance'']}, {''phase'': ''spec'', ''skills'': [''product-manager'', ''master-design'', ''content-strategy'']}, {''phase'': ''produce'', ''skills'': [''design-genre'', ''macrostructures'', ''ui-components'', ''ux-patterns-for-developers'', ''design-system'', ''ux-ui-patterns'', ''master-design'', ''motion-design'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''pre-emit-critique'', ''skills'': [''master-design'', ''ux-psychology'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''review'', ''skills'': [''design-review'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''web-performance'', ''content-strategy'', ''composition'', ''visual-hierarchy'',
-    ''copywriting'', ''cro'']}, {''phase'': ''fix'', ''skills'': [''design-genre'', ''macrostructures'', ''design-system'', ''ux-ui-patterns'', ''master-design'', ''readability'', ''responsiveness'', ''motion-design'', ''content-strategy'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}]'
+  ai-native-skills.related_skills: '[''master-design'', ''ux-psychology'', ''design-review'', ''design-system'', ''dark-light-theming'', ''ux-ui-patterns'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''design-genre'', ''macrostructures'', ''content-strategy'', ''web-performance'']'
+  ai-native-skills.skill_load_order: '[{''phase'': ''preflight'', ''skills'': [''design-genre'', ''macrostructures'', ''information-architecture'', ''dark-light-theming'']}, {''phase'': ''audit'', ''skills'': [''ux-psychology'', ''accessibility'', ''readability'', ''responsiveness'', ''web-performance'', ''dark-light-theming'']}, {''phase'': ''spec'', ''skills'': [''product-manager'', ''master-design'', ''content-strategy'', ''dark-light-theming'']}, {''phase'': ''produce'', ''skills'': [''design-genre'', ''macrostructures'', ''ui-components'', ''ux-patterns-for-developers'', ''design-system'', ''dark-light-theming'', ''ux-ui-patterns'', ''master-design'', ''motion-design'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''pre-emit-critique'', ''skills'': [''master-design'', ''ux-psychology'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}, {''phase'': ''review'', ''skills'': [''design-review'', ''dark-light-theming'', ''readability'', ''responsiveness'', ''accessibility'', ''motion-design'', ''web-performance'', ''content-strategy'', ''composition'', ''visual-hierarchy'',
+    ''copywriting'', ''cro'']}, {''phase'': ''fix'', ''skills'': [''design-genre'', ''macrostructures'', ''design-system'', ''dark-light-theming'', ''ux-ui-patterns'', ''master-design'', ''readability'', ''responsiveness'', ''motion-design'', ''content-strategy'', ''composition'', ''visual-hierarchy'', ''copywriting'', ''cro'']}]'
 ---
 
 # Redesign Workflow
@@ -75,14 +75,17 @@ Before anything — scan the target for existing design context:
 Pre-flight scan (in order):
   1. design.md / DESIGN.md at project root → locked design system, overrides all picks
   2. CSS custom properties (:root vars) → existing palette + type scale
-  3. package.json deps → framework, motion libs, font packages
-  4. Existing macrostructure stamp: /* macrostructure: <name> */ in any CSS
-  5. Existing surface: browser_navigate/browser_vision for URLs, or inspect local files/screenshots when provided
+  3. Theme infrastructure → `next-themes`, `.dark`, `[data-theme]`, `ThemeProvider`, existing toggle components
+  4. package.json deps → framework, motion libs, font packages
+  5. Existing macrostructure stamp: /* macrostructure: <name> */ in any CSS
+  6. Existing surface: browser_navigate/browser_vision for URLs, or inspect local files/screenshots when provided
 
 Output (emit once):
   Pre-flight findings:
   · Existing palette: [found | not found]
   · Existing font stack: [found | not found]
+  · Theme infrastructure: [none | class-based | data-theme | next-themes | custom]
+  · Current theme default: [light | dark | system | unknown]
   · Motion stance: [motion-on | motion-cut] (based on deps)
   · Macrostructure in use: [name | none]
   · Design system locked: [yes (design.md) | no]
@@ -252,7 +255,13 @@ spec = {
   cta:       "hire me" | "contact" | null,
   audience:  "hiring manager" | "client" | "developer" | "general",
   nav_items: derived from goal (3 max for personal),
-  hero_copy: must pass 50ms test — stance, not job description
+  hero_copy: must pass 50ms test — stance, not job description,
+  theme: {
+    mode_support: "light-only" | "dark-only" | "dual-theme",
+    default_mode: "light" | "dark" | "system",
+    toggle_required: boolean,
+    verification_required: ["light", "dark"] when dual-theme
+  }
 }
 ```
 
@@ -279,8 +288,9 @@ Produce the requested output (`prototype` or `patch`). For HTML prototypes, appl
 1. Genre tokens (from `design-genre` skill — voice, color family, motion stance)
 2. Macrostructure structure (from `macrostructures` skill — layout, heading, dividers)
 3. Design system tokens (from `design-system` skill — spacing, type scale, color semantic)
-4. Motion (from `motion-design` skill — only if motion-on)
-5. Content (from `content-strategy` skill — microcopy, button labels, empty states)
+4. Theme architecture (from `dark-light-theming` skill — semantic token mapping, toggle, FOUC prevention, contrast per mode)
+5. Motion (from `motion-design` skill — only if motion-on)
+6. Content (from `content-strategy` skill — microcopy, button labels, empty states)
 
 Stamp at top of CSS (mandatory):
 ```css
@@ -368,6 +378,28 @@ background-size: 32px 32px;
 /* OR: alternating section backgrounds */
 ```
 
+**Theme System (mandatory for dual-theme surfaces):**
+```
+If the app already has theme infrastructure, preserve it instead of adding a second system:
+  next-themes + attribute="class" → use `.dark` / `dark:` utilities
+  next-themes + attribute="data-theme" → use `[data-theme="dark"]`
+  custom/localStorage → inspect existing script before changing
+
+Theme toggle requirements:
+  □ one toggle in global nav or settings area
+  □ aria-label changes with the next action: "Switch to dark theme" / "Switch to light theme"
+  □ touch target ≥ 44×44px
+  □ no hydration mismatch: render stable fallback until mounted if using next-themes
+  □ all theme colors use semantic tokens; no mode-specific hardcoded hex in components
+
+Dual-theme visual requirements:
+  □ Verify light mode screenshot/DOM
+  □ Toggle to dark mode and verify screenshot/DOM
+  □ Toggle back and verify state reversibility
+  □ Status colors remain readable in both modes
+  □ Inverse sections are intentional and documented, not accidental token inversion
+```
+
 **Whitespace Rhythm:**
 ```
 Hero section:    min-height: 100vh — maximum space, this is a statement
@@ -407,7 +439,56 @@ PASS: "One codebase. Five products." / "I build systems meant to last."
 
 ## Phase 4: REVIEW (Scored Gate Check)
 
-Run ALL 17 gates across 6 skill dimensions. Every gate scored 0–10. Minimum **8.0 average** to pass.
+### Verification cadence for visual loops
+
+During active creative redesign loops, do **not** run expensive or deploy-grade verification (`npm run build`, full lint, full typecheck) on every iteration. Keep the loop visual and fast until the user approves the direction or says it is ready to deploy/commit.
+
+Use lightweight iteration checks instead:
+
+```text
+- browser visual inspection of changed routes
+- browser visual inspection in every supported theme mode (light/dark/system when applicable)
+- theme toggle click checks: light → dark → light, aria-label updates, persisted class/data attribute updates
+- browser console/DOM probes for horizontal overflow, visible CSS, H1 position, and touch targets
+- link/navigation click checks for changed CTAs/hash links
+- git diff --check on changed files for patch hygiene
+```
+
+Only run full build/lint/typecheck when:
+
+```text
+- user says the design is approved / "sip" / ready to deploy
+- preparing a commit or PR
+- a code change is non-visual and correctness depends on the build
+- the user explicitly asks for full verification
+```
+
+If lint/build is blocked by repo setup while still in visual loop, report the blocker but do not keep retrying the same command; continue with lightweight browser checks until deploy readiness.
+
+### Theme verification inside redesign loops
+
+When the project has a theme provider, `.dark`/`[data-theme]` tokens, or a theme toggle, treat theme as part of the redesign surface — not an optional afterthought. Load `dark-light-theming` when adding or evaluating theme behavior.
+
+For each affected route, verify both modes before calling the iteration reviewable:
+
+```text
+1. Light visual check: nav, hero, cards, badges, CTAs, contact/footer, texture/grid visibility
+2. Dark visual check: same sections after toggling theme
+3. Toggle behavior: aria-label changes to the next action (e.g. "Switch to light theme")
+4. DOM probes in both modes: no horizontal overflow, touch targets >= 44px, body bg/fg changed
+5. Link/hash checks remain valid after theme toggling
+```
+
+Theme-specific gates:
+
+```text
+Gate T1: Token architecture — uses semantic tokens (`bg-background`, `text-foreground`, `border-border`) rather than hardcoded mode colors
+Gate T2: Toggle accessibility — real button, >=44px target, accessible label describes next action
+Gate T3: Mode contrast — primary/secondary text and badges remain readable in light and dark
+Gate T4: Inversion intent — inverse sections (e.g. contact) are intentional; if they flip bright in dark mode, call it out as a design decision or polish flag
+```
+
+Run ALL gates across 7 skill dimensions plus universal composition/hierarchy/motion rules. Every gate scored 0–10. Minimum **8.0 average** to pass.
 
 ```
 DESIGN REVIEW — Iteration N
@@ -428,6 +509,27 @@ Gate 2: Typographic Scale   (1.333 modular, H1/body ≤ 3.5x DESKTOP, ≤ 3.0x M
   Score: __ / 10
 Gate 3: Color Semantic      (one token = one role, no collapse)        Score: __ / 10
 Gate 4: Figure/Ground       (bg depth: texture/gradient/alt)           Score: __ / 10
+Gate T1: Theme Architecture  (one semantic token table, two primitive maps)
+  □ Existing theme provider/infrastructure preserved, not duplicated?
+  □ Theme mode support matches spec: light-only | dark-only | dual-theme?
+  □ Toggle exists when required and is placed in a predictable global location?
+  Score: __ / 10
+Gate T2: Theme Toggle A11y + State
+  □ Toggle has ≥44×44px target?
+  □ aria-label describes the NEXT action, not current state?
+  □ Toggle changes class/data-theme and can be reversed light → dark → light?
+  Score: __ / 10
+Gate T3: Dual-Theme Visual QA
+  □ Light mode screenshot/DOM checked?
+  □ Dark mode screenshot/DOM checked?
+  □ No horizontal overflow or invisible text in either mode?
+  □ Borders, cards, badges, inverse sections remain intentional and readable?
+  Score: __ / 10
+Gate T4: Theme Contrast + Inversion
+  □ Primary text ≥ 4.5:1 in each mode?
+  □ Secondary text/status badges readable in each mode?
+  □ Accent and status colors are not semantically collapsed?
+  Score: __ / 10
 Gate 5: Whitespace Rhythm   (hero ≠ content ≠ contact padding)        Score: __ / 10
 
 ── UX/UI PATTERNS ─────────────────────────────────
@@ -512,6 +614,7 @@ Gate 22: Cinematic Ratio    (hero=max, contact=min, decreasing)        Score: __
 CLUSTER SCORES:
   Design System:    G1         = __ / 10
   Visual Design:    G2–5  avg  = __ / 10
+  Theme System:     T1–T4 avg  = __ / 10
   UX/UI Patterns:   G6–8  avg  = __ / 10
   Readability:      G9–12 avg  = __ / 10
   Responsiveness:   G13–15 avg = __ / 10
@@ -544,6 +647,14 @@ Gate 2: Color Semantic
 Gate 3: Figure/Ground
   □ Background has depth (texture/gradient/alternating)?
   □ Squint test: foreground separates from background?
+  Result: PASS | FAIL (reason)
+
+Gate 4: Theme Verification
+  □ Theme support matches spec: light-only | dark-only | dual-theme?
+  □ If dual-theme: light screenshot/DOM verified?
+  □ If dual-theme: dark screenshot/DOM verified?
+  □ Toggle is reversible and aria-label describes next action?
+  □ No overflow, invisible text, or unreadable status colors in either mode?
   Result: PASS | FAIL (reason)
 
 Gate 5: Whitespace Rhythm
@@ -714,19 +825,24 @@ Applying 3+ micro-patches to one CSS block causes rules to nest inside wrong sel
 Symptom: page goes white, `document.styleSheets.length === 0`.
 Rule: after 2 failed patches on same file region → full rewrite with `write_file`. Never a 3rd patch.
 
-### Mandatory CSS verification snippet (run after EVERY CSS change)
+### Mandatory CSS/theme verification snippet (run after EVERY CSS or theme change)
 ```js
+const interactive = [...document.querySelectorAll('a,button')];
 const ok = {
-  bg: getComputedStyle(document.body).backgroundColor,      // NOT rgba(0,0,0,0)
-  sheets: document.styleSheets.length,                      // > 0
-  touchFail: [...document.querySelectorAll('a,button')]
-    .filter(el=>{const b=el.getBoundingClientRect();
-      return b.width>0&&b.height<44;}).length,              // === 0
+  themeClass: document.documentElement.className,                  // contains expected light/dark class when themed
+  themeLabel: document.querySelector('button[aria-label*="theme"]')
+    ?.getAttribute('aria-label'),                                  // next action label
+  bg: getComputedStyle(document.body).backgroundColor,              // NOT rgba(0,0,0,0)
+  fg: getComputedStyle(document.body).color,                        // readable against bg
+  sheets: document.styleSheets.length,                              // > 0
+  overflow: document.documentElement.scrollWidth > innerWidth,       // false
+  touchFail: interactive.filter(el=>{const b=el.getBoundingClientRect();
+    return b.width>0 && b.height>0 && (b.width<44 || b.height<44);}).length,
   h1TopPct: Math.round(document.querySelector('h1')
-    .getBoundingClientRect().top/window.innerHeight*100),   // < 50
+    .getBoundingClientRect().top/window.innerHeight*100),           // < 50
 };
 ```
-All 4 must pass before claiming CSS is working.
+All must pass before claiming CSS/theme is working. For dual-theme pages, run once in light mode, toggle, run again in dark mode, then toggle back.
 
 
 
