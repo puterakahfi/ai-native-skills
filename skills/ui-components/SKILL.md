@@ -143,15 +143,18 @@ Slots (in order, top to bottom):
 ### Template
 ```css
 .hero {
-  min-height: 100vh;
-  display: block;                           /* NEVER grid/flex-center */
-  padding-top: clamp(120px, 16vh, 180px);  /* nav + breathing */
-  padding-bottom: clamp(80px, 12vh, 160px);
+  /* NO min-height:100vh — forces void when content is sparse */
+  display: block;
+  padding-top: clamp(120px, 16vh, 180px);     /* nav(64px) + breathing above name */
+  padding-bottom: clamp(80px, 14vh, 140px);   /* breathing room — NOT full viewport */
   padding-left: var(--sp-8);
   padding-right: var(--sp-8);
   position: relative;
   border-bottom: 1px solid var(--border);
 }
+/* HARD RULE: min-height:100vh + sparse content = huge void below = FAIL */
+/* HARD RULE: display:grid/flex-center = content floats in void at tall viewports = FAIL */
+/* CORRECT: display:block + padding = content anchored, void only as breathing room */
 .hero-content { max-width: 1280px; margin: 0 auto; width: 100%; }
 
 .hero-eyebrow {
