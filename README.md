@@ -141,7 +141,7 @@ Load these first — they route and compose everything else.
 | `native-ai-engineer` | Layer placement, runtime boundary, contract authoring |
 | `native-ai-runtime-agent` | Runtime agent in ai-native-fw product adapters |
 | `native-ai-runtime-ops` | Ops for AI-native canonical runtime hosts |
-| `ai-native-profile-bootstrap` | Bootstrap Hermes profiles with AI-native meta-skills, workflows, foundation skills, and verification policy |
+| `hermes-profile-bootstrap` | Hermes adapter for the Native AI profile-bootstrap contract: profile skeleton, skill presets, install plan, and verification policy |
 
 ### Roles
 

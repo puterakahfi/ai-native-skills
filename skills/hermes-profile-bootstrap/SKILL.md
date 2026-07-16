@@ -1,20 +1,21 @@
 ---
-name: ai-native-profile-bootstrap
-description: Bootstrap a Hermes profile for AI-native engineering. Use when creating, generating, templating, or auditing a Hermes profile that should start with the minimum meta-skills, workflows, foundation skills, Native AI runtime skills, and verification policy for an ai-native-engineering workspace.
+name: hermes-profile-bootstrap
+description: Bootstrap the Hermes adapter for the Native AI profile-bootstrap contract. Use when creating, generating, templating, or auditing a Hermes profile that should start with AI-native meta-skills, workflows, foundation skills, runtime skills, and verification policy.
 license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-profile/profile-bootstrap.contract.yaml
 ---
 
-# AI Native Profile Bootstrap
+# Hermes Profile Bootstrap
 
 ## Overview
 
-Use this skill to create or audit a Hermes profile that behaves like a minimal, repeatable `ai-native-engineering` runtime.
+Use this skill to create or audit the **Hermes adapter implementation** of the Native AI `profile-bootstrap` contract.
 
-The profile is a **runtime skeleton**, not a product. It should provide enough skills, profile identity, config defaults, and verification hooks for Hermes to operate Native AI projects without depending on chat-only context.
+The core contract lives in `native-ai-core/contracts/skills/runtime-profile/profile-bootstrap.contract.yaml`. This skill owns the Hermes-specific profile skeleton, commands, paths, install steps, and verification behavior. The profile is a **runtime skeleton**, not a product.
 
 Target command shape:
 
@@ -22,13 +23,14 @@ Target command shape:
 hermes-generate profile <profile-name> --preset engineering
 ```
 
-Until that command exists, use this skill as the canonical blueprint for manual generation or for implementing the generator.
+Until that command exists, use this skill as the canonical Hermes adapter blueprint for manual generation or for implementing the generator.
 
 ## When to Use
 
 Use when the user asks to:
 
 - create, generate, bootstrap, install, or audit a Hermes profile based on `ai-native-engineering`
+- implement the Hermes adapter for the core `profile-bootstrap` contract
 - define the minimum required skills for an AI-native Hermes runtime
 - design `hermes-generate profile <name>` or an equivalent profile template command
 - create a reusable Hermes profile distribution for Native AI work
@@ -41,6 +43,10 @@ Do not use for:
 - live session sync, `state.db`, credentials, memories, or gateway secrets
 - replacing Hermes Desktop/CLI/Gateway with a separate dashboard
 
+## Contract Placement
+
+The runtime-agnostic contract belongs in `native-ai-core`. This skill belongs in `ai-native-skills` because it is executable Hermes adapter guidance. If a rule applies to every runtime, move it to the core contract; if it mentions Hermes paths or commands, keep it here.
+
 ## Layer Boundary
 
 Keep this split clean:
@@ -48,7 +54,7 @@ Keep this split clean:
 ```text
 Hermes profile skeleton = runtime identity, config defaults, installed skills, scripts, docs
 ai-native-skills        = portable executable skill source
-native-ai-core          = runtime-agnostic contracts and workflow definitions
+native-ai-core          = runtime-agnostic profile-bootstrap contract and workflow definitions
 native-ai-fw/app        = product/runtime binding and product source-of-truth registry
 product instance        = VisualMate or another product's rules, specs, context, and docs
 ```
