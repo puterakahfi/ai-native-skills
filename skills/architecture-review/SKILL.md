@@ -54,6 +54,14 @@ Compiled ≠ Approved.
 - [ ] Domain modeling approach followed (DDD, etc)?
 - [ ] No business logic leaking into the wrong layer?
 - [ ] No controller calling repository directly?
+- [ ] Domain layer has zero framework/infrastructure imports?
+- [ ] Ports (interfaces) defined in domain layer, adapters in infrastructure?
+- [ ] Aggregates have single root — external access via root ID only?
+- [ ] Value objects are immutable?
+- [ ] Domain events named in past tense?
+- [ ] Repositories return aggregates, not raw entities or DTOs?
+- [ ] No domain logic in application service or controller?
+- [ ] Pattern selection justified by forces (not preference)?
 - [ ] No domain entity importing infrastructure?
 
 **Violation signal:** Cross-layer imports, fat controllers, anemic domain models, god classes.
