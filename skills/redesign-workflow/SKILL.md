@@ -224,6 +224,89 @@ let user pick, or pick the most distant from default (not Specimen, not Marquee 
 
 ---
 
+## Phase 0.6: VISUAL LANGUAGE DEFINITION
+
+Before producing a theme-specific redesign, define the visual language in concrete values. A named theme is not a color swap. If the user says “minimalist”, “zen”, “brutalist”, “editorial”, “premium”, or similar, translate the word into rules before touching UI.
+
+### Zen / Minimalist definition
+
+Zen minimalist design is the disciplined use of **silence, emptiness, restraint, and natural rhythm** to create focus. It is closer to ink painting, tea ceremony, gallery walls, and quiet architecture than to “clean SaaS cards with muted colors”.
+
+```text
+Core values:
+  Ma / emptiness       → negative space is content, not unused area
+  Restraint            → remove elements before styling them
+  Natural imperfection → asymmetry, organic edges, light texture, not perfect SaaS symmetry
+  Stillness            → no loud hover lift, bouncing motion, glow, or decorative urgency
+  One focal object     → one strong anchor per viewport: word, image, mark, or object
+  Low visual density   → few cards, few badges, few borders, fewer CTAs
+  Muted contrast       → ink/stone/paper/sage, mostly neutral; accent is rare
+  Editorial hierarchy  → typography breathes; body text is quiet; labels are small
+  Material subtlety    → paper grain, ink wash, stone, mist, soft shadow only when needed
+```
+
+### Zen / Minimalist UI rules
+
+```text
+Palette:
+  ✓ paper white, warm ivory, mist gray, charcoal, ink black, stone, sage
+  ✓ one low-chroma accent used sparingly
+  ✗ swapping blue for brown/green without reducing density
+  ✗ bright startup blue, neon, gradient mesh, glassmorphism
+
+Layout:
+  ✓ large asymmetrical whitespace
+  ✓ narrow text columns and intentional empty areas
+  ✓ sections can feel like scrollable prints/posters, not dashboard panels
+  ✗ equal-weight card catalogs unless content truly requires it
+  ✗ filling every row/column because grid space exists
+
+Typography:
+  ✓ fewer type sizes, lighter weights, larger line-height
+  ✓ one display moment per viewport; everything else supports it
+  ✗ font-black everywhere
+  ✗ H1/H2/H3 all shouting with the same weight
+
+Imagery / ornament:
+  ✓ ink wash, abstract brush, mist, mountain/roofline silhouette, single object, thin rule
+  ✓ decorative elements must create pause or orientation
+  ✗ random icons on every card
+  ✗ dot grids/blueprints as default “tech texture” when zen is requested
+
+Motion:
+  ✓ fade, slow reveal, opacity, tiny translate only when it helps orientation
+  ✗ hover lift on every card
+  ✗ springy/bouncy motion
+```
+
+### Zen / Minimalist anti-patterns
+
+Auto-fail the UI layer if any of these appear after a zen/minimalist request:
+
+```text
+❌ “coklat rame”: only changing palette to brown/warm tones while density stays high
+❌ many cards + many badges + many tags + many icons = catalog, not zen
+❌ visible grid backgrounds dominating the viewport
+❌ every section has a big bold headline and bordered card cluster
+❌ accent used on labels, icons, badges, CTA, logo dot, and bullets all at once
+❌ dark mode simply inverts the whole page into heavy charcoal panels
+❌ motion/hover effects added before silence and spacing are solved
+```
+
+### Zen / Minimalist check
+
+Before calling a zen/minimalist pass successful, answer:
+
+```text
+1. What did we remove?
+2. Where is the intentional emptiness?
+3. What is the single focal object/idea in this viewport?
+4. Which elements became quieter, not just recolored?
+5. If all color is removed, does the composition still feel calm?
+```
+
+---
+
 ## Phase 0.75: LAYERED REDESIGN PLAN
 
 Before producing, classify the work into layers. Redesign is not one undifferentiated "make it better" pass. Each iteration must name which layer it is improving and which layers are intentionally left alone.
@@ -273,6 +356,8 @@ visual density, responsive layout, component consistency
 
 UI gates:
 ```
+□ Named visual language is defined as rules before styling starts
+□ Theme change reduced density/noise, not just changed colors
 □ Visual hierarchy is readable at a glance
 □ Typography scale is deliberate, not arbitrary
 □ Layout matches content count and priority
@@ -481,11 +566,12 @@ Nav:      Work · About · Contact
 
 Produce the requested output (`prototype` or `patch`). For HTML prototypes, apply design in this order:
 1. Genre tokens (from `design-genre` skill — voice, color family, motion stance)
-2. Macrostructure structure (from `macrostructures` skill — layout, heading, dividers)
-3. Design system tokens (from `design-system` skill — spacing, type scale, color semantic)
-4. Theme architecture (from `dark-light-theming` skill — semantic token mapping, toggle, FOUC prevention, contrast per mode)
-5. Motion (from `motion-design` skill — only if motion-on)
-6. Content (from `content-strategy` skill — microcopy, button labels, empty states)
+2. Visual language definition (e.g. zen/minimalist key values before styling)
+3. Macrostructure structure (from `macrostructures` skill — layout, heading, dividers)
+4. Design system tokens (from `design-system` skill — spacing, type scale, color semantic)
+5. Theme architecture (from `dark-light-theming` skill — semantic token mapping, toggle, FOUC prevention, contrast per mode)
+6. Motion (from `motion-design` skill — only if motion-on)
+7. Content (from `content-strategy` skill — microcopy, button labels, empty states)
 
 Stamp at top of CSS (mandatory):
 ```css
@@ -717,6 +803,11 @@ Gate 2: Typographic Scale   (1.333 modular, H1/body ≤ 3.5x DESKTOP, ≤ 3.0x M
   Score: __ / 10
 Gate 3: Color Semantic      (one token = one role, no collapse)        Score: __ / 10
 Gate 4: Figure/Ground       (bg depth: texture/gradient/alt)           Score: __ / 10
+Gate V1: Visual Language Definition
+  □ Named theme translated into concrete values before styling?
+  □ For zen/minimalist: silence, emptiness, restraint, low density, and one focal object are present?
+  □ Output is more reduced than the previous iteration, not merely recolored?
+  Score: __ / 10
 Gate T1: Theme Architecture  (one semantic token table, two primitive maps)
   □ Existing theme provider/infrastructure preserved, not duplicated?
   □ Theme mode support matches spec: light-only | dark-only | dual-theme?
