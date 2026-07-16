@@ -1,7 +1,7 @@
 ---
 name: language-standards
-description: Enforces English as the lingua franca for all engineering artifacts — code, commits, PRs, issues, comments, skills, and test cases. Team communication language is product-defined; artifact language is not.
-version: 1.0.0
+description: Enforces consistent language usage across engineering artifacts — code, commits, PRs, issues, comments, skills, and test cases. The artifact language is product-defined; this skill enforces that the choice is explicit, consistent, and documented.
+version: 1.1.0
 author: puterakahfi
 license: MIT
 type: skill
@@ -13,68 +13,112 @@ implements: ai-native-core/contracts/skills/rule-management/language-standards.c
 ## The Core Rule
 
 ```
-Team communication language  = product_defined (can be any language)
-Engineering artifact language = English, always
+Artifact language      = product_defined (declare it explicitly)
+Consistency            = mandatory (one language per artifact type, no mixing)
+Team chat language     = product_defined (unconstrained)
 
-Why: artifacts outlive team members, agents, and conversations.
-     A commit message in Bahasa Indonesia is unreadable to the next engineer,
-     the next agent, and the next tool in the pipeline.
+This skill does NOT mandate English.
+It mandates that your language choice is explicit, consistent, and documented.
+```
+
+**Why this matters:** Mixed-language artifacts break search, tooling, and onboarding.
+A codebase where half the commits are in English and half in Japanese is worse than either alone.
+
+---
+
+## Step 1: Declare Your Language Standard
+
+Define this in `AGENTS.md` or `engineering-contract.yaml`:
+
+```yaml
+language_standard:
+  artifact_language: english          # or: japanese, portuguese, indonesian, etc.
+  team_communication: unconstrained   # Slack, standup, DMs — any language
+  user_facing_copy: localized         # UI strings — per market
+  exceptions:
+    - artifact: user-facing-error-messages
+      language: localized
+    - artifact: legal-compliance-docs
+      language: product_defined
 ```
 
 ---
 
-## What Must Be English
+## Step 2: Apply Consistently
 
-| Artifact | English Required | Example |
-|---|---|---|
-| Variable / function / class names | ✅ | `getUserById()`, not `getDapatkanUserById()` |
-| Code comments | ✅ | `// validate ownership before update` |
-| Commit messages | ✅ | `fix: resolve null pointer in checkout flow` |
-| PR title & description | ✅ | `feat: add JWT refresh token rotation` |
-| Issue / ticket titles | ✅ | `Bug: user balance goes negative after refund` |
-| Acceptance criteria | ✅ | `Given a logged-in user, when...` |
-| Skill SKILL.md content | ✅ | All skill bodies, descriptions, gates |
-| Test case triggers | ✅ | `"Audit this design — what is missing?"` |
-| AGENTS.md / .cursorrules | ✅ | All rule content |
-| ADR (Architecture Decision Records) | ✅ | Full document |
-| API error messages (user-facing) | ⚡ product_defined | May need localization |
-| Log messages | ✅ | `logger.error("Payment gateway timeout")` |
+Once declared, **all** artifacts of that type must use the declared language. No mixing.
 
-## What Can Be Team Language
+### Code identifiers
 
-| Artifact | Language |
-|---|---|
-| Slack/Teams messages | product_defined |
-| Sprint ceremonies (standup, retro) | product_defined |
-| Internal wiki pages | product_defined |
-| User-facing UI copy | product_defined (localized) |
-| Jira ticket comments | product_defined |
+```php
+# declared: english
+✅ getUserById(), $userName, class PaymentGateway
+❌ getDapatkanUserById(), $namaPengguna
 
----
+# declared: portuguese
+✅ obterUsuarioPorId(), $nomeUsuario
+❌ getUserById() mixed with obterUsuario()
+```
 
-## Commit Message Standard
-
-Format: `type(scope): short description [TICKET-ID]`
+### Commit messages
 
 ```bash
-# ✅ correct
-git commit -m "fix(auth): resolve session expiry not clearing cookie [FS-142]"
-git commit -m "feat(checkout): add promo code validation [RWO-88]"
-git commit -m "refactor(user): extract ownership check to service layer"
-git commit -m "docs: update API endpoint reference for v2 payment"
+# declared: english
+✅ fix(auth): resolve session expiry not clearing cookie [FS-142]
+❌ fix: perbaiki bug di halaman login
 
-# ❌ wrong — not English
-git commit -m "fix: perbaiki bug di halaman login"
-git commit -m "feat: tambah fitur promo code"
-
-# ❌ wrong — too vague
-git commit -m "fix: bug fix"
-git commit -m "update stuff"
-git commit -m "changes"
-git commit -m "wip"
+# declared: indonesian
+✅ fix(auth): perbaiki sesi yang tidak terhapus saat expired [FS-142]
+❌ fix: fix session bug  ← mixing
 ```
 
-### Commit Types
+### PR title & description
+
+Must match declared language. No half-translated PRs.
+
+```markdown
+# declared: english — correct
+feat(checkout): add promo code validation [RWO-88]
+
+# declared: english — wrong (mixed)
+feat: tambah promo code validation [RWO-88]
+```
+
+### Code comments
+
+```php
+# declared: english
+✅ // validate ownership before update — prevents IDOR
+❌ // validasi kepemilikan dulu
+
+# declared: indonesian  
+✅ // validasi kepemilikan sebelum update — mencegah IDOR
+❌ // validate ownership before update ← mixing
+```
+
+### Skill & test content
+
+Skill SKILL.md, test triggers, and quality gates must match the declared artifact language.
+
+```yaml
+# declared: english
+trigger: "Audit this design — what is missing?"  ✅
+trigger: "Audit design ini — apa yang kurang?"   ❌
+
+# declared: indonesian
+trigger: "Audit design ini — apa yang kurang?"   ✅
+trigger: "Audit this design — what is missing?"  ❌
+```
+
+---
+
+## Step 3: Commit Message Format
+
+Regardless of language, commit messages must follow the structured format:
+
+```
+type(scope): description [TICKET-ID]
+```
 
 | Type | Use For |
 |---|---|
@@ -87,108 +131,49 @@ git commit -m "wip"
 | `perf` | Performance improvement |
 | `revert` | Reverting a previous commit |
 
----
-
-## PR Title & Description Standard
-
-```markdown
-# PR Title
-feat(scope): short description [TICKET-ID]
-
-# PR Description template
-## What
-<!-- What changed and why -->
-
-## How
-<!-- How the change was implemented -->
-
-## Testing
-<!-- How this was tested -->
-
-## Checklist
-- [ ] Tests pass
-- [ ] No hardcoded secrets
-- [ ] Ticket updated
-```
-
----
-
-## Issue / Ticket Title Standard
-
-```
-# ✅ correct
-Bug: user balance goes negative after concurrent refund requests
-Feat: add bulk export for facility schedules
-Chore: upgrade PHP from 8.0 to 8.2
-
-# ❌ wrong
-Bug: saldo user jadi minus waktu refund
-Feat: tambah fitur export massal
-```
-
----
-
-## Code Comment Standard
-
-```php
-// ✅ correct
-// Validate ownership before allowing update — prevents IDOR
-if ($booking->getUserId() !== $currentUser->getId()) {
-    throw new UnauthorizedException();
-}
-
-// ❌ wrong
-// Validasi kepemilikan dulu sebelum update
-if ($booking->getUserId() !== $currentUser->getId()) {
-    throw new UnauthorizedException();
-}
-```
-
-**Rule:** If you can't explain it in English, the code is not clear enough yet.
-
----
-
-## Skill & Test Case Standard
-
-```yaml
-# ✅ correct trigger
-trigger: "Audit this design — what is missing or broken?"
-
-# ❌ wrong trigger
-trigger: "Audit design ini — apa yang kurang?"
-```
-
-All `SKILL.md` content, `quality_gates`, test case `triggers`, `must_contain`, and `must_not_contain` must be in English.
+**Type prefixes are always English** — they are part of the Conventional Commits spec and parsed by tooling regardless of declared artifact language.
 
 ---
 
 ## Enforcement Checklist
 
 Before committing:
-- [ ] All commit messages in English with correct type prefix?
-- [ ] All variable/function/class names in English?
-- [ ] All code comments in English?
-- [ ] PR title and description in English?
-- [ ] No mixed-language code comments?
+- [ ] Language standard declared in `AGENTS.md` or engineering contract?
+- [ ] All identifiers consistent with declared language?
+- [ ] All code comments consistent?
+- [ ] Commit message follows `type(scope): description` format?
 
 Before merging PR:
-- [ ] Issue/ticket title in English?
-- [ ] Acceptance criteria in English?
-- [ ] ADR (if any) in English?
+- [ ] PR title and description in declared language?
+- [ ] No mixed-language artifacts in the diff?
 
 Before publishing skill:
-- [ ] SKILL.md body in English?
-- [ ] All test case triggers in English?
-- [ ] Contract quality_gates in English?
+- [ ] SKILL.md language matches declared standard?
+- [ ] Test triggers in declared language?
 
 ---
 
 ## Common Anti-Patterns
 
-| Anti-Pattern | Correct |
+| Anti-Pattern | Why It Fails |
 |---|---|
-| `// validasi input dulu` | `// validate input before processing` |
-| `fix: perbaiki bug login` | `fix(auth): resolve login redirect loop [FS-99]` |
-| `$namaPengguna` | `$userName` |
-| Test trigger in Bahasa | Test trigger in English |
-| PR description: "sudah fix bugnya" | PR description: "Resolves null pointer in user session cleanup" |
+| No language declaration | No baseline to enforce against |
+| Half commits in English, half in native language | Mixed → unsearchable, inconsistent |
+| Code in English, comments in native language | Split-brain codebase |
+| Language standard declared but not written down | Implicit conventions don't survive team changes |
+| Type prefix (`feat:`, `fix:`) translated | Breaks tooling that parses Conventional Commits |
+
+---
+
+## Arbiter Default
+
+Arbiter projects (`facility-scheduler`, `rwo`) use:
+
+```yaml
+language_standard:
+  artifact_language: english
+  team_communication: unconstrained
+  user_facing_copy: localized
+```
+
+This is an Arbiter-level decision — not a universal mandate from this skill.
