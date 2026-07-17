@@ -43,10 +43,12 @@ Phase 4   → PRODUCE          (derive from ports, not improvise)
   → load port: design-interaction (patterns before implementing behavior)
   → load port: design-strategy (copywriting, ux-psychology)
   → load: references/phase-produce.md
+  → load: references/delight-expression-image-assets.md when adding/evaluating hero imagery, illustration, video, or graphic embellishment
 Phase 5   → REVIEW           (foundation gates first, then genre/brand)
   → load: design-foundation   (F1–F7 hard gates — any fail blocks delivery)
   → load port: design-system  (accessibility + token gates)
   → load: references/phase-review-gates.md
+  → load: references/visual-loop-verification.md when fresh visual-loop verification is requested or full lint/build is intentionally deferred
 Phase 6   → FIX              (skill-first fix loop)
   → load: references/phase-fix-loop.md
 Phase 7   → DELIVER
