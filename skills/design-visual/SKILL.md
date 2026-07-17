@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-visual.contract.yaml
-  ai-native-skills.related_skills: '["design-color","design-typography","design-iconography","design-genre","motion-design","composition","readability"]'
+  ai-native-skills.related_skills: '["design-depth","design-color","design-typography","design-iconography","design-genre","motion-design","composition","readability"]'
 ---
 
 # Design Visual Port
@@ -36,6 +36,7 @@ Answers: What genre? What motion stance? What typography rules? What composition
 | Concern | Adapter | When to load |
 |---|---|---|
 | Typography structure + pairing | `design-typography` | Layer 2 — after genre, before layout |
+| Layer stack + depth | `design-depth` | When brief has illustration/depth intent |
 | Color palette + harmony | `design-color` | Layer 1.5 — after genre, sets canvas |
 | Typeface + visual style | `design-genre` | Always first — gates everything downstream |
 | Motion stance + animation | `motion-design` | Phase 4 produce, any animation decision |
