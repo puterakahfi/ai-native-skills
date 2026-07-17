@@ -105,6 +105,58 @@ After:
 
 ---
 
+## How to Handle Catalog / Category Skills
+
+Catalog skill = skill yang isinya kumpulan item sejenis (genres, patterns, templates, etc.)
+
+**Anti-pattern: monolith catalog**
+```
+❌ references/genre-definitions.md  — semua genre dalam 1 file
+❌ references/patterns.md           — semua patterns dalam 1 file
+❌ references/templates.md          — semua templates dalam 1 file
+
+Problems:
+  - Agent load semua items setiap kali, padahal hanya butuh 1
+  - File tumbuh tak terbatas setiap item baru ditambah
+  - Browse experience buruk — harus scroll seluruh file
+  - Lost in Middle: item di tengah file diabaikan
+```
+
+**Correct pattern: per-item files**
+```
+✅ references/zen.md
+✅ references/editorial.md
+✅ references/modern-minimal.md
+
+Rules:
+  1. 1 file = 1 item (1 genre, 1 pattern, 1 template)
+  2. File name = item slug (kebab-case)
+  3. Router SKILL.md = index table only — no item content inline
+  4. Load only the item needed: skill_view(file_path='references/<item>.md')
+  5. Each item file ≤ 200L, self-contained
+
+Router index table format:
+  | Item | File | Default? |
+  |------|------|----------|
+  | Zen  | references/zen.md | |
+  | Editorial | references/editorial.md | ✅ |
+```
+
+**Triage: is this skill a catalog?**
+```
+Ask: "Does this skill contain N similar items where only 1 is needed per session?"
+  YES → per-item files
+  NO  → normal split (by phase/topic)
+
+Catalog signals:
+  - File has ## Genre 1, ## Genre 2, ## Genre 3...
+  - File has ## Pattern A, ## Pattern B...
+  - File has "choose one of the following..."
+  - Items are parallel in structure (same schema repeated N times)
+```
+
+---
+
 ## How to Add Missing Delegation
 
 If skill re-implements behavior ux-patterns-for-developers covers:
