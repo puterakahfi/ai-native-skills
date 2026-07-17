@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-visual.contract.yaml
-  ai-native-skills.related_skills: '["design-typography","design-genre","motion-design","composition","readability"]'
+  ai-native-skills.related_skills: '["design-color","design-typography","design-genre","motion-design","composition","readability"]'
 ---
 
 # Design Visual Port
@@ -36,6 +36,7 @@ Answers: What genre? What motion stance? What typography rules? What composition
 | Concern | Adapter | When to load |
 |---|---|---|
 | Typography structure + pairing | `design-typography` | Layer 2 — after genre, before layout |
+| Color palette + harmony | `design-color` | Layer 1.5 — after genre, sets canvas |
 | Typeface + visual style | `design-genre` | Always first — gates everything downstream |
 | Motion stance + animation | `motion-design` | Phase 4 produce, any animation decision |
 | Composition + visual weight | `composition` | Phase 4 produce, layout balance questions |
@@ -59,9 +60,10 @@ Phase 0.5 GENRE:
   1. skill_view(name='design-genre')             ← detect genre from brief
   2. skill_view(name='design-genre', file_path='references/<genre>.md')  ← load genre spec
 
-Phase 0.6 VISUAL LANGUAGE (typography — Layer 2):
-  3. skill_view(name='design-typography')        ← pair + scale + hierarchy
-  4. skill_view(name='design-typography', file_path='references/genre-typeface-map.md')
+Phase 0.6 VISUAL LANGUAGE (color + typography):
+  3. skill_view(name='design-color', file_path='references/genre-palette-map.md')  ← Layer 1.5
+  4. skill_view(name='design-typography')        ← Layer 2: pair + scale + hierarchy
+  5. skill_view(name='design-typography', file_path='references/genre-typeface-map.md')
 
 Phase 4 PRODUCE (visual concerns):
   5. skill_view(name='motion-design')            ← motion stance + CSS
