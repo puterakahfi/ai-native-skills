@@ -11,6 +11,7 @@ Apply design in this order. Load each skill before using its templates.
 6. Motion               → motion-design skill (only if motion-on)
 7. Content              → content-strategy skill
 8. Components           → ui-components (template) + ux-patterns-for-developers (behavior)
+9. Component pass       → component-redesign-pass.md (navbar → hero → sections → cards/rows → contact → footer)
 ```
 
 ---

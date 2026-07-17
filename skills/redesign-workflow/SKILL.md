@@ -46,6 +46,7 @@ Phase 4   → PRODUCE          (derive from ports, not improvise)
   → load port: design-interaction (patterns before implementing behavior)
   → load port: design-strategy (copywriting, ux-psychology)
   → load: references/phase-produce.md
+  → load: references/component-redesign-pass.md when auditing or redesigning page-level UI components (navbar, hero, sections, cards/rows, contact, footer)
   → load: references/hero-patterns.md when touching above-fold hero composition, hero imagery, or hero CTA/story
   → load: references/delight-expression-image-assets.md when adding/evaluating hero imagery, illustration, video, or graphic embellishment
 Phase 5   → REVIEW           (foundation gates first, then genre/brand)
