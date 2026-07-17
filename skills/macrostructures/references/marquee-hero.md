@@ -29,8 +29,8 @@ Reveal:         Hero entrance stagger (cinematic), scroll reveal below
   padding-left: var(--sp-8);
   padding-right: var(--sp-8);
   position: relative;
-  /* border-bottom: zen genre = NO — use white space as divider (Seijaku rule) */
-  /* border-bottom: editorial/atmospheric genre = OK */
+  /* NO border-bottom — zen: oneness, page breathes as one whole */
+  /* editorial/atmospheric: border-bottom optional, only if page needs hard cut */
 }
 /* HARD RULE: min-height:100vh + sparse content = void = FAIL */
 /* Use generous padding-bottom instead — breathing room without dead space */

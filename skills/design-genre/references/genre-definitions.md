@@ -154,12 +154,15 @@ Layout:     Seven principles of Wabi-Sabi applied to UI:
               Seijaku (静寂): SILENCE — lines are visual noise, use space instead
               Shibui: simple overall, subtle details — balance simplicity+complexity
 
-            LINE RULE (from Seijaku + Shibui):
-              Max 1 structural border on the page — the work section top border.
-              All other section breaks = white space only (padding change, no line).
-              ❌ border on every section = 5+ lines = noise = NOT zen
-              ✅ ONE line marks the transition from identity → work
-              ✅ Rest of page: padding rhythm creates implicit separation
+            LINE RULE (from Seijaku + oneness):
+              ZERO structural borders between sections.
+              Zen = oneness — borders split the page into separate entities = NOT zen.
+              Section separation = padding rhythm ONLY. No lines anywhere.
+              Work row borders (internal list separators) = only exception — they
+                are part of ONE list system, not section dividers.
+              ❌ hero border-bottom = splits identity from work = FAIL
+              ❌ section border-top = fragments the page = FAIL
+              ✅ padding change = breath between sections, page stays whole
 
             VOID RULE (Ma 間):
               Space is intentional, not accidental. Every space needs an anchor.
