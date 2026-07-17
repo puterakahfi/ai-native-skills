@@ -171,7 +171,14 @@ Layout:     Seven principles of Wabi-Sabi applied to UI:
               - Section padding: clamp(64px,8vh,80px) top AND bottom — consistent rhythm
 
             Layout: 2-col about (heading left, content right — Fukinsei asymmetry)
-            Work: rows separated by 1px border-top only (one system, consistent)
+            Work rows: subtle surface bg on dark (--surface token) — Shibui: simple overall,
+              subtle detail. Border-top still required as row separator.
+            Work rows light mode: bg transparent (white page = enough contrast, no card needed)
+
+            LIGHT MODE BG RULE:
+              Light mode bg = pure white (#ffffff) — NOT warm ivory.
+              Ivory = dark mode complement. Light mode = stark white = maximum contrast = Kanso.
+              --bg-alt and --surface in light = #ffffff
 
 Motion:     STILLNESS — no hover lift, no bounce, no glow, no scale
             ONLY permitted: color-shift transition (150–200ms)
