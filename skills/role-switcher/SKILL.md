@@ -65,6 +65,15 @@ State which roles are active at the start of every response.
 | interview users, research, validate assumption, JTBD | `user-research` + `product-manager` |
 | survey, usability test, what do users want | `user-research` + `ux-psychology` |
 
+### Creative & AI Tools
+
+| Intent Signals | Roles to Activate |
+|---|---|
+| generate image prompt, refine prompt, improve this prompt | `prompt-engineer` |
+| why does my image look wrong, fix prompt, bad image output | `prompt-engineer` |
+| prompt for [subject], create prompt for [style] | `prompt-engineer` |
+| AI image product, image generation feature, token efficiency | `prompt-engineer` + `product-manager` |
+
 ### Cross-Domain (Full Stack)
 
 | Intent Signals | Roles to Activate |

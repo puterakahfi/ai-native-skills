@@ -275,6 +275,7 @@ Role skills act as **expert personas** — auto-composed by `role-switcher` base
 | `user-research` | User Researcher | interviews, usability tests, JTBD, assumption validation |
 | `native-ai-engineer` | Native AI Domain Architect | runtime boundary, contract authoring, adapter design |
 | `diagram-architect` | Architecture Visualizer | architecture diagrams, flow charts, system maps |
+| `prompt-engineer` | Image Prompt Engineer | refine prompt, generate image prompt, why does image look wrong, prompt for [subject] |
 
 ---
 
