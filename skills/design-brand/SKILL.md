@@ -41,29 +41,44 @@ IF no brand file:
 
 ---
 
-## Brand File Structure
+## Brand File Lives in YOUR PROJECT
 
-Each brand = one file in `references/`:
 ```
-references/
-  arbiter.md      ← Arbiter Sports design system
-  <client>.md     ← add per client/product
+OCP RULE: skill repo stores HOW, not data.
+  ai-native-skills/design-brand/ ← process + template only
+  your-project/.hermes/brands/   ← actual brand files live here
+  your-project/design.md         ← or here (existing convention)
 ```
 
 Create a brand file when:
-- Client has existing design system
-- Product has locked tokens (CSS vars, design.md, Figma tokens)
-- Redesign must stay within visual language (no full genre switch)
+- Client/product has existing design system
+- Redesign must stay within visual language
+- Tokens are locked (CSS vars, Figma tokens, design.md)
+
+How to create:
+```
+1. Copy template: skill_view(name='design-brand', file_path='references/template.md')
+2. Save to: your-project/.hermes/brands/<brand>.md
+3. Fill in from: CSS inspect + vision audit + Figma tokens
+```
 
 ---
 
 ## Phase 0 Pre-flight Integration
 
 ```
-STEP 1: Check for brand file
-  skill_view(name='design-brand', file_path='references/<client>.md')
+STEP 1: Check for brand file in PROJECT (not in skills repo)
+  read_file('.hermes/brands/<brand>.md')   ← project brand file
+  OR read_file('design.md')                ← existing convention
 
-STEP 2: If found → extract locked constraints
+STEP 2: Brand file not found + brand mentioned in brief → AUTO-EXTRACT:
+  browser_navigate(<brand_url>)
+  Extract :root CSS vars + font-family + icon family
+  vision_analyze → palette, component style, border usage
+  Write to: .hermes/brands/<brand>.md (in PROJECT, not skills)
+  Confirm with user before proceeding
+
+STEP 3: If found → extract locked constraints
   Emit: "Brand lock detected: [client]"
   List: locked tokens, locked typeface, locked palette, flex areas
 
