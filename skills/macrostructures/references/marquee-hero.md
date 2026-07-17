@@ -54,6 +54,28 @@ Reveal:         Hero entrance stagger (cinematic), scroll reveal below
 eyebrow (top of flex) → name (dominant) → stance (below) → meta (right) → scroll cue (bottom)
 ```
 
+## Zen Variant — Void Prevention Rule
+
+```
+ZEN GENRE HARD RULE: hero MUST have an anchor element below the bio.
+Without anchor, hero reads as incomplete/abandoned.
+
+Option A — Contact row inline (preferred):
+  <nav class="hero-contact"> email · github · linkedin </nav>
+  Renders as: subtle links below bio, color var(--muted), NO label prefix
+
+Option B — Scroll cue:
+  <span class="scroll-cue" aria-hidden="true">↓</span>
+  position: absolute; bottom: var(--sp-7); opacity: 0.25
+
+Pick ONE. Both = too busy. Neither = void fail.
+
+Also: hero padding-bottom MUST match section padding-top:
+  hero padding-bottom: clamp(64px, 10vh, 96px)   ← NOT 14vh (too tall for zen)
+  section padding-top: clamp(64px, 10vh, 96px)
+  This creates consistent visual rhythm, not floating sections.
+```
+
 ---
 
 ## Example Structure

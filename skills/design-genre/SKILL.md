@@ -49,6 +49,9 @@ MODERN-MINIMAL: SaaS, enterprise, API, platform, developer tool, infra,
 PLAYFUL: fun, consumer, casual, friendly, onboarding, family,
   community, kids, social, lifestyle, wellness
 
+ZEN/MINIMALIST: zen, minimalist, stillness, restraint, ma, sparse, wabi-sabi,
+  senior personal portfolio, quiet, monk-mode
+
 EDITORIAL (default): portfolio, personal, blog, magazine, agency, studio,
   foundry, publication, art direction
 
