@@ -1,29 +1,27 @@
 ---
 name: copywriting
-description: 'Copywriting fundamentals — messaging hierarchy, headline formulas, value proposition, microcopy, tone calibration, and content audit gates.
-
-  '
+description: 'Copywriting fundamentals — messaging hierarchy, headline formulas, value proposition, microcopy, tone calibration, and content audit gates.'
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.type: skill
   ai-native-skills.tags: '[''content'', ''copywriting'', ''messaging'', ''ux-writing'', ''tone-of-voice'']'
 ---
 
+## HARD RULES
+- Every claim must be specific and falsifiable — no vague nouns
+- No hedging verbs ("try to", "aim to", "passionate about")
+- Score Gates CP1–CP4 before delivering any copy
+
 # Copywriting
 
 ## When to Load
-
-Load when:
 - Writing or auditing any hero headline, stance, bio, or section heading
 - Content feels generic, vague, or could apply to anyone
 - User asks "is this copy good?"
 - Producing any landing page, portfolio, or product page
 
 ---
-
 ## The Content Hierarchy (top → bottom)
-
-Every piece of content answers one question at a time, in order:
 
 ```
 1. WHO ARE YOU?          → Name, role — immediate, no jargon
@@ -36,7 +34,6 @@ Every piece of content answers one question at a time, in order:
 If the page skips a level or reorders these → content hierarchy broken.
 
 ---
-
 ## The Value Proposition Formula
 
 ```
@@ -57,7 +54,6 @@ Test: can this sentence apply to 1000 other people? If yes → rewrite.
 ```
 
 ---
-
 ## Headline Formulas
 
 ### H1 — Identity Anchor
@@ -74,7 +70,6 @@ Good: "Putera Kahfi."  (name is enough — work section carries the rest)
 ```
 Formula: [Gerund or noun] — directional, ≤ 4 words
 Purpose: tell user what this section is, not what to feel
-Length:  ≤ 4 words
 
 Bad:  "Some of My Best Work" (hedging), "Explore My Projects" (imperative without CTA)
 Good: "Selected work", "About", "Let's talk."
@@ -99,7 +94,6 @@ Tone:    Direct, first person, no hedging ("I try to", "I hope to", "passionate 
 Bad:  "I'm a passionate developer who loves to learn and build innovative solutions."
 Good: "Full stack engineer. I design systems that are still maintainable five years later —
        modular, bounded, honest about complexity."
-       → specific domain (systems), specific claim (maintainability), characteristic style (3 adjectives)
 
 Checklist:
   □ No "passionate", "love", "innovative", "cutting-edge", "synergy"
@@ -110,7 +104,6 @@ Checklist:
 ```
 
 ---
-
 ## Microcopy Rules
 
 ### Labels and Tags
@@ -138,13 +131,11 @@ Good: "Read the post", "View Blueprint", "Send a message"
 ### Contact section heading
 ```
 □ Conversational, not corporate
-□ Implies easy access, not a formal process
 Bad:  "Get in Touch", "Contact Me"
 Good: "Let's talk.", "Say hello.", "hi@pkahfi.com" (email itself as heading)
 ```
 
 ---
-
 ## Tone Calibration
 
 ### Tone Axes (rate each 1–5)
@@ -175,7 +166,6 @@ Generic:        1 (maximum specific — every sentence falsifiable)
 ```
 
 ---
-
 ## Content Density Gates
 
 ```
@@ -203,3 +193,6 @@ Gate CP4: Tone Consistency
   □ Conversational but not casual
   Score: __ / 10
 ```
+
+---
+> **HARD RULES reminder:** specific + falsifiable claims only → no hedging/buzzwords → microcopy consistent → all CP gates scored before ship.

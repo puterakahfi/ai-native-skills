@@ -11,304 +11,66 @@ metadata:
 
 # Ports and Adapters (Hexagonal Architecture)
 
-## Core Idea
+> **HARD RULES**
+> - Ports = input boundaries only — defined in Domain layer, never in Infrastructure
+> - Adapters implement ports, never call each other directly
+> - Domain never imports infrastructure — dependency flows inward only
+
+## Quick Reference
+
+| Phase | What to Do | Reference |
+|---|---|---|
+| Architecture & Ports | Understand the 3 layers, define port interfaces, implement infrastructure + primary adapters | [architecture-and-adapters.md](references/architecture-and-adapters.md) |
+| App Service, DI & Testing | Wire application service, bind adapters via DI, use in-memory adapters for tests | [application-service-and-testing.md](references/application-service-and-testing.md) |
+
+## When to Use This Skill
+
+- Starting a new service or bounded context
+- Adding a new integration (DB, payment, email, queue)
+- Writing domain tests that run fast without infrastructure
+- Reviewing a PR for architectural violations
+
+## Decision Flow
 
 ```
-The domain is the center. Everything else is a plugin.
+New feature required?
+  └─ Does it touch infrastructure (DB, email, payment, queue)?
+       ├─ YES → Define port in Domain/Port/, implement adapter in Infrastructure/
+       └─ NO  → Pure domain logic, no port needed
 
-        [REST API]  [CLI]  [Queue Consumer]
-              ↓        ↓         ↓
-         PRIMARY PORTS (driving ports)
-              ↓
-         [ D O M A I N ]
-              ↓
-         SECONDARY PORTS (driven ports)
-              ↓        ↓         ↓
-           [DB]    [Email]   [Message Bus]
+Adding a new external consumer (REST, CLI, queue)?
+  └─ Create primary adapter in Interface/ that drives domain via Application Service
 ```
 
-**Primary ports** — driven BY external actors (REST, CLI, tests)
-**Secondary ports** — driven BY the domain (DB, email, queue)
-
-The domain defines both. Infrastructure implements secondary ports. Framework implements primary ports.
-
----
-
-## Why This Matters
+## Architecture Summary
 
 ```
-Without hexagonal:
-  Domain → Laravel → MySQL
-  Test requires DB, test requires HTTP, test requires queue — slow, fragile
-
-With hexagonal:
-  Domain → interface only
-  Test uses in-memory adapter — fast, isolated, no infrastructure
-  Swap MySQL for Postgres: change one adapter, zero domain changes
-  Swap REST for GraphQL: change one adapter, zero domain changes
-```
-
----
-
-## The 3 Layers
-
-```
-┌──────────────────────────────────────────────┐
-│  ADAPTERS (Infrastructure + Framework)        │
-│  EloquentOrderRepo, StripePaymentAdapter,     │
-│  LaravelController, SQSConsumer               │
-├──────────────────────────────────────────────┤
-│  PORTS (Interfaces defined by Domain)         │
-│  OrderRepository, PaymentGateway,             │
-│  EmailSender, EventPublisher                  │
-├──────────────────────────────────────────────┤
-│  DOMAIN (Pure, no external dependencies)      │
-│  Order, Money, OrderService, OrderPlaced      │
-└──────────────────────────────────────────────┘
+[REST/CLI/Queue] → PRIMARY PORTS → [DOMAIN] → SECONDARY PORTS → [DB/Email/Bus]
 
 Dependency direction: Adapters → Ports ← Domain
 NEVER: Domain → Adapter (direct)
 ```
 
----
+## Gates
 
-## Port Definition — Always in Domain Layer
+- [ ] Port interfaces in Domain/Port/ only (no framework imports)?
+- [ ] Adapters in Infrastructure/ or Interface/ only?
+- [ ] Application service orchestrates — zero domain logic in UseCase?
+- [ ] Domain tests use in-memory adapters (no real DB/HTTP)?
+- [ ] No `use Illuminate\...` (or framework equivalent) in Domain/?
 
-```php
-// src/Domain/Order/Port/OrderRepository.php
-// DOMAIN owns this interface — infrastructure implements it
+## Common Violations
 
-namespace App\Domain\Order\Port;
-
-interface OrderRepository
-{
-    public function findById(OrderId $id): ?Order;
-    public function save(Order $order): void;
-    public function nextIdentity(): OrderId;
-}
-```
-
-```php
-// src/Domain/Payment/Port/PaymentGateway.php
-namespace App\Domain\Payment\Port;
-
-interface PaymentGateway
-{
-    public function charge(Money $amount, PaymentToken $token): PaymentResult;
-    public function refund(PaymentId $id, Money $amount): RefundResult;
-}
-```
-
-**Gate:** Port interfaces live in domain layer. No framework imports allowed.
+| Violation | Fix |
+|---|---|
+| `use Illuminate\...` in Domain/ | Extract to adapter |
+| `EloquentModel` in Domain/Order/ | Move to Infrastructure/ |
+| `DB::table()` in entity method | Define port, inject adapter |
+| Business rule in UseCase | Move to domain object |
+| Interface defined in Infrastructure/ | Move to Domain/Port/ |
 
 ---
 
-## Adapter Implementation — Always in Infrastructure Layer
+Load [architecture-and-adapters.md](references/architecture-and-adapters.md) for layer diagram, port definitions, and adapter implementation examples.
 
-```php
-// src/Infrastructure/Persistence/EloquentOrderRepository.php
-// INFRASTRUCTURE implements the domain port
-
-namespace App\Infrastructure\Persistence;
-
-use App\Domain\Order\Port\OrderRepository;
-
-class EloquentOrderRepository implements OrderRepository
-{
-    public function findById(OrderId $id): ?Order
-    {
-        $record = OrderModel::find($id->toString());
-        return $record ? $this->toDomain($record) : null;
-    }
-
-    public function save(Order $order): void
-    {
-        OrderModel::updateOrCreate(
-            ['id' => $order->id()->toString()],
-            $this->toRecord($order)
-        );
-    }
-
-    private function toDomain(OrderModel $model): Order { /* mapping */ }
-    private function toRecord(Order $order): array { /* mapping */ }
-}
-```
-
-```php
-// src/Infrastructure/Payment/StripePaymentGateway.php
-namespace App\Infrastructure\Payment;
-
-use App\Domain\Payment\Port\PaymentGateway;
-
-class StripePaymentGateway implements PaymentGateway
-{
-    public function charge(Money $amount, PaymentToken $token): PaymentResult
-    {
-        // Stripe SDK calls here
-    }
-}
-```
-
----
-
-## Primary Adapter — Driving the Domain
-
-```php
-// src/Interface/Http/OrderController.php
-// HTTP adapter drives the domain via application service
-
-class OrderController
-{
-    public function __construct(
-        private PlaceOrderUseCase $placeOrder  // application service, not domain directly
-    ) {}
-
-    public function store(PlaceOrderRequest $request): JsonResponse
-    {
-        $result = $this->placeOrder->execute(
-            new PlaceOrderCommand(
-                customerId: CustomerId::from($request->customer_id),
-                items: $request->items,
-            )
-        );
-        return response()->json($result);
-    }
-}
-```
-
----
-
-## Application Service — Orchestration Layer
-
-```php
-// src/Application/Order/PlaceOrderUseCase.php
-// Orchestrates domain + ports — no domain logic here
-
-class PlaceOrderUseCase
-{
-    public function __construct(
-        private OrderRepository $orders,       // port — injected
-        private PaymentGateway $payments,      // port — injected
-        private EventPublisher $events,        // port — injected
-    ) {}
-
-    public function execute(PlaceOrderCommand $cmd): OrderId
-    {
-        $order = Order::place($cmd->customerId, $cmd->items);
-        $this->payments->charge($order->total(), $cmd->paymentToken);
-        $this->orders->save($order);
-        $this->events->publish($order->releaseEvents());
-        return $order->id();
-    }
-}
-```
-
-**Gate:** Application service has no domain logic. Domain has no infrastructure calls.
-
----
-
-## Dependency Injection — Wiring Adapters to Ports
-
-```php
-// src/Infrastructure/Provider/AppServiceProvider.php
-
-$this->app->bind(OrderRepository::class, EloquentOrderRepository::class);
-$this->app->bind(PaymentGateway::class, StripePaymentGateway::class);
-$this->app->bind(EventPublisher::class, SQSEventPublisher::class);
-```
-
-For testing — swap to in-memory adapters:
-
-```php
-// tests — no real DB, no real Stripe, no real SQS
-$this->app->bind(OrderRepository::class, InMemoryOrderRepository::class);
-$this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
-$this->app->bind(EventPublisher::class, FakeEventPublisher::class);
-```
-
----
-
-## In-Memory Adapters for Testing
-
-```php
-// tests/Infrastructure/InMemoryOrderRepository.php
-class InMemoryOrderRepository implements OrderRepository
-{
-    private array $store = [];
-
-    public function findById(OrderId $id): ?Order
-    {
-        return $this->store[$id->toString()] ?? null;
-    }
-
-    public function save(Order $order): void
-    {
-        $this->store[$order->id()->toString()] = $order;
-    }
-
-    public function nextIdentity(): OrderId
-    {
-        return OrderId::generate();
-    }
-}
-```
-
-**Gate:** Domain tests run in milliseconds — no DB, no HTTP, no queue.
-
----
-
-## Folder Structure
-
-```
-src/
-├── Domain/
-│   ├── Order/
-│   │   ├── Order.php              ← aggregate root
-│   │   ├── OrderLine.php          ← entity
-│   │   ├── OrderId.php            ← value object
-│   │   ├── OrderStatus.php        ← value object
-│   │   ├── Event/
-│   │   │   └── OrderPlaced.php    ← domain event
-│   │   └── Port/
-│   │       └── OrderRepository.php ← port (interface)
-│   └── Payment/
-│       └── Port/
-│           └── PaymentGateway.php  ← port (interface)
-├── Application/
-│   └── Order/
-│       └── PlaceOrderUseCase.php   ← orchestration
-├── Infrastructure/
-│   ├── Persistence/
-│   │   └── EloquentOrderRepository.php ← adapter
-│   └── Payment/
-│       └── StripePaymentGateway.php    ← adapter
-└── Interface/
-    └── Http/
-        └── OrderController.php         ← primary adapter
-```
-
----
-
-## Violations — What to Catch in Review
-
-| Violation | Signal | Fix |
-|---|---|---|
-| Domain imports framework | `use Illuminate\...` in Domain/ | Extract to adapter |
-| Adapter in Domain/ | `EloquentModel` in Domain/Order/ | Move to Infrastructure/ |
-| Domain calls infrastructure directly | `DB::table()` in entity method | Define port, inject adapter |
-| Application service has domain logic | Business rule in UseCase | Move to domain object |
-| Port defined in Infrastructure | Interface in Infrastructure/ | Move to Domain/Port/ |
-| Test requires real DB | Slow, fragile test | Use in-memory adapter |
-
----
-
-## Relation to ai-native-core
-
-```
-ai-native-core itself uses this pattern:
-  contracts/  = ports    (what must be true — interfaces)
-  ai-native-skills/ = adapters (how — public implementations)
-  ai-native-fw/     = adapters (how — product-specific implementations)
-
-The pattern is fractal — applies at code level and at ecosystem level.
-```
+Load [application-service-and-testing.md](references/application-service-and-testing.md) for orchestration layer, DI wiring, in-memory adapters, folder structure, and violation table.

@@ -1,33 +1,28 @@
 ---
 name: cro
-description: 'Conversion Rate Optimization — attention flow, trust signals, friction audit, above-fold optimization, and persuasion architecture for landing pages.
-
-  '
+description: 'Conversion Rate Optimization — attention flow, trust signals, friction audit, above-fold optimization, and persuasion architecture for landing pages.'
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.type: skill
   ai-native-skills.tags: '[''cro'', ''conversion'', ''persuasion'', ''trust'', ''attention'', ''landing-page'']'
 ---
 
+## HARD RULES
+- Run the 5-second test before delivering any page audit
+- Score Gates CRO1–CRO4 before marking work done
+- Never add Layer 4 (social proof) without Layer 1–3 in place
+
 # CRO — Conversion Rate Optimization
 
 ## When to Load
-
-Load when:
 - Any page has a goal (contact, hire, read, click)
 - Auditing whether a landing page converts its intended audience
-- "Does this page make someone take action?"
 - Portfolio pages where the goal is getting hired or contacted
 
-Note: CRO ≠ only e-commerce. For a portfolio, conversion = someone sends an email
-or remembers you. The principles are identical.
-
 ---
-
 ## The Attention Economy Model
 
-Visitor gives you ~3–8 seconds before deciding to stay or leave.
-Every element above the fold must earn the next second of attention.
+Visitor gives you ~3–8 seconds. Every element above the fold must earn the next second.
 
 ```
 Second 0–1: WHO IS THIS?           → Name/brand legible immediately
@@ -40,10 +35,7 @@ Dead space above hero wastes seconds 0–1 entirely.
 ```
 
 ---
-
 ## Trust Signal Architecture
-
-Trust is built in layers. Each layer must be present before the next matters.
 
 ```
 Layer 1: COMPETENCE SIGNALS
@@ -69,10 +61,7 @@ Rule: Do not add Layer 4 if Layer 1–3 are weak. Testimonials on a vague page =
 ```
 
 ---
-
 ## Friction Audit
-
-Friction = anything that makes the intended action harder than it needs to be.
 
 ### Cognitive Friction
 ```
@@ -103,10 +92,7 @@ Friction = anything that makes the intended action harder than it needs to be.
 ```
 
 ---
-
 ## Above-Fold Optimization
-
-The most CRO-critical real estate. Every pixel must pull weight.
 
 ```
 Must be present above fold:
@@ -124,8 +110,7 @@ Must NOT be present above fold:
 
 ### The 5-Second Test (self-audit)
 ```
-Cover everything below the fold.
-After 5 seconds, answer:
+Cover everything below the fold. After 5 seconds, answer:
   1. Whose page is this?
   2. What do they do?
   3. Is there evidence they're good at it?
@@ -135,13 +120,10 @@ If you can't answer all 4 → above-fold fails CRO audit.
 ```
 
 ---
-
 ## Persuasion Architecture
 
-The sequence in which information is presented determines conversion.
-
 ```
-Optimal sequence for personal portfolio (no CTA):
+Optimal sequence for personal portfolio:
 
   1. IDENTITY ANCHOR     → Name, immediate
   2. ROLE SIGNAL         → What they do, one sentence
@@ -158,14 +140,9 @@ Anti-patterns:
 ```
 
 ---
-
-## For Portfolio Pages (no explicit CTA)
-
-Goal: visitor leaves remembering the name + feeling confident in ability.
-Micro-conversion: they save the email, forward the link, or come back.
+## Portfolio CRO Checklist
 
 ```
-Portfolio CRO checklist:
   □ Name is the single most memorable element on the page
   □ Work entries link to live products (not GitHub readme or Figma file)
   □ Each work entry has a description that adds info beyond the title
@@ -176,7 +153,6 @@ Portfolio CRO checklist:
 ```
 
 ---
-
 ## Gates
 
 ```
@@ -204,3 +180,6 @@ Gate CRO4: Persuasion Sequence
   □ No anti-pattern ordering
   Score: __ / 10
 ```
+
+---
+> **HARD RULES reminder:** 5-sec test → trust layers (1→3 before 4) → friction audit → persuasion sequence → all gates scored before ship.

@@ -1,26 +1,26 @@
 ---
 name: composition
-description: 'Above-the-fold composition — focal point, visual weight, eye-flow, anchoring. Prevents floating/unanchored layouts and dead-space voids.
-
-  '
+description: 'Above-the-fold composition — focal point, visual weight, eye-flow, anchoring. Prevents floating/unanchored layouts and dead-space voids.'
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.type: skill
   ai-native-skills.tags: '[''design'', ''composition'', ''visual-weight'', ''focal-point'', ''alignment'']'
 ---
 
+## HARD RULES
+- Primary content must sit at or above optical center (≤ 45% from top)
+- Hero must have ZERO unframed dead space above focal point
+- No magic-number positioning — every element aligned to grid or sibling edge
+
 # Composition
 
 ## When to Load
-
-Load when:
 - Producing any hero or above-the-fold section
 - Layout feels "floating" or content is not immediately visible
 - There is unexplained void above or around main content
 - Elements feel unbalanced or not grounded
 
 ---
-
 ## Core Principle: Every Layout Has One Focal Point
 
 The eye needs an anchor — one point it lands on first, then travels from.
@@ -32,7 +32,6 @@ RIGHT: focal point sits at optical center (45% from top, not 50%) → eye lands 
 ```
 
 ---
-
 ## Optical Center vs Geometric Center
 
 ```
@@ -49,12 +48,7 @@ For hero with name as focal point:
 ```
 
 ---
-
 ## Visual Weight Distribution
-
-Weight = how much visual mass an element carries.
-Heavy elements: large type, high contrast, bright color.
-Light elements: small type, muted color, more whitespace.
 
 ```
 Rule: Heavy elements anchor the layout. They must be visible without scroll.
@@ -72,38 +66,32 @@ Checklist:
 ```
 
 ---
-
 ## Eye Flow Mapping
 
 Eye enters top-left (F-pattern for text, Z-pattern for visual pages).
-Design must guide the eye, not leave it to wander.
 
 ```
-Personal portfolio (dark, editorial):
-  Z-pattern:
-    top-left (logo/name) → top-right (nav) → diagonal → bottom-left (stance) → bottom-right (meta)
+Personal portfolio (dark, editorial) Z-pattern:
+  top-left (logo/name) → top-right (nav) → diagonal → bottom-left (stance) → bottom-right (meta)
 
 Marquee Hero eye flow:
   Enter top-left (eyebrow) → drop to name (heavy anchor) → right to meta → down to scroll cue
-  
+
 VIOLATION: void above name breaks the entry → eye enters void, searches for anchor, fatigues
 FIX: name must be reachable from top without crossing dead space
 ```
 
 ---
-
 ## Dead Space vs Intentional Breathing Room
 
 ```
 Dead space (BAD):
   - Void above primary content with no visual purpose
   - No element occupies or intentionally frames the void
-  - Eye has nothing to "read" while scanning to content
   - Caused by: justify-content:flex-end, min-height:100vh with little content
 
 Breathing room (GOOD):
   - Whitespace between sections — intentional reset
-  - Eye finishes one section, white space signals "next context"
   - Has rhythm: small-larger-small or consistent multiples
   - Caused by: padding between sections, not padding above hero
 
@@ -112,7 +100,6 @@ Rule: Hero must have ZERO dead space above focal point.
 ```
 
 ---
-
 ## Anchoring Patterns
 
 ### Pattern A: Top-anchored hero (recommended for personal portfolio)
@@ -147,7 +134,6 @@ Rule: Hero must have ZERO dead space above focal point.
 
 ### Pattern C: Split hero (Studio macrostructure)
 ```css
-/* Both columns must fill — no void inside columns */
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -161,13 +147,9 @@ Rule: Hero must have ZERO dead space above focal point.
 ```
 
 ---
-
 ## Alignment: Balance vs Symmetry
 
 ```
-Symmetry: identical weight on both sides (boring, static)
-Balance:  equal visual weight, not necessarily equal size (dynamic, interesting)
-
 Alignment rule: every element must be anchored to a grid column or a sibling edge.
 "Ngambang" (floating) = element has no visual relationship to anything near it.
 
@@ -179,7 +161,6 @@ Checklist:
 ```
 
 ---
-
 ## Pre-emit Composition Check (run before Phase 3: PRODUCE)
 
 Before writing HTML, answer:
@@ -194,8 +175,7 @@ Before writing HTML, answer:
 If answer to 3 is "nothing" → change layout pattern before writing any HTML.
 
 ---
-
-## Gate: Composition (for redesign-workflow integration)
+## Gate: Composition
 
 ```
 Gate C1: Focal Point Above-Fold
@@ -207,7 +187,7 @@ Gate C1: Focal Point Above-Fold
 Gate C2: Visual Weight Distribution
   □ One heavy, one supporting, one accent — all identifiable
   □ Heavy element has highest contrast + largest size in section
-  □ No two elements compete for dominance (inter-section weight decay)
+  □ No two elements compete for dominance
   Score: __ / 10
 
 Gate C3: Alignment & Anchoring
@@ -217,3 +197,6 @@ Gate C3: Alignment & Anchoring
   □ No floating elements — each has a visual relationship to its neighbors
   Score: __ / 10
 ```
+
+---
+> **HARD RULES reminder:** optical center ≤ 45% → no unframed dead space → 8px grid alignment → run pre-emit check → score all C gates before ship.
