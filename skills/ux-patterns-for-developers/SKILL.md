@@ -17,13 +17,45 @@ metadata:
 
 ## RULE: Delegate, Don't Improvise
 
-When building any UI component, check this library FIRST:
+When building any UI component, check this library FIRST.
+
+**Decision rule — when to delegate here vs build internal:**
+
 ```
-URL: https://ux-patterns-for-developers.com/patterns/{category}/{slug}
+DELEGATE HERE when ALL three are true:
+  ✓ Stable   — library is well-maintained (W3C-backed, established community)
+  ✓ Trusted  — behavior + a11y + edge cases already validated by community
+  ✓ Worth it — cost to build internally >> cost to delegate
+               example: 74 patterns with full a11y = months to build; delegate in seconds
+
+BUILD INTERNAL (ui-components skill) when:
+  ✓ Brand/product-specific — CSS tokens, visual templates, copy tone
+  ✓ Pattern not covered here — check catalog first, then build
+  ✓ Need opinionated version — external spec too generic for your product
+
+PREFERRED: use BOTH together
+  ux-patterns-for-developers → behavior, a11y, interaction, edge cases  (HOW it works)
+  ui-components               → CSS template, tokens, visual, brand      (HOW it looks)
 ```
 
-If a pattern exists here → read it → extract spec → use it.  
-Do NOT improvise behavior from scratch when a proven pattern exists.
+**Concrete example (navigation):**
+```
+ux-patterns navigation-menu spec says:
+  position: sticky (not fixed)
+  aria-label="Open menu" (not "Toggle navigation")
+  box-shadow on scroll (not border-bottom)
+
+ui-components navbar template says:
+  --bg: #09090a
+  font-family: var(--font-mono)
+  height: 64px
+
+Result: sticky nav with correct a11y + correct visual style.
+Neither skill alone is complete. Both together = correct.
+```
+
+If a pattern exists here → install → load → extract spec → use verbatim.  
+**HARD RULE: never improvise behavior that this library already specifies.**
 
 ---
 

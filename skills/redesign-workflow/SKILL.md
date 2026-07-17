@@ -607,6 +607,45 @@ Produce the requested output (`prototype` or `patch`). For HTML prototypes, appl
 6. Motion (from `motion-design` skill — only if motion-on)
 7. Content (from `content-strategy` skill — microcopy, button labels, empty states)
 
+### Skill Delegation Rule
+
+Before writing any component, ask: **should this come from an internal skill or an external one?**
+
+```
+DELEGATE TO EXTERNAL SKILL when ALL three are true:
+  ✓ Stable    — well-maintained, not arbitrarily changing (W3C, major OSS, established community)
+  ✓ Trusted   — proven source with a11y + behavior + edge cases already validated
+  ✓ Worth it  — cost to build internally >> cost to delegate
+                (74 patterns with a11y + behavior = months to build; delegate in seconds)
+
+BUILD INTERNAL when:
+  ✓ Brand/product-specific — CSS tokens, visual templates, copy tone
+  ✓ No external covers it  — niche pattern not in any library
+  ✓ External too generic   — you need an opinionated, project-specific version
+
+BOTH together (preferred pattern):
+  external skill → behavior spec, a11y, interaction, edge cases
+  internal skill → CSS template, tokens, visual, brand
+```
+
+**Trusted external skills (pre-approved):**
+
+| Source | Install | Covers |
+|---|---|---|
+| `ux-patterns-for-developers` | `npx skills add ... --skill <name>` | 74 UI patterns — behavior, a11y, edge cases |
+
+**How to use an external skill:**
+```
+1. Check if pattern exists: skill_view(name='ux-patterns-for-developers') → catalog
+2. Install: npx skills add https://github.com/thedaviddias/ux-patterns-for-developers --skill <name> --yes --global
+3. Load: skill_view(name='<pattern-name>') → extract behavior spec
+4. Merge with internal CSS template from ui-components
+5. Do NOT re-implement what the external skill already specifies — copy it verbatim
+```
+
+**HARD RULE: never improvise behavior that an external skill already specifies.**
+If `navigation-menu` says `position: sticky` + `aria-label="Open menu"` → use exactly that. No deviation.
+
 Stamp at top of CSS (mandatory):
 ```css
 /*
