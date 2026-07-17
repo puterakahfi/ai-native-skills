@@ -258,11 +258,17 @@ hermes chat -s redesign-workflow -q \
 
 ### Roles
 
-| Skill | Description |
-|---|---|
-| `master-engineer` | Senior Software Engineer — system design, architecture decisions |
-| `product-manager` | PRD authoring, acceptance criteria, task breakdown |
-| `diagram-architect` | Architecture diagrams — SVG, Excalidraw, Mermaid |
+Role skills act as **expert personas** — auto-composed by `role-switcher` based on intent detection, no manual activation needed.
+
+| Skill | Persona | Auto-triggers on |
+|---|---|---|
+| `master-engineer` | Senior Software Engineer | code review, architecture, debugging, refactor |
+| `master-design` | Senior Product Designer | UI audit, design system, visual critique |
+| `product-manager` | Product Manager | PRD, spec, backlog, gap analysis |
+| `ux-psychology` | UX Researcher / Psychologist | user flow, cognitive load, heuristics, retention |
+| `user-research` | User Researcher | interviews, usability tests, JTBD, assumption validation |
+| `native-ai-engineer` | Native AI Domain Architect | runtime boundary, contract authoring, adapter design |
+| `diagram-architect` | Architecture Visualizer | architecture diagrams, flow charts, system maps |
 
 ---
 

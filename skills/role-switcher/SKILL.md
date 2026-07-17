@@ -50,8 +50,10 @@ State which roles are active at the start of every response.
 | security, vulnerability, secrets | `security-review` + `master-engineer` |
 | system design, scalability, architecture decision | `master-engineer` + `native-ai-engineer` |
 | refactor, clean up, simplify | `master-engineer` + `systematic-debugging` |
+| diagram, visualize architecture, draw flow | `diagram-architect` + `master-engineer` |
+| AI native, runtime boundary, contract, adapter | `native-ai-engineer` + `master-engineer` |
 
-### Product Domain
+### Research & Product Domain
 
 | Intent Signals | Roles to Activate |
 |---|---|
@@ -59,6 +61,8 @@ State which roles are active at the start of every response.
 | spec, requirements, acceptance criteria | `product-manager` + `plan` |
 | prioritize, backlog, roadmap | `product-manager` |
 | user problem, pain point, why does this fail | `product-manager` + `ux-psychology` |
+| interview users, research, validate assumption, JTBD | `user-research` + `product-manager` |
+| survey, usability test, what do users want | `user-research` + `ux-psychology` |
 
 ### Cross-Domain (Full Stack)
 
@@ -67,6 +71,7 @@ State which roles are active at the start of every response.
 | audit everything, full review | `master-engineer` + `master-design` + `ux-psychology` + `product-manager` |
 | new feature from scratch | `product-manager` + `master-design` + `master-engineer` |
 | why is this failing (product) | `product-manager` + `ux-psychology` + `systematic-debugging` |
+| end-to-end: research → design → build | `user-research` + `master-design` + `master-engineer` |
 
 ---
 
