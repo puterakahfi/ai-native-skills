@@ -148,14 +148,27 @@ Color:      Warm dark (NOT cold black — #0c0b09 not #000000)
             border: rgba(255,255,248,0.06) — barely-there
             Dark mode primary
 
-Layout:     Ma (間) — negative space IS content, not absence of design
-            Section dividers: 1px rgba border only — never background color swap
-            VOID RULE: every space needs a visual anchor below content
+Layout:     Seven principles of Wabi-Sabi applied to UI:
+              Fukinsei (不均斉): asymmetry preferred over perfect grid alignment
+              Kanso (簡素): simplicity — remove before adding
+              Seijaku (静寂): SILENCE — lines are visual noise, use space instead
+              Shibui: simple overall, subtle details — balance simplicity+complexity
+
+            LINE RULE (from Seijaku + Shibui):
+              Max 1 structural border on the page — the work section top border.
+              All other section breaks = white space only (padding change, no line).
+              ❌ border on every section = 5+ lines = noise = NOT zen
+              ✅ ONE line marks the transition from identity → work
+              ✅ Rest of page: padding rhythm creates implicit separation
+
+            VOID RULE (Ma 間):
+              Space is intentional, not accidental. Every space needs an anchor.
               - Hero MUST have anchor below bio: contact row OR scroll cue
-              - Without anchor → hero feels abandoned → FAIL
-              - Section gap MUST be ≤80px padding before next section starts
-            About: 2-col grid (heading left, content right)
-            Work: borderless rows, 1px border-top only
+              - Without anchor → hero reads abandoned → FAIL
+              - Section padding: clamp(64px,8vh,80px) top AND bottom — consistent rhythm
+
+            Layout: 2-col about (heading left, content right — Fukinsei asymmetry)
+            Work: rows separated by 1px border-top only (one system, consistent)
 
 Motion:     STILLNESS — no hover lift, no bounce, no glow, no scale
             ONLY permitted: color-shift transition (150–200ms)
