@@ -6,7 +6,7 @@ description: 'UI component patterns — exact CSS templates, behavior specs, int
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/design/ui-components.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/design/ux-ui-patterns.contract.yaml
   ai-native-skills.tags: '[''ui'', ''components'', ''patterns'', ''templates'', ''css'', ''behavior'']'
 ---
 
