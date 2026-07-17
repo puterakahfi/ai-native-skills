@@ -41,8 +41,9 @@ Phase 4   → PRODUCE          (derive from ports, not improvise)
   → load port: design-interaction (patterns before implementing behavior)
   → load port: design-strategy (copywriting, ux-psychology)
   → load: references/phase-produce.md
-Phase 5   → REVIEW           (score all gates, min 8.0)
-  → load port: design-system  (accessibility gates)
+Phase 5   → REVIEW           (foundation gates first, then genre/brand)
+  → load: design-foundation   (F1–F7 hard gates — any fail blocks delivery)
+  → load port: design-system  (accessibility + token gates)
   → load: references/phase-review-gates.md
 Phase 6   → FIX              (skill-first fix loop)
   → load: references/phase-fix-loop.md
@@ -89,6 +90,9 @@ Do not use for: product from zero (`product-development-workflow`), non-visual f
 Scan target for existing design signals:
 
 ```
+0. design-brand file? → skill_view(name='design-brand', file_path='references/<client>.md')
+   Found  → BRAND LOCK: respect tokens, genre adapts within brand only
+   Not found → free genre selection
 1. design.md / DESIGN.md at root → locked system, overrides all picks
 2. CSS :root vars → existing palette + type scale
 3. Theme infra → next-themes / .dark / [data-theme] / ThemeProvider
