@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/information-architecture.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/design/information-architecture.contract.yaml
   ai-native-skills.related_skills: "['ux-psychology', 'ux-ui-patterns', 'content-strategy', 'product-manager']"
 ---
 
