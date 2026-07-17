@@ -10,6 +10,14 @@ metadata:
   ai-native-skills.related_skills: "['master-design', 'ux-ui-patterns', 'accessibility', 'design-review']"
 ---
 
+# Design System Port
+
+> This skill doubles as **Port 5: Design System & Accessibility** — the systematic cross-cutting layer.
+> Load this for tokens, theming, and accessibility concerns.
+> Adapter skills: `dark-light-theming`, `accessibility`
+
+---
+
 # Design System Skill
 
 ## ⚠️ HARD RULES (read before anything else)

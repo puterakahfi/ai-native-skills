@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/redesign.contract.yaml
-  ai-native-skills.related_skills: '["design-audit","design-review","design-refinement","master-design","ui-components","ux-patterns-for-developers","macrostructures","design-genre","composition","visual-hierarchy","copywriting","cro","dark-light-theming","responsiveness","motion-design"]'
+  ai-native-skills.related_skills: '["design-visual","design-layout","design-interaction","design-strategy","design-system","design-audit","design-review","design-refinement"]'
 ---
 
 # Redesign Workflow
@@ -27,16 +27,22 @@ HARD RULES (non-negotiable):
 ```
 Phase 0   → PRE-FLIGHT       (scan existing design signals)
 Phase 0.5 → GENRE + MACRO    (pick genre + macrostructure from brief)
-  → load: references/phase-genre-macro.md
-Phase 0.6 → VISUAL LANGUAGE  (translate theme word → concrete rules)
+  → load port: design-visual   (genre detection + visual language)
+  → load port: design-layout   (macrostructure pick)
   → load: references/phase-genre-macro.md
 Phase 0.75→ LAYERED PLAN     (classify work by layer)
   → load: references/phase-genre-macro.md
-Phase 2   → VALUE ALIGNMENT  (business-value-alignment skill)
+Phase 2   → VALUE ALIGNMENT
+  → load port: design-strategy (cro only if conversion goal)
 Phase 3   → SPEC CONFIRM     (align constraints before producing)
-Phase 4   → PRODUCE          (derive from skills, not improvise)
+Phase 4   → PRODUCE          (derive from ports, not improvise)
+  → load port: design-visual   (motion, composition)
+  → load port: design-layout   (ui-components, responsiveness)
+  → load port: design-interaction (patterns before implementing behavior)
+  → load port: design-strategy (copywriting, ux-psychology)
   → load: references/phase-produce.md
 Phase 5   → REVIEW           (score all gates, min 8.0)
+  → load port: design-system  (accessibility gates)
   → load: references/phase-review-gates.md
 Phase 6   → FIX              (skill-first fix loop)
   → load: references/phase-fix-loop.md
