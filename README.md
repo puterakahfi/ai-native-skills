@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**76 skills · 7 workflows · 2 meta-skills**
+**79 skills · 9 workflows · 6 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -75,7 +75,7 @@ This is a Hermes adapter skill for the runtime-agnostic profile-bootstrap contra
 
 ---
 
-## Meta-Skills (2)
+## Meta-Skills (6)
 
 Load these first — they route and compose everything else.
 
@@ -83,10 +83,14 @@ Load these first — they route and compose everything else.
 |---|---|
 | `workflow-router` | Detects task type (product-from-zero/refinement/bug/feature/review/deploy) → loads correct workflow automatically |
 | `role-switcher` | Detects intent → composes role lenses (design audit → master-design + ux-psychology + product-manager) |
+| `design-layout` | Layout & structure port — routes to macrostructures, responsiveness, ui-components |
+| `design-visual` | Visual design port — routes to genre, motion, composition, readability |
+| `design-strategy` | UX strategy & content port — routes to ux-psychology, information-architecture, cro, copywriting |
+| `design-interaction` | Interaction & UX patterns port — routes to ux-ui-patterns, ux-patterns-for-developers |
 
 ---
 
-## Workflows (7)
+## Workflows (9)
 
 | Workflow | Phases |
 |---|---|
@@ -97,6 +101,8 @@ Load these first — they route and compose everything else.
 | `deployment-workflow` | pre-deploy → deploy → health-verify → rollback |
 | `redesign-workflow` | existing UI/UX surface refinement — audit → spec → prototype/patch → design-review gates → iterate → deliver |
 | `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |
+| `design-refinement` | targeted design fix — failing-gate triage → patch → re-gate → deliver (no full redesign) |
+| `skill-doctor` | skill health — audit → triage → fix monoliths/stubs → verify length + gates |
 
 ### Workflow entry points
 
@@ -106,10 +112,12 @@ Use broad lifecycle workflows, not surface-specific workflow variants:
 |---|---|
 | Build a product from zero, no PRD yet | `product-development-workflow` |
 | Refine/redesign/polish an existing landing page, dashboard, app screen, onboarding flow, pricing page, or portfolio | `redesign-workflow` |
+| Fix specific failing design gates without full redesign | `design-refinement` |
 | Build a new capability in an existing product | `new-feature-workflow` |
 | Fix broken behavior or regression | `bugfix-workflow` |
 | Review before merge/ship | `code-review-workflow` |
 | Deploy/release/rollback | `deployment-workflow` |
+| Audit and fix skill files | `skill-doctor` |
 
 Examples:
 
@@ -123,7 +131,7 @@ hermes chat -s redesign-workflow -q \
 
 ---
 
-## Skills (67)
+## Skills (79)
 
 ### Domain Architecture
 
@@ -139,6 +147,7 @@ hermes chat -s redesign-workflow -q \
 | `adr` | Architecture Decision Records — immutable, superseding pattern, tradeoff-honest |
 | `ai-system-design` | RAG, agent memory, LLM evals, prompt injection defense, graceful degradation |
 | `systems-thinking` | Feedback loops, second-order effects, Conway's Law, Goodhart's Law, leverage points |
+| `data-modeling` | Schema design, normalization tradeoffs, migration patterns, polyglot persistence |
 
 ### Engineering Quality
 
@@ -152,6 +161,9 @@ hermes chat -s redesign-workflow -q \
 | `incident-response` | Structured incident lifecycle, blameless postmortem, 5 Whys to systemic cause |
 | `refactoring` | Named code smells, green-first, small steps, one type per commit |
 | `test-driven-development` | RED-GREEN-REFACTOR — tests before implementation, every time |
+| `technical-debt-governance` | Debt inventory, classification, interest calculation, paydown prioritization |
+| `web-performance` | Core Web Vitals scoring, LCP/CLS/INP optimization, font loading, caching |
+| `decision-making` | Engineering decision-making frameworks — reversibility classification, pre-mortem, OODA loop |
 | `skill-eval` | APPLIED/PARTIAL/GHOST — verify skills are actually applied, not just loaded |
 
 ### Experience Design
@@ -162,9 +174,18 @@ hermes chat -s redesign-workflow -q \
 | `redesign-workflow` | Full redesign loop — Phase 0.5 brief-signal, 35+ gates (G1–G22, R1–R8, C1–C3, H1–H3, CRO1–CRO4), skill-first fix |
 | `macrostructures` | Layout archetypes — Marquee Hero, Studio, Editorial; mandatory CSS templates |
 | `design-genre` | Editorial dark, minimal light, bold brand — token selection per genre |
+| `design-foundation` | Universal design foundation — hierarchy, Ma, Kanso, tokens, a11y |
+| `design-brand` | Locked external design systems — brand tokens, constraints, and rules that override genre |
+| `design-depth` | Visual depth and layering — multi-layer composition, atmosphere, type interleave, elevation inheritance |
+| `design-color` | Color as design structure — palette construction, psychology, harmony rules, genre mapping |
+| `design-typography` | Typography as design structure — typeface selection, type scale, pairing, rhythm |
+| `design-iconography` | Iconography as design structure — icon style, sizing, optical alignment, usage rules |
+| `design-spacing` | Spacing as design structure — visual rhythm, spatial hierarchy, Ma principle |
 | `design-system` | Token architecture, component library, design language governance |
+| `design-audit` | Standalone design audit — inspect existing UI, produce scored gap report with fix plan |
 | `ui-components` | 9 component templates — Navbar, Hero, Section, Work Row, About, Contact, Footer, Scroll Reveal, Verification. Copy-paste, no improvisation |
 | `ux-patterns-for-developers` | 74 battle-tested UI patterns from uxpatterns.dev — delegate to `npx skills add` for component behavior + a11y |
+| `ux-ui-patterns` | UI/UX pattern library — which hero pattern fits the goal, which layout for content type |
 | `composition` | Focal point, optical center (45%), dead space vs breathing room, eye-flow mapping |
 | `visual-hierarchy` | Dominant/supporting/accent triad, H2 ≤ 60% H1, heading role taxonomy |
 | `readability` | Line length (44ch), contrast, type size, cognitive ease |
@@ -174,6 +195,7 @@ hermes chat -s redesign-workflow -q \
 | `design-review` | Design system compliance, AI slop detection, visual hierarchy gates |
 | `ux-psychology` | Cognitive load, habit loops, Fitts's Law, Nielsen heuristics |
 | `copywriting` | Messaging hierarchy, value prop 1000-person test, bio ≤45 words, buzzword blacklist |
+| `content-strategy` | Content strategy — microcopy, tone of voice, content hierarchy, onboarding flows |
 | `cro` | Attention flow, trust signals, 8-second window, persuasion sequence |
 | `information-architecture` | Content hierarchy, navigation taxonomy, mental models |
 | `accessibility` | WCAG 2.1 AA — semantic HTML, ARIA, keyboard nav, screen reader, cognitive |
@@ -251,29 +273,34 @@ Input quality:
   prompt-optimizer → business-value-alignment → experiment-design → response-contract → spec-workflow → threat-modeling
 
 Domain modeling:
-  domain-driven-design → ports-and-adapters → design-patterns → adr
+  domain-driven-design → ports-and-adapters → design-patterns → adr → data-modeling
 
 Distributed systems:
   service-design → api-contract → event-driven-design
 
 Frontend:
   redesign-workflow → macrostructures → ui-components → ux-patterns-for-developers → accessibility → ux-psychology
-  master-design → composition → visual-hierarchy → copywriting → cro → motion-design
+  master-design → design-foundation → design-brand → design-depth → design-color → design-typography
+  design-layout → design-visual → design-strategy → design-interaction
+  composition → visual-hierarchy → copywriting → content-strategy → cro → motion-design
 
 AI systems:
   ai-system-design → ethics-responsible-ai → systems-thinking
 
 Quality gates:
-  architecture-review → security-review → code-review-workflow → skill-eval
+  architecture-review → security-review → code-review-workflow → skill-eval → skill-doctor
 
 Reliability:
-  observability-design → resilience-engineering → incident-response
+  observability-design → resilience-engineering → incident-response → technical-debt-governance
+
+Performance:
+  web-performance → design-depth → dark-light-theming → responsiveness
 
 Process:
   product-development-workflow → spec-workflow → new-feature-workflow → bugfix-workflow → deployment-workflow
 
 Philosophy:
-  systems-thinking → ethics-responsible-ai → adr
+  systems-thinking → decision-making → ethics-responsible-ai → adr
 ```
 
 ---

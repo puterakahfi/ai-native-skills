@@ -6,10 +6,10 @@ The goal is to keep skill authoring decisions consistent: when to create an atom
 
 Current repository inventory:
 
-- `skill`: 67
-- `workflow`: 7
-- `meta-skill`: 2
-- Total executable skills: 76
+- `skill`: 79
+- `workflow`: 9
+- `meta-skill`: 6
+- Total executable skills: 94
 
 ---
 
@@ -113,6 +113,9 @@ A good `workflow` should define:
 | `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict |
 | `deployment-workflow` | pre-deploy → context-load → deploy → health-verify → confirm/rollback |
 | `redesign-workflow` | audit → spec → prototype → design-review gates → iterate → deliver |
+| `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |
+| `design-refinement` | failing-gate triage → patch → re-gate → deliver (targeted, no full redesign) |
+| `skill-doctor` | audit → triage → fix monoliths/stubs → verify length + gates |
 
 ---
 
@@ -152,6 +155,10 @@ A good `meta-skill` should define:
 |---|---|
 | `workflow-router` | Detect task type — bug, feature, review, deploy, spike — and route to the correct workflow. |
 | `role-switcher` | Detect user intent and compose expert role lenses, such as design + UX psychology + product management. |
+| `design-layout` | Route layout decisions — macrostructures, responsiveness, ui-components, spatial structure. |
+| `design-visual` | Route visual design — genre selection, motion, composition, readability. |
+| `design-strategy` | Route UX strategy — ux-psychology, information-architecture, cro, copywriting, content-strategy. |
+| `design-interaction` | Route interaction patterns — ux-ui-patterns, ux-patterns-for-developers, behavior. |
 
 ---
 
