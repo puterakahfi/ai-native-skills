@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-visual.contract.yaml
-  ai-native-skills.related_skills: '["design-genre","motion-design","composition","readability"]'
+  ai-native-skills.related_skills: '["design-typography","design-genre","motion-design","composition","readability"]'
 ---
 
 # Design Visual Port
@@ -35,7 +35,8 @@ Answers: What genre? What motion stance? What typography rules? What composition
 
 | Concern | Adapter | When to load |
 |---|---|---|
-| Genre + voice + slop gates | `design-genre` | Always first — gates everything downstream |
+| Typography structure + pairing | `design-typography` | Layer 2 — after genre, before layout |
+| Typeface + visual style | `design-genre` | Always first — gates everything downstream |
 | Motion stance + animation | `motion-design` | Phase 4 produce, any animation decision |
 | Composition + visual weight | `composition` | Phase 4 produce, layout balance questions |
 | Typography legibility | `readability` | Phase 5 review, body text concerns |
@@ -58,12 +59,16 @@ Phase 0.5 GENRE:
   1. skill_view(name='design-genre')             ← detect genre from brief
   2. skill_view(name='design-genre', file_path='references/<genre>.md')  ← load genre spec
 
+Phase 0.6 VISUAL LANGUAGE (typography — Layer 2):
+  3. skill_view(name='design-typography')        ← pair + scale + hierarchy
+  4. skill_view(name='design-typography', file_path='references/genre-typeface-map.md')
+
 Phase 4 PRODUCE (visual concerns):
-  3. skill_view(name='motion-design')            ← motion stance + CSS
-  4. skill_view(name='composition')              ← visual weight rules
+  5. skill_view(name='motion-design')            ← motion stance + CSS
+  6. skill_view(name='composition')              ← visual weight rules
 
 Phase 5 REVIEW (visual gates):
-  5. skill_view(name='readability')              ← typography/legibility gates
+  7. skill_view(name='readability')              ← legibility metrics (contrast, CPL)
 ```
 
 ---
