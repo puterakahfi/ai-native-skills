@@ -7,7 +7,7 @@ skill_adapter:
   implements:
     contract:
       id: master-engineer
-      source: "https://github.com/puterakahfi/native-ai-core/contracts/skills/software-engineering/master-engineer.contract.yaml"
+      source: "https://github.com/puterakahfi/native-ai-core/contracts/skills/engineering/master-engineer.contract.yaml"
       version: "^0.1.0"
   category: software-development
   capabilities:

@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/engineering/decision-making.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/product/decision-making.contract.yaml
   ai-native-skills.related_skills: "['systems-thinking', 'adr', 'ethics-responsible-ai', 'risk-modeling']"
 ---
 

@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/model/model-selection.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime/model-selection.contract.yaml
   ai-native-skills.related_skills: '[''ai-system-design'', ''skill-eval'', ''threat-modeling'', ''architecture-review'', ''native-ai-runtime-agent'']'
 ---
 
@@ -21,7 +21,7 @@ The model is the **brain** in the AI-native engineering stack. Do not pick a mod
 This skill implements the runtime-agnostic contract:
 
 ```text
-ai-native-core/contracts/skills/model/model-selection.contract.yaml
+ai-native-core/contracts/skills/runtime/model-selection.contract.yaml
 ```
 
 ## When to Use

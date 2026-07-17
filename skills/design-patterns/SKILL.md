@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/design-patterns.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/architecture/design-patterns.contract.yaml
 ---
 
 # Design Patterns

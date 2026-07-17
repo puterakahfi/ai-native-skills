@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/product-management/product-requirements.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/product/product-requirements.contract.yaml
   ai-native-skills.related_skills: '["business-value-alignment", "experiment-design", "product-manager", "user-research", "spec-workflow", "decision-making", "api-contract"]'
 ---
 

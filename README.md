@@ -360,7 +360,7 @@ Adapter behavior is a pattern, not a separate official category value today. Use
 name: native-ai-runtime-agent
 metadata:
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-agent/native-ai-runtime-agent.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime/native-ai-runtime-agent.contract.yaml
 ```
 
 See [docs/skills.md](docs/skills.md#adapter-pattern) for details.

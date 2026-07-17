@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/runtime-profile/profile-bootstrap.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/runtime/profile-bootstrap.contract.yaml
 ---
 
 # Hermes Profile Bootstrap
@@ -17,7 +17,7 @@ metadata:
 
 Use this skill to create or audit the **Hermes adapter implementation** of the Native AI `profile-bootstrap` contract.
 
-The core contract lives in `native-ai-core/contracts/skills/runtime-profile/profile-bootstrap.contract.yaml`. This skill owns the Hermes-specific profile skeleton, commands, paths, install steps, and verification behavior. The profile is a **runtime skeleton**, not a product.
+The core contract lives in `native-ai-core/contracts/skills/runtime/profile-bootstrap.contract.yaml`. This skill owns the Hermes-specific profile skeleton, commands, paths, install steps, and verification behavior. The profile is a **runtime skeleton**, not a product.
 
 Target command shape:
 

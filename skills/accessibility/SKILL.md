@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/accessibility.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/design/accessibility.contract.yaml
   ai-native-skills.related_skills: '["design-review", "ux-psychology", "master-design", "ethics-responsible-ai"]'
 ---
 

@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/software-engineering/test-driven-development.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/engineering/test-driven-development.contract.yaml
 ---
 
 # Test-Driven Development (TDD)

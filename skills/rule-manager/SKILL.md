@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/rule-management/rule-manager.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/governance/rule-manager.contract.yaml
 ---
 
 # Rule Manager

@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/context-management/context-manager.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/context/context-manager.contract.yaml
 ---
 
 # Context Manager

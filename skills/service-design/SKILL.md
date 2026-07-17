@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/service-design.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/architecture/service-design.contract.yaml
   ai-native-skills.related_skills: '[''domain-driven-design'', ''api-contract'', ''event-driven-design'', ''ports-and-adapters'']'
 ---
 

@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/rule-management/language-standards.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/governance/language-standards.contract.yaml
 ---
 
 # Language Standards
