@@ -5,6 +5,7 @@ license: MIT
 metadata:
   ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "master-engineer master-design spec-workflow test-driven-development"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/new-feature.contract.yaml
   ai-native-skills.skill_load_order: '[{''phase'': ''plan'', ''load'': [''master-engineer'']}, {''phase'': ''design'', ''load'': [''master-engineer'', ''diagram-architect'', ''master-design'', ''design-review'']}, {''phase'': ''implement'', ''load'': [''master-engineer'']}, {''phase'': ''review'', ''load'': [''architecture-review'', ''design-review'']}]'

@@ -4,20 +4,26 @@ Reusable agent skills and workflows for AI-native engineering. Works with any ag
 
 **79 skills · 9 workflows · 6 meta-skills**
 
-See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
+See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. See [docs/skill-packs.md](docs/skill-packs.md) for one-command bundle installs. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
 ---
 
 ## Install
 
 ```bash
+# Single skill
 npx skills add puterakahfi/ai-native-skills@<skill-name> -g -y
 
-# examples
+# Examples
 npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
 npx skills add puterakahfi/ai-native-skills@systems-thinking -g -y
 npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
+
+# Full suite
+npx skills add puterakahfi/ai-native-skills -g -y
 ```
+
+> **Installing a workflow?** Workflows depend on other skills — use the packs in [docs/skill-packs.md](docs/skill-packs.md) to install a workflow + all its dependencies in one command. The Agent Skills spec has no native dependency resolution yet; packs bridge the gap.
 
 ---
 

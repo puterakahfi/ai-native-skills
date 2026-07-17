@@ -5,6 +5,7 @@ license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "master-engineer architecture-review security-review threat-modeling"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/code-review.contract.yaml
   ai-native-skills.skill_load_order: '[{''phase'': ''architecture-check'', ''load'': [''architecture-review'']}, {''phase'': ''design-check'', ''load'': [''design-review'']}, {''phase'': ''logic-check'', ''load'': [''systematic-debugging'', ''master-engineer'']}]'

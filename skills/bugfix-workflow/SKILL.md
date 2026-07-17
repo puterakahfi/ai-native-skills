@@ -5,6 +5,7 @@ license: MIT
 metadata:
   ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "systematic-debugging master-engineer security-review test-driven-development"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/bugfix.contract.yaml
   ai-native-skills.skill_load_order: '[{''phase'': ''investigate'', ''load'': [''systematic-debugging'']}, {''phase'': ''fix'', ''load'': [''systematic-debugging'']}, {''phase'': ''review'', ''load'': [''architecture-review'']}]'

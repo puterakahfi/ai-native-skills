@@ -5,6 +5,7 @@ license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "master-engineer observability-design resilience-engineering"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/deployment.contract.yaml
   ai-native-skills.skill_load_order: '[{''phase'': ''pre-deploy-check'', ''load'': [''security-review'', ''architecture-review'']}, {''phase'': ''context-load'', ''load'': [''context-manager'']}]'

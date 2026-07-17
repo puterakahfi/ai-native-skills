@@ -5,6 +5,7 @@ license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "redesign-workflow new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow design-refinement skill-doctor spec-workflow"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/workflow-router.contract.yaml
   ai-native-skills.related_skills: '[''role-switcher'', ''product-development-workflow'', ''redesign-workflow'', ''bugfix-workflow'', ''new-feature-workflow'', ''code-review-workflow'', ''deployment-workflow'', ''spec-workflow'']'

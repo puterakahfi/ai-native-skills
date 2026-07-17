@@ -5,6 +5,7 @@ license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "master-engineer master-design product-manager ux-psychology user-research native-ai-engineer diagram-architect design-review systematic-debugging architecture-review security-review plan"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/role-switcher.contract.yaml
 ---

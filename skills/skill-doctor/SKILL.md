@@ -5,6 +5,7 @@ license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "skill-eval"
   ai-native-skills.type: workflow
   ai-native-skills.related_skills: '["skill-eval","redesign-workflow","context-engineering"]'
 ---
