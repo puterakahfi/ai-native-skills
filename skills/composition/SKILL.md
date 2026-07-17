@@ -147,17 +147,16 @@ Rule: Hero must have ZERO dead space above focal point.
 ```
 
 ---
-## Alignment: Balance vs Symmetry
+## Alignment & Anchoring
 
 ```
-Alignment rule: every element must be anchored to a grid column or a sibling edge.
+Rule: every element must be anchored to a grid column or a sibling edge.
 "Ngambang" (floating) = element has no visual relationship to anything near it.
 
-Checklist:
-  □ Every element aligns to: left edge, right edge, center axis, or sibling
-  □ No element is positioned by eye-balling (no magic numbers like margin-top:73px)
-  □ Vertical rhythm: spacing between elements is multiples of base unit (8px grid)
-  □ If two elements are "near" each other, they must snap to the same grid line
+  □ Aligns to: left edge, right edge, center axis, or sibling
+  □ No magic numbers (no margin-top:73px)
+  □ Vertical rhythm: spacing = multiples of 8px base unit
+  □ "Near" elements must snap to same grid line
 ```
 
 ---

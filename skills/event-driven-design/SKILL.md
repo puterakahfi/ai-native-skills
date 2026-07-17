@@ -7,10 +7,15 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/event-driven-design.contract.yaml
-  ai-native-skills.related_skills: '[''domain-driven-design'', ''service-design'', ''design-patterns'', ''api-contract'']'
+  ai-native-skills.related_skills: '["domain-driven-design", "service-design", "design-patterns", "api-contract"]'
 ---
 
 # Event-Driven Design
+
+> **HARD RULES**
+> - Events are immutable facts — always named in **past tense**
+> - Event schema **must be versioned** — every envelope carries `eventVersion`
+> - Consumers **must be idempotent** — at-least-once delivery means duplicates will arrive
 
 ## When to Use
 
@@ -24,257 +29,21 @@ metadata:
 
 ---
 
-## Event Schema Design
+## References
 
-### Naming Convention — Past Tense, Domain Meaningful
-
-```
-✅ OrderPlaced         ← something happened in Sales context
-✅ PaymentProcessed    ← something happened in Payment context
-✅ ItemsReserved       ← something happened in Inventory context
-✅ ShipmentDispatched  ← something happened in Shipping context
-
-❌ PlaceOrder          ← command, not event
-❌ OrderUpdate         ← vague, not past tense
-❌ UserEvent           ← meaningless, not domain-specific
-```
-
-### Event Envelope — Standard Schema
-
-Every event must carry:
-
-```json
-{
-  "eventId": "evt_01J5X...",
-  "eventType": "order.placed",
-  "eventVersion": "1.0",
-  "occurredAt": "2026-07-16T10:00:00Z",
-  "aggregateId": "ord_abc123",
-  "aggregateType": "Order",
-  "correlationId": "req_xyz789",
-  "causationId": "cmd_place_order_456",
-  "payload": {
-    "orderId": "ord_abc123",
-    "customerId": "cust_789",
-    "items": [
-      { "productId": "prd_001", "quantity": 2, "price": 4999 }
-    ],
-    "total": 9998,
-    "currency": "USD"
-  }
-}
-```
-
-**Required fields:**
-- `eventId` — globally unique, for idempotency
-- `eventType` — dotted namespace: `{context}.{event_name}`
-- `eventVersion` — schema version
-- `occurredAt` — when it happened (not when published)
-- `aggregateId` + `aggregateType` — what entity this is about
-- `correlationId` — trace ID across service calls
-
----
-
-## Schema Versioning + Evolution
-
-### Backward Compatible Changes (safe)
-```json
-// v1.0
-{ "orderId": "...", "total": 9998 }
-
-// v1.1 — added optional field — backward compatible
-{ "orderId": "...", "total": 9998, "currency": "USD" }
-```
-
-### Breaking Changes (require new version)
-```
-❌ Remove field consumers use
-❌ Rename field
-❌ Change field type
-❌ Make optional field required
-```
-
-### Strategy: Schema Registry
-- Register every event schema version
-- Validate on publish, validate on consume
-- Consumers declare which version(s) they support
-
----
-
-## Producer Contract
-
-Producer publishes — commits to schema stability within a version.
-
-```yaml
-# producer-contract: OrderService
-produces:
-  - event: order.placed
-    version: "1.0"
-    schema: schemas/order.placed.v1.0.json
-    delivery: at-least-once
-    broker: kafka/orders-topic
-
-  - event: order.cancelled
-    version: "1.0"
-    schema: schemas/order.cancelled.v1.0.json
-    delivery: at-least-once
-    broker: kafka/orders-topic
-```
-
----
-
-## Consumer Contract + Idempotency
-
-Consumers MUST be idempotent — at-least-once delivery means duplicates will arrive.
-
-```php
-class OrderPlacedConsumer
-{
-    public function handle(OrderPlaced $event): void
-    {
-        // Idempotency check — skip if already processed
-        if ($this->processedEvents->contains($event->eventId)) {
-            return;  // duplicate — safe to ignore
-        }
-
-        // Process
-        $this->inventory->reserve($event->aggregateId, $event->payload['items']);
-
-        // Mark as processed (in same transaction as business logic)
-        $this->processedEvents->record($event->eventId);
-    }
-}
-```
-
-**Idempotency strategies:**
-| Strategy | How |
+| Topic | File |
 |---|---|
-| Processed event log | Store eventId in DB, check before processing |
-| Natural key dedup | Business key (orderId + action) is unique constraint |
-| Conditional update | `UPDATE ... WHERE status = 'PENDING'` — only applies once |
+| Event Schema Design, Schema Versioning, Producer Contract, Consumer Contract + Idempotency | [references/event-schema-and-contracts.md](references/event-schema-and-contracts.md) |
+| Delivery Guarantees, Outbox Pattern, DLQ, Saga Patterns, CQRS + Event Flow, Checklist | [references/delivery-saga-cqrs.md](references/delivery-saga-cqrs.md) |
 
 ---
 
-## Delivery Guarantees
-
-| Guarantee | Meaning | Use When |
-|---|---|---|
-| At-most-once | May lose messages, never duplicate | Telemetry, non-critical notifications |
-| At-least-once | May duplicate, never lose | Most business events — combine with idempotency |
-| Exactly-once | Never lose, never duplicate | Financial transactions — expensive, use Outbox pattern |
-
----
-
-## Outbox Pattern — Atomic Publish
-
-**Problem:** Save to DB + publish to broker — what if broker fails after DB commit?
+## Quick Decision Guide
 
 ```
-❌ Wrong:
-  BEGIN TRANSACTION
-  INSERT INTO orders ...
-  COMMIT
-  → publish OrderPlaced to Kafka  ← fails here → event lost forever
+Need to decouple two services?        → Event-driven, see event-schema-and-contracts.md
+Multi-service transaction?            → Saga (choreography or orchestration), see delivery-saga-cqrs.md
+Exactly-once guarantee needed?        → Outbox pattern, see delivery-saga-cqrs.md
+Consumer failing on duplicates?       → Idempotency strategies, see event-schema-and-contracts.md
+Schema change in existing event?      → Schema versioning + registry, see event-schema-and-contracts.md
 ```
-
-```
-✅ Outbox:
-  BEGIN TRANSACTION
-  INSERT INTO orders ...
-  INSERT INTO outbox (event_type, payload, status='PENDING') ...
-  COMMIT
-  ← background worker reads outbox → publishes → marks DELIVERED
-  ← retry on broker failure — idempotent because eventId is stable
-```
-
----
-
-## Dead Letter Queue (DLQ)
-
-Every consumer must define what happens when processing fails repeatedly.
-
-```yaml
-consumer:
-  queue: inventory.order-placed
-  max_retries: 3
-  retry_delay: [5s, 30s, 5m]   # exponential backoff
-  dlq: inventory.order-placed.dlq
-
-# DLQ handler — alert + manual review
-dlq_handler:
-  alert: pagerduty/inventory-team
-  retention: 7d
-  replay_command: bin/replay-dlq.sh inventory.order-placed.dlq
-```
-
----
-
-## Saga Patterns
-
-### Choreography Saga (event-driven, decentralized)
-
-```
-OrderService      → emits OrderPlaced
-InventoryService  → listens OrderPlaced → reserves → emits ItemsReserved
-PaymentService    → listens ItemsReserved → charges → emits PaymentProcessed
-ShippingService   → listens PaymentProcessed → schedules → emits ShipmentScheduled
-
-Failure: PaymentService fails
-  → emits PaymentFailed
-  → InventoryService listens PaymentFailed → emits ItemsReleased (compensation)
-  → OrderService listens ItemsReleased → emits OrderCancelled (compensation)
-```
-
-**Use when:** Services are truly independent, choreography is simple enough to trace.
-
-### Orchestration Saga (command-driven, centralized)
-
-```
-SagaOrchestrator:
-  1. command ReserveItems → InventoryService
-  2. on ItemsReserved: command ChargePayment → PaymentService
-  3. on PaymentProcessed: command ScheduleShipment → ShippingService
-  4. on failure: issue compensating commands in reverse order
-
-State machine — tracks saga progress, handles timeouts
-```
-
-**Use when:** Complex flow with many services, need explicit saga state tracking.
-
----
-
-## CQRS + Event Flow
-
-```
-Write side:
-  Command → Handler → Aggregate → Domain Event → Event Store → Publish
-
-Read side:
-  Event → Projector → Read Model (denormalized view) → Query
-
-Example:
-  PlaceOrderCommand
-    → OrderAggregate.place()
-    → emits OrderPlaced
-    → stored in EventStore
-    → published to broker
-    → OrderProjector handles OrderPlaced
-    → updates orders_read_model table
-    → GET /orders/{id} queries orders_read_model (fast)
-```
-
----
-
-## Event-Driven Design Checklist
-
-Before publishing a new event:
-- [ ] Event name is past tense and domain meaningful?
-- [ ] Event envelope has all required fields (eventId, eventType, eventVersion, occurredAt)?
-- [ ] Schema registered in schema registry?
-- [ ] Producer contract documented?
-- [ ] Consumer is idempotent (handles duplicate delivery)?
-- [ ] Delivery guarantee declared?
-- [ ] DLQ defined with retry + alert strategy?
-- [ ] Saga compensation transactions defined (if multi-service transaction)?
-- [ ] Outbox pattern used if exactly-once needed?
-- [ ] Schema evolution strategy documented (backward compatible)?

@@ -11,6 +11,8 @@ metadata:
 
 # Hermes Profile Bootstrap
 
+> **HARD RULES:** Run phases in order. Verify each step before proceeding. This workflow is idempotent — safe to re-run.
+
 ## Overview
 
 Use this skill to create or audit the **Hermes adapter implementation** of the Native AI `profile-bootstrap` contract.
@@ -61,322 +63,30 @@ product instance        = VisualMate or another product's rules, specs, context,
 
 A generated profile may reference product projects, but it must not bake product facts into the reusable skeleton.
 
-## Presets
+## Execution Phases
 
-Choose the smallest preset that satisfies the intended runtime.
+Run in order. Verify completion criteria before advancing to the next phase.
 
-| Preset | Use when | Includes |
-|---|---|---|
-| `minimal` | Profile should only route work and understand Native AI boundaries | meta-skills, core workflows, Native AI runtime skills, context/rule skills |
-| `engineering` | Default for coding/product engineering | `minimal` + engineering quality + architecture foundation |
-| `product` | Profile will design/build product UX and landing/app surfaces | `engineering` + design/product/CRO pack |
-| `runtime-ops` | Profile will operate a canonical remote Hermes runtime | `minimal` + runtime ops, deployment, observability, incident skills |
-| `full` | Profile should be a complete AI-native engineering workstation | all packs below |
+### Phase 1 — Preset & Skill Packs
 
-Default to `engineering` unless the user names a narrower or broader preset.
+Select preset and identify all required skill packs for the chosen preset.
 
-## Required Skill Packs
+→ See `references/skill-packs.md`
 
-### Meta-skills
+Completion: preset is selected and all included packs are listed.
 
-Install in every preset:
+### Phase 2 — Generation
 
-```text
-workflow-router
-role-switcher
-```
+Name the profile, create skeleton files, install skills, configure safe defaults.
 
-Purpose: classify the request before execution and compose the right workflow/role lenses.
+→ See `references/generation.md`
 
-### Core workflows
+Completion: skeleton files exist, skills installed, no secrets embedded.
 
-Install in every preset:
+### Phase 3 — Verification & Handoff
 
-```text
-spec-workflow
-product-development-workflow
-new-feature-workflow
-bugfix-workflow
-code-review-workflow
-deployment-workflow
-```
+Run doctor, list installed skills, compare against `skills.lock.yaml`, report handoff.
 
-Add for product/design presets:
+→ See `references/verification.md`
 
-```text
-redesign-workflow
-```
-
-### Native AI runtime foundation
-
-Install in every preset:
-
-```text
-native-ai-engineer
-native-ai-runtime-agent
-native-ai-runtime-ops
-context-engineering
-context-manager
-rule-manager
-response-contract
-model-selection
-business-value-alignment
-experiment-design
-```
-
-Purpose: keep core/app/runtime/product/profile boundaries explicit, make profile behavior repeatable, require model choice to be intentional, and align work to measurable value before execution, and turn uncertain value into minimum viable experiments.
-
-### Engineering quality foundation
-
-Install for `engineering`, `product`, `runtime-ops`, and `full`:
-
-```text
-systematic-debugging
-test-driven-development
-refactoring
-architecture-review
-security-review
-threat-modeling
-git-workflow
-plan
-spike
-skill-eval
-```
-
-### Architecture foundation
-
-Install for `engineering`, `product`, and `full`:
-
-```text
-domain-driven-design
-ports-and-adapters
-api-contract
-event-driven-design
-service-design
-systems-thinking
-adr
-```
-
-### Runtime operations pack
-
-Install for `runtime-ops` and `full`:
-
-```text
-observability-design
-resilience-engineering
-incident-response
-deployment-workflow
-native-ai-runtime-ops
-```
-
-### Product/design pack
-
-Install for `product` and `full`:
-
-```text
-product-manager
-product-requirements
-master-design
-design-review
-design-system
-design-genre
-information-architecture
-accessibility
-responsiveness
-ui-components
-ux-patterns-for-developers
-ux-ui-patterns
-ux-psychology
-visual-hierarchy
-composition
-macrostructures
-motion-design
-readability
-dark-light-theming
-copywriting
-content-strategy
-cro
-web-performance
-```
-
-## Profile Skeleton
-
-A generated profile should produce this shape under `~/.hermes/profiles/<profile-name>/`:
-
-```text
-~/.hermes/profiles/<profile-name>/
-├── SOUL.md                         # runtime identity and operating principles
-├── config.yaml                     # safe defaults only; no secrets
-├── skills.lock.yaml                # chosen skill preset and source pins
-├── scripts/
-│   ├── install-skills.sh           # installs declared skills
-│   └── verify-profile.sh           # validates profile health
-├── docs/
-│   ├── profile.md                  # what this profile is for
-│   └── skill-preset.md             # installed packs and rationale
-└── .gitignore                      # excludes state/secrets/logs if this is a distribution repo
-```
-
-Never include these in a reusable profile distribution or generated template:
-
-```text
-state.db
-state.db-wal
-state.db-shm
-sessions/
-memories/
-cron/
-auth.json
-.env
-.env.*
-logs/
-cache/
-secrets/
-tokens/
-credentials/
-```
-
-Hermes itself may create a local `.env` inside a live profile during `hermes profile create`; keep that file local, uncommitted, and free of template-owned secrets.
-
-## Generation Procedure
-
-1. **Name the profile.** Accept `<profile-name>` from the user or command. Completion: name is lowercase/hyphenated and safe as a directory name.
-2. **Select preset.** Default to `engineering`. Completion: selected preset and included skill packs are listed.
-3. **Create profile.** Prefer Hermes CLI when available:
-   ```bash
-   hermes profile create <profile-name>
-   ```
-   Completion: `hermes profile show <profile-name>` succeeds, or the generator reports the exact blocker.
-4. **Write skeleton files.** Create `SOUL.md`, `skills.lock.yaml`, `docs/profile.md`, `docs/skill-preset.md`, and scripts. Completion: files exist and contain no secrets or live state.
-5. **Install skills.** Use `npx skills add puterakahfi/ai-native-skills@<skill-name> -g -y` or the profile's supported install mechanism. Completion: every selected skill is installed or the missing list is explicit.
-6. **Configure safe defaults.** Set only reusable profile defaults: toolset preferences, display/language defaults, and verification policy. Completion: no API keys, tokens, product secrets, or local-only paths are embedded.
-7. **Verify profile.** Run:
-   ```bash
-   hermes -p <profile-name> doctor
-   hermes -p <profile-name> skills list
-   ```
-   Completion: doctor output is captured and selected skills appear in the skill list.
-8. **Report handoff.** Return profile path, preset, installed packs, verification output, and next manual steps for model/auth setup.
-
-## `skills.lock.yaml` Shape
-
-Use a simple declarative lock file so the profile is reproducible:
-
-```yaml
-profile: ai-native-engineering
-preset: engineering
-source: puterakahfi/ai-native-skills
-skills:
-  meta:
-    - workflow-router
-    - role-switcher
-  workflows:
-    - spec-workflow
-    - product-development-workflow
-    - new-feature-workflow
-    - bugfix-workflow
-    - code-review-workflow
-    - deployment-workflow
-  native_ai:
-    - native-ai-engineer
-    - native-ai-runtime-agent
-    - native-ai-runtime-ops
-    - context-engineering
-    - context-manager
-    - rule-manager
-    - response-contract
-    - model-selection
-    - business-value-alignment
-    - experiment-design
-  engineering_quality:
-    - systematic-debugging
-    - test-driven-development
-    - refactoring
-    - architecture-review
-    - security-review
-    - threat-modeling
-    - git-workflow
-    - plan
-    - spike
-    - skill-eval
-  architecture:
-    - domain-driven-design
-    - ports-and-adapters
-    - api-contract
-    - event-driven-design
-    - service-design
-    - systems-thinking
-    - adr
-verification:
-  expected_total: 76
-```
-
-Generators may add version pins later, but the initial skeleton should stay readable and editable.
-
-## SOUL.md Baseline
-
-Generated `SOUL.md` should be short and profile-level:
-
-```markdown
-# AI Native Engineering Profile
-
-You are operating as an AI-native engineering runtime.
-
-Default behavior:
-- Route ambiguous work through `workflow-router` or `role-switcher` before execution.
-- Keep Native AI boundaries explicit: core, app adapter, runtime binding, product instance, profile.
-- Use workflows for lifecycle tasks and skills for capability-specific gates.
-- Verify with real tool output before claiming completion.
-- Store durable reusable procedures as skills; keep task progress out of memory.
-
-Do not store secrets, live session state, product-specific facts, or credentials in this profile distribution.
-```
-
-## Implementation Notes for `hermes-generate profile`
-
-A future generator should:
-
-- support `--preset minimal|engineering|product|runtime-ops|full`
-- support `--dry-run` and print planned file writes and skill installs
-- refuse to overwrite an existing profile unless `--force` is explicit
-- write idempotent files where possible
-- separate stdout data from stderr diagnostics
-- accept `--profile-dir` for testing without touching real `~/.hermes`
-- produce a final JSON summary for automation
-
-Minimum JSON summary:
-
-```json
-{
-  "profile": "my-profile",
-  "preset": "engineering",
-  "path": "~/.hermes/profiles/my-profile",
-  "skills_requested": 35,
-  "skills_installed": 35,
-  "verification": "passed"
-}
-```
-
-## Common Pitfalls
-
-1. **Committing live Hermes state.** Profile distributions must not include `state.db`, sessions, memories, auth, cron state, or logs.
-2. **Baking in product facts.** VisualMate or other product-specific truths belong in product repos or runtime bindings, not the reusable profile skeleton.
-3. **Over-installing by default.** Use `engineering` as the default; reserve `full` for explicit requests.
-4. **Skipping meta-skills.** Without `workflow-router` and `role-switcher`, the profile loses its routing behavior and becomes just a skill pile.
-5. **Treating auth/model setup as reproducible source.** Model selection can be configured; credentials must remain local and manual.
-6. **Trusting install output without verification.** Always run `hermes -p <profile-name> skills list` or equivalent after installation.
-7. **Duplicating Hermes runtime surfaces.** The profile guides Hermes; it should not create a second dashboard, session store, or gateway implementation.
-
-## Verification Checklist
-
-- [ ] Profile name is explicit and safe.
-- [ ] Preset is selected and documented.
-- [ ] Meta-skills are included.
-- [ ] Core workflows are included.
-- [ ] Native AI runtime foundation is included.
-- [ ] Preset-specific packs are included and no unrelated packs are installed by default.
-- [ ] `SOUL.md`, `skills.lock.yaml`, docs, and scripts are generated without secrets.
-- [ ] Live state and credentials are excluded.
-- [ ] `hermes -p <profile-name> doctor` was run or blocker reported.
-- [ ] Installed skills were listed and compared against `skills.lock.yaml`.
-- [ ] Handoff includes manual model/auth steps.
+Completion: doctor output captured, skill list matches lock, manual steps documented.

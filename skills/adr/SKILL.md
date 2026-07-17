@@ -9,31 +9,16 @@ metadata:
   ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/adr.contract.yaml
 ---
 
+## HARD RULES
+- ADRs are immutable once Accepted — never edit body, create a superseding ADR instead
+- Every ADR must include at least 2 options considered with pros/cons
+- Decision must be stated in one sentence tied to context forces
+
 # Architecture Decision Record (ADR)
-
-## Why ADRs Matter
-
-```
-Without ADRs:
-  "Why did we choose Kafka over RabbitMQ?"
-  "Nobody remembers. The person who decided left 2 years ago."
-  → team re-debates the same decision every 6 months
-
-With ADRs:
-  ADR-007: Use Kafka for order events
-  Context: high throughput, replay needed, multiple consumers
-  Decision: Kafka — replay + consumer groups fit our forces
-  Consequences: ops complexity, need schema registry
-  → decision is traceable, not re-debated
-```
-
-ADRs are **immutable facts** about past decisions. They never get edited — they get superseded.
-
----
 
 ## When to Write an ADR
 
-Write an ADR when the decision:
+Write when the decision:
 - Affects multiple teams or services
 - Is hard or expensive to reverse
 - Involves significant tradeoffs
@@ -42,7 +27,6 @@ Write an ADR when the decision:
 **Trigger words:** "we chose X over Y", "we decided not to use Z", "we will adopt pattern P".
 
 ---
-
 ## ADR Format
 
 ```markdown
@@ -92,7 +76,6 @@ We will use {Option C} because {one sentence rationale tied to context forces}.
 ```
 
 ---
-
 ## Example ADRs
 
 ### ADR-001: Use Kafka for Order Events
@@ -100,12 +83,9 @@ We will use {Option C} because {one sentence rationale tied to context forces}.
 ```markdown
 # ADR-001: Use Kafka for Order Events
 
-**Status:** Accepted
-**Date:** 2026-07-16
-**Deciders:** platform-team, order-team
+**Status:** Accepted  **Date:** 2026-07-16  **Deciders:** platform-team, order-team
 
 ## Context
-
 OrderService publishes events consumed by InventoryService, ShippingService,
 and AnalyticsService. Peak load: 50k orders/hour. We need:
 - Message replay (for reprocessing on consumer bug fix)
@@ -129,12 +109,10 @@ RabbitMQ (current) drops messages on consumer lag and has no replay capability.
 - Con: ops complexity, needs schema registry, learning curve
 
 ## Decision
-
 We will use Kafka because replay and independent consumer groups are hard
 requirements that neither RabbitMQ nor SQS satisfy.
 
 ## Consequences
-
 ### Positive
 - Event replay enables safe consumer bug fixes
 - Independent consumer lag — one slow consumer doesn't block others
@@ -150,28 +128,22 @@ requirements that neither RabbitMQ nor SQS satisfy.
 ```
 
 ---
-
 ### ADR-002: Reject GraphQL, Use REST + OpenAPI
 
 ```markdown
 # ADR-002: Reject GraphQL, Use REST + OpenAPI
 
-**Status:** Accepted
-**Date:** 2026-07-16
+**Status:** Accepted  **Date:** 2026-07-16
 
 ## Context
-
-Frontend team requested GraphQL for flexible queries. We evaluated against
-our current team size (8 engineers), API consumer count (2 internal services,
-1 mobile app), and backend expertise.
+Frontend team requested GraphQL. Evaluated against team size (8 engineers),
+API consumer count (2 internal services, 1 mobile app), and backend expertise.
 
 ## Decision
-
 We will use REST + OpenAPI because GraphQL's flexibility benefits do not
 justify the added complexity for our current consumer count and team size.
 
 ## Consequences
-
 ### Negative
 - Less flexible querying for frontend — may need multiple endpoints
 - N+1 query problem must be managed manually (no DataLoader)
@@ -185,7 +157,6 @@ justify the added complexity for our current consumer count and team size.
 ```
 
 ---
-
 ## ADR Lifecycle
 
 ```
@@ -198,7 +169,6 @@ Superseded by ADR-NNN → replaced by a newer decision
 **Immutability rule:** Once `Accepted`, never edit the body. Create a new ADR and set status to `Superseded by ADR-NNN`.
 
 ---
-
 ## Storage
 
 ```
@@ -211,7 +181,6 @@ docs/
 ```
 
 ---
-
 ## ADR Authoring Checklist
 
 - [ ] Status declared explicitly?
@@ -222,3 +191,6 @@ docs/
 - [ ] Risks identified?
 - [ ] If superseding: old ADR updated with `Superseded by ADR-NNN`?
 - [ ] Traceable to a real problem or constraint?
+
+---
+> **HARD RULES reminder:** immutable once Accepted → min 2 options → one-sentence decision → negative consequences required → supersede, never edit.
