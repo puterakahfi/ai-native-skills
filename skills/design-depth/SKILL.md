@@ -53,8 +53,9 @@ LAYERED (depth — atmospheric, zen with illustration, editorial with art):
 
 ---
 
-## Reference Files
-
+## References
+- `references/elevation-inheritance.md` — **two-axis model: plane + elevation, transparent resolution, z-index formula**
+- `references/layer-stack.md` — CSS z-index architecture
 | Topic | File | When to load |
 |---|---|---|
 | Layer stack patterns + CSS | `references/layer-stack.md` | Declaring layer architecture |
