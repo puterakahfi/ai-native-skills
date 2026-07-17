@@ -50,7 +50,7 @@ Diversification rule (mandatory):
 
 ---
 
-## Macrostructure Index
+## Macrostructure Catalog — load per item
 
 Pick one. Then load the relevant reference file.
 
