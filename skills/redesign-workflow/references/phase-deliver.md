@@ -1,12 +1,30 @@
 # Phase 7 — DELIVER + PITFALLS + ANTI-LOOP
 
+## FILE MANAGEMENT — HARD RULE
+
+```
+ONE file per project. PATCH/WRITE in-place. NEVER create versioned files.
+  ❌ pkahfi-v2.html, pkahfi-v3.html, output-final.html → FORBIDDEN
+  ✅ pkahfi.html → patched every iteration, versioned via git
+
+Versioning = git commits, not filenames.
+After each iteration: git commit -m "redesign: iter N — <what changed>"
+
+If write_file full rewrite needed (2 failed patches):
+  → overwrite SAME file, git commit, continue
+  → never create new filename
+```
+
+---
+
 ## Phase 7: DELIVER
 
 Only when: overall avg >= 8.0 AND G21 = 10 AND touchFail = 0.
 
 ```
-1. Save HTML to output_path
-2. MEDIA: output_path → deliver as file
+1. Ensure file is at canonical output_path (single file, no version suffix)
+2. git commit -m "redesign: final — <target> iter N"
+3. MEDIA: output_path → deliver as file
 3. Gate report summary
 4. Key changes table: before → after
 5. If max_iterations reached: honest gap report
