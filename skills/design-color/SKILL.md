@@ -6,7 +6,7 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-color.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/color-theory.contract.yaml
   ai-native-skills.related_skills: '["design-visual","design-genre","design-system","dark-light-theming","design-typography"]'
 ---
 
