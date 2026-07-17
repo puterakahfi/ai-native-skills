@@ -7,28 +7,29 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/threat-modeling.contract.yaml
-  ai-native-skills.related_skills: '[''security-review'', ''architecture-review'', ''spec-workflow'', ''adr'']'
+  ai-native-skills.related_skills: '["security-review", "architecture-review", "spec-workflow", "adr"]'
 ---
-
-## HARD RULES
-- Run threat modeling BEFORE implementation, not after (design-phase cost = $1, production = $1000+)
-- All CRITICAL and HIGH threats must have mitigations before implementation starts
-- Accepted risks must be documented with rationale — never silently skipped
 
 # Threat Modeling
 
-## When to Run
-- Every new feature that handles user data
-- Every new API endpoint or change to authentication/authorization
-- Every new service or integration
-- Any change to trust boundaries
+## Order of Operations
+
+```
+spec-workflow → threat-modeling → implementation → security-review
+
+Cost of fixing a threat:
+  Design phase: $1 | Implementation: $10 | Testing: $100 | Production: $1000+
+```
 
 **Trigger:** "What could go wrong with this, before we build it?"
 
+Run threat modeling for: every new API endpoint, auth/authz change, new service/integration, or trust boundary change.
+
 ---
+
 ## Step 1: Draw the Data Flow Diagram
 
-Identify every: **Process** (code), **Data store** (DB/cache), **External entity** (user/service), **Data flow** (arrows).
+Map Processes, Data Stores, External Entities, and Data Flows (arrows):
 
 ```
 [User Browser] → (Login API) → [Session Store]
@@ -39,21 +40,22 @@ Identify every: **Process** (code), **Data store** (DB/cache), **External entity
 ```
 
 ---
+
 ## Step 2: Identify Trust Boundaries
 
 A trust boundary = anywhere data crosses from one trust level to another.
 
 ```
-Trust boundaries in the example above:
-  1. Internet → API Gateway         (untrusted → trusted)
-  2. API → Payment Service          (internal trusted → external third-party)
-  3. API → Event Bus                (sync → async, different trust context)
-  4. Service → Database             (application → persistence)
+1. Internet → API Gateway         (untrusted → trusted)
+2. API → Payment Service          (internal trusted → external third-party)
+3. API → Event Bus                (sync → async, different trust context)
+4. Service → Database             (application → persistence)
 
 Mark every arrow that crosses a trust boundary.
 ```
 
 ---
+
 ## Step 3: STRIDE Per Trust Boundary
 
 | Threat | Question | Example |
@@ -68,21 +70,22 @@ Mark every arrow that crosses a trust boundary.
 ```
 Example — Trust boundary: Internet → Login API
 
-S: Credential stuffing → Rate limiting, MFA, account lockout
-T: Session token interception → HTTPS only, Secure + HttpOnly cookie flags
-R: No audit trail → Log all auth events with IP, timestamp, userId
-I: User enumeration via error message → Same error for "user not found" + "wrong password"
-D: Login endpoint flood → Rate limit per IP + per account, CAPTCHA
-E: JWT algorithm confusion (none) → Whitelist algorithms, validate signature always
+S: credential stuffing → rate limiting, MFA, account lockout
+T: session token interception → HTTPS only, Secure + HttpOnly cookie flags
+R: no audit trail → log all auth events with IP, timestamp, userId
+I: user enumeration via error message → generic error for both "not found" and "wrong password"
+D: brute force/DDoS → rate limit per IP + per account, CAPTCHA
+E: JWT algorithm confusion (none algorithm) → whitelist algorithms, validate signature always
 ```
 
 ---
+
 ## Step 4: Risk Rating
 
 ```
 DREAD scoring:
-  Damage potential + Reproducibility + Exploitability + Affected users + Discoverability
-  Score = sum (5-15): Critical: 13-15 | High: 10-12 | Medium: 7-9 | Low: 5-6
+  Damage potential / Reproducibility / Exploitability / Affected users / Discoverability (1-3 each)
+  Score = sum (5-15): Critical 13-15 | High 10-12 | Medium 7-9 | Low 5-6
 
 Simplified:
   CRITICAL — exploitable, high damage, easy to trigger
@@ -93,9 +96,10 @@ Simplified:
 ```
 
 ---
+
 ## Step 5: Mitigation Plan
 
-Every threat needs one of: **Mitigate** / **Transfer** / **Avoid** / **Accept** (with rationale).
+Every threat needs one of: **Mitigate** / **Transfer** / **Avoid** / **Accept**
 
 ```yaml
 # threat-model.yaml
@@ -129,6 +133,7 @@ trust_boundaries:
 ```
 
 ---
+
 ## Integration with spec-workflow
 
 ```markdown
@@ -143,6 +148,7 @@ trust_boundaries:
 ```
 
 ---
+
 ## Threat Modeling Checklist
 
 Before implementation starts:
@@ -152,8 +158,7 @@ Before implementation starts:
 - [ ] Every threat has risk rating?
 - [ ] All CRITICAL and HIGH threats have mitigation?
 - [ ] Accepted risks documented with rationale?
-- [ ] Threat model stored in docs/threat-models/?
+- [ ] Threat model stored in `docs/threat-models/`?
 - [ ] Threat model linked from ADR if architectural change involved?
 
----
-> **HARD RULES reminder:** proactive (before code) → DFD + trust boundaries → STRIDE every boundary → rate every threat → CRITICAL/HIGH must be mitigated → document accepted risks.
+> **HARD RULE:** No CRITICAL or HIGH unmitigated threat may enter implementation. Accept only with explicit written rationale.

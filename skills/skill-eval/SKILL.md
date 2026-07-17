@@ -9,14 +9,9 @@ metadata:
   ai-native-skills.implements: ai-native-core/contracts/skills/quality-control/skill-eval.contract.yaml
 ---
 
-## HARD RULES
-- Never test with leading hints ("using the role-switcher skill...") — defeats the test
-- must_contain strings must be unique to skill behavior, not generic LLM output
-- Re-run after every model upgrade or AGENTS.md change
-
 # Skill Eval
 
-## States
+## Classification Model
 
 ```
 Skill loaded ≠ Skill applied
@@ -26,13 +21,10 @@ Skill loaded ≠ Skill applied
 3. Load skill → fully apply → output matches contract          [APPLIED]
 ```
 
-## When to Use
-- After adding a new skill — verify it actually changes agent behavior
-- Regression testing — verify existing skills still work after model/prompt changes
-- Debugging agent drift — agent was following a skill, now seems to ignore it
-- Quality audit — prove to stakeholders that skills are enforced, not decorative
+**Run when:** adding a new skill, regression testing after model/prompt change, debugging agent drift, quality audit.
 
 ---
+
 ## 3 Levels of Verification
 
 ### Level 1: Structural Check
@@ -61,7 +53,6 @@ Generic response signals (FAIL):
 - "Sure! Here are some suggestions..."
 - "Great question! Generally speaking..."
 - "I'll help you with that..."
-- "There are several approaches..."
 
 Skill-applied signals (PASS):
 - Structured output matching skill's output format
@@ -70,10 +61,10 @@ Skill-applied signals (PASS):
 ```
 
 ---
+
 ## How to Run an Eval
 
 ### Step 1: Load test case
-
 ```yaml
 # from contracts/tests/<skill>.test.yaml
 skill: role-switcher
@@ -83,15 +74,13 @@ must_contain: ["Roles active:", "master-design", "Synthesis"]
 must_not_contain: ["Here are some suggestions", "Generally speaking"]
 ```
 
-### Step 2: Send trigger to agent with skill loaded
-
+### Step 2: Send trigger
 ```
 [Load skill: role-switcher]
 [Send trigger verbatim — do not add context or hints]
 ```
 
 ### Step 3: Evaluate output
-
 ```
 SKILL EVAL RESULT — role-switcher / design-audit
 ─────────────────────────────────────────────────
@@ -105,7 +94,6 @@ must_contain:
 
 must_not_contain:
   [✓] "Here are some suggestions" — not found
-  [✓] "Generally speaking" — not found
 
 Gate compliance:
   [✓] intent_must_be_detected_before_role_selection
@@ -123,6 +111,7 @@ Verdict: PARTIAL — skill loaded but ux-psychology role not activated
 | **GHOST** | must_not_contain violated (generic response) OR no skill structure in output |
 
 ---
+
 ## Writing New Test Cases
 
 ```yaml
@@ -137,7 +126,7 @@ skill_test:
       description: <what this case verifies>
       trigger: "<exact prompt to send — no hints>"
       must_contain:
-        - "<string that must appear in output>"
+        - "<string unique to skill behavior>"
       must_not_contain:
         - "<generic response string that signals skill not applied>"
       must_contain_one_of:        # optional — verdict patterns
@@ -151,12 +140,13 @@ skill_test:
 ```
 
 **Rules for good test cases:**
-- Trigger must be a **canonical** use case — most natural way to invoke this skill
+- Trigger = canonical use case — most natural way to invoke the skill (no hints)
 - `must_contain` strings must be **unique to skill behavior** — not things any LLM would say
 - `must_not_contain` must catch **generic LLM responses** — the "skill not applied" signal
 - One test case per quality gate where possible
 
 ---
+
 ## Automated Runner
 
 ```bash
@@ -166,18 +156,11 @@ skill_test:
 ```
 
 ---
-## Regression Schedule
 
-Run skill evals:
-- After any skill update
-- After model upgrade/change
-- Weekly as a cron health check
-- After any AGENTS.md change
+## Regression Schedule & Anti-Patterns
 
+Run after: skill update, model upgrade, weekly cron, AGENTS.md change.
 If a skill regresses (was APPLIED, now PARTIAL/GHOST) → patch the skill before merging.
-
----
-## Anti-Patterns
 
 | Anti-Pattern | Why It Fails |
 |---|---|
@@ -187,5 +170,4 @@ If a skill regresses (was APPLIED, now PARTIAL/GHOST) → patch the skill before
 | Only test structural output, skip gate compliance | Catches GHOST but misses PARTIAL |
 | Never re-run after model change | Model updates can silently break skill behavior |
 
----
-> **HARD RULES reminder:** canonical trigger, no hints → unique must_contain strings → classify APPLIED/PARTIAL/GHOST → re-run after every model/skill change.
+> **HARD RULE:** Trigger must be sent verbatim with no hints. Any context that names the skill invalidates the eval.

@@ -1,37 +1,16 @@
 ---
 name: composition
-description: 'Above-the-fold composition — focal point, visual weight, eye-flow, anchoring. Prevents floating/unanchored layouts and dead-space voids.'
+description: 'Above-the-fold composition — focal point, visual weight, eye-flow, anchoring. Prevents floating/unanchored layouts and dead-space voids.
+
+  '
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.type: skill
   ai-native-skills.tags: '[''design'', ''composition'', ''visual-weight'', ''focal-point'', ''alignment'']'
 ---
 
-## HARD RULES
-- Primary content must sit at or above optical center (≤ 45% from top)
-- Hero must have ZERO unframed dead space above focal point
-- No magic-number positioning — every element aligned to grid or sibling edge
-
 # Composition
 
-## When to Load
-- Producing any hero or above-the-fold section
-- Layout feels "floating" or content is not immediately visible
-- There is unexplained void above or around main content
-- Elements feel unbalanced or not grounded
-
----
-## Core Principle: Every Layout Has One Focal Point
-
-The eye needs an anchor — one point it lands on first, then travels from.
-Without an anchor, the eye wanders and the layout feels unresolved ("ngambang").
-
-```
-WRONG: content pushed to bottom of 100vh → void above → eye enters void first
-RIGHT: focal point sits at optical center (45% from top, not 50%) → eye lands immediately
-```
-
----
 ## Optical Center vs Geometric Center
 
 ```
@@ -48,6 +27,7 @@ For hero with name as focal point:
 ```
 
 ---
+
 ## Visual Weight Distribution
 
 ```
@@ -66,11 +46,12 @@ Checklist:
 ```
 
 ---
+
 ## Eye Flow Mapping
 
+```
 Eye enters top-left (F-pattern for text, Z-pattern for visual pages).
 
-```
 Personal portfolio (dark, editorial) Z-pattern:
   top-left (logo/name) → top-right (nav) → diagonal → bottom-left (stance) → bottom-right (meta)
 
@@ -82,6 +63,7 @@ FIX: name must be reachable from top without crossing dead space
 ```
 
 ---
+
 ## Dead Space vs Intentional Breathing Room
 
 ```
@@ -100,6 +82,7 @@ Rule: Hero must have ZERO dead space above focal point.
 ```
 
 ---
+
 ## Anchoring Patterns
 
 ### Pattern A: Top-anchored hero (recommended for personal portfolio)
@@ -147,19 +130,19 @@ Rule: Hero must have ZERO dead space above focal point.
 ```
 
 ---
-## Alignment & Anchoring
+
+## Alignment Rules
 
 ```
-Rule: every element must be anchored to a grid column or a sibling edge.
-"Ngambang" (floating) = element has no visual relationship to anything near it.
-
-  □ Aligns to: left edge, right edge, center axis, or sibling
-  □ No magic numbers (no margin-top:73px)
-  □ Vertical rhythm: spacing = multiples of 8px base unit
-  □ "Near" elements must snap to same grid line
+Checklist:
+  □ Every element aligns to: left edge, right edge, center axis, or sibling
+  □ No element is positioned by eye-balling (no magic numbers like margin-top:73px)
+  □ Vertical rhythm: spacing between elements is multiples of base unit (8px grid)
+  □ If two elements are "near" each other, they must snap to the same grid line
 ```
 
 ---
+
 ## Pre-emit Composition Check (run before Phase 3: PRODUCE)
 
 Before writing HTML, answer:
@@ -174,7 +157,8 @@ Before writing HTML, answer:
 If answer to 3 is "nothing" → change layout pattern before writing any HTML.
 
 ---
-## Gate: Composition
+
+## Gate: Composition (for redesign-workflow integration)
 
 ```
 Gate C1: Focal Point Above-Fold
@@ -186,7 +170,7 @@ Gate C1: Focal Point Above-Fold
 Gate C2: Visual Weight Distribution
   □ One heavy, one supporting, one accent — all identifiable
   □ Heavy element has highest contrast + largest size in section
-  □ No two elements compete for dominance
+  □ No two elements compete for dominance (inter-section weight decay)
   Score: __ / 10
 
 Gate C3: Alignment & Anchoring
@@ -197,5 +181,4 @@ Gate C3: Alignment & Anchoring
   Score: __ / 10
 ```
 
----
-> **HARD RULES reminder:** optical center ≤ 45% → no unframed dead space → 8px grid alignment → run pre-emit check → score all C gates before ship.
+> **HARD RULE:** Never emit HTML until Pre-emit Composition Check passes. If void above focal point has no framing element → switch pattern first.

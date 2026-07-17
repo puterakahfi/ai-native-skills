@@ -9,11 +9,6 @@ metadata:
   ai-native-skills.implements: ai-native-core/contracts/skills/domain-architecture/adr.contract.yaml
 ---
 
-## HARD RULES
-- ADRs are immutable once Accepted — never edit body, create a superseding ADR instead
-- Every ADR must include at least 2 options considered with pros/cons
-- Decision must be stated in one sentence tied to context forces
-
 # Architecture Decision Record (ADR)
 
 ## When to Write an ADR
@@ -27,6 +22,7 @@ Write when the decision:
 **Trigger words:** "we chose X over Y", "we decided not to use Z", "we will adopt pattern P".
 
 ---
+
 ## ADR Format
 
 ```markdown
@@ -38,9 +34,8 @@ Write when the decision:
 
 ## Context
 
-<!-- Why was this decision needed? What forces, constraints, or problems prompted it?
-     Be specific — not "we needed something better" but "we have 50k events/min
-     and our current queue drops messages under load" -->
+<!-- Why was this decision needed? Specific forces/constraints — not "we wanted X"
+     but "we have 50k events/min and our current queue drops messages under load" -->
 
 ## Options Considered
 
@@ -76,16 +71,18 @@ We will use {Option C} because {one sentence rationale tied to context forces}.
 ```
 
 ---
-## Example ADRs
 
-### ADR-001: Use Kafka for Order Events
+## Example ADR-001: Use Kafka for Order Events
 
 ```markdown
 # ADR-001: Use Kafka for Order Events
 
-**Status:** Accepted  **Date:** 2026-07-16  **Deciders:** platform-team, order-team
+**Status:** Accepted
+**Date:** 2026-07-16
+**Deciders:** platform-team, order-team
 
 ## Context
+
 OrderService publishes events consumed by InventoryService, ShippingService,
 and AnalyticsService. Peak load: 50k orders/hour. We need:
 - Message replay (for reprocessing on consumer bug fix)
@@ -109,10 +106,12 @@ RabbitMQ (current) drops messages on consumer lag and has no replay capability.
 - Con: ops complexity, needs schema registry, learning curve
 
 ## Decision
+
 We will use Kafka because replay and independent consumer groups are hard
 requirements that neither RabbitMQ nor SQS satisfy.
 
 ## Consequences
+
 ### Positive
 - Event replay enables safe consumer bug fixes
 - Independent consumer lag — one slow consumer doesn't block others
@@ -128,7 +127,8 @@ requirements that neither RabbitMQ nor SQS satisfy.
 ```
 
 ---
-### ADR-002: Reject GraphQL, Use REST + OpenAPI
+
+## Example ADR-002: Reject GraphQL, Use REST + OpenAPI
 
 ```markdown
 # ADR-002: Reject GraphQL, Use REST + OpenAPI
@@ -136,27 +136,28 @@ requirements that neither RabbitMQ nor SQS satisfy.
 **Status:** Accepted  **Date:** 2026-07-16
 
 ## Context
+
 Frontend team requested GraphQL. Evaluated against team size (8 engineers),
-API consumer count (2 internal services, 1 mobile app), and backend expertise.
+consumer count (2 internal services, 1 mobile app), and backend expertise.
 
 ## Decision
-We will use REST + OpenAPI because GraphQL's flexibility benefits do not
-justify the added complexity for our current consumer count and team size.
+
+REST + OpenAPI — GraphQL flexibility benefits don't justify complexity at our scale.
 
 ## Consequences
+
 ### Negative
-- Less flexible querying for frontend — may need multiple endpoints
-- N+1 query problem must be managed manually (no DataLoader)
+- Less flexible querying — may need multiple endpoints
+- N+1 query problem managed manually (no DataLoader)
 
 ### Positive
-- Standard tooling (oasdiff, Pact, Swagger UI)
-- Contract testing ecosystem is mature
-- Easier onboarding for new engineers
+- Standard tooling (oasdiff, Pact, Swagger UI); mature contract testing ecosystem
 
 **Revisit when:** consumer count exceeds 5 or frontend query flexibility becomes blocking.
 ```
 
 ---
+
 ## ADR Lifecycle
 
 ```
@@ -168,7 +169,6 @@ Superseded by ADR-NNN → replaced by a newer decision
 
 **Immutability rule:** Once `Accepted`, never edit the body. Create a new ADR and set status to `Superseded by ADR-NNN`.
 
----
 ## Storage
 
 ```
@@ -176,11 +176,11 @@ docs/
 └── adr/
     ├── ADR-001-kafka-for-order-events.md
     ├── ADR-002-rest-not-graphql.md
-    ├── ADR-003-hexagonal-architecture.md
     └── README.md  ← index of all ADRs with status
 ```
 
 ---
+
 ## ADR Authoring Checklist
 
 - [ ] Status declared explicitly?
@@ -192,5 +192,4 @@ docs/
 - [ ] If superseding: old ADR updated with `Superseded by ADR-NNN`?
 - [ ] Traceable to a real problem or constraint?
 
----
-> **HARD RULES reminder:** immutable once Accepted → min 2 options → one-sentence decision → negative consequences required → supersede, never edit.
+> **HARD RULE:** ADRs are immutable facts. Never edit an accepted ADR — supersede it.
