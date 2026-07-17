@@ -129,7 +129,14 @@ Copy tone: Short sentences, no filler. "I build systems meant to last." NOT "pas
            Specificity over warmth. No superlatives.
 
 Typography: Light-weight display serif (wt 300) + Light sans body (wt 300–400)
-            Headlines: large but NOT heavy — weight 300 is anchor, not boldness
+            ZEN HIERARCHY RULE: restraint = no decoration, NOT no size.
+              H1: weight 300 + size LARGE (clamp text-3xl → text-4xl) — dominant focal object
+              H2: weight 300 + size medium (clamp text-xl → text-2xl) — subordinate
+              body: weight 300–400 + size base — quiet
+              ❌ WRONG: weight 300 + size small → hierarchy collapses, page reads flat
+              ✅ RIGHT: weight 300 + size large → zen dominant without loudness
+            font-variation-settings: "wght" 300 — explicit for variable fonts (Fraunces)
+            H1/body ratio target: ≥ 3.5x (not ≤ 3.0x — that rule is for heavy-weight fonts)
             Body: generous leading (1.7–1.8), max 44ch hero bio
             ALL-CAPS: forbidden — use letter-spacing 0.08–0.12em on labels instead
             NO bold accent on nav/links — color shift only
