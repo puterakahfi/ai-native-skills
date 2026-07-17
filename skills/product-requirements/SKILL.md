@@ -7,57 +7,16 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product-management/product-requirements.contract.yaml
-  ai-native-skills.related_skills: '[''business-value-alignment'', ''experiment-design'', ''product-manager'', ''user-research'', ''spec-workflow'', ''decision-making'', ''api-contract'']'
+  ai-native-skills.related_skills: '["business-value-alignment", "experiment-design", "product-manager", "user-research", "spec-workflow", "decision-making", "api-contract"]'
 ---
 
 # Product Requirements
 
-## Overview
-
-Use this skill to create or review a **Product Requirements Document (PRD)**.
-
-A PRD is the product/spec bridge between discovery and implementation. It states what should be built, why it matters, who it serves, what is in/out of scope, how success is measured, and what evidence proves the product is ready to release.
-
-This skill implements:
-
-```text
-ai-native-core/contracts/skills/product-management/product-requirements.contract.yaml
-```
-
 ## When to Use
 
-Use when the user asks to:
+Use when the user asks to write a PRD, turn discovery notes into product requirements, define goals/metrics/scope/acceptance criteria, or review feature readiness before technical spec.
 
-- write a PRD
-- turn discovery notes into product requirements
-- define product goals, non-goals, user value, business value, experiment evidence or assumptions, scope, success metrics, and launch criteria
-- create testable acceptance criteria before implementation
-- review whether a feature request is ready for technical spec or MVP planning
-- convert product intent into requirements without jumping into implementation
-
-Do not use for:
-
-- technical architecture specs; use `spec-workflow`, `api-contract`, or architecture skills
-- implementation task breakdown only; use `product-manager` or workflow/task planning
-- release execution; use release/launch/deployment skills or workflows
-
-## Lifecycle Placement
-
-```text
-product-discovery-workflow
-  ↓
-product-requirements  ← this skill owns the PRD artifact
-  ↓
-mvp-planning-workflow
-  ↓
-spec-workflow
-  ↓
-new-feature-workflow
-  ↓
-acceptance verification
-  ↓
-release / launch
-```
+Do not use for: technical architecture specs (`spec-workflow`, `api-contract`); release execution; implementation task breakdown only (`product-manager`).
 
 ## PRD Template
 
@@ -84,11 +43,9 @@ release / launch
 
 ## 5. Goals
 - G1: <measurable outcome>
-- G2: <measurable outcome>
 
 ## 6. Non-Goals
 - NG1: <explicitly out of scope>
-- NG2: <explicitly out of scope>
 
 ## 7. Success Metrics
 - North-star / primary metric: <metric + target>
@@ -136,17 +93,17 @@ release / launch
 
 ## Authoring Procedure
 
-1. **Frame the problem.** Completion: problem statement names a user/business outcome and does not prescribe implementation.
-2. **Name the users.** Completion: primary target user is explicit; excluded users are named when relevant.
-3. **Carry experiment evidence forward.** Completion: experiment results are referenced, or untested assumptions are listed as open questions/risks.
-4. **Define goals and non-goals.** Completion: success and boundaries are both documented.
-5. **Make metrics measurable.** Completion: each success metric has a target or observable threshold.
-6. **Set scope boundaries.** Completion: scope-in and scope-out both exist.
-7. **Write requirements.** Completion: every requirement is testable or traces to testable acceptance criteria.
-8. **Write acceptance criteria.** Completion: criteria use Given/When/Then or equivalent observable evidence.
-9. **Capture constraints, dependencies, and risks.** Completion: blockers are explicit, not implied.
-10. **Define launch criteria.** Completion: readiness includes verification, support, analytics, and operational signals when relevant.
-11. **Check traceability.** Completion: `requirement → acceptance criterion → verification evidence` can be followed.
+1. **Frame the problem.** Problem statement names a user/business outcome, does not prescribe implementation.
+2. **Name the users.** Primary target user explicit; excluded users named when relevant.
+3. **Carry experiment evidence forward.** Results referenced, or untested assumptions listed as risks.
+4. **Define goals and non-goals.** Success and boundaries both documented.
+5. **Make metrics measurable.** Each success metric has a target or observable threshold.
+6. **Set scope boundaries.** Scope-in and scope-out both exist.
+7. **Write requirements.** Every requirement is testable or traces to acceptance criteria.
+8. **Write acceptance criteria.** Use Given/When/Then or equivalent observable evidence.
+9. **Capture constraints, dependencies, and risks.** Blockers are explicit, not implied.
+10. **Define launch criteria.** Readiness includes verification, support, analytics, and operational signals.
+11. **Check traceability.** `requirement → acceptance criterion → verification evidence` can be followed.
 
 ## Quality Gates
 
@@ -154,7 +111,6 @@ release / launch
 - Target users are explicit.
 - Goals and non-goals both exist.
 - High-risk unvalidated assumptions reference `experiment-design` output or remain explicit open questions.
-- High-risk unvalidated assumptions must not be hidden as confident requirements.
 - Success metrics are measurable.
 - Scope-in and scope-out both exist.
 - Requirements are testable or trace to testable acceptance criteria.
@@ -163,11 +119,9 @@ release / launch
 - Constraints and dependencies are explicit.
 - Open questions have owners or next-step decisions.
 - Launch criteria define readiness, not just implementation completion.
-- Implementation detail is excluded unless it is a real constraint.
+- Implementation detail excluded unless it is a real constraint.
 
 ## PRD Readiness Verdict
-
-When reviewing a PRD, produce:
 
 ```text
 PRD READINESS
@@ -188,9 +142,9 @@ Next action:
 
 ## Common Pitfalls
 
-1. **Solution-first PRD.** “Build a dashboard” is not a problem statement; name the user outcome first.
+1. **Solution-first PRD.** "Build a dashboard" is not a problem statement; name the user outcome first.
 2. **No non-goals.** Without explicit non-goals, scope creep is guaranteed.
-3. **Vague metrics.** “Improve UX” is not measurable. Use observable behavior or thresholds.
+3. **Vague metrics.** "Improve UX" is not measurable. Use observable behavior or thresholds.
 4. **Untestable requirements.** If it cannot be observed or verified, it is not ready for implementation.
 5. **Acceptance criteria without traces.** Criteria should point back to requirements.
 6. **Launch equals code complete.** Launch readiness also needs verification, support, analytics, and operational confidence.

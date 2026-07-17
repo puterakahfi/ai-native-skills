@@ -11,7 +11,7 @@ metadata:
 
 # UX Psychology
 
-## The Core Rule
+## Hard Rule
 
 ```
 "Confusing" is not a finding. "Overwhelming" is not a finding.
@@ -22,21 +22,16 @@ Every finding must cite a principle and have an actionable fix.
 
 - Design audit — why users drop off or struggle
 - New feature UX review before implementation
-- Onboarding flow critique
-- Form or checkout flow analysis
+- Onboarding/form/checkout flow critique
 - Any flow where user behavior data shows friction
-- Composing with `design-review` for a full design critique
 
 ---
 
 ## Framework 1: Cognitive Load
 
-Cognitive load = mental effort required to use the interface.
-
-**Three types:**
 | Type | Description | Design Problem |
 |---|---|---|
-| **Intrinsic** | Complexity of the task itself | Can't reduce — manage with progressive disclosure |
+| **Intrinsic** | Complexity of the task itself | Manage with progressive disclosure |
 | **Extraneous** | Complexity added by bad design | Eliminate — unnecessary steps, unclear labels |
 | **Germane** | Mental effort building useful mental model | Optimize — clear patterns, consistent behavior |
 
@@ -47,26 +42,22 @@ Cognitive load = mental effort required to use the interface.
 - [ ] Does the screen require memory of previous screens?
 - [ ] Is there visual noise that adds no meaning?
 
-**Heuristic:** Miller's Law — working memory holds ~7±2 chunks. If a screen presents more than 7 distinct elements requiring decision, it has cognitive overload.
+**Miller's Law:** Working memory holds ~7±2 chunks. >7 distinct decision elements = cognitive overload.
 
 ---
 
-## Framework 2: Habit Loop (Nir Eyal — Hooked Model)
-
-For product flows meant to build user habits:
+## Framework 2: Habit Loop (Hooked Model)
 
 ```
 Trigger → Action → Variable Reward → Investment
 ```
 
-| Stage | Question to Ask |
+| Stage | Question |
 |---|---|
-| **Trigger** | What internal/external cue brings user here? Is it clear? |
-| **Action** | Is the action the simplest possible behavior? (BJ Fogg: Motivation × Ability × Prompt) |
+| **Trigger** | What cue brings user here? Is it clear? |
+| **Action** | Is the action the simplest possible? (BJ Fogg: Motivation × Ability × Prompt) |
 | **Variable Reward** | Does the user get a meaningful, slightly unpredictable reward? |
-| **Investment** | Does the user put something in (data, content, social) that increases future value? |
-
-**Audit:** For each core flow — does it complete the loop, or does it break at a stage?
+| **Investment** | Does the user put in data/content/social that increases future value? |
 
 ---
 
@@ -82,38 +73,31 @@ Trigger → Action → Variable Reward → Investment
 | 6 | **Recognition over recall** | User must remember info from previous screen |
 | 7 | **Flexibility and efficiency** | No shortcuts for expert users |
 | 8 | **Aesthetic and minimalist design** | Every extra element competes for attention |
-| 9 | **Help users recognize, diagnose, recover from errors** | Error message says "Error 500" not "what happened + what to do" |
+| 9 | **Help users recognize, diagnose, recover from errors** | Error message says "Error 500" not what happened + what to do |
 | 10 | **Help and documentation** | No contextual help at the point of confusion |
 
 ---
 
 ## Framework 4: Fitts's Law + Hick's Law
 
-**Fitts's Law** — time to click a target ∝ distance / size.
+**Fitts's Law** — time to click ∝ distance / size. Violations: small touch targets (<44px), primary CTA far from eye-land, destructive actions same size as constructive.
 
-Violations:
-- Small touch targets (<44px on mobile)
-- Primary CTA far from where user's eye lands
-- Destructive actions (delete) same size/position as constructive actions
-
-**Hick's Law** — decision time ∝ number of choices.
-
-Violations:
-- Navigation with 8+ top-level items
-- Dropdowns with 20+ options, no search
-- Dashboard showing all features at once instead of progressive disclosure
+**Hick's Law** — decision time ∝ number of choices. Violations: 8+ top-level nav items, dropdowns with 20+ options (no search), all features exposed at once.
 
 ---
 
 ## Framework 5: Gestalt Principles
 
-| Principle | What It Means | Design Violation |
-|---|---|---|
-| **Proximity** | Close items appear related | Unrelated elements grouped by accident |
-| **Similarity** | Similar items appear related | Different actions look the same |
-| **Continuity** | Eye follows paths | Visual flow broken by misaligned elements |
-| **Closure** | Mind completes incomplete shapes | Incomplete UI patterns confuse users |
-| **Figure/Ground** | Object vs background | Low contrast — user can't identify focal point |
+| Principle | Design Violation |
+|---|---|
+| **Proximity** | Unrelated elements grouped by accident |
+| **Similarity** | Different actions look the same |
+| **Continuity** | Visual flow broken by misaligned elements |
+| **Figure/Ground** | Low contrast — user can't identify focal point |
+
+**Figure/ground depth test:** Single color background + text = no depth; eye can't distinguish canvas from content. Fix: subtle texture, alternating section backgrounds (#0a0a0a vs #0f0f0f), 1px card borders, or top-to-bottom gradient.
+
+**Color semantics:** One accent = one signal. Green for live status AND logo AND hover = semantic collapse.
 
 ---
 
@@ -121,7 +105,6 @@ Violations:
 
 ```
 UX PSYCHOLOGY AUDIT — <feature/screen>
-───────────────────────────────────────
 Roles active: ux-psychology
 
 ## Cognitive Load
@@ -153,52 +136,6 @@ P3: <nice to have>
 
 ---
 
-## Figure/Ground — Gestalt Extended
-
-Figure/ground is not just about contrast — it is about depth and separation:
-
-```
-Flat background problem:
-  Single color background (#0a0a0a) with text = no depth
-  Eye cannot distinguish "canvas" from "content plane"
-  Everything feels on the same layer
-
-Solutions:
-  A) Subtle texture (noise, grain, dot grid) — establishes ground plane
-  B) Section backgrounds alternate slightly (#0a0a0a vs #0f0f0f)
-  C) Cards with 1px border create figure on ground
-  D) Gradient from #0a0a0a to #111111 top-to-bottom = subtle depth
-
-Test: squint at the design — can you still tell what is foreground vs background?
-If no → figure/ground is failing.
-```
-
----
-
-## Color Psychology in UI
-
-Colors carry meaning before content is read:
-
-```
-Dark backgrounds:
-  Pure black (#000)     → harsh, contrast fatigue on long reads
-  Near black (#0a0a0a)  → sophisticated, intentional
-  Dark grey (#111)      → neutral, readable
-
-Accent color semantic rules:
-  Green     → live, success, go, nature, positive
-  Blue      → trust, information, interactive, calm
-  Amber     → warning, energy, attention
-  White     → clean, minimal, clarity
-
-Danger: green accent used for BOTH live status AND logo dot AND hover state
-        → user maps green to 3 meanings → semantic collapse
-
-One accent = one signal. Always.
-```
-
----
-
 ## Common Anti-Patterns
 
 | Anti-Pattern | Principle Violated |
@@ -214,4 +151,4 @@ One accent = one signal. Always.
 | Accent color with 3+ semantic roles | Color psychology — meaning collapses |
 | Uniform padding on every section | Cognitive load — hierarchy disappears |
 | Hero copy = job description | First impression 50ms — captures nothing memorable |
-| 2 items in 4-column grid | Gestalt completion — looks broken, not intentionally minimal |
+| 2 items in 4-column grid | Gestalt completion — looks broken |
