@@ -3,15 +3,19 @@ name: design-refinement
 description: Targeted design improvement workflow — fix specific failing gates without full redesign. Use when design direction is correct but specific gates are failing. Faster than redesign-workflow.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality/design-refinement.contract.yaml
+  ai-native-skills.contract-version: "^1.0.0"
   ai-native-skills.related_skills: '["design-audit","design-review","redesign-workflow","master-design","ui-components","accessibility","readability","responsiveness"]'
 ---
 
 # Design Refinement
 
 Targeted gate fix loop. No full redesign. Preserves existing direction.
+
+This is the Hermes/Agent Skills adapter for `ai-native-core/contracts/skills/quality/design-refinement.contract.yaml`. The core contract owns the runtime-agnostic phases and gates; this adapter owns concrete browser probes, patch discipline, score reporting, and handoff to `redesign-workflow` when refinement is the wrong lifecycle.
 
 <!-- CRITICAL RULES -->
 ```

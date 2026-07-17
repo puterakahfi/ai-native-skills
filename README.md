@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**79 skills · 9 workflows · 6 meta-skills**
+**76 skills · 9 workflows · 6 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. See [docs/skill-packs.md](docs/skill-packs.md) for one-command bundle installs. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -137,7 +137,7 @@ hermes chat -s redesign-workflow -q \
 
 ---
 
-## Skills (79)
+## Skills (76)
 
 ### Domain Architecture
 

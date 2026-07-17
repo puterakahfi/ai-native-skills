@@ -109,7 +109,7 @@ npx skills add puterakahfi/ai-native-skills \
 ---
 
 ## Full Suite (everything)
-All 94 skills — workflows, meta-skills, roles, domain, engineering, design.
+All 91 entries — skills, workflows, meta-skills, roles, domain, engineering, design.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills -g -y

@@ -38,6 +38,7 @@ No execution before routing. Routing must be stated explicitly.
 |---|---|---|
 | "build product from zero", "develop product idea", "MVP from scratch", "idea to launch", "no PRD yet" | `product-development-workflow` | product-development-workflow, product-requirements, user-research, model-selection |
 | "refine UI", "redesign", "polish", "landing page", "dashboard UX", "improve hierarchy", "CRO", "visual audit", "UX review" | `redesign-workflow` | redesign-workflow, master-design, design-review, content-strategy, cro |
+| "fix gate G21", "failing design gates", "preserve direction", "specific design issue", "targeted UI fix" | `design-refinement` | design-refinement, design-audit, design-review, master-design |
 | "fix bug", "error", "broken", "crash", "not working", "TICKET-ID" | `bugfix-workflow` | systematic-debugging, architecture-review, git-workflow |
 | "add feature", "implement", "build endpoint", "new endpoint", "TICKET-ID (feat)" | `new-feature-workflow` | spec-workflow, plan, master-engineer, tdd |
 | "review PR", "review code", "check this", "before merge" | `code-review-workflow` | architecture-review, design-review, security-review |
@@ -117,6 +118,10 @@ Contains symptom words? (error, crash, broken, not working, 500, null, undefined
     ↓
 Contains product-from-zero words? (idea, MVP, digital product, from zero, no PRD, launch)
     ├─ YES → product-development-workflow
+    └─ NO → continue
+    ↓
+Contains targeted design-fix words? (fix gate, failing design gates, preserve direction, specific design issue)
+    ├─ YES → design-refinement
     └─ NO → continue
     ↓
 Contains UI/UX refinement words? (refine, redesign, polish, landing page, dashboard, UX, hierarchy, CTA, CRO)
