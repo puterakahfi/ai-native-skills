@@ -1,4 +1,23 @@
-# Phase 5 — REVIEW (Scored Gate Check)
+## Phase 5 Output Format (MANDATORY)
+
+Scorecard MUST be delivered as markdown — NOT inside a code block.
+
+```
+## [site] · Scorecard iter N
+
+**X.XX / 10** ✅/❌ PASS/FAIL · G21 hard gate X/10 ✓/✗
+
+| Cluster | Score | Notes |
+|---|---|---|
+| Design System | X.X | ... |
+...
+
+**Open gates:**
+- `GXX` Name X.X — description
+```
+
+NEVER dump scorecard as a fenced code block — it renders as unreadable wall of text.
+
 
 Minimum **8.0 average** to pass. Gate 21 (Reduced Motion) = hard gate: 0 = full fail.
 
