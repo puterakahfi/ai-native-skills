@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**67 skills · 7 workflows · 2 meta-skills**
+**76 skills · 7 workflows · 2 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -158,11 +158,25 @@ hermes chat -s redesign-workflow -q \
 
 | Skill | Description |
 |---|---|
-| `master-design` | Senior Product Designer — UI/UX, wireframes, design systems |
+| `master-design` | Senior Product Designer — Eight Universal Rules, genre, macrostructures, design system |
+| `redesign-workflow` | Full redesign loop — Phase 0.5 brief-signal, 35+ gates (G1–G22, R1–R8, C1–C3, H1–H3, CRO1–CRO4), skill-first fix |
+| `macrostructures` | Layout archetypes — Marquee Hero, Studio, Editorial; mandatory CSS templates |
+| `design-genre` | Editorial dark, minimal light, bold brand — token selection per genre |
+| `design-system` | Token architecture, component library, design language governance |
+| `ui-components` | 9 component templates — Navbar, Hero, Section, Work Row, About, Contact, Footer, Scroll Reveal, Verification. Copy-paste, no improvisation |
+| `ux-patterns-for-developers` | 74 battle-tested UI patterns from uxpatterns.dev — delegate to `npx skills add` for component behavior + a11y |
+| `composition` | Focal point, optical center (45%), dead space vs breathing room, eye-flow mapping |
+| `visual-hierarchy` | Dominant/supporting/accent triad, H2 ≤ 60% H1, heading role taxonomy |
+| `readability` | Line length (44ch), contrast, type size, cognitive ease |
+| `responsiveness` | Mobile-first, wide/ultrawide breakpoints (1440px, 1920px), max-width containers |
+| `motion-design` | Animation tokens, easing, reduced-motion, stagger patterns |
+| `dark-light-theming` | Theme switching, token mapping, prefers-color-scheme |
 | `design-review` | Design system compliance, AI slop detection, visual hierarchy gates |
 | `ux-psychology` | Cognitive load, habit loops, Fitts's Law, Nielsen heuristics |
+| `copywriting` | Messaging hierarchy, value prop 1000-person test, bio ≤45 words, buzzword blacklist |
+| `cro` | Attention flow, trust signals, 8-second window, persuasion sequence |
+| `information-architecture` | Content hierarchy, navigation taxonomy, mental models |
 | `accessibility` | WCAG 2.1 AA — semantic HTML, ARIA, keyboard nav, screen reader, cognitive |
-| `micro-frontend` | MFE architecture — see Domain Architecture |
 
 ### Observability & Operations
 
@@ -243,7 +257,8 @@ Distributed systems:
   service-design → api-contract → event-driven-design
 
 Frontend:
-  redesign-workflow → micro-frontend → accessibility → ux-psychology
+  redesign-workflow → macrostructures → ui-components → ux-patterns-for-developers → accessibility → ux-psychology
+  master-design → composition → visual-hierarchy → copywriting → cro → motion-design
 
 AI systems:
   ai-system-design → ethics-responsible-ai → systems-thinking
