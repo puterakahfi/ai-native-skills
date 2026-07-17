@@ -7,6 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-genre.contract.yaml
+  ai-native-skills.contract-version: "^1.0.0"
   ai-native-skills.related_skills: '["ux-ui-patterns", "design-system", "master-design", "redesign-workflow"]'
 ---
 

@@ -7,6 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/profile-bootstrap.contract.yaml
+  ai-native-skills.contract-version: "~0.1"
 ---
 
 # Hermes Profile Bootstrap

@@ -7,6 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/incident-response.contract.yaml
+  ai-native-skills.contract-version: "~0.1"
   ai-native-skills.related_skills: "['systematic-debugging', 'observability-design', 'deployment-workflow', 'adr']"
 ---
 

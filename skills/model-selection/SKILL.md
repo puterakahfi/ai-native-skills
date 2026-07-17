@@ -7,6 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/model-selection.contract.yaml
+  ai-native-skills.contract-version: "~0.1"
   ai-native-skills.related_skills: '[''ai-system-design'', ''skill-eval'', ''threat-modeling'', ''architecture-review'', ''native-ai-runtime-agent'']'
 ---
 

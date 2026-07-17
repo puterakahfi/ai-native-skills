@@ -7,6 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/resilience-engineering.contract.yaml
+  ai-native-skills.contract-version: "~0.1"
   ai-native-skills.related_skills: '["observability-design", "incident-response", "service-design", "deployment-workflow"]'
 ---
 

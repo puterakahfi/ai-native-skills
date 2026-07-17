@@ -8,6 +8,7 @@ metadata:
   ai-native-skills.requires: "master-engineer master-design product-manager ux-psychology user-research native-ai-engineer diagram-architect design-review systematic-debugging architecture-review security-review plan"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/role-switcher.contract.yaml
+  ai-native-skills.contract-version: "~0.1"
 ---
 
 # Role Switcher

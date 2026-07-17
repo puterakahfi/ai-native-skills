@@ -7,6 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product/user-research.contract.yaml
+  ai-native-skills.contract-version: "^1.0.0"
   ai-native-skills.related_skills: '["product-manager", "ux-psychology", "information-architecture", "content-strategy"]'
 ---
 

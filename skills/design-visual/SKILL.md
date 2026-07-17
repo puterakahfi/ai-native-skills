@@ -7,6 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-visual.contract.yaml
+  ai-native-skills.contract-version: "^1.0.0"
   ai-native-skills.related_skills: '["design-depth","design-color","design-typography","design-iconography","design-genre","motion-design","composition","readability"]'
 ---
 

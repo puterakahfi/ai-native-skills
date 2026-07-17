@@ -8,6 +8,7 @@ metadata:
   ai-native-skills.requires: "design-foundation design-brand design-genre design-depth design-color design-typography design-spacing design-iconography design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement master-design macrostructures ui-components composition visual-hierarchy copywriting ux-psychology accessibility"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
+  ai-native-skills.contract-version: "^1.0.0"
   ai-native-skills.related_skills: '["design-visual","design-layout","design-interaction","design-strategy","design-system","design-audit","design-review","design-refinement"]'
 ---
 

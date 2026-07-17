@@ -8,6 +8,7 @@ metadata:
   ai-native-skills.requires: "systematic-debugging master-engineer security-review test-driven-development"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/bugfix.contract.yaml
+  ai-native-skills.contract-version: "~0.3"
   ai-native-skills.skill_load_order: '[{''phase'': ''investigate'', ''load'': [''systematic-debugging'']}, {''phase'': ''fix'', ''load'': [''systematic-debugging'']}, {''phase'': ''review'', ''load'': [''architecture-review'']}]'
   ai-native-skills.skills: '{''required'': [''systematic-debugging'', ''architecture-review''], ''optional'': [''master-engineer'']}'
 ---

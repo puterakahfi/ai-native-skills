@@ -8,6 +8,7 @@ metadata:
   ai-native-skills.requires: "master-engineer architecture-review security-review threat-modeling"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/code-review.contract.yaml
+  ai-native-skills.contract-version: "~0.1"
   ai-native-skills.skill_load_order: '[{''phase'': ''architecture-check'', ''load'': [''architecture-review'']}, {''phase'': ''design-check'', ''load'': [''design-review'']}, {''phase'': ''logic-check'', ''load'': [''systematic-debugging'', ''master-engineer'']}]'
   ai-native-skills.skills: '{''required'': [''architecture-review''], ''optional'': [''design-review'', ''systematic-debugging'', ''master-engineer'']}'
 ---

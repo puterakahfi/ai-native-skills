@@ -7,6 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product/business-value-alignment.contract.yaml
+  ai-native-skills.contract-version: "^1.0.0"
   ai-native-skills.related_skills: '["experiment-design", "product-manager", "product-requirements", "decision-making", "user-research", "cro", "observability-design"]'
 ---
 

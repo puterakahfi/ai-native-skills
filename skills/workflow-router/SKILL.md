@@ -8,6 +8,7 @@ metadata:
   ai-native-skills.requires: "redesign-workflow new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow design-refinement skill-doctor spec-workflow"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/workflow-router.contract.yaml
+  ai-native-skills.contract-version: "~0.2"
   ai-native-skills.related_skills: '[''role-switcher'', ''product-development-workflow'', ''redesign-workflow'', ''bugfix-workflow'', ''new-feature-workflow'', ''code-review-workflow'', ''deployment-workflow'', ''spec-workflow'']'
 ---
 
