@@ -1,261 +1,189 @@
 ---
 name: design-review
-description: Design system compliance reviewer and AI slop detector — checks UI design and implementation against the product design system contract. Catches generic templates, one-off styles, visual direction drift, and AI-generated slop before it ships.
+description: Scored design gate check — load this skill during Phase 5 of redesign-workflow, or standalone to score any UI surface. Contains the complete 35+ gate scorecard. Load on-demand, not always-on.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 2.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-review.contract.yaml
+  ai-native-skills.related_skills: '["design-audit","design-refinement","redesign-workflow","master-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
 ---
 
 # Design Review
 
-## The Core Rule
+Scored gate check. Minimum **8.0 average** to pass. Gate G21 = hard gate.
+
+<!-- LOAD ON-DEMAND — not always-on. Load in Phase 5 of redesign-workflow or standalone audit. -->
+
+## Quick Score (8 critical gates — run first)
 
 ```
-No UI output — designed or generated — passes review
-without being checked against the Product Design System Contract.
-"Make it clean and modern" is not a design contract.
+□ G2:  Typographic scale — H1/body ratio ≤ 3.5x desktop, ≤ 3.0x mobile?
+□ G8:  First impression  — H1 stance readable in 50ms?
+□ G9:  Line length       — prose ≤ 65ch, hero bio ≤ 44ch?
+□ G14: Touch targets     — all interactive ≥ 44×44px?
+□ G16: Semantic HTML     — nav/main/section/footer + H1→H2→H3?
+□ G21: Reduced motion    — HARD GATE — @media(prefers-reduced-motion) present?
+□ R1:  Type pairing      — display face ≠ body face?
+□ C1:  Focal point       — H1 ≤ 50% from top, no void above?
+
+If any score < 5 → CRITICAL → fix before full review.
 ```
-
-## When to Use
-
-- Before shipping any new page or component
-- After AI generates UI code or mockup
-- When a new component is proposed
-- When visual direction feels "off"
-- When reviewing a PR that touches UI
-- When evaluating a design from a new team member or agent
-
-## Prerequisites
-
-1. Load the product's `product-ui-design-system-contract.yaml` before starting
-2. Have the design artifact, mockup, or UI code diff ready
 
 ---
 
-## Review Checklist
+## DOM Verification (run before scoring)
 
-### 1. Visual Direction Compliance
-
-Check against `visual_direction` in the design contract:
-
-- [ ] Feels like the declared style (e.g. "clean_blue_saas", "minimal_dashboard")?
-- [ ] Matches declared personality traits?
-- [ ] Does NOT feel like any item in `must_not_feel_like`?
-
-**Slop signal:** Generic, could-be-any-product feel. Interchangeable with a random admin template.
+```js
+JSON.stringify({
+  sheets:    document.styleSheets.length,           // > 0
+  bg:        getComputedStyle(document.body).backgroundColor, // not rgba(0,0,0,0)
+  overflow:  document.documentElement.scrollWidth > innerWidth, // false
+  touchFail: [...document.querySelectorAll('a,button')]
+    .filter(el=>{const b=el.getBoundingClientRect();
+      return b.width>0&&b.height>0&&(b.width<44||b.height<44);}).length, // 0
+  h1TopPct:  Math.round(document.querySelector('h1')
+    ?.getBoundingClientRect().top / window.innerHeight * 100), // < 50
+});
+```
 
 ---
 
-### 2. AI Slop Detection
+## Full Scorecard (35+ gates)
 
-These patterns indicate AI-generated slop — auto-flag for review:
+### Design System
+| Gate | Check | Min |
+|---|---|---|
+| G1 Token Completeness | All colors/spacing/type from declared tokens, no hardcoded hex/px | 8 |
 
-**Visual slop:**
-- Gradient hero sections on a dashboard product
-- Glassmorphism used without product precedent
-- Random card shadows inconsistent with token system
-- "Modern" icons that don't match icon system
-- Color usage that doesn't map to any design token
+### Visual Design
+| Gate | Check | Min |
+|---|---|---|
+| G2 Typographic Scale | 1.333 modular, H1/body ≤ 3.5x desktop / ≤ 3.0x mobile | 8 |
+| G3 Color Semantic | One token = one role, no collapse | 8 |
+| G4 Figure/Ground | Bg has depth: texture/gradient/alternating sections | 8 |
+| G5 Whitespace Rhythm | Hero ≠ content ≠ contact ≠ footer padding | 8 |
 
-**Template slop:**
-- Sidebar + topbar + metric cards combo copy-pasted from a generic template
-- "Welcome back, User!" hero text on an operational tool
-- Random testimonial or pricing section appearing in a product UI
-- AI-generated landing page structure applied to a dashboard
+### Theme System
+| Gate | Check | Min |
+|---|---|---|
+| T1 Token Architecture | Semantic tokens, no mode-specific hardcoded hex | 8 |
+| T2 Toggle A11y | ≥44px target, aria-label = next action | 8 |
+| T3 Dual-Theme QA | Light + dark DOM/screenshot both verified | 8 |
+| T4 Contrast + Inversion | Primary ≥ 4.5:1 both modes | 8 |
 
-**Typography slop:**
-- Font sizes not from typography token system
-- Random `font-weight: 600` or `font-size: 13px` inline styles
-- Mixed font families not defined in contract
+### UX/UI Patterns
+| Gate | Check | Min |
+|---|---|---|
+| G6 Hero Pattern | Correct pattern for page goal | 8 |
+| G7 Layout Grid | Column count matches content count | 8 |
+| G8 First Impression | H1 = stance in 50ms, not job description | 8 |
+
+### Readability
+| Gate | Check | Min |
+|---|---|---|
+| G9 Line Length | Hero bio ≤ 44ch, body prose ≤ 65ch | 8 |
+| G10 Contrast Ratio | Primary ≥ 4.5:1, secondary ≥ 3:1 | 8 |
+| G11 Type Size | Body ≥ 16px, smallest ≥ 12px | 8 |
+| G12 Cognitive Ease | H1 ≤ 8 words, ≤ 4 sentences/para | 8 |
+
+### Responsiveness
+| Gate | Check | Min |
+|---|---|---|
+| G13 Mobile Layout | 1-col, no overflow at 375px | 8 |
+| G14 Touch Targets | All interactive ≥ 44×44px | 8 |
+| G15 Type Scaling | clamp() or mobile cap, ratio ≤ 3.0x mobile | 8 |
+
+### Accessibility
+| Gate | Check | Min |
+|---|---|---|
+| G16 Semantic Structure | nav/main/section/footer, H1→H2→H3, sr-only H2, skip link | 8 |
+| G17 Interactive A11y | Descriptive links, focus:visible, aria-* attributes correct | 8 |
+
+### Eight Universal Rules (from master-design)
+| Gate | Check | Min |
+|---|---|---|
+| R1 Type | H1 font ≠ body font role (not just weight) | 8 |
+| R2 Colour | Accent < 5% surface area, max 1 accent hue | 8 |
+| R3 Space | All spacing = named token on 4px grid | 8 |
+| R4 Motion | Every animation has prefers-reduced-motion override | 8 |
+| R5 Voice | No buzzwords, distinct register | 8 |
+| R6 Layout | At least one axis intentionally asymmetric | 8 |
+| R7 Hierarchy | H2 ≤ 60% H1, max 3 visual weight levels | 8 |
+| R8 Restraint | Every element has named role | 8 |
+
+### Composition
+| Gate | Check | Min |
+|---|---|---|
+| C1 Focal Point | H1 visible ≤ 50% from top, no dead space above | 8 |
+| C2 Weight Distribution | One heavy (H1), one supporting (H2), one accent (label) | 8 |
+| C3 Alignment | Grid-anchored, no magic-number px, no floating elements | 8 |
+
+### Visual Hierarchy
+| Gate | Check | Min |
+|---|---|---|
+| H1 Dominant/Supporting | H2 ≤ 60% of H1 size | 8 |
+| H2 Inter-Section Decay | No section H2 heavier than hero H1 | 8 |
+| H3 Heading Taxonomy | ANCHOR/SECTION/STATEMENT/LABEL roles identifiable | 8 |
+
+### Motion
+| Gate | Check | Min |
+|---|---|---|
+| G18 Motion Purpose | Every animation = user signal, not decoration | 8 |
+| G19 Duration+Easing | Hover ≤ 200ms, ease-out enter, ease-in exit | 8 |
+| G20 GPU Performance | transform+opacity only, will-change where needed | 8 |
+| **G21 Reduced Motion** | **HARD GATE** — @media(prefers-reduced-motion) on ALL animations | **10** |
+| G22 Cinematic Ratio | Hero=max, contact=min, decreasing through sections | 8 |
+
+### CRO
+| Gate | Check | Min |
+|---|---|---|
+| CRO1 Attention Flow | F-pattern or Z-pattern respected | 8 |
+| CRO2 Trust Signals | Credibility anchors present, not fake social proof | 8 |
+| CRO3 8-Second Window | Value prop clear in 8 seconds | 8 |
+| CRO4 Persuasion Seq | Awareness → interest → desire → action flow | 8 |
+
+### Copy / Content
+| Gate | Check | Min |
+|---|---|---|
+| CP1 Value Prop | Passes 1000-person test — specific enough | 8 |
+| CP2 Bio Length | ≤ 45 words | 8 |
+| CP3 No Slop | No buzzwords from red list | 8 |
+| CP4 Status Honesty | live/planned/lab/private/archived — accurate labels | 8 |
 
 ---
 
-### 3. Component Reuse vs One-Off Styles
+## Cluster Summary
 
-- [ ] Uses required components from design contract?
-- [ ] No new one-off page-level components that duplicate existing ones?
-- [ ] No `style={{ color: '#3b82f6' }}` hardcoded colors?
-- [ ] No ad-hoc `className="text-[13px] font-medium leading-[1.4]"`?
+```
+Design System:   G1           = __ /10
+Visual Design:   G2–G5  avg   = __ /10
+Theme System:    T1–T4  avg   = __ /10
+UX/UI Patterns:  G6–G8  avg   = __ /10
+Readability:     G9–G12 avg   = __ /10
+Responsiveness:  G13–G15 avg  = __ /10
+Accessibility:   G16–G17 avg  = __ /10
+Universal Rules: R1–R8  avg   = __ /10
+Composition:     C1–C3  avg   = __ /10
+Hierarchy:       H1–H3  avg   = __ /10
+Motion:          G18–G22 avg  = __ /10  ← G21 hard gate
+CRO:             CRO1–4 avg   = __ /10
+Copy:            CP1–4  avg   = __ /10
 
-**Violation signal:** Any inline style or Tailwind arbitrary value that maps to an existing token.
+OVERALL: __ / 10   PASS: ≥ 8.0
+G21 = 0 → automatic full fail
+```
 
 ---
 
-### 4. Color Token Compliance
-
-- [ ] All colors reference token roles (bgApp, bgSurface, accentBlue, etc)?
-- [ ] No hardcoded hex values?
-- [ ] No new color introduced without design contract update?
-- [ ] Status colors follow status badge rules?
-
----
-
-### 5. Layout Pattern Compliance
-
-- [ ] Page uses declared layout patterns (app_shell, command_center_page, etc)?
-- [ ] No arbitrary new layout invented for one page?
-- [ ] Information density matches product direction?
-
----
-
-### 6. Status & Semantic Rules
-
-- [ ] Status badges follow status_rules in contract?
-- [ ] Loading/error/empty states use declared patterns?
-- [ ] No custom status color invented without contract update?
-
----
-
-### 7. Responsive Rules
-
-- [ ] Follows declared responsive breakpoints?
-- [ ] Mobile view follows stacked/compact pattern defined in contract?
-- [ ] No desktop-only layout shipped without mobile consideration?
-
----
-
-### 8. Accessibility Baseline
-
-- [ ] Text contrast meets readable_contrast rule?
-- [ ] Focus states visible?
-- [ ] Semantic heading hierarchy followed?
-- [ ] Interactive elements keyboard accessible?
-
----
-
-## Verdict Format
+## AI Slop Red List (auto-flag if present)
 
 ```
-DESIGN REVIEW VERDICT
-─────────────────────
-Status: PASS | FAIL | PASS WITH FLAGS
-
-Slop Detected:
-  - [BLOCKING] <description>
-  - [WARNING]  <description>
-
-Visual Direction: ALIGNED | DRIFTED
-  → Drift reason: <if drifted>
-
-Token Violations:
-  - <element> uses hardcoded <value> → should use <token>
-
-Component Issues:
-  - <component> is a one-off duplicate of <existing component>
-
-Recommendation:
-  <summary of what must change before shipping>
+❌ "Seamless", "leverage", "world-class", "cutting-edge", "modern solution"
+❌ H1 + 3 bullet features + CTA (template pattern)
+❌ "Trusted by X companies" logo row
+❌ 6+ equal-size feature cards
+❌ Gradient mesh background behind text
+❌ Color-only status signal (missing aria-label)
+❌ All-caps nav with 5+ items
 ```
-
-## AI Slop Smell Detector
-
-These outputs from AI agents justify an immediate design review request:
-
-- Any UI that "looks professional" but has no token references
-- Gradient + glassmorphism + rounded cards combo on a B2B SaaS product
-- "Clean and modern" as the only design direction given to the agent
-- New page that matches zero declared layout patterns
-- Component that hardcodes colors, spacing, and font sizes inline
-- UI generated from a generic template prompt, not from the design contract
-
-## Typographic Scale Gate
-
-Before approving any design, verify font sizes follow a modular scale:
-
-```
-Check: are font sizes from a declared scale (1.25x or 1.333x ratio)?
-Check: H1-to-body ratio ≤ 3.5x on mobile?
-Check: no arbitrary pixel values outside the scale?
-
-Fail signal: font sizes not in ratio (14px, 18px, 26px, 36px all together)
-→ picked by feel, not system.
-```
-
-## Color Semantic Gate
-
-```
-Map every used color → its semantic role:
-  Is accent used for more than one purpose? → FAIL
-
-Signs of semantic collapse:
-  Same color: logo + status indicator + hover + CTA
-  → user cannot learn what color means
-
-Declare semantic table before designing:
-  accent:  one role ONLY (e.g. LIVE status)
-  bright:  headings / primary content
-  text:    body / secondary
-  subtle:  supporting info
-  muted:   decorative / disabled
-```
-
-## Whitespace Rhythm Gate
-
-```
-Every section same top/bottom padding? → FAIL
-
-Section weight must match content importance:
-  Hero:    maximum space — statement
-  Content: tighter — scanning mode
-  Contact: minimal — closing quietly
-
-Verify: padding varies intentionally across sections.
-```
-
-## Empty State Gate
-
-```
-Any grid with ≤ 50% columns filled?
-  2 cards in 2-col grid → OK
-  2 cards in 4-col grid → FAIL (looks broken)
-  2 cards in 1-col stack → OK (intentional)
-
-Fix layout to match actual content count before approving.
-```
-
-## First Impression Gate (50ms)
-
-```
-Read hero H1 quickly. What do you remember?
-
-FAIL:
-  "Full Stack Engineer specializing in X" → resume line
-  "Building solutions for modern businesses" → meaningless
-  "[Name] — [Title] at [Location]" → directory entry
-
-PASS:
-  One surprising or specific idea
-  A stance, not a description
-  Something that makes you curious or relate immediately
-
-Test: cover name and photo. Does copy still work? If no → too generic.
-```
-
-## Common Anti-Patterns (Auto-Fail)
-
-| Anti-Pattern | Why It Fails |
-|---|---|
-| `color: '#3b82f6'` hardcoded | Token system violation |
-| New page with custom sidebar layout | Layout pattern violation |
-| Status badge with custom red/green | Status badge rule violation |
-| Glassmorphism card on clean SaaS product | Visual direction violation |
-| Copy-pasted landing page hero in dashboard | Template slop |
-| `font-size: 13px` inline | Typography token violation |
-| "AI generated it, looks good to me" | Design contract not consulted |
-| Arbitrary font sizes not in modular scale | Typographic scale gate fail |
-| Accent color used for 3+ different meanings | Color semantic gate fail |
-| Every section identical padding | Whitespace rhythm gate fail |
-| Hero copy = job description | First impression gate fail |
-| 2 items in 4-column grid | Empty state gate fail |
-| Flat single-color bg with no depth/texture | Figure/ground violation |
-
-## Intentionality Test
-
-For every design decision, ask:
-
-> **"Was this intentional per the design contract, or was it just what the AI produced?"**
-
-If you cannot answer "intentional" with a contract reference — it fails.
