@@ -23,6 +23,17 @@ Minimum **8.0 average** to pass. Gate 21 (Reduced Motion) = hard gate: 0 = full 
 
 ---
 
+## Review Mode Selection
+
+Use `iteration-review-mode.md` during active visual loops when one layer was touched and the user is still reacting to direction. Use the full scorecard below only for deploy/commit readiness, major multi-layer changes, or final delivery claims.
+
+```text
+Iteration mode: touched gates + regression checks only
+Full mode: all clusters + average + hard gates
+```
+
+---
+
 ## Lightweight Iteration Checks (during active visual loops)
 
 Do NOT run full build/lint/typecheck on every iteration. Keep loops fast:

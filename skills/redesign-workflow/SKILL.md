@@ -27,6 +27,8 @@ HARD RULES (non-negotiable):
 ## Core Loop
 
 ```
+Phase -1  → ROUTE DECISION   (redesign vs refinement vs audit)
+  → load: references/redesign-vs-refinement.md
 Phase 0   → PRE-FLIGHT       (scan existing design signals)
 Phase 0.5 → GENRE + MACRO    (pick genre + macrostructure from brief)
   → load port: design-visual   (genre detection + visual language)
@@ -34,6 +36,7 @@ Phase 0.5 → GENRE + MACRO    (pick genre + macrostructure from brief)
   → load: references/phase-genre-macro.md
 Phase 0.75→ LAYERED PLAN     (classify work by layer)
   → load: references/phase-genre-macro.md
+  → load: references/user-feedback-parser.md when user gives qualitative design feedback ("kureng", "rame", "ngambang", "aksesoris")
 Phase 2   → VALUE ALIGNMENT
   → load port: design-strategy (cro only if conversion goal)
 Phase 3   → SPEC CONFIRM     (align constraints before producing)
@@ -43,11 +46,13 @@ Phase 4   → PRODUCE          (derive from ports, not improvise)
   → load port: design-interaction (patterns before implementing behavior)
   → load port: design-strategy (copywriting, ux-psychology)
   → load: references/phase-produce.md
+  → load: references/hero-patterns.md when touching above-fold hero composition, hero imagery, or hero CTA/story
   → load: references/delight-expression-image-assets.md when adding/evaluating hero imagery, illustration, video, or graphic embellishment
 Phase 5   → REVIEW           (foundation gates first, then genre/brand)
   → load: design-foundation   (F1–F7 hard gates — any fail blocks delivery)
   → load port: design-system  (accessibility + token gates)
   → load: references/phase-review-gates.md
+  → load: references/iteration-review-mode.md during active layer-by-layer refinement loops
   → load: references/visual-loop-verification.md when fresh visual-loop verification is requested or full lint/build is intentionally deferred
 Phase 6   → FIX              (skill-first fix loop)
   → load: references/phase-fix-loop.md

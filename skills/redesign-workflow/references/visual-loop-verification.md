@@ -43,6 +43,30 @@ npm run lint blocked by missing shared config: Cannot find package '@repo/config
 
 Do **not** keep rerunning the same failing lint command every iteration. Resume full lint only at commit/deploy boundary or after the setup issue is fixed.
 
+## Blank page / missing hero recovery
+
+Before diagnosing CSS or React layout, prove the browser is actually on the app page.
+
+```text
+1. Check `location.href` — if it is `about:blank`, re-navigate to the route.
+2. Check `document.body.children.length` — 0 means no app DOM mounted.
+3. Check `document.styleSheets.length` — 0 means CSS/resources not loaded.
+4. Check dev-server process/logs — parent watcher may exit while child server still listens.
+5. Check route with curl — route 200 does not guarantee browser is still on that route.
+6. For Next dev, prefer `http://localhost:<port>` over `127.0.0.1` if logs show blocked cross-origin HMR/font/dev resources.
+7. Re-navigate after server restart before calling the UI blank.
+```
+
+Diagnosis names:
+
+```text
+about:blank false alarm — browser is not on the app route
+unmounted DOM — route loaded no body children
+stylesheet drop — body exists but stylesheets = 0
+resource-origin block — Next dev blocks 127.0.0.1 resources; use localhost or allowedDevOrigins
+runtime blank — route + DOM + styles exist but visible content absent; inspect console/errors next
+```
+
 ## Example DOM probe for image delight assets
 
 ```js
