@@ -80,11 +80,17 @@ If wrong: say "genre: [X]" and I'll redirect.
 
 ---
 
-## References
+## References — Genre Catalog
 
-| Topic | File |
-|---|---|
-| Genre 1–4 definitions: voice, typography, color, layout, nav/footer defaults, slop gates | [references/genre-definitions.md](references/genre-definitions.md) |
-| Genre × Macrostructure compatibility table | [references/genre-compatibility.md](references/genre-compatibility.md) |
+Each genre is a standalone file. Load only the one you need.
+
+| Genre | File | Default? |
+|---|---|---|
+| Zen / Minimalist | [references/zen.md](references/zen.md) | |
+| Editorial | [references/editorial.md](references/editorial.md) | ✅ |
+| Modern Minimal | [references/modern-minimal.md](references/modern-minimal.md) | |
+| Atmospheric | [references/atmospheric.md](references/atmospheric.md) | |
+| Playful | [references/playful.md](references/playful.md) | |
+| Genre × Macrostructure compatibility | [references/genre-compatibility.md](references/genre-compatibility.md) | |
 
 > **Reminder:** genre = voice+color+motion stance · declare genre token card first · must match audience mental model.
