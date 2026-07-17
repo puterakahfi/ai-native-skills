@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-layout.contract.yaml
-  ai-native-skills.related_skills: '["macrostructures","responsiveness","ui-components"]'
+  ai-native-skills.related_skills: '["design-spacing","macrostructures","responsiveness","ui-components"]'
 ---
 
 # Design Layout Port
@@ -38,6 +38,7 @@ Answers: What macrostructure? What grid? What breakpoints? What component struct
 | Page-level structure | `macrostructures` | Phase 0.5 — pick macrostructure |
 | Breakpoints + fluid grid | `responsiveness` | Phase 4 produce, any responsive concern |
 | Component structure (nav, hero, sections) | `ui-components` | Phase 4 produce, building components |
+| Rhythm, Ma, spatial hierarchy | `design-spacing` | Phase 4, any spacing decision |
 
 ### How to load an adapter
 ```

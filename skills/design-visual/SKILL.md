@@ -7,7 +7,7 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/experience-design/design-visual.contract.yaml
-  ai-native-skills.related_skills: '["design-color","design-typography","design-genre","motion-design","composition","readability"]'
+  ai-native-skills.related_skills: '["design-color","design-typography","design-iconography","design-genre","motion-design","composition","readability"]'
 ---
 
 # Design Visual Port
@@ -41,6 +41,7 @@ Answers: What genre? What motion stance? What typography rules? What composition
 | Motion stance + animation | `motion-design` | Phase 4 produce, any animation decision |
 | Composition + visual weight | `composition` | Phase 4 produce, layout balance questions |
 | Typography legibility | `readability` | Phase 5 review, body text concerns |
+| Icon style + a11y | `design-iconography` | Phase 4, any icon decision |
 
 ### How to load an adapter
 ```
