@@ -11,7 +11,7 @@ Run this before deciding whether to use `redesign-workflow`, `design-refinement`
 | Overall score < 7.0 | `redesign-workflow` | Direction is probably failing, not just polish. |
 | Multiple critical gates < 5.0 | `redesign-workflow` | Foundation is unstable. |
 | Overall ≥ 7.0 and user approves direction but names specific issues | `design-refinement` | Preserve direction and fix targeted gates only. |
-| User says “kureng” / “something feels off” but cannot name it | quick audit + `user-feedback-parser.md` → then route | Qualitative feedback needs classification. |
+| User says “something feels off” but cannot name it | quick audit + `user-feedback-parser.md` → then route | Qualitative feedback needs classification. |
 | User asks to change style/genre/macrostructure | `redesign-workflow` | Style/macro changes reopen direction. |
 | User asks to make current direction cleaner/quieter/more integrated | `design-refinement` | Direction stays; gates improve. |
 | User asks for deploy/commit readiness | `redesign-workflow` Phase 5/7 verification | Full review/deploy gates apply. |

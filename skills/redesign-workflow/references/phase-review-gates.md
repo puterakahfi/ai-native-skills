@@ -139,7 +139,7 @@ R8:  Restraint  Every element has named role, nothing fills blindly   Score: __ 
 ── COMPOSITION ─────────────────────────────────────
 C1:  Focal Point       (H1 visible ≤50% from top, no dead space above)Score: __ /10
 C2:  Weight Distrib    (one heavy, one supporting, one accent)         Score: __ /10
-C3:  Alignment         (grid-anchored, no magic-number, no ngambang)   Score: __ /10
+C3:  Alignment         (grid-anchored, no magic-number, no floating elements) Score: __ /10
 
 ── VISUAL HIERARCHY ────────────────────────────────
 H1:  Dominant/Supporting ratio (supporting H2 ≤60% of H1)            Score: __ /10

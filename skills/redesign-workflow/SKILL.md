@@ -36,7 +36,7 @@ Phase 0.5 → GENRE + MACRO    (pick genre + macrostructure from brief)
   → load: references/phase-genre-macro.md
 Phase 0.75→ LAYERED PLAN     (classify work by layer)
   → load: references/phase-genre-macro.md
-  → load: references/user-feedback-parser.md when user gives qualitative design feedback ("kureng", "rame", "ngambang", "aksesoris")
+  → load: references/user-feedback-parser.md when user gives qualitative design feedback ("too busy", "floating", "feels like an accessory")
 Phase 2   → VALUE ALIGNMENT
   → load port: design-strategy (cro only if conversion goal)
 Phase 3   → SPEC CONFIRM     (align constraints before producing)
