@@ -35,7 +35,13 @@ Do NOT run full build/lint/typecheck on every iteration. Keep loops fast:
 □ git diff --check on changed files
 ```
 
+If a harness or reminder says verification is stale during creative UI/UX work, do not reflexively run full lint/build. First decide whether this is still an iteration loop or a commit/deploy boundary. For iteration loops, provide a fresh lightweight evidence packet instead: changed-file `git diff --check`, route status, browser DOM probes for images/overflow/touch targets, and light/dark visual checks when theme is affected.
+
+If full lint was already attempted and is blocked by missing shared config or setup state, state the concrete blocker once and do not keep retrying the same failing command until commit/deploy.
+
 Full build/lint only when: user approves, preparing PR/commit, or deploy-ready.
+
+See `visual-loop-verification.md` for packet examples and DOM probes.
 
 ---
 
