@@ -6,6 +6,8 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/design/adaptive-component-design.contract.yaml
+  ai-native-skills.contract-version: "~1.0"
   ai-native-skills.related_skills: '["responsiveness","ux-ui-patterns","ux-patterns-for-developers","accessibility","ui-components"]'
 ---
 
