@@ -3,12 +3,12 @@ name: adaptive-component-design
 description: Selects and substitutes the right UI component pattern across mobile, tablet, laptop, and desktop based on task intent, option count, label length, discoverability, content width, input method, and interaction cost. Use when a component fits one viewport but overlaps, clips, hides choices, or becomes awkward on another.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/adaptive-component-design.contract.yaml
   ai-native-skills.contract-version: "~1.0"
-  ai-native-skills.related_skills: '["responsiveness","ux-ui-patterns","ux-patterns-for-developers","accessibility","ui-components"]'
+  ai-native-skills.related_skills: '["master-design","design-review","responsiveness","ux-ui-patterns","ux-patterns-for-developers","accessibility","ui-components"]'
 ---
 
 # Adaptive Component Design
@@ -18,6 +18,29 @@ metadata:
 Responsive design may change the component, not only its size or layout.
 
 Do not preserve Tabs, Table, Modal, Sidebar, or another pattern merely for visual consistency. Preserve the user task, state, semantics, and information priority; choose the component that performs those jobs best at the available content width.
+
+## Role in composition
+
+This is a specialist skill, not the owner of the complete product experience.
+
+```text
+Narrow advisory question about one cross-device component
+→ adaptive-component-design may run alone
+
+Broad UI/UX design or redesign
+→ owner: master-design
+→ specialist: adaptive-component-design
+→ reviewer: design-review when rendered or implemented
+```
+
+Rules:
+
+- `master-design` owns the overall product-design decision and synthesis.
+- This skill owns component fitness and substitution across viewports.
+- It may challenge a requested component within its boundary.
+- It must return evidence and trade-offs to the design owner.
+- It must not independently change product strategy, page macrostructure, visual language, or brand direction.
+- An implemented result must not be accepted without `design-review`.
 
 ## Scope
 
@@ -29,7 +52,7 @@ This skill owns:
 - overflow affordances and reachable controls;
 - component fitness gates before implementation.
 
-It does not own visual styling, tokens, page macrostructure, or breakpoint CSS mechanics.
+It does not own visual styling, tokens, page macrostructure, product strategy, or breakpoint CSS mechanics.
 
 ## Decision procedure
 
@@ -40,7 +63,9 @@ It does not own visual styling, tokens, page macrostructure, or breakpoint CSS m
 5. Select the smallest pattern that preserves discoverability and task completion.
 6. Define substitutions for each width class.
 7. Keep one controlled state and one semantic contract across variants.
-8. Verify at boundary widths and with realistic content.
+8. Record rejected alternatives and trade-offs.
+9. Return the recommendation to `master-design` for final synthesis when operating in a composed design task.
+10. Verify at boundary widths and with realistic content.
 
 ## Component substitution matrix
 
@@ -97,6 +122,8 @@ Fail the design if any answer is yes:
 - Do mobile and desktop variants drift into different state or behavior?
 - Is overflow possible without a visible affordance?
 - Was the component selected because it already existed rather than because it fits the task?
+- Is this specialist making page-level, product-strategy, or visual-direction decisions without `master-design`?
+- Is an implemented result being accepted without independent `design-review` evidence?
 
 ## Verification evidence
 
@@ -107,6 +134,7 @@ Before claiming completion, provide:
 - screenshots at 390×844, 768×1024, 1280×800, and 1440×900;
 - checks immediately before and after every used breakpoint;
 - interaction evidence for selection, overflow controls, keyboard use, and resize;
+- reviewer verdict when the result is rendered or implemented;
 - remaining assumptions or mismatches.
 
 Code inspection alone is not visual verification.
