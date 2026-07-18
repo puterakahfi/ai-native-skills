@@ -1,9 +1,9 @@
 ---
 name: design-refinement
-description: Targeted design improvement workflow — fix specific failing gates without full redesign, verify the result, and automatically promote reusable lessons into skills through skill-evolution.
+description: Targeted design improvement workflow — consume an evidence-backed design-review result, fix specific governed failures while preserving passing work, verify with domain-appropriate evidence, re-review through the facade, and promote reusable lessons after a verified fix.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.0
+  ai-native-skills.version: 2.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.requires: "design-audit design-review master-design skill-evolution skill-eval"
@@ -14,146 +14,265 @@ metadata:
 
 # Design Refinement
 
-Targeted gate-fix loop. Preserve the correct design direction, fix declared failures, verify the real result, and review every verified fix for reusable learning.
+Targeted gate-fix loop: preserve the accepted direction, patch specific verified failures, collect domain-appropriate evidence, and re-review through the `design-review` facade.
 
-This adapter implements `ai-native-core/contracts/skills/quality/design-refinement.contract.yaml`. The core contract owns runtime-agnostic phases and gates. This adapter owns concrete inspection, patch discipline, visual and interaction verification, automatic learning promotion, score reporting, and handoff to `redesign-workflow` when refinement is the wrong lifecycle.
+This workflow owns refinement scope, preservation, patch discipline, verification, regression checks, and post-fix learning. The facade and loaded domain reviewers own gate meanings, applicability, scoring, coverage, and verdicts.
 
-## Hard rules
+## Hard Rules
 
 ```text
-1. Classify before patching: identify the governing skill and correct correction layer.
-2. Verify before promotion: never update a shared skill from an unverified idea.
-3. Preserve: do not change what is already passing (>= 8.0).
-4. Scope: fix declared gates only; no drive-by redesign.
-5. Learn automatically: after every verified fix, run skill-evolution.
-6. Eval required: every promoted shared lesson needs regression evidence.
-7. Patch safety: after two failed patches on the same region, reread and plan; never blindly apply a third patch.
+1. Start from a routed review result, not an ungrounded aesthetic complaint.
+2. Design domain, coverage mode, and governing reviewer must be explicit.
+3. Preserve passing gates, locked assets, accepted direction, and unaffected regions.
+4. Fix declared failures only; no drive-by redesign.
+5. Patch the layer that owns the root cause, not the most visible symptom.
+6. Use evidence appropriate to the gate and domain.
+7. Re-review through the facade; do not self-invent replacement gate semantics.
+8. LIMITED REVIEW cannot authorize specialist-domain refinement as complete.
+9. After every verified fix, run skill-evolution + skill-eval.
+10. Promote reusable knowledge only after the real artifact passes verification.
+11. After two failed patches in the same region, reread and replan; never blindly apply a third.
+12. Do not route from average score alone.
 ```
 
-## When to use
+## Entry Decision
 
-Use `design-refinement` when:
+Use `design-refinement` when all are true:
 
-- the design direction is correct, normally overall average `>= 7.0`;
-- specific gates are failing below `8.0`;
-- the user approves the direction but wants targeted issues fixed.
+```text
+accepted direction or macrostructure is still valid
+specific failed or partial gates are known
+primary-domain reviewer coverage is BUILT_IN or ADAPTER_COVERED
+required evidence can be collected
+passing work should remain stable
+```
 
-Use `redesign-workflow` instead when:
+Route elsewhere when:
 
-- overall average is below `7.0`;
-- multiple critical gates are below `5.0`;
-- the direction or macrostructure itself is wrong.
+```text
+design-audit
+  failures or coverage are not yet known
 
-Use `design-audit` first when the failing gates are not yet known.
+redesign-workflow
+  direction, macrostructure, visual language, or component model is wrong
+  the requested change spans multiple foundational clusters
+
+domain specialist / reviewer
+  coverage_mode is LIMITED or ROUTE_ELSEWHERE for the primary domain
+
+local implementation/content/asset fix
+  the governing rule already exists and no design decision is required
+```
+
+A score below or above a fixed number does not decide the route by itself. Consider domain coverage, hard gates, root cause, direction, and scope.
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---:|---|
-| `target` | Yes | File path, URL, repository surface, or rendered artifact |
-| `failing_gates` | Yes | Gate IDs from a prior audit or review |
-| `preserve` | No | Passing gates and elements that must remain stable |
-| `max_iterations` | No | Default `3` |
-| `approval_mode` | No | Repository write policy inherited from the project |
-
-## Refinement loop
-
-### Step 1 — Load audit state
-
-Use the prior audit/review report. If none exists, run a quick critical-gate audit before editing.
-
 ```text
-Current overall score:
-Failing gates:
-Target gates to fix:
-Passing gates to preserve:
-Evidence currently available:
+target               required — editable artifact, repository surface, URL, or source
+prior_review         required — facade review/audit route, findings, scores, coverage
+target_findings      required — failed/partial gate IDs and affected regions
+preserve             passing gates, locked assets, accepted regions, content, behavior
+design_domain        inherited from prior review
+surface_profile      inherited from prior review
+coverage_mode        BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE
+domain_reviewers     governing built-in/external reviewers
+max_iterations       default 3
+approval_mode        repository write policy inherited from the project
 ```
 
-Do not patch before the failing gates and preservation set are explicit.
+## Refinement State
 
-### Step 2 — Declare scope
+Record before editing:
+
+```yaml
+refinement:
+  target: <target>
+  design_domain: <domain>
+  surface_profile: <profile>
+  coverage_mode: <mode>
+  domain_reviewers: []
+  target_findings:
+    - gate: <id>
+      governing_reviewer: <reviewer>
+      region: <region>
+      current_status: <FAIL | PARTIAL>
+      current_score: <score>
+      evidence: []
+  preserved_gates: []
+  preserved_regions: []
+  locked_assets: []
+  required_evidence: []
+  evidence_gaps: []
+  max_iterations: 3
+```
+
+Stop and route when the primary-domain coverage is insufficient for the requested correction. Universal visual feedback may guide a bounded local change, but it cannot certify a specialist-domain fix.
+
+## Refinement Loop
+
+### Phase 1 — Validate and bound scope
+
+Confirm:
+
+```text
+□ prior review uses the current design-review status model
+□ target findings are verified, not merely NOT_VERIFIED
+□ governing reviewer exists for every target gate
+□ accepted direction remains valid
+□ preservation set is explicit
+□ required evidence is obtainable
+□ no hard-gate failure demands immediate redesign or specialist escalation
+```
+
+Declare:
 
 ```text
 REFINEMENT SCOPE
-────────────────────────────────────
-Fixing: <gate IDs and affected regions>
-Preserving: <passing gates and locked elements>
-Candidate approach: <smallest likely correction>
-Verification plan: <render, viewport, interaction, accessibility, tests>
+Fixing:      <gate IDs, reviewers, regions>
+Preserving:  <passing gates, assets, regions, behavior>
+Root cause:  <current hypothesis>
+Patch layer: <foundation | structure | component | expression | interaction |
+              content | implementation | domain-specialist>
+Evidence:    <verification plan>
 ```
 
-### Step 3 — Classify and apply the candidate fix
+### Phase 2 — Classify the defect
 
-For each failing gate:
+For each target finding:
 
 ```text
-A. Identify the governing skill, reference, workflow, or product rule.
-B. Read the existing rule completely.
-C. Classify the defect:
-   - reusable skill gap;
-   - reference knowledge gap;
-   - workflow orchestration gap;
-   - local implementation defect.
-D. Apply the smallest candidate fix to the correct layer.
-E. Record a learning candidate when reusable reasoning may be missing.
+A. Resolve the governing reviewer and gate definition.
+B. Read the complete governing rule/reference.
+C. Separate root cause from repeated symptoms.
+D. Classify ownership:
+   - reusable specialist-skill gap
+   - facade/routing/orchestration gap
+   - reference or eval gap
+   - product-specific design lock
+   - local implementation/content/asset defect
+E. Choose the smallest correction layer that can resolve the root cause.
 ```
 
-Do not append a pitfall to a skill merely because an implementation ignored an existing clear rule. Fix the implementation or orchestration and protect the behavior with an eval when needed.
+Do not patch `design-review` merely because a product implementation ignored an existing specialist rule. Do not copy specialist-domain knowledge into the facade.
 
-A candidate learning is not promoted knowledge until the real case passes verification.
-
-### Step 4 — Verify
-
-Run evidence appropriate to the affected gate:
+### Phase 3 — Apply the smallest candidate fix
 
 ```text
-Runtime:
-  build, lint, type checks, relevant tests
-
-DOM and accessibility:
-  overflow, touch targets, headings, semantics, focus, reduced motion
-
-Visual:
-  inspect affected regions with realistic content
-
-Responsive and interaction:
-  mobile, tablet, laptop, desktop
-  keyboard, pointer, touch, swipe, scroll, resize
-
-Gate review:
-  re-score fixed gates
-  re-check adjacent and preserved gates for regression
+preserve accepted direction
+preserve passing gates
+change only the required layer and affected regions
+keep required assets and content faithful
+avoid introducing unrelated component or style changes
+record changed files/regions and rationale
 ```
 
-A successful build alone is not visual verification.
+A candidate learning is not shared knowledge until verification succeeds.
 
-If the candidate fix fails, iterate within the declared scope. Do not update shared skills from the failed attempt.
+### Phase 4 — Verify with domain-appropriate evidence
 
-### Step 5 — Automatic skill-evolution review
+Select only applicable evidence:
 
-After each fix passes verification, load:
+```text
+interactive digital surface
+  rendered visual at affected viewports/themes
+  changed interaction and adjacent state walkthrough
+  keyboard/pointer/touch/gesture checks as applicable
+  accessibility semantics/focus when affected
+  runtime capture when the flow is executable
+
+static visual communication
+  final-size and destination-placement inspection
+  crop/safe-area/overlay checks
+  logo/product/person/content comparison when required
+  export resolution, compression, edge, and color checks
+
+presentation
+  affected slide plus adjacent narrative sequence
+  room/screen-share/self-guided scale
+  chart, data, source, and repeated-layout checks
+
+specialized domain
+  evidence required by the governing domain reviewer
+
+repository implementation
+  changed-file diff check
+  relevant tests, type/lint/build checks at the appropriate boundary
+  source inspection does not replace rendering when visual behavior changed
+```
+
+Re-check:
+
+```text
+fixed target gates
+adjacent regression gates
+all explicitly preserved gates and locks
+applicable hard gates affected by the change
+```
+
+A successful build alone is not design verification.
+
+### Phase 5 — Focused facade re-review
+
+Invoke `design-review` with the inherited route:
+
+```yaml
+review_route:
+  design_domain: <inherited>
+  surface_profile: <inherited>
+  artifact_state: <current state>
+  review_depth: focused
+  coverage_mode: <inherited>
+  domain_reviewers: <inherited>
+  selected_gates: <target + adjacent regression gates>
+  selected_components: <affected components>
+  evidence_available: <fresh verification packet>
+```
+
+Allowed outcomes:
+
+```text
+PASS / target gates >= threshold
+  proceed to learning review and exit
+
+CONDITIONAL PASS
+  proceed only when remaining gaps are outside the declared refinement boundary
+  and do not invalidate preserved or hard gates
+
+NEEDS WORK
+  iterate while max_iterations remains
+
+CRITICAL
+  stop and route to redesign-workflow, local emergency fix, or specialist
+
+LIMITED REVIEW
+  stop complete-domain claims; load the required reviewer or narrow the scope
+```
+
+Do not overwrite a failed re-review with a subjective “looks better” judgment.
+
+### Phase 6 — Automatic learning review
+
+After each verified fix, load:
 
 ```text
 skill-evolution + skill-eval
 ```
 
-Run the review automatically. Do not wait for the user to ask whether the skill should be updated.
-
 The learning review must:
 
-1. capture the observed failure, verified fix, and before/after evidence;
-2. extract why the fix worked;
-3. classify the knowledge as local, product-specific, reusable rule, reference, workflow, eval-only, or core contract;
-4. remove product names, repository paths, routes, class names, and exact breakpoints from shared instructions;
-5. test the generalized reason against at least two different contexts and counterexamples;
-6. check the complete target skill and related skills for duplicate coverage;
-7. apply the smallest justified shared patch;
-8. add or update a regression eval derived from the real case;
-9. run relevant eval and conformance checks;
-10. commit automatically only when repository and approval policy permit it.
+1. capture the failure, verified fix, before/after evidence, and governing reviewer;
+2. extract why the correction worked;
+3. classify it as local, product-specific, reusable specialist rule, facade/routing rule, reference, workflow, eval-only, or core contract;
+4. remove product names, paths, routes, classes, and accidental breakpoints from shared instructions;
+5. test the generalized reason against different contexts and counterexamples;
+6. check complete governing files for duplicate coverage;
+7. patch the smallest correct owner, never the facade by convenience;
+8. add or update a regression eval from the verified case;
+9. run relevant conformance checks when available;
+10. commit automatically only when repository and approval policy permit.
 
-Allowed verdicts:
+Allowed learning verdicts:
 
 ```text
 PROMOTED
@@ -164,91 +283,38 @@ DEFERRED_UNVERIFIED
 NOT_WRITTEN_READ_ONLY
 ```
 
-Examples:
+### Phase 7 — Exit or handoff
 
-```text
-Product-specific fact:
-A named gallery used a particular component at a project breakpoint.
-→ Store in product design lock or regression provenance.
-
-Reusable reason:
-A primary discovery set should not be hidden solely because the current component overflows; evaluate visible overflow or component substitution from task, option count, label length, and available width.
-→ Promote to the governing skill only when new, transferable, and verified.
-```
-
-### Step 6 — Exit
-
-Exit when all declared failing gates reach `>= 8.0`, or when `max_iterations` is reached.
+Exit when all declared target findings pass the focused facade review and preserved gates remain stable, or when `max_iterations` is reached.
 
 ```text
 REFINEMENT COMPLETE — <target>
-────────────────────────────────────
-Gates fixed: <before -> after scores>
+Design domain: <domain>
+Coverage mode: <mode>
+Reviewers: <list>
+Gates fixed: <before → after>
 Gates preserved: <regression result>
 Iterations: <N>
-Local implementation patches: <list>
-Learning candidates reviewed: <count>
-Promoted skill/reference/workflow changes: <list or none>
-Eval-only additions: <list or none>
-Local-only or duplicate lessons: <list or none>
+Changed regions/files: <list>
+Evidence packet: <summary>
+Learning verdicts: <list>
 Promotion commits: <SHA list or not written>
 Residual gaps: <list or none>
+Handoff: <none | local fix | redesign-workflow | domain specialist>
 ```
 
 The workflow is incomplete when a verified fix occurred but no learning-review verdict was recorded.
 
-## Common refinement targets
-
-### Reduced motion
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-
-Treat the snippet as an implementation example, not a universal substitute for checking every motion behavior and semantic transition.
-
-### Touch targets
-
-```css
-.element {
-  min-height: 44px;
-  min-width: 44px;
-  display: inline-flex;
-  align-items: center;
-}
-```
-
-The reusable rule is reachable, non-overlapping interaction. The exact CSS remains framework and product dependent.
-
-### Semantic structure
-
-```html
-<a href="#main" class="skip-link">Skip to content</a>
-<nav aria-label="Main navigation">
-<main id="main">
-<section aria-labelledby="section-heading">
-<h2 class="sr-only" id="section-heading">Section name</h2>
-```
-
-### Focal-point void
-
-Avoid using full viewport height by reflex when sparse content creates dead space. Select height and spacing from the intended composition and actual content.
-
-### Type pairing
-
-Use distinct display and body roles when the product's visual language benefits from them. Preserve existing brand typography locks when present.
-
-## Anti-patterns
+## Common Pitfalls
 
 | Anti-pattern | Correct behavior |
 |---|---|
-| Patch a shared skill before proving the real fix | Verify first, then promote |
-| Copy the product case into `SKILL.md` | Store case provenance separately and promote only reusable reasoning |
-| Add a duplicate rule because it was ignored | Fix orchestration or add regression eval |
-| Fix unrelated visual areas during refinement | Preserve passing gates |
+| Route from average score alone | Use coverage, hard gates, direction, root cause, and domain ownership |
+| Treat NOT_VERIFIED as a failing design | Collect evidence or report the gap |
+| Refine a logo system with universal UI gates only | Load identity reviewer or return LIMITED REVIEW |
+| Run browser checks on a poster | Use final-size, fidelity, crop, and export evidence |
+| Patch all visible symptoms separately | Correct the governing root cause once |
+| Update the facade with specialist knowledge | Patch the specialist reviewer or domain reference |
+| Copy a product case into shared instructions | Promote only generalized verified reasoning |
+| Fix unrelated visual areas | Preserve passing gates and scope |
 | Claim skill update without a commit result | Report `not written` honestly |
