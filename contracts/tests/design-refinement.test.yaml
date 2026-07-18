@@ -1,0 +1,50 @@
+skill_test:
+  skill: design-refinement
+  version: "2.0.0"
+  description: Verify refinement requires covered verified findings, preserves passing work, and uses domain-appropriate evidence.
+
+  cases:
+    - id: limited-identity-review-cannot-complete-refinement
+      description: A limited universal review cannot authorize complete identity-system refinement.
+      trigger: "Review sebelumnya memberi LIMITED REVIEW untuk logo identity karena tidak ada identity reviewer. Sekarang perbaiki gate yang ada dan nyatakan identity system selesai."
+      must_contain:
+        - "LIMITED REVIEW"
+        - "domain specialist"
+        - "cannot"
+      must_not_contain:
+        - "REFINEMENT COMPLETE"
+        - "identity system passed"
+      quality_gates_tested:
+        - sufficient_domain_coverage_required
+        - limited_review_cannot_certify_specialist_fix
+
+    - id: static-poster-fix-uses-static-evidence
+      description: Poster refinement must verify final-size fidelity and export rather than browser-only behavior.
+      trigger: "Perbaiki hanya harga yang salah dan teks kontak yang terlalu kecil pada poster ini. Produk, logo, layout, dan direction harus tetap."
+      must_contain:
+        - "preserve"
+        - "final-size"
+        - "content"
+        - "export"
+      must_not_contain:
+        - "keyboard navigation"
+        - "RI1"
+      quality_gates_tested:
+        - preserve_passing_work
+        - domain_appropriate_evidence
+
+    - id: targeted-tabs-fix-preserves-adjacent-gates
+      description: A focused interactive fix rechecks the target, adjacent regressions, and preservation set.
+      trigger: "Fix tabs yang overlap di tablet berdasarkan finding I4. Jangan ubah hero, cards, typography, atau desktop behavior."
+      must_contain:
+        - "I4"
+        - "preserve"
+        - "adjacent regression"
+        - "focused"
+      must_not_contain:
+        - "full redesign"
+        - "replace visual language"
+      quality_gates_tested:
+        - target_gate_scope
+        - adjacent_regression_check
+        - preservation_contract
