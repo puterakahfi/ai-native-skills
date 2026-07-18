@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: Surface-aware design review orchestrator — classify the artifact, load only relevant visual, interactive, static, and component gates, require evidence, then score and report with explicit coverage. Use standalone or from design-audit, design-refinement, and redesign-workflow.
+description: Surface-aware design review orchestrator — classify the artifact, load only relevant universal, interactive, static, and component gates, require evidence, then score and report with explicit coverage. Use standalone or from design-audit, design-refinement, and redesign-workflow.
 license: MIT
 metadata:
   ai-native-skills.version: 3.0.0
@@ -11,9 +11,9 @@ metadata:
 
 # Design Review
 
-Surface-aware, evidence-backed design quality review for interactive products, static marketing visuals, and presentations.
+Surface-aware, evidence-backed review for interactive products, static marketing visuals, and presentations.
 
-This skill owns review routing, applicability, evidence, scoring, and reporting. Specialized design skills own the underlying design knowledge and correction rules.
+This skill owns routing, applicability, scoring, and reporting. Specialist skills own the underlying design knowledge and correction rules.
 
 <!-- LOAD ON-DEMAND — use standalone or from design-audit, design-refinement, and redesign-workflow. -->
 
@@ -22,60 +22,64 @@ This skill owns review routing, applicability, evidence, scoring, and reporting.
 ```text
 1. Classify the surface before selecting gates.
 2. Separate universal principles from surface-specific thresholds.
-3. Never apply interactive UI gates to static artifacts.
+3. Never apply interactive gates to static artifacts.
 4. Never claim a gate passed without suitable evidence.
 5. Distinguish NOT_APPLICABLE from NOT_VERIFIED; neither is zero.
 6. Score only verified applicable gates.
 7. Load only the relevant profile, surface, and component references.
-8. Every failed gate requires an observation, evidence, impact, and correction direction.
-9. Do not turn personal taste or one design style into a universal gate.
+8. Every failure needs an observation, evidence, impact, and correction direction.
+9. Do not turn personal taste or one style into a universal gate.
 10. A high score with low evidence coverage is not release approval.
-11. Hard gates are contextual, never globally attached to unrelated surface types.
+11. Hard gates are contextual, not global.
 12. Review does not silently become redesign or implementation work.
 ```
 
-## When to Use
+## Use and Routing
 
-Use `design-review` for:
+Use for quick iteration checks, focused component review, full audit scoring, or release/delivery review of:
 
-- scored quality checks of existing designs;
-- quick review during an active visual iteration;
-- focused review of a declared issue or component;
-- full design audit scoring;
-- release or delivery readiness checks;
-- review of web, mobile, desktop, poster, banner, social, and presentation surfaces.
+```text
+web marketing
+web application
+mobile application
+desktop application
+poster, flyer, banner, social, ad, or thumbnail
+presentation or slide
+```
 
-Route elsewhere when:
+Route to:
 
-- use `design-audit` when the user wants a complete gap report and prioritization lifecycle;
-- use `design-refinement` when known failing gates should be fixed while preserving passing work;
-- use `redesign-workflow` when direction, macrostructure, or multiple critical clusters need replacement;
-- use the governing specialist skill when the request is knowledge or production rather than review.
+```text
+design-audit       → complete gap-analysis lifecycle
+design-refinement  → fix known failing gates while preserving passing work
+redesign-workflow  → replace wrong direction, macrostructure, or multiple critical clusters
+specialist skill   → knowledge or production without review lifecycle
+```
 
 ## Parameters
 
-| Parameter | Required | Description |
+| Parameter | Required | Values or meaning |
 |---|---:|---|
-| `target` | Yes | URL, rendered app, screenshot, image, PDF page, slide, repository path, or named surface |
-| `goal` | No | User, communication, business, or delivery outcome being reviewed |
-| `surface_profile` | No | `web-marketing`, `web-application`, `mobile-application`, `desktop-application`, `static-marketing`, `presentation`, or `other` |
-| `artifact_state` | No | `rendered-interactive`, `rendered-static`, `source-only`, or `mixed` |
-| `review_depth` | No | `quick`, `focused`, `full`, or `release`; default `focused` during iteration, otherwise `full` |
-| `focus` | No | Declared lenses, components, regions, or prior failing gate IDs |
-| `viewing_context` | No | Viewports, dimensions, channel, distance, theme, orientation, input methods, or print requirements |
-| `required_assets` | No | Logos, products, faces, copy, price, contact, legal text, and references that must remain faithful |
+| `target` | Yes | URL, app, screenshot, image, PDF page, slide, repository path, or named surface |
+| `goal` | No | User, communication, business, or delivery outcome |
+| `surface_profile` | No | `web-marketing`, `web-application`, `mobile-application`, `desktop-application`, `static-marketing`, `presentation`, `other` |
+| `artifact_state` | No | `rendered-interactive`, `rendered-static`, `source-only`, `mixed` |
+| `review_depth` | No | `quick`, `focused`, `full`, `release` |
+| `focus` | No | Lenses, components, regions, or prior gate IDs |
+| `viewing_context` | No | Viewports, dimensions, channel, distance, theme, orientation, input methods, print requirements |
+| `required_assets` | No | Logos, products, people, copy, prices, contacts, claims, legal text, and references to preserve |
 
-Infer missing values only when evidence is strong. Record assumptions in the review context.
+Infer missing values only when evidence is strong and record the assumption.
 
 ## Core Workflow
 
 ```text
 Phase 0 → CLASSIFY
-  Resolve surface profile, artifact state, viewing context, and review depth.
+  Resolve profile, artifact state, viewing context, and review depth.
   Load: references/review-routing.md
 
 Phase 1 → ROUTE
-  Select universal, surface-specific, and component references.
+  Select relevant lenses, surface gates, components, and evidence.
   Load: references/review-profiles.md
 
 Phase 2 → INSPECT
@@ -83,67 +87,58 @@ Phase 2 → INSPECT
   Capture realistic content, states, sizes, themes, assets, and constraints.
 
 Phase 3 → UNIVERSAL REVIEW
-  Review typography, hierarchy, spacing, composition, balance, alignment,
-  color, readability, content clarity, brand consistency, and restraint.
+  Typography, hierarchy, spacing, composition, balance, alignment,
+  color, readability, content, brand consistency, and restraint.
   Load: references/universal-gates.md
 
 Phase 4 → SURFACE REVIEW
-  Interactive profile:
-    Load: references/interactive-surface-gates.md
-  Static or presentation profile:
-    Load: references/static-visual-gates.md
+  Interactive → references/interactive-surface-gates.md
+  Static/slide → references/static-visual-gates.md
 
 Phase 5 → COMPONENT REVIEW
   Review only present or required components.
   Load: references/component-review.md when relevant.
 
 Phase 6 → EVIDENCE AND SCORE
-  Assign status, score, weight, confidence, hard-gate result, and coverage.
+  Assign status, score, weight, hard-gate result, and coverage.
   Load: references/evidence-and-scoring.md
 
 Phase 7 → REPORT
-  Prioritize findings by impact, state limitations, and select the correct handoff.
+  Prioritize findings, limitations, and the correct handoff.
   Load: references/review-report.md
 ```
 
-## Canonical Loop
+Canonical loop:
 
 ```text
-classify
-→ route
-→ inspect
-→ universal review
-→ surface review
-→ component review when relevant
-→ hard-gate check
-→ score + coverage
-→ report
+classify → route → inspect → universal → surface → components
+→ hard gates → score + coverage → report
 ```
 
-Do not begin scoring until the route and available evidence are explicit.
+Do not score until the route and available evidence are explicit.
 
 ## Review Depth
 
 ```text
 quick
-  Critical universal gates + applicable profile hard gates + declared issue.
+  Critical universal gates + applicable hard gates + declared issue.
   No release claim.
 
 focused
   Selected lenses/components + adjacent regression checks.
-  Use during active design refinement.
+  Default during active refinement.
 
 full
-  All applicable universal gates + profile gates + major present components.
+  All applicable universal and profile gates + major present components.
 
 release
-  Full review + all applicable hard gates + required states, sizes, themes,
-  input methods, runtime or export evidence, and sufficient coverage.
+  Full review + applicable hard gates + required states, sizes, themes,
+  input methods, runtime/export evidence, and sufficient coverage.
 ```
 
-Do not run a full scorecard for every small visual iteration.
+Do not run a full scorecard for every small iteration.
 
-## Reference Loading Map
+## Reference Map
 
 Always load:
 
@@ -158,79 +153,48 @@ references/review-report.md
 Load on demand:
 
 ```text
-Interactive web/mobile/desktop → references/interactive-surface-gates.md
-Poster/banner/social/slide     → references/static-visual-gates.md
-Present/required UI components → references/component-review.md
+interactive web/mobile/desktop → references/interactive-surface-gates.md
+poster/banner/social/slide     → references/static-visual-gates.md
+present or required components → references/component-review.md
 ```
 
-Never load all references merely because they exist.
+Never load all references defensively.
 
-## Applicability Model
+## Applicability and Hard Gates
 
-Every selected gate receives exactly one status:
+Every selected gate receives one status:
 
 ```text
-PASS
-FAIL
-PARTIAL
-NOT_VERIFIED
-NOT_APPLICABLE
+PASS | FAIL | PARTIAL | NOT_VERIFIED | NOT_APPLICABLE
 ```
 
-Examples:
+Contextual hard gates include:
 
 ```text
-Poster + reduced motion                    → NOT_APPLICABLE
-Dashboard screenshot + keyboard operation → NOT_VERIFIED
-Running app + unhandled route error        → FAIL RI1
-Source-only CSS + visual balance           → NOT_VERIFIED until rendered
-Commercial poster + wrong supplied price   → FAIL static content-fidelity hard gate
-```
-
-## Contextual Hard Gates
-
-```text
-Interactive release:
+interactive release
   RI1 runtime integrity
   G21 reduced motion when applicable
-  required accessibility/task-completion blockers
+  verified accessibility or task-completion blockers
 
-Static commercial delivery:
+static commercial delivery
   required logo/product/person/content fidelity
   mandatory text legibility
-  crop/safe-area integrity
+  crop and safe-area integrity
   delivery resolution
 ```
 
-A hard gate applies only when its triggering context exists. Missing evidence produces `NOT_VERIFIED`, not an invented pass or zero.
+A hard gate applies only when its triggering context exists. Missing evidence is `NOT_VERIFIED`, not pass or zero.
 
-## Evidence Before Score
+## Evidence and Verdict
 
-Accepted evidence may include:
-
-```text
-rendered visual
-interaction observation
-runtime capture
-DOM or native accessibility tree
-source inspection
-asset comparison
-measurements
-user or task evidence
-```
-
-A build passing is not visual verification. A screenshot looking correct is not interaction or runtime verification.
-
-## Scoring Policy
+Evidence may include rendered visuals, interaction observation, runtime capture, accessibility tree, source inspection, asset comparison, measurements, or user/task evidence.
 
 ```text
 Default pass threshold: 8.0 / 10
-Critical gate: score below 5
-Overall score: weighted average of verified applicable gates only
+Critical: verified score below 5
+Overall: weighted average of verified applicable gates only
 Coverage: verified applicable weight / all applicable selected weight
 ```
-
-Verdict requires both score and coverage:
 
 ```text
 PASS             score >= 8, hard gates pass, sufficient coverage
@@ -239,73 +203,47 @@ NEEDS WORK       score < 8 or important gates fail
 CRITICAL         applicable hard gate fails or material critical gate exists
 ```
 
-## Required Review State
+A build is not visual verification. A screenshot is not interaction or runtime verification.
 
-Record before scoring:
+## Output Contract
 
-```yaml
-review_route:
-  surface_profile: <profile>
-  artifact_state: <state>
-  review_depth: <depth>
-  viewing_context: []
-  selected_references: []
-  selected_lenses: []
-  selected_components: []
-  applicable_hard_gates: []
-  evidence_available: []
-  evidence_gaps: []
-```
-
-Record for each failed or partial gate:
-
-```yaml
-finding:
-  gate: <id>
-  status: <FAIL | PARTIAL>
-  score: <0-10 for verified scope>
-  region: <location>
-  observation: <specific condition>
-  evidence: []
-  impact:
-    user: <impact>
-    business_or_delivery: <impact when relevant>
-  recommendation: <specific correction direction>
-  confidence: <high | medium | low>
-```
-
-## Output
-
-The report must include:
+Report:
 
 ```text
-review context
-score and verified coverage
+review context and route
+score + verified coverage
 contextual hard-gate status
 executive findings
-cluster summary
-component findings when relevant
+cluster and component summary
 critical / important / polish priority
 NOT_APPLICABLE and NOT_VERIFIED gates
 recommended handoff
 ```
 
-Do not dump the entire gate inventory when a focused review is enough.
+Each failed or partial finding must contain:
+
+```text
+gate and region
+specific observation
+evidence
+user/message/business/delivery impact
+correction direction
+confidence
+```
+
+Do not dump the full gate inventory when a focused report is enough.
 
 ## Integration Contract
 
 ```text
 design-audit
   owns capture, full gap analysis, prioritization, and audit recommendation
-  calls design-review for routed scoring
 
 design-refinement
-  owns targeted fixes and regression preservation
-  calls design-review for focused re-score
+  owns targeted fixes, preservation, and focused re-score
 
 redesign-workflow
-  owns redesign lifecycle and fix loop
-  calls design-review after rendered verification
+  owns redesign lifecycle, verification, defect classification, and fix loop
 ```
 
 `design-review` reports findings. It changes artifacts only when the calling workflow explicitly owns and requests production.
@@ -313,16 +251,14 @@ redesign-workflow
 ## Final Guard
 
 ```text
-□ Surface profile is explicit.
-□ Artifact state and viewing context are explicit.
+□ Profile, artifact state, and viewing context are explicit.
 □ Only relevant references were loaded.
 □ Universal gates were reviewed.
 □ Surface and component gates match the target.
 □ Hard gates were applied contextually.
 □ Every score has suitable evidence.
-□ NOT_VERIFIED and NOT_APPLICABLE are separate.
-□ Overall score includes verified applicable gates only.
+□ NOT_VERIFIED and NOT_APPLICABLE remain separate.
+□ Score uses verified applicable gates only.
 □ Coverage is reported beside the score.
-□ Findings are specific and prioritized.
-□ No style preference was presented as a universal design law.
+□ Findings are specific, prioritized, and style-neutral.
 ```
