@@ -1,9 +1,9 @@
 ---
 name: design-audit
-description: Standalone design audit — inspect an existing UI surface and produce a scored gap report without redesigning. Use before redesign-workflow to understand what needs fixing, or as a periodic health check on shipped surfaces.
+description: Standalone design audit — inspect an existing interactive or static visual surface, route through design-review, and produce an evidence-backed prioritized gap report without redesigning.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 2.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.related_skills: '["redesign-workflow","design-review","design-refinement","master-design","accessibility","readability","responsiveness"]'
@@ -11,115 +11,216 @@ metadata:
 
 # Design Audit
 
-Inspect → score → report. No redesign output. Produces an actionable gap report.
+Inspect → route → score → prioritize → report. No redesign output.
+
+`design-audit` owns evidence capture, gap analysis, and recommendation. `design-review` owns gate routing, applicability, scoring, coverage, and review format.
 
 ## When to Use
 
-- Before starting a redesign (understand the current state first)
-- Periodic health check on a shipped surface
-- Stakeholder audit — "what's actually wrong and why"
-- Deciding between `design-refinement` (targeted fix) vs `redesign-workflow` (full rebuild)
+- before a redesign to understand the current state;
+- periodic quality health checks;
+- stakeholder review of what is wrong and why;
+- deciding between targeted refinement and full redesign;
+- auditing web, mobile, desktop, poster, social, banner, or presentation surfaces.
 
-**Output**: scored gap report + prioritized fix list, not new HTML.
+Output: an evidence-backed gap report and prioritized fix list, not a replacement artifact.
 
----
+## Hard Rules
+
+```text
+1. Route the surface before choosing capture methods or gates.
+2. Capture evidence appropriate to the artifact state.
+3. Never score unavailable evidence as zero.
+4. Do not apply browser-only checks to static or native artifacts.
+5. Use design-review as the canonical gate source; do not duplicate its scorecard.
+6. Every gap needs evidence, impact, and a correction direction.
+7. Audit does not silently become redesign or implementation work.
+```
 
 ## Audit Process
 
-### Step 1 — Capture current state
+### Step 1 — Resolve context
 
-```
-browser_navigate(target)
-browser_vision("Full visual audit: hierarchy, CTA, typography, spacing, first impression")
-browser_snapshot(full=true)
+Load `design-review` and run its classification and routing phases.
 
-DOM probes:
-  document.styleSheets.length          → > 0
-  getComputedStyle(body).backgroundColor → not rgba(0,0,0,0)
-  document.documentElement.scrollWidth > innerWidth → false (no overflow)
-  [...querySelectorAll('a,button')].filter(el => {
-    const b = el.getBoundingClientRect();
-    return b.width > 0 && b.height > 0 && (b.width < 44 || b.height < 44);
-  }).length  → 0 (no small touch targets)
-  document.querySelector('h1')?.getBoundingClientRect().top / innerHeight * 100 → < 50%
-```
+Record:
 
-### Step 2 — Score against gates
-
-Load `design-review` skill. Score each gate 0–10.
-
-Fast audit (subset) — score these 8 critical gates first:
-```
-□ G2:  Typographic scale — H1/body ratio ≤ 3.5x?
-□ G8:  First impression  — H1 = stance in 50ms?
-□ G9:  Line length       — prose ≤ 65ch, bio ≤ 44ch?
-□ G14: Touch targets     — interactive ≥ 44×44px?
-□ G16: Semantic HTML     — nav/main/section/footer + heading hierarchy?
-□ G21: Reduced motion    — @media(prefers-reduced-motion) present?
-□ R1:  Type pairing      — display face ≠ body face?
-□ C1:  Focal point       — H1 visible ≤ 50% from top, no void above?
+```yaml
+audit_context:
+  target: <target>
+  goal: <goal>
+  surface_profile: <profile>
+  artifact_state: <state>
+  review_depth: <quick | focused | full | release>
+  viewing_context: []
+  required_assets: []
+  evidence_available: []
+  evidence_gaps: []
 ```
 
-Full audit — score all gates from `design-review` skill (35+ gates).
+Default to `full` for a standalone audit unless the user requests a quick or focused review.
 
-### Step 3 — Classify each failure
+### Step 2 — Capture current state
 
-For each failing gate (< 8.0):
+Use the capture path that matches the artifact.
+
+```text
+rendered web application
+  full visual capture
+  required viewports and themes
+  interaction and state walkthrough
+  DOM/accessibility evidence
+  runtime evidence
+
+mobile or desktop application
+  required devices, windows, orientations, and density
+  touch/keyboard/pointer behavior
+  accessibility tree when available
+  loading, error, permission, offline, and resize states
+
+static marketing visual
+  final-size export
+  actual channel/aspect-ratio simulation
+  safe-area and crop check
+  supplied asset/content comparison
+  resolution and compression inspection
+
+presentation
+  complete sequence when available
+  room or screen-share scale
+  chart, data, source, and narrative inspection
+
+source-only
+  implementation and asset inspection
+  mark unrendered visual/interaction claims NOT_VERIFIED
 ```
-Gate:    [id + name]
-Score:   [n] / 10
-Finding: [what is actually wrong — specific, not generic]
-Skill:   [which skill encodes the fix rule]
-Fix:     [specific action — e.g. "add @media(prefers-reduced-motion:reduce) to .hero-name transition"]
-Effort:  [low | medium | high]
+
+Do not use a successful build as proof of visual quality. Do not use a screenshot as proof of keyboard, motion, or runtime behavior.
+
+### Step 3 — Run design review
+
+Load only the references selected by `design-review/references/review-routing.md`.
+
+```text
+quick audit
+  universal quick gates
+  applicable profile hard gates
+  user-declared issue
+
+focused audit
+  selected lenses/components
+  adjacent regression gates
+
+full audit
+  all applicable universal gates
+  selected profile gates
+  major present components
+  evidence coverage
+
+release audit
+  full audit
+  all applicable hard gates verified
+  runtime or export delivery evidence
 ```
 
-### Step 4 — Prioritize
+Use the score and coverage model from `design-review/references/evidence-and-scoring.md`.
 
-Cluster findings into:
+### Step 4 — Classify each gap
+
+For every failed or partial gate:
+
+```yaml
+gap:
+  gate: <id>
+  score: <verified score>
+  status: <FAIL | PARTIAL>
+  finding: <specific observed condition>
+  evidence: []
+  impact:
+    user: <impact>
+    business_or_delivery: <impact when relevant>
+  governing_skill: <skill or product rule>
+  correction_direction: <specific action direction>
+  suspected_layer: <foundation | structure | component | expression | interaction | content | implementation>
+  effort: <low | medium | high>
+  confidence: <high | medium | low>
 ```
-CRITICAL (score < 5):  fix before any visual polish
-  → usually: G21 reduced motion, G16 semantic HTML, G14 touch targets
 
-IMPORTANT (score 5–7): fix in next iteration
-  → usually: G2 type scale, G8 first impression, G9 line length
+Do not prescribe an implementation library merely because the current component is wrong. Describe the behavior and design requirement first.
 
-POLISH (score 7–8):    fix when other gates pass
-  → usually: C2 weight distribution, G5 whitespace rhythm
+### Step 5 — Prioritize
+
+```text
+CRITICAL
+  applicable hard-gate failure
+  or verified score below 5 with material task, message, fidelity, accessibility,
+  runtime, or delivery impact
+
+IMPORTANT
+  verified score 5–7.9
+  or a clear issue that weakens comprehension, usability, trust, or consistency
+
+POLISH
+  passing or near-passing quality issue with low task risk
 ```
 
----
+Combine repeated symptoms under one root-cause finding. Do not penalize six card instances as six independent spacing defects.
 
-## Audit Report Format
+### Step 6 — Recommend the lifecycle
 
+```text
+design-refinement
+  direction is sound
+  gaps are specific
+  passing regions should be preserved
+
+redesign-workflow
+  direction or macrostructure is wrong
+  multiple critical clusters fail
+  the selected component model cannot support the task
+
+local implementation/content/asset fix
+  the governing design rule already exists
+  and the defect is isolated to code, data, copy, assets, or configuration
 ```
-DESIGN AUDIT — [target]
-════════════════════════
-Date: [date]
-Surface: [type]
-Overall avg: X.X / 10
-Status: PASS (≥8.0) | NEEDS WORK | CRITICAL
 
-CRITICAL (< 5):
-  Gate G21 Reduced Motion: 0/10
-  Finding: No @media(prefers-reduced-motion:reduce) on any animation
-  Fix: Add reduced-motion override to all transitions/animations
-  Effort: low
+Do not use a fixed count of critical gates as the sole redesign trigger. Consider whether the failures share one local root cause or reveal a broken direction.
 
-IMPORTANT (5–7):
-  Gate G2 Typographic Scale: 6/10
-  Finding: Hero H1 = 7rem, body = 18px → ratio 6.2x (max 3.5x)
-  Fix: Clamp hero to clamp(3rem, 2rem+4vw, 4.5rem)
-  Effort: low
+## Audit Report
 
-POLISH (7–8):
-  Gate C2 Weight Distrib: 7/10
-  Finding: Two elements competing for H1 weight in hero
-  Fix: Reduce about-heading to font-weight:500, font-size:1.6rem
-  Effort: low
+Use `design-review/references/review-report.md` and add the audit recommendation.
 
-RECOMMENDED ACTION:
-  [ ] Use design-refinement for targeted gate fixes (IMPORTANT + POLISH)
-  [ ] Use redesign-workflow for full rebuild (if CRITICAL count ≥ 3)
-════════════════════════
+Minimum output:
+
+```markdown
+# Design Audit — [target]
+
+## Context
+- Surface profile: [profile]
+- Artifact state: [state]
+- Goal: [goal]
+- Evidence: [evidence]
+
+## Verdict
+**X.XX / 10** — [status] · Coverage [X%]
+
+- Hard gates: [status]
+- Critical: [count]
+- Important: [count]
+- Polish: [count]
+
+## Priority Findings
+1. **[finding]** — [severity]
+   - Evidence: ...
+   - Impact: ...
+   - Correction direction: ...
+
+## Limitations
+- Not applicable: ...
+- Not verified: ...
+
+## Recommended Action
+[design-refinement | redesign-workflow | local fix | ready]
 ```
+
+The audit ends with the report. Produce or patch only when the user or calling workflow explicitly requests the next lifecycle.
