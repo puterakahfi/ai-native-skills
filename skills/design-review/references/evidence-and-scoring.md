@@ -2,18 +2,18 @@
 
 Load this reference before assigning any design-review score.
 
-The score is a summary of observed evidence, not a substitute for reasoning. Never assign a precise score to a gate that could not be inspected.
+A score summarizes verified applicable evidence. It does not replace reasoning, primary-domain coverage, or contextual hard gates.
 
-## Gate status
+## Gate Status
 
-Every selected gate must receive one status:
+Every selected gate receives exactly one status:
 
 ```text
-PASS            verified and meets the review threshold
+PASS            verified and meets the threshold
 FAIL            verified and does not meet the threshold
 PARTIAL         mixed evidence or only part of the required scope passes
-NOT_VERIFIED    relevant, but available evidence cannot prove or disprove it
-NOT_APPLICABLE  irrelevant to the selected profile, component, or declared context
+NOT_VERIFIED    relevant, but evidence cannot prove or disprove it
+NOT_APPLICABLE  irrelevant to the selected domain, profile, component, or context
 ```
 
 Rules:
@@ -21,62 +21,104 @@ Rules:
 ```text
 NOT_VERIFIED   is not zero
 NOT_APPLICABLE is not zero
-PARTIAL        receives a score only for the verified scope and must name the missing scope
-PASS           requires suitable evidence
-FAIL           requires a specific finding, impact, and evidence
+PARTIAL        scores only verified scope and names missing scope
+PASS           requires suitable direct evidence
+FAIL           requires observation, evidence, impact, and correction direction
 ```
 
-## Evidence classes
+## Two Different Coverage Dimensions
+
+Do not collapse these into one percentage.
+
+### Primary-domain coverage
+
+```text
+BUILT_IN
+  the facade has a complete built-in reviewer for the primary domain
+
+ADAPTER_COVERED
+  a declared external reviewer covers the primary domain and maps to the facade contract
+
+LIMITED
+  universal or adjacent-domain review is possible, but the primary-domain reviewer is missing
+
+ROUTE_ELSEWHERE
+  the requested claim cannot be responsibly reviewed by the available facade/reviewers
+```
+
+Primary-domain coverage determines the verdict ceiling.
+
+```text
+BUILT_IN / ADAPTER_COVERED
+  PASS, CONDITIONAL PASS, NEEDS WORK, or CRITICAL are available
+
+LIMITED
+  maximum complete-domain verdict is LIMITED REVIEW
+
+ROUTE_ELSEWHERE
+  do not calculate or present a misleading complete-domain verdict
+```
+
+### Evidence coverage
+
+Evidence coverage measures how much of the selected applicable gate weight was actually verified.
+
+```text
+evidence_coverage = verified applicable weight
+                    --------------------------
+                    all applicable selected weight
+```
+
+A high evidence percentage does not repair missing primary-domain coverage. A complete domain reviewer with weak evidence also cannot issue release approval.
+
+## Evidence Classes
 
 | Evidence | Suitable for | Typical limitations |
 |---|---|---|
-| Rendered visual | hierarchy, balance, typography, spacing, color, crop, composition | cannot prove hidden interaction, source consistency, or runtime health |
-| Interaction observation | navigation, states, overflow, focus, input behavior, feedback | may miss source-level or untriggered edge cases |
-| Runtime capture | errors, asset failures, performance symptoms, flow completion | does not prove visual quality by itself |
+| Rendered visual | hierarchy, balance, typography, spacing, color, crop, composition | cannot prove hidden interaction, source consistency, runtime, or specialist-domain production quality |
+| Interaction observation | navigation, states, overflow, focus, input behavior, feedback | may miss source-level and untriggered edge cases |
+| Runtime capture | errors, asset failures, performance symptoms, flow completion | does not prove visual or domain quality alone |
 | DOM/native accessibility tree | semantics, roles, names, focus relationships | does not prove full usability or visual hierarchy alone |
-| Source inspection | tokens, implementation, state coverage, reduced-motion rules | does not prove the rendered result without execution |
-| Asset comparison | logo, product, human, content, and brand fidelity | requires approved reference assets |
+| Source inspection | tokens, implementation, state coverage, reduced motion | does not prove rendered behavior without execution |
+| Asset comparison | logo, product, human, content, brand fidelity | requires approved references and may not cover system-level identity quality |
 | Measured output | dimensions, contrast, DPI, safe area, target size | measurements require contextual interpretation |
-| User or task evidence | comprehension, success, confusion, business impact | quality depends on sample and method |
+| User/task evidence | comprehension, success, confusion, business impact | quality depends on method and sample |
+| Domain evidence | specialist tests, production constraints, standards, physical/process proof | valid only when required by and interpreted through the domain reviewer |
 
-Use at least one direct evidence item per failed gate. Release hard gates require evidence appropriate to the gate, not inference from appearance.
+Use at least one direct evidence item per failed gate. Hard gates require evidence appropriate to the governing reviewer, not inference from appearance.
 
-## Score rubric
+## Score Rubric
 
-Use a 0–10 score only for verified applicable scope.
+Use 0–10 only for verified applicable scope.
 
 ```text
 10  exceptional: fully resolves the intended need with strong evidence and no meaningful gap
 9   strong: clear, robust, and polished with only negligible issues
 8   pass: fit for purpose; minor issues do not materially harm the task or message
 7   near pass: usable but one clear issue weakens quality or confidence
-6   weak: multiple visible issues or one important task/message problem
+6   weak: multiple visible issues or one important task/message/domain problem
 5   poor: significant friction, confusion, inconsistency, or fidelity risk
-3–4 critical: severe problem that materially harms use, comprehension, or delivery
+3–4 critical: severe problem materially harming use, comprehension, safety, or delivery
 1–2 broken: most of the gate fails or creates serious risk
 0   verified complete failure of an applicable gate; never use for missing evidence
 ```
 
 Default pass threshold: `>= 8.0`.
 
-Scores below 5 are critical. Do not spend review effort on polish while a critical gate remains unresolved.
+Scores below 5 are critical. Do not spend review effort on polish while a critical gate or primary-domain coverage gap remains unresolved.
 
 ## Weighting
 
-Weights come from the selected profile and declared goal.
-
-Default:
+Weights come from the selected profile, domain reviewer, declared goal, and applicable hard-gate policy.
 
 ```text
-normal gate          weight 1
-profile priority     weight 2
-hard gate            pass/fail control; may also carry weight 2
-explicit user goal   increase only when directly relevant
+normal gate            weight 1
+profile/domain priority weight 2
+hard gate              pass/fail control; may also carry weight 2
+explicit user goal     increase only when directly relevant
 ```
 
-Do not silently increase weight because the reviewer personally prefers an aspect.
-
-Weighted score:
+Do not silently increase weight because the reviewer prefers an aspect.
 
 ```text
 overall = sum(score × weight for verified applicable gates)
@@ -84,56 +126,59 @@ overall = sum(score × weight for verified applicable gates)
           sum(weight for verified applicable gates)
 ```
 
-Do not include `NOT_VERIFIED` or `NOT_APPLICABLE` in the denominator.
+Exclude `NOT_VERIFIED` and `NOT_APPLICABLE` from the score denominator. Still include relevant `NOT_VERIFIED` weight in evidence-coverage calculations.
 
-## Coverage
-
-Always report verified coverage beside the score.
-
-```text
-coverage = verified applicable weight
-           --------------------------
-           all applicable selected weight
-```
-
-Example:
-
-```text
-Overall: 8.4 / 10
-Verified coverage: 72%
-Not verified: keyboard operation, reduced motion, runtime integrity
-```
-
-A high score with low coverage is not release approval.
-
-Suggested verdict policy:
+## Verdict Policy
 
 ```text
 PASS
+  primary-domain coverage is BUILT_IN or ADAPTER_COVERED
   overall >= 8.0
   all applicable hard gates pass
-  no critical gate
-  sufficient coverage for the declared review depth
+  no material critical gate
+  evidence coverage is sufficient for the declared depth
 
 CONDITIONAL PASS
+  primary-domain coverage is BUILT_IN or ADAPTER_COVERED
   overall >= 8.0
   no verified hard-gate failure
-  relevant gates remain NOT_VERIFIED or accepted risk remains
+  evidence gaps or accepted risks remain
+  the current approval boundary explicitly permits them
 
 NEEDS WORK
+  primary-domain coverage exists
   overall < 8.0
   or one or more important gates fail
 
 CRITICAL
   any applicable hard gate fails
-  or any verified gate is below 5 and materially blocks the declared purpose
+  or a verified gate below 5 materially blocks the declared purpose
+
+LIMITED REVIEW
+  primary-domain coverage is LIMITED
+  universal or adjacent-domain findings may still be reported
+  no complete-domain, release, production-ready, or final-approval claim is allowed
+
+ROUTE_ELSEWHERE
+  requested review claim cannot be supported by available reviewers
+  stop scoring the unsupported claim and hand off
 ```
 
-## Hard gates are contextual
+Example:
 
-A gate is hard only when its triggering context applies.
+```text
+Overall verified gates: 8.4 / 10
+Evidence coverage: 72%
+Primary-domain coverage: LIMITED
+Verdict: LIMITED REVIEW
+Reason: no brand-identity reviewer was loaded
+```
 
-Examples:
+The 8.4 score describes verified universal scope only; it does not approve the identity system.
+
+## Contextual Hard Gates
+
+A gate is hard only when its triggering context and governing reviewer apply.
 
 ```text
 RI1 runtime integrity
@@ -142,40 +187,45 @@ RI1 runtime integrity
   NOT_APPLICABLE for a poster
 
 G21 reduced motion
-  hard for release review when motion exists or can be introduced by the platform
+  hard for release review when motion exists or can be introduced
   NOT_VERIFIED from screenshot-only evidence
   NOT_APPLICABLE to a static image
 
-SV8–SV11 fidelity and content accuracy
-  hard for commercial delivery when a supplied logo, product, person, price, date, contact, or claim must be preserved
-  NOT_APPLICABLE only when no specific asset or fact is required
+SV8–SV11 fidelity/content accuracy
+  hard for commercial delivery when supplied logo, product, person,
+  price, date, contact, or claim must be preserved
+
+specialized domain hard gates
+  declared by the loaded domain reviewer
+  cannot be invented by the facade or inferred from universal gates
 ```
 
-Never create a global hard gate that automatically fails unrelated surface types.
+Never create one global hard gate that fails unrelated domains.
 
-## Finding quality
+## Finding Contract
 
-Every failed or partial gate must include:
+Every failed or partial gate includes:
 
 ```yaml
 finding:
   gate: I4
+  governing_reviewer: built-in-interactive
   status: FAIL
   score: 6
   region: category-tabs
-  observation: only the next chevron is visible after overflow; users cannot discover the previous direction
+  observation: only the next overflow direction is visible after scrolling
   evidence:
     - type: interaction
       context: tablet landscape after scrolling right
   impact:
-    user: returning to earlier categories is difficult and the control appears one-directional
-    business: discovery of earlier gallery categories may decrease
-  recommendation: expose synchronized previous and next affordances based on scroll position
+    user: returning to earlier categories is difficult
+    business_or_delivery: discovery of earlier categories may decrease
+  recommendation: expose synchronized previous and next affordances or substitute a control that preserves discoverability
   confidence: high
   effort: low
 ```
 
-Avoid findings such as:
+Avoid:
 
 ```text
 “spacing feels off”
@@ -184,59 +234,62 @@ Avoid findings such as:
 “use a better component”
 ```
 
-Translate qualitative feedback into an observable condition, affected task or message, governing gate, and specific correction direction.
+Translate qualitative feedback into an observable condition, governing gate/reviewer, affected outcome, and correction direction.
 
-## Review depth and evidence expectations
+## Review Depth Expectations
 
 ### Quick
 
 ```text
 critical universal gates
-profile hard gates that can be verified
+verifiable profile/domain hard gates
 user-declared issue
-no release claim
+no release or complete-domain claim
 ```
 
 ### Focused
 
 ```text
-selected lenses and components
+selected gates/components
 adjacent regression gates
 relevant hard gates when evidence exists
+inherited primary-domain coverage
 ```
 
 ### Full
 
 ```text
 all applicable universal gates
-all applicable profile gates
-all present major components
-coverage and evidence gaps
+all applicable gates from every loaded reviewer
+major present components
+complete evidence gaps and scope limitations
+full only when primary-domain coverage exists
 ```
 
 ### Release
 
 ```text
 full review
+BUILT_IN or ADAPTER_COVERED primary domain
 all applicable hard gates verified
-required states and realistic content
-required viewports, sizes, themes, and input methods
-runtime or export integrity
-no pass claim when coverage is insufficient
+required states, content, assets, sizes, themes, and input methods
+runtime, export, or specialist-domain delivery evidence
+no pass claim when evidence or domain coverage is insufficient
 ```
 
-## Review sequence
+## Review Sequence
 
 ```text
-1. Verify route and context.
-2. Run applicable hard gates.
-3. Stop and report immediately if a hard gate fails materially.
-4. Score universal gates.
-5. Score profile gates.
-6. Score selected components.
-7. Reconcile duplicate findings under the governing root cause.
-8. Calculate score and coverage.
-9. Produce prioritized findings and limitations.
+1. Verify design domain, surface, artifact state, and review depth.
+2. Resolve primary-domain coverage and loaded reviewers.
+3. Stop or limit the claim for ROUTE_ELSEWHERE or LIMITED coverage.
+4. Run applicable hard gates from loaded reviewers.
+5. Stop and report immediately when a hard gate fails materially.
+6. Score universal gates.
+7. Score domain/profile and selected component gates.
+8. Reconcile repeated symptoms under the governing root cause.
+9. Calculate verified score and evidence coverage separately.
+10. Produce prioritized findings, domain limitations, and handoff.
 ```
 
-Do not average repeated symptoms as separate failures. One underlying spacing-token defect affecting six cards should be one system finding with affected regions, not six score penalties.
+Do not average repeated symptoms as independent failures. One underlying system defect affecting many regions receives one root-cause finding with affected locations.
