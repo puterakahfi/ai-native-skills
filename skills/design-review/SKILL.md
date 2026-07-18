@@ -3,7 +3,7 @@ name: design-review
 description: Scored design gate check — load this skill during Phase 5 of redesign-workflow, or standalone to score any UI surface. Contains the complete 35+ gate scorecard. Load on-demand, not always-on.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.0.0
+  ai-native-skills.version: 2.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.related_skills: '["design-audit","design-refinement","redesign-workflow","master-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
@@ -26,9 +26,9 @@ Scored gate check. Minimum **8.0 average** to pass. Gate G21 = hard gate.
 □ G21: Reduced motion    — HARD GATE — @media(prefers-reduced-motion) present?
 □ R1:  Type pairing      — display face ≠ body face?
 □ C1:  Focal point       — H1 ≤ 50% from top, no void above?
+```
 
 If any score < 5 → CRITICAL → fix before full review.
-```
 
 ---
 
@@ -149,7 +149,14 @@ JSON.stringify({
 | CP1 Value Prop | Passes 1000-person test — specific enough | 8 |
 | CP2 Bio Length | ≤ 45 words | 8 |
 | CP3 No Slop | No buzzwords from red list | 8 |
-| CP4 Status Honesty | live/planned/lab/private/archived — accurate labels | 8 |
+| CP4 Status & Action Honesty | Status labels match real state; Continue/Resume requires reconstructable task state, not navigation history alone | 8 |
+
+#### CP4 decision rule
+
+- Use **Continue** or **Resume** only when the next surface can restore materially preserved task state, such as a draft, cart, form step, upload, or playback position.
+- When only visit history exists, use language such as **Recently viewed** or **Open again** instead of implying progress preservation.
+- Durable server state is sufficient; a client-side draft is not mandatory when the task can still be reconstructed reliably.
+- The trade-off is lower perceived activity, but truthful action labels preserve user trust and prevent dead-end continuation flows.
 
 ---
 
@@ -166,7 +173,7 @@ Accessibility:   G16–G17 avg  = __ /10
 Universal Rules: R1–R8  avg   = __ /10
 Composition:     C1–C3  avg   = __ /10
 Hierarchy:       H1–H3  avg   = __ /10
-Motion:          G18–G22 avg  = __ /10  ← G21 hard gate
+Motion:          G18–G22 avg   = __ /10  ← G21 hard gate
 CRO:             CRO1–4 avg   = __ /10
 Copy:            CP1–4  avg   = __ /10
 
