@@ -1,9 +1,9 @@
 ---
 name: design-audit
-description: Standalone design audit — inspect an existing interactive or static visual surface, route through design-review, and produce an evidence-backed prioritized gap report without redesigning.
+description: Standalone facade-backed design audit — classify an existing artifact, capture appropriate evidence, invoke the applicable design-review domain strategy, and produce a prioritized gap report without redesigning.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.0.0
+  ai-native-skills.version: 2.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.related_skills: '["redesign-workflow","design-review","design-refinement","master-design","accessibility","readability","responsiveness"]'
@@ -11,37 +11,59 @@ metadata:
 
 # Design Audit
 
-Inspect → route → score → prioritize → report. No redesign output.
+Inspect → classify → capture → review → prioritize → report. No redesign output.
 
-`design-audit` owns evidence capture, gap analysis, and recommendation. `design-review` owns gate routing, applicability, scoring, coverage, and review format.
-
-## When to Use
-
-- before a redesign to understand the current state;
-- periodic quality health checks;
-- stakeholder review of what is wrong and why;
-- deciding between targeted refinement and full redesign;
-- auditing web, mobile, desktop, poster, social, banner, or presentation surfaces.
-
-Output: an evidence-backed gap report and prioritized fix list, not a replacement artifact.
+`design-audit` owns evidence capture, gap analysis, prioritization, and lifecycle recommendation. The `design-review` facade owns domain routing, applicability, evidence normalization, scoring, coverage, verdict, and report semantics.
 
 ## Hard Rules
 
 ```text
-1. Route the surface before choosing capture methods or gates.
-2. Capture evidence appropriate to the artifact state.
-3. Never score unavailable evidence as zero.
-4. Do not apply browser-only checks to static or native artifacts.
-5. Use design-review as the canonical gate source; do not duplicate its scorecard.
-6. Every gap needs evidence, impact, and a correction direction.
-7. Audit does not silently become redesign or implementation work.
+1. Classify the design domain and surface before selecting capture methods.
+2. Use the design-review facade as the canonical review entry point.
+3. Never duplicate facade or domain-review gate inventories here.
+4. Capture evidence appropriate to the artifact and selected reviewer.
+5. Never score unavailable evidence as zero.
+6. Do not apply browser-only checks to static, native, or unsupported domains.
+7. Full audit means full only for domains covered by built-in or loaded reviewers.
+8. Unsupported primary domains produce LIMITED REVIEW, not a full pass.
+9. Every gap needs evidence, impact, governing reviewer, and correction direction.
+10. Audit does not silently become redesign or implementation.
+```
+
+## When to Use
+
+Use for:
+
+- audit-only requests;
+- periodic quality health checks;
+- stakeholder gap reports;
+- pre-redesign assessment;
+- deciding between local fix, refinement, redesign, or specialist review;
+- built-in facade domains: digital interface, visual communication, and presentation;
+- specialized domains when an appropriate domain reviewer is available.
+
+Output: an evidence-backed gap report and prioritized action, not a replacement artifact.
+
+## Parameters
+
+```text
+target            required — URL, app, screenshot, image, PDF, slide, repo path
+goal               user, communication, business, or delivery outcome
+design_domain      digital-interface | visual-communication | presentation | other
+surface_profile    web-marketing | web-application | mobile-application |
+                   desktop-application | static-marketing | presentation | other
+artifact_state     rendered-interactive | rendered-static | source-only | mixed
+review_depth       quick | focused | full | release; default full
+viewing_context    viewports, formats, channel, distance, theme, orientation, inputs
+required_assets    logos, products, people, copy, prices, claims, legal content
+domain_reviewers   specialist reviewers required by the primary domain
 ```
 
 ## Audit Process
 
-### Step 1 — Resolve context
+### Step 1 — Resolve facade route
 
-Load `design-review` and run its classification and routing phases.
+Start with `design-review/SKILL.md`, then enter its CLASSIFY / ROUTE phases.
 
 Record:
 
@@ -49,89 +71,116 @@ Record:
 audit_context:
   target: <target>
   goal: <goal>
+  design_domain: <domain>
   surface_profile: <profile>
   artifact_state: <state>
   review_depth: <quick | focused | full | release>
+  coverage_mode: <BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE>
+  domain_reviewers: []
   viewing_context: []
   required_assets: []
   evidence_available: []
   evidence_gaps: []
+  scope_limitations: []
 ```
 
-Default to `full` for a standalone audit unless the user requests a quick or focused review.
+Use `design-review/references/facade-boundary.md` when scope or domain coverage is unclear.
+
+Do not continue as a complete audit when `coverage_mode` is `ROUTE_ELSEWHERE`. For `LIMITED`, continue only with an explicitly limited universal review and state that no complete domain verdict is possible.
 
 ### Step 2 — Capture current state
 
-Use the capture path that matches the artifact.
+Select evidence from the resolved domain and artifact state.
 
 ```text
-rendered web application
-  full visual capture
-  required viewports and themes
+rendered web interface
+  complete visual capture at required viewports/themes
   interaction and state walkthrough
   DOM/accessibility evidence
   runtime evidence
 
 mobile or desktop application
-  required devices, windows, orientations, and density
+  required devices, windows, orientations, density, and resize states
   touch/keyboard/pointer behavior
   accessibility tree when available
-  loading, error, permission, offline, and resize states
+  loading, error, permission, offline, interruption, and recovery states
 
-static marketing visual
-  final-size export
-  actual channel/aspect-ratio simulation
-  safe-area and crop check
+static visual communication
+  final-size export and actual placement simulation
+  crop, safe-area, bleed, and overlay checks
   supplied asset/content comparison
-  resolution and compression inspection
+  resolution, compression, and color inspection
 
 presentation
   complete sequence when available
-  room or screen-share scale
-  chart, data, source, and narrative inspection
+  room, screen-share, or self-guided viewing mode
+  chart, source, data, narrative, and repeated-layout inspection
+
+specialized domain
+  evidence required by the loaded domain reviewer
+  universal visual evidence is supplementary, not specialist proof
 
 source-only
-  implementation and asset inspection
-  mark unrendered visual/interaction claims NOT_VERIFIED
+  implementation, token, content, and asset inspection
+  visual/interaction claims remain NOT_VERIFIED until rendered
 ```
 
-Do not use a successful build as proof of visual quality. Do not use a screenshot as proof of keyboard, motion, or runtime behavior.
+A build is not visual verification. A screenshot is not keyboard, motion, runtime, or hidden-state evidence.
 
-### Step 3 — Run design review
+### Step 3 — Run facade review
 
-Load only the references selected by `design-review/references/review-routing.md`.
+Load references phase-by-phase according to `design-review`:
 
 ```text
-quick audit
-  universal quick gates
-  applicable profile hard gates
-  user-declared issue
+CLASSIFY / ROUTE
+  review-routing.md
+  facade-boundary.md when needed
+  review-profiles.md only for a built-in profile
 
-focused audit
-  selected lenses/components
-  adjacent regression gates
+UNIVERSAL REVIEW
+  universal-gates.md
 
-full audit
-  all applicable universal gates
-  selected profile gates
-  major present components
-  evidence coverage
+DOMAIN / SURFACE REVIEW
+  interactive-surface-gates.md OR
+  static-visual-gates.md OR
+  declared external domain reviewer
 
-release audit
-  full audit
-  all applicable hard gates verified
-  runtime or export delivery evidence
+COMPONENT REVIEW
+  component-review.md only for selected components
+
+EVIDENCE + SCORE
+  evidence-and-scoring.md
+
+REPORT
+  review-report.md
 ```
 
-Use the score and coverage model from `design-review/references/evidence-and-scoring.md`.
+Audit depth:
 
-### Step 4 — Classify each gap
+```text
+quick
+  critical universal gates + verifiable hard gates + declared issue
+  no release claim
+
+focused
+  selected lenses/components + adjacent regression checks
+
+full
+  all applicable gates from every loaded reviewer
+  complete only when primary-domain coverage exists
+
+release
+  full audit + all applicable hard gates + required domain evidence
+```
+
+### Step 4 — Classify gaps
 
 For every failed or partial gate:
 
 ```yaml
 gap:
   gate: <id>
+  governing_reviewer: <built-in or external reviewer>
   score: <verified score>
   status: <FAIL | PARTIAL>
   finding: <specific observed condition>
@@ -139,78 +188,86 @@ gap:
   impact:
     user: <impact>
     business_or_delivery: <impact when relevant>
-  governing_skill: <skill or product rule>
-  correction_direction: <specific action direction>
-  suspected_layer: <foundation | structure | component | expression | interaction | content | implementation>
+  correction_direction: <behavior or design requirement>
+  suspected_layer: <foundation | structure | component | expression | interaction | content | implementation | domain-specialist>
   effort: <low | medium | high>
   confidence: <high | medium | low>
 ```
 
-Do not prescribe an implementation library merely because the current component is wrong. Describe the behavior and design requirement first.
+Combine repeated symptoms under one root cause. Do not multiply one spacing, token, state, or domain defect into many independent penalties.
 
 ### Step 5 — Prioritize
 
 ```text
 CRITICAL
   applicable hard-gate failure
-  or verified score below 5 with material task, message, fidelity, accessibility,
-  runtime, or delivery impact
+  or verified score below 5 with material task, message, fidelity,
+  accessibility, runtime, safety, or delivery impact
 
 IMPORTANT
   verified score 5–7.9
-  or a clear issue that weakens comprehension, usability, trust, or consistency
+  or a clear issue weakening comprehension, usability, trust, or consistency
 
 POLISH
-  passing or near-passing quality issue with low task risk
+  passing or near-passing issue with low task and delivery risk
+
+COVERAGE GAP
+  relevant gate or primary domain remains NOT_VERIFIED or uncovered
 ```
 
-Combine repeated symptoms under one root-cause finding. Do not penalize six card instances as six independent spacing defects.
+Coverage gaps do not become cosmetic findings. They limit the verdict.
 
-### Step 6 — Recommend the lifecycle
+### Step 6 — Recommend the correct lifecycle
 
 ```text
+local implementation/content/asset fix
+  governing rule exists and the defect is isolated
+
 design-refinement
   direction is sound
-  gaps are specific
-  passing regions should be preserved
+  primary-domain coverage is sufficient
+  failures are specific and passing work should be preserved
 
 redesign-workflow
-  direction or macrostructure is wrong
-  multiple critical clusters fail
-  the selected component model cannot support the task
+  direction, macrostructure, or component model is wrong
+  failures reveal a broad design-system or experience problem
 
-local implementation/content/asset fix
-  the governing design rule already exists
-  and the defect is isolated to code, data, copy, assets, or configuration
+domain specialist / reviewer
+  primary domain is unsupported or specialist evidence is missing
+
+ready
+  score, hard gates, coverage, and declared purpose all pass
 ```
 
-Do not use a fixed count of critical gates as the sole redesign trigger. Consider whether the failures share one local root cause or reveal a broken direction.
+Do not route from average score alone. Consider coverage, hard gates, root cause, direction, and domain ownership.
 
 ## Audit Report
 
-Use `design-review/references/review-report.md` and add the audit recommendation.
-
-Minimum output:
+Use `design-review/references/review-report.md` and append the lifecycle recommendation.
 
 ```markdown
 # Design Audit — [target]
 
 ## Context
+- Design domain: [domain]
 - Surface profile: [profile]
 - Artifact state: [state]
+- Coverage mode: [mode]
+- Loaded reviewers: [reviewers]
 - Goal: [goal]
-- Evidence: [evidence]
 
 ## Verdict
-**X.XX / 10** — [status] · Coverage [X%]
+**X.XX / 10** — [PASS | CONDITIONAL PASS | NEEDS WORK | CRITICAL | LIMITED REVIEW] · Coverage [X%]
 
 - Hard gates: [status]
 - Critical: [count]
 - Important: [count]
 - Polish: [count]
+- Coverage gaps: [count]
 
 ## Priority Findings
 1. **[finding]** — [severity]
+   - Reviewer: ...
    - Evidence: ...
    - Impact: ...
    - Correction direction: ...
@@ -218,9 +275,10 @@ Minimum output:
 ## Limitations
 - Not applicable: ...
 - Not verified: ...
+- Domain limitations: ...
 
 ## Recommended Action
-[design-refinement | redesign-workflow | local fix | ready]
+[local fix | design-refinement | redesign-workflow | domain specialist | ready]
 ```
 
 The audit ends with the report. Produce or patch only when the user or calling workflow explicitly requests the next lifecycle.
