@@ -8,7 +8,7 @@ metadata:
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-layout.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
-  ai-native-skills.related_skills: '["design-spacing","macrostructures","responsiveness","ui-components"]'
+  ai-native-skills.related_skills: '["design-spacing","macrostructures","responsiveness","adaptive-component-design","ui-components"]'
 ---
 
 # Design Layout Port
@@ -37,7 +37,7 @@ Answers: What macrostructure? What grid? What breakpoints? What component struct
 | Concern | Adapter | When to load |
 |---|---|---|
 | Page-level structure | `macrostructures` | Phase 0.5 — pick macrostructure |
-| Breakpoints + fluid grid | `responsiveness` | Phase 4 produce, any responsive concern |
+| Breakpoints + fluid grid | `responsiveness` | Phase 4 produce, any responsive concern |\n| Component substitution by viewport | `adaptive-component-design` | When the same component does not fit every width |
 | Component structure (nav, hero, sections) | `ui-components` | Phase 4 produce, building components |
 | Rhythm, Ma, spatial hierarchy | `design-spacing` | Phase 4, any spacing decision |
 
@@ -61,7 +61,7 @@ Phase 0.5 MACRO PICK:
 
 Phase 4 PRODUCE (layout concerns):
   3. skill_view(name='ui-components')            ← component structure
-  4. skill_view(name='responsiveness')           ← breakpoints + fluid
+  4. skill_view(name='responsiveness')           ← breakpoints + fluid\n  5. skill_view(name='adaptive-component-design') ← choose/substitute patterns per viewport
 ```
 
 ---
