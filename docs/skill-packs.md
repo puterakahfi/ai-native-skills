@@ -116,7 +116,7 @@ npx skills add puterakahfi/ai-native-skills \
 ---
 
 ## Full Suite (everything)
-All 92 entries — skills, workflows, meta-skills, roles, domain, engineering, design.
+Install every currently published skill, workflow, and meta-skill.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills -g -y
@@ -132,7 +132,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 | `design-refinement` | design-audit, design-review, master-design, skill-evolution, skill-eval |
 | `skill-evolution` | skill-eval, git-workflow |
 | `role-switcher` | master-engineer, master-design, product-manager, ux-psychology, user-research, native-ai-engineer, diagram-architect, design-review, systematic-debugging, architecture-review, security-review, plan |
-| `workflow-router` | redesign-workflow, new-feature-workflow, bugfix-workflow, code-review-workflow, deployment-workflow, product-development-workflow, design-refinement, skill-doctor, spec-workflow |
+| `workflow-router` | redesign-workflow, new-feature-workflow, bugfix-workflow, code-review-workflow, deployment-workflow, product-development-workflow, design-refinement, skill-evolution, skill-eval, git-workflow, skill-doctor, spec-workflow |
 | `product-development-workflow` | product-requirements, business-value-alignment, experiment-design, user-research, master-design, master-engineer, spec-workflow, threat-modeling, code-review-workflow, deployment-workflow, observability-design |
 | `bugfix-workflow` | systematic-debugging, master-engineer, security-review, test-driven-development |
 | `code-review-workflow` | master-engineer, architecture-review, security-review, threat-modeling |
