@@ -1,189 +1,156 @@
-## Phase 5 Output Format (MANDATORY)
+# Phase 9 — Review Adapter
 
-Scorecard MUST be delivered as markdown — NOT inside a code block.
+This reference integrates `redesign-workflow` with the canonical `design-review` skill.
 
-```
-## [site] · Scorecard iter N
+Do not maintain a duplicate scorecard here. Gate definitions, applicability, evidence, scoring, hard-gate policy, and report format are owned by `skills/design-review/`.
 
-**X.XX / 10** ✅/❌ PASS/FAIL · G21 hard gate X/10 ✓/✗
+## Entry condition
 
-| Cluster | Score | Notes |
-|---|---|---|
-| Design System | X.X | ... |
-...
-
-**Open gates:**
-- `GXX` Name X.X — description
-```
-
-NEVER dump scorecard as a fenced code block — it renders as unreadable wall of text.
-
-
-Minimum **8.0 average** to pass. Gate 21 (Reduced Motion) = hard gate: 0 = full fail.
-
----
-
-## Review Mode Selection
-
-Use `iteration-review-mode.md` during active visual loops when one layer was touched and the user is still reacting to direction. Use the full scorecard below only for deploy/commit readiness, major multi-layer changes, or final delivery claims.
+Review only after Phase 8 verification has produced fresh evidence for the redesigned artifact.
 
 ```text
-Iteration mode: touched gates + regression checks only
-Full mode: all clusters + average + hard gates
+□ target rendered or inspected in the declared artifact state
+□ required viewports, formats, themes, or channels captured
+□ relevant interactions and states exercised when interactive
+□ runtime or export evidence captured when required
+□ preservation locks checked
+□ verification report attached to the current iteration
 ```
 
----
+A successful build alone is not visual verification. A good-looking screenshot alone is not interaction or runtime verification.
 
-## Lightweight Iteration Checks (during active visual loops)
+## Load order
 
-Do NOT run full build/lint/typecheck on every iteration. Keep loops fast:
-```
-□ browser visual check — all sections
-□ browser visual check in every theme mode (light/dark)
-□ theme toggle: light → dark → light, aria-label updates
-□ DOM probes: overflow, sheets > 0, touch targets, H1 position
-□ hash/link click checks on changed CTAs
-□ git diff --check on changed files
-```
-
-If a harness or reminder says verification is stale during creative UI/UX work, do not reflexively run full lint/build. First decide whether this is still an iteration loop or a commit/deploy boundary. For iteration loops, provide a fresh lightweight evidence packet instead: changed-file `git diff --check`, route status, browser DOM probes for images/overflow/touch targets, and light/dark visual checks when theme is affected.
-
-If full lint was already attempted and is blocked by missing shared config or setup state, state the concrete blocker once and do not keep retrying the same failing command until commit/deploy.
-
-Full build/lint only when: user approves, preparing PR/commit, or deploy-ready.
-
-See `visual-loop-verification.md` for packet examples and DOM probes.
-
----
-
-## DOM Verification Snippet (run after EVERY CSS change)
-
-```js
-JSON.stringify({
-  sheets:    document.styleSheets.length,          // > 0
-  bg:        getComputedStyle(document.body).backgroundColor, // not rgba(0,0,0,0)
-  overflow:  document.documentElement.scrollWidth > innerWidth, // false
-  touchFail: [...document.querySelectorAll('a,button')]
-    .filter(el=>{const b=el.getBoundingClientRect();
-      return b.width>0&&b.height>0&&(b.width<44||b.height<44);}).length, // 0
-  h1TopPct:  Math.round(document.querySelector('h1')
-    ?.getBoundingClientRect().top/window.innerHeight*100), // < 50
-});
+```text
+1. design-review/SKILL.md
+2. design-review/references/review-routing.md
+3. design-review/references/review-profiles.md
+4. design-review/references/universal-gates.md
+5. surface-specific reference selected by routing
+6. design-review/references/component-review.md when relevant
+7. design-review/references/evidence-and-scoring.md
+8. design-review/references/review-report.md
 ```
 
----
+During an active visual loop, also load `iteration-review-mode.md`.
 
-## Full Scorecard
+## Review mode selection
 
+```text
+focused iteration
+  Use when one layer, component, or declared gate changed.
+  Review touched gates plus adjacent regression checks.
+  Do not run or display the full inventory.
+
+full review
+  Use for major multi-layer change, audit handoff, or final design approval.
+
+release review
+  Use for commit, PR, deployment, or delivery readiness.
+  All applicable contextual hard gates must be verified.
 ```
-DESIGN REVIEW — Iteration N
-════════════════════════════════════════════════════
 
-── DESIGN SYSTEM ──────────────────────────────────
-G1:  Token Completeness
-  □ All colors from semantic token table?
-  □ All spacing from 8px grid tokens?
-  □ All font-sizes from modular scale?
-  □ No hardcoded hex/px outside token table?
-  Score: __ / 10
+## Route from redesign state
 
-── VISUAL DESIGN ──────────────────────────────────
-G2:  Typographic Scale   (1.333 modular, H1/body ≤ 3.5x desktop, ≤ 3.0x mobile)
-  Common violation: clamp hero 7rem + 21px body = 5.3x → FAIL
-  Score: __ / 10
-G3:  Color Semantic      (one token = one role, no collapse)           Score: __ /10
-G4:  Figure/Ground       (bg depth: texture/gradient/alt sections)     Score: __ /10
-G5:  Whitespace Rhythm   (hero ≠ content ≠ contact ≠ footer padding)  Score: __ /10
+Map redesign state into the review route:
 
-── THEME SYSTEM ───────────────────────────────────
-T1:  Token Architecture  (semantic tokens, no mode-specific hex)       Score: __ /10
-T2:  Toggle A11y         (≥44px, aria-label = next action)             Score: __ /10
-T3:  Dual-Theme QA       (light + dark DOM/screenshot verified)        Score: __ /10
-T4:  Contrast + Inversion(primary ≥ 4.5:1 both modes)                 Score: __ /10
-
-── UX/UI PATTERNS ─────────────────────────────────
-G6:  Hero Pattern        (correct pattern for page goal)               Score: __ /10
-G7:  Layout Grid         (column count matches content count)          Score: __ /10
-G8:  First Impression    (50ms: stance not job description)            Score: __ /10
-
-── READABILITY ─────────────────────────────────────
-G9:  Line Length         (hero bio ≤44ch, body prose ≤65ch)           Score: __ /10
-G10: Contrast Ratio      (primary ≥4.5:1, secondary ≥3:1)             Score: __ /10
-G11: Type Size           (body ≥16px, smallest ≥12px)                 Score: __ /10
-G12: Cognitive Ease      (H1 ≤8 words, ≤4 sentences/para)             Score: __ /10
-
-── RESPONSIVENESS ──────────────────────────────────
-G13: Mobile Layout       (1-col, no overflow)                          Score: __ /10
-G14: Touch Targets       (interactive ≥44×44px)                       Score: __ /10
-G15: Type Scaling        (clamp() or mobile cap, ratio ≤3.0x mobile)  Score: __ /10
-
-── ACCESSIBILITY ───────────────────────────────────
-G16: Semantic Structure
-  □ main / nav[aria-label] / footer / section[aria-labelledby]
-  □ H1→H2→H3 — no skips
-  □ Work section: sr-only H2 if visually hidden
-  □ Skip link as first focusable element
-  Score: __ /10
-G17: Interactive A11y    (descriptive links, focus:visible, aria-*)   Score: __ /10
-
-── EIGHT UNIVERSAL RULES ──────────────────────────
-R1:  Type       H1 font ≠ body font role (not just weight diff)       Score: __ /10
-R2:  Colour     Accent < 5% surface area, max 1 accent hue            Score: __ /10
-R3:  Space      All spacing = named token on 4px grid                 Score: __ /10
-R4:  Motion     Every animation has prefers-reduced-motion override   Score: __ /10
-R5:  Voice      No buzzwords, distinct register, not neutral middle   Score: __ /10
-R6:  Layout     At least one axis intentionally asymmetric            Score: __ /10
-R7:  Hierarchy  H2 ≤ 60% H1, max 3 visual weight levels              Score: __ /10
-R8:  Restraint  Every element has named role, nothing fills blindly   Score: __ /10
-
-── COMPOSITION ─────────────────────────────────────
-C1:  Focal Point       (H1 visible ≤50% from top, no dead space above)Score: __ /10
-C2:  Weight Distrib    (one heavy, one supporting, one accent)         Score: __ /10
-C3:  Alignment         (grid-anchored, no magic-number, no floating elements) Score: __ /10
-
-── VISUAL HIERARCHY ────────────────────────────────
-H1:  Dominant/Supporting ratio (supporting H2 ≤60% of H1)            Score: __ /10
-H2:  Inter-Section Decay (no section H2 heavier than hero H1)         Score: __ /10
-H3:  Heading Taxonomy  (ANCHOR/SECTION/STATEMENT/LABEL roles clear)   Score: __ /10
-
-── MOTION ──────────────────────────────────────────
-G18: Motion Purpose    (every animation = user signal)                 Score: __ /10
-G19: Duration+Easing   (hover≤200ms, ease-out enter, ease-in exit)    Score: __ /10
-G20: GPU Performance   (transform+opacity only, will-change)          Score: __ /10
-G21: Reduced Motion    *** HARD GATE — 0 = FULL FAIL ***              Score: __ /10
-G22: Cinematic Ratio   (hero=max, contact=min, decreasing)            Score: __ /10
-
-── CRO ─────────────────────────────────────────────
-CRO1: Attention Flow   (F-pattern or Z-pattern respected)             Score: __ /10
-CRO2: Trust Signals    (credibility anchors present, not fake)        Score: __ /10
-CRO3: 8-Second Window  (value prop clear in 8s)                       Score: __ /10
-CRO4: Persuasion Seq   (awareness → interest → desire → action)       Score: __ /10
-
-── COPY / CONTENT ──────────────────────────────────
-CP1: Value Prop        (passes 1000-person test — specific enough)    Score: __ /10
-CP2: Bio Length        (≤45 words)                                    Score: __ /10
-CP3: No Slop           (no buzzwords from red list)                   Score: __ /10
-CP4: Status Honesty    (live/planned/lab/private/archived — accurate) Score: __ /10
-
-════════════════════════════════════════════════════
-CLUSTER SCORES:
-  Design System:   G1          = __ /10
-  Visual Design:   G2–G5  avg  = __ /10
-  Theme System:    T1–T4  avg  = __ /10
-  UX/UI Patterns:  G6–G8  avg  = __ /10
-  Readability:     G9–G12 avg  = __ /10
-  Responsiveness:  G13–G15 avg = __ /10
-  Accessibility:   G16–G17 avg = __ /10
-  Universal Rules: R1–R8  avg  = __ /10
-  Composition:     C1–C3  avg  = __ /10
-  Hierarchy:       H1–H3  avg  = __ /10
-  Motion:          G18–G22 avg = __ /10  ← G21 hard gate
-  CRO:             CRO1–4 avg  = __ /10
-  Copy:            CP1–4  avg  = __ /10
-
-OVERALL: __ / 10   MINIMUM: 8.0
-G21 (Reduced Motion) — score 0 = automatic full fail regardless of average
-════════════════════════════════════════════════════
-Failing gates (< 8):
-  Gate [id] [name]: score __ — fix: [specific action]
+```yaml
+review_route:
+  surface_profile: <from preflight/spec>
+  artifact_state: <rendered-interactive | rendered-static | mixed>
+  review_depth: <focused | full | release>
+  viewing_context: <from spec and verification>
+  selected_lenses: <from changed layers and acceptance criteria>
+  selected_components: <changed or high-risk components>
+  applicable_hard_gates: <from selected design-review profile>
+  evidence_available: <from verification report>
+  evidence_gaps: []
 ```
+
+Do not default every redesign to `web-marketing`. Use the declared product surface.
+
+## Lightweight iteration evidence
+
+During creative iteration, keep the loop proportional to the changed layer:
+
+```text
+□ inspect all changed regions in the browser or final artifact
+□ inspect adjacent regions for hierarchy and spacing regression
+□ verify relevant viewports or final output ratios
+□ verify every affected theme when theme behavior changed
+□ exercise changed controls and overflow behavior
+□ run changed-file diff checks when repository files changed
+□ capture runtime errors when the changed flow is interactive
+```
+
+Do not reflexively run full build, lint, or every test after each small visual adjustment. Run them at the appropriate commit, PR, deploy, or release boundary, or when the changed implementation requires them.
+
+If a full command is blocked by missing shared configuration, record the concrete blocker once. Do not repeat the same failing command as a substitute for fresh visual evidence.
+
+## Review decision
+
+Use the verdict from `design-review`:
+
+```text
+PASS
+  → proceed to delivery when redesign acceptance criteria also pass
+
+CONDITIONAL PASS
+  → proceed only when remaining evidence gaps or accepted risks are compatible with the current approval boundary
+
+NEEDS WORK
+  → proceed to Phase 10 defect classification
+
+CRITICAL
+  → stop delivery and proceed to Phase 10 defect classification immediately
+```
+
+A score of 8 or above does not override a failed contextual hard gate or insufficient release coverage.
+
+## Defect handoff
+
+For each failed or partial gate, pass this structure to Phase 10:
+
+```yaml
+defect_candidate:
+  gate: <id>
+  region: <affected region>
+  observation: <verified condition>
+  evidence: []
+  impact: <user, business, accessibility, fidelity, runtime, or delivery impact>
+  recommendation: <correction direction>
+  suspected_layer: <foundation | structure | component | expression | interaction | content | implementation>
+```
+
+Do not classify the correction layer solely from the visible symptom. Phase 10 owns final defect classification.
+
+## Output
+
+Render the scorecard as normal markdown, never as a fenced wall of text.
+
+Minimum output:
+
+```markdown
+## [target] · Design Review · Iteration [N]
+
+**X.XX / 10** — [verdict] · Coverage [X%]
+
+- Hard gates: [status]
+- Critical findings: [count]
+- Important findings: [count]
+
+| Cluster | Score | Coverage | Notes |
+|---|---:|---:|---|
+| Universal visual quality | X.X | X% | ... |
+| Surface-specific quality | X.X | X% | ... |
+| Components | X.X | X% | ... |
+| Runtime or fidelity | X.X | X% | ... |
+
+**Open findings**
+- `[gate]` [score/status] — [observation] → [correction direction]
+
+**Not verified**
+- [gate and missing evidence]
+```
+
+The full report contract remains in `design-review/references/review-report.md`.
