@@ -121,7 +121,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Workflow / Meta-skill | Requires |
 |---|---|
-| `redesign-workflow` | design-foundation, design-brand, design-genre, design-depth, design-color, design-typography, design-spacing, design-iconography, design-visual, design-layout, design-strategy, design-interaction, design-system, design-audit, design-review, design-refinement, master-design, macrostructures, ui-components, composition, visual-hierarchy, copywriting, ux-psychology, accessibility |
+| `redesign-workflow` | design-foundation, design-brand, design-genre, design-depth, design-color, design-typography, design-spacing, design-iconography, design-visual, design-layout, adaptive-component-design, design-strategy, design-interaction, design-system, design-audit, design-review, design-refinement, master-design, macrostructures, ui-components, composition, visual-hierarchy, copywriting, ux-psychology, accessibility |
 | `role-switcher` | master-engineer, master-design, product-manager, ux-psychology, user-research, native-ai-engineer, diagram-architect, design-review, systematic-debugging, architecture-review, security-review, plan |
 | `workflow-router` | redesign-workflow, new-feature-workflow, bugfix-workflow, code-review-workflow, deployment-workflow, product-development-workflow, design-refinement, skill-doctor, spec-workflow |
 | `product-development-workflow` | product-requirements, business-value-alignment, experiment-design, user-research, master-design, master-engineer, spec-workflow, threat-modeling, code-review-workflow, deployment-workflow, observability-design |
