@@ -1,9 +1,9 @@
 ---
 name: role-switcher
-description: Intent detection and automatic role composition — selects a domain owner, relevant specialists, and reviewers so expert skills collaborate without losing decision ownership.
+description: Intent and domain detection with explicit role composition — selects one owner, narrow specialists, an independent reviewer facade, and a domain reviewer when specialized acceptance is required.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "master-engineer master-design adaptive-component-design product-manager ux-psychology user-research native-ai-engineer diagram-architect design-review systematic-debugging architecture-review security-review plan"
   ai-native-skills.type: meta-skill
@@ -13,247 +13,292 @@ metadata:
 
 # Role Switcher
 
-## Core rule
+## Core Rule
 
 ```text
-Do not pick one skill and guess.
-Detect intent
-→ assign one domain owner
-→ load only relevant specialists
-→ load a reviewer when evidence or acceptance is required
-→ synthesize one decision.
+detect intent and domain
+→ assign one owner
+→ load only narrow specialists
+→ add a reviewer facade when acceptance is required
+→ add a domain reviewer when the facade has no complete built-in coverage
+→ synthesize one decision
 ```
 
-Roles are not a flat list. Every composition must distinguish:
+Roles are not a flat list.
 
-- **Owner** — holds final decision responsibility and synthesis.
-- **Specialist** — contributes narrow expertise.
-- **Reviewer** — independently checks gates and evidence.
+```text
+Owner            final decision responsibility and synthesis
+Specialist       narrow expertise contributing within a boundary
+Reviewer facade  common review entry point, evidence, score, verdict, report
+Domain reviewer  specialized domain gates and evidence requirements
+```
 
-A specialist must never silently replace the owner.
+A specialist or reviewer must never silently replace the owner.
 
-## Design ownership rule
+## Design Review Composition
+
+For design acceptance, `design-review` is the reviewer facade. It is not automatically the specialist for every design discipline.
+
+```text
+design-review facade owns
+  domain/surface classification
+  reviewer selection
+  applicability and evidence normalization
+  score, coverage, verdict, report
+
+built-in or external domain reviewer owns
+  domain principles
+  specialist thresholds
+  domain hard gates
+  correction knowledge
+```
+
+### Built-in facade coverage
+
+| Design domain | Owner | Specialists | Reviewer facade | Domain reviewer |
+|---|---|---|---|---|
+| Digital product UI, responsive web, mobile, desktop | `master-design` | relevant design ports; `adaptive-component-design` when component fitness changes by viewport | `design-review` | built-in interactive/profile strategy |
+| Static marketing, social, ad, poster, banner, thumbnail | `master-design` | typography, color, composition, brand/content specialists as relevant | `design-review` | built-in static-visual strategy |
+| Presentation slides or decks | `master-design` or declared presentation owner | narrative, data, visual specialists as relevant | `design-review` | built-in presentation strategy |
+
+### Specialized design domains
+
+| Design domain | Owner | Reviewer facade | Required domain reviewer |
+|---|---|---|---|
+| Logo and brand identity systems | declared brand/identity owner | `design-review` | brand-identity reviewer |
+| Packaging and specialist print production | declared packaging/print owner | `design-review` | packaging/print reviewer |
+| Motion graphics, film, video editing | declared motion/video owner | `design-review` | motion/video reviewer |
+| Industrial or physical product design | declared industrial-design owner | `design-review` | industrial-design reviewer |
+| Architecture, interior, or spatial design | declared spatial-design owner | `design-review` | spatial-domain reviewer |
+| Fashion design | declared fashion-design owner | `design-review` | fashion-domain reviewer |
+| Service-design research and organizational systems | product/service owner | `design-review` only for visual artifacts | service-design reviewer |
+
+When no required domain reviewer is available:
+
+```text
+coverage_mode: LIMITED
+verdict ceiling: LIMITED REVIEW
+handoff: domain specialist or reviewer
+```
+
+Universal visual review may still be useful, but it cannot certify complete specialist-domain quality.
+
+## Design Ownership Rules
 
 For product design, UI, or UX work:
 
 ```text
-Owner:      master-design
-Specialist: adaptive-component-design when cross-device component fitness matters
-Reviewer:   design-review for audit, refinement, implementation, or final visual acceptance
+Owner: master-design
+Specialist: only skills required by the task
+Reviewer facade: design-review for audit, implementation, refinement, or acceptance
+Domain reviewer: selected from the classified design domain
 ```
 
 Therefore:
 
-- A broad UI/UX task must not load `adaptive-component-design` without `master-design`.
-- A cross-device component task normally loads `master-design + adaptive-component-design`.
-- An audit, implemented patch, refinement, or deliverable normally loads `master-design + adaptive-component-design when relevant + design-review`.
-- A narrowly scoped advisory question such as “which component should replace Tabs on mobile?” may load `adaptive-component-design` alone, but it must not make unrelated page-level or visual-direction decisions.
+- broad UI/UX work must retain `master-design` as owner;
+- cross-device component work normally loads `adaptive-component-design` as specialist;
+- audit-only work uses `design-audit` as lifecycle/capability and `design-review` as reviewer facade;
+- targeted verified failures use `design-refinement`;
+- broad direction or structure replacement uses `redesign-workflow`;
+- a narrow advisory question may load one specialist without a reviewer when no artifact is being accepted;
+- specialized domains must not be approved using built-in UI/static gates alone.
 
 ## When to Use
 
-- User request spans multiple domains.
-- Audit or critique requests need independent review.
-- “What is missing?” requires multiple expert perspectives.
-- A specialist capability is needed but an owner must preserve coherent decisions.
-- The answer requires switching lenses during analysis.
-- A workflow needs deterministic skill composition before execution.
-
----
+- A request spans multiple expertise areas.
+- Audit or acceptance needs independent review.
+- A specialist capability is needed while ownership must remain coherent.
+- The design domain determines which reviewer can issue a complete verdict.
+- A workflow needs deterministic role composition.
+- “What is missing?” requires evidence from multiple bounded lenses.
 
 ## Role Map
 
-### Design Domain
+### Design and Experience
 
-| Intent signals | Owner | Specialists | Reviewer |
+| Intent | Owner | Specialists | Reviewer composition |
 |---|---|---|---|
-| general product design, UI/UX direction, wireframe, mockup, design decision | `master-design` | Load only relevant design ports or expert skills | `design-review` when rendered or implemented |
-| audit design, review UI, critique UX, what is wrong with this screen | `master-design` | `ux-psychology` when behavioral analysis matters | `design-review` |
-| design system, tokens, components, visual consistency | `master-design` | relevant design-system and visual skills | `design-review` |
-| responsive component choice, mobile vs tablet pattern, Tabs overlap, component does not fit viewport | `master-design` | `adaptive-component-design` | `design-review` for implementation or acceptance |
-| user flow, onboarding, retention, habit | `master-design` | `ux-psychology` + `product-manager` as relevant | `design-review` when a visual artifact exists |
-| accessibility, inclusive design | `master-design` | accessibility and `ux-psychology` as relevant | `design-review` |
-| AI slop, template UI, generic design | `master-design` | relevant visual skills | `design-review` |
+| General product UI/UX direction, wireframe, mockup, design decision | `master-design` | relevant design ports/skills | `design-review` when rendered or accepted + built-in interactive reviewer |
+| Audit UI/UX or visual artifact | `master-design` or declared domain owner | behavioral/content specialists when relevant | `design-review` + applicable domain reviewer |
+| Design system, tokens, components, consistency | `master-design` | design-system and relevant visual/component skills | `design-review` + built-in interactive reviewer |
+| Responsive component choice, tabs overflow, viewport substitution | `master-design` | `adaptive-component-design` | `design-review` for implemented acceptance |
+| User flow, onboarding, retention, habit | `master-design` | `ux-psychology`, product skills | `design-review` when a visual artifact exists |
+| Accessibility and inclusive design | `master-design` | accessibility specialists | `design-review` for evidence-backed acceptance |
+| Static campaign/poster/social visual | `master-design` | typography, color, composition, copy/brand | `design-review` + built-in static reviewer |
+| Presentation/deck | declared presentation owner | narrative, data, design specialists | `design-review` + built-in presentation reviewer |
+| Identity, packaging, motion/video, industrial, spatial, fashion | declared domain owner | domain specialists | `design-review` + declared external domain reviewer; otherwise LIMITED REVIEW |
 
-### Engineering Domain
+### Engineering
 
-| Intent signals | Owner | Specialists | Reviewer |
+| Intent | Owner | Specialists | Reviewer |
 |---|---|---|---|
-| review code, PR review, architecture check | `master-engineer` | relevant architecture skills | `architecture-review` |
-| bug, error, not working, debugging | `master-engineer` | `systematic-debugging` | relevant review skill after fix |
-| security, vulnerability, secrets | `master-engineer` | security domain skills | `security-review` |
-| system design, scalability, architecture decision | `master-engineer` | `native-ai-engineer` when AI-native boundaries matter | `architecture-review` when acceptance is required |
-| refactor, clean up, simplify | `master-engineer` | refactoring and debugging skills | `architecture-review` when structural boundaries change |
-| diagram, visualize architecture, draw flow | `master-engineer` | `diagram-architect` | architecture reviewer when used as a decision artifact |
-| AI native, runtime boundary, contract, adapter | `native-ai-engineer` | `master-engineer` and relevant runtime skills | `architecture-review` |
+| Review code, PR, architecture | `master-engineer` | relevant architecture skills | `architecture-review` |
+| Bug, error, crash, debugging | `master-engineer` | `systematic-debugging` | relevant reviewer after fix |
+| Security, vulnerability, secrets | `master-engineer` | security skills | `security-review` |
+| System design, scalability, architecture decision | `master-engineer` | `native-ai-engineer` when relevant | `architecture-review` for acceptance |
+| Refactor, simplify, debt | `master-engineer` | refactoring/debugging skills | `architecture-review` when boundaries change |
+| Diagram or architecture visualization | `master-engineer` | `diagram-architect` | architecture reviewer when decision-bearing |
+| Native AI runtime, adapter, contract | `native-ai-engineer` | `master-engineer`, runtime skills | `architecture-review` |
 
-### Research and Product Domain
+### Product and Research
 
-| Intent signals | Owner | Specialists | Reviewer |
+| Intent | Owner | Specialists | Reviewer |
 |---|---|---|---|
-| what is missing, gap analysis, feature audit | `product-manager` | domain-specific roles | relevant domain reviewer |
-| spec, requirements, acceptance criteria | `product-manager` | `plan` and technical/design owners as needed | relevant review workflow |
-| prioritize, backlog, roadmap | `product-manager` | decision and value skills as relevant | none unless approval is requested |
-| user problem, pain point, why does this fail | `product-manager` | `ux-psychology` | owner synthesizes |
-| interview users, research, validate assumption, JTBD | `user-research` | `product-manager` | research evidence review |
-| survey, usability test, what do users want | `user-research` | `ux-psychology` | product owner synthesizes implications |
+| Gap analysis, product feature audit | `product-manager` | domain owners and experts | relevant domain reviewer |
+| Requirements and acceptance criteria | `product-manager` | plan + technical/design owners | relevant review workflow |
+| Prioritization, backlog, roadmap | `product-manager` | decision/value skills | none unless approval requested |
+| User problem or behavioral failure | `product-manager` | `ux-psychology` | owner synthesizes |
+| Interviews, JTBD, assumption validation | `user-research` | `product-manager` | research evidence review |
+| Survey or usability test | `user-research` | `ux-psychology` | product owner synthesizes implications |
 
 ### Creative and AI Tools
 
-| Intent signals | Owner | Specialists | Reviewer |
+| Intent | Owner | Specialists | Reviewer |
 |---|---|---|---|
-| generate image prompt, refine prompt, improve this prompt | `prompt-engineer` | product or brand skills when relevant | output review when acceptance matters |
-| why does my image look wrong, fix prompt, bad image output | `prompt-engineer` | visual/product roles as relevant | rendered-output review |
-| prompt for a subject or style | `prompt-engineer` | style or domain skills as relevant | none unless quality acceptance is requested |
-| AI image product, image generation feature, token efficiency | `product-manager` | `prompt-engineer` + technical/design owners | relevant product/design review |
+| Generate/refine image prompt | `prompt-engineer` | brand/product/design specialists as relevant | rendered-output review when acceptance matters |
+| Diagnose bad image output | `prompt-engineer` | visual/domain specialists | `design-review` with applicable static or specialized reviewer |
+| AI image product or generation feature | `product-manager` | prompt + design + engineering owners | product/design/engineering reviewers |
 
 ### Cross-Domain
 
-| Intent signals | Owner | Specialists | Reviewer |
+| Intent | Owner | Specialists | Reviewer |
 |---|---|---|---|
-| audit everything, full review | `product-manager` or explicitly declared lead | `master-engineer` + `master-design` + relevant experts | domain reviewers |
-| new feature from scratch | `product-manager` | `master-design` + `master-engineer` | design and engineering review before acceptance |
-| why is this failing as a product | `product-manager` | `ux-psychology` + `systematic-debugging` + domain owner | relevant reviewer |
-| end-to-end research → design → build | `product-manager` | `user-research` + `master-design` + `master-engineer` | design and engineering review |
+| Full product audit | `product-manager` or declared lead | engineering, design, product specialists | independent domain reviewers |
+| New feature from scratch | `product-manager` | design + engineering owners | design and engineering review |
+| End-to-end research → design → build | `product-manager` | research + design + engineering | design and engineering review |
 
----
+## Application Steps
 
-## How to Apply
-
-### Step 1: Detect intent
+### 1. Detect intent and requested lifecycle
 
 Determine:
 
-- domain: design, engineering, product, research, creative, or mixed;
-- action: audit, build, fix, plan, review, decide, or advise;
-- depth: narrow advisory, actionable specification, implementation, or acceptance;
-- evidence state: idea only, source code, rendered artifact, or production behavior.
-
-### Step 2: Assign composition slots
-
-Declare one owner first, then specialists and reviewers.
-
 ```text
-Owner: master-design
-Specialists: adaptive-component-design
-Reviewer: design-review
+domain
+action: audit | advise | build | fix | redesign | accept
+depth: narrow | specification | production | release
+evidence state: idea | source | rendered | production behavior
 ```
 
-Do not call every loaded skill a “role.” State its responsibility.
-
-### Step 3: Enforce owner presence
-
-Before execution:
+For design tasks, also classify:
 
 ```text
-□ one owner is explicit
-□ every specialist has a narrow reason to be loaded
-□ no specialist replaces the owner
-□ reviewer is independent from the decision when practical
-□ rendered or implemented deliverables have a reviewer
+design_domain
+surface_profile
+built-in or external reviewer coverage
 ```
 
-For UI/UX tasks specifically:
+### 2. Assign composition slots
+
+```yaml
+roles:
+  owner: master-design
+  specialists:
+    - adaptive-component-design
+  reviewer_facade: design-review
+  domain_reviewers:
+    - built-in-interactive
+  coverage_mode: BUILT_IN
+```
+
+Do not call every loaded skill a role without declaring its responsibility.
+
+### 3. Enforce composition gates
 
 ```text
-□ master-design is present as owner
-□ adaptive-component-design is loaded when viewport changes component fitness
-□ design-review is loaded for audit, refinement, implementation, or final acceptance
+□ exactly one owner is explicit
+□ every specialist has a narrow reason
+□ reviewer is independent when practical
+□ design domain and reviewer coverage are explicit
+□ specialized acceptance has a domain reviewer
+□ missing domain reviewer limits the verdict
+□ rendered or implemented deliverables have evidence-backed review
 ```
 
-### Step 4: Apply each lens
-
-Each contributor returns findings within its boundary.
+### 4. Apply bounded contributions
 
 ```text
-## Design owner — master-design
-Defines product outcome, evaluates proposed solutions, and holds final synthesis.
+Owner
+  defines outcome, constraints, and final synthesis
 
-## Cross-device specialist — adaptive-component-design
-Selects or substitutes components by task, content, viewport, and input modality.
+Specialist
+  contributes decisions only within its expertise
 
-## Reviewer — design-review
-Checks the rendered or implemented result against hard gates and evidence.
+Reviewer facade
+  classifies, normalizes evidence, scores, and reports
+
+Domain reviewer
+  applies specialist-domain gates and hard-gate policy
 ```
 
-### Step 5: Synthesize
+### 5. Synthesize one result
 
-The owner must produce:
+The owner returns:
 
-- the single recommended decision;
-- rationale tied to user and product outcome;
+- one recommended decision;
+- rationale tied to user/product/message outcome;
 - specialist evidence;
-- rejected alternatives and trade-offs;
-- implementation implications;
-- reviewer verdict or remaining gaps.
+- alternatives and trade-offs;
+- implementation or production implications;
+- reviewer verdict, coverage mode, and remaining gaps.
 
-Do not return disconnected role reports without a final owner decision.
+Do not return disconnected role reports.
 
----
+## Examples
 
-## Example: Cross-device category navigation
-
-**Request:** “Use Tabs for catalogue categories on every device.”
+### Cross-device category navigation
 
 ```text
 Intent: product UI decision with cross-device risk
-
 Owner: master-design
 Specialist: adaptive-component-design
-Reviewer: design-review when implemented
+Reviewer facade: design-review
+Domain reviewer: built-in interactive strategy
 ```
 
-Expected behavior:
+The specialist evaluates Tabs, rails, Select, sheets, and other patterns. The owner chooses. The reviewer verifies overflow, paired affordances, shared state, target reachability, and input behavior.
 
-1. `master-design` extracts the real requirement: fast category switching and visible discovery.
-2. `adaptive-component-design` evaluates Tabs, segmented controls, shortcut rails, Select, and sheets per viewport.
-3. `master-design` chooses and documents the final substitution strategy.
-4. `design-review` verifies overflow, paired chevrons, scroll state, touch targets, keyboard access, and shared selected state.
-
-The request to use Tabs is treated as a proposed solution, not as the product requirement.
-
-## Example: Design audit
-
-**Intent detected:** design audit requiring owner plus independent reviewer.
+### Logo-system audit without identity reviewer
 
 ```text
-Owner: master-design
-Specialists: ux-psychology when relevant
-Reviewer: design-review
+Intent: specialist design audit
+Owner: declared brand/identity owner
+Reviewer facade: design-review
+Domain reviewer: unavailable
+Coverage: LIMITED
 ```
 
-The final response must include one prioritized synthesis from `master-design`, backed by the review evidence.
+The result may contain universal composition/type/color observations, but it cannot claim the identity system is production-ready.
 
----
+## Adding Product-Specific Roles
 
-## Adding Custom Roles
-
-Extend the role map for product-specific domains:
+Extend in product context:
 
 ```yaml
-# In product AGENTS.md or a context file
 role_extensions:
-  domain_expert_audit:
-    owner: product-manager
-    specialists: [master-engineer, native-ai-engineer]
-    reviewer: architecture-review
+  identity_audit:
+    owner: product-brand-owner
+    specialists: [design-typography, design-color]
+    reviewer_facade: design-review
+    domain_reviewers: [brand-identity-review]
 
-  content_review:
+  ai_output_review:
     owner: product-manager
-    specialists: [ux-psychology]
-    reviewer: design-review
+    specialists: [prompt-engineer, master-design]
+    reviewer_facade: design-review
+    domain_reviewers: [built-in-static]
 ```
-
----
 
 ## Anti-Patterns
 
 | Anti-pattern | Why it fails |
 |---|---|
-| Load a specialist without an owner for broad work | Narrow expertise starts making unrelated decisions |
-| Treat all loaded skills as equal owners | Decision responsibility becomes ambiguous |
-| Load `adaptive-component-design` alone for a full redesign | It does not own product experience, visual direction, or page structure |
-| Skip `design-review` for implemented UI | The decision maker self-certifies without rendered evidence |
-| Activate all roles for every request | Noise and conflicting advice |
-| Hide which roles were activated | The user cannot see who owns the decision |
-| Give a flat list without synthesis | The user must resolve conflicts alone |
-| Follow the user's requested component blindly | A proposed solution is mistaken for the actual requirement |
+| Flat list of roles | Ownership and boundaries disappear |
+| Specialist replaces owner | Narrow expertise controls unrelated decisions |
+| `design-review` treated as expert in every design discipline | Facade coverage is overstated |
+| Specialized design has no domain reviewer but receives PASS | Missing knowledge is hidden |
+| Activate all skills for every request | Context and advice become noisy |
+| Skip reviewer for implemented acceptance | Decision maker self-certifies |
+| Follow requested component blindly | Proposed solution replaces actual requirement |
+| Return separate reports without synthesis | User must resolve conflicts manually |
