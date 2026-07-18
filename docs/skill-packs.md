@@ -24,6 +24,7 @@ npx skills add puterakahfi/ai-native-skills \
   --skill design-iconography \
   --skill design-visual \
   --skill design-layout \
+  --skill adaptive-component-design \
   --skill design-strategy \
   --skill design-interaction \
   --skill design-system \
