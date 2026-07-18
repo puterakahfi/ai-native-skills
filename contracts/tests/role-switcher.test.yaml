@@ -1,0 +1,53 @@
+skill_test:
+  skill: role-switcher
+  version: "1.2.0"
+  description: Verify design role composition separates owner, specialists, reviewer facade, and domain reviewer.
+
+  cases:
+    - id: mobile-tabs-composition
+      description: Cross-device component acceptance needs a design owner, adaptive specialist, and facade reviewer.
+      trigger: "Tentukan apakah tabs category ini cocok untuk mobile, tablet, dan desktop lalu review implementasinya."
+      must_contain:
+        - "master-design"
+        - "adaptive-component-design"
+        - "design-review"
+        - "built-in interactive"
+      must_not_contain:
+        - "adaptive-component-design as owner"
+        - "all skills"
+      quality_gates_tested:
+        - one_owner
+        - specialist_boundary
+        - reviewer_facade_present
+
+    - id: logo-review-composition
+      description: Identity-system acceptance requires an identity owner and domain reviewer in addition to the facade.
+      trigger: "Review logo dan identity system ini untuk memastikan siap dipakai sebagai brand utama."
+      must_contain:
+        - "design-review"
+        - "brand-identity"
+        - "domain reviewer"
+      must_contain_one_of:
+        - "LIMITED"
+        - "brand-identity reviewer"
+      must_not_contain:
+        - "built-in interactive strategy"
+        - "master-design is automatically the identity expert"
+      quality_gates_tested:
+        - facade_not_domain_expert
+        - specialized_domain_reviewer_required
+
+    - id: static-poster-composition
+      description: Static marketing review uses the design owner, relevant visual specialists, and built-in static reviewer.
+      trigger: "Buat role composition untuk audit poster jualan dengan fokus harga, produk, hierarchy, dan final export."
+      must_contain:
+        - "master-design"
+        - "design-review"
+        - "built-in static"
+        - "visual-communication"
+      must_not_contain:
+        - "RI1"
+        - "keyboard reviewer"
+      quality_gates_tested:
+        - static_domain_composition
+        - interactive_reviewer_not_selected
