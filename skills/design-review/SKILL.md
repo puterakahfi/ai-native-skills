@@ -3,7 +3,7 @@ name: design-review
 description: Scored design gate check — load this skill during Phase 5 of redesign-workflow, or standalone to score any UI surface. Contains the complete 35+ gate scorecard. Load on-demand, not always-on.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.0.1
+  ai-native-skills.version: 2.0.2
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.related_skills: '["design-audit","design-refinement","redesign-workflow","master-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
@@ -11,11 +11,11 @@ metadata:
 
 # Design Review
 
-Scored gate check. Minimum **8.0 average** to pass. Gate G21 = hard gate.
+Scored gate check. Minimum **8.0 average** to pass. Gate G21 and RI1 = hard gates.
 
 <!-- LOAD ON-DEMAND — not always-on. Load in Phase 5 of redesign-workflow or standalone audit. -->
 
-## Quick Score (8 critical gates — run first)
+## Quick Score (9 critical gates — run first)
 
 ```
 □ G2:  Typographic scale — H1/body ratio ≤ 3.5x desktop, ≤ 3.0x mobile?
@@ -24,6 +24,7 @@ Scored gate check. Minimum **8.0 average** to pass. Gate G21 = hard gate.
 □ G14: Touch targets     — all interactive ≥ 44×44px?
 □ G16: Semantic HTML     — nav/main/section/footer + H1→H2→H3?
 □ G21: Reduced motion    — HARD GATE — @media(prefers-reduced-motion) present?
+□ RI1: Runtime integrity — HARD GATE — no unhandled page errors or HTML served as executable assets?
 □ R1:  Type pairing      — display face ≠ body face?
 □ C1:  Focal point       — H1 ≤ 50% from top, no void above?
 ```
@@ -45,6 +46,34 @@ JSON.stringify({
   h1TopPct:  Math.round(document.querySelector('h1')
     ?.getBoundingClientRect().top / window.innerHeight * 100), // < 50
 });
+```
+
+### Rendered runtime integrity — hard gate
+
+A surface that looks usable can still be broken. Capture runtime evidence from before navigation until the reviewed flow completes.
+
+Fail RI1 when either is true:
+
+- the browser reports an unhandled page/runtime error;
+- a JavaScript, module, worker, or stylesheet request receives HTML or another incompatible executable content type.
+
+Do **not** fail only because a framework prefetch request was cancelled or superseded. Treat cancellation as a failure only when it creates a page error, missing UI, broken interaction, or other user-visible regression.
+
+Example browser verification:
+
+```js
+const runtimeErrors = [];
+page.on('pageerror', error => runtimeErrors.push(String(error)));
+page.on('response', response => {
+  const type = response.request().resourceType();
+  const contentType = response.headers()['content-type'] || '';
+  if (['script', 'stylesheet'].includes(type) && contentType.includes('text/html')) {
+    runtimeErrors.push(`HTML served as ${type}: ${response.url()}`);
+  }
+});
+
+// navigate and execute the reviewed flow
+expect(runtimeErrors).toEqual([]);
 ```
 
 ---
@@ -99,6 +128,11 @@ JSON.stringify({
 |---|---|---|
 | G16 Semantic Structure | nav/main/section/footer, H1→H2→H3, sr-only H2, skip link | 8 |
 | G17 Interactive A11y | Descriptive links, focus:visible, aria-* attributes correct | 8 |
+
+### Rendered Runtime Integrity
+| Gate | Check | Min |
+|---|---|---|
+| **RI1 Runtime Integrity** | **No unhandled page errors; executable assets never receive HTML/incompatible content; cancelled prefetch alone is not a failure** | **10** |
 
 ### Eight Universal Rules (from master-design)
 | Gate | Check | Min |
@@ -170,15 +204,16 @@ UX/UI Patterns:  G6–G8  avg   = __ /10
 Readability:     G9–G12 avg   = __ /10
 Responsiveness:  G13–G15 avg  = __ /10
 Accessibility:   G16–G17 avg  = __ /10
+Runtime:         RI1          = __ /10  ← hard gate
 Universal Rules: R1–R8  avg   = __ /10
 Composition:     C1–C3  avg   = __ /10
 Hierarchy:       H1–H3  avg   = __ /10
-Motion:          G18–G22 avg   = __ /10  ← G21 hard gate
+Motion:          G18–G22 avg  = __ /10  ← G21 hard gate
 CRO:             CRO1–4 avg   = __ /10
 Copy:            CP1–4  avg   = __ /10
 
 OVERALL: __ / 10   PASS: ≥ 8.0
-G21 = 0 → automatic full fail
+G21 = 0 or RI1 = 0 → automatic full fail
 ```
 
 ---
