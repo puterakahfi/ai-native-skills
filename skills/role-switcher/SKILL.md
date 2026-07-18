@@ -5,7 +5,7 @@ license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "master-engineer master-design product-manager ux-psychology user-research native-ai-engineer diagram-architect design-review systematic-debugging architecture-review security-review plan"
+  ai-native-skills.requires: "master-engineer master-design adaptive-component-design product-manager ux-psychology user-research native-ai-engineer diagram-architect design-review systematic-debugging architecture-review security-review plan"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/role-switcher.contract.yaml
   ai-native-skills.contract-version: "~0.1"
@@ -38,7 +38,7 @@ State which roles are active at the start of every response.
 | Intent Signals | Roles to Activate |
 |---|---|
 | audit design, review UI, critique UX, what's wrong with this screen | `master-design` + `ux-psychology` + `design-review` |
-| design system, tokens, components, visual consistency | `master-design` + `design-review` |
+| design system, tokens, components, visual consistency | `master-design` + `design-review` |\n| responsive component choice, mobile vs tablet pattern, tabs overlap, component does not fit viewport | `master-design` + `adaptive-component-design` + `design-review` |
 | user flow, onboarding, retention, habit | `master-design` + `ux-psychology` + `product-manager` |
 | accessibility, inclusive design | `master-design` + `ux-psychology` |
 | AI slop, template UI, generic design | `design-review` + `master-design` |
