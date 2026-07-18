@@ -195,7 +195,7 @@ hermes chat -s redesign-workflow -q \
 | `composition` | Focal point, optical center (45%), dead space vs breathing room, eye-flow mapping |
 | `visual-hierarchy` | Dominant/supporting/accent triad, H2 ≤ 60% H1, heading role taxonomy |
 | `readability` | Line length (44ch), contrast, type size, cognitive ease |
-| `responsiveness` | Mobile-first, wide/ultrawide breakpoints (1440px, 1920px), max-width containers |
+| `responsiveness` | Mobile-first, wide/ultrawide breakpoints (1440px, 1920px), max-width containers |\n| `adaptive-component-design` | Cross-device component selection and substitution — tabs, rails, selects, sheets, grids, and tables by task and viewport |
 | `motion-design` | Animation tokens, easing, reduced-motion, stagger patterns |
 | `dark-light-theming` | Theme switching, token mapping, prefers-color-scheme |
 | `design-review` | Design system compliance, AI slop detection, visual hierarchy gates |
@@ -294,7 +294,7 @@ Distributed systems:
 Frontend:
   redesign-workflow → macrostructures → ui-components → ux-patterns-for-developers → accessibility → ux-psychology
   master-design → design-foundation → design-brand → design-depth → design-color → design-typography
-  design-layout → design-visual → design-strategy → design-interaction
+  design-layout → adaptive-component-design → design-visual → design-strategy → design-interaction
   composition → visual-hierarchy → copywriting → content-strategy → cro → motion-design
 
 AI systems:
