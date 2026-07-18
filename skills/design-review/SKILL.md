@@ -1,231 +1,328 @@
 ---
 name: design-review
-description: Scored design gate check — load this skill during Phase 5 of redesign-workflow, or standalone to score any UI surface. Contains the complete 35+ gate scorecard. Load on-demand, not always-on.
+description: Surface-aware design review orchestrator — classify the artifact, load only relevant visual, interactive, static, and component gates, require evidence, then score and report with explicit coverage. Use standalone or from design-audit, design-refinement, and redesign-workflow.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.0.2
+  ai-native-skills.version: 3.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.related_skills: '["design-audit","design-refinement","redesign-workflow","master-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
+  ai-native-skills.related_skills: '["design-audit","design-refinement","redesign-workflow","master-design","design-foundation","design-system","adaptive-component-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
 ---
 
 # Design Review
 
-Scored gate check. Minimum **8.0 average** to pass. Gate G21 and RI1 = hard gates.
+Surface-aware, evidence-backed design quality review for interactive products, static marketing visuals, and presentations.
 
-<!-- LOAD ON-DEMAND — not always-on. Load in Phase 5 of redesign-workflow or standalone audit. -->
+This skill owns review routing, applicability, evidence, scoring, and reporting. Specialized design skills own the underlying design knowledge and correction rules.
 
-## Quick Score (9 critical gates — run first)
+<!-- LOAD ON-DEMAND — use standalone or from design-audit, design-refinement, and redesign-workflow. -->
 
-```
-□ G2:  Typographic scale — H1/body ratio ≤ 3.5x desktop, ≤ 3.0x mobile?
-□ G8:  First impression  — H1 stance readable in 50ms?
-□ G9:  Line length       — prose ≤ 65ch, hero bio ≤ 44ch?
-□ G14: Touch targets     — all interactive ≥ 44×44px?
-□ G16: Semantic HTML     — nav/main/section/footer + H1→H2→H3?
-□ G21: Reduced motion    — HARD GATE — @media(prefers-reduced-motion) present?
-□ RI1: Runtime integrity — HARD GATE — no unhandled page errors or HTML served as executable assets?
-□ R1:  Type pairing      — display face ≠ body face?
-□ C1:  Focal point       — H1 ≤ 50% from top, no void above?
-```
+## Hard Rules
 
-If any score < 5 → CRITICAL → fix before full review.
-
----
-
-## DOM Verification (run before scoring)
-
-```js
-JSON.stringify({
-  sheets:    document.styleSheets.length,           // > 0
-  bg:        getComputedStyle(document.body).backgroundColor, // not rgba(0,0,0,0)
-  overflow:  document.documentElement.scrollWidth > innerWidth, // false
-  touchFail: [...document.querySelectorAll('a,button')]
-    .filter(el=>{const b=el.getBoundingClientRect();
-      return b.width>0&&b.height>0&&(b.width<44||b.height<44);}).length, // 0
-  h1TopPct:  Math.round(document.querySelector('h1')
-    ?.getBoundingClientRect().top / window.innerHeight * 100), // < 50
-});
+```text
+1. Classify the surface before selecting gates.
+2. Separate universal principles from surface-specific thresholds.
+3. Never apply interactive UI gates to static artifacts.
+4. Never claim a gate passed without suitable evidence.
+5. Distinguish NOT_APPLICABLE from NOT_VERIFIED; neither is zero.
+6. Score only verified applicable gates.
+7. Load only the relevant profile, surface, and component references.
+8. Every failed gate requires an observation, evidence, impact, and correction direction.
+9. Do not turn personal taste or one design style into a universal gate.
+10. A high score with low evidence coverage is not release approval.
+11. Hard gates are contextual, never globally attached to unrelated surface types.
+12. Review does not silently become redesign or implementation work.
 ```
 
-### Rendered runtime integrity — hard gate
+## When to Use
 
-A surface that looks usable can still be broken. Capture runtime evidence from before navigation until the reviewed flow completes.
+Use `design-review` for:
 
-Fail RI1 when either is true:
+- scored quality checks of existing designs;
+- quick review during an active visual iteration;
+- focused review of a declared issue or component;
+- full design audit scoring;
+- release or delivery readiness checks;
+- review of web, mobile, desktop, poster, banner, social, and presentation surfaces.
 
-- the browser reports an unhandled page/runtime error;
-- a JavaScript, module, worker, or stylesheet request receives HTML or another incompatible executable content type.
+Route elsewhere when:
 
-Do **not** fail only because a framework prefetch request was cancelled or superseded. Treat cancellation as a failure only when it creates a page error, missing UI, broken interaction, or other user-visible regression.
+- use `design-audit` when the user wants a complete gap report and prioritization lifecycle;
+- use `design-refinement` when known failing gates should be fixed while preserving passing work;
+- use `redesign-workflow` when direction, macrostructure, or multiple critical clusters need replacement;
+- use the governing specialist skill when the request is knowledge or production rather than review.
 
-Example browser verification:
+## Parameters
 
-```js
-const runtimeErrors = [];
-page.on('pageerror', error => runtimeErrors.push(String(error)));
-page.on('response', response => {
-  const type = response.request().resourceType();
-  const contentType = response.headers()['content-type'] || '';
-  if (['script', 'stylesheet'].includes(type) && contentType.includes('text/html')) {
-    runtimeErrors.push(`HTML served as ${type}: ${response.url()}`);
-  }
-});
+| Parameter | Required | Description |
+|---|---:|---|
+| `target` | Yes | URL, rendered app, screenshot, image, PDF page, slide, repository path, or named surface |
+| `goal` | No | User, communication, business, or delivery outcome being reviewed |
+| `surface_profile` | No | `web-marketing`, `web-application`, `mobile-application`, `desktop-application`, `static-marketing`, `presentation`, or `other` |
+| `artifact_state` | No | `rendered-interactive`, `rendered-static`, `source-only`, or `mixed` |
+| `review_depth` | No | `quick`, `focused`, `full`, or `release`; default `focused` during iteration, otherwise `full` |
+| `focus` | No | Declared lenses, components, regions, or prior failing gate IDs |
+| `viewing_context` | No | Viewports, dimensions, channel, distance, theme, orientation, input methods, or print requirements |
+| `required_assets` | No | Logos, products, faces, copy, price, contact, legal text, and references that must remain faithful |
 
-// navigate and execute the reviewed flow
-expect(runtimeErrors).toEqual([]);
+Infer missing values only when evidence is strong. Record assumptions in the review context.
+
+## Core Workflow
+
+```text
+Phase 0 → CLASSIFY
+  Resolve surface profile, artifact state, viewing context, and review depth.
+  Load: references/review-routing.md
+
+Phase 1 → ROUTE
+  Select universal, surface-specific, and component references.
+  Load: references/review-profiles.md
+
+Phase 2 → INSPECT
+  Inspect the complete available artifact before scoring.
+  Capture realistic content, states, sizes, themes, assets, and constraints.
+
+Phase 3 → UNIVERSAL REVIEW
+  Review typography, hierarchy, spacing, composition, balance, alignment,
+  color, readability, content clarity, brand consistency, and restraint.
+  Load: references/universal-gates.md
+
+Phase 4 → SURFACE REVIEW
+  Interactive profile:
+    Load: references/interactive-surface-gates.md
+  Static or presentation profile:
+    Load: references/static-visual-gates.md
+
+Phase 5 → COMPONENT REVIEW
+  Review only present or required components.
+  Load: references/component-review.md when relevant.
+
+Phase 6 → EVIDENCE AND SCORE
+  Assign status, score, weight, confidence, hard-gate result, and coverage.
+  Load: references/evidence-and-scoring.md
+
+Phase 7 → REPORT
+  Prioritize findings by impact, state limitations, and select the correct handoff.
+  Load: references/review-report.md
 ```
 
----
+## Canonical Loop
 
-## Full Scorecard (35+ gates)
-
-### Design System
-| Gate | Check | Min |
-|---|---|---|
-| G1 Token Completeness | All colors/spacing/type from declared tokens, no hardcoded hex/px | 8 |
-
-### Visual Design
-| Gate | Check | Min |
-|---|---|---|
-| G2 Typographic Scale | 1.333 modular, H1/body ≤ 3.5x desktop / ≤ 3.0x mobile | 8 |
-| G3 Color Semantic | One token = one role, no collapse | 8 |
-| G4 Figure/Ground | Bg has depth: texture/gradient/alternating sections | 8 |
-| G5 Whitespace Rhythm | Hero ≠ content ≠ contact ≠ footer padding | 8 |
-
-### Theme System
-| Gate | Check | Min |
-|---|---|---|
-| T1 Token Architecture | Semantic tokens, no mode-specific hardcoded hex | 8 |
-| T2 Toggle A11y | ≥44px target, aria-label = next action | 8 |
-| T3 Dual-Theme QA | Light + dark DOM/screenshot both verified | 8 |
-| T4 Contrast + Inversion | Primary ≥ 4.5:1 both modes | 8 |
-
-### UX/UI Patterns
-| Gate | Check | Min |
-|---|---|---|
-| G6 Hero Pattern | Correct pattern for page goal | 8 |
-| G7 Layout Grid | Column count matches content count | 8 |
-| G8 First Impression | H1 = stance in 50ms, not job description | 8 |
-
-### Readability
-| Gate | Check | Min |
-|---|---|---|
-| G9 Line Length | Hero bio ≤ 44ch, body prose ≤ 65ch | 8 |
-| G10 Contrast Ratio | Primary ≥ 4.5:1, secondary ≥ 3:1 | 8 |
-| G11 Type Size | Body ≥ 16px, smallest ≥ 12px | 8 |
-| G12 Cognitive Ease | H1 ≤ 8 words, ≤ 4 sentences/para | 8 |
-
-### Responsiveness
-| Gate | Check | Min |
-|---|---|---|
-| G13 Mobile Layout | 1-col, no overflow at 375px | 8 |
-| G14 Touch Targets | All interactive ≥ 44×44px | 8 |
-| G15 Type Scaling | clamp() or mobile cap, ratio ≤ 3.0x mobile | 8 |
-
-### Accessibility
-| Gate | Check | Min |
-|---|---|---|
-| G16 Semantic Structure | nav/main/section/footer, H1→H2→H3, sr-only H2, skip link | 8 |
-| G17 Interactive A11y | Descriptive links, focus:visible, aria-* attributes correct | 8 |
-
-### Rendered Runtime Integrity
-| Gate | Check | Min |
-|---|---|---|
-| **RI1 Runtime Integrity** | **No unhandled page errors; executable assets never receive HTML/incompatible content; cancelled prefetch alone is not a failure** | **10** |
-
-### Eight Universal Rules (from master-design)
-| Gate | Check | Min |
-|---|---|---|
-| R1 Type | H1 font ≠ body font role (not just weight) | 8 |
-| R2 Colour | Accent < 5% surface area, max 1 accent hue | 8 |
-| R3 Space | All spacing = named token on 4px grid | 8 |
-| R4 Motion | Every animation has prefers-reduced-motion override | 8 |
-| R5 Voice | No buzzwords, distinct register | 8 |
-| R6 Layout | At least one axis intentionally asymmetric | 8 |
-| R7 Hierarchy | H2 ≤ 60% H1, max 3 visual weight levels | 8 |
-| R8 Restraint | Every element has named role | 8 |
-
-### Composition
-| Gate | Check | Min |
-|---|---|---|
-| C1 Focal Point | H1 visible ≤ 50% from top, no dead space above | 8 |
-| C2 Weight Distribution | One heavy (H1), one supporting (H2), one accent (label) | 8 |
-| C3 Alignment | Grid-anchored, no magic-number px, no floating elements | 8 |
-
-### Visual Hierarchy
-| Gate | Check | Min |
-|---|---|---|
-| H1 Dominant/Supporting | H2 ≤ 60% of H1 size | 8 |
-| H2 Inter-Section Decay | No section H2 heavier than hero H1 | 8 |
-| H3 Heading Taxonomy | ANCHOR/SECTION/STATEMENT/LABEL roles identifiable | 8 |
-
-### Motion
-| Gate | Check | Min |
-|---|---|---|
-| G18 Motion Purpose | Every animation = user signal, not decoration | 8 |
-| G19 Duration+Easing | Hover ≤ 200ms, ease-out enter, ease-in exit | 8 |
-| G20 GPU Performance | transform+opacity only, will-change where needed | 8 |
-| **G21 Reduced Motion** | **HARD GATE** — @media(prefers-reduced-motion) on ALL animations | **10** |
-| G22 Cinematic Ratio | Hero=max, contact=min, decreasing through sections | 8 |
-
-### CRO
-| Gate | Check | Min |
-|---|---|---|
-| CRO1 Attention Flow | F-pattern or Z-pattern respected | 8 |
-| CRO2 Trust Signals | Credibility anchors present, not fake social proof | 8 |
-| CRO3 8-Second Window | Value prop clear in 8 seconds | 8 |
-| CRO4 Persuasion Seq | Awareness → interest → desire → action flow | 8 |
-
-### Copy / Content
-| Gate | Check | Min |
-|---|---|---|
-| CP1 Value Prop | Passes 1000-person test — specific enough | 8 |
-| CP2 Bio Length | ≤ 45 words | 8 |
-| CP3 No Slop | No buzzwords from red list | 8 |
-| CP4 Status & Action Honesty | Status labels match real state; Continue/Resume requires reconstructable task state, not navigation history alone | 8 |
-
-#### CP4 decision rule
-
-- Use **Continue** or **Resume** only when the next surface can restore materially preserved task state, such as a draft, cart, form step, upload, or playback position.
-- When only visit history exists, use language such as **Recently viewed** or **Open again** instead of implying progress preservation.
-- Durable server state is sufficient; a client-side draft is not mandatory when the task can still be reconstructed reliably.
-- The trade-off is lower perceived activity, but truthful action labels preserve user trust and prevent dead-end continuation flows.
-
----
-
-## Cluster Summary
-
-```
-Design System:   G1           = __ /10
-Visual Design:   G2–G5  avg   = __ /10
-Theme System:    T1–T4  avg   = __ /10
-UX/UI Patterns:  G6–G8  avg   = __ /10
-Readability:     G9–G12 avg   = __ /10
-Responsiveness:  G13–G15 avg  = __ /10
-Accessibility:   G16–G17 avg  = __ /10
-Runtime:         RI1          = __ /10  ← hard gate
-Universal Rules: R1–R8  avg   = __ /10
-Composition:     C1–C3  avg   = __ /10
-Hierarchy:       H1–H3  avg   = __ /10
-Motion:          G18–G22 avg  = __ /10  ← G21 hard gate
-CRO:             CRO1–4 avg   = __ /10
-Copy:            CP1–4  avg   = __ /10
-
-OVERALL: __ / 10   PASS: ≥ 8.0
-G21 = 0 or RI1 = 0 → automatic full fail
+```text
+classify
+→ route
+→ inspect
+→ universal review
+→ surface review
+→ component review when relevant
+→ hard-gate check
+→ score + coverage
+→ report
 ```
 
----
+Do not begin scoring until the route and available evidence are explicit.
 
-## AI Slop Red List (auto-flag if present)
+## Review Depth
 
+```text
+quick
+  Critical universal gates + applicable profile hard gates + declared issue.
+  No release claim.
+
+focused
+  Selected lenses/components + adjacent regression checks.
+  Use during active design refinement.
+
+full
+  All applicable universal gates + profile gates + major present components.
+
+release
+  Full review + all applicable hard gates + required states, sizes, themes,
+  input methods, runtime or export evidence, and sufficient coverage.
 ```
-❌ "Seamless", "leverage", "world-class", "cutting-edge", "modern solution"
-❌ H1 + 3 bullet features + CTA (template pattern)
-❌ "Trusted by X companies" logo row
-❌ 6+ equal-size feature cards
-❌ Gradient mesh background behind text
-❌ Color-only status signal (missing aria-label)
-❌ All-caps nav with 5+ items
+
+Do not run a full scorecard for every small visual iteration.
+
+## Reference Loading Map
+
+Always load:
+
+```text
+references/review-routing.md
+references/review-profiles.md
+references/universal-gates.md
+references/evidence-and-scoring.md
+references/review-report.md
+```
+
+Load on demand:
+
+```text
+Interactive web/mobile/desktop → references/interactive-surface-gates.md
+Poster/banner/social/slide     → references/static-visual-gates.md
+Present/required UI components → references/component-review.md
+```
+
+Never load all references merely because they exist.
+
+## Applicability Model
+
+Every selected gate receives exactly one status:
+
+```text
+PASS
+FAIL
+PARTIAL
+NOT_VERIFIED
+NOT_APPLICABLE
+```
+
+Examples:
+
+```text
+Poster + reduced motion                    → NOT_APPLICABLE
+Dashboard screenshot + keyboard operation → NOT_VERIFIED
+Running app + unhandled route error        → FAIL RI1
+Source-only CSS + visual balance           → NOT_VERIFIED until rendered
+Commercial poster + wrong supplied price   → FAIL static content-fidelity hard gate
+```
+
+## Contextual Hard Gates
+
+```text
+Interactive release:
+  RI1 runtime integrity
+  G21 reduced motion when applicable
+  required accessibility/task-completion blockers
+
+Static commercial delivery:
+  required logo/product/person/content fidelity
+  mandatory text legibility
+  crop/safe-area integrity
+  delivery resolution
+```
+
+A hard gate applies only when its triggering context exists. Missing evidence produces `NOT_VERIFIED`, not an invented pass or zero.
+
+## Evidence Before Score
+
+Accepted evidence may include:
+
+```text
+rendered visual
+interaction observation
+runtime capture
+DOM or native accessibility tree
+source inspection
+asset comparison
+measurements
+user or task evidence
+```
+
+A build passing is not visual verification. A screenshot looking correct is not interaction or runtime verification.
+
+## Scoring Policy
+
+```text
+Default pass threshold: 8.0 / 10
+Critical gate: score below 5
+Overall score: weighted average of verified applicable gates only
+Coverage: verified applicable weight / all applicable selected weight
+```
+
+Verdict requires both score and coverage:
+
+```text
+PASS             score >= 8, hard gates pass, sufficient coverage
+CONDITIONAL PASS score >= 8, no verified hard-gate failure, evidence gaps remain
+NEEDS WORK       score < 8 or important gates fail
+CRITICAL         applicable hard gate fails or material critical gate exists
+```
+
+## Required Review State
+
+Record before scoring:
+
+```yaml
+review_route:
+  surface_profile: <profile>
+  artifact_state: <state>
+  review_depth: <depth>
+  viewing_context: []
+  selected_references: []
+  selected_lenses: []
+  selected_components: []
+  applicable_hard_gates: []
+  evidence_available: []
+  evidence_gaps: []
+```
+
+Record for each failed or partial gate:
+
+```yaml
+finding:
+  gate: <id>
+  status: <FAIL | PARTIAL>
+  score: <0-10 for verified scope>
+  region: <location>
+  observation: <specific condition>
+  evidence: []
+  impact:
+    user: <impact>
+    business_or_delivery: <impact when relevant>
+  recommendation: <specific correction direction>
+  confidence: <high | medium | low>
+```
+
+## Output
+
+The report must include:
+
+```text
+review context
+score and verified coverage
+contextual hard-gate status
+executive findings
+cluster summary
+component findings when relevant
+critical / important / polish priority
+NOT_APPLICABLE and NOT_VERIFIED gates
+recommended handoff
+```
+
+Do not dump the entire gate inventory when a focused review is enough.
+
+## Integration Contract
+
+```text
+design-audit
+  owns capture, full gap analysis, prioritization, and audit recommendation
+  calls design-review for routed scoring
+
+design-refinement
+  owns targeted fixes and regression preservation
+  calls design-review for focused re-score
+
+redesign-workflow
+  owns redesign lifecycle and fix loop
+  calls design-review after rendered verification
+```
+
+`design-review` reports findings. It changes artifacts only when the calling workflow explicitly owns and requests production.
+
+## Final Guard
+
+```text
+□ Surface profile is explicit.
+□ Artifact state and viewing context are explicit.
+□ Only relevant references were loaded.
+□ Universal gates were reviewed.
+□ Surface and component gates match the target.
+□ Hard gates were applied contextually.
+□ Every score has suitable evidence.
+□ NOT_VERIFIED and NOT_APPLICABLE are separate.
+□ Overall score includes verified applicable gates only.
+□ Coverage is reported beside the score.
+□ Findings are specific and prioritized.
+□ No style preference was presented as a universal design law.
 ```
