@@ -9,7 +9,7 @@ Install bundles for common use cases. Each pack installs a workflow plus all ski
 ---
 
 ## Redesign Pack
-Full UI/UX redesign loop — audit, design system, depth, genre, layout, copy, gates.
+Full UI/UX redesign loop — audit, design system, depth, genre, layout, copy, gates, and automatic verified-case learning promotion.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -31,6 +31,9 @@ npx skills add puterakahfi/ai-native-skills \
   --skill design-audit \
   --skill design-review \
   --skill design-refinement \
+  --skill skill-evolution \
+  --skill skill-eval \
+  --skill git-workflow \
   --skill master-design \
   --skill macrostructures \
   --skill ui-components \
@@ -104,13 +107,16 @@ npx skills add puterakahfi/ai-native-skills \
   --skill test-driven-development \
   --skill resilience-engineering \
   --skill refactoring \
+  --skill skill-evolution \
+  --skill skill-eval \
+  --skill git-workflow \
   -g -y
 ```
 
 ---
 
 ## Full Suite (everything)
-All 91 entries — skills, workflows, meta-skills, roles, domain, engineering, design.
+All 92 entries — skills, workflows, meta-skills, roles, domain, engineering, design.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills -g -y
@@ -122,7 +128,9 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Workflow / Meta-skill | Requires |
 |---|---|
-| `redesign-workflow` | design-foundation, design-brand, design-genre, design-depth, design-color, design-typography, design-spacing, design-iconography, design-visual, design-layout, adaptive-component-design, design-strategy, design-interaction, design-system, design-audit, design-review, design-refinement, master-design, macrostructures, ui-components, composition, visual-hierarchy, copywriting, ux-psychology, accessibility |
+| `redesign-workflow` | design-foundation, design-brand, design-genre, design-depth, design-color, design-typography, design-spacing, design-iconography, design-visual, design-layout, adaptive-component-design, design-strategy, design-interaction, design-system, design-audit, design-review, design-refinement, skill-evolution, skill-eval, git-workflow, master-design, macrostructures, ui-components, composition, visual-hierarchy, copywriting, ux-psychology, accessibility |
+| `design-refinement` | design-audit, design-review, master-design, skill-evolution, skill-eval |
+| `skill-evolution` | skill-eval, git-workflow |
 | `role-switcher` | master-engineer, master-design, product-manager, ux-psychology, user-research, native-ai-engineer, diagram-architect, design-review, systematic-debugging, architecture-review, security-review, plan |
 | `workflow-router` | redesign-workflow, new-feature-workflow, bugfix-workflow, code-review-workflow, deployment-workflow, product-development-workflow, design-refinement, skill-doctor, spec-workflow |
 | `product-development-workflow` | product-requirements, business-value-alignment, experiment-design, user-research, master-design, master-engineer, spec-workflow, threat-modeling, code-review-workflow, deployment-workflow, observability-design |
