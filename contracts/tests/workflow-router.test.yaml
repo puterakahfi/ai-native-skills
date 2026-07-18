@@ -1,0 +1,61 @@
+skill_test:
+  skill: workflow-router
+  version: "1.2.0"
+  description: Verify audit, refinement, redesign, and specialized-domain requests select different primary routes.
+
+  cases:
+    - id: audit-only-routes-to-design-audit
+      description: Audit-only intent must not start redesign production.
+      trigger: "Audit dashboard ini dan jelaskan apa yang salah. Jangan ubah desain atau source code."
+      must_contain:
+        - "DESIGN AUDIT"
+        - "design-audit"
+        - "report only"
+      must_not_contain:
+        - "Starting redesign-workflow"
+        - "PRODUCTION"
+      quality_gates_tested:
+        - audit_is_not_redesign
+        - route_before_execution
+
+    - id: known-tabs-failure-routes-to-refinement
+      description: A known narrow failure with preservation constraints belongs to design refinement.
+      trigger: "Perbaiki hanya tabs category yang overlap di tablet. Pertahankan direction, layout, dan komponen lain yang sudah benar."
+      must_contain:
+        - "design-refinement"
+        - "targeted"
+        - "preserve"
+      must_not_contain:
+        - "redesign-workflow"
+        - "replace visual direction"
+      quality_gates_tested:
+        - known_failure_routes_to_refinement
+        - preserve_scope
+
+    - id: broad-direction-change-routes-to-redesign
+      description: Broad structural and visual-direction replacement belongs to redesign workflow.
+      trigger: "Redesign landing page ini. Direction, hierarchy, macrostructure, dan visual language sekarang salah dan perlu diganti."
+      must_contain:
+        - "redesign-workflow"
+        - "broad"
+        - "direction"
+      must_not_contain:
+        - "design-refinement"
+      quality_gates_tested:
+        - broad_direction_routes_to_redesign
+
+    - id: logo-audit-needs-specialized-reviewer
+      description: Specialized design audit must resolve domain reviewer coverage.
+      trigger: "Audit logo identity system ini untuk production readiness."
+      must_contain:
+        - "design-audit"
+        - "brand-identity"
+        - "domain reviewer"
+      must_contain_one_of:
+        - "LIMITED REVIEW"
+        - "brand-identity-review"
+      must_not_contain:
+        - "built-in interactive"
+      quality_gates_tested:
+        - design_domain_resolution
+        - unsupported_domain_not_forced_through_ui_review
