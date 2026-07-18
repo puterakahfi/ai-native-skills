@@ -1,110 +1,202 @@
-# Phase 6 — FIX + AUTONOMOUS LOOP
+# Phase 11 — FIX, VERIFY, AND LEARN
 
-## Phase 6: FIX (Skill-First Mandatory)
+## Core rule
 
-When any gate scores < 8.0, run IN ORDER. Skipping Step A = not allowed.
-
-```
-Step A — Root cause classification (mandatory):
-  For each failing gate:
-    1. Which skill encodes the rule for this gate?
-    2. Is the rule present in that skill? (yes/no)
-    3. No → skill is root cause → patch skill FIRST
-    4. Yes → was the rule followed in output? (yes/no)
-    5. No → output violated existing rule → patch skill (add violation/pitfall note)
-    Document: SKILL: [name] | RULE: [quoted] | GAP: [missing]
-
-Step B — Patch the skill:
-  - Open relevant skill file
-  - Add/strengthen rule, example, or pitfall — be specific:
-    NOT: "use proper spacing"
-    YES: "section-label padding = var(--sp-6) — never 0 when adjacent to cards"
-  - Commit skill patch BEFORE producing new output
-
-Step C — Reproduce from patched skill:
-  - Re-run Phase 4 PRODUCE with patched skill loaded
-  - Do NOT patch HTML directly — reproduce from skill
-  - This verifies the skill fix actually works
-
-Step D — Re-score:
-  - Re-run Phase 5 REVIEW on new output
-  - Compare gate scores iteration-to-iteration
-  - If previously passing gate now fails → skill patch introduced regression → fix
+```text
+Classify the defect
+→ fix the correct local or shared layer
+→ verify the real case
+→ run skill-evolution automatically
+→ promote only reusable reasoning with a regression eval.
 ```
 
-**Gate fix quick reference:**
+Do not patch a shared skill merely because an implementation failed. First determine whether the failure came from missing reusable knowledge, ignored existing knowledge, workflow orchestration, reference quality, or local implementation.
 
-| Gate Failure | Specific Fix |
-|---|---|
-| G2 Typographic Scale | Replace raw font-size with scale vars; check H1/body ratio |
-| G3 Color Semantic | Rename vars; verify each has exactly one role |
-| G4 Figure/Ground | Add dot-grid or gradient to body background |
-| G5 Whitespace | Differentiate section padding by visual weight |
-| G8 First Impression | Rewrite H1 as stance — 50ms test |
-| G14 Touch Targets | Add min-height:44px + display:flex + align-items:center |
-| G16 Semantic | Add sr-only H2, fix heading hierarchy, add skip link |
-| G21 Reduced Motion | Add @media(prefers-reduced-motion:reduce) to ALL animations |
-| R1 Type | Add display face (Fraunces/Playfair) vs body face (Inter) |
-| C1 Focal Point | Remove min-height:100vh; use padding-top:clamp() |
-| C3 Alignment | Remove magic-number px; anchor to grid or sibling edge |
+## Step A — Defect classification
+
+For every failed gate, record:
+
+```text
+Gate:
+Observed failure:
+Governing skill or workflow:
+Existing relevant rule:
+Defect class:
+  reusable_skill_defect
+  reference_knowledge_defect
+  workflow_orchestration_defect
+  local_implementation_defect
+Candidate correction layer:
+Evidence needed to prove the fix:
+```
+
+Classification rules:
+
+- Missing reusable decision factor, reasoning step, anti-pattern, or quality gate → `reusable_skill_defect`.
+- Reusable explanation or decision matrix is incomplete but too detailed for the main skill → `reference_knowledge_defect`.
+- Correct skills were not loaded, phases were ordered incorrectly, or review was skipped → `workflow_orchestration_defect`.
+- CSS, framework behavior, product state, route, exact breakpoint, or repository-specific component bug → `local_implementation_defect`.
+- Existing rule was clear but ignored → patch the artifact or orchestration first; do not duplicate the rule.
+
+## Step B — Apply the smallest candidate fix
+
+Use the correction order from the defect class:
+
+```text
+Reusable skill defect
+→ formulate a learning candidate
+→ apply the candidate reasoning to the real surface
+→ verify it
+→ promote through skill-evolution after verification.
+
+Reference knowledge defect
+→ improve the reusable reference candidate
+→ apply and verify
+→ promote after verification.
+
+Workflow orchestration defect
+→ patch workflow composition or phase ordering
+→ resume from a safe phase
+→ verify the complete affected path.
+
+Local implementation defect
+→ patch only the product artifact
+→ verify regression
+→ keep the detail in the product repository.
+```
+
+A candidate rule is not yet shared knowledge. It becomes promotable only after the real case passes.
+
+## Step C — Verify the real case
+
+Run the evidence appropriate to the failure:
+
+- render and screenshot inspection;
+- mobile, tablet, laptop, and desktop checks;
+- pointer, touch, keyboard, swipe, scroll, and resize behavior;
+- loading, empty, error, success, permission, and edge states;
+- DOM probes and accessibility checks;
+- build, lint, type, unit, integration, or end-to-end tests;
+- fixed-gate and preserved-gate re-scoring.
+
+Record before and after evidence. A successful build alone is not proof that a UI/UX defect is resolved.
+
+If verification fails, continue the bounded correction loop. Do not update shared skills from the failed attempt.
+
+## Step D — Automatic skill-evolution review
+
+After a fix passes verification, load:
+
+```text
+skill-evolution + skill-eval
+```
+
+Run the learning review without waiting for the user to request it.
+
+The review must decide one of:
+
+```text
+PROMOTE_RULE
+PROMOTE_REFERENCE
+PROMOTE_WORKFLOW
+PROMOTE_CONTRACT
+EVAL_ONLY
+LOCAL_ONLY
+DUPLICATE
+DEFERRED_UNVERIFIED
+```
+
+Promotion rules:
+
+- Extract why the fix worked, not merely which component or code was used.
+- Remove product names, route names, file paths, class names, and exact breakpoints from shared instructions.
+- Preserve the decision factors, conditions, counterexamples, and trade-offs.
+- Check the complete target skill and related skills for duplicate coverage.
+- Patch the smallest correct layer.
+- Add or update a regression eval derived from the real case.
+- Run the relevant evals and contract conformance checks.
+- Commit automatically only when repository access and approval policy permit it.
+- Store the concrete case provenance outside the reusable `SKILL.md` body.
+
+Examples:
+
+```text
+Local fact:
+Creative Gallery used a shortcut rail on a narrow viewport.
+
+Reusable reason:
+When a small, high-value discovery set must remain visible but does not fit,
+preserve discoverability through reachable overflow or component substitution;
+do not hide primary choices solely to avoid layout work.
+```
+
+The local fact belongs in the product design lock or regression case. The reusable reason may belong in `adaptive-component-design` when it is new and passes transfer checks.
+
+## Step E — Re-run from promoted knowledge
+
+When a shared skill, reference, workflow, or contract was promoted:
+
+1. Reload the updated source.
+2. Re-run `skill-eval` for the new regression case.
+3. Re-run related evals affected by the boundary.
+4. Re-check the original product surface where feasible.
+5. Record the promotion commit and verification result.
+
+A skill patch without a passing regression eval is incomplete.
 
 ---
 
-## Phase 6: AUTONOMOUS LOOP
+## Autonomous correction loop
 
-```
+```text
 LOOP STATE:
-  iteration:     1
-  max:           5 (default, configurable)
-  active_layer:  [strategy | UI | UX | voice | interaction | delight | verification]
-  skill_patches: []
-  score_history: []
-  layer_history: []
+  iteration:          1
+  max:                5
+  active_layer:       [strategy | UI | UX | voice | interaction | delight | verification]
+  local_patches:      []
+  learning_candidates:[]
+  promotions:         []
+  score_history:      []
 
 LOOP BODY:
-  0. Declare active layer (one primary, name deferred)
-     → Do not skip to delight if lower layer failing
-
-  1. Phase 4: PRODUCE
-     → load references/phase-produce.md
-     → stamp: macrostructure, genre, iteration N, pre-emit scores
-
-  2. Phase 5: REVIEW
-     → load references/phase-review-gates.md
-     → score all applicable gates
-     → log: score_history.append(avg)
-
-  3. Check exit:
-     avg >= 8.0    → EXIT → Phase 7 DELIVER
-     iteration >= max → EXIT → Phase 7 DELIVER + gap report
-
-  4. Phase 6: FIX (skill-first mandatory)
-     → root cause → patch skill → log skill_patches
-     → iteration++
-     → goto step 1
-
-LOOP REPORT (emit at exit):
-  ════════════════════════════
-  Loop complete: N iterations
-  Score progression: [8.0 → 8.4 → 9.1]
-  Skills patched:
-    - [skill]: [rule added]
-  Final score: X.X / 10
-  Status: ✅ PASS | ⚠️ MAX REACHED
-
-  Residual gaps (if max reached):
-    Gate N: [desc] — score — [why not fixed]
-  ════════════════════════════
-
-EXTENSION (if max reached, score < 8.0):
-  "Loop reached max N. Score: X.X. Residual: [list]. Extend? (Y = 3 more)"
+  1. Produce or patch the current candidate.
+  2. Verify and review with evidence.
+  3. If gates fail and iterations remain:
+       classify defect
+       apply smallest candidate fix
+       iteration++
+       return to verification.
+  4. If a fix passes:
+       run skill-evolution automatically
+       promote, eval-only, or record no-promotion verdict.
+  5. Exit when delivery gates pass or max iterations is reached.
 ```
 
-**Why skill-first beats output-first:**
+## Exit report
+
+```text
+CORRECTION AND LEARNING REPORT
+────────────────────────────────────
+Iterations: <N>
+Score progression: <list>
+Local implementation patches: <list>
+Learning candidates reviewed: <count>
+Promoted skill/reference/workflow/contract changes: <list or none>
+Eval-only additions: <list or none>
+Local-only lessons: <list or none>
+Duplicate/deferred candidates: <list or none>
+Promotion commits: <sha list or not written>
+Residual gaps: <list or none>
+Final status: PASS | MAX_REACHED_WITH_GAPS
 ```
-Output-first (wrong):            Skill-first (correct):
-  fix HTML directly                patch skill → reproduce
-  same mistake next iter           mistake doesn't recur
-  skill never improves             skill accumulates knowledge
-  mistakes repeat sessions         mistakes don't repeat sessions
-```
+
+## Hard failures
+
+The phase fails when:
+
+- a shared skill is patched from an unverified idea;
+- product-specific implementation history is copied into reusable instructions;
+- an existing rule is duplicated instead of tested;
+- a promoted patch has no regression eval;
+- the agent claims a repository update without a write result or commit;
+- delivery occurs without running learning review for verified fixes.
