@@ -14,78 +14,25 @@ metadata:
 
 Unified review entry point for digital interfaces and visual communication artifacts.
 
-`design-review` is a **facade skill**: callers use one review interface while the facade classifies the target, selects applicable review strategies, normalizes evidence, and produces a consistent score and verdict. It does not own every design discipline's knowledge.
-
-## Facade Ownership Boundary
-
-The facade owns:
-
-```text
-surface and domain classification
-review profile and strategy selection
-applicability status
-common evidence model
-score, coverage, and verdict policy
-finding and report contract
-handoff to audit, refinement, redesign, or a specialist
-```
-
-Specialist or domain-review skills own:
-
-```text
-domain principles and thresholds
-component and platform behavior
-specialized hard gates
-production methods
-correction techniques
-```
-
-The facade must not copy specialist knowledge into `SKILL.md` merely to avoid loading the governing skill.
-
-## Supported Core Scope
-
-Covered by the built-in review strategies:
-
-```text
-digital product interfaces
-responsive web experiences
-mobile and desktop applications
-static marketing and social visuals
-advertising creatives and thumbnails
-presentation slides and decks
-```
-
-Not covered as a complete discipline without an additional domain reviewer:
-
-```text
-logo and brand-identity system design
-packaging and specialist print production
-motion graphics, film, and video editing
-industrial or physical product design
-architecture, interior, and spatial design
-fashion design
-service-design research and organizational-service systems
-```
-
-Universal visual gates may still provide a limited review for an unsupported discipline, but the report must state the limitation and must not claim full domain coverage.
+This facade owns classification, applicability, evidence normalization, scoring, coverage, verdict, and reporting. Specialist reviewers own domain knowledge and hard gates. Load `references/facade-boundary.md` when scope or extension behavior matters.
 
 ## Hard Rules
 
 ```text
-1. Classify the surface and design domain before selecting gates.
+1. Classify the design domain and surface before selecting gates.
 2. Separate universal principles from domain and surface thresholds.
 3. Never apply interactive gates to static artifacts.
 4. Never claim a gate passed without suitable evidence.
 5. NOT_APPLICABLE and NOT_VERIFIED are different; neither is zero.
 6. Score only verified applicable gates.
-7. Load only references and domain reviewers required by the active phase.
+7. Load only references and reviewers required by the active phase.
 8. Every failure needs observation, evidence, impact, and correction direction.
 9. Do not turn taste or one style into a universal gate.
 10. High score + low coverage is not release approval.
 11. Hard gates are contextual, not global.
 12. Review does not silently become redesign or implementation.
-13. Unsupported domains require a declared adapter or an explicitly limited review.
-14. The facade normalizes domain output; it does not rewrite domain knowledge.
+13. Unsupported domains require an adapter or an explicitly limited review.
+14. The facade normalizes domain output; it does not copy domain knowledge.
 ```
 
 ## Inputs
@@ -101,7 +48,7 @@ focus             lenses, components, regions, or previous gate IDs
 viewing_context   viewports, dimensions, channel, distance, theme, orientation, inputs
 required_assets   logos, products, people, copy, price, contact, claims, legal content
 goal               user, communication, business, or delivery outcome
-domain_reviewers  optional specialist reviewers or adapters required by the domain
+domain_reviewers  optional specialist reviewers required by the domain
 ```
 
 Infer missing values only when evidence is strong and record the assumption.
@@ -110,12 +57,13 @@ Infer missing values only when evidence is strong and record the assumption.
 
 ```text
 Phase 0 → CLASSIFY
-  Resolve design domain, profile, artifact state, context, and depth.
+  Resolve domain, profile, artifact state, context, depth, and coverage mode.
   Load: references/review-routing.md
+  Load: references/facade-boundary.md when domain scope is unclear or extended.
 
 Phase 1 → ROUTE
-  Select applicable domain reviewers, lenses, surface gates, components, and evidence.
-  Load: references/review-profiles.md only when a built-in profile applies.
+  Select domain reviewers, lenses, surface gates, components, and evidence.
+  Load: references/review-profiles.md only for a built-in profile.
 
 Phase 2 → INSPECT
   Inspect the complete available artifact before scoring.
@@ -126,21 +74,21 @@ Phase 3 → UNIVERSAL REVIEW
   color, readability, content, brand consistency, restraint.
   Load: references/universal-gates.md
 
-Phase 4 → DOMAIN AND SURFACE REVIEW
+Phase 4 → DOMAIN / SURFACE REVIEW
   Interactive → references/interactive-surface-gates.md
   Static/slide → references/static-visual-gates.md
-  Unsupported specialized domain → load declared domain reviewer or limit scope.
+  Specialized domain → declared domain reviewer or limited scope.
 
 Phase 5 → COMPONENT REVIEW
   Review only present or required components.
   Load: references/component-review.md when relevant.
 
 Phase 6 → EVIDENCE + SCORE
-  Normalize domain findings; assign status, score, weight, hard-gate result, and coverage.
+  Normalize findings; assign status, score, weight, hard-gate result, coverage.
   Load: references/evidence-and-scoring.md
 
 Phase 7 → REPORT
-  Prioritize findings, limitations, adapter coverage, and handoff.
+  Prioritize findings, limitations, domain coverage, and handoff.
   Load: references/review-report.md
 ```
 
@@ -151,34 +99,45 @@ classify → route → inspect → universal → domain/surface → components
 
 Do not score until route, domain coverage, and evidence are explicit.
 
-## Phase-Specific Loading Policy
+## Phase-Specific Loading
 
-Start with `SKILL.md` only. Load references when entering the phase that owns them:
+Start with `SKILL.md` only.
 
 ```text
 CLASSIFY / ROUTE
-  references/review-routing.md
-  references/review-profiles.md only for a built-in profile
+  review-routing.md
+  facade-boundary.md only for scope/extension decisions
+  review-profiles.md only for a built-in profile
 
 UNIVERSAL REVIEW
-  references/universal-gates.md
+  universal-gates.md
 
 DOMAIN / SURFACE REVIEW
-  references/interactive-surface-gates.md OR
-  references/static-visual-gates.md OR
-  declared external domain reviewer
+  interactive-surface-gates.md OR
+  static-visual-gates.md OR
+  declared domain reviewer
 
 COMPONENT REVIEW
-  references/component-review.md only for selected components
+  component-review.md only for selected components
 
 EVIDENCE + SCORE
-  references/evidence-and-scoring.md
+  evidence-and-scoring.md
 
 REPORT
-  references/review-report.md
+  review-report.md
 ```
 
 Never load every reference defensively. A completed phase output is the handoff context for the next phase.
+
+## Built-In Coverage
+
+```text
+digital-interface    web, mobile, desktop, and responsive product UI
+visual-communication poster, flyer, banner, social, ad, and thumbnail
+presentation         slides and decks
+```
+
+Identity systems, packaging, motion/video, industrial, spatial, fashion, and service-design disciplines require a domain reviewer for a complete verdict. Universal gates alone produce `LIMITED REVIEW`.
 
 ## Review Depth
 
@@ -192,12 +151,12 @@ focused
   Default during active refinement.
 
 full
-  All applicable universal, domain, and profile gates + major present components.
-  Full means full only for domains covered by loaded reviewers.
+  All applicable gates from every loaded reviewer + major present components.
+  Full only for domains covered by built-in or adapter reviewers.
 
 release
   Full review + contextual hard gates + required states, sizes, themes,
-  input methods, runtime/export evidence, and sufficient domain coverage.
+  inputs, runtime/export evidence, and sufficient domain coverage.
 ```
 
 ## Applicability and Evidence
@@ -208,14 +167,12 @@ Every selected gate receives exactly one status:
 PASS | FAIL | PARTIAL | NOT_VERIFIED | NOT_APPLICABLE
 ```
 
-Examples:
-
 ```text
 poster + reduced motion                    → NOT_APPLICABLE
 dashboard screenshot + keyboard operation → NOT_VERIFIED
 running app + unhandled route error        → FAIL RI1
 commercial visual + wrong supplied price  → FAIL fidelity/content hard gate
-logo concept without identity reviewer     → limited universal review; no full-domain verdict
+logo concept without identity reviewer     → LIMITED REVIEW
 ```
 
 Contextual hard gates:
@@ -236,45 +193,9 @@ specialized domain
   hard gates declared by the loaded domain reviewer
 ```
 
-Use rendered visuals, interaction observation, runtime capture, accessibility tree, source inspection, asset comparison, measurements, or user/task evidence as appropriate.
+Use evidence appropriate to the gate: rendered visual, interaction, runtime, accessibility tree, source, asset comparison, measurements, or user/task evidence.
 
-A build is not visual verification. A screenshot is not interaction or runtime verification. Universal visual evidence is not proof of specialist-domain quality.
-
-## Domain Reviewer Contract
-
-A domain reviewer integrated through this facade must declare:
-
-```yaml
-domain_reviewer:
-  domain: <stable domain id>
-  applies_when: []
-  required_context: []
-  required_evidence: []
-  gates: []
-  hard_gate_triggers: []
-  unsupported_claims: []
-  finding_contract: design-review/finding
-```
-
-It must:
-
-```text
-return PASS/FAIL/PARTIAL/NOT_VERIFIED/NOT_APPLICABLE per selected gate
-provide evidence and impact for every failed or partial gate
-identify domain-specific hard-gate triggers
-map findings into the facade finding contract
-preserve the common score and coverage semantics
-state what remains outside its own scope
-```
-
-It must not:
-
-```text
-silently redefine universal gate meanings
-count missing evidence as zero
-claim coverage outside its declared domain
-perform redesign or production unless the caller owns that lifecycle
-```
+A build is not visual verification. A screenshot is not interaction or runtime verification. Universal visual evidence is not specialist-domain proof.
 
 ## Score and Verdict
 
@@ -290,12 +211,10 @@ PASS             score >= 8, hard gates pass, sufficient domain/evidence coverag
 CONDITIONAL PASS score >= 8, no verified hard-gate failure, gaps remain
 NEEDS WORK       score < 8 or important gates fail
 CRITICAL         hard gate fails or material critical gate exists
-LIMITED REVIEW   specialist domain coverage was not available
+LIMITED REVIEW   primary-domain reviewer was not available
 ```
 
 ## Output
-
-Report:
 
 ```text
 review context and route
@@ -318,7 +237,7 @@ Each failed or partial finding includes gate, region, observation, evidence, imp
 design-audit       owns full capture, gap analysis, and prioritization
 design-refinement  owns targeted fixes, preservation, and focused re-score
 redesign-workflow  owns redesign, verification, defect classification, and fix loop
-domain specialist  owns unsupported design-domain knowledge and gates
+domain specialist  owns unsupported domain knowledge and gates
 ```
 
 `design-review` reports findings. It changes artifacts only when the calling workflow explicitly owns production.
@@ -326,8 +245,8 @@ domain specialist  owns unsupported design-domain knowledge and gates
 ## Final Guard
 
 ```text
-□ Design domain, profile, artifact state, and viewing context are explicit.
-□ Built-in coverage or domain-review adapter coverage is explicit.
+□ Domain, profile, artifact state, and viewing context are explicit.
+□ Built-in or adapter coverage is explicit.
 □ Only phase-relevant references were loaded.
 □ Universal gates were reviewed.
 □ Surface/component/domain gates match the target.
@@ -336,6 +255,6 @@ domain specialist  owns unsupported design-domain knowledge and gates
 □ NOT_VERIFIED and NOT_APPLICABLE remain separate.
 □ Score uses verified applicable gates only.
 □ Coverage is shown beside score.
-□ Unsupported domains are reported as limited, not fully passed.
+□ Unsupported domains are limited, not fully passed.
 □ Findings are specific, prioritized, and style-neutral.
 ```
