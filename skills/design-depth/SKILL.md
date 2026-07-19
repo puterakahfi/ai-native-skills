@@ -1,95 +1,246 @@
 ---
 name: design-depth
-description: Visual depth and layering — multi-layer design composition, atmosphere layers, typography interleave, object placement, depth techniques. Transforms flat design into layered spatial experience.
+description: Optional visual depth and layering for structural separation, atmosphere, imagery integration, focus, overlays, and state. Selects flat, shallow, layered, or deep treatment from product meaning, assets, context, performance, and accessibility rather than using glow, blur, shadow, glass, or typography interleave as a generic premium recipe.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-depth.contract.yaml
-  ai-native-skills.contract-version: "^2.0.0"
-  ai-native-skills.related_skills: '["design-visual","design-foundation","composition","motion-design","design-genre"]'
+  ai-native-skills.contract-version: "^2.1.0"
+  ai-native-skills.related_skills: '["design-visual","master-design","design-foundation","composition","design-genre","motion-design","readability","design-review"]'
 ---
 
-# Design Depth Skill
+# Design Depth
 
-> **HARD RULES:**
-> 1. Declare layer stack BEFORE producing — how many layers, what on each.
-> 2. Depth is intentional — not every design needs depth. Flat is valid when Kanso applies.
-> 3. Objects have no hard edges — they bleed into canvas (no box/card border).
-> 4. Typography can be BEHIND and IN FRONT of objects — interleave is the technique.
-> 5. Scale = distance — objects in "back" are smaller, objects in "front" are larger.
+Depth is optional. Use it only when it improves separation, focus, imagery integration, spatial storytelling, interaction state, or emotional meaning.
 
----
+## Hard rules
 
-## Flat vs Layered
-
-```
-FLAT (valid — zen, SaaS, editorial):
-  Layer 1: canvas (bg color)
-  Layer 2: all UI at same z-level (type + components + illustration)
-  Use when: Kanso — content IS the design, no decoration needed
-
-LAYERED (depth — atmospheric, zen with illustration, editorial with art):
-  Layer 1: canvas
-  Layer 2: atmosphere (ink wash, mist, gradient, texture)
-  Layer 3: typography (mid-ground)
-  Layer 4: objects (illustration, photo, 3D — foreground)
-  Layer 5: accent (seal, badge, highlight — top)
-  Use when: visual richness, spatial storytelling, brand with illustration system
+```text
+1. Assess whether depth is needed before selecting techniques.
+2. Flat, shallow, layered, and deep are all valid.
+3. Premium is not equivalent to gradient, glow, blur, glass, shadow, or 3D.
+4. Every depth technique needs a named role.
+5. Do not require artificial depth metadata for flat components.
+6. Hard edges, borders, soft edges, and bleed are all contextual.
+7. Typography interleave is optional and requires readability plus fallback.
+8. Effects must not replace foundation, content, composition, or product proof.
+9. Performance, reduced motion, responsive behavior, and accessibility constrain depth.
+10. Rendered evidence is required before acceptance.
 ```
 
----
+## Depth need assessment
 
-## Core Decisions (in order)
-
+```yaml
+depth_need_assessment:
+  target_surface:
+  selected_design_direction:
+  message_or_task:
+  required_separation:
+  available_imagery_or_assets: []
+  interaction_overlays_or_states: []
+  viewing_contexts: []
+  performance_constraints: []
+  accessibility_constraints: []
+  depth_value:
+  risks: []
+  recommended_mode: <flat | shallow | layered | deep>
 ```
-1. DEPTH MODE    → flat / shallow (2-3 layers) / deep (4-5 layers)
-2. LAYER STACK   → declare each layer: content + z-level + opacity
-3. ATMOSPHERE    → what creates the "ground"? (gradient, texture, wash, blur)
-4. INTERLEAVE    → where does type go behind objects? where in front?
-5. SCALE RULE    → near = big + sharp / far = small + faded
-6. EDGE RULE     → objects bleed into canvas (no bounding box)
+
+```text
+FLAT
+  hierarchy, grouping, and flow are clear without perceptual layering
+
+SHALLOW
+  limited surface separation, focus, or state distinction is needed
+
+LAYERED
+  meaningful overlap, imagery, atmosphere, or interaction planes are active
+
+DEEP
+  spatial storytelling or complex imagery requires several coordinated planes
 ```
 
----
+Do not select layered or deep mode merely because the page feels flat or not premium enough. Diagnose hierarchy, composition, content, and asset quality first.
+
+## Depth roles
+
+Allowed roles:
+
+```text
+CANVAS
+  establishes the base field
+
+STRUCTURAL_SEPARATION
+  separates content regions or component states
+
+CONTENT_PLANE
+  establishes the primary readable/task layer
+
+ATMOSPHERE
+  supports mood, environment, or spatial continuity
+
+IMAGERY_INTEGRATION
+  combines photography, illustration, or product artifacts with content
+
+FOCUS_OR_EMPHASIS
+  temporarily prioritizes an element or narrative beat
+
+INTERACTION_OVERLAY
+  expresses modal, popover, drawer, tooltip, or other layered interaction
+
+FEEDBACK_OR_STATE
+  distinguishes loading, selected, warning, success, or error conditions
+```
+
+Every technique must point to one or more roles.
+
+## Technique selection
+
+Potential techniques:
+
+```text
+surface contrast or border
+elevation and shadow
+overlap and crop
+scale and perspective
+gradient or light field
+blur or atmospheric wash
+edge bleed
+hard-edge containment
+typography interleave
+parallax or motion depth
+```
+
+Rules:
+
+```text
+border or hard edge
+  valid when containment, system language, comparison, or interaction requires it
+
+edge bleed
+  valid when imagery integration or composition benefits
+
+shadow/elevation
+  valid when it communicates plane, state, or focus
+
+gradient/glow/blur
+  valid when it creates a specific light, atmosphere, or separation role
+
+typography interleave
+  valid only when reading order and responsive fallback remain clear
+
+perspective/3D
+  valid only when assets and message justify the cost
+```
+
+## Layer stack
+
+Declare a layer stack only when overlap or depth behavior requires it:
+
+```yaml
+layer:
+  name:
+  role:
+  relative_plane:
+  background_or_blend:
+  content_relationship:
+  responsive_fallback:
+  legibility_constraints:
+```
+
+Implementation z-index values are product/runtime defined. Transparent surfaces inherit their parent context. Do not create a four-plane stack for every component by convention.
+
+## Restraint and hierarchy
+
+```text
+one dominant depth cue
+→ primary plane, imagery, or focus
+
+supporting cues
+→ lower intensity separation or atmosphere
+
+local interaction depth
+→ only when state or behavior requires it
+```
+
+Equal shadow, blur, and glow on every card flattens the hierarchy instead of creating depth.
+
+## Responsive and accessibility behavior
+
+Verify:
+
+```text
+text and controls remain readable over imagery/effects
+focus and interaction overlays remain clear
+mobile crops and overlaps preserve meaning
+reduced-motion mode preserves hierarchy when motion contributes depth
+low-performance contexts retain the essential separation
+zoom/text scaling does not create destructive overlap
+```
+
+## Output
+
+```yaml
+depth_contract:
+  depth_mode:
+  depth_roles: []
+  layer_stack: []
+  technique_map: []
+  imagery_integration:
+  optional_interleave:
+  responsive_fallbacks: []
+  performance_constraints: []
+  accessibility_constraints: []
+  prohibited_effect_stacks: []
+  required_rendered_evidence: []
+```
+
+## Anti-slop checks
+
+```text
+gradient + blur + glow + glass + shadow stacked without role
+every card uses equal elevation
+dark atmosphere reduces product/content clarity
+fake 3D added without suitable assets
+typography interleave used only for novelty
+data-heavy task surface receives decorative depth
+all sections become floating isolated surfaces
+depth added to compensate for weak hierarchy or content
+```
+
+Correction:
+
+```text
+identify the intended role
+→ keep the smallest technique set that performs it
+→ remove roleless effects
+→ restore clear readable planes
+```
 
 ## References
-- `references/elevation-inheritance.md` — **two-axis model: plane + elevation, transparent resolution, z-index formula**
-- `references/layer-stack.md` — CSS z-index architecture
-| Topic | File | When to load |
-|---|---|---|
-| Layer stack patterns + CSS | `references/layer-stack.md` | Declaring layer architecture |
-| Atmosphere techniques | `references/atmosphere.md` | bg wash, mist, gradient depth |
-| Typography interleave | `references/type-interleave.md` | Type behind/in front of objects |
-| Depth by genre | `references/genre-depth.md` | Which depth technique per genre |
 
-```
-skill_view(name='design-depth', file_path='references/layer-stack.md')
-skill_view(name='design-depth', file_path='references/atmosphere.md')
-skill_view(name='design-depth', file_path='references/type-interleave.md')
-skill_view(name='design-depth', file_path='references/genre-depth.md')
+Load only when applicable:
+
+```text
+references/elevation-inheritance.md
+references/layer-stack.md
+references/atmosphere.md
+references/type-interleave.md
+references/genre-depth.md
 ```
 
----
+## Final guard
 
-## When to Use Depth
-
+```text
+□ Depth need and mode are justified.
+□ Every technique has a named role.
+□ Flat components are not forced into artificial planes.
+□ Hard/soft edges and containment match the direction and task.
+□ Effects do not replace foundation, composition, content, or proof.
+□ Text, controls, states, and responsive contexts remain safe.
+□ Performance and reduced-motion constraints are addressed.
+□ Generic premium effect stacks were rejected.
+□ Rendered evidence supports the depth claim.
 ```
-USE depth when:
-  ✓ Brief has: illustration, photography, art assets
-  ✓ Genre: atmospheric, zen with visual richness
-  ✓ Goal: emotional impact, spatial storytelling, premium feel
-  ✓ Surface: hero section, landing page, editorial spread
-
-STAY FLAT when:
-  ✓ Kanso applies — content is the design
-  ✓ Genre: SaaS/dashboard — density > atmosphere
-  ✓ No art assets available — fake depth = worse than flat
-  ✓ Surface: forms, tables, data views
-```
-
----
-
-> **REMINDER:** Declare layer stack first. Objects bleed — no hard edges.
-> Type interleaves — not just sits on top. Scale = distance.

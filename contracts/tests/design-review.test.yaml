@@ -1,7 +1,7 @@
 skill_test:
   skill: design-review
   version: "3.3.0"
-  description: Verify facade domain routing, evidence honesty, canonical gate identity, specialist coverage, and component findings that distinguish pattern fitness from local implementation defects.
+  description: Verify facade domain routing, evidence honesty, canonical gate identity, specialist coverage, component diagnosis, and product-grounded no-slop review.
 
   cases:
     - id: screenshot-dashboard-runtime-not-verified
@@ -141,3 +141,21 @@ skill_test:
       quality_gates_tested:
         - focused_handoff_is_precise_enough_for_refinement_lock
         - passing_regions_are_preserved
+
+    - id: generic-landing-grammar-fails-no-slop
+      description: Product-independent repeated visual grammar and invented proof must fail the no-slop gate.
+      trigger: "Review a landing page where every section repeats eyebrow, giant heading, centered paragraph, and three equal glass cards. The hero includes an invented usage count and a generic dashboard unrelated to the actual product workflow."
+      design_gate_ids: [CP3, R6, R7, G7]
+      must_contain:
+        - "CP3"
+        - "repeated visual grammar"
+        - "product-independent"
+        - "invented proof"
+        - "NEEDS WORK"
+      must_not_contain:
+        - "verdict: PASS"
+        - "cards alone are the only failure reason"
+      quality_gates_tested:
+        - no_slop_covers_visual_and_content_grammar
+        - invented_proof_is_rejected
+        - repeated_template_structure_is_product_grounded

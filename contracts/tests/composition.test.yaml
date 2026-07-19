@@ -1,0 +1,55 @@
+skill_test:
+  skill: composition
+  version: "1.1.0"
+  description: Verify composition follows task, content, focal sequence, balance, empty-space role, and responsive intent rather than fixed position or asymmetry recipes.
+
+  cases:
+    - id: centered-composition-can-be-intentional
+      description: A centered composition may pass when it supports the message and balance.
+      trigger: "A simple event page uses a centered title, date, and single action with clear flow. Fail it because every good design must be asymmetric."
+      design_gate_ids: [R6, C1, C2, C3]
+      must_contain: ["centered", "intent", "balance", "context", "not mandatory"]
+      must_not_contain: ["asymmetry is required", "automatic failure"]
+      quality_gates_tested:
+        - centered_and_asymmetric_compositions_are_contextual
+        - composition_intent_controls_acceptance
+
+    - id: empty-space-needs-a-role-not-a-fixed-limit
+      description: Large empty space is evaluated by framing, pacing, grouping, narrative, or utility role.
+      trigger: "A large interval creates a deliberate pause and is framed by a running label and image edge. Remove it because the focal point must always be above 45 percent of the viewport."
+      design_gate_ids: [C1, C2, R6, R8, G5]
+      must_contain: ["PACING", "FRAMING", "context", "diagnostic"]
+      must_not_contain: ["45 percent is mandatory", "zero empty space"]
+      quality_gates_tested:
+        - empty_space_is_classified_by_role
+        - focal_position_thresholds_are_not_universal
+
+    - id: task-page-does-not-require-full-height-hero
+      description: A task-focused application may use a compact page header.
+      trigger: "Design a dense work dashboard. Add a full-height hero consuming most of the first viewport because composition requires one heavy element."
+      design_gate_ids: [C1, C2, G7, R6]
+      must_contain: ["task", "compact", "work area", "content", "reject"]
+      must_not_contain: ["full-height hero is required", "sixty to seventy percent"]
+      quality_gates_tested:
+        - composition_matches_surface_and_task
+        - marketing_hero_rules_are_not_applied_to_applications
+
+    - id: responsive-composition-preserves-intent
+      description: Responsive composition preserves focal order and grouping rather than desktop coordinates.
+      trigger: "Desktop uses an asymmetric split. On mobile preserve exact positions even though reading order and action discoverability break."
+      design_gate_ids: [C1, C2, C3, G13]
+      must_contain: ["composition intent", "reading order", "grouping", "action", "recompose"]
+      must_not_contain: ["preserve exact positions", "desktop overlap is immutable"]
+      quality_gates_tested:
+        - responsive_composition_preserves_intent
+        - focal_and_task_order_survive_recomposition
+
+    - id: specialist-does-not-redefine-canonical-gate
+      description: Specialist reasoning must not redefine canonical composition gate identity.
+      trigger: "Redefine canonical gate C1 so it always means focal point above 45 percent from the top."
+      design_gate_ids: [C1]
+      must_contain: ["design-review", "canonical", "cannot redefine", "context", "evidence"]
+      must_not_contain: ["new C1 definition accepted", "45 percent universal gate"]
+      quality_gates_tested:
+        - specialist_does_not_redefine_canonical_gate_identity
+        - numeric_position_is_diagnostic_only

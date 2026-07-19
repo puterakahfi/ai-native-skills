@@ -1,0 +1,65 @@
+skill_test:
+  skill: design-depth
+  version: "1.1.0"
+  description: Verify depth is optional, role-driven, asset-aware, readable, performant, and not treated as a generic premium effect recipe.
+
+  cases:
+    - id: premium-request-does-not-require-depth-effects
+      description: Premium direction must not automatically add an effect stack.
+      trigger: "Make this simple professional service page premium by adding glass, blur, glow, gradient, deep shadow, and 3D shapes to every section."
+      design_gate_ids: [G4, R6, R8, CP3]
+      must_contain: ["depth need assessment", "named role", "flat", "shallow", "remove"]
+      must_not_contain: ["apply every effect", "premium requires depth"]
+      quality_gates_tested:
+        - depth_mode_is_justified_by_message_task_assets_and_context
+        - roleless_effect_stack_is_rejected
+
+    - id: flat-components-do-not-need-artificial-depth-planes
+      description: A clear flat component system must not receive fake depth metadata by convention.
+      trigger: "The form and data table are clear on one surface. Add four depth planes and z-index metadata to every component because all components must declare depth."
+      design_gate_ids: [G4, G1, R8]
+      must_contain: ["flat", "not required", "structural clarity", "artificial", "avoid"]
+      must_not_contain: ["every component must declare four planes", "fake elevation"]
+      quality_gates_tested:
+        - flat_components_are_not_forced_to_declare_fake_depth_metadata
+        - depth_is_loaded_only_when_needed
+
+    - id: hard-edge-containment-can-be-valid
+      description: Borders and hard edges may be valid for comparison, interaction, or system language.
+      trigger: "A comparison table uses precise borders to preserve row and column relationships. Remove every hard edge because depth objects must always bleed into the canvas."
+      design_gate_ids: [G4, G7, G1]
+      must_contain: ["containment", "comparison", "valid", "context", "system language"]
+      must_not_contain: ["hard edges are forbidden", "always bleed"]
+      quality_gates_tested:
+        - hard_and_soft_edges_are_contextual
+        - containment_role_controls_edge_treatment
+
+    - id: typography-interleave-is-optional
+      description: Typography interleave must not be added without imagery need and readable fallbacks.
+      trigger: "The hero has no suitable image asset. Put the heading behind decorative shapes anyway because premium depth requires typography interleave."
+      design_gate_ids: [G4, G11, R8, CP3]
+      must_contain: ["optional", "asset", "readability", "fallback", "reject"]
+      must_not_contain: ["interleave is required", "hide heading behind decoration"]
+      quality_gates_tested:
+        - typography_interleave_is_optional
+        - asset_and_legibility_requirements_control_interleave
+
+    - id: equal-elevation-cards-flatten-hierarchy
+      description: Applying the same depth treatment to every card does not create useful hierarchy.
+      trigger: "Give every content card the same strong shadow, blur, and glow so the page feels layered."
+      design_gate_ids: [G4, C2, R7, R8]
+      must_contain: ["equal strength", "hierarchy", "named role", "remove", "supporting"]
+      must_not_contain: ["same strong effect on every card", "more effects create hierarchy"]
+      quality_gates_tested:
+        - depth_intensity_follows_hierarchy
+        - repeated_equal_effects_are_not_depth
+
+    - id: atmosphere-cannot-reduce-task-legibility
+      description: Atmospheric treatment must be reduced when it harms actual task content.
+      trigger: "A dark blurred atmosphere makes labels and form controls hard to read, but keep it because mood is more important than usability."
+      design_gate_ids: [G4, G10, G11, R8]
+      must_contain: ["legibility", "task", "reduce", "actual context", "cannot"]
+      must_not_contain: ["mood overrides usability", "keep illegible atmosphere"]
+      quality_gates_tested:
+        - body_text_and_controls_remain_legible_and_operable
+        - atmosphere_does_not_override_task_completion

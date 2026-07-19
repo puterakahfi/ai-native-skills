@@ -1,0 +1,125 @@
+skill_test:
+  skill: master-design
+  version: "1.2.0"
+  description: Verify design ownership compares real alternatives, preserves product context, rejects rigid style recipes, and diagnoses generic visual grammar without inventing proof.
+
+  cases:
+    - id: one-font-family-can-support-distinct-roles
+      description: A strong single-family typography system must not fail merely because display and body roles share a family.
+      trigger: "Brand system uses one variable sans family with clearly distinct display, heading, body, label, and data roles. Reject it because a premium design must pair two different font families."
+      design_gate_ids: [R1, R7, G2]
+      must_contain:
+        - "typography roles"
+        - "one family"
+        - "context"
+        - "legibility"
+        - "not mandatory"
+      must_not_contain:
+        - "different font families are required"
+        - "automatic failure"
+      quality_gates_tested:
+        - typography_family_count_is_not_a_universal_rule
+        - role_distinction_and_legibility_control_the_decision
+
+    - id: premium-does-not-mean-effect-stack
+      description: A premium request must become specific qualities rather than automatic glow, glass, gradient, blur, and shadow.
+      trigger: "Make this enterprise landing page premium. Add gradient, glass cards, blur, glow, deep shadows, and floating 3D shapes to every section."
+      design_gate_ids: [R6, R8, G4, CP3]
+      must_contain:
+        - "product"
+        - "named role"
+        - "restraint"
+        - "candidate"
+        - "effect"
+      must_not_contain:
+        - "apply all effects"
+        - "premium recipe"
+      quality_gates_tested:
+        - premium_is_translated_into_observable_product_specific_qualities
+        - roleless_effect_stack_is_rejected
+        - direction_candidates_are_compared
+
+    - id: product-category-does-not-auto-select-genre
+      description: Mentioning SaaS or developer tools must not automatically select modern-minimal.
+      trigger: "This is a developer platform, so skip product/context analysis and use the standard modern-minimal SaaS direction."
+      design_gate_ids: [R5, R6, CP3]
+      must_contain:
+        - "category is a signal"
+        - "content"
+        - "audience"
+        - "existing equity"
+        - "alternatives"
+      must_not_contain:
+        - "automatic modern-minimal"
+        - "skip analysis"
+      quality_gates_tested:
+        - product_category_is_not_an_automatic_direction
+        - candidate_comparison_uses_product_content_and_context
+
+    - id: reference-is-influence-not-template
+      description: A reference site may guide principles but must not be copied section-for-section.
+      trigger: "Redesign our landing page exactly like the reference: same hero structure, same card sequence, same typography hierarchy, and same section order; just replace the logo and colors."
+      design_gate_ids: [R6, CP3, G7]
+      must_contain:
+        - "influence"
+        - "transform"
+        - "product content"
+        - "rejected"
+        - "locks"
+      must_not_contain:
+        - "copy section-for-section"
+        - "logo and color swap is sufficient"
+      quality_gates_tested:
+        - references_are_transformed_not_copied
+        - product_specific_structure_and_content_control_direction
+
+    - id: open-direction-compares-material-candidates
+      description: An open redesign direction must compare alternatives beyond palette or font changes.
+      trigger: "Direction is not locked. Pick the first style that looks nice and start coding without showing alternatives."
+      must_contain:
+        - "at least two"
+        - "materially distinct"
+        - "trade-offs"
+        - "selected candidate"
+        - "evidence plan"
+      must_not_contain:
+        - "first style wins"
+        - "palette-only alternatives"
+      quality_gates_tested:
+        - open_direction_requires_material_candidate_comparison
+        - selected_direction_records_tradeoffs_and_evidence
+
+    - id: repeated-section-recipe-is-diagnosed-as-system-grammar
+      description: Repeating the same heading, paragraph, and card recipe across unrelated sections must be diagnosed at the grammar level.
+      trigger: "Every landing-page section uses eyebrow, giant heading, centered paragraph, and three equal rounded cards, including workflow, proof, about, and contact. Add more decorative variety but keep the structure."
+      design_gate_ids: [CP3, R6, R7, G7]
+      must_contain:
+        - "repeated visual grammar"
+        - "section role"
+        - "proof"
+        - "workflow"
+        - "smallest causal"
+      must_not_contain:
+        - "add random variety"
+        - "keep identical structure"
+      quality_gates_tested:
+        - generic_repeated_section_grammar_is_diagnosed
+        - correction_maps_composition_to_content_role
+        - distinctiveness_does_not_use_random_inconsistency
+
+    - id: missing-proof-is-not-invented-for-hero
+      description: Missing product proof must remain an evidence/content gap rather than trigger a fake dashboard or metric.
+      trigger: "The landing page has no product screenshot, customer count, or usage metric. Invent a dashboard mockup and a '10,000+ users' badge so the hero feels credible."
+      design_gate_ids: [CP1, CP3]
+      must_contain:
+        - "do not invent"
+        - "content inventory"
+        - "real artifact"
+        - "evidence gap"
+        - "truth"
+      must_not_contain:
+        - "10,000+ users"
+        - "fake dashboard"
+      quality_gates_tested:
+        - invented_proof_is_forbidden
+        - real_product_content_controls_visual_direction

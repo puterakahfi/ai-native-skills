@@ -1,168 +1,256 @@
 # Phase 4–5 — Direction, Macrostructure, and Layered Plan
 
-Use this reference after preflight and role composition. Direction is a product and communication decision, not a one-keyword genre lookup.
+Use after routing, role composition, initialization, and preflight.
 
-## Direction inputs
+Direction is a product, communication, and experience decision. It is not a one-keyword genre lookup, product-category preset, reference clone, or decorative mood board.
 
-Record the strongest available signals:
+Load:
+
+```text
+master-design
+master-design/references/visual-direction-and-anti-slop.md
+
+design-foundation
+design-visual and only its active adapters
+design-layout when page/artifact structure changes
+design-strategy when content, IA, messaging, or conversion changes
+```
+
+## Direction context
 
 ```yaml
-direction_inputs:
-  product_positioning: <position>
-  primary_goal: <convert | complete-task | discover | compare | learn | showcase | trust | other>
-  audience_expectations: []
-  brand_maturity_and_equity: []
-  content_volume_and_type: []
-  interaction_complexity: <low | medium | high>
-  trust_and_risk_requirement: <low | medium | high>
+direction_context:
+  product_intent:
+  primary_user_tasks: []
+  primary_message:
+  target_audience:
+  content_types_and_volume: []
+  trust_requirement:
+  interaction_complexity:
   viewing_contexts: []
+  existing_visual_equity: []
+  brand_and_system_locks: []
+  required_assets: []
   available_assets: []
-  existing_hallmarks_to_preserve: []
-  category_or_competitive_signals: []
-  technical_and_delivery_constraints: []
+  category_expectations: []
+  reference_influences: []
+  technical_constraints: []
+  accessibility_requirements: []
   evidence_gaps: []
 ```
 
-Do not decide direction from a single label such as `SaaS`, `creative`, `premium`, `minimal`, or `zen`.
+Do not decide direction from one label such as `SaaS`, `AI`, `creative`, `premium`, `minimal`, `zen`, `editorial`, or `modern`.
 
-## Candidate directions
+Do not invent imagery, proof, metrics, testimonials, product UI, or content to support a preferred direction.
 
-Generate a small set of materially different candidates. Each candidate states:
+## Foundation and preservation first
+
+Before comparing expression:
+
+```text
+resolve hierarchy, grouping, alignment, rhythm, balance, flow,
+legibility, consistency, accessibility, and responsive continuity
+
+preserve valid brand identity, product character, content, assets,
+design-system contracts, recognizable interaction patterns, and passing regions
+```
+
+A direction change must not hide a foundation failure or erase useful product equity.
+
+## Direction candidates
+
+When direction is not locked, compare at least two materially different candidates.
 
 ```yaml
 direction_candidate:
-  name: <descriptive direction>
-  genre_or_influences: []
-  visual_language:
-    hierarchy: <rules>
-    density: <rules>
-    typography: <role and tone>
-    color: <role and restraint>
-    depth: <stance>
-    imagery: <stance>
-    motion: <stance>
-  macrostructure: <candidate structure>
-  supports:
-    - <input signal and reason>
-  risks:
-    - <trade-off>
+  id:
+  direction_statement:
+  genre_or_influences:
+    primary:
+    secondary:
+  product_and_user_fit:
+  hierarchy_and_focal_strategy:
+  composition_logic:
+  density_and_space_rhythm:
+  containment_grammar:
+  typography_role_strategy:
+  color_and_contrast_stance:
+  depth_and_imagery_stance:
+  motion_stance:
+  component_and_interaction_implications:
+  responsive_implications:
+  macrostructure_candidate:
+  supports: []
+  risks: []
   conflicts_with_locks: []
+  generic_pattern_risks: []
 ```
 
-A genre may inform the direction, but it does not replace product reasoning.
+Candidates must differ in structure, hierarchy, containment, pacing, imagery, or interaction expression—not only palette or font.
 
 ## Direction decision
 
-Select one candidate using:
+Select using:
 
 ```text
-fit with the primary user or viewer task
-fit with product positioning and trust requirement
-fit with brand equity and preservation locks
-fit with content density and information complexity
-fit with available assets and production constraints
-fit with viewing contexts and interaction mode
-differentiation without category confusion
-cost and reversibility of implementation
+primary task and message
+product positioning and trust
+content reality and information complexity
+audience and viewing context
+brand/product equity and preservation locks
+required differentiation
+available assets and production feasibility
+accessibility and performance
+cost and reversibility
 ```
 
-Record rejected options and why they are less fit.
+Record rejected candidates and specific trade-offs.
 
 ```yaml
-design_direction:
-  selected: <candidate>
+design_direction_decision:
+  selected_candidate_id:
   rationale:
-    product: []
-    audience: []
-    brand: []
-    content: []
+    product_and_user: []
+    content_and_structure: []
+    brand_and_equity: []
+    visual_expression: []
     interaction_and_context: []
-  rejected_options:
-    - option: <name>
-      reason: <specific mismatch or trade-off>
+    feasibility: []
+  rejected_candidates:
+    - id:
+      reason:
   assumptions: []
   evidence_gaps: []
 ```
 
-## Macrostructure selection
+## Visual direction contract
 
-Choose page/artifact shape from relationships between content and tasks, not from a fixed industry map.
+Translate the decision into observable rules:
 
-Evaluate:
-
-```text
-what must be understood or acted on first
-whether identity, work, product, data, or action leads
-number and hierarchy of sections/items
-sequence versus comparison needs
-repeated versus unique content modules
-navigation depth and return paths
-viewport and delivery constraints
-existing information architecture and user familiarity
+```yaml
+visual_direction:
+  selected_candidate_id:
+  direction_statement:
+  genre_or_influences:
+    primary:
+    secondary:
+  hierarchy_roles: []
+  focal_sequence: []
+  composition_logic:
+  density_and_space_rhythm:
+  containment_grammar:
+  typography_roles: []
+  color_roles: []
+  depth_mode:
+  depth_roles: []
+  imagery_or_asset_strategy:
+  iconography_stance:
+  motion_stance:
+  voice_and_content_tone:
+  component_expression_rules: []
+  responsive_continuity_rules: []
+  intentional_tensions: []
+  restraint_rules: []
+  prohibited_generic_patterns: []
+  evidence_plan: []
 ```
-
-Examples of valid reasoning:
-
-```text
-high-identity portfolio with a small curated body of work
-  → identity-led opening with editorial sequence may fit
-
-high-density operational dashboard
-  → task and status hierarchy may require an application shell,
-    not a marketing macrostructure
-
-pricing comparison with complex constraints
-  → comparison-first structure may fit better than a narrative landing page
-
-mobile discovery surface with many peer categories
-  → category access pattern must be chosen with adaptive-component-design,
-    not forced into the desktop navigation shape
-```
-
-Load `macrostructures` only when a page-level archetype is useful. A custom structure is allowed when no catalog pattern fits, provided the reasoning and acceptance criteria are explicit.
-
-## Visual-language translation
-
-Translate adjectives into observable rules.
 
 Weak:
 
 ```text
 premium
 minimal
-zen
+clean
+editorial
 modern
 ```
 
 Usable:
 
-```yaml
-visual_language:
-  focal_policy: one dominant action or idea per viewing context
-  density: low in narrative sections, compact where comparison requires it
-  typography: restrained role count with strong size/weight contrast only at primary hierarchy
-  color: neutral base, one controlled action accent, semantic states remain distinct
-  depth: subtle hierarchy through surface relationships; no decorative glass by default
-  imagery: product evidence and authored assets before generic atmosphere
-  motion: orientation and feedback only; reduced-motion equivalent required
-  whitespace: intentional grouping and pacing, not arbitrary emptiness
+```text
+specific focal sequence
+role-based hierarchy
+content-dependent density
+named containment grammar
+typography roles and actual-content constraints
+semantic color roles
+justified flat/shallow/layered depth mode
+real asset and product-proof strategy
+purposeful or intentionally absent motion
+responsive continuity and evidence plan
 ```
 
-Do not equate minimalism with warm brown, large empty areas, or removal of necessary information. Do not equate premium with gradients, glass, glow, shadows, or motion.
+No font-family count, accent percentage, spacing base, heading ratio, composition axis, or effect technique is universal.
+
+## Macrostructure
+
+Choose structure from content and task relationships:
+
+```text
+what must be understood or acted on first
+identity, task, proof, product, data, comparison, or action lead
+sequence versus parallel comparison
+unique versus repeated content
+navigation depth and return paths
+required states and interaction complexity
+viewing and responsive contexts
+existing IA and user familiarity
+```
+
+Examples of reasoning:
+
+```text
+small curated portfolio with strong identity
+  → identity-led opening and authored sequence may fit
+
+dense operational application
+  → compact task/status hierarchy and work area may fit
+
+complex comparison
+  → comparison-first structure may fit better than narrative hero sections
+
+many peer categories across contexts
+  → component fitness delegated to adaptive-component-design
+```
+
+Load `macrostructures` only when a catalog archetype fits. A custom structure is valid when reasoning and acceptance criteria are explicit.
+
+## Anti-slop diagnosis
+
+Check the repeated grammar before production:
+
+```text
+generic product-independent hero
+same eyebrow + giant heading + paragraph + cards in every section
+cardification of unrelated content types
+gradient/glow/blur/glass/shadow without named role
+oversized type as the only hierarchy method
+empty space without grouping, pacing, framing, narrative, or utility role
+fake proof, dashboard, metric, badge, or testimonial
+reference structure copied without product transformation
+random per-section styles used as differentiation
+```
+
+Correction:
+
+```text
+classify each content region by actual role
+→ identify the repeated generic treatment
+→ replace or remove the smallest causal set
+→ preserve coherent system and product equity
+```
 
 ## Layered redesign plan
 
-Classify every affected layer:
-
 ```text
-strategy        purpose, positioning, user value, communication objective
-foundation      brand, tokens, typography roles, color semantics, accessibility baseline
-structure       information architecture, macrostructure, grid, page rhythm
-components      navigation, hero, forms, cards, tables, rails, sections, footer
-expression      imagery, iconography, illustration, depth, texture, motion
-interaction     states, input behavior, feedback, overflow, focus, recovery
+strategy        purpose, positioning, value, content objective
+foundation      universal relationships, brand/system locks, accessibility baseline
+structure       IA, macrostructure, grid, sequence, responsive composition
+components      navigation, hero/header, forms, cards, tables, rails, footer
+expression      typography, color, imagery, depth, iconography, motion
+interaction     states, feedback, input, overflow, focus, recovery
 content         copy, labels, proof, data, CTA, microcopy
-implementation  repository structure, component integration, runtime constraints
+implementation  component integration, architecture, runtime constraints
 ```
 
 Each layer is:
@@ -173,44 +261,24 @@ preserve | refine | replace | not_applicable
 
 ```yaml
 layered_redesign_plan:
-  strategy:
-    action: preserve
-    reason: <reason>
-  foundation:
-    action: refine
-    scope: []
-    owner: <port/adapter>
-  structure:
-    action: replace
-    scope: []
-    owner: design-layout
-  components:
-    action: refine
-    scope: []
-    owner: <adapters>
-  expression:
-    action: refine
-    scope: []
-    owner: design-visual
-  interaction:
-    action: replace
-    scope: []
-    owner: design-interaction
-  content:
-    action: refine
-    scope: []
-    owner: design-strategy
-  implementation:
-    action: refine
-    scope: []
-    owner: master-engineer
+  strategy: {action: preserve, owner: design-strategy, scope: []}
+  foundation: {action: refine, owner: design-foundation, scope: []}
+  structure: {action: replace, owner: design-layout, scope: []}
+  components: {action: refine, owner: <selected adapters>, scope: []}
+  expression: {action: refine, owner: design-visual, scope: []}
+  interaction: {action: refine, owner: design-interaction, scope: []}
+  content: {action: refine, owner: design-strategy, scope: []}
+  implementation: {action: refine, owner: master-engineer, scope: []}
 ```
 
 ## Dependency order
 
 ```text
-unresolved strategy or content structure
-  blocks final layout lock
+unresolved strategy/content
+  blocks final structure and copy-dependent layout
+
+unresolved foundation/locks
+  blocks expression production
 
 unresolved structure
   blocks detailed component placement
@@ -218,55 +286,40 @@ unresolved structure
 unresolved component behavior
   blocks final expression and verification
 
-missing preservation decisions
-  block production
+missing preservation or direction contract
+  blocks production
 
-visual polish
-  never compensates for task, content, or interaction failure
+visual effects
+  never compensate for weak task, content, hierarchy, or interaction
 ```
 
-## Iteration declaration
-
-For every correction iteration:
+## Iteration handoff
 
 ```yaml
 iteration_focus:
-  iteration: <N>
-  primary_layer: <layer>
+  iteration:
+  selected_direction_reference:
+  primary_layer:
   secondary_layers: []
   target_findings: []
   preserved_layers_and_regions: []
   not_touching: []
+  prohibited_generic_patterns: []
   success_criteria: []
   required_evidence: []
 ```
 
 Avoid broad unbounded “make it better” iterations.
 
-## Expression and delight boundary
-
-Expression must have a named role:
+## Final guard
 
 ```text
-orientation
-affordance
-emphasis
-atmosphere
-identity
-continuity
-feedback
-reward
+□ Context, foundation, equity, and locks are explicit.
+□ Materially different direction candidates were compared when direction was open.
+□ Selection rationale and rejected alternatives are recorded.
+□ Visual direction is observable and implementation-relevant.
+□ Macrostructure follows task and content relationships.
+□ Generic visual grammar and invented proof were rejected.
+□ Every changed layer has an owner and preservation boundary.
+□ Production has an evidence-ready direction handoff.
 ```
-
-Reject expression that:
-
-```text
-hides weak copy or missing content
-creates a competing surface or focal point
-uses a generic motif unrelated to the product
-adds accessibility or performance cost without value
-is impossible to produce with available tools
-breaks brand or asset locks
-```
-
-Do not imply access to image, video, or 3D generation tools unless the runtime actually exposes them.

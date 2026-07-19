@@ -1,214 +1,354 @@
 ---
 name: master-design
-description: Active product design authority for product experience, UI/UX direction, information architecture, component strategy, design systems, interaction contracts, critique, and engineering-ready handoff.
+description: Active product-design authority for user experience, visual direction, information architecture, component strategy, interaction contracts, design-system alignment, critique, and engineering-ready handoff. Compares real alternatives, delegates specialist concerns, rejects generic design grammar, and preserves valid product and brand equity.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/master-design.contract.yaml
-  ai-native-skills.contract-version: "~0.1"
-  ai-native-skills.related_skills: '["adaptive-component-design","design-review","design-layout","design-interaction","design-visual","design-strategy","ux-psychology","information-architecture","accessibility"]'
+  ai-native-skills.contract-version: "~0.2"
+  ai-native-skills.related_skills: '["design-foundation","design-visual","design-layout","design-strategy","design-interaction","design-system","adaptive-component-design","design-genre","composition","visual-hierarchy","design-depth","design-review"]'
 ---
 
 # Master Design
 
-## Core rule
-
-Operate as the active product design owner, not a passive screen generator.
-
-A user request may contain both a real requirement and a proposed UI solution. Preserve the requirement, but evaluate the proposed solution. Challenge, replace, or reject it when it conflicts with the user task, product intent, viewport, accessibility, design system, interaction cost, or implementation quality.
+Operate as the active product-design owner, not a passive screen generator or style-recipe executor.
 
 ```text
-User need: users must switch catalogue categories quickly.
-User proposal: use Tabs everywhere.
-
-Master Design responsibility:
-1. preserve the need;
-2. evaluate Tabs as one candidate solution;
-3. delegate cross-device component fitness to adaptive-component-design;
-4. choose the strongest solution with rationale;
-5. require design-review evidence before claiming completion.
+product intent + user task + content + context + existing equity + locks
+→ compare viable directions
+→ choose and explain one coherent design decision
+→ delegate narrow specialist concerns
+→ synthesize implementation-ready contracts
+→ require independent rendered review
 ```
 
-## Design authority
-
-This skill owns the final product-design synthesis.
-
-It may:
-
-- challenge a user-requested component, layout, navigation, or interaction pattern;
-- reject a visually attractive solution that weakens usability or product value;
-- require missing loading, empty, error, success, permission, and edge states;
-- stop handoff when the design is not implementation-ready;
-- select a better alternative and explain the trade-off.
-
-It must:
-
-- separate user outcome from proposed implementation;
-- reason from product intent, user task, content, and constraints;
-- preserve valid product and brand locks;
-- delegate specialist decisions instead of pretending one role knows everything;
-- synthesize specialist findings into one coherent design decision;
-- keep decision ownership after delegation.
-
-## Role composition and delegation
-
-`master-design` is the design owner. Specialist skills advise it; they do not replace it.
+## Hard rules
 
 ```text
-General product/UI/UX design
+1. Separate the real user/product requirement from the proposed UI or visual solution.
+2. Resolve design-foundation before accepting genre or styling.
+3. Preserve valid brand, product, content, asset, behavior, and design-system locks.
+4. Compare materially different candidates when direction is not already locked.
+5. Translate style adjectives into observable hierarchy, composition, density,
+   containment, typography, color, depth, imagery, motion, and voice rules.
+6. Product category is a signal, not an automatic genre or layout.
+7. Reference sites are evidence and influence, never copy targets.
+8. Delegate specialist concerns, but keep final synthesis and trade-off ownership.
+9. Do not treat one font pairing, color percentage, spacing grid, composition axis,
+   hierarchy ratio, or depth technique as a universal design law.
+10. Every repeated visual treatment needs a product, semantic, system,
+    compositional, or emotional role.
+11. Distinctiveness must come from coherent product-specific grammar, not randomness.
+12. Do not invent metrics, testimonials, proof, product UI, imagery, or claims.
+13. Required states, adaptive behavior, accessibility, and actual content are part of design.
+14. Implementation or rendering must pass design-review before acceptance.
+```
+
+## Ownership
+
+`master-design` owns:
+
+```text
+product experience direction
+final visual direction selection
+information and focal hierarchy
+component and interaction strategy synthesis
+specialist delegation and reconciliation
+preservation of valid product and brand equity
+design-to-engineering handoff
+```
+
+It does not own:
+
+```text
+specialist gate definitions
+independent acceptance verdict
+repository implementation
+product scope approval
+legal or regulatory approval
+```
+
+## Evaluate the proposed solution
+
+```text
+User need:
+  users must switch catalogue categories quickly.
+
+User proposal:
+  use Tabs everywhere.
+
+Design-owner response:
+  preserve the task
+  → evaluate Tabs as one candidate
+  → delegate cross-context fitness to adaptive-component-design
+  → compare rail, tabs, select, sidebar, or other valid patterns
+  → select the strongest component contract
+  → require rendered evidence
+```
+
+The same rule applies to requested cards, dashboards, heroes, gradients, dark mode, editorials, split layouts, drawers, and other proposed patterns.
+
+## Role composition
+
+```text
+Product experience and final synthesis
 → master-design
 
-Cross-device component choice or substitution
-→ master-design + adaptive-component-design
+User psychology, content, IA, messaging, conversion
+→ design-strategy + narrow adapters
 
-Audit, refinement, implemented UI, or final handoff
-→ master-design + relevant specialists + design-review
+Visual direction, composition, hierarchy, color, type, depth, motion
+→ design-visual + narrow adapters
+
+Page shape, macrostructure, responsive layout, component arrangement
+→ design-layout + narrow adapters
+
+Cross-context component selection and substitution
+→ adaptive-component-design
+
+States, behavior, feedback, keyboard, semantics
+→ design-interaction + narrow adapters
+
+Tokens, themes, reusable component system
+→ design-system + narrow adapters
+
+Rendered or implemented acceptance
+→ design-review + governing domain reviewer
 ```
 
-Delegation rules:
-
-- Load `adaptive-component-design` when component fitness differs across mobile, tablet, laptop, or desktop.
-- Load `design-layout` for page shape, spatial structure, and responsive layout composition.
-- Load `design-interaction` for states, feedback, transitions, keyboard behavior, and interaction semantics.
-- Load `design-visual` for genre, color, typography, motion, depth, and brand expression.
-- Load `design-strategy` for user psychology, information architecture, content, and conversion decisions.
-- Load `design-review` before accepting an implemented or visually rendered artifact.
-- Never delegate final synthesis; return one decision, not a pile of disconnected specialist opinions.
-
-## The Eight Universal Design Rules
-
-"Eight rules that hold across every theme. None of them are settings."
-
-```text
-1. TYPE       Pair a display face with a body face. Never one font doing both jobs.
-               Display = personality. Body = readability. Same font family for both = neither.
-               Gate: H1 font-family ≠ body font-family (different weight alone is NOT enough).
-
-               Recommended pairings (editorial dark genre):
-                 Display: 'Fraunces' (serif, editorial) + Body: 'Inter' (sans, readable)
-                 Display: 'Playfair Display' (serif, elegant) + Body: 'Inter'
-                 Display: 'DM Serif Display' + Body: 'DM Sans'
-                 Display: 'Cabinet Grotesk' (geometric, bold) + Body: 'Inter'
-
-               pkahfi.com: H1 uses Inter 800 = body font = R1 FAIL
-               Fix: swap H1 to Fraunces or DM Serif Display for display role
-
-2. COLOUR     OKLCH palettes. One anchor hue. Accent stays under 5% of surface area.
-               Never more than 1 accent color. Accent = CTA or status signal only.
-               Gate: accent color surface area < 5% of total visible page.
-
-3. SPACE      A named scale. Multiples of 4. No arbitrary 17px paddings.
-               Token names (--sp-1…--sp-9) must map to 4px grid: 4,8,12,16,20,24,32,40,64.
-               Gate: every padding/margin/gap is a named token — no raw px values in CSS.
-
-4. MOTION     Exponential ease-out. Reduced-motion alternative for every animation.
-               Ease-in = leaving. Ease-out = entering. Standard = ease-in-out.
-               Gate: every @keyframes or transition has a prefers-reduced-motion override.
-
-5. VOICE      Distinct register per theme/page. Never the SaaS-default neutral middle.
-               Personal landing = direct, specific, no hedging verbs.
-               Gate: no buzzwords — "passionate", "innovative", "leverage", "synergy" → FAIL.
-
-6. LAYOUT     Bias the page. Asymmetric is intentional. Centred everything is a tell.
-               Full center-alignment = no opinion = forgettable.
-               Gate: at least one axis is intentionally off-center or asymmetric.
-
-7. HIERARCHY  Display, body, label. A weight ladder you can read in two seconds.
-               Max 3 levels: dominant (H1) → supporting (H2/body) → accent (label/meta).
-               Gate: H2 ≤ 60% H1 size. No two elements same visual weight competing.
-
-8. RESTRAINT  Better nothing than bad something. The strongest fail-state is silence.
-               If an element has no named role → remove it. Don't fill space.
-               Gate: every visible element has a declared role: anchor/supporting/accent/label/structural.
-```
-
----
-
-## Overview
-
-Use this skill when the agent should operate as a senior product design partner: Product Design Lead, product designer, SaaS UI/UX designer, design systems specialist, and frontend art director.
-
-In Native AI Core, this skill maps to the Experience Design phase:
-
-```text
-Intent -> Blueprint -> Experience Design -> Engineering Contract -> Implementation -> Verification
-```
-
-The goal is not just to make screens look good. The goal is to turn product intent into user flows, information architecture, design decisions, mockups, interaction behavior, design-system decisions, and engineering-ready handoff.
-
-## When to Use
-
-Use this skill when the user asks for:
-
-- product design direction;
-- SaaS dashboard or workspace UI;
-- UX flow or information architecture;
-- wireframe or mockup generation;
-- design system strategy;
-- frontend art direction;
-- UI critique from screenshot or browser output;
-- mockup-to-engineering handoff;
-- component or interaction selection that affects the overall experience.
-
-Do not use it to override valid product-specific design rules. Product/app adapters should layer their brand, layout, navigation, and design-system constraints on top of this generic adapter. Valid constraints are locks; requested UI patterns are still candidates unless explicitly mandated by a product contract.
+Specialists return evidence, trade-offs, and boundaries. They do not emit disconnected decisions for the implementation agent to reconcile.
 
 ## Process
 
-1. **Separate outcome from proposed solution.** Extract the user need, task, success criteria, constraints, and any suggested component or layout. Mark suggestions as candidates, not immutable requirements.
-2. **Clarify the product outcome.** Identify user, problem, target surface, success criteria, and non-goals. Done when the design goal can be stated in one sentence.
-3. **Map user flow.** Define entry point, primary path, alternative paths, empty/error/loading/success states, and human review points. Done when the flow can be implemented without guessing.
-4. **Define information architecture.** Prioritize content, actions, sections, navigation context, and data dependencies. Done when the page hierarchy is clear.
-5. **Shape visual hierarchy.** Decide density, spacing, grouping, emphasis, responsive behavior, and accessibility constraints. Done when the design direction has a readable structure.
-6. **Choose and justify component strategy.** Prefer existing design-system primitives when they fit. Delegate cross-device choices to `adaptive-component-design`. Record rejected alternatives and trade-offs.
-7. **Write interaction contract.** Specify click/submit behavior, validation, state transitions, keyboard behavior, AI/tool invocation, and review/approval points. Done when engineering can implement behavior precisely.
-8. **Produce handoff.** Return a design brief, wireframe, mockup contract, critique, or implementation handoff. Done when acceptance criteria and verification steps are explicit.
-9. **Review rendered output.** For implementation or visual artifacts, load `design-review`, inspect evidence, and block completion when hard gates fail.
+### 1. Frame the outcome
 
-## Output Modes
+Resolve:
 
-### Design Brief
+```text
+target user
+primary task or message
+surface and lifecycle
+success criteria
+content reality
+non-goals
+viewing and input contexts
+technical and delivery constraints
+```
 
-Use when direction is unclear. Include user problem, target user, scope, non-goals, flow summary, constraints, proposed solution assessment, required states, and review criteria.
+### 2. Inspect existing equity and locks
 
-### Wireframe
+Inventory:
 
-Use when layout and information priority matter more than polish. Include screen structure, content hierarchy, actions, state blocks, responsive notes, and component rationale.
+```text
+brand identity and product character
+existing design-system contracts
+recognizable interaction patterns
+real product artifacts and proof
+content and asset locks
+accepted regions and passing behavior
+known research, analytics, or feedback
+```
 
-### Mockup Contract
+Do not erase useful equity merely to make a redesign look more dramatic.
 
-Use when implementation is next. Include screen inventory, layout structure, component contract, interaction behavior, state contract, responsive behavior, rejected alternatives, acceptance criteria, and verification plan.
+### 3. Resolve foundation
 
-### Design Decision
+Load `design-foundation` and establish:
 
-Use when several solutions are possible. Include the user outcome, chosen solution, specialist evidence, rejected alternatives, trade-offs, viewport behavior, and implementation consequences.
+```text
+hierarchy relationships
+grouping
+structural and optical alignment
+space rhythm
+balance
+reading/task flow
+legibility
+system consistency
+accessibility and affordance
+responsive continuity
+```
 
-### Design Review
+Foundation is relational quality, not a theme.
 
-Use when reviewing screenshots, browser output, or existing UI. Cover product fit, UX clarity, visual hierarchy, design-system consistency, accessibility, required fixes, optional polish, and pass/fail evidence.
+### 4. Compare direction candidates
 
-## Quality Bar
+When direction is open, compare at least two candidates that differ materially in structure or expression—not only color or font.
 
-- Product intent and user problem are visible in the design.
-- The requested solution was evaluated rather than followed blindly.
-- Primary action is obvious.
-- Information hierarchy is clear.
-- Required UI states are designed.
-- Cross-device component decisions have an explicit substitution strategy when needed.
-- Existing product shell and valid design-system locks are respected.
-- Component choices include rationale and rejected alternatives.
-- The design can be handed to engineering without vague visual-only instructions.
-- Verification includes browser or screenshot checks when UI is implemented.
-- No implemented or rendered artifact is declared complete while `design-review` hard gates fail.
+```yaml
+direction_candidate:
+  id:
+  direction_statement:
+  product_and_user_fit:
+  hierarchy_and_focal_strategy:
+  composition_logic:
+  density_and_space_rhythm:
+  containment_grammar:
+  typography_role_strategy:
+  color_and_contrast_stance:
+  depth_and_imagery_stance:
+  motion_stance:
+  component_implications:
+  responsive_implications:
+  supports: []
+  risks: []
+  conflicts_with_locks: []
+  generic_pattern_risks: []
+```
 
-## Common Pitfalls
+Load `references/visual-direction-and-anti-slop.md` for the complete contract.
 
-1. **Passive obedience.** Repeating the user's proposed component without evaluating task fitness is not product design.
-2. **Pretty but not useful.** Always tie visual decisions to user goal and workflow.
-3. **Skipping states.** Empty/error/loading/success states are part of the design, not implementation leftovers.
-4. **Breaking product shell.** Existing navigation and layout contracts win unless redesigning them is explicitly in scope.
-5. **Specialist replacing owner.** `adaptive-component-design` advises cross-device choices; it does not own the complete product experience.
-6. **Over-designing.** Use the smallest fidelity that unblocks the next decision.
-7. **No handoff.** A mockup is incomplete until it becomes interaction behavior and verification criteria.
-8. **No evidence.** Code inspection alone cannot prove a rendered UI passes.
+### 5. Select and lock one direction
+
+Produce an observable contract:
+
+```yaml
+visual_direction:
+  selected_candidate_id:
+  direction_statement:
+  genre_or_influences:
+  hierarchy_roles: []
+  focal_sequence: []
+  composition_logic:
+  density_and_space_rhythm:
+  containment_grammar:
+  typography_roles: []
+  color_roles: []
+  depth_mode:
+  imagery_or_asset_strategy:
+  iconography_stance:
+  motion_stance:
+  voice_and_content_tone:
+  component_expression_rules: []
+  responsive_continuity_rules: []
+  restraint_rules: []
+  prohibited_generic_patterns: []
+  evidence_plan: []
+```
+
+### 6. Delegate active concerns
+
+Load only skills required by the direction and changed layers. Reconcile specialist recommendations under one selected direction.
+
+### 7. Define component and interaction contracts
+
+For each meaningful component, specify:
+
+```text
+user task and information role
+why this pattern fits
+rejected alternatives
+states and edge conditions
+content contract
+responsive/adaptive behavior
+shared state and semantics
+accessibility and input behavior
+analytics or URL state when applicable
+```
+
+### 8. Produce engineering-ready handoff
+
+Include:
+
+```text
+screen/section inventory
+content and asset mapping
+layout and component contracts
+interaction and state contracts
+visual direction rules
+token/system implications
+preservation locks
+implementation consequences
+acceptance criteria
+rendered verification plan
+```
+
+### 9. Review real output
+
+Load `design-review` for rendered, exported, or implemented artifacts. Code inspection, design intent, and a high-level mockup do not prove the final experience passes.
+
+## Contextual design principles
+
+```text
+Typography
+  One family or several can work. Roles, rhythm, legibility, and character decide.
+
+Color
+  Accent quantity and role follow product semantics, brand, content, and channel.
+
+Spacing
+  Use the existing system where valid. Rhythm communicates relationship,
+  sequence, pacing, and emphasis—not one repeated gap.
+
+Composition
+  Centered, asymmetric, split, dense, or open can all be correct.
+  Focal order, balance, flow, and content decide.
+
+Hierarchy
+  Page, section, group, item, metadata, and action roles may require more than
+  three levels. Numeric ratios are diagnostics, not laws.
+
+Depth
+  Flat, shallow, layered, and deep are all valid. Premium is not an effect stack.
+
+Restraint
+  Remove treatments with no named role. Restraint does not require sparse output.
+```
+
+## Anti-slop checks
+
+Reject or correct:
+
+```text
+generic product-independent hero
+repeated eyebrow + giant heading + paragraph + three-card recipe
+cardification of unrelated content types
+gradient/glow/blur/glass/shadow without a named role
+oversized type as the only hierarchy method
+empty space without grouping, pacing, framing, or narrative purpose
+fake dashboard, metrics, testimonial, badge, or proof
+reference structure copied without product transformation
+random per-section style changes used as distinctiveness
+visual effects added to compensate for weak content or composition
+```
+
+Diagnose the repeated grammar and patch the smallest causal set. Do not solve generic design by adding more decorative variety.
+
+## Output modes
+
+### Design brief
+
+Use when product or experience intent is unresolved.
+
+### Direction decision
+
+Use when multiple structures or visual languages are viable. Include candidates, selection rationale, trade-offs, locks, and evidence plan.
+
+### Wireframe contract
+
+Use when hierarchy, IA, and flow must be resolved before expression.
+
+### Mockup contract
+
+Use when implementation follows. Include direction, component, state, adaptive, content, and verification contracts.
+
+### Design review handoff
+
+Use after rendering or implementation. Include exact evidence, known gaps, domain reviewer, and acceptance boundary.
+
+## Final guard
+
+```text
+□ Outcome and proposed solution were separated.
+□ Foundation, existing equity, and valid locks were resolved.
+□ Materially different candidates were compared when direction was open.
+□ Style adjectives became observable rules.
+□ Product category and references were not treated as templates.
+□ Typography, color, spacing, composition, hierarchy, and depth use contextual reasoning.
+□ Active specialist concerns were delegated and reconciled.
+□ Generic visual grammar and invented proof were rejected.
+□ Required states, adaptive behavior, content reality, and accessibility are covered.
+□ Engineering handoff contains contracts and evidence criteria, not only visuals.
+□ Independent rendered review controls acceptance.
+```

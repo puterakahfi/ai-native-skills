@@ -3,7 +3,7 @@ name: adaptive-component-design
 description: Selects, preserves, or substitutes UI component patterns across available widths and input contexts from the user task, real container width, realistic content pressure, discoverability, accessibility, and interaction cost. Use when a component fits one context but overlaps, clips, hides choices, or becomes awkward in another.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.0
+  ai-native-skills.version: 1.2.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/adaptive-component-design.contract.yaml
@@ -37,16 +37,17 @@ This skill owns component fitness, adaptation/substitution, shared state semanti
 ```text
 1. Start from the user task, not the requested component name.
 2. Measure actual container width after shell, sidebars, gutters, and adjacent controls.
-3. Device labels and common viewport numbers are contexts or samples, not canonical selection rules.
-4. Derive adaptation boundaries from real content failure and passing points.
-5. Separate pattern mismatch from implementation defects.
-6. Preserve a fit component when the issue is local implementation.
-7. Replace an unfit component even when it already exists in the design system.
-8. Keep primary choices discoverable unless a product reason justifies disclosure.
-9. Different component families must preserve product meaning and controlled state.
-10. Verify realistic content, text expansion, states, input modes, and boundary widths.
-11. Screenshots alone do not prove keyboard, dynamic affordances, or state equivalence.
-12. Implemented output requires independent design-review evidence.
+3. Separate screenshot artifact dimensions, browser CSS viewport, and actual available container width; they are not interchangeable evidence.
+4. Device labels and common viewport numbers are contexts or samples, not canonical selection rules.
+5. Derive adaptation boundaries from real content failure and passing points.
+6. Separate pattern mismatch from implementation defects.
+7. Preserve a fit component when the issue is local implementation.
+8. Replace an unfit component even when it already exists in the design system.
+9. Keep primary choices discoverable unless a product reason justifies disclosure.
+10. Different component families must preserve product meaning and controlled state.
+11. Verify realistic content, text expansion, states, input modes, and boundary widths.
+12. Screenshots alone do not prove keyboard, dynamic affordances, state equivalence, or the viewport that produced the artifact.
+13. Implemented output requires independent design-review evidence.
 ```
 
 ## Diagnose before fixing
@@ -73,6 +74,7 @@ Load `references/component-fitness-and-boundaries.md` for the full decision proc
 
 ```text
 name task and priority
+→ establish visual-evidence provenance
 → measure real width
 → inventory realistic content pressure
 → identify input/display contexts
@@ -142,6 +144,8 @@ intermediate widths where behavior changes non-linearly
 
 Stress with applicable realistic labels, highest expected option count, localization/text expansion, zoom, dynamic content, states, orientation, and input modes.
 
+An image embedded in chat, documentation, or an issue tracker may be resized independently of the browser that produced it. Do not use the image file width as proof of a mobile, tablet, or desktop runtime state. Prefer capture metadata or browser evidence. When those are unavailable, active component variants may support a hypothesis, but the actual CSS viewport and available container width remain `NOT_VERIFIED` until measured.
+
 Do not require one universal list of viewport numbers. Common device sizes are useful samples only.
 
 ## Output
@@ -168,6 +172,7 @@ adaptive_component_handoff:
 Return failure or `NOT_VERIFIED` when applicable:
 
 - choice is based only on device name or existing implementation;
+- screenshot artifact width is treated as the runtime CSS viewport without provenance;
 - actual available width is unknown;
 - pattern mismatch and implementation defect are conflated;
 - primary choices are hidden without rationale;
@@ -183,6 +188,7 @@ Return failure or `NOT_VERIFIED` when applicable:
 ## Completion evidence
 
 ```text
+visual-evidence provenance: artifact dimensions, known CSS viewport, and available container width
 component fitness record
 selected and rejected patterns
 adaptation mode by actual context
