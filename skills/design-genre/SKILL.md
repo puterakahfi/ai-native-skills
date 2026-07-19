@@ -1,227 +1,237 @@
 ---
 name: design-genre
-description: Design genre classification — zen-minimalist, editorial, modern-minimal, atmospheric, and playful. Runs after design-foundation and determines voice, density, containment, color, motion stance, and genre-specific slop gates without overriding universal composition quality.
+description: Selects a contextual visual expression family for density, containment, voice, texture, color, imagery, and motion after foundation and brand/product constraints are resolved. Compares candidates, supports one bounded secondary influence, and blocks genre shortcuts such as generic SaaS minimal, random editorial asymmetry, fake atmospheric glow, or excessive zen whitespace.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.0
+  ai-native-skills.version: 1.3.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-genre.contract.yaml
-  ai-native-skills.contract-version: "^1.0.0"
-  ai-native-skills.related_skills: '["design-foundation","ux-ui-patterns","design-system","master-design","redesign-workflow"]'
+  ai-native-skills.contract-version: "^1.1.0"
+  ai-native-skills.related_skills: '["design-foundation","design-brand","design-visual","master-design","composition","design-depth","design-color","design-typography"]'
 ---
 
-# Design Genre Skill
+# Design Genre
 
-> **HARD RULES — apply always:**
-> 1. **Resolve `design-foundation` first.** Genre expresses hierarchy, grouping, alignment, spacing, balance, flow, legibility, and responsiveness; it does not replace them.
-> 2. **Genre = composition expression + density + voice + color + motion stance, not just palette.**
-> 3. **Declare the genre token before genre-specific design decisions.**
-> 4. **Load the selected genre reference before selecting macrostructure or components.**
-> 5. **Genre-specific constraints override generic workflow, macrostructure, and component defaults — but never foundation requirements.**
-> 6. **Genre must match the audience mental model and explicit user direction.** Wrong genre means downstream misalignment.
-
----
-
-## Layer Relationship
+Genre is an expression family, not a product-category shortcut, palette preset, or substitute for design foundation.
 
 ```text
-design-foundation
-  owns: hierarchy, grouping, alignment, space rhythm, balance, flow,
-        legibility, consistency, accessibility, responsive continuity
-
-          ↓ expressed through
-
-design-genre
-  owns: density, containment grammar, visual voice, color stance,
-        motion stance, texture, stylistic restraint/expression
-
-          ↓ constrained by
-
-design-brand / DESIGN.md
-  owns: identity, assets, semantic tokens, product-specific locks
+resolved foundation + product intent + audience + content + context
++ existing equity + brand/system locks + references
+→ compare expression candidates
+→ select one primary genre and optional bounded secondary influence
+→ load observable constraints
 ```
 
-A genre may make a foundation rule stricter. It may not remove it.
-
----
-
-## Core Principle
+## Hard rules
 
 ```text
-Genre scopes downstream expression:
-  - Which macrostructures fit
-  - Which density and containment grammar is valid
-  - Which theme cluster to rotate
-  - Which nav/footer archetypes are appropriate
-  - What voice/copy fixtures to use
-  - Which additional slop gates and hard constraints apply
-
-Foundation remains active underneath:
-  - parent/child/sibling hierarchy
-  - grouping by relationship
-  - structural and optical alignment
-  - intentional spatial rhythm
-  - balance and focal order
-  - reading/task flow
-  - legibility, accessibility, responsive continuity
+1. Resolve design-foundation and valid brand/product locks first.
+2. Genre must describe density, containment, voice, typography stance,
+   color stance, imagery/depth, motion, and composition expression.
+3. Product category is one signal, never an automatic genre.
+4. Explicit user direction has high weight but must become observable rules.
+5. References are influences, not templates.
+6. Compare materially different candidates when direction is open.
+7. A secondary influence must be bounded and named.
+8. Do not mix multiple genres as uncontrolled per-section variety.
+9. Insufficient or conflicting evidence remains unresolved; do not silently default.
+10. Genre cannot hide foundation failure.
+11. Premium is not a genre.
+12. Load only the selected genre references needed by the final contract.
 ```
 
-Pick genre **after foundation resolution** and before layout, colors, fonts, cards, borders, or motion.
-
-```text
-No strong genre signal → editorial default
-Explicit user genre direction → overrides inferred product-category defaults
-Foundation failure → fix foundation; do not switch genre as a workaround
-```
-
----
-
-## Required Foundation Handoff
-
-Before genre detection, foundation state must include:
+## Inputs
 
 ```yaml
-foundation_handoff:
-  hierarchy_roles: []
-  parent_child_groups: []
-  sibling_sets: []
-  structural_anchors: []
-  optical_corrections: []
-  spatial_rhythm_rules: []
-  balance_strategy: <value | unresolved>
-  flow_sequence: []
-  legibility_requirements: []
-  responsive_continuity_rules: []
-  unresolved_foundation_gaps: []
+genre_input:
+  foundation_handoff: <required>
+  product_intent: <required>
+  audience_and_viewing_context: <required>
+  content_characteristics: <required>
+  explicit_user_direction:
+  brand_and_design_system_locks: []
+  existing_visual_equity: []
+  reference_influences: []
+  category_expectations: []
+  trust_requirement:
+  interaction_complexity:
+  available_assets: []
 ```
 
-If foundation is unresolved, genre selection may be exploratory but production must not begin.
+## Candidate families
 
----
-
-## Genre Detection — Signal Based
+Current catalogs:
 
 ```text
-ZEN / MINIMALIST:
-  zen, minimalist, stillness, restraint, ma, sparse, wabi-sabi,
-  negative space, senior personal portfolio, quiet, monk-mode,
-  focus on space, calm, few visual interruptions
-
-ATMOSPHERIC:
-  AI tool, generative, music, video, voice, audio, late-night,
-  dark mode, creative tool, artist tool, ambient, cinematic
-
-MODERN-MINIMAL:
-  SaaS, enterprise, API, platform, developer tool, infra,
-  B2B, dev experience, dashboard, analytics, productivity
-
-PLAYFUL:
-  fun, consumer, casual, friendly, onboarding, family,
-  community, kids, social, lifestyle, wellness
-
-EDITORIAL:
-  portfolio, personal, blog, magazine, agency, studio,
-  foundry, publication, art direction
+zen-minimalist
+editorial
+modern-minimal
+atmospheric
+playful
 ```
 
-### Conflict Policy
+These are not mutually exclusive product categories. A product may use one primary family with one bounded influence, for example:
 
 ```text
-Explicit user direction exists
-  → use it unless it conflicts with a locked brand/design system
-
-Two or more inferred non-default genres remain plausible
-  → ask once which feels closer
-
-No strong signal
-  → editorial
+primary: modern-minimal
+secondary influence: editorial typography and pacing
 ```
 
-Do not silently route a personal engineering site to `modern-minimal` merely because it mentions SaaS, agents, APIs, or developer tools when the user explicitly requests zen or space-led minimalism.
+The secondary influence may affect named concerns only. It must not create two competing systems.
 
-Do not use a genre change to hide a foundation problem:
+## Candidate comparison
+
+```yaml
+genre_candidate:
+  id:
+  primary_expression_family:
+  secondary_influence:
+  signal_support: []
+  audience_and_product_fit:
+  density_and_containment:
+  typography_and_voice_implications:
+  color_implications:
+  depth_and_imagery_implications:
+  motion_implications:
+  composition_implications:
+  supports: []
+  risks: []
+  conflicts_with_locks: []
+  generic_pattern_risks: []
+```
+
+Candidates must differ beyond palette.
+
+Useful signals include:
 
 ```text
-flat hierarchy        ≠ “modern minimal”
-misalignment          ≠ “editorial asymmetry”
-excessive empty space ≠ “zen”
-random color          ≠ “playful”
-weak contrast         ≠ “atmospheric”
+product positioning and maturity
+primary task and attention model
+content type and volume
+audience expectations and trust needs
+interaction complexity
+viewing context
+existing brand/product equity
+available imagery or assets
+category conventions worth preserving or challenging
+explicit user direction
 ```
 
----
-
-## Mandatory Reference Load
-
-After selecting a genre, load exactly its catalog file before macrostructure selection:
+## Selection
 
 ```text
-zen-minimalist → references/zen.md
-editorial       → references/editorial.md
-modern-minimal  → references/modern-minimal.md
-atmospheric     → references/atmospheric.md
-playful         → references/playful.md
+strong bounded direction and locks already exist
+  → inherit them; genre may only label and constrain expression
+
+one candidate clearly best supports product, content, context, and equity
+  → select it and record rejected alternatives
+
+multiple candidates remain materially plausible
+  → present the trade-off or follow approval mode
+
+signals are weak or conflicting
+  → UNRESOLVED
+  → do not silently choose editorial or modern-minimal
 ```
 
-Record the loaded constraints in run state:
+## Genre integrity
+
+```text
+ZEN / MINIMALIST
+  restraint, attention, pacing, reduction, material honesty
+  not excessive empty space or weak hierarchy
+
+EDITORIAL
+  authored pacing, typographic voice, narrative sequence, intentional composition
+  not random asymmetry, giant serif type, or magazine imitation
+
+MODERN-MINIMAL
+  clarity, system confidence, task focus, controlled surfaces, precise detail
+  not generic SaaS hero, identical cards, blue gradient, or sterile neutrality
+
+ATMOSPHERIC
+  mood, depth, imagery, spatial or sensory storytelling
+  not automatic dark mode, glow, blur, gradient, or illegible ambience
+
+PLAYFUL
+  approachable energy, expressive feedback, warmth, rhythm, and character
+  not random color, rounded everything, stickers, or childish decoration
+```
+
+Premium must be translated into specific qualities such as material restraint, confidence, precision, craft, depth, editorial pacing, service detail, or high-fidelity product proof.
+
+## Output
 
 ```yaml
 genre_contract:
-  foundation_reference: <design-foundation path>
+  foundation_reference:
   inherited_foundation_rules: []
-  genre: <name>
-  reference: <loaded file>
-  composition_expression: []
-  containment_rules: []
-  density_rules: []
-  color_rules: []
-  motion_rules: []
-  hard_failures: []
+  brand_and_product_locks: []
+  primary_genre:
+  secondary_influence:
+    genre:
+    applies_to: []
+  selection_rationale:
+  rejected_candidates: []
+  voice:
+  density:
+  containment_grammar:
+  typography_stance:
+  color_stance:
+  depth_and_imagery_stance:
+  motion_stance:
+  composition_expression:
+  restraint_rules: []
+  prohibited_patterns: []
+  references_loaded: []
+  unresolved_questions: []
 ```
 
-A genre label without its loaded constraint set is unresolved and must not proceed to production.
+A genre label without these constraints is unresolved.
 
----
-
-## Genre Output Format
-
-Emit once before genre-specific production starts:
+## Anti-slop checks
 
 ```text
-Foundation: [resolved | unresolved]
-Foundation reference: [path]
-Foundation gaps: [list]
-Genre: [zen-minimalist | editorial | modern-minimal | atmospheric | playful]
-Signal: [what triggered this — or "default" if editorial]
-Genre reference loaded: [path]
-Voice: [one-line description]
-Density: [sparse | moderate | dense]
-Containment grammar: [space-led | editorial rows | surfaces | mixed]
-Motion stance: [motion-on | motion-cut | stillness]
-Theme cluster: [list of applicable themes]
-Nav range: [N-codes]
-Footer range: [Ft-codes]
-Macrostructure range: [applicable macrostructures]
-Inherited foundation rules: [short list]
-Hard genre constraints: [short list]
+SaaS / developer tool automatically routed to modern-minimal
+personal site automatically routed to editorial
+creative tool automatically routed to atmospheric dark glow
+wellness product automatically routed to playful or zen
+palette-only genre changes
+genre switch used to hide weak hierarchy or composition
+reference site copied section-for-section
+multiple genres mixed only to create visual variety
 ```
 
-If wrong, say `genre: [X]` and redirect before production.
+Correction:
 
----
+```text
+return to foundation, product intent, content, context, and candidate comparison
+```
 
-## References — Genre Catalog
+## References
 
-Each genre is a standalone expression contract. Load only the selected one.
+Load only references selected by the final contract:
 
-| Genre | File | Default? |
-|---|---|---|
-| Zen / Minimalist | [references/zen.md](references/zen.md) | |
-| Editorial | [references/editorial.md](references/editorial.md) | ✅ |
-| Modern Minimal | [references/modern-minimal.md](references/modern-minimal.md) | |
-| Atmospheric | [references/atmospheric.md](references/atmospheric.md) | |
-| Playful | [references/playful.md](references/playful.md) | |
-| Genre × Macrostructure compatibility | [references/genre-compatibility.md](references/genre-compatibility.md) | |
+| Genre | Reference |
+|---|---|
+| Zen / Minimalist | `references/zen.md` |
+| Editorial | `references/editorial.md` |
+| Modern Minimal | `references/modern-minimal.md` |
+| Atmospheric | `references/atmospheric.md` |
+| Playful | `references/playful.md` |
+| Compatibility evidence | `references/genre-compatibility.md` |
 
-> **Reminder:** genre is an extension contract, not the universal base. Generic defaults cannot override genre; genre cannot override foundation.
+## Final guard
+
+```text
+□ Foundation and locks were resolved first.
+□ Product category was treated as a signal, not a shortcut.
+□ Material alternatives were compared when direction was open.
+□ Primary and optional secondary influence are explicit and bounded.
+□ Genre is expressed as observable rules, not palette or adjective only.
+□ References were transformed through product content and constraints.
+□ Genre did not hide a foundation failure.
+□ Generic genre slop was checked.
+□ Unresolved direction is reported honestly.
+```
