@@ -39,12 +39,31 @@ multiple statistics cards
 long autobiography
 ```
 
+The opening must also contain or lead directly into one recognizable idea. A centered name, generic role line, paragraph, and three links is readable but often anonymous. Strengthen it with a specific thesis, product promise, distinctive phrase, visual system, or proof cue that could not be swapped onto another profile without becoming false.
+
+## Differentiation Gate
+
+Clean composition is the baseline. A profile becomes recognizable through one deliberate device, not through more decoration.
+
+Choose one primary device:
+
+```text
+thesis-led opening       a concise belief or system statement
+proof-module treatment   projects rendered as compact, repeated evidence blocks
+system diagram           a small semantic flow or architecture map
+owned visual asset       brand mark, illustration, or theme-aware project visual
+editorial rhythm         deliberate contrast between thesis, proof, capability, and action
+```
+
+A device passes only when it supports the person's actual positioning. Generic quotes, arbitrary ASCII art, random gradients, and decorative banners do not count.
+
 ## Visual Budget
 
 Default limits are heuristics, not universal gates:
 
 ```text
 hero visual systems:       1
+differentiation devices:   1 primary
 accent styles:             1 primary + 1 supporting
 badge rows above projects: 0–1
 third-party widgets:       0–2
@@ -67,6 +86,8 @@ short action or transition
 breathing space
 ```
 
+Repeat anatomy inside a role, but vary treatment between roles. Project proof, engineering thesis, capability inventory, and contact action should not all look like identical heading-plus-paragraph sections.
+
 Avoid consecutive walls of badges → icons → stats → trophies → activity → counters. They have similar visual weight and produce no focal hierarchy.
 
 ## Project Module Patterns
@@ -82,6 +103,22 @@ One sentence describing the problem and audience.
 **Outcome:** Verified result or current state  
 [Repository](...) · [Product](...) · [Case study](...)
 ```
+
+### Compact proof block
+
+Use a GitHub-native blockquote when selected work needs stronger contrast without fragile HTML:
+
+```markdown
+> ### [Project Name →](...)
+>
+> **Specific purpose or audience value.**
+>
+> Role — meaningful ownership and contribution.
+>
+> `status` · `evidence type`
+```
+
+Use the same anatomy across selected projects. Keep descriptions bounded so the blocks remain scannable.
 
 ### Compact selected-work list
 
@@ -114,7 +151,7 @@ H3       projects, products, or bounded subsections
 bold     labels and short emphasis
 italic   occasional nuance, not body styling
 code     technologies, commands, repository names, file paths
-quote    a meaningful principle or testimonial with provenance
+quote    a meaningful principle, proof block, or testimonial with provenance
 ```
 
 Do not use heading levels solely to change visual size. Keep semantic order intact.
@@ -157,6 +194,7 @@ fallback meaning in nearby text
 hero remains concise
 images scale without horizontal scrolling
 project order remains logical
+proof blocks remain readable and do not become nested noise
 HTML tables do not crush text
 badge rows wrap without becoming dominant
 links remain distinguishable
