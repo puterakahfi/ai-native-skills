@@ -1,156 +1,226 @@
-# Phase 4 — PRODUCE
+# Phase 8 — Delegated Production
 
-Apply design in this order. Load each skill before using its templates.
+Load this reference only after route, roles, direction, layered plan, value alignment, spec, and approval boundary are explicit.
 
-```
-1. Genre tokens         → design-genre skill
-2. Visual language      → phase-genre-macro.md Phase 0.6
-3. Macrostructure       → macrostructures skill
-4. Design system tokens → design-system skill
-5. Theme architecture   → dark-light-theming skill
-6. Motion               → motion-design skill (only if motion-on)
-7. Content              → content-strategy skill
-8. Components           → ui-components (template) + ux-patterns-for-developers (behavior)
-9. Component pass       → component-redesign-pass.md (navbar → hero → sections → cards/rows → contact → footer)
-```
+Production implements the approved design contract through selected ports and adapters. It does not invent a second direction or import generic UI defaults as universal rules.
 
----
+## Entry packet
 
-## Mandatory CSS Stamp (top of every output)
-
-```css
-/*
- * macrostructure: [name]
- * genre:          [genre]
- * theme:          [light-only | dark-only | dual-theme]
- * iteration:      [N]
- * pre-emit:       P_ H_ E_ S_ R_ V_
- */
-```
-
----
-
-## Mandatory Design System
-
-**Typographic scale — 1.333 Perfect Fourth:**
-```css
---text-xs:   0.563rem;
---text-sm:   0.75rem;
---text-base: 1rem;
---text-lg:   1.333rem;
---text-xl:   1.777rem;
---text-2xl:  2.369rem;
---text-3xl:  3.157rem;
---text-4xl:  4.209rem;
-/* Mobile: cap H1 at --text-3xl — keep H1/body ratio ≤ 3.0x */
+```yaml
+production_input:
+  design_domain: <domain>
+  surface_profile: <profile>
+  output_mode: <prototype | patch>
+  design_owner: <owner>
+  implementation_owner: <owner or null>
+  delegation_plan: <selected ports and adapters>
+  direction: <approved direction>
+  layered_plan: <preserve/refine/replace decisions>
+  acceptance_criteria: []
+  viewing_contexts: []
+  locks:
+    brand: []
+    design_system: []
+    content: []
+    assets: []
+    behavior: []
+    preserved_regions: []
 ```
 
-**Color semantic (one var = one role, no collapse):**
-```css
---live:              /* LIVE status — nowhere else */
---interactive-hover: /* hover state — nowhere else */
---bg:                /* base background */
---bg-alt:            /* alternate section (figure/ground) */
---surface:           /* card/elevated surface */
---border:            /* dividers */
---bright:            /* headings, primary content */
---text:              /* body text */
---subtle:            /* supporting info */
---muted:             /* decorative, disabled */
+Stop when the packet is incomplete or the approval policy has not passed.
+
+## Production sequence
+
+```text
+1. Resolve content and copy that affect structure.
+2. Apply approved macrostructure and information hierarchy.
+3. Declare or preserve the project design system and tokens.
+4. Select components and cross-context substitutions by task.
+5. Implement behavior through established patterns when available.
+6. Apply visual language, type, color, composition, depth, imagery, and motion.
+7. Preserve locked assets, content, behavior, and accepted regions.
+8. Produce a renderable/exportable artifact.
+9. Record what changed and why.
+10. Hand off to domain-appropriate verification.
 ```
 
-**Figure/Ground (never flat single color):**
-```css
-background-image: radial-gradient(circle, #1e1e1e 1px, transparent 1px);
-background-size: 32px 32px;
-/* OR: linear-gradient(180deg, #0f0f0f 0%, #0a0a0a 100%) */
-/* OR: alternating section backgrounds */
+The sequence may overlap during implementation, but later styling must not hide unresolved content, structure, interaction, or accessibility problems.
+
+## Delegation rules
+
+Load only adapters declared in `delegation_plan`.
+
+```text
+strategy
+  design-strategy + selected adapters
+
+visual
+  design-visual + selected adapters
+
+layout
+  design-layout + selected adapters
+
+interaction
+  design-interaction + selected adapters
+
+system
+  design-system + selected adapters
+
+implementation
+  master-engineer or runtime equivalent when executable code is produced
 ```
 
-**Whitespace rhythm:**
-```
-Hero:    padding-top clamp(120px,16vh,180px) — NO min-height:100vh (causes void)
-Content: 80–96px padding
-Contact: 48–64px padding
-Footer:  24–32px padding
-```
+See `delegation-and-verification.md` for selection rules.
 
-**Empty state rule:**
-```
-1 product  → full width
-2 products → full-width stacked (NOT 2-col grid)
-3 products → 3-col grid or stacked
-4+         → grid
-```
+## Contextual defaults, not universal rules
 
-**First impression (50ms):**
-```
-H1 = stance, not job title
-FAIL: "Full Stack Engineer specializing in scalable architecture"
-PASS: "One codebase. Five products." / "I build systems meant to last."
+The following must come from the approved brand, project system, selected genre/profile, or explicit design decision:
+
+```text
+type scale and ratio
+spacing base and density
+container width and breakpoints
+radius and elevation system
+background treatment
+hero height and section rhythm
+number of columns or cards
+component type on each viewport
+motion stance and timing
+light/dark theme architecture
 ```
 
-**Accessibility baseline:**
-```html
-<nav aria-label="Main navigation">
-<main id="main">
-<section aria-labelledby="[id]">
-<footer>
-<!-- H1→H2→H3 — no skipping -->
-<!-- sr-only H2 if section visually unlabelled -->
-<!-- Links: descriptive text, rel="noopener" for external -->
-<!-- Skip link: first focusable element, min-height 44px -->
+Do not globally require:
+
+```text
+one fixed modular type scale
+one fixed spacing grid
+one gradient, dot pattern, or figure/ground technique
+a fixed hero padding or min-height rule
+a card/grid arrangement based only on item count
+the same component pattern across mobile, tablet, and desktop
+motion or depth merely to make the result feel “premium”
 ```
 
----
+Adapter defaults are starting hypotheses. Existing product constraints, task density, content, viewing context, and brand locks may require a different valid system.
 
-## Pre-Emit Self-Critique (BEFORE delivering)
+## Component selection
 
-Score 1–5. Any axis < 3 = revision before emit.
-```
-P (Philosophy):  Every element has a reason to exist?     __ /5
-H (Hierarchy):   Visual hierarchy immediately readable?   __ /5
-E (Execution):   Spacing, scale, alignment consistent?    __ /5
-S (Specificity): Copy specific, not generic? No slop?     __ /5
-R (Restraint):   Anything decorative that could be cut?   __ /5
-V (Variety):     Structurally different from last output? __ /5
+Choose components by:
 
-Stamp: /* pre-emit: P_ H_ E_ S_ R_ V_ */
-```
-
----
-
-## Slop Red List (auto-revision if present)
-
-```
-❌ "Get started for free" as primary CTA (unless product requires it)
-❌ H1 + 3 bullet features + CTA button (template pattern)
-❌ "Trusted by X companies" logo row in hero
-❌ Testimonial grid with star ratings
-❌ Gradient mesh background behind text
-❌ "Seamless", "leverage", "world-class", "cutting-edge" in copy
-❌ 6+ feature cards in equal-size grid
-❌ All-caps nav with 5+ items
+```text
+user task and decision frequency
+number and hierarchy of options
+available width and orientation
+input mode and target size
+content length and localization risk
+discoverability and overflow behavior
+state complexity and accessibility
+existing component-system compatibility
 ```
 
----
+Examples:
 
-## Theme System (dual-theme surfaces)
+```text
+category navigation on wide tablet
+  may use line tabs or horizontal rail when peers remain reachable
 
+same navigation on narrow mobile
+  may use a scroll rail, select, sheet, or another substitution
+
+large comparison table on mobile
+  may become a focused detail pattern rather than a squeezed desktop table
 ```
-Preserve existing infra — do not add second system:
-  next-themes + class  → .dark / dark: utilities
-  next-themes + data   → [data-theme="dark"]
-  custom/localStorage  → inspect existing script first
 
-Toggle requirements:
-  □ one toggle in global nav
-  □ aria-label = next action: "Switch to dark theme" / "Switch to light theme"
-  □ touch target ≥ 44×44px
-  □ no hydration mismatch on SSR
+Never force the user-requested component when another pattern better satisfies the underlying task. Record the substitution rationale.
 
-Verify both modes:
-  □ Light screenshot/DOM ✓
-  □ Toggle → dark screenshot/DOM ✓
-  □ Toggle back → state reversible ✓
+## External versus internal ownership
+
+```text
+external trusted pattern
+  behavior, keyboard/touch semantics, states, accessibility, edge cases
+
+internal product component
+  tokens, copy, layout integration, visual expression, brand treatment
 ```
+
+Check `ux-patterns-for-developers` before hand-rolling established behavior. Do not copy an external visual style that conflicts with the product system.
+
+## Output modes
+
+### Prototype
+
+```text
+create a safe renderable or exportable artifact
+avoid destructive changes to the source product
+make changed regions and states inspectable
+record mock data or simulated behavior honestly
+```
+
+A prototype does not prove production runtime, data integration, or release readiness.
+
+### Patch
+
+```text
+implementation owner applies the approved design contract
+preserve the last known good state
+respect repository architecture and existing component system
+run changed-file checks during iteration
+run relevant full checks at commit/PR/release boundary
+record changed files and rollback path
+```
+
+The design owner resolves design trade-offs. The implementation owner resolves technical trade-offs without silently altering the approved direction.
+
+## Asset and content handling
+
+```text
+use supplied assets when they are locked
+never invent prices, claims, dates, contacts, testimonials, metrics, or product facts
+never alter required product or human identity without explicit scope
+preserve source attribution and data provenance when applicable
+record generated or placeholder assets as such
+```
+
+When imagery or motion tooling is unavailable, choose an honest fallback rather than claiming generation occurred.
+
+## Production self-check
+
+Before verification:
+
+```text
+□ Output follows the approved direction and layered plan.
+□ Every selected adapter has a declared reason.
+□ No unused adapter rules were imported.
+□ Content and copy are final enough to verify layout honestly.
+□ Components fit task and context rather than merely matching desktop mockups.
+□ Existing project/brand system overrides generic defaults.
+□ Required assets and facts remain faithful.
+□ Preserved regions and behaviors were not changed accidentally.
+□ Artifact can be rendered or exported for the declared verification strategy.
+□ Implementation changes have a rollback path.
+```
+
+## Production report
+
+```yaml
+production_report:
+  output_mode: <prototype | patch>
+  artifact: <path or target>
+  design_owner: <owner>
+  implementation_owner: <owner or null>
+  adapters_used:
+    - capability: <skill>
+      reason: <trace to plan or criterion>
+  changed_layers: []
+  changed_regions_or_files: []
+  preserved_locks_checked: []
+  substitutions:
+    - requested_or_previous_pattern: <pattern>
+      selected_pattern: <pattern>
+      reason: <task/context rationale>
+  placeholders_or_simulations: []
+  rollback: <path or method>
+  ready_for_verification: true | false
+```
+
+`ready_for_verification` means a current artifact exists. It does not mean the artifact passed.
