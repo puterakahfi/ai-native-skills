@@ -1,7 +1,7 @@
 skill_test:
   skill: github-profile
-  version: "1.1.0"
-  description: Verify proof-first, design-driven GitHub Profile README generation across different personal-brand goals and platform constraints.
+  version: "1.2.0"
+  description: Verify proof-first, brand-aligned, foundation-led GitHub Profile README generation across personal-brand goals and platform constraints.
 
   cases:
     - id: backend-engineer-proof-before-badges
@@ -127,3 +127,26 @@ skill_test:
         - differentiated_module_treatment
         - non_repetitive_section_hierarchy
         - rendered_feedback_refinement
+
+    - id: established-zen-brand-rejects-cardification-and-dead-space
+      description: An established zen personal brand must preserve its grammar while still satisfying foundation hierarchy, grouping, rhythm, balance, and legibility.
+      trigger: "Redesign GitHub profile ini supaya aligned dengan personal site saya. Brand-nya zen, calm editorial, more space, dan no lines. Jangan pakai cards atau blockquote. Hasil sebelumnya cuma memperbesar whitespace sampai kontennya kecil dan tercerai."
+      must_contain:
+        - "brand|preservation lock|brand grammar|brand lock"
+        - "hierarchy|grouping|rhythm|balance|legibility|foundation"
+      must_contain_one_of:
+        - "purposeful whitespace|intentional whitespace|Ma|ruang yang bermakna"
+        - "within-group|between-group|proximity|kedekatan"
+        - "page anchor|section parent|item|metadata"
+      must_not_contain:
+        - "blockquotes are the best default"
+        - "add cards for every project"
+        - "more whitespace always means more zen"
+        - "use the same large gap everywhere"
+      quality_gates_tested:
+        - brand_preservation_before_genre
+        - foundation_before_expression
+        - purposeful_spatial_rhythm
+        - non_card_grouping
+        - visual_mass_balance
+        - readable_role_hierarchy
