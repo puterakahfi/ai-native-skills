@@ -1,12 +1,13 @@
 skill_test:
   skill: design-review
-  version: "3.1.0"
-  description: Verify facade domain routing, evidence honesty, hard-gate behavior, and limited specialist coverage.
+  version: "3.2.0"
+  description: Verify facade domain routing, evidence honesty, hard-gate behavior, canonical gate identity, and limited specialist coverage.
 
   cases:
     - id: screenshot-dashboard-runtime-not-verified
       description: A dashboard screenshot cannot prove runtime or keyboard behavior.
       trigger: "Review screenshot dashboard ini untuk kesiapan rilis. Saya hanya memberikan screenshot, tidak ada URL atau source code."
+      design_gate_ids: [RI1]
       must_contain:
         - "digital-interface"
         - "NOT_VERIFIED"
@@ -20,10 +21,12 @@ skill_test:
         - classify_before_gates
         - screenshot_does_not_prove_runtime
         - evidence_before_score
+        - every_reported_gate_id_must_be_registered
 
     - id: static-commercial-wrong-price-hard-fail
       description: Incorrect mandatory commercial content must fail the static content-fidelity hard gate.
       trigger: "Review poster jualan ini. Harga yang wajib adalah Rp2.000.000, tetapi teks pada desain tertulis Rp20.000.000."
+      design_gate_ids: [SV11]
       must_contain:
         - "visual-communication"
         - "SV11"
@@ -35,6 +38,7 @@ skill_test:
       quality_gates_tested:
         - static_content_accuracy_hard_gate
         - required_fact_fidelity
+        - canonical_gate_identity
 
     - id: logo-without-domain-reviewer-is-limited
       description: Universal visual gates cannot certify a complete logo identity system.
@@ -54,6 +58,7 @@ skill_test:
     - id: presentation-selects-presentation-strategy
       description: Presentation review must use presentation-domain gates instead of interactive gates.
       trigger: "Review deck presentasi ini untuk dipakai screen sharing. Fokus pada alur cerita, keterbacaan data, dan konsistensi slide."
+      design_gate_ids: [PR1, PR2, PR3, RI1]
       must_contain:
         - "presentation"
         - "PR1"
@@ -65,3 +70,4 @@ skill_test:
       quality_gates_tested:
         - presentation_domain_routing
         - interactive_gates_not_applied_to_static_deck
+        - canonical_gate_identity
