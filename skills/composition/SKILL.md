@@ -1,184 +1,236 @@
 ---
 name: composition
-description: 'Above-the-fold composition — focal point, visual weight, eye-flow, anchoring. Prevents floating/unanchored layouts and dead-space voids.
-
-  '
+description: Context-aware composition reasoning for focal order, visual weight, balance, alignment, anchoring, empty-space purpose, and eye/task flow across marketing, product, editorial, static, and presentation surfaces. Uses rendered evidence and does not redefine canonical design-review gates.
+license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
+  ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.tags: '[''design'', ''composition'', ''visual-weight'', ''focal-point'', ''alignment'']'
+  ai-native-skills.related_skills: '["master-design","design-foundation","design-visual","visual-hierarchy","design-layout","design-depth","design-review"]'
 ---
 
 # Composition
 
-## Optical Center vs Geometric Center
+Composition organizes visual mass, empty space, direction, alignment, and sequence so the intended message or task is perceived in the right order.
 
-```
-Geometric center: 50% from top (math correct, visually wrong)
-Optical center:   45% from top (eye perceives this as "center")
+## Hard rules
 
-Rule: Primary content should sit at or above optical center.
-Never push primary content below 60% of viewport height.
-
-For hero with name as focal point:
-  justify-content: center           → name at 50% → slightly low, acceptable
-  justify-content: flex-end         → name at bottom → VOID above → FAIL
-  padding-top that pushes to ~40%   → optimal
-```
-
----
-
-## Visual Weight Distribution
-
-```
-Rule: Heavy elements anchor the layout. They must be visible without scroll.
-
-Above-the-fold weight budget:
-  □ One heavy element (H1 / hero name) — 60–70% of visual weight
-  □ One supporting element (stance/bio) — 20–30%
-  □ One accent (meta/contact) — 5–10%
-  □ Total = 100% — if nothing heavy, layout floats
-
-Checklist:
-  □ Is the heaviest element visible within first 100vh?
-  □ Is it above the optical center (≤ 45% from top)?
-  □ Does it have enough contrast to anchor immediately?
+```text
+1. Resolve content roles, viewing context, and primary task/message first.
+2. Composition can be centered, asymmetric, split, dense, open, modular, or layered.
+3. Optical and geometric alignment are both valid when intentional.
+4. Numeric positions and ratios are diagnostic evidence, not universal laws.
+5. Empty space needs a grouping, pacing, framing, emphasis, or narrative role.
+6. Heavy visual elements need not always appear above the fold; context and sequence decide.
+7. Do not force every page into a hero-centered composition.
+8. Use the existing layout/grid/spacing system when valid; do not invent magic nudges.
+9. Diagnose composition from the complete surface and actual content.
+10. Canonical C1–C3 identity and verdicts remain owned by design-review.
 ```
 
----
+## Inputs
 
-## Eye Flow Mapping
-
-```
-Eye enters top-left (F-pattern for text, Z-pattern for visual pages).
-
-Personal portfolio (dark, editorial) Z-pattern:
-  top-left (logo/name) → top-right (nav) → diagonal → bottom-left (stance) → bottom-right (meta)
-
-Marquee Hero eye flow:
-  Enter top-left (eyebrow) → drop to name (heavy anchor) → right to meta → down to scroll cue
-
-VIOLATION: void above name breaks the entry → eye enters void, searches for anchor, fatigues
-FIX: name must be reachable from top without crossing dead space
-```
-
----
-
-## Dead Space vs Intentional Breathing Room
-
-```
-Dead space (BAD):
-  - Void above primary content with no visual purpose
-  - No element occupies or intentionally frames the void
-  - Caused by: justify-content:flex-end, min-height:100vh with little content
-
-Breathing room (GOOD):
-  - Whitespace between sections — intentional reset
-  - Has rhythm: small-larger-small or consistent multiples
-  - Caused by: padding between sections, not padding above hero
-
-Rule: Hero must have ZERO dead space above focal point.
-      Breathing room lives BETWEEN sections, not BEFORE the first section.
+```yaml
+composition_input:
+  target_surface:
+  surface_profile:
+  viewing_contexts: []
+  primary_task_or_message:
+  content_inventory: []
+  hierarchy_roles: []
+  selected_design_direction:
+  existing_grid_and_spacing_system:
+  required_assets: []
+  responsive_contexts: []
 ```
 
----
+## Composition model
 
-## Anchoring Patterns
+Evaluate together:
 
-### Pattern A: Top-anchored hero (recommended for personal portfolio)
-```css
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;   /* optical center */
-  padding-top: 80px;         /* nav clearance — shrinks available space */
-  padding-bottom: var(--sp-9);
-  padding-left: var(--sp-8);
-  padding-right: var(--sp-8);
-}
-/* Result: content sits at optical center of remaining space (below nav) */
+```text
+scale
+contrast
+position
+proximity
+density
+direction
+color mass
+imagery mass
+containment
+empty space
+motion or state emphasis
 ```
 
-### Pattern B: Bottom-anchored hero with scroll cue (editorial/magazine)
-```css
-/* Content at bottom, but EYEBROW/DATE at top creates visual bookends */
-/* Void is intentionally framed by top element — not dead space */
-.hero {
-  display: grid;
-  grid-template-rows: auto 1fr auto;  /* top-anchor, spacer, content */
-  min-height: 100vh;
-  padding: var(--sp-7) var(--sp-8);
-}
-.hero-top    { /* eyebrow, date, number */ }
-.hero-spacer { /* intentional void — now FRAMED, not dead */ }
-.hero-bottom { /* name, stance, meta */ }
+No single variable proves balance or dominance.
+
+## Focal sequence
+
+Map the intended sequence:
+
+```yaml
+focal_sequence:
+  entry_context:
+  first_focal_point:
+  supporting_points: []
+  transition_cues: []
+  action_or_exit_point:
+  alternate_paths: []
 ```
 
-### Pattern C: Split hero (Studio macrostructure)
-```css
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
-  padding-top: 80px;  /* nav clearance on wrapper, not columns */
-  align-items: stretch;
-}
-.hero-left  { display:flex; flex-direction:column; justify-content:center; padding:var(--sp-9) var(--sp-8); }
-.hero-right { display:flex; flex-direction:column; padding:0; } /* cards fill height */
-.hero-right .card { flex:1; } /* cards stretch to fill */
+Different surfaces may require different anchors:
+
+```text
+marketing landing
+  value/message → proof → explanation → action
+
+application
+  page/task identity → current state → primary work area → actions
+
+editorial
+  authored entry → narrative progression → supporting detail
+
+static visual
+  primary message → required facts/assets → action/contact
+
+presentation
+  slide focal point → supporting evidence → narrative transition
 ```
 
----
+Do not impose an F-pattern, Z-pattern, or optical-center formula without evidence that it fits the content and reading context.
 
-## Alignment Rules
+## Balance
 
-```
-Checklist:
-  □ Every element aligns to: left edge, right edge, center axis, or sibling
-  □ No element is positioned by eye-balling (no magic numbers like margin-top:73px)
-  □ Vertical rhythm: spacing between elements is multiples of base unit (8px grid)
-  □ If two elements are "near" each other, they must snap to the same grid line
-```
+Balance is intentional distribution, not symmetry.
 
----
+```text
+symmetrical
+  valid for stability, comparison, ceremony, or system clarity
 
-## Pre-emit Composition Check (run before Phase 3: PRODUCE)
+asymmetrical
+  valid when visual mass and direction create a readable counterbalance
 
-Before writing HTML, answer:
-```
-1. Where is the focal point? (element name)
-2. What % from top of viewport does it sit? (target ≤ 45%)
-3. What frames the void above it? (eyebrow? border? nothing? → nothing = FAIL)
-4. Eye flow: top-left → ? → ? → ? → exit point
-5. Is every element anchored to a grid line or sibling edge? (yes/no)
+open
+  valid when empty space frames, pauses, separates, or focuses
+
+dense
+  valid when task or information value requires parallel context
 ```
 
-If answer to 3 is "nothing" → change layout pattern before writing any HTML.
+Failure signals:
 
----
-
-## Gate: Composition (for redesign-workflow integration)
-
-```
-Gate C1: Focal Point Above-Fold
-  □ Primary element (H1/name) visible within first 100vh without scroll
-  □ Primary element sits at ≤ 50% from top of viewport (optical center)
-  □ No unframed dead space above primary element
-  Score: __ / 10  (fail = score < 7)
-
-Gate C2: Visual Weight Distribution
-  □ One heavy, one supporting, one accent — all identifiable
-  □ Heavy element has highest contrast + largest size in section
-  □ No two elements compete for dominance (inter-section weight decay)
-  Score: __ / 10
-
-Gate C3: Alignment & Anchoring
-  □ Every element aligned to grid column, sibling edge, or center axis
-  □ No magic-number positioning (margin:73px etc)
-  □ Spacing is multiples of base unit (8px grid)
-  □ No floating elements — each has a visual relationship to its neighbors
-  Score: __ / 10
+```text
+one region feels accidentally stranded or overloaded
+multiple regions compete without a clear sequence
+visual mass contradicts content priority
+empty space disconnects related content
+imagery or decoration outweighs product/message value
+asymmetry has no visible balancing logic
 ```
 
-> **HARD RULE:** Never emit HTML until Pre-emit Composition Check passes. If void above focal point has no framing element → switch pattern first.
+## Empty space
+
+Classify large intervals:
+
+```text
+GROUPING
+  separates unrelated groups or keeps a cluster intact
+
+PACING
+  creates a pause or section transition
+
+FRAMING
+  isolates a focal element or meaningful asset
+
+NARRATIVE
+  creates anticipation, reveal, or editorial sequence
+
+UTILITY
+  preserves readability, interaction, safe area, or responsive behavior
+
+ROLELESS
+  no observable purpose; candidate defect
+```
+
+Minimal, zen, premium, or editorial labels do not automatically justify a large void.
+
+## Alignment and anchoring
+
+```text
+structural anchor
+  grid column, container edge, baseline, repeated component line
+
+optical anchor
+  corrected alignment for type, icons, irregular imagery, or perceived weight
+
+relational anchor
+  alignment to a sibling, parent group, focal point, or content sequence
+```
+
+Magic numbers are suspicious when they compensate for a missing system. Small optical corrections are valid when reusable and documented.
+
+## Responsive composition
+
+For each relevant context verify:
+
+```text
+focal sequence survives
+related content remains grouped
+reading/task order remains correct
+visual mass does not flip accidentally
+empty space retains or changes role intentionally
+imagery crop and overlap preserve meaning
+actions remain discoverable
+```
+
+Do not preserve desktop coordinates. Preserve composition intent.
+
+## Output
+
+```yaml
+composition_contract:
+  primary_task_or_message:
+  focal_sequence: []
+  weight_distribution:
+  balance_strategy:
+  structural_anchors: []
+  optical_corrections: []
+  empty_space_roles: []
+  section_transition_logic: []
+  responsive_composition_rules: []
+  intentional_tensions: []
+  failure_risks: []
+  required_rendered_evidence: []
+```
+
+## Review handoff
+
+`design-review` owns canonical gate identity and verdict. Composition supplies reasoning and evidence for applicable canonical concerns such as focal point, weight distribution, alignment, composition intent, hierarchy, spatial rhythm, and flow.
+
+Do not define new meanings for `C1`, `C2`, `C3`, or other registered IDs in this skill.
+
+## Anti-slop checks
+
+```text
+hero composition copied regardless of content
+centered everything used as safe default
+random asymmetry used as editorial signal
+large void called premium without a role
+every section given identical visual weight
+background effects used to fill composition weakness
+floating decorative objects with no relational anchor
+```
+
+## Final guard
+
+```text
+□ Primary task/message and content roles are explicit.
+□ Focal sequence fits the surface and viewing context.
+□ Balance considers all visual-weight variables.
+□ Empty space has a named role or is reduced.
+□ Structural and optical anchors are intentional.
+□ Responsive contexts preserve composition intent rather than coordinates.
+□ Direction is distinctive without random inconsistency.
+□ Rendered evidence supports the claim.
+□ Canonical review gates were not redefined.
+```
