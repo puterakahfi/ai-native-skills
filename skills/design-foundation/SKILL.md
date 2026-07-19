@@ -1,9 +1,9 @@
 ---
 name: design-foundation
-description: Universal design foundation — the non-negotiable composition contract every design genre, brand, surface, and workflow must satisfy. Covers hierarchy, grouping, figure-ground, semantic layering, alignment, spacing rhythm, balance, flow, legibility, consistency, accessibility, and responsive continuity.
+description: Universal design foundation — the non-negotiable composition contract every design genre, brand, surface, and workflow must satisfy. Covers hierarchy, grouping, figure-ground, semantic layering, content resilience, alignment, spacing rhythm, balance, flow, legibility, consistency, accessibility, and responsive continuity.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.0
+  ai-native-skills.version: 1.3.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-foundation.contract.yaml
@@ -39,13 +39,15 @@ F1  HIERARCHY
     Importance levels and semantic roles are distinguishable at a glance.
 
 F2  GROUPING
-    Proximity, similarity, common region, figure-ground, containment, and sequence communicate what belongs together.
+    Proximity, similarity, common region, figure-ground, containment, presence,
+    and sequence communicate what belongs together.
 
 F3  ALIGNMENT
     Elements share meaningful structural or optical anchors; exceptions are intentional.
 
 F4  SPACE + RHYTHM
-    Spacing expresses relationship, sequence, and emphasis instead of repeating one gap.
+    Spacing and density express relationship, content state, sequence, and emphasis
+    instead of repeating one gap or composition.
 
 F5  BALANCE
     Visual mass, contrast, density, direction, imagery, depth, overlap, and empty space are distributed intentionally.
@@ -54,16 +56,19 @@ F6  FLOW
     The eye and the user can follow the intended reading, task, or narrative order.
 
 F7  LEGIBILITY
-    Type, contrast, measure, scale, and information density suit the real viewing context.
+    Type, contrast, measure, scale, content length, value shape, and information density
+    suit the real viewing context.
 
 F8  SYSTEM CONSISTENCY
-    Repeated roles use coherent tokens, treatments, states, and component behavior.
+    Repeated roles use coherent tokens, treatments, states, components, fallbacks,
+    and content-adaptation behavior.
 
 F9  ACCESSIBILITY + AFFORDANCE
     Interaction remains perceivable, operable, understandable, and keyboard/touch safe.
 
 F10 RESPONSIVE CONTINUITY
-    Hierarchy, grouping, reading order, layer meaning, and interaction meaning survive format or viewport changes.
+    Hierarchy, grouping, reading order, layer meaning, content meaning, and interaction meaning
+    survive format, viewport, and supported-content changes.
 ```
 
 ---
@@ -99,6 +104,7 @@ Rules:
 - enclosure is optional; cards and borders are not required for grouping
 - similarity must not erase meaningful differences in status, priority, or role
 - foreground, background, and containment relationships must remain understandable
+- optional content may appear or disappear without detaching the remaining relationships
 ```
 
 A practical starting point is a between-group interval around `1.25×–2×` the within-group interval, then verify visually in context.
@@ -124,6 +130,23 @@ Not every artifact needs every layer. A flat design can pass; a highly layered d
 
 Load `references/figure-ground-layering.md` when the artifact includes surfaces, imagery behind text, overlap, sticky/fixed UI, popovers, drawers, dialogs, layered compositions, or depth effects.
 
+### 2c. Content resilience preserves relationships under variation
+
+```text
+- supported content bounds are declared instead of assumed from ideal placeholders
+- empty, minimum, normal, maximum, and applicable variant states are considered
+- optional text, media, metadata, and items may change without collapsing hierarchy or grouping
+- wrapping, clamping, truncation, scrolling, pagination, summarization, disclosure,
+  prioritization, or component substitution is deliberate and preserves critical meaning
+- repeated roles use coherent content-adaptation and fallback policies
+- realistic long content is combined with constrained viewport, localization,
+  text scaling, and missing-media conditions where applicable
+```
+
+A design does not need to support unlimited content. It must honestly define the supported range and provide a meaningful strategy at its boundaries.
+
+Load `references/content-resilience.md` for variable-content products, reusable templates, catalogs, tables, forms, collections, generated/user-authored content, localization, text scaling, or optional media. Load `references/content-resilience-fixtures.md` for cross-surface regression and bias testing.
+
 ### 3. Alignment uses shared anchors
 
 ```text
@@ -142,7 +165,8 @@ Box alignment is not always optical alignment. Mixed font sizes, icons, and irre
 - space must answer: what relationship does this interval communicate?
 - one repeated gap everywhere usually flattens hierarchy
 - large empty intervals need an anchor and a structural purpose
-- sparse content does not automatically require less or more space; evaluate composition and context
+- empty, sparse, normal, and dense content states must not reuse one composition blindly
+- content quantity does not automatically require less or more space; evaluate composition and context
 - whitespace may group, separate, pause, emphasize, or resolve
 ```
 
@@ -163,6 +187,7 @@ A composition may be symmetrical, asymmetrical, centered, dense, open, flat, or 
 - the next intended region is discoverable
 - reading order and DOM/task order do not conflict
 - transitions between sections, states, or layers preserve context
+- content adaptation does not hide or reorder the next valid action without reason
 - CTAs and actions appear after sufficient meaning, not before it
 - decorative motion must not hijack the intended flow
 ```
@@ -171,11 +196,12 @@ A composition may be symmetrical, asymmetrical, centered, dense, open, flat, or 
 
 ```text
 - hierarchy survives scale reduction
-- grouped content stays grouped after stacking
+- grouped content stays grouped after stacking or optional-content changes
 - desktop rails collapse into predictable mobile order
 - labels, titles, content, and actions do not zig-zag accidentally
-- touch targets, overflow, localization, and text scaling remain safe
+- touch targets, overflow, localization, content variation, and text scaling remain safe
 - floating, sticky, modal, and overlapping relationships remain safe and understandable
+- realistic content stress is tested together with constrained space, not separately only
 ```
 
 ---
@@ -185,15 +211,15 @@ A composition may be symmetrical, asymmetrical, centered, dense, open, flat, or 
 | Gate | Universal question | Failure signal |
 |---|---|---|
 | F1 Hierarchy | Are importance levels and semantic roles unambiguous? | Parent and child compete; headings, labels, and metadata collapse into one level. |
-| F2 Grouping | Do proximity, common region, figure-ground, and containment show what belongs together? | Related items detach, unrelated items merge, or foreground/background ownership becomes unclear. |
+| F2 Grouping | Do proximity, common region, figure-ground, containment, and presence show what belongs together? | Related items detach, optional content leaves broken relationships, or foreground/background ownership becomes unclear. |
 | F3 Alignment | Do repeated elements use meaningful structural or optical anchors? | Accidental drift, almost-aligned edges, or per-item nudging. |
-| F4 Spatial Rhythm | Does spacing encode grouping, sequence, and emphasis? | One gap everywhere; parent-to-group and sibling gaps feel equal. |
+| F4 Spatial Rhythm | Does spacing and density encode grouping, content state, sequence, and emphasis? | One gap/composition everywhere; empty or dense states feel stranded, collapsed, or flattened. |
 | F5 Balance | Are visual mass, depth, overlap, and empty space distributed intentionally? | One region or layer is stranded, overloaded, obscured, or accidentally dominant. |
-| F6 Flow | Is the intended reading/task sequence clear? | Competing focal points, unclear next step, broken order, or lost context after a layer/state change. |
-| F7 Legibility | Is content readable in the real context? | Weak contrast, poor measure, tiny metadata, dense/orphaned text, or background interference. |
-| F8 Consistency | Are repeated roles governed coherently? | Same role changes treatment without reason; duplicate token vocabularies. |
+| F6 Flow | Is the intended reading/task sequence clear? | Competing focal points, unclear next step, broken order, or lost context after a layer/state/content change. |
+| F7 Legibility | Is content readable in the real context and supported variation range? | Weak contrast, poor measure, tiny metadata, clipping, unstable wrapping, dense/orphaned text, or background interference. |
+| F8 Consistency | Are repeated roles and adaptation policies governed coherently? | Same role changes treatment, overflow, fallback, or optional-content behavior without reason. |
 | F9 Accessibility | Are interaction and information accessible? | Missing labels, focus, contrast, touch size, reduced motion, semantic order, or layer operability. |
-| F10 Responsive Continuity | Do relationships and behavior survive viewport/format change? | Grouping breaks, order changes incorrectly, overflow, mobile zig-zag, or unsafe layer occlusion. |
+| F10 Responsive Continuity | Do relationships and behavior survive viewport, format, and supported-content changes? | Grouping breaks, order changes incorrectly, overflow is unsafe, content disappears, mobile zig-zag, or layer occlusion occurs. |
 
 **A verified foundation failure blocks release approval. A source-only suspicion is `NOT_VERIFIED` until rendered or runtime evidence exists.**
 
@@ -212,7 +238,7 @@ design-genre
   adds stricter expression constraints without redefining the foundation
 
 design-system / brand
-  implements semantic tokens and product-specific rules
+  implements semantic tokens, component variants, content policies, and product-specific rules
 
 design workflows
   load foundation before direction/production and classify the correct fix layer
@@ -226,11 +252,12 @@ A local visual defect should not automatically patch this skill. Promote it here
 
 ```text
 Foundation owns relationship and quality.
-Genre/brand own expression.
+Genre/brand/product own expression and declared limits.
 
-FOUNDATION                         GENRE / BRAND
+FOUNDATION                         GENRE / BRAND / PRODUCT
 clear grouping                     cards, borders, whitespace, or color fields
 clear figure-ground                flat, outlined, elevated, glass, textured, cinematic
+content resilience                 exact item limits, copy limits, pagination, or fallback UI
 stable hierarchy                   exact typeface, weights, and scale magnitude
 intentional alignment              symmetric, asymmetric, centered, editorial grid
 readable contrast                  exact palette and accent behavior
@@ -250,13 +277,17 @@ Genre-specific rules may be stricter, but may not erase foundation requirements.
 | Principles and composition rationale | `references/principles.md` | Direction, planning, production |
 | Foundation gates and evidence | `references/gates.md` | Review, refinement, release verification |
 | Figure-ground, containment, layering, overlap, and evidence | `references/figure-ground-layering.md` | Surfaces, imagery behind text, sticky/fixed UI, overlays, modal/floating layers, layered static composition |
-| Cross-genre figure-ground regression fixtures | `references/figure-ground-fixtures.md` | Skill evaluation, bias checks, PASS/FAIL discrimination across minimal, dense, expressive, product, static, and presentation surfaces |
+| Cross-genre figure-ground regression fixtures | `references/figure-ground-fixtures.md` | Skill evaluation and bias checks across minimal, dense, expressive, product, static, and presentation surfaces |
+| Content bounds, stress states, adaptation strategies, and evidence | `references/content-resilience.md` | Variable-content products, reusable templates, catalogs, tables, forms, localization, text scaling, optional media, generated/user content |
+| Cross-surface content resilience regression fixtures | `references/content-resilience-fixtures.md` | Skill evaluation and PASS/FAIL discrimination across empty/minimum/normal/maximum/variant content states |
 
 ```text
 skill_view(name='design-foundation', file_path='references/principles.md')
 skill_view(name='design-foundation', file_path='references/gates.md')
 skill_view(name='design-foundation', file_path='references/figure-ground-layering.md')
 skill_view(name='design-foundation', file_path='references/figure-ground-fixtures.md')
+skill_view(name='design-foundation', file_path='references/content-resilience.md')
+skill_view(name='design-foundation', file_path='references/content-resilience-fixtures.md')
 ```
 
 ---
