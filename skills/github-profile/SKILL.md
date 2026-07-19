@@ -30,7 +30,7 @@ HARD RULES
 
 Use this skill to create, redesign, or refine the `README.md` shown on a personal GitHub profile.
 
-It owns GitHub-profile strategy, content architecture, GitHub-native visual composition, README generation, dependency choices, and domain verification. It composes existing design skills rather than redefining hierarchy, composition, readability, copywriting, accessibility, or review rules.
+It owns profile strategy, content architecture, GitHub-native visual composition, README generation, dependency choices, and domain verification. It composes existing design skills rather than redefining hierarchy, composition, readability, copywriting, accessibility, or review rules.
 
 It does not own repository authorization, private-data discovery, custom illustration production, employment verification, or general GitHub account configuration.
 
@@ -44,14 +44,12 @@ github_profile_input:
   goal: hiring | consulting | freelance | open-source | founder | personal-brand | community | mixed
   primary_audience: <who should understand and act>
   desired_action: <view projects | contact | hire | collaborate | sponsor | follow | other>
-
   identity:
     name: <verified or supplied>
     role_or_positioning: <verified or supplied>
     location: <optional>
     languages: []
     short_bio: <optional>
-
   evidence:
     selected_projects: []
     products: []
@@ -59,7 +57,6 @@ github_profile_input:
     achievements: []
     metrics: []
     testimonials_or_clients: []
-
   capabilities: []
   current_focus: []
   contact_links: []
@@ -79,16 +76,15 @@ Infer only low-risk presentation choices. Mark missing factual content as a gap;
 
 ```text
 1. INVENTORY
-   Resolve verified identity, target audience, desired action, proof, links,
-   existing equity, preservation locks, and missing information.
+   Resolve verified identity, audience, action, proof, links, existing equity,
+   preservation locks, and missing information.
 
 2. POSITION
-   Select one primary narrative and one dominant value proposition.
+   Select one primary narrative and dominant value proposition.
    Load references/strategy-and-content.md.
 
 3. STRUCTURE
-   Order content by visitor decision needs, not by available widgets.
-   Keep critical identity and proof before secondary detail.
+   Order content by visitor decision needs; keep identity and proof before detail.
 
 4. DIRECT
    Apply design-foundation, then choose a GitHub-appropriate direction.
@@ -99,13 +95,12 @@ Infer only low-risk presentation choices. Mark missing factual content as a gap;
    Load references/platform-constraints.md and references/templates.md.
 
 6. RENDER
-   Render through GitHub or an equivalent GFM renderer at desktop and narrow width.
-   Inspect light/dark behavior when theme-dependent assets are used.
+   Render through GitHub or equivalent GFM at desktop and narrow width.
+   Inspect both themes when theme-dependent assets are used.
 
 7. REVIEW
-   Load references/verification.md.
-   Route the rendered artifact through design-review as rendered-static,
-   using universal/static visual gates that are applicable to this medium.
+   Load references/verification.md and route the rendered-static artifact through
+   design-review using only universal/static gates applicable to this medium.
 
 8. REFINE
    Correct the smallest failing layer while preserving accepted narrative,
@@ -124,23 +119,15 @@ Infer only low-risk presentation choices. Mark missing factual content as a gap;
 
 Load only the references required by the current mode and uncertainty.
 
-## Composition Rules
+## Composition Contract
 
 ```text
-Required content roles
-  identity → positioning → proof → selected work → current focus → action
-
-Optional supporting roles
-  capabilities → principles → writing → community → contact → personal interests
-
-Default visual budget
-  one dominant hero treatment
-  one supporting accent system
-  zero to two dynamic widgets
-  project proof before generic technology badges
+required roles: identity → positioning → proof → selected work → current focus → action
+optional roles: capabilities → principles → writing → community → personal interests
+default budget: one hero treatment, one accent system, zero–two dynamic widgets
 ```
 
-A technology list supports positioning; it is not the positioning. Contribution graphs and generated statistics support proof; they do not replace project context, role, or impact.
+A technology list supports positioning; it is not the positioning. Statistics support proof; they do not replace project context, role, or impact.
 
 ## Output Contract
 
@@ -164,40 +151,25 @@ github_profile_result:
   readme: <complete markdown>
   render_evidence: []
   design_review_result: <verdict or NOT_VERIFIED>
-  maintenance_notes: []
 ```
 
-For `patch`, hand the complete proposed content and file boundary to the repository write owner. Do not claim the branch was changed without tool evidence.
+For `patch`, hand the proposed content and file boundary to the repository write owner. Do not claim a branch changed without tool evidence.
 
 ## Acceptance Checks
 
 ```text
 □ Identity, audience, desired action, and profile narrative are explicit.
-□ Every factual claim is supplied, repository-verifiable, or clearly marked unverified.
-□ The first screen communicates identity, value, and proof without scrolling through decoration.
-□ Section order follows visitor questions and has one clear dominant hierarchy.
-□ Selected work explains context, role, outcome, and a useful destination when available.
-□ Visual devices support meaning; badges and widgets do not dominate the page.
-□ Critical information survives blocked images and unavailable third-party services.
-□ Text, image alternatives, links, theme behavior, and narrow-width reading are verified.
-□ README source is understandable, editable, and free of unnecessary generated complexity.
-□ Rendered output received design-review or is honestly marked NOT_VERIFIED.
+□ Every factual claim is supplied, repository-verifiable, or marked unverified.
+□ The first screen communicates identity, value, and proof before decoration.
+□ Section order follows visitor questions and one dominant hierarchy.
+□ Selected work explains context, role, outcome, and a useful destination.
+□ Badges and widgets support meaning rather than dominate it.
+□ Critical information survives blocked images and unavailable services.
+□ Alt text, links, themes, narrow width, and source maintainability are verified.
+□ Rendered output received design-review or is honestly NOT_VERIFIED.
 ```
 
-## Failure Patterns
-
-```text
-generic greeting + badge wall + stats wall
-all claims, no project evidence
-portfolio cards with no role or outcome
-hero image carrying essential text with no fallback
-five unrelated visual styles in one README
-light-only or dark-only unreadable assets
-visitor counters and trophies used as credibility substitutes
-third-party widget failure collapsing the whole composition
-fabricated "currently working on" or skill claims
-copying another profile's identity instead of its structural principle
-```
+Common failures: generic greeting + badge/stat wall; claims without project evidence; cards without role or outcome; essential text only inside a hero image; mixed visual styles; broken theme contrast; counters/trophies as credibility substitutes; critical third-party widgets; fabricated current work; or copied identity.
 
 ```text
 FINAL REMINDER
