@@ -2,7 +2,7 @@
 
 Load this reference during classification when domain coverage, ownership, or extension behavior is relevant.
 
-`design-review` is a facade skill: callers use one review entry point while the facade selects applicable review strategies, resolves canonical gate IDs, normalizes evidence, and produces a consistent score and verdict.
+`design-review` is a facade: callers use one entry point while it selects reviewers, resolves canonical gate IDs, normalizes evidence, and produces a consistent score and verdict.
 
 ## Ownership
 
@@ -16,25 +16,25 @@ applicability status
 common evidence model
 score, coverage, and verdict policy
 finding and report contract
-handoff to audit, refinement, redesign, or a specialist
+handoff to audit, refinement, redesign, legal, or specialist routes
 ```
 
-Specialist or domain-review skills own:
+Domain reviewers own:
 
 ```text
 domain principles and thresholds
 full gate definitions
-component and platform behavior
+evidence interpretation
 specialized hard gates
-production methods
-correction techniques
+production methods and correction knowledge
+scope and professional-boundary limits
 ```
 
-The facade must not copy specialist knowledge into its core merely to avoid loading the governing skill.
+The facade must not copy specialist knowledge merely to avoid loading its owner.
 
-## Built-in Scope
+## Coverage
 
-Covered by built-in review strategies:
+Built-in strategies:
 
 ```text
 digital product interfaces
@@ -45,82 +45,93 @@ advertising creatives and thumbnails
 presentation slides and decks
 ```
 
-Not covered as a complete discipline without an additional domain reviewer:
+Registered external adapter:
 
 ```text
-logo and brand-identity system design
+brand-identity
+  reviewer: brand-identity-review
+  namespace: BI
+  owner: skills/brand-identity-review/references/identity-gates.md
+  coverage when loaded: ADAPTER_COVERED
+```
+
+Still requiring future adapters:
+
+```text
 packaging and specialist print production
 motion graphics, film, and video editing
 industrial or physical product design
 architecture, interior, and spatial design
 fashion design
-service-design research and organizational-service systems
+service-design systems
 ```
 
-Universal visual gates may provide a limited review for an unsupported discipline, but the report must state the limitation and must not claim full domain coverage.
+Universal gates may provide limited observations when a required adapter is unavailable, but they cannot produce complete specialist-domain approval.
 
 ## Coverage Modes
 
 ```text
-BUILT_IN        the facade has a native review strategy for the domain
-ADAPTER_COVERED a compatible specialist domain reviewer is loaded
+BUILT_IN        native facade strategy covers the primary domain
+ADAPTER_COVERED compatible specialist reviewer is loaded
 LIMITED         only universal or partial concerns can be reviewed
-ROUTE_ELSEWHERE the request requires unavailable specialist knowledge
+ROUTE_ELSEWHERE requested claim requires unavailable expertise
 ```
 
-A full or release verdict requires `BUILT_IN` or `ADAPTER_COVERED` coverage for the declared primary domain.
+A full or release verdict requires `BUILT_IN` or `ADAPTER_COVERED` primary-domain coverage plus sufficient evidence.
 
 ## Domain Reviewer Contract
-
-A domain reviewer integrated through the facade must declare:
 
 ```yaml
 domain_reviewer:
   domain: <stable domain id>
   gate_namespace: <registered uppercase prefix>
-  gate_registry_entries: []
-  applies_when: []
+  gate_registry_entries: design-review/references/gate-registry.yaml
   required_context: []
   required_evidence: []
-  gates: []
+  gates: <repo-relative governing owner reference>
   hard_gate_triggers: []
   unsupported_claims: []
   finding_contract: design-review/finding
 ```
 
-It must:
+A reviewer must:
 
 ```text
-register a unique namespace before exposing gates to the facade
-register every selected or reported gate ID in gate-registry.yaml
-keep full gate definitions in its own governing reference
-return PASS/FAIL/PARTIAL/NOT_VERIFIED/NOT_APPLICABLE per selected gate
-provide evidence and impact for every failed or partial gate
-identify domain-specific hard-gate triggers
-map findings into the facade finding contract
+register one unique namespace
+register every exposed gate ID
+keep full definitions in its own governing reference
+return PASS/FAIL/PARTIAL/NOT_VERIFIED/NOT_APPLICABLE
+provide evidence and impact for failures/partials
+identify contextual hard gates
+map findings to the facade contract
 preserve common score and coverage semantics
-state what remains outside its own scope
-add eval coverage using design_gate_ids
+state out-of-scope claims
+add eval coverage with design_gate_ids
 ```
 
 It must not:
 
 ```text
-mint gate IDs only inside a prompt, report, or caller
-reuse another domain's namespace for unrelated meaning
-silently redefine universal gate meanings
+mint IDs only inside prompts or reports
+reuse another domain namespace for unrelated meaning
+redefine universal gates silently
 count missing evidence as zero
-claim coverage outside its declared domain
-perform redesign or production unless the caller owns that lifecycle
+claim coverage outside its domain
+perform redesign/production unless caller owns that lifecycle
+claim professional clearance outside its boundary
 ```
 
-Registry rules and extension procedure are defined in:
+The registry validator accepts:
 
 ```text
-references/gate-registry.yaml
-references/gate-migrations.yaml
-references/gate-registry.md
+built-in owner filename
+  universal-gates.md
+
+external repo-relative owner path
+  skills/brand-identity-review/references/identity-gates.md
 ```
+
+Owner paths cannot escape the repository.
 
 ## Composition Rules
 
@@ -129,27 +140,29 @@ When multiple reviewers match:
 ```text
 choose one primary domain owner
 load secondary reviewers only for declared cross-domain concerns
-keep universal gates shared rather than duplicated per reviewer
-resolve duplicate findings under the reviewer that owns the root cause
+keep universal gates shared rather than duplicated
+resolve duplicate findings under the root-cause owner
 normalize every finding to a canonical registered ID
-do not average unrelated domain scorecards without explicit weighting
+do not average unrelated scorecards without explicit weighting
 ```
 
 Examples:
 
 ```text
-mobile app with marketing onboarding
-→ primary: digital-interface/mobile
-→ secondary: conversion concerns only when explicitly in scope
-
-presentation containing a dashboard mockup
-→ primary: presentation
-→ secondary: interactive component review limited to the mockup
+logo identity system
+→ primary: brand-identity
+→ facade: design-review
+→ reviewer: brand-identity-review
+→ coverage: ADAPTER_COVERED
 
 logo displayed inside a poster
 → primary: visual-communication/static
-→ brand-fidelity checks verify application of the supplied logo
-→ logo-design quality itself requires brand-identity reviewer
+→ SV8 verifies application of supplied approved logo
+→ BI gates apply only when logo-system quality itself is in scope
+
+presentation containing a dashboard mockup
+→ primary: presentation
+→ secondary interactive review limited to the mockup
 ```
 
 ## Boundary Failure Modes
@@ -157,12 +170,13 @@ logo displayed inside a poster
 ```text
 specialist knowledge copied into facade core
 every request loads every reviewer
-unsupported domain receives a full PASS
-one scorecard is forced across unrelated disciplines
-facade starts producing or redesigning without caller ownership
-new domain requires rewriting unrelated built-in strategies
-domain reviewer invents unregistered gate IDs
-alias is guessed from similar wording instead of declared migration
+unsupported domain receives full PASS
+one scorecard forced across unrelated disciplines
+facade produces/redesigns without lifecycle ownership
+external reviewer invents unregistered IDs
+external reviewer stores definitions in the facade
+alias guessed from similar wording
+similarity screening presented as legal clearance
 ```
 
-See `docs/facade-skill-pattern.md` for the repository-wide pattern definition.
+See `gate-registry.md` for extension rules and `docs/facade-skill-pattern.md` for the repository-wide facade pattern.
