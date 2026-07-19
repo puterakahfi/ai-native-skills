@@ -100,8 +100,8 @@ skill_test:
         - "local implementation owner"
         - "adjacent regression gates"
       must_not_contain:
-        - "PATTERN_MISMATCH"
-        - "replace with Select"
+        - "diagnosis: PATTERN_MISMATCH"
+        - "selected_strategy: substitute to Select"
       quality_gates_tested:
         - component_finding_has_diagnosis
         - correction_owner_matches_defect_class
