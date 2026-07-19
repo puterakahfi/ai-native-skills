@@ -1,0 +1,58 @@
+github_profile_result:
+  fixture: puterakahfi
+  generated_with: github-profile@1.0.0
+  profile_goal: personal-brand
+  primary_audience:
+    - software engineers
+    - product builders
+    - AI-native engineering collaborators
+  desired_action: explore work and collaborate
+  narrative: >-
+    Putera Kahfi connects software architecture, product design, and agent-driven
+    development to build practical AI-native engineering systems.
+  selected_direction:
+    name: editorial-technical-authority
+    reason: >-
+      The subject spans engineering, design, and product work, but the strongest
+      public proof is technical. A thesis-led editorial opening keeps the identity
+      distinctive while selected public repositories provide direct evidence.
+  density: balanced
+  dynamic_widgets: none
+  verified_facts:
+    - claim: Public GitHub identity is Putera Kahfi / puterakahfi.
+      provenance: authenticated GitHub profile
+    - claim: ai-native-skills is a public repository of reusable agent skills and workflows.
+      provenance: https://github.com/puterakahfi/ai-native-skills
+    - claim: ai-native-core is a public runtime-agnostic contract layer for AI-native engineering.
+      provenance: https://github.com/puterakahfi/ai-native-core
+  user_supplied_facts:
+    - claim: Works across Go, PHP, Next.js, Docker, DDD, and ports-and-adapters.
+      provenance: user profile and project context
+    - claim: Builds VisualMate as an AI Creative Control System.
+      provenance: user-supplied product context
+    - claim: Maintains pkahfi.com and ai.pkahfi.com initiatives.
+      provenance: user-supplied project context
+  assumptions: []
+  content_gaps:
+    - No verified employer or client list included.
+    - No unverified revenue, user-count, conversion, or contribution metrics included.
+    - Private repositories are not used as public proof links.
+    - Current-focus statements should be reviewed when the fixture is published.
+  preservation_locks:
+    - Putera Kahfi name
+    - puterakahfi GitHub identity
+    - Native AI Engineering positioning
+    - public project links
+  section_order:
+    - hero
+    - thesis
+    - selected_work
+    - working_system
+    - current_focus
+    - connect
+  external_dependencies: []
+  render_evidence: []
+  design_review_result: NOT_VERIFIED
+  review_note: >-
+    Source and content architecture are prepared. Rendered desktop, narrow-width,
+    and theme evidence are still required before delivery is classified READY.
