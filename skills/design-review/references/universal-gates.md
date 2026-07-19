@@ -30,22 +30,24 @@ No rendered visual                  → visual gates are NOT_VERIFIED
 No declared system or repeated set  → token gates may be NOT_APPLICABLE
 ```
 
-## Foundation mapping
+## Foundation-axis mapping
 
-| Foundation axis | Universal review gates |
-|---|---|
-| F1 Hierarchy | G2, G8, R7, H1, H2, H3 |
-| F2 Grouping | G4, G5, G7, G12 |
-| F3 Alignment | C3, G7, R3 |
-| F4 Space + Rhythm | G5, R3, G4 |
-| F5 Balance | C1, C2, R6, R8 |
-| F6 Flow | G8, G12, H2 plus applicable surface gates |
-| F7 Legibility | G2, G9, G10, G11, R1 |
-| F8 System Consistency | G1, G3, R2 |
-| F9 Accessibility + Affordance | G10 plus applicable interactive/static hard gates |
-| F10 Responsive Continuity | C3, G5, G7 plus responsive surface gates |
+F1–F10 are **foundation axes**, not canonical reportable gate IDs. Every scored or reported finding must use the registered canonical IDs shown on the right.
 
-A universal score cannot override a verified foundation failure. Use the foundation gate status in the final verdict.
+```text
+F1  Hierarchy                   → G2, G8, R7, H1, H2, H3
+F2  Grouping                    → G4, G5, G7, G12
+F3  Alignment                   → C3, G7, R3
+F4  Space + Rhythm              → G5, R3, G4
+F5  Balance                     → C1, C2, R6, R8
+F6  Flow                        → G8, G12, H2 + applicable surface gates
+F7  Legibility                  → G2, G9, G10, G11, R1
+F8  System Consistency          → G1, G3, R2
+F9  Accessibility + Affordance  → G10 + applicable interactive/static hard gates
+F10 Responsive Continuity       → C3, G5, G7 + responsive surface gates
+```
+
+A universal score cannot override a verified foundation-axis failure. The final verdict records the axis assessment, but findings and scores use canonical gate IDs from the registry.
 
 ## Design consistency
 
@@ -183,7 +185,7 @@ one SectionHeader component misaligns every eyebrow
 
 ## Universal quick review
 
-For a quick review, score the applicable subset and report foundation status:
+For a quick review, assess the applicable foundation axes through canonical gate IDs:
 
 ```text
 F1  hierarchy / role clarity
@@ -194,9 +196,10 @@ F5  balance
 F6  flow
 F7  legibility
 
+Canonical scoring subset:
 G10 contrast
 CP1 message specificity
-applicable accessibility/responsive hard gates
+applicable registered accessibility/responsive gates
 ```
 
 Any score below 5 is critical. Continue to profile-specific hard gates before declaring the artifact safe or release-ready.
