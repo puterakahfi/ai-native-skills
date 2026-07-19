@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**79 skills · 9 workflows · 6 meta-skills**
+**80 skills · 9 workflows · 6 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/facade-skill-pattern.md](docs/facade-skill-pattern.md) for facade skills that expose one stable entry point while delegating specialist knowledge. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. See [docs/skill-packs.md](docs/skill-packs.md) for one-command bundle installs. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -16,7 +16,7 @@ npx skills add puterakahfi/ai-native-skills@<skill-name> -g -y
 
 # Examples
 npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
-npx skills add puterakahfi/ai-native-skills@systems-thinking -g -y
+npx skills add puterakahfi/ai-native-skills@brand-identity-review -g -y
 npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 
 # Full suite
@@ -75,11 +75,11 @@ This is a Hermes adapter skill for the runtime-agnostic profile-bootstrap contra
 
 | Type | Description | Examples |
 |---|---|---|
-| `skill` | Atomic capability — standalone, reusable domain capability or expert lens | `systematic-debugging`, `threat-modeling` |
+| `skill` | Atomic capability — standalone, reusable domain capability or expert lens | `systematic-debugging`, `brand-identity-review` |
 | `workflow` | Sequenced phases — lifecycle with gates, often composing skills | `bugfix-workflow`, `redesign-workflow` |
 | `meta-skill` | Router/composer — selects workflows or skill combinations before execution | `role-switcher`, `workflow-router` |
 
-`facade` is a pattern, not a fourth type. A facade remains a `skill` when it performs real work such as classification, applicability, evidence normalization, scoring, or output assembly.
+`facade` and `domain-reviewer` are patterns, not additional official types. Both remain `type: skill` while declaring their pattern and contract.
 
 ---
 
@@ -114,36 +114,22 @@ Load these first — they route and compose everything else.
 
 ### Workflow entry points
 
-Use broad lifecycle workflows, not surface-specific workflow variants:
-
 | User intent | Start with |
 |---|---|
 | Build a product from zero, no PRD yet | `product-development-workflow` |
 | Audit or score an existing design without changing it | `design-audit` |
+| Audit a logo or identity system | `design-audit` + `design-review` + `brand-identity-review` |
 | Fix known specific design findings while preserving direction | `design-refinement` |
-| Replace design direction, structure, or multiple layers | `redesign-workflow` |
+| Replace design direction, structure, concept, or multiple layers | `redesign-workflow` |
 | Build a new capability in an existing product | `new-feature-workflow` |
 | Fix broken behavior or regression | `bugfix-workflow` |
 | Review code before merge/ship | `code-review-workflow` |
 | Deploy/release/rollback | `deployment-workflow` |
 | Audit and fix skill files | `skill-doctor` |
 
-Examples:
-
-```bash
-hermes chat -s product-development-workflow -q \
-  "Develop a digital product for affiliators from zero. Start with discovery and stop after PRD/MVP recommendation for approval."
-
-hermes chat -s design-audit -q \
-  "Audit this dashboard and return an evidence-backed gap report. Do not redesign or patch it."
-
-hermes chat -s redesign-workflow -q \
-  "Redesign https://pkahfi.com. Replace the current direction and stop for approval before producing code."
-```
-
 ---
 
-## Skills (79)
+## Skills (80)
 
 ### Domain Architecture
 
@@ -195,23 +181,24 @@ hermes chat -s redesign-workflow -q \
 | `design-spacing` | Spacing as design structure — visual rhythm, spatial hierarchy, Ma principle |
 | `design-system` | Token architecture, component library, design language governance |
 | `design-audit` | Facade-backed audit — capture evidence, resolve domain coverage, score, prioritize, and recommend the next lifecycle |
-| `ui-components` | 9 component templates — Navbar, Hero, Section, Work Row, About, Contact, Footer, Scroll Reveal, Verification. Copy-paste, no improvisation |
-| `ux-patterns-for-developers` | 74 battle-tested UI patterns from uxpatterns.dev — delegate to `npx skills add` for component behavior + a11y |
-| `ux-ui-patterns` | UI/UX pattern library — which hero pattern fits the goal, which layout for content type |
-| `composition` | Focal point, optical center (45%), dead space vs breathing room, eye-flow mapping |
-| `visual-hierarchy` | Dominant/supporting/accent triad, H2 ≤ 60% H1, heading role taxonomy |
+| `design-review` | Facade skill — classify domain, select built-in/external reviewers, resolve canonical gates, normalize evidence, score coverage, and produce a verdict |
+| `brand-identity-review` | External domain reviewer — canonical BI gates for brand logic, concept translation, construction, optical balance, identity systems, reproduction, and similarity risk |
+| `ui-components` | Component templates and implementation guidance for common product surfaces |
+| `ux-patterns-for-developers` | Battle-tested UI patterns from uxpatterns.dev — component behavior and accessibility |
+| `ux-ui-patterns` | UI/UX pattern library — which pattern fits the goal and content type |
+| `composition` | Focal point, optical center, whitespace, weight, and eye-flow mapping |
+| `visual-hierarchy` | Dominant/supporting/accent relationships and role taxonomy |
 | `readability` | Line length, contrast, type size, and cognitive ease interpreted by context |
-| `responsiveness` | Mobile-first, wide/ultrawide breakpoints, max-width containers, and adaptive behavior |
-| `adaptive-component-design` | Cross-device component selection and substitution — tabs, rails, selects, sheets, grids, and tables by task and viewport |
-| `motion-design` | Animation tokens, easing, reduced-motion, stagger patterns |
+| `responsiveness` | Mobile-first, wide/ultrawide breakpoints, containers, and adaptive behavior |
+| `adaptive-component-design` | Cross-device component selection and substitution by task and viewport |
+| `motion-design` | Animation tokens, easing, reduced motion, stagger patterns |
 | `dark-light-theming` | Theme switching, token mapping, prefers-color-scheme |
-| `design-review` | Facade skill — classify design domain and surface, select built-in or external reviewers, normalize evidence, score coverage, and produce a consistent verdict |
 | `ux-psychology` | Cognitive load, habit loops, Fitts's Law, Nielsen heuristics |
-| `copywriting` | Messaging hierarchy, value proposition, content specificity, and buzzword control |
-| `content-strategy` | Content strategy — microcopy, tone of voice, content hierarchy, onboarding flows |
+| `copywriting` | Messaging hierarchy, value proposition, specificity, and buzzword control |
+| `content-strategy` | Microcopy, tone of voice, content hierarchy, onboarding flows |
 | `cro` | Attention flow, trust signals, value recognition, persuasion sequence |
 | `information-architecture` | Content hierarchy, navigation taxonomy, mental models |
-| `accessibility` | WCAG-oriented semantics, ARIA, keyboard, screen reader, and cognitive accessibility |
+| `accessibility` | WCAG-oriented semantics, ARIA, keyboard, screen reader, cognitive accessibility |
 
 ### Observability & Operations
 
@@ -225,7 +212,7 @@ hermes chat -s redesign-workflow -q \
 | Skill | Description |
 |---|---|
 | `prompt-optimizer` | Vague intent → precise prompt: scope, constraint, output format, stop condition |
-| `model-selection` | Select model class by task intent, risk, capabilities, context, fallback, and verification needs |
+| `model-selection` | Select model class by task intent, risk, capabilities, context, fallback, verification needs |
 | `response-contract` | Persistent output verbosity via AGENTS.md — no filler, answer-first, code exact |
 | `context-engineering` | AGENTS.md authoring — encode constraints, guardrails, domain knowledge |
 | `context-manager` | Context pack resolution — build precise context before agent execution |
@@ -244,16 +231,16 @@ hermes chat -s redesign-workflow -q \
 | Skill | Description |
 |---|---|
 | `product-requirements` | PRD authoring — goals, non-goals, scope, metrics, requirements, acceptance criteria, launch readiness |
-| `business-value-alignment` | Business Value Alignment — user value, business value, metrics, assumptions, risks, and continue/narrow/experiment/stop verdict |
-| `experiment-design` | Experiment Design — hypothesis, riskiest assumption, smallest test, success/guardrail criteria, and pass/partial/fail decision rule |
-| `product-manager` | PRD authoring, acceptance criteria, task breakdown, scope, and prioritization |
-| `user-research` | User interviews, synthesis, insights, personas, JTBD, and research-backed decisions |
+| `business-value-alignment` | User value, business value, metrics, assumptions, risks, and decision verdict |
+| `experiment-design` | Hypothesis, riskiest assumption, smallest test, success/guardrail criteria, decision rule |
+| `product-manager` | PRD, acceptance criteria, task breakdown, scope, prioritization |
+| `user-research` | Interviews, synthesis, personas, JTBD, research-backed decisions |
 
 ### Governance & Standards
 
 | Skill | Description |
 |---|---|
-| `ethics-responsible-ai` | Fairness audit, harm assessment, transparency, consent, accountability, power asymmetry |
+| `ethics-responsible-ai` | Fairness, harm, transparency, consent, accountability, power asymmetry |
 | `threat-modeling` | See Engineering Quality |
 | `language-standards` | Consistent declared language across artifacts |
 | `rule-manager` | AGENTS.md/.cursorrules authoring and enforcement |
@@ -267,11 +254,9 @@ hermes chat -s redesign-workflow -q \
 | `native-ai-engineer` | Layer placement, runtime boundary, contract authoring |
 | `native-ai-runtime-agent` | Runtime agent in ai-native-fw product adapters |
 | `native-ai-runtime-ops` | Ops for AI-native canonical runtime hosts |
-| `hermes-profile-bootstrap` | Hermes adapter for the Native AI profile-bootstrap contract: profile skeleton, skill presets, install plan, and verification policy |
+| `hermes-profile-bootstrap` | Hermes adapter for profile bootstrap, skill presets, install plan, and verification |
 
 ### Roles
-
-Role skills act as **expert personas** — auto-composed by `role-switcher` based on intent detection, no manual activation needed.
 
 | Skill | Persona | Auto-triggers on |
 |---|---|---|
@@ -282,98 +267,37 @@ Role skills act as **expert personas** — auto-composed by `role-switcher` base
 | `user-research` | User Researcher | interviews, usability tests, JTBD, assumption validation |
 | `native-ai-engineer` | Native AI Domain Architect | runtime boundary, contract authoring, adapter design |
 | `diagram-architect` | Architecture Visualizer | architecture diagrams, flow charts, system maps |
-| `prompt-engineer` | Image Prompt Engineer | refine prompt, generate image prompt, why does image look wrong, prompt for [subject] |
+| `prompt-engineer` | Image Prompt Engineer | image prompt refinement and diagnosis |
 
 ---
 
 ## Coverage Map
 
-```
-Input quality:
-  prompt-optimizer → business-value-alignment → experiment-design → response-contract → spec-workflow → threat-modeling
-
-Domain modeling:
-  domain-driven-design → ports-and-adapters → design-patterns → adr → data-modeling
-
-Distributed systems:
-  service-design → api-contract → event-driven-design
-
+```text
 Frontend and visual design:
   workflow-router → design-audit | design-refinement | redesign-workflow
   role-switcher → owner + specialists + design-review facade + domain reviewer
-  design-review → universal review + interactive/static/presentation strategy + evidence/coverage/verdict
-  master-design → design-foundation → design-brand → design-depth → design-color → design-typography
-  design-layout → adaptive-component-design → design-visual → design-strategy → design-interaction
-  composition → visual-hierarchy → copywriting → content-strategy → cro → motion-design
+  design-review → built-in interactive/static/presentation + external adapters
+  brand-identity-review → BI1–BI16 → ADAPTER_COVERED identity verdict
+  master-design → design-foundation → design-brand → design-depth → color/type
+  design-layout → adaptive-component-design → design-visual → strategy → interaction
 
-AI systems:
-  ai-system-design → ethics-responsible-ai → systems-thinking
-
-Quality gates:
+Engineering quality:
   architecture-review → security-review → code-review-workflow → skill-eval → skill-doctor
+
+Product delivery:
+  product-development-workflow → spec-workflow → new-feature-workflow
+  → code-review-workflow → deployment-workflow → observability-design
 
 Reliability:
   observability-design → resilience-engineering → incident-response → technical-debt-governance
-
-Performance:
-  web-performance → design-depth → dark-light-theming → responsiveness
-
-Process:
-  product-development-workflow → spec-workflow → new-feature-workflow → bugfix-workflow → deployment-workflow
-
-Philosophy:
-  systems-thinking → decision-making → ethics-responsible-ai → adr
-```
-
----
-
-## Full Delivery Loop
-
-```
-business-value-alignment ← value: user value, business value, metrics, assumptions, verdict
-    ↓
-experiment-design      ← learning: hypothesis, riskiest assumption, smallest test, decision rule
-    ↓
-product-requirements    ← PRD: goals, non-goals, scope, metrics, acceptance criteria
-    ↓
-product-development-workflow ← umbrella flow from discovery to launch
-    ↓
-spec-workflow          ← spec before code
-    ↓
-threat-modeling        ← security before implementation
-    ↓
-new-feature-workflow   ← team process
-    ↓
-code-review-workflow   ← gate before merge
-    ↓
-deployment-workflow    ← gate before prod
-    ↓
-observability-design   ← monitor after deploy
-    ↓
-incident-response      ← when things go wrong
-```
-
-With meta-skills routing:
-
-```
-workflow-router → detect: audit? refinement? redesign? bug? feature? review? deploy?
-role-switcher   → compose: owner? specialists? reviewer facade? domain reviewer?
 ```
 
 ---
 
 ## Adapter and Facade Patterns
 
-Adapter behavior is a pattern, not a separate official category value today. Use `metadata["ai-native-skills.type"]: skill` plus `metadata["ai-native-skills.implements"]` and `compat/*.compat.yaml` when a skill implements a Native AI Core contract.
-
-```yaml
-name: native-ai-runtime-agent
-metadata:
-  ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/runtime/native-ai-runtime-agent.contract.yaml
-```
-
-A facade skill also remains `type: skill` while declaring its pattern:
+A facade remains `type: skill`:
 
 ```yaml
 name: design-review
@@ -382,7 +306,17 @@ metadata:
   ai-native-skills.pattern: facade
 ```
 
-See [docs/skills.md](docs/skills.md#adapter-pattern) and [docs/facade-skill-pattern.md](docs/facade-skill-pattern.md).
+A domain reviewer also remains `type: skill`:
+
+```yaml
+name: brand-identity-review
+metadata:
+  ai-native-skills.type: skill
+  ai-native-skills.pattern: domain-reviewer
+  ai-native-skills.implements: ai-native-core/contracts/skills/quality/brand-identity-review.contract.yaml
+```
+
+The facade owns routing, canonical identity, evidence normalization, scoring, coverage, verdict, and report. The domain reviewer owns specialist gate definitions, evidence interpretation, hard gates, and professional boundaries.
 
 ---
 
@@ -392,12 +326,11 @@ Regression cases live under `contracts/tests/<skill>.test.yaml`.
 
 ```bash
 python ai-native-core/scripts/run-eval.py \
-  --skill role-switcher \
-  --output-file /tmp/agent-output.txt
-# verdict: APPLIED | PARTIAL | GHOST
+  --skill brand-identity-review \
+  --output-dir eval-outputs
 ```
 
-Design facade regressions include audit/refinement/redesign routing, screenshot evidence limits, static fidelity hard gates, presentation strategy selection, and specialized-domain `LIMITED REVIEW` behavior.
+Design regressions cover routing, evidence limits, static fidelity, presentation strategy, canonical gate identity, identity construction/variant/small-size failures, adapter coverage, and similarity-screening legal boundaries.
 
 ---
 
