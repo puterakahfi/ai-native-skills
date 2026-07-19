@@ -1,105 +1,272 @@
 # Foundation Gates Scorecard
 
-> Run at Phase 5 REVIEW — before genre/brand gates.
-> F-gates are HARD FAIL — any fail blocks delivery.
+> Run for every design review before genre, brand, component, or domain-specific approval.
 
-## Foundation Gates (F1–F7)
+Foundation gates evaluate universal relationships. Profile and genre references may add stricter thresholds, but may not remove these checks.
 
-### F1 — Visual Hierarchy
-```
-CHECK: measure H1 font-size ÷ body font-size
-  ≥ 3.5× = PASS (zen weight-300 minimum)
-  ≥ 2.5× = PASS (standard)
-  < 2.5× = FAIL → increase H1 size OR increase weight
+## Evidence Policy
 
-CHECK: H2 and H3 visually distinguishable from each other?
-  Yes = PASS
-  No  = FAIL → adjust size/weight/color steps
+```text
+RENDERED evidence available     → evaluate visual relationship gates
+SOURCE/system evidence available→ evaluate consistency and implementation gates
+INTERACTION evidence available  → evaluate affordance, order, and responsive behavior
+missing required evidence       → NOT_VERIFIED, never PASS
 ```
 
-### F2 — Contrast Ratio
-```
-TOOL: browser devtools → inspect → accessibility → contrast ratio
+Use measurements to explain an observed problem. Do not turn one ratio or token heuristic into a universal law.
 
-Primary text on bg:    ≥ 4.5:1 = PASS  /  < 4.5:1 = FAIL
-Secondary text on bg:  ≥ 3.0:1 = PASS  /  < 3.0:1 = FAIL
-Large text (24px+):    ≥ 3.0:1 = PASS  /  < 3.0:1 = FAIL
-Icon on bg:            ≥ 3.0:1 = PASS  /  < 3.0:1 = FAIL
-```
+---
 
-### F3 — Touch Targets
-```
-CHECK: all interactive elements (buttons, links, toggles)
-  min-width + min-height ≥ 44px = PASS
-  Any element < 44px = FAIL → add padding wrapper
+## F1 — Hierarchy and Role Clarity
 
-JS audit:
-  document.querySelectorAll('a,button,[role=button]')
-    .forEach(el => {
-      const r = el.getBoundingClientRect();
-      if(r.width < 44 || r.height < 44)
-        console.warn('touchFail', el);
-    })
-```
-
-### F4 — Semantic Tokens
-```
-CHECK: no raw values in component CSS
-  grep for: #[0-9a-fA-F] / [0-9]+px / [0-9]+rem (outside :root)
-
-PASS: all values via var(--token)
-FAIL: any hardcoded value in component selector → extract to token
-```
-
-### F5 — No Dead Space
-```
-CHECK: is there a viewport where content feels stranded/lost?
-  No = PASS
-  Yes = FAIL → fix: remove min-height:100vh, add content, or shrink padding
-
-SPECIFIC CHECKS:
-  □ No min-height: 100vh on hero
-  □ Sparse sections (< 3 elements) have tighter spacing
-  □ No empty sections as spacers
-```
-
-### F6 — No Decoration Without Function
-```
-CHECK: every visual element has a job
-  □ Dividers: do they separate meaningfully different sections?
-  □ Background patterns: do they add depth or just texture?
-  □ Gradient: does it direct attention or just "look nice"?
-  □ Icons: informational or decorative (aria-hidden if latter)?
-
-FAIL: any element whose removal improves clarity → remove it
-```
-
-### F7 — Aria & Keyboard
-```
+```text
 CHECK:
-  □ All buttons have text label or aria-label
-  □ All icon-only elements have aria-label or aria-hidden
-  □ Skip link present: <a href="#main" class="skip-link">
-  □ Focus-visible on all interactive elements (not outline:none)
-  □ Tab order logical (follows visual order)
-  □ prefers-reduced-motion: animation disabled if requested
+□ primary, supporting, and tertiary roles are distinguishable at a glance
+□ parent and child levels do not compete at equal visual weight
+□ siblings look related but remain subordinate to their parent
+□ heading, body, label, metadata, and action roles are recognizable
+□ later sections preserve the intended global hierarchy
 
-Any fail = FAIL gate
+FAIL examples:
+- section heading and child item titles look equally dominant
+- labels, metadata, and body copy collapse into the same visual role
+- multiple competing focal points make the first reading step unclear
 ```
+
+Useful evidence:
+
+```text
+type scale, weight, measure, contrast, placement, spacing,
+attention order, blur/squint test, actual-size viewport capture
+```
+
+Numeric ratios are diagnostic only.
+
+---
+
+## F2 — Grouping and Gestalt
+
+```text
+CHECK:
+□ related elements cluster more strongly than unrelated elements
+□ within-group spacing is tighter than between-group spacing where applicable
+□ parent → child-group separation is stronger than child → child separation
+□ similarity communicates sibling roles without hiding important differences
+□ enclosure, cards, or surfaces are used only when functionally useful
+
+FAIL examples:
+- parent introduction and child collection read as one flat group
+- child details feel detached from their item
+- unrelated sections appear grouped because their gap is too small
+- every item is boxed because proximity and hierarchy are unresolved
+```
+
+Diagnostic starting point:
+
+```text
+between-group interval ≈ 1.25×–2× within-group interval
+```
+
+Verify visually; do not enforce as a universal token.
+
+---
+
+## F3 — Alignment and Optical Continuity
+
+```text
+CHECK:
+□ repeated roles use stable structural anchors
+□ adjacent sections share a coherent shell or declared relationship
+□ almost-aligned edges are corrected or intentionally separated
+□ mixed-size label/heading pairs are optically aligned
+□ asymmetry has visible balancing logic
+□ arbitrary local offsets do not replace a shared grid
+
+FAIL examples:
+- each section invents a different content start position
+- repeated translate/margin nudges create page-wide drift
+- DOM boxes align but rendered glyph tops look crooked
+- mobile stacking preserves desktop offsets and creates zig-zag order
+```
+
+---
+
+## F4 — Spatial Rhythm
+
+```text
+CHECK:
+□ spacing expresses hierarchy, grouping, sequence, and emphasis
+□ one repeated interval is not used for every relationship
+□ large empty intervals have an anchor and purpose
+□ dense and sparse regions are proportioned intentionally
+□ transitions between regions feel neither collapsed nor abandoned
+
+FAIL examples:
+- parent-to-children gap equals sibling-to-sibling gap
+- every section uses the same top/bottom padding regardless of content
+- content appears stranded inside a large void
+- spacing is compensated with borders instead of corrected relationally
+```
+
+---
+
+## F5 — Balance and Weight Distribution
+
+```text
+CHECK:
+□ visual mass is distributed intentionally
+□ empty space balances rather than abandons content
+□ contrast, scale, color, imagery, and density support the intended focal point
+□ asymmetrical layouts have a stable counterweight
+□ no secondary region becomes accidentally dominant
+
+FAIL examples:
+- one side of the composition feels overloaded without a counterweight
+- decorative color or image competes with the main message
+- a sparse region appears unfinished because its anchor is too weak
+```
+
+Balance is not symmetry.
+
+---
+
+## F6 — Flow and Sequence
+
+```text
+CHECK:
+□ the first focal point is clear
+□ the next intended region or action is discoverable
+□ reading order matches semantic/task order
+□ transitions preserve context
+□ CTA placement follows sufficient meaning, evidence, or task readiness
+□ motion supports rather than interrupts the sequence
+
+FAIL examples:
+- competing anchors create multiple first steps
+- visual order conflicts with DOM or keyboard order
+- responsive stacking changes the intended narrative
+- decorative elements interrupt the reading path
+```
+
+---
+
+## F7 — Legibility and Readability
+
+```text
+CHECK:
+□ text size, weight, leading, tracking, and case suit the actual context
+□ line length and measure support sustained reading or scanning
+□ secondary content remains perceivable
+□ contrast supports essential information
+□ information density is chunked appropriately
+
+FAIL examples:
+- metadata becomes visual dust
+- low-contrast body copy depends on zoom
+- display text overflows or creates unreadable line breaks
+- paragraphs are too wide, dense, or fragmented for the medium
+```
+
+Use applicable WCAG, platform, print, feed, or presentation thresholds from the surface reviewer.
+
+---
+
+## F8 — System Consistency
+
+```text
+CHECK:
+□ repeated roles use coherent colors, spacing, type roles, states, and components
+□ existing tokens or design-system mechanisms are reused when available
+□ exceptions are intentional and documented
+□ no parallel token vocabulary is introduced without a migration reason
+□ static artifacts remain internally consistent even without source tokens
+
+FAIL examples:
+- same semantic role changes treatment without reason
+- duplicate spacing/color/type systems coexist accidentally
+- local hardcoded values break theme or component consistency
+```
+
+Do not require software tokens for a one-off static artifact. Evaluate the medium and available source.
+
+---
+
+## F9 — Accessibility and Affordance
+
+```text
+CHECK where applicable:
+□ contrast meets contextual accessibility requirements
+□ controls have understandable labels and states
+□ focus is visible
+□ touch/pointer targets are usable
+□ semantic and keyboard order are logical
+□ reduced-motion preference is respected
+□ color is not the only carrier of essential meaning
+
+Any verified accessibility blocker = FAIL.
+```
+
+---
+
+## F10 — Responsive Continuity
+
+```text
+CHECK:
+□ hierarchy survives viewport, orientation, or format changes
+□ grouped content stays grouped after stacking
+□ reading and interaction order remain predictable
+□ labels, titles, content, and actions do not zig-zag accidentally
+□ overflow, localization, and text scaling are safe
+□ controls adapt to input type and available space
+
+FAIL examples:
+- desktop hierarchy becomes flat on mobile
+- child details detach from their parent after stacking
+- horizontal navigation overlaps or hides without an adaptive pattern
+- local offsets produce mobile drift
+```
+
+---
 
 ## Foundation Scorecard Template
 
-```
+```text
 FOUNDATION GATES
-────────────────────────────────
-F1 Hierarchy    [ ] PASS  [ ] FAIL  H1/body: ___×
-F2 Contrast     [ ] PASS  [ ] FAIL  Primary: ___:1
-F3 Touch        [ ] PASS  [ ] FAIL  touchFail: ___
-F4 Tokens       [ ] PASS  [ ] FAIL  violations: ___
-F5 Dead Space   [ ] PASS  [ ] FAIL  instances: ___
-F6 Noise        [ ] PASS  [ ] FAIL  removals: ___
-F7 Aria         [ ] PASS  [ ] FAIL  violations: ___
-────────────────────────────────
-RESULT: ALL PASS → proceed to genre/brand gates
-        ANY FAIL → fix before continuing
+────────────────────────────────────────────────────
+F1  Hierarchy             PASS | FAIL | NOT_VERIFIED
+F2  Grouping              PASS | FAIL | NOT_VERIFIED
+F3  Alignment             PASS | FAIL | NOT_VERIFIED
+F4  Spatial rhythm        PASS | FAIL | NOT_VERIFIED
+F5  Balance               PASS | FAIL | NOT_VERIFIED
+F6  Flow                  PASS | FAIL | NOT_VERIFIED
+F7  Legibility            PASS | FAIL | NOT_VERIFIED
+F8  System consistency    PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+F9  Accessibility         PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+F10 Responsive continuity PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+────────────────────────────────────────────────────
+Evidence gaps: [...] 
+Blocking failures: [...] 
+RESULT: all applicable verified gates pass → continue to genre/domain gates
+        any verified fail → classify and correct before release approval
 ```
+
+## Defect Classification Hints
+
+```text
+hierarchy/grouping/spacing failure across multiple regions
+  → foundation or structure defect
+
+one repeated pattern fails everywhere
+  → component-system defect
+
+rule exists but implementation ignores it
+  → local implementation defect
+
+foundation rule absent or misleading
+  → design-foundation knowledge defect
+
+workflow never loaded foundation before production
+  → workflow orchestration defect
+```
+
+Do not fix a foundation failure by adding decoration. Correct the relationship first.
