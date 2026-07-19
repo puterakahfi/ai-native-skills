@@ -2,7 +2,7 @@
 
 `gate-registry.yaml` is the machine-readable source of truth for design gate identity. This document explains how to use and extend it.
 
-## What the registry owns
+## Registry ownership
 
 The registry owns only stable identity and routing metadata:
 
@@ -19,41 +19,44 @@ contextual hard-gate policy
 migration relationship
 ```
 
-The registry does **not** own the full review question, evidence interpretation, examples, or correction knowledge. Those stay in the governing owner:
+Full review questions, evidence interpretation, examples, and correction knowledge remain in the governing owner:
 
 ```text
-universal-gates.md
-interactive-surface-gates.md
-static-visual-gates.md
-or a declared external domain reviewer
+built-in owner filename
+  resolves inside skills/design-review/references/
+
+external owner repo-relative path
+  resolves to another skill, for example:
+  skills/brand-identity-review/references/identity-gates.md
 ```
 
-This prevents `design-review` from becoming a god skill while keeping gate IDs stable across audit, refinement, workflows, reports, and evals.
+This keeps stable IDs in the facade registry without moving specialist knowledge into `design-review`.
 
 ## Runtime use
 
 Consult the registry when:
 
 - resolving `focus` or previous gate IDs;
-- normalizing findings from built-in or external reviewers;
+- normalizing built-in or external reviewer findings;
 - mapping aliases or deprecated IDs;
-- validating a report or handoff;
-- authoring an eval that names a design gate;
-- adding a domain reviewer or new gate family.
+- validating reports and handoffs;
+- authoring evals that name design gates;
+- adding a domain reviewer or gate family.
 
-Do not load the full registry merely to review an unrelated artifact. The facade may resolve selected IDs on demand.
+Do not load the complete registry for every review. Resolve selected IDs on demand.
 
 ## Identity rules
 
 ```text
-1. Every selected or reported design gate ID must be registered.
+1. Every selected or reported design gate ID is registered.
 2. Every active gate has exactly one canonical owner.
-3. The owner reference contains the full gate definition.
-4. Callers must not redefine a gate or invent a local meaning for its ID.
+3. The owner reference contains the full definition.
+4. Callers do not redefine a gate or invent local meanings.
 5. Similar wording does not create an alias.
-6. Deprecated IDs require an explicit migration entry.
-7. A renamed gate keeps its ID only when its meaning and owner remain materially compatible.
+6. Deprecated IDs require an explicit migration.
+7. A renamed gate keeps its ID only when meaning and owner remain compatible.
 8. A materially different gate receives a new ID.
+9. External owner paths are repository-relative and cannot escape the repo.
 ```
 
 ## Namespace rules
@@ -66,16 +69,15 @@ I4
 RI1
 SV11
 PR3
+BI2
 ```
 
-Current namespaces are declared in `gate-registry.yaml`. External domain reviewers must register a unique namespace before adding gates.
-
-Example future adapter:
+Current external adapter registration:
 
 ```yaml
 namespaces:
   BI:
-    purpose: brand-identity
+    purpose: brand-identity-system-quality
 
 gate_groups:
   brand-identity:
@@ -84,13 +86,11 @@ gate_groups:
       design_domain: brand-identity
       status: active
       applicability: brand-identity
-    gates:
-      BI1:
-        canonical_name: concept-symbol-fit
-        title: Concept/Symbol Fit
 ```
 
-Do not reserve `BI` or any other prefix merely because it might be useful later. Add the namespace together with the real domain reviewer and gates.
+`BI1–BI16` are owned by `brand-identity-review`; the facade stores their stable identity and routing metadata only.
+
+Do not reserve a namespace merely because it might be useful later. Register it together with a real domain reviewer, owner definitions, and regression coverage.
 
 ## Status model
 
@@ -99,60 +99,61 @@ active
   may be selected, scored, and reported
 
 deprecated
-  accepted only through the migration map; reports use the active replacement
+  accepted through the migration map; reports use active replacement
 
 reserved
-  namespace or identity is protected but must not be scored
+  protected identity; must not be scored
 ```
 
 ## Migration behavior
 
-`gate-migrations.yaml` is authoritative for aliases and deprecations.
+`gate-migrations.yaml` is authoritative.
 
 ```text
-incoming active ID
+active ID
 → use directly
 
-incoming alias
-→ normalize to canonical active ID
-→ retain alias in provenance only
+alias
+→ normalize to active ID
+→ preserve alias only in provenance
 
-incoming deprecated ID
+deprecated ID
 → load declared replacement(s)
-→ state the migration in the review context
+→ state migration in review context
 
 unknown ID
-→ reject; do not guess
+→ reject; never guess
 ```
 
-The registry baseline intentionally preserves existing active IDs. Empty alias and deprecated maps are valid and safer than invented mappings.
+Empty alias and deprecated maps are valid. They are safer than invented migrations.
 
 ## Eval contract usage
 
-When an eval trigger or assertion names a design gate, declare it explicitly:
+When a trigger or assertion names a design gate, declare it:
 
 ```yaml
-- id: tabs-overflow
-  trigger: "Finding I4 failed on tablet."
-  design_gate_ids: [I4]
+- id: identity-variant-drift
+  trigger: "BI11 failed because inverse geometry changed."
+  design_gate_ids: [BI11]
   quality_gates_tested:
     - facade_verdict_controls_workflow_state
 ```
 
-`quality_gates_tested` describes behavioral contract gates. `design_gate_ids` identifies canonical design-review gates. They are different namespaces and must not be mixed.
+`design_gate_ids` identifies canonical design gates. `quality_gates_tested` describes behavioral skill/workflow contract gates.
 
-## Change procedure
+## Adding an external domain reviewer
 
 ```text
-1. Identify the governing domain reviewer and owner reference.
-2. Check that no active gate already owns the same meaning.
-3. Register or reuse a namespace.
-4. Add the full gate definition to the owner reference.
-5. Add the identity metadata to gate-registry.yaml.
-6. Add alias/deprecation migration only when replacing a real prior ID.
-7. Add or update eval coverage with design_gate_ids.
-8. Run the registry and eval validators.
-9. Bump registry version for identity/schema changes.
+1. Create the reviewer skill and its owner reference.
+2. Define the domain, required evidence, and hard-gate boundary.
+3. Check that no active gate already owns the same meaning.
+4. Register a unique namespace.
+5. Add owner path, domain, applicability, weights, and hard-gate metadata.
+6. Add migrations only for real previous IDs.
+7. Add eval coverage with design_gate_ids.
+8. Update router/role composition and install packs.
+9. Run registry and eval validators.
+10. Bump registry version for identity/schema changes.
 ```
 
-A wording clarification in an owner reference does not require a registry-version bump when identity, applicability, ownership, and hard-gate policy remain unchanged.
+A wording clarification in an owner reference does not require a registry bump when identity, applicability, ownership, and hard-gate policy remain unchanged.
