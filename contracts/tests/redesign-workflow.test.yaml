@@ -1,7 +1,7 @@
 skill_test:
   skill: redesign-workflow
-  version: "3.2.0"
-  description: Verify redesign routing, ownership, delegation, scope, decision-provenance and concurrency integrity, domain-aware verification, facade-controlled delivery, and bounded correction.
+  version: "3.3.0"
+  description: Verify redesign routing, ownership, delegation, decision provenance, scope and concurrency integrity, domain-aware verification, facade-controlled delivery, and bounded correction.
 
   cases:
     - id: audit-only-hands-off-before-production
@@ -80,7 +80,7 @@ skill_test:
         - "scope expansion approved"
         - "newest PR body wins"
         - "user approval verified"
-        - "include /ai-designer"
+        - "effective_decision: include /ai-designer"
       quality_gates_tested:
         - material_scope_override_requires_verified_provenance
         - agent_authored_summary_is_not_owner_approval
