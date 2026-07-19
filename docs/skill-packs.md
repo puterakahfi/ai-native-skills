@@ -2,14 +2,15 @@
 
 Install bundles for common use cases. Each pack installs a workflow plus all skills it depends on.
 
-> **Why packs?** The Agent Skills spec has no native `dependencies` field. Skills declare
-> `metadata["ai-native-skills.requires"]` for agent-side awareness, but the CLI won't auto-install
-> transitive deps yet. Use the commands below to install a complete, working bundle in one shot.
+> **Why packs?** The Agent Skills spec has no native dependency resolution. Skills declare
+> `metadata["ai-native-skills.requires"]` for agent-side awareness, but the CLI does not auto-install
+> transitive dependencies yet. Packs bridge the gap.
 
 ---
 
 ## Redesign Pack
-Full UI/UX redesign loop — audit, design system, depth, genre, layout, copy, gates, and automatic verified-case learning promotion.
+
+Full UI/UX and visual redesign loop — audit, domain review, design system, depth, genre, layout, copy, gates, and verified-case learning promotion.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -30,6 +31,7 @@ npx skills add puterakahfi/ai-native-skills \
   --skill design-system \
   --skill design-audit \
   --skill design-review \
+  --skill brand-identity-review \
   --skill design-refinement \
   --skill skill-evolution \
   --skill skill-eval \
@@ -47,8 +49,31 @@ npx skills add puterakahfi/ai-native-skills \
 
 ---
 
+## Identity Review Pack
+
+Evidence-backed logo and brand-identity system audit using the `design-review` facade and canonical `BI` gates.
+
+```bash
+npx skills add puterakahfi/ai-native-skills \
+  --skill design-audit \
+  --skill design-review \
+  --skill brand-identity-review \
+  --skill design-brand \
+  --skill composition \
+  --skill visual-hierarchy \
+  --skill design-typography \
+  --skill design-color \
+  --skill design-refinement \
+  -g -y
+```
+
+Use for identity audits and acceptance. The pack does not provide legal trademark clearance.
+
+---
+
 ## Role Switcher Pack
-Auto-compose expert personas from intent — design, engineering, product, research.
+
+Auto-compose expert personas from intent — design, identity, engineering, product, and research.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -61,6 +86,7 @@ npx skills add puterakahfi/ai-native-skills \
   --skill native-ai-engineer \
   --skill diagram-architect \
   --skill design-review \
+  --skill brand-identity-review \
   --skill systematic-debugging \
   --skill architecture-review \
   --skill security-review \
@@ -71,6 +97,7 @@ npx skills add puterakahfi/ai-native-skills \
 ---
 
 ## Product Development Pack
+
 Full product lifecycle — discovery, PRD, spec, implementation, verification, deploy.
 
 ```bash
@@ -93,6 +120,7 @@ npx skills add puterakahfi/ai-native-skills \
 ---
 
 ## Engineering Quality Pack
+
 Code review, debugging, security, architecture — everything before merge.
 
 ```bash
@@ -115,8 +143,7 @@ npx skills add puterakahfi/ai-native-skills \
 
 ---
 
-## Full Suite (everything)
-Install every currently published skill, workflow, and meta-skill.
+## Full Suite
 
 ```bash
 npx skills add puterakahfi/ai-native-skills -g -y
@@ -128,12 +155,13 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Workflow / Meta-skill | Requires |
 |---|---|
-| `redesign-workflow` | design-foundation, design-brand, design-genre, design-depth, design-color, design-typography, design-spacing, design-iconography, design-visual, design-layout, adaptive-component-design, design-strategy, design-interaction, design-system, design-audit, design-review, design-refinement, skill-evolution, skill-eval, git-workflow, master-design, macrostructures, ui-components, composition, visual-hierarchy, copywriting, ux-psychology, accessibility |
-| `design-refinement` | design-audit, design-review, master-design, skill-evolution, skill-eval |
+| `redesign-workflow` | design foundation/brand/genre/depth/color/type/spacing/iconography, adaptive component design, audit/review/refinement, identity reviewer when identity is in scope, learning/eval/git, master-design, composition, hierarchy, copy, UX, accessibility |
+| `design-refinement` | design-audit, design-review, governing domain reviewer, master-design, skill-evolution, skill-eval |
+| `brand-identity-review` | design-review, design-brand, composition, visual-hierarchy, design-typography, design-color |
 | `skill-evolution` | skill-eval, git-workflow |
-| `role-switcher` | master-engineer, master-design, product-manager, ux-psychology, user-research, native-ai-engineer, diagram-architect, design-review, systematic-debugging, architecture-review, security-review, plan |
-| `workflow-router` | redesign-workflow, new-feature-workflow, bugfix-workflow, code-review-workflow, deployment-workflow, product-development-workflow, design-refinement, skill-evolution, skill-eval, git-workflow, skill-doctor, spec-workflow |
-| `product-development-workflow` | product-requirements, business-value-alignment, experiment-design, user-research, master-design, master-engineer, spec-workflow, threat-modeling, code-review-workflow, deployment-workflow, observability-design |
+| `role-switcher` | engineering/design/product/research owners, design-review, brand-identity-review, debugging, architecture/security review, plan |
+| `workflow-router` | design audit/refinement/redesign/review, brand-identity-review, feature/bug/review/deploy/product workflows, learning/eval/git, skill-doctor, spec-workflow |
+| `product-development-workflow` | product requirements/value/experiment/research, design/engineering owners, spec, threat modeling, code review, deployment, observability |
 | `bugfix-workflow` | systematic-debugging, master-engineer, security-review, test-driven-development |
 | `code-review-workflow` | master-engineer, architecture-review, security-review, threat-modeling |
 | `new-feature-workflow` | master-engineer, master-design, spec-workflow, test-driven-development |
