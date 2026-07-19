@@ -1,7 +1,7 @@
 skill_test:
   skill: design-review
-  version: "3.2.0"
-  description: Verify facade domain routing, evidence honesty, hard-gate behavior, canonical gate identity, and limited specialist coverage.
+  version: "3.3.0"
+  description: Verify facade domain routing, evidence honesty, hard-gate behavior, canonical gate identity, and specialist adapter coverage.
 
   cases:
     - id: screenshot-dashboard-runtime-not-verified
@@ -41,8 +41,8 @@ skill_test:
         - canonical_gate_identity
 
     - id: logo-without-domain-reviewer-is-limited
-      description: Universal visual gates cannot certify a complete logo identity system.
-      trigger: "Review apakah konsep logo dan identity system ini sudah production-ready. Tidak ada brand identity reviewer khusus yang tersedia."
+      description: Universal visual gates cannot certify a complete logo identity system when the adapter is unavailable.
+      trigger: "Review apakah konsep logo dan identity system ini sudah production-ready. Brand-identity-review tidak tersedia pada runtime ini."
       must_contain:
         - "brand-identity"
         - "LIMITED REVIEW"
@@ -54,6 +54,23 @@ skill_test:
       quality_gates_tested:
         - unsupported_domain_requires_reviewer
         - limited_review_verdict_ceiling
+
+    - id: logo-with-domain-reviewer-is-adapter-covered
+      description: Loading brand-identity-review changes primary-domain coverage from limited to adapter-covered.
+      trigger: "Review identity system ini dengan brand-identity-review. Brand brief, vector masters, variants, minimum-size tests, monochrome, inverse, lockups, applications, dan comparison set tersedia."
+      design_gate_ids: [BI1, BI2, BI5, BI7, BI8, BI10, BI11, BI15, BI16]
+      must_contain:
+        - "brand-identity-review"
+        - "ADAPTER_COVERED"
+        - "BI1"
+        - "BI16"
+      must_not_contain:
+        - "LIMITED REVIEW"
+        - "built-in interactive"
+      quality_gates_tested:
+        - external_domain_reviewer_loading
+        - adapter_coverage_changes_verdict_ceiling
+        - canonical_gate_identity
 
     - id: presentation-selects-presentation-strategy
       description: Presentation review must use presentation-domain gates instead of interactive gates.
