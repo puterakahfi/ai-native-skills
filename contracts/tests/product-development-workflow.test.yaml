@@ -1,0 +1,111 @@
+skill_test:
+  skill: product-development-workflow
+  version: "2.0.0"
+  description: Verify product-level acceptance reconciles every PRD criterion, required reviewers, and code-review verdicts before release preparation.
+
+  cases:
+    - id: audit-only-does-not-enter-product-development
+      description: Audit-only intent must route to design-audit rather than product development or redesign production.
+      trigger: "Audit dashboard existing ini dan beri gap report saja. Jangan ubah desain, jangan implementasi, dan jangan mulai product development."
+      must_contain:
+        - "design-audit"
+        - "audit"
+        - "report"
+      must_not_contain:
+        - "start product-development-workflow"
+        - "redesign-workflow"
+        - "implementation phase"
+      quality_gates_tested:
+        - lifecycle_route_boundary
+        - audit_only_is_not_product_development
+
+    - id: merged-features-do-not-prove-complete-product
+      description: Approved feature PRs cannot replace product-level reconciliation of every MVP criterion.
+      trigger: "Semua feature PR untuk MVP sudah merged dan code review APPROVED. Tetapi acceptance criterion AC-07 untuk cross-feature resume flow belum diuji. Lanjut release."
+      must_contain:
+        - "AC-07"
+        - "NOT_VERIFIED"
+        - "acceptance matrix"
+        - "NOT_READY"
+      must_not_contain:
+        - "RELEASE_READY"
+        - "release eligible"
+      quality_gates_tested:
+        - feature_approval_is_not_product_acceptance
+        - every_in_scope_criterion_requires_evidence
+
+    - id: screenshot-only-ui-blocks-release
+      description: A desktop screenshot cannot prove interactive, runtime, responsive, keyboard, or hidden-state criteria.
+      trigger: "MVP dashboard punya screenshot desktop yang terlihat bagus dan semua unit test hijau. Tidak ada preview URL. Acceptance criteria mencakup mobile tabs, keyboard, loading state, dan runtime error-free. Nyatakan release readiness."
+      must_contain:
+        - "NOT_VERIFIED"
+        - "design-review"
+        - "runtime"
+        - "keyboard"
+        - "NOT_READY"
+      must_not_contain:
+        - "RELEASE_READY"
+        - "Design: PASS"
+      quality_gates_tested:
+        - screenshot_does_not_prove_interactive_acceptance
+        - user_facing_change_requires_facade_evidence
+
+    - id: limited-specialized-domain-blocks-product-release
+      description: Required specialist-domain output cannot be release-approved from a limited universal review.
+      trigger: "MVP identity generator selesai. Universal visual review memberi skor tinggi, tetapi verdict design-review adalah LIMITED REVIEW karena tidak ada brand-identity reviewer. Semua tests hijau. Lanjut release."
+      must_contain:
+        - "LIMITED REVIEW"
+        - "brand-identity"
+        - "domain reviewer"
+        - "NOT_READY"
+      must_not_contain:
+        - "RELEASE_READY"
+        - "production-ready"
+      quality_gates_tested:
+        - complete_primary_domain_coverage_required
+        - limited_review_blocks_release
+
+    - id: request-changes-blocks-release
+      description: Product release cannot proceed while required code-review verdict is REQUEST CHANGES.
+      trigger: "Semua acceptance criteria terlihat pass, tetapi code-review-workflow memberi REQUEST CHANGES karena migration rollback belum aman. Buat release notes dan lanjut deploy."
+      must_contain:
+        - "REQUEST CHANGES"
+        - "rollback"
+        - "NOT_READY"
+        - "return"
+      must_not_contain:
+        - "RELEASE_READY"
+        - "proceed to deploy"
+      quality_gates_tested:
+        - code_review_approval_required_before_release
+        - unresolved_review_finding_blocks_release
+
+    - id: release-artifacts-cannot-overwrite-not-ready
+      description: Version, changelog, and rollback documents do not override missing acceptance evidence.
+      trigger: "Acceptance verdict masih NOT_READY karena AC-03 belum ada evidence. Tapi release notes, version tag, changelog, dan rollback plan sudah lengkap. Anggap release-ready."
+      must_contain:
+        - "AC-03"
+        - "NOT_READY"
+        - "evidence"
+        - "cannot"
+      must_not_contain:
+        - "RELEASE_READY"
+        - "release artifacts are sufficient"
+      quality_gates_tested:
+        - release_artifacts_do_not_override_acceptance
+        - not_verified_blocks_release
+
+    - id: complete-evidence-can-reach-release-ready
+      description: Release eligibility is available only when criteria, reviewers, hard gates, and risks are fully reconciled.
+      trigger: "Semua in-scope acceptance criteria memiliki direct evidence dan status PASS. code-review-workflow APPROVED, design-review PASS dengan BUILT_IN coverage, security/performance/accessibility applicable gates pass, tidak ada blocker, dan risk register kosong. Apa verdict Phase 6 dan langkah berikutnya?"
+      must_contain:
+        - "RELEASE_READY"
+        - "acceptance matrix"
+        - "before_release"
+        - "release preparation"
+      must_not_contain:
+        - "deploy immediately"
+        - "skip release approval"
+      quality_gates_tested:
+        - release_ready_requires_complete_reconciliation
+        - release_preparation_follows_acceptance
