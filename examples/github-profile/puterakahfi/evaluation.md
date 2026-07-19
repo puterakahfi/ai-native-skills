@@ -9,9 +9,10 @@ initial_commit: c1a3f65b6138093e8a817019425aca23c681f0c7
 first_refinement_commit: d5ebd185a1d78f7ce11cfba87e24c3c30092b9ff
 line_free_but_foundation_failed_commit: 4319b26c20b51e1a23e350a65bf29ec01788c775
 foundation_corrected_commit: 8b09299ad169221ec2daf1a3b05110d2af229c53
+final_refined_commit: a8d09f5a622b58e219a0c5620ab7a277c29f68c2
 skill: github-profile@1.2.0
 workflow: redesign-workflow@3.3.0
-mode: create_then_redesign_then_correct
+mode: create_then_redesign_then_correct_then_review
 output_mode: patch
 ```
 
@@ -19,7 +20,9 @@ output_mode: patch
 
 ```text
 classification: APPLIED_REVIEWED_CORRECTED
-rendered_delivery_verdict: NOT_VERIFIED
+rendered_delivery_verdict: LIMITED_REVIEW
+verified_universal_score: 8.5 / 10
+evidence_coverage: approximately 92 percent
 ```
 
 The fixture exercises a real correction loop rather than accepting valid Markdown or a stylistic label as finished design:
@@ -34,7 +37,10 @@ The fixture exercises a real correction loop rather than accepting valid Markdow
 8. reload `redesign-workflow`, compose one design owner and selected specialists
 9. compare two valid direction candidates
 10. select and patch a foundation-led zen composition
-11. convert both failures into permanent skill rules and regression tests
+11. render desktop and narrow GFM-equivalent evidence
+12. apply one focused copy-density refinement
+13. run the `design-review` universal facade with explicit LIMITED domain coverage
+14. convert failures into permanent skill rules and regression tests
 
 ## Preserved Equity and Locks
 
@@ -46,7 +52,7 @@ preservation_locks:
     - Product and design systems
   proof:
     - AI Native Skills
-    - Native AI Core
+    - AI Native Core
     - VisualMate
   brand_grammar:
     mood: zen and calm editorial
@@ -59,16 +65,7 @@ preservation_locks:
 
 ## Version 1.0 · Source Success, Render Failure
 
-The initial version passed important behavioral checks:
-
-- positioning before technologies
-- selected work before capability inventory
-- explicit role, contribution, and state
-- public proof without exposing private repositories
-- no fabricated employer, metric, client, or achievement claims
-- no badge wall, statistics wall, counters, animations, or third-party widgets
-
-The first screenshot produced this rendered verdict:
+The initial version passed positioning, proof, factual integrity, anti-clutter, and platform checks, but the first screenshot exposed:
 
 ```text
 PASS     factual integrity
@@ -91,22 +88,7 @@ Observed failures:
 
 ## Version 1.1 · Distinctive but Brand-Conflicting
 
-The next refinement introduced:
-
-- thesis-led opening
-- blockquote proof modules
-- code-box process flow
-- reduced content overlap
-
-This improved differentiation but introduced a new root-cause defect:
-
-```text
-FAIL  brand continuity
-```
-
-The proof blocks and code container used a technical-documentation grammar that conflicted with the established `pkahfi.com` direction: zen, more space, and no lines.
-
-Learning:
+The next refinement introduced a thesis-led opening, blockquote proof modules, and a code-box process flow. This improved contrast but failed brand continuity because the technical-documentation grammar conflicted with the established `pkahfi.com` direction.
 
 ```text
 distinctive ≠ brand-aligned
@@ -115,20 +97,18 @@ GitHub-native ≠ automatically appropriate
 
 ## Version 1.2 Attempt · Line-Free but Foundation Failure
 
-A line-free refinement removed borders, blockquotes, code boxes, and horizontal rules. The second screenshot showed that the correction was too literal.
-
-Foundation findings:
+A literal no-lines interpretation replaced containment with repeated oversized gaps.
 
 ```text
-F1 HIERARCHY   FAIL     page anchor, section label, item, and metadata were too close in weight
-F2 GROUPING    FAIL     projects were visually detached by oversized gaps
-F3 ALIGNMENT   PARTIAL  centered identity worked, but the body lacked strong role anchors
-F4 RHYTHM      FAIL     large spacing repeated across unrelated transitions
-F5 BALANCE     FAIL     small content mass floated inside a tall empty canvas
-F6 FLOW        PARTIAL  order was logical, but long voids weakened continuation
-F7 LEGIBILITY  FAIL     small labels carried critical section identity
-F8 CONSISTENCY PASS     repeated roles were treated consistently
-F9 ACCESS      PASS     semantic text and links remained available
+F1 HIERARCHY   FAIL
+F2 GROUPING    FAIL
+F3 ALIGNMENT   PARTIAL
+F4 RHYTHM      FAIL
+F5 BALANCE     FAIL
+F6 FLOW        PARTIAL
+F7 LEGIBILITY  FAIL
+F8 CONSISTENCY PASS
+F9 ACCESS      PASS
 F10 RESPONSIVE NOT_VERIFIED
 ```
 
@@ -136,24 +116,14 @@ Root cause:
 
 > “More space” was translated into more `<br>` elements instead of relational spacing. The result contained dead space rather than Ma.
 
-This directly violated `design-spacing`:
-
-```text
-sparse content needs less space, not more
-vertical rhythm first
-Ma is intentional presence, not absence
-```
-
-## Workflow Correction
-
-The correction was rerouted through `redesign-workflow`.
+## Canonical Workflow Correction
 
 ### Role composition
 
 ```yaml
 lifecycle_owner: redesign-workflow
 design_owner: master-design
-implementation_owner: master-engineer-equivalent repository patch owner
+implementation_owner: repository patch owner
 repository_write_owner: GitHub connector
 specialists:
   - design-foundation
@@ -163,7 +133,8 @@ specialists:
   - design-spacing
   - readability
   - content-strategy
-reviewer: design-review rendered-static facade
+reviewer: design-review universal facade
+primary_domain_coverage: LIMITED
 ```
 
 ### Direction candidates
@@ -180,32 +151,36 @@ B  Zen Technical Index
 
 Selected: **Centered Zen Manifesto**.
 
-Reason: it preserves the calm personal-brand identity while restoring a clear editorial focal sequence.
-
-### Corrected hierarchy
+### Relational system
 
 ```text
-page anchor     H3 centered name
-positioning     bold supporting role
-thesis          H4 authored proposition
-section parent  H3 left-aligned
-project item    H4 linked title
+page anchor     centered H3 name
+positioning     plain supporting role
+thesis          centered H4 authored proposition
+section parent  left-aligned H3
+project item    linked H4
 metadata        italic supporting line
 body            concise explanatory copy
 action          bounded profile links
+
+spacing         element gap < item gap < section gap
 ```
 
-### Corrected spatial rhythm
+No decorative lines, cards, blockquotes, code boxes, widgets, or external visual dependencies remain.
 
-```text
-element gap < item gap < section gap
-```
+## Focused Render Refinement
 
-- related project anatomy stays attached
-- projects have stronger separation than their internal details
-- sections have the strongest pause
-- only one bounded centered opening is used
-- no decorative lines, cards, blockquotes, or visual boxes
+The first GFM-equivalent render confirmed that structure and brand grammar had recovered, but found two remaining weaknesses:
+
+- the bold positioning line competed with the authored thesis
+- some desktop project and capability lines were longer than necessary
+
+The final commit corrected these locally without reopening direction:
+
+- changed positioning to plain supporting text
+- shortened project contribution copy
+- shortened capabilities
+- reduced current-focus measure
 
 ## Contract Mapping
 
@@ -216,9 +191,10 @@ PASS  no fabricated identity or metrics
 PASS  product/founder narrative
 PASS  anti-clutter
 PASS  generic-documentation failure converted to a regression case
-PASS  brand preservation now precedes genre expression
-PASS  foundation now precedes zen styling
+PASS  brand preservation precedes genre expression
+PASS  foundation precedes zen styling
 PASS  dead-space failure converted to a regression case
+PASS  final focused review preserves accepted direction
 ```
 
 ## GitHub Activation and Source Checks
@@ -236,17 +212,57 @@ PASS  source remains human-editable
 PASS  current statements are dated
 ```
 
+## Final Focused Design Review
+
+- Design domain: `other` — developer-profile document
+- Surface profile: `other` — GitHub Profile README
+- Artifact state: `mixed`
+- Review depth: `focused`
+- Coverage mode: `LIMITED`
+- Evidence:
+  - final live source
+  - local GFM-equivalent desktop render at `1200 × 1900`
+  - local GFM-equivalent narrow render at `390 × 3600`
+  - earlier user-provided rejected-baseline screenshots
+
+```text
+verified universal score  8.5 / 10
+evidence coverage         approximately 92 percent
+primary-domain coverage   LIMITED
+verdict                   LIMITED REVIEW
+critical findings         0
+important open findings   0
+```
+
+Foundation result:
+
+```text
+F1 HIERARCHY              PASS
+F2 GROUPING               PASS
+F3 ALIGNMENT              PASS
+F4 SPACE + RHYTHM         PASS
+F5 BALANCE                PASS
+F6 FLOW                   PASS
+F7 LEGIBILITY             PASS
+F8 SYSTEM CONSISTENCY     PASS
+F9 ACCESSIBILITY          PARTIAL
+F10 RESPONSIVE CONTINUITY PASS for local GFM-equivalent narrow rendering
+```
+
+The detailed canonical gate report lives in `render-review.md`.
+
 ## Render Acceptance
 
 ```text
-PASS          initial desktop render captured and reviewed
-PASS          line-free foundation-failed desktop render captured and reviewed
-NOT_VERIFIED  foundation-corrected desktop render not yet captured
-NOT_VERIFIED  foundation-corrected narrow-width render not captured
-NOT_VERIFIED  light/dark visual comparison not captured
+PASS          initial GitHub desktop render captured and reviewed
+PASS          line-free foundation-failed GitHub desktop render captured and reviewed
+PASS          final desktop GFM-equivalent render captured and reviewed
+PASS          final narrow GFM-equivalent render captured and reviewed
+NOT_VERIFIED  direct GitHub desktop parity for final commit
+NOT_VERIFIED  direct GitHub narrow parity for final commit
+NOT_VERIFIED  direct GitHub dark-theme rendering
+LIMITED       dedicated developer-profile domain coverage
 ```
-
-The screenshots are valid evidence for rejecting the earlier attempts. The current foundation-corrected source still requires direct rendering before a `READY` or full `PASS` verdict.
 
 ## Learning Result
 
@@ -259,6 +275,11 @@ whitespace is relational structure, not quantity
 zen does not exempt hierarchy, grouping, balance, or legibility
 source validity does not prove rendered composition
 GitHub Profile README needs document-specific translation
+workflow compliance must be evidenced, not asserted
 ```
 
-Potential next evolution: register a dedicated `developer-profile` or `document-portfolio` reviewer after comparing additional engineer, founder, maintainer, and designer fixtures.
+## Delivery
+
+Preserve the current live README. No further mutation is supported by the available evidence.
+
+The result remains **LIMITED REVIEW**, not complete PASS, because direct GitHub parity and a dedicated developer-profile/document-portfolio reviewer are still absent.
