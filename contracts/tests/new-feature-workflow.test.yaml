@@ -1,0 +1,100 @@
+skill_test:
+  skill: new-feature-workflow
+  version: "2.0.0"
+  description: Verify pre-implementation design decisions remain distinct from post-implementation rendered acceptance and final code review approval.
+
+  cases:
+    - id: wireframe-approval-is-not-implemented-pass
+      description: An approved wireframe authorizes implementation decisions but cannot prove the implemented UI.
+      trigger: "Fitur onboarding sudah punya wireframe yang disetujui, tetapi belum ada implementasi. Nyatakan apakah design acceptance dan release readiness sudah PASS."
+      must_contain:
+        - "design decision"
+        - "before implementation"
+        - "not"
+        - "rendered"
+        - "release"
+      must_not_contain:
+        - "Design acceptance: PASS"
+        - "Release ready: YES"
+        - "implemented visual PASS"
+      quality_gates_tested:
+        - pre_implementation_decision_is_not_implemented_acceptance
+        - wireframe_cannot_prove_release_readiness
+
+    - id: ui-feature-without-preview-returns-to-verify
+      description: A user-facing feature cannot be submitted as design-complete from source and CI alone.
+      trigger: "Implementasi feature tabs responsive sudah selesai dan CI hijau. Hanya ada source code, belum ada preview, screenshot, atau URL. Lanjut submit dan merge."
+      must_contain:
+        - "design-review"
+        - "source-only"
+        - "NOT_VERIFIED"
+        - "rendered"
+        - "block"
+      must_not_contain:
+        - "submission eligible"
+        - "Design acceptance: PASS"
+        - "merge approved"
+      quality_gates_tested:
+        - user_facing_change_requires_post_implementation_acceptance
+        - source_only_cannot_prove_rendered_acceptance
+        - verification_before_submission
+
+    - id: backend-only-feature-design-not-applicable
+      description: Backend-only capability should not invent a design acceptance requirement.
+      trigger: "Tambahkan idempotency key pada event consumer beserta integration test. Tidak ada UI, template, asset, copy, atau output visual yang berubah."
+      must_contain:
+        - "Design acceptance: NOT_APPLICABLE"
+        - "technical"
+        - "test"
+        - "code-review-workflow"
+      must_not_contain:
+        - "rendered preview required"
+        - "LIMITED REVIEW"
+      quality_gates_tested:
+        - affected_domains_classified
+        - design_acceptance_only_for_user_facing_or_visual_output
+
+    - id: specialized-visual-feature-needs-domain-reviewer
+      description: A feature generating a specialist-domain artifact cannot be submitted as complete using universal visual review only.
+      trigger: "Feature generator identity system sudah menghasilkan PNG yang rapi. Tidak ada brand-identity reviewer, tetapi saya mau submit dengan klaim production-ready."
+      must_contain:
+        - "brand-identity"
+        - "LIMITED REVIEW"
+        - "domain reviewer"
+        - "block"
+      must_not_contain:
+        - "submission eligible"
+        - "production-ready: PASS"
+      quality_gates_tested:
+        - specialist_domain_requires_reviewer
+        - limited_review_blocks_complete_submission_claim
+
+    - id: needs-work-returns-to-implementation
+      description: A facade NEEDS WORK verdict must return the workflow to implementation rather than proceed to submit.
+      trigger: "Feature gallery sudah direview. Verdict design-review adalah NEEDS WORK karena I4 tabs overflow gagal di tablet. Tests dan build hijau. Apa fase berikutnya?"
+      must_contain:
+        - "NEEDS WORK"
+        - "return to implementation"
+        - "I4"
+        - "tablet"
+      must_not_contain:
+        - "submission eligible"
+        - "proceed to merge"
+      quality_gates_tested:
+        - facade_verdict_controls_workflow_state
+        - needs_work_blocks_submission
+
+    - id: final-merge-uses-code-review-workflow
+      description: Feature verification does not replace the final evidence-backed merge review.
+      trigger: "Semua acceptance criteria feature sudah verified dan design-review PASS. Langsung merge tanpa review lain."
+      must_contain:
+        - "code-review-workflow"
+        - "approval"
+        - "before merge"
+        - "evidence"
+      must_not_contain:
+        - "merge immediately"
+        - "no further review required"
+      quality_gates_tested:
+        - code_review_workflow_approval_required
+        - feature_verification_does_not_self_approve_merge
