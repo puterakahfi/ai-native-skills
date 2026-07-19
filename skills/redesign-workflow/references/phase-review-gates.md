@@ -1,33 +1,69 @@
-# Phase 9 — Design Review Facade Adapter
+# Phase 10 — Design Review Facade Adapter
 
-This reference integrates `redesign-workflow` with the canonical `design-review` facade. The facade owns universal and domain scoring. The redesign workflow additionally owns conformance to the explicit design direction and loaded genre contract.
+Use this reference after fresh verification of the current redesign artifact.
+
+`redesign-workflow` supplies context and evidence. `design-review` owns classification, canonical gate resolution, applicability, scoring, coverage, verdict, and reporting. Built-in or external domain reviewers own specialist gates, evidence interpretation, hard-gate triggers, and correction knowledge.
+
+Do not maintain a duplicate scorecard here.
 
 ## Entry condition
 
-Review only after Phase 8 has produced fresh evidence.
-
 ```text
-□ target rendered or inspected in the declared artifact state
-□ design domain and surface profile resolved
-□ selected genre reference loaded
-□ genre constraints attached to the run state
-□ page shell and alignment rails declared
-□ required viewports, themes, formats, or channels captured
-□ relevant interactions and states exercised
-□ runtime or export evidence captured when required
-□ preservation locks checked
-□ verification report attached to the current iteration
+□ current artifact exists in the declared artifact state
+□ design domain and surface profile are resolved
+□ role composition and reviewer coverage are explicit
+□ required viewing contexts were captured
+□ affected states/interactions were exercised when applicable
+□ runtime, export, or specialist evidence was captured when required
+□ preservation locks were checked
+□ verification report belongs to the current iteration
+□ evidence gaps are recorded honestly
 ```
 
-A successful build is not visual verification. A screenshot alone is not runtime or interaction verification.
+A build alone is not visual verification. A screenshot alone is not interaction, runtime, responsive, export, or specialist-domain proof.
 
-## Facade loading policy
+## Reviewer route
 
-Start with `design-review/SKILL.md`, then load only applicable references.
+```text
+digital-interface
+  design-review facade
+  + built-in interactive reviewer
+  coverage: BUILT_IN
+
+visual-communication
+  design-review facade
+  + built-in static reviewer
+  coverage: BUILT_IN
+
+presentation
+  design-review facade
+  + built-in presentation reviewer
+  coverage: BUILT_IN
+
+brand-identity
+  design-review facade
+  + brand-identity-review when available
+  coverage: ADAPTER_COVERED
+  fallback: LIMITED or ROUTE_ELSEWHERE
+
+other
+  design-review facade
+  + declared external domain reviewer
+  fallback: LIMITED or ROUTE_ELSEWHERE
+```
+
+Universal visual gates never replace a required specialist reviewer.
+
+## Phase-specific loading
 
 ```text
 CLASSIFY / ROUTE
+  design-review/SKILL.md
   design-review/references/review-routing.md
+  design-review/references/facade-boundary.md when coverage is unclear
+  design-review/references/gate-registry.yaml for selected or prior gate IDs
+  design-review/references/gate-migrations.yaml only for real aliases/deprecations
+  design-review/references/review-profiles.md only for built-in profiles
 
 UNIVERSAL REVIEW
   design-review/references/universal-gates.md
@@ -35,10 +71,10 @@ UNIVERSAL REVIEW
 DOMAIN / SURFACE REVIEW
   design-review/references/interactive-surface-gates.md OR
   design-review/references/static-visual-gates.md OR
-  declared external reviewer
+  loaded external domain reviewer
 
 COMPONENT REVIEW
-  design-review/references/component-review.md only for selected components
+  design-review/references/component-review.md only for affected components
 
 EVIDENCE + SCORE
   design-review/references/evidence-and-scoring.md
@@ -47,365 +83,161 @@ REPORT
   design-review/references/review-report.md
 ```
 
-During an active visual loop, also load `iteration-review-mode.md`.
-
-## Contextual hard gate: genre conformance
-
-This gate runs before the facade verdict is accepted.
-
-```yaml
-genre_conformance_gate:
-  genre: <name>
-  reference: <loaded path>
-  constraints_tested: []
-  source_evidence: []
-  rendered_evidence: []
-  violations: []
-  status: pass | fail | not_verified
-```
-
-Rules:
-
-```text
-- explicit genre constraints are hard gates when applicable
-- a high universal score cannot override a genre violation
-- source evidence may identify obvious failures before rendering
-- rendered evidence is required for final pass
-- not_verified cannot be reported as pass
-```
-
-### Zen / space-led conformance gate
-
-When genre is `zen-minimalist`, `editorial-minimal`, or explicitly space-led, verify:
-
-```text
-COMPOSITION
-□ whitespace and proximity perform most grouping
-□ one clear focal object per viewport
-□ empty intervals are intentional and anchored
-
-ALIGNMENT CONTINUITY
-□ nav, hero, sections, contact, and footer share one declared page shell
-□ 2–4 persistent vertical rails are visible across adjacent sections
-□ section labels reuse a stable start position
-□ mixed-size eyebrow/heading pairs are optically aligned by rendered glyphs, not only layout boxes
-□ major headings reuse a stable main-content rail
-□ titles, descriptions, and actions align to declared supporting rails
-□ asymmetry comes from span, measure, or one declared focal exception
-□ repeated arbitrary margin-left, padding-left, or translate-x offsets = 0
-□ mobile collapses to a predictable one- or two-rail reading order
-
-STRUCTURAL LINES
-□ section dividers = 0
-□ repeated per-row separators = 0 by default
-□ at most one rare list-boundary hairline is justified
-□ typical viewport shows target 0 and maximum 1 structural line
-
-CONTAINMENT
-□ cards are rare exceptions
-□ no card-to-hairline substitution
-□ no repeated bordered metadata rows across multiple sections
-□ no giant boxed CTA used only for visual impact
-
-MOTION AND EXPRESSION
-□ no hover lift, bounce, glow, or decorative urgency
-□ accent and texture remain rare
-```
-
-Functional exclusions from the line budget:
-
-```text
-form controls, keyboard focus rings, required tables, diagrams, charts,
-and data grids whose meaning depends on lines
-```
-
-Allowed alignment exception:
-
-```text
-one documented focal object or illustration may break a rail when the break
-is visually intentional, remains balanced, and does not license unrelated row drift
-```
-
-Box alignment is not optical alignment. A small uppercase label and a large display heading can occupy the same grid row yet still look vertically crooked because cap height, ascenders, and line-box metrics differ. Correct repeated label/heading relationships with one shared component or token-level optical offset. Do not add unrelated per-section nudges.
-
-### Required evidence for zen line density and alignment
-
-```text
-1. source scan of changed visual components for:
-   border-t, border-b, border-y, divide-y, divide-x, repeated <hr>,
-   box-shadow separators, and pseudo-element rules
-
-2. source scan for local alignment nudges:
-   translate-x, margin-left, padding-left, arbitrary ml-[...], pl-[...],
-   percentage indentation, alternating row offsets, and conflicting container widths
-
-3. full-page or representative viewport captures
-
-4. visible structural-line count per inspected viewport
-
-5. alignment-rail inspection across at least three adjacent sections:
-   label start, heading start, supporting-content start, action end
-
-6. optical top-edge inspection for repeated eyebrow/heading pairs:
-   compare rendered glyph edges, not only DOM boxes; verify one shared correction rule
-
-7. mobile reading-order inspection after desktop rails collapse
-
-8. justification for every allowed line or focal-offset exception
-```
-
-Example failed evidence:
-
-```yaml
-violations:
-  - region: selected-work
-    observation: every project row uses border-top
-    class: card_to_hairline_substitution
-  - region: principles
-    observation: section border-y plus per-item border-top
-    class: structural_fragmentation
-  - region: page-wide
-    observation: work list uses ml-[30%], principles alternate translate-x, contact uses another offset
-    class: alignment_drift
-  - region: selected-work-header
-    observation: eyebrow and display heading share a grid row but rendered glyph tops are visibly misaligned
-    class: optical_alignment_failure
-  - region: responsive
-    observation: desktop offsets survive stacking and create mobile zig-zag
-    class: rail_collapse_failure
-```
-
-Any unapproved structural section border, repeated row-separator system, or repeated arbitrary content offset on a zen page produces `fail` and routes to defect classification.
-
-## Contextual hard gate: portfolio publication eligibility
-
-Apply this gate to portfolios, product hubs, personal sites, showcase pages, and any redesign that publishes a project inventory.
-
-The content inventory is not an archive. Honest status labeling does not justify publishing every project.
-
-```yaml
-publication_eligibility_gate:
-  items_reviewed: []
-  published_items: []
-  hidden_items: []
-  user_overrides: []
-  violations: []
-  status: pass | fail | not_verified
-```
-
-Classify every candidate item before it receives homepage visibility:
-
-```text
-RELEASED_AND_REACHABLE
-  shipped or public; destination works; evidence is inspectable
-
-ACTIVE_AND_MAINTAINED
-  currently used, maintained, or materially progressing
-
-ACTIVE_WORK_IN_PROGRESS
-  not released, but strategically active and intentionally shown
-
-DORMANT_OR_ABANDONED
-  stalled, neglected, or no longer representative
-
-STALE_OR_BROKEN
-  dead link, misleading status, outdated claim, or unavailable destination
-
-SPECULATIVE
-  idea only; no meaningful artifact or active execution
-```
-
-Publication defaults:
-
-```text
-□ RELEASED_AND_REACHABLE may be shown
-□ ACTIVE_AND_MAINTAINED may be shown with accurate status
-□ ACTIVE_WORK_IN_PROGRESS may be shown only when it has strategic value and clear labeling
-□ DORMANT_OR_ABANDONED is hidden by default
-□ STALE_OR_BROKEN is hidden until corrected
-□ SPECULATIVE is hidden unless the user explicitly requests a roadmap surface
-□ explicit user inclusion or exclusion overrides inferred eligibility
-```
-
-Hard rules:
-
-```text
-- transparency is not inventory dumping
-- “Lab”, “Planned”, or “Experiment” is not automatic permission to publish
-- a project must not be labeled live without verified public evidence
-- dormant projects must not borrow credibility from released work
-- when filtering leaves one item, simplify the section rather than preserving an empty catalog pattern
-- user feedback that an item is dormant, abandoned, or not ready is authoritative
-```
-
-Required evidence:
-
-```text
-1. item name and claimed maturity
-2. source of truth: user instruction, repository evidence, reachable URL, or active artifact
-3. publication decision: show | hide | move to roadmap
-4. reason for every ACTIVE_WORK_IN_PROGRESS item kept visible
-5. confirmation that navigation and section copy still match the filtered inventory
-```
-
-Example failure:
-
-```yaml
-violations:
-  - region: wider-ecosystem
-    observation: dormant projects remain visible because they are labeled Lab
-    class: publication_eligibility_failure
-  - region: navigation
-    observation: section still promises a broad ecosystem after inventory was reduced to one active item
-    class: content_structure_mismatch
-```
-
-A portfolio or product hub cannot pass review while user-declared dormant, abandoned, stale, or misleading projects remain published.
-
-## Review mode selection
-
-```text
-focused iteration
-  changed gates plus adjacent regressions
-
-full review
-  multi-layer direction or final design approval
-
-release review
-  commit, PR, deployment, or delivery readiness
-```
-
-A genre correction that changes containment grammar or alignment rails requires at least a focused review across every affected section, not only the initially reported component.
+During a focused iteration, also use `iteration-review-mode.md`. Do not load the full gate inventory defensively.
 
 ## Route from redesign state
 
 ```yaml
 review_route:
-  design_domain: <digital-interface | visual-communication | presentation | other>
-  surface_profile: <from spec>
-  artifact_state: <rendered-interactive | rendered-static | mixed>
+  design_domain: <domain>
+  surface_profile: <profile>
+  artifact_state: <rendered-interactive | rendered-static | source-only | mixed>
   review_depth: <focused | full | release>
   coverage_mode: <BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE>
   domain_reviewers: []
-  genre_reviewer: <loaded design-genre reference>
-  selected_lenses: []
+  viewing_context: []
+  selected_gate_ids: []
   selected_components: []
-  applicable_hard_gates: []
+  changed_layers: []
+  acceptance_criteria: []
   evidence_available: []
   evidence_gaps: []
+  preservation_locks: []
 ```
 
-Do not default every redesign to `web-marketing`. Use the actual surface and design domain.
+Every selected or reported design gate must be active and canonical in the registry.
 
-## Lightweight iteration evidence
+## Review mode
 
 ```text
-□ inspect every changed region
-□ inspect adjacent regions for rhythm, hierarchy, and alignment regressions
-□ verify affected viewports and themes
-□ exercise changed controls and overflow
-□ run changed-file diff, genre-token scan, and local-offset scan
-□ capture runtime errors for interactive surfaces
-□ record any deferred build/test gates honestly
+focused
+  target findings or changed layers
+  adjacent regression gates
+  preserved gates and locks
+  affected contextual hard gates
+
+full
+  all applicable universal and loaded domain gates
+  major present components
+  full only with BUILT_IN or ADAPTER_COVERED primary-domain coverage
+
+release
+  full review
+  required runtime/export/specialist production evidence
+  all applicable contextual hard gates verified
+  no complete approval with insufficient coverage
 ```
 
-Do not use repeated full builds as a substitute for fresh visual evidence.
+## Gate status preservation
 
-## Review decision
-
-Use the facade verdict only after contextual hard gates are applied.
+Every selected gate receives exactly one:
 
 ```text
 PASS
-  facade passes + genre conformance passes + redesign acceptance passes
-
-CONDITIONAL PASS
-  only when remaining evidence gaps fit the approval boundary and no genre hard gate fails
-
-NEEDS WORK
-  failed genre or scored gate → Phase 10 defect classification
-
-CRITICAL
-  blocking runtime, accessibility, fidelity, or destructive failure
-
-LIMITED REVIEW
-  missing domain coverage or rendered evidence; never claim full approval
+FAIL
+PARTIAL
+NOT_VERIFIED
+NOT_APPLICABLE
 ```
 
-A score of 8 or above does not override a failed genre hard gate, publication-eligibility gate, missing release evidence, or insufficient domain coverage.
+Rules:
+
+```text
+missing evidence → NOT_VERIFIED, not FAIL and not zero
+irrelevant gate → NOT_APPLICABLE
+mixed verified scope → PARTIAL with missing scope named
+FAIL/PARTIAL → eligible for defect handoff
+NOT_VERIFIED → evidence gap or verification handoff, not design-fix evidence
+```
+
+## Verdict mapping
+
+```text
+PASS
+  → delivery only when redesign acceptance criteria, preservation locks,
+    required evidence, and contextual hard gates also pass
+
+CONDITIONAL PASS
+  → delivery only when remaining gaps are explicitly non-blocking,
+    accepted, and inside the approval boundary
+
+NEEDS WORK
+  → Phase 11 defect classification when iterations remain
+
+CRITICAL
+  → block passing delivery and classify immediately
+
+LIMITED REVIEW
+  → load the required domain reviewer, narrow the approval claim,
+    or hand off to the specialist
+
+ROUTE ELSEWHERE
+  → stop unsupported approval; do not continue scoring as if covered
+```
+
+An average at or above 8 never overrides a contextual hard-gate failure, missing primary-domain coverage, or required `NOT_VERIFIED` evidence.
 
 ## Defect handoff
 
+For each failed or partial gate:
+
 ```yaml
 defect_candidate:
-  gate: <id>
-  governing_reviewer: <genre reference | design-review | domain reviewer>
-  region: <affected region>
+  canonical_gate_id: <id>
+  governing_reviewer: <built-in or external reviewer>
+  status: <FAIL | PARTIAL>
   observation: <verified condition>
   evidence: []
-  impact: <user | business | accessibility | fidelity | runtime | delivery>
-  recommendation: <direction>
-  suspected_layer: <foundation | structure | component | expression | interaction | content | implementation>
+  impact: <user, business, accessibility, fidelity, runtime, or delivery impact>
+  affected_region: <region>
+  recommendation: <correction direction>
+  suspected_layer: <strategy | foundation | structure | component |
+                    expression | interaction | content | implementation |
+                    product-lock | domain-specialist>
 ```
 
-For recurring genre violations, consider:
+Do not infer correction ownership from the visible symptom. Phase 11 owns classification.
 
-```text
-workflow_orchestration_defect
-  selected reference was not loaded or its constraints were not propagated
+For `NOT_VERIFIED`:
 
-reference_knowledge_defect
-  genre rule was ambiguous or allowed a recurring wrong interpretation
-
-local_implementation_defect
-  rule was clear and loaded, but implementation violated it
+```yaml
+evidence_gap:
+  canonical_gate_id: <id>
+  governing_reviewer: <reviewer>
+  missing_evidence: []
+  claim_blocked: <claim>
+  next_verification: <required action>
 ```
 
-Alignment drift caused by many local offsets is a structure defect, not a set of unrelated component-polish defects. Reopen the shared grid and remove the nudges instead of correcting each item independently.
-
-Repeated optical misalignment in the same label/heading pattern is a component-system defect. Fix the shared primitive once; do not scatter `pt-*`, `top-*`, or transforms across individual sections.
-
-Publishing dormant work despite an existing live-content rule is a workflow-enforcement defect. Add or strengthen the publication gate instead of merely relabeling dormant items.
-
-Do not classify solely from the visible symptom.
-
-## Minimum report
+## Review output
 
 ```markdown
-## [target] · Design Review · Iteration [N]
+## [target] · Redesign Review · Iteration [N]
 
-**X.XX / 10** — [verdict] · Coverage [X%]
+**X.XX / 10** — [VERDICT] · Evidence coverage [X%]
 
 - Design domain: [domain]
-- Genre: [genre]
-- Genre conformance: [pass | fail | not verified]
-- Publication eligibility: [pass | fail | not verified]
-- Structural line count by viewport: [evidence]
-- Page shell: [value]
-- Persistent alignment rails: [evidence]
-- Optical label/heading alignment: [pass | fail | not verified]
-- Arbitrary offset count: [number and regions]
-- Responsive rail collapse: [pass | fail | not verified]
-- Review coverage: [mode]
-- Hard gates: [status]
-- Critical findings: [count]
-- Important findings: [count]
+- Primary-domain coverage: [BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE]
+- Loaded reviewers: [reviewers]
+- Contextual hard gates: [status]
+- Acceptance criteria: [status]
 
-| Cluster | Score/status | Coverage | Governing reviewer | Notes |
-|---|---:|---:|---|---|
-| Genre conformance | pass/fail | X% | design-genre | ... |
-| Publication eligibility | pass/fail | X% | redesign-workflow | ... |
-| Alignment continuity | pass/fail | X% | redesign-workflow | ... |
-| Universal visual quality | X.X | X% | design-review | ... |
-| Domain/surface quality | X.X | X% | reviewer | ... |
-| Components | X.X | X% | reviewer | ... |
-| Runtime/export/fidelity | X.X | X% | reviewer | ... |
+### Findings
+- `[gate]` [FAIL/PARTIAL] — [observation] → [correction direction]
 
-**Open findings**
-- [gate] — [observation] → [correction]
+### Not verified
+- `[gate]` — [missing evidence and blocked claim]
 
-**Not verified**
-- [missing evidence]
+### Preservation
+- Passed: ...
+- Failed: ...
+- Not verified: ...
+
+### Scope limitations
+- ...
+
+### Handoff
+[delivery | defect classification | verification | domain reviewer | route elsewhere]
 ```
 
-The full report contract remains in `design-review/references/review-report.md`.
+The full score/report semantics remain owned by `design-review/references/evidence-and-scoring.md` and `review-report.md`.
