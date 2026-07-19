@@ -3,18 +3,18 @@ name: design-review
 description: Facade skill for evidence-backed review of digital interfaces and visual communication artifacts — classify the target, select applicable domain reviewers and canonical gates, normalize evidence, then score and report with explicit coverage.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.2.0
+  ai-native-skills.version: 3.3.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.pattern: facade
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/design-review.contract.yaml
   ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.related_skills: '["design-audit","design-refinement","redesign-workflow","master-design","design-foundation","design-system","adaptive-component-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
+  ai-native-skills.related_skills: '["brand-identity-review","design-audit","design-refinement","redesign-workflow","master-design","design-foundation","design-system","adaptive-component-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
 ---
 
 # Design Review
 
-Unified review entry point for digital interfaces and visual communication artifacts.
+Unified review entry point for built-in and adapter-covered design domains.
 
 The facade owns classification, reviewer routing, canonical gate resolution, applicability, evidence normalization, scoring, coverage, verdict, and reporting. Specialist reviewers own domain knowledge, full gate definitions, evidence interpretation, and domain hard gates.
 
@@ -43,9 +43,11 @@ The facade owns classification, reviewer routing, canonical gate resolution, app
 
 ```text
 target            required — URL, app, screenshot, image, PDF page, slide, repo path
-design_domain     digital-interface | visual-communication | presentation | other
+design_domain     digital-interface | visual-communication | presentation |
+                   brand-identity | other
 surface_profile   web-marketing | web-application | mobile-application |
-                   desktop-application | static-marketing | presentation | other
+                   desktop-application | static-marketing | presentation |
+                   brand-identity | other
 artifact_state    rendered-interactive | rendered-static | source-only | mixed
 review_depth      quick | focused | full | release
 focus             lenses, components, regions, or canonical previous gate IDs
@@ -76,15 +78,16 @@ Phase 2 — INSPECT
   Capture realistic content, states, sizes, themes, assets, and constraints.
 
 Phase 3 — UNIVERSAL REVIEW
-  Load universal-gates.md.
+  Load universal-gates.md when cross-domain principles are applicable.
 
 Phase 4 — DOMAIN / SURFACE REVIEW
   Interactive → interactive-surface-gates.md
   Static/slide → static-visual-gates.md
-  Specialized domain → declared domain reviewer or limited scope
+  Brand identity → brand-identity-review
+  Other specialized domain → declared reviewer or limited scope
 
 Phase 5 — COMPONENT REVIEW
-  Load component-review.md only for present or required components.
+  Load component-review.md only for present or required interactive components.
 
 Phase 6 — EVIDENCE + SCORE
   Normalize findings, validate gate IDs, assign statuses, scores, weights,
@@ -116,15 +119,16 @@ CLASSIFY / ROUTE
   review-profiles.md only for a built-in profile
 
 UNIVERSAL REVIEW
-  universal-gates.md
+  universal-gates.md when applicable
 
 DOMAIN / SURFACE REVIEW
   interactive-surface-gates.md OR
   static-visual-gates.md OR
-  declared domain reviewer
+  brand-identity-review OR
+  another declared domain reviewer
 
 COMPONENT REVIEW
-  component-review.md only for selected components
+  component-review.md only for selected interactive components
 
 EVIDENCE + SCORE
   evidence-and-scoring.md
@@ -152,9 +156,11 @@ unknown ID     → reject
 new meaning    → register a new ID and owner
 ```
 
-External domain reviewers must register a unique namespace and all exposed gates. See `facade-boundary.md` and `gate-registry.md`.
+External domain reviewers register a unique namespace and may own definitions through a repo-relative skill reference. They must not copy their domain knowledge into the facade.
 
-## Built-In Coverage
+## Coverage
+
+Built-in:
 
 ```text
 digital-interface    web, mobile, desktop, and responsive product UI
@@ -162,13 +168,19 @@ visual-communication poster, flyer, banner, social, ad, and thumbnail
 presentation         slides and decks
 ```
 
-Identity systems, packaging, motion/video, industrial, spatial, fashion, and service-design disciplines require a domain reviewer for a complete verdict. Universal gates alone produce `LIMITED REVIEW`.
+Available external adapter:
+
+```text
+brand-identity       brand-identity-review · namespace BI · ADAPTER_COVERED
+```
+
+Packaging, motion/video, industrial, spatial, fashion, and service-design disciplines still require their own domain reviewer. Universal gates alone produce `LIMITED REVIEW`.
 
 ## Review Depth
 
 ```text
 quick
-  Critical universal gates + applicable hard gates + declared issue.
+  Critical universal gates + applicable domain hard gates + declared issue.
   No release claim.
 
 focused
@@ -180,7 +192,7 @@ full
 
 release
   Full review + contextual hard gates + required states, sizes, themes,
-  inputs, runtime/export evidence, and sufficient domain coverage.
+  inputs, runtime/export/domain evidence, and sufficient primary coverage.
 ```
 
 ## Applicability and Evidence
@@ -196,16 +208,17 @@ poster + reduced motion                    → NOT_APPLICABLE
 dashboard screenshot + keyboard operation → NOT_VERIFIED
 running app + unhandled route error        → FAIL RI1
 commercial visual + wrong supplied price  → FAIL SV11
+logo concept + brand-identity-review       → evaluate BI gates
 logo concept without identity reviewer     → LIMITED REVIEW
 ```
 
-Contextual hard gates include:
+Contextual hard gates are declared by the governing reviewer:
 
 ```text
 interactive release
   RI1 runtime integrity
   G21 reduced motion when applicable
-  verified accessibility or task-completion blockers
+  accessibility/task-completion blockers
 
 static commercial delivery
   SV8–SV11 required asset/content fidelity
@@ -213,8 +226,11 @@ static commercial delivery
   SV12–SV13 crop/safe-area integrity
   SV17 delivery resolution
 
-specialized domain
-  registered hard gates from the loaded domain reviewer
+brand identity
+  contextual BI hard gates from brand-identity-review
+
+other specialized domain
+  registered hard gates from its loaded reviewer
 ```
 
 A build is not visual verification. A screenshot is not interaction or runtime verification. Universal evidence is not specialist-domain proof.
@@ -259,6 +275,7 @@ design-audit       full capture, gap analysis, prioritization
 design-refinement  targeted fixes, preservation, focused re-score
 redesign-workflow  redesign, verification, defect classification, fix loop
 domain specialist  unsupported domain knowledge and gates
+legal specialist   trademark/legal questions outside design review
 ```
 
 ## Final Guard
