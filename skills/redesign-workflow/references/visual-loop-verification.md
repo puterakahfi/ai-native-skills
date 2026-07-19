@@ -1,100 +1,185 @@
-# Visual Loop Verification Packets
+# Focused Iteration Verification Packets
 
-Use this reference when a creative redesign loop is still in progress and a harness/reminder asks for "fresh verification" while full lint/build is either intentionally deferred or blocked by repository setup.
+Use this reference during an active redesign loop when fresh evidence is required before focused review. Creative iteration is not automatically a deploy gate, but it still needs honest domain-appropriate evidence.
 
 ## Principle
 
-Creative UI/UX loops are not deploy gates. Keep feedback fast until the user approves the direction or asks to commit/deploy.
+```text
+changed layer
+→ smallest sufficient fresh evidence packet
+→ focused facade review
+→ adjacent regression and preservation checks
+```
 
-Run full lint/build/typecheck when:
+Full lint, build, typecheck, export preflight, or specialist production checks run when:
 
 ```text
-✓ user says the design is approved / ready
-✓ preparing a commit or PR
-✓ the change is non-visual and correctness depends on build/test output
-✓ user explicitly asks for full verification
+user approves the direction for commit/PR/release
+the changed implementation requires them for correctness
+the declared acceptance criteria require them
+specialist production readiness is being claimed
+user explicitly requests full verification
 ```
 
-During iteration, provide a fresh lightweight packet instead.
+A deferred command is recorded as deferred, never passed.
 
-## Lightweight packet
+## Common packet
 
-For changed visual routes/components, collect:
+Every iteration captures:
 
 ```text
-1. `git diff --check -- <changed files>`
-2. route status with curl/browser navigation (`/route 200`)
-3. browser DOM probe:
-   - image complete + rendered dimensions when image assets changed
-   - overflow false
-   - touch target failures 0
-   - theme label/class when theme affected
-4. browser visual check for the affected route and mode
-5. dark/light toggle check when tokens or image blending changed
+changed regions, files, or slides
+current artifact/version identifier
+primary design domain and artifact state
+target gates or acceptance criteria
+adjacent regression areas
+preservation locks checked
+evidence available and gaps
+commands/checks run, failed, or deferred
 ```
 
-## When lint is blocked
+## Digital-interface packet
 
-If full lint was already attempted and failed because a shared config/dependency is missing, report the concrete blocker once:
+For changed interactive routes/components:
 
 ```text
-npm run lint blocked by missing shared config: Cannot find package '@repo/config-eslint' imported from eslint.config.mjs
+1. changed-file diff check when source changed
+2. route/app state is actually mounted
+3. rendered inspection at affected viewports/orientations/themes
+4. changed controls and states exercised
+5. overflow and component substitution inspected
+6. relevant pointer/touch/keyboard/gesture behavior checked
+7. focus/semantics checked when affected
+8. runtime/console or flow-completion evidence when executable
+9. brand/content/asset locks compared
 ```
 
-Do **not** keep rerunning the same failing lint command every iteration. Resume full lint only at commit/deploy boundary or after the setup issue is fixed.
+Do not assume a 200 response means the browser is displaying the intended state. Confirm route, mounted content, and required styles/resources.
 
-## Blank page / missing hero recovery
-
-Before diagnosing CSS or React layout, prove the browser is actually on the app page.
+Useful runtime diagnosis:
 
 ```text
-1. Check `location.href` — if it is `about:blank`, re-navigate to the route.
-2. Check `document.body.children.length` — 0 means no app DOM mounted.
-3. Check `document.styleSheets.length` — 0 means CSS/resources not loaded.
-4. Check dev-server process/logs — parent watcher may exit while child server still listens.
-5. Check route with curl — route 200 does not guarantee browser is still on that route.
-6. For Next dev, prefer `http://localhost:<port>` over `127.0.0.1` if logs show blocked cross-origin HMR/font/dev resources.
-7. Re-navigate after server restart before calling the UI blank.
+about:blank false alarm
+  browser is not on the target route
+
+unmounted surface
+  route exists but required content did not mount
+
+stylesheet/resource failure
+  content exists but styling/assets are absent
+
+runtime blank
+  route, DOM/native tree, and styles exist but visible content is missing
+
+state mismatch
+  the captured state differs from the redesign acceptance state
 ```
 
-Diagnosis names:
+A screenshot cannot prove keyboard operation, hidden states, runtime integrity, responsive substitution, or reversibility.
+
+## Visual-communication packet
+
+For poster, banner, social, ad, thumbnail, or other static work:
 
 ```text
-about:blank false alarm — browser is not on the app route
-unmounted DOM — route loaded no body children
-stylesheet drop — body exists but stylesheets = 0
-resource-origin block — Next dev blocks 127.0.0.1 resources; use localhost or allowedDevOrigins
-runtime blank — route + DOM + styles exist but visible content absent; inspect console/errors next
+1. current export at declared dimensions/ratio
+2. actual-size or destination-size inspection
+3. crop, safe-area, and overlay simulation
+4. mandatory text survival and legibility
+5. supplied logo/product/person/content comparison
+6. edge/mask, resolution, compression, and color inspection when affected
+7. adjacent layout and hierarchy regression check
 ```
 
-## Example DOM probe for image delight assets
+Do not run runtime, keyboard, touch, or reduced-motion checks on a static image.
 
-```js
-(() => ({
-  route: location.pathname,
-  images: [...document.images].map(img => ({
-    alt: img.alt,
-    complete: img.complete,
-    natural: [img.naturalWidth, img.naturalHeight],
-    rendered: [
-      Math.round(img.getBoundingClientRect().width),
-      Math.round(img.getBoundingClientRect().height),
-    ],
-  })),
-  overflow: document.documentElement.scrollWidth > innerWidth,
-  touchFail: [...document.querySelectorAll('a,button')].filter(el => {
-    const b = el.getBoundingClientRect();
-    return b.width > 0 && b.height > 0 && (b.width < 44 || b.height < 44);
-  }).length,
-}))()
+## Presentation packet
+
+For slide or deck changes:
+
+```text
+1. affected slide at actual delivery scale
+2. preceding and following slides
+3. complete narrative sequence when structure changed
+4. screen-share, room, or self-guided viewing simulation
+5. chart/data/source verification when affected
+6. deck consistency and repeated-layout regression
+7. export/playback evidence when applicable
 ```
+
+A single polished slide does not prove narrative continuity.
+
+## Brand-identity packet
+
+For identity changes, load `brand-identity-review/references/evidence-and-hard-gates.md`.
+
+```text
+1. primary mark and affected variants
+2. construction/geometry comparison
+3. small-size and declared minimum-size samples
+4. monochrome and inverse samples
+5. clear-space and lockup contexts when affected
+6. typography/color integration
+7. application contexts and production master evidence
+8. similarity-risk screen when the mark concept changed
+```
+
+A large color mockup cannot prove small-size survival, variant consistency, monochrome readiness, or production masters.
+
+## Specialized-domain packet
+
+Use evidence declared by the loaded domain reviewer. Universal visual screenshots are supplementary, not complete specialist proof.
+
+## When implementation checks are blocked
+
+Report the blocker once with the exact command and reason:
+
+```text
+npm run lint: DEFERRED/BLOCKED
+Reason: missing shared package @repo/config-eslint
+Impact: source-level lint coverage unavailable for this iteration
+Next boundary: retry before commit/PR after dependency restoration
+```
+
+Do not repeatedly run the same known-blocked command as a substitute for fresh design evidence.
+
+## Focused re-review boundary
+
+```text
+target gate(s)
+adjacent regression gates
+preserved gates and locks
+contextual hard gates affected by the change
+new evidence gaps introduced by the change
+```
+
+Do not display or rerun the complete gate inventory for a small local change unless the change affects foundational or cross-cutting layers.
 
 ## Reporting format
 
-```text
-Fresh visual-loop verification:
-- diff check: PASS
-- routes: /en 200, /ai-designer 200
-- browser DOM: overflow=false, touchFail=0, images complete
-- full lint/build: intentionally deferred for creative loop; known blocker if forced: <blocker>
+```yaml
+focused_verification:
+  iteration: <N>
+  design_domain: <domain>
+  artifact_state: <state>
+  changed_layers: []
+  changed_regions: []
+  viewing_contexts_checked: []
+  target_evidence: []
+  adjacent_regressions:
+    passed: []
+    failed: []
+    not_verified: []
+  preservation_locks:
+    passed: []
+    failed: []
+    not_verified: []
+  implementation_or_export_checks:
+    passed: []
+    failed: []
+    deferred: []
+  evidence_gaps: []
+  ready_for_focused_review: true | false
 ```
+
+`ready_for_focused_review` means the evidence packet is honest enough to review. It does not mean the artifact passed.
