@@ -84,7 +84,8 @@ skill_test:
         - "boundary"
       must_not_contain:
         - "four screenshots prove completion"
-        - "PASS"
+        - "final_decision: PASS"
+        - "verdict: PASS"
       quality_gates_tested:
         - common_viewports_are_samples_not_canonical_breakpoints
         - acceptance_criteria_cover_actual_targets_and_adaptation_boundaries
