@@ -63,6 +63,28 @@ The pack includes `decision-provenance` for scope/lock/override authority and th
 
 ---
 
+## Feature Delivery Pack
+
+Verified feature scope, implementation, rendered acceptance, technical review, and explicit merge authorization.
+
+```bash
+npx skills add puterakahfi/ai-native-skills \
+  --skill new-feature-workflow \
+  --skill master-engineer \
+  --skill master-design \
+  --skill decision-provenance \
+  --skill spec-workflow \
+  --skill test-driven-development \
+  --skill design-review \
+  --skill code-review-workflow \
+  --skill architecture-review \
+  --skill security-review \
+  --skill threat-modeling \
+  -g -y
+```
+
+---
+
 ## Identity Review Pack
 
 Evidence-backed logo and brand-identity system audit using the `design-review` facade and canonical `BI` gates.
@@ -112,7 +134,7 @@ npx skills add puterakahfi/ai-native-skills \
 
 ## Product Development Pack
 
-Full product lifecycle — discovery, PRD, spec, implementation, verification, deploy.
+Full product lifecycle — discovery, verified PRD/MVP decisions, implementation, product acceptance, release approval, delivery, launch, and learning.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -121,9 +143,12 @@ npx skills add puterakahfi/ai-native-skills \
   --skill business-value-alignment \
   --skill experiment-design \
   --skill user-research \
+  --skill decision-provenance \
   --skill master-design \
   --skill master-engineer \
   --skill spec-workflow \
+  --skill new-feature-workflow \
+  --skill design-review \
   --skill threat-modeling \
   --skill code-review-workflow \
   --skill deployment-workflow \
@@ -135,12 +160,13 @@ npx skills add puterakahfi/ai-native-skills \
 
 ## Engineering Quality Pack
 
-Code review, debugging, security, architecture — everything before merge.
+Code review, debugging, security, architecture, evidence, risk authority, and merge authorization.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
   --skill code-review-workflow \
   --skill bugfix-workflow \
+  --skill decision-provenance \
   --skill master-engineer \
   --skill systematic-debugging \
   --skill architecture-review \
@@ -176,9 +202,9 @@ npx skills add puterakahfi/ai-native-skills -g -y
 | `skill-evolution` | skill-eval, git-workflow |
 | `role-switcher` | engineering/design/product/research owners, design-review, brand-identity-review, debugging, architecture/security review, plan |
 | `workflow-router` | design audit/refinement/redesign/review, brand-identity-review, feature/bug/review/deploy/product workflows, learning/eval/git, skill-doctor, spec-workflow |
-| `product-development-workflow` | product requirements/value/experiment/research, design/engineering owners, spec, threat modeling, code review, deployment, observability |
+| `product-development-workflow` | product requirements/value/experiment/research; decision-provenance for PRD/MVP/risk/release decisions; design/engineering owners; feature workflow; code review; deployment; observability |
 | `bugfix-workflow` | systematic-debugging, master-engineer, security-review, test-driven-development |
-| `code-review-workflow` | master-engineer, architecture-review, security-review, threat-modeling |
-| `new-feature-workflow` | master-engineer, master-design, spec-workflow, test-driven-development |
+| `code-review-workflow` | architecture/design/logic/security reviewers; decision-provenance for risk and merge authority |
+| `new-feature-workflow` | engineering/design owners; decision-provenance for feature scope/decisions/risks; spec, tests, design review, code review |
 | `deployment-workflow` | master-engineer, observability-design, resilience-engineering |
 | `skill-doctor` | skill-eval |
