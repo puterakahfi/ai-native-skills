@@ -152,6 +152,35 @@ color-only status communication
 
 A flag becomes a failed gate only when evidence shows it harms clarity, truth, accessibility, brand, or task performance.
 
+## Foundation failure handoff
+
+```text
+failure appears across genres or surfaces
+  → design-foundation knowledge or workflow orchestration defect
+
+foundation rule exists but one implementation ignores it
+  → local implementation defect
+
+one repeated component pattern fails everywhere
+  → component-system defect
+
+failure is stricter stylistic expression only
+  → design-genre defect
+```
+
+Examples:
+
+```text
+parent/child/sibling hierarchy collapses in zen, SaaS, and editorial
+  → foundation defect
+
+only zen page exceeds its structural-line budget
+  → genre defect
+
+one SectionHeader component misaligns every eyebrow
+  → component-system defect
+```
+
 ## Universal quick review
 
 For a quick review, score the applicable subset and report foundation status:
