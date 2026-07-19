@@ -1,178 +1,298 @@
-# Phase 12 — DELIVER + PITFALLS + ANTI-LOOP
+# Phase 13 — Delivery and Anti-Loop
 
-Load `quality-levels.md` before choosing delivery language or declaring the redesign complete.
+Deliver only from current scope integrity, concurrency integrity, facade verdict, acceptance criteria, evidence coverage, primary-domain coverage, reviewer-owned hard gates, preservation status, and approval boundary.
 
-## File management — hard rule
+Average score is supporting information. Mergeability is repository information. A recent commit is chronology. None is a delivery decision.
 
-```text
-ONE canonical file/path per project surface. PATCH/WRITE in-place.
-NEVER create versioned output files merely to preserve iterations.
+## Pre-delivery integrity gates
 
-❌ pkahfi-v2.html, pkahfi-v3.html, output-final.html
-✅ pkahfi.html or the existing repository path, versioned through git
+### Scope
 
-Versioning = commits, not filenames.
-```
-
-When a full rewrite is required after two failed patches, overwrite the same canonical path, commit it, and continue. Do not create another artifact name.
-
-## Delivery quality gate
-
-Delivery status must match evidence:
+For repository patch runs, require:
 
 ```text
-Q1 FOUNDATION-SAFE
-  acceptable as an implementation candidate or bounded handoff
-  never call it final, pixel-polished, or pixel-perfect
-
-Q2 RENDER-VERIFIED
-  acceptable for visual review
-  remaining optical or regression gaps must be stated
-
-Q3 PIXEL-POLISHED
-  default target for final redesign delivery
-  requires rendered verification, optical correction, adjacent-regression check,
-  and all applicable foundation/system/genre/domain/accessibility/runtime gates passing
-
-Q4 PIXEL-MATCHED
-  only when a locked reference/spec and comparison evidence exist
+scope_diff_report.status = PASS
+OUT_OF_SCOPE = []
+UNKNOWN = []
+preserved path/route violations = []
+all REQUIRED_DEPENDENCY entries have causal evidence and approval
 ```
 
-A high average score does not advance the quality level when required evidence is missing.
+### Concurrency
 
-## Final delivery eligibility
-
-Final `REDESIGN COMPLETE` delivery requires:
+Load `concurrent-write-integrity.md` and require:
 
 ```text
-□ target quality level reached
-□ foundation gates F1–F10 pass with evidence
-□ applicable design-system, brand, genre, domain, and content gates pass
-□ required routes/artifacts, viewports, themes, and states inspected
-□ changed and adjacent regions re-inspected after the final patch
-□ optical correction complete
-□ runtime/export blockers resolved or explicitly outside the requested boundary
-□ accessibility hard gates pass
-□ touch target failures = 0 for applicable interactive surfaces
-□ unresolved gaps = 0 for Q3/Q4 final approval
+concurrency_report.status = PASS
+manifest target head = actual stable branch head
+last mutation used a valid expected-head lease
+no unresolved DECISION_CONFLICT, SCOPE_EXPANSION, or UNKNOWN drift
+no anti-ping-pong threshold reached
+parent pointer, when applicable, targets the frozen verified child head
 ```
 
-If the project has a legacy score contract, its threshold still applies, but the score cannot replace the quality-level evidence.
+When either integrity gate is blocked, design observations may be recorded but merge or passing delivery is forbidden.
 
-## Delivery procedure
+## Delivery decisions
+
+### PASS
+
+Deliver as accepted only when all are true:
 
 ```text
-1. Ensure every artifact is at its canonical path.
-2. Confirm the current commit matches the verified artifact.
-3. Record quality target and achieved quality level.
-4. Commit with a descriptive final message when repository write was requested.
-5. Deliver the artifact or repository/PR reference.
-6. Include gate summary, verification matrix, and key changes.
-7. Include an honest gap report when the target level was not reached.
+scope integrity passes
+concurrency integrity passes
+facade verdict is PASS
+redesign acceptance criteria pass
+primary-domain coverage is BUILT_IN or ADAPTER_COVERED
+all applicable contextual hard gates pass
+required evidence is available
+no release-blocking NOT_VERIFIED remains
+brand, content, asset, behavior, route, path, and design-system locks pass
+implementation/export checks required by the delivery boundary pass
 ```
 
-Recommended format:
+### CONDITIONAL PASS
+
+Deliver conditionally only when:
 
 ```text
-REDESIGN COMPLETE — <target>
-──────────────────────────────
-Quality target:   Q3 PIXEL-POLISHED
-Quality achieved: Q3 PIXEL-POLISHED
-Foundation gates: F1–F10 PASS
-Contextual gates: PASS
-Viewports/themes: <verified matrix>
-Routes/states:    <verified matrix>
-Iterations:       N
-Skills patched:   [list]
-
-Key changes:
-  Before: [issue]   After: [fix applied]
-  ...
+scope and concurrency integrity pass
+facade verdict is CONDITIONAL PASS
+no verified hard-gate failure exists
+remaining gaps are explicitly non-blocking
+risks are accepted inside the approval boundary
+risk owner and expiry are recorded when relevant
+no missing specialist reviewer is being hidden
 ```
 
-When the target level is not reached:
+Do not use `CONDITIONAL PASS` to accept contamination, a moving branch, unresolved owner conflict, or stale evidence.
+
+### SCOPE BLOCKED
 
 ```text
-REDESIGN HANDOFF — <target>
-────────────────────────────
-Quality target:   Q3 PIXEL-POLISHED
-Quality achieved: Q1 FOUNDATION-SAFE | Q2 RENDER-VERIFIED
-Blocking evidence: [missing or failed checks]
-Remaining gaps:    [specific list]
-Next correction:   [specific action]
+OUT_OF_SCOPE or UNKNOWN entry exists
+preserved path/route changed or removed
+baseline or target is not reproducible
+required dependency lacks causal evidence or approval
 ```
 
-Do not hide a Q1 or Q2 handoff behind words such as `final`, `perfect`, `complete`, or `release-ready`.
+Action: restore, remove, split, hand off, or explicitly re-approve the true dependency; then regenerate the scope report.
 
-## Pixel-perfect language
-
-Use `pixel-perfect` only when all of the following are true:
+### CONCURRENT WRITE BLOCKED
 
 ```text
-□ user explicitly requests or accepts that term
-□ Q4 pixel-matched evidence exists
-□ reference/spec and tolerance are declared
-□ comparison covers required states and viewports
-□ deviations are documented and approved
+actual head differs from expected head and drift is conflicting or unknown
+same decision/path was automatically reversed twice
+multiple agents claim incompatible ownership
+parent pointer is chasing a moving child head
+delivery manifest or PR body references a stale head
 ```
 
-Otherwise prefer:
+Action:
+
+1. stop automated repository writes;
+2. report expected and actual heads, changed paths, and decision conflict;
+3. declare one repository write owner or split real lifecycles;
+4. freeze a head;
+5. regenerate scope, verification, concurrency, and review artifacts.
+
+Never resolve this with a force-push over uninspected work or a third automatic reversal.
+
+### NEEDS WORK or CRITICAL
 
 ```text
-foundation-safe
-render-verified
-pixel-polished
-pixel-matched within declared tolerance
+iterations remain
+  → return to defect classification and fix under a fresh write lease
+
+no iterations remain
+  → MAX_ITERATIONS_REACHED with explicit gap report
 ```
 
-## Pitfalls
+### LIMITED REVIEW
 
-### CSS patch corruption
+Load the required domain reviewer, narrow the verified claim, or hand off. Limited coverage cannot approve a complete specialist-domain outcome.
 
-Three or more blind micro-patches to the same CSS block can corrupt selector structure.
+### ROUTE ELSEWHERE
 
-**Rule:** after two failed patches on the same region, use rewrite safety. Re-read the whole region or file, then replace the canonical implementation coherently. Never apply a blind third patch.
+Stop the unsupported approval claim and state the required lifecycle or reviewer.
 
-### Viewport-height void
+### MAX ITERATIONS REACHED
 
-`min-height: 100vh` on sparse content can create dead space, especially on mobile.
+Deliver the best preserved attempt with current artifact, rollback, scope/concurrency status, facade verdict, verified improvements, remaining findings, evidence gaps, limitations, and handoff. Never label it complete, approved, production-ready, or passed.
 
-**Rule:** choose height and section rhythm from content, task, device chrome, and composition. Do not use a fixed hero recipe as a universal replacement.
+## Artifact handling
 
-### Sticky versus fixed navigation
+```text
+repository patch
+  edit canonical files only
+  compare effective diff to captured baseline
+  validate expected head before every mutation
+  preserve valuable unrelated work before removing it from this delivery
+  do not create arbitrary v2/v3/final copies
 
-Do not enforce one positioning method universally. Select sticky, fixed, static, or contextual navigation from product behavior, scroll requirements, safe areas, and existing system constraints.
+prototype or exported artifact
+  use declared output path
+  compare produced manifest with approved artifact set
+  retain iteration and writer provenance
+  preserve last known good artifact when replacement is risky
 
-### Color-only status signals
+presentation/static/identity production
+  follow domain file, export, master, and naming requirements
+  do not impose a single-file HTML convention
+```
 
-Status cannot rely on color alone. Supply visible text or an accessible label and preserve sufficient contrast.
+The workflow does not automatically commit after every creative iteration. Commit behavior follows repository policy, approval mode, and valid write ownership.
 
-### Improvised behavior
+## Delivery manifest
 
-Do not implement interaction from memory when an established pattern or existing product primitive is available. Inspect the trusted behavior source first.
+```yaml
+delivery_manifest:
+  target: <target>
+  design_domain: <domain>
+  surface_profile: <profile>
+  output_mode: <mode>
+  baseline_ref: <ref or original artifact>
+  target_ref: <actual stable head or produced artifact>
+  final_decision: <PASS | CONDITIONAL_PASS | SCOPE_BLOCKED |
+                   CONCURRENT_WRITE_BLOCKED | MAX_ITERATIONS_REACHED |
+                   LIMITED_REVIEW | ROUTE_ELSEWHERE>
+  scope_diff:
+    status: <PASS | BLOCKED | NOT_APPLICABLE>
+    confirmed_scope: <summary>
+    changed_entries: []
+    required_dependencies: []
+    out_of_scope: []
+    unknown: []
+    preserved_path_violations: []
+  concurrency:
+    status: <PASS | CONCURRENT_WRITE_BLOCKED | NOT_APPLICABLE>
+    branch: <branch or null>
+    expected_head: <sha or null>
+    actual_head: <sha or null>
+    drift_classification: <classification or null>
+    contention_cycles: <N>
+    repository_write_owner: <owner or unresolved>
+    head_sequence: []
+  facade_verdict: <verdict>
+  coverage_mode: <mode>
+  evidence_coverage: <percentage>
+  primary_domain_coverage: <complete | limited | unavailable>
+  contextual_hard_gates: <status>
+  acceptance_criteria:
+    passed: []
+    conditional: []
+    failed: []
+    not_verified: []
+  artifact:
+    path_or_target: <value>
+    changed_files_or_regions: []
+    rollback: <path, ref, or method>
+  role_composition:
+    design_owner: <owner>
+    implementation_owner: <owner or null>
+    repository_write_owner: <owner or unresolved>
+    reviewer_facade: design-review
+    domain_reviewers: []
+  preservation:
+    passed: []
+    failed: []
+    not_verified: []
+  verification:
+    evidence_available: []
+    evidence_gaps: []
+    checks_passed: []
+    checks_failed: []
+    checks_deferred: []
+  findings:
+    resolved: []
+    remaining: []
+  accepted_risks: []
+  learning_review:
+    verdicts: []
+    commits: []
+  approval_history: []
+```
 
-### Build as visual proof
+## Human-facing report
 
-A successful lint, typecheck, test, or build is implementation evidence—not proof of hierarchy, alignment, spacing, balance, flow, responsiveness, or optical finish.
+```markdown
+# Redesign Delivery — [target]
 
-### Screenshot as runtime proof
+**Decision:** [PASS | CONDITIONAL PASS | SCOPE BLOCKED | CONCURRENT WRITE BLOCKED | MAX ITERATIONS REACHED | LIMITED REVIEW | ROUTE ELSEWHERE]
 
-A screenshot is visual evidence for the captured state only. It does not prove keyboard operation, dynamic states, route integrity, console health, or responsive behavior outside that capture.
+- Scope integrity: [status]
+- Concurrency integrity: [status]
+- Stable target head: [sha or not stable]
+- Repository write owner: [owner or unresolved]
+- Design domain: [domain]
+- Facade verdict: [verdict]
+- Coverage: [mode]
+- Evidence coverage: [X%]
+- Contextual hard gates: [status]
+- Iterations: [N]
+
+## Effective delivery diff
+- Baseline: ...
+- Target: ...
+- In scope: ...
+- Required dependencies: ...
+- Out of scope / unknown: ...
+
+## Concurrency
+- Expected head: ...
+- Actual head: ...
+- Drift: ...
+- Contention cycles: ...
+- Required owner action: ...
+
+## Delivered or preserved artifact
+[path or target]
+
+## Verified improvements
+- ...
+
+## Remaining findings and evidence gaps
+- ...
+
+## Rollback
+- ...
+
+## Next route
+[none | owner coordination | scope cleanup | verification | defect fix | domain specialist | new feature | code review]
+```
 
 ## Anti-loop protection
 
-```text
-Before each produce/fix:
-  iteration_count++
-  if iteration_count > max_iterations:
-    stop correction
-    deliver the best achieved quality level
-    report remaining failures and missing evidence honestly
+Design iterations increment only after completed facade review. Scope cleanup and concurrency reconciliation are tracked separately.
 
-If the same gate fails two iterations in a row:
-  classify why the approach failed
-  change the correction strategy for that gate
-  do not repeat the same patch with slightly different numbers
+```text
+before each fix
+  confirm active defect/blocker, governing owner, expected head,
+  intended paths, preservation set, and required evidence
+
+after two failed design patches in one region
+  re-read and replan
+
+after two automated reversals of one decision/path
+  stop writes with CONCURRENT_WRITE_BLOCKED
+
+when max design iterations are reached
+  preserve artifact and rollback
+  deliver honest gap report
 ```
 
-Maximum iterations protect the workflow from endless correction. They do not convert unresolved failures into a pass or elevate the achieved quality level.
+Do not reset baseline to hide contamination. Do not chase a moving child branch with parent pointers. Do not overwrite PR text repeatedly while the underlying head and decision remain unstable.
+
+## Common delivery failures
+
+| Failure | Correct behavior |
+|---|---|
+| Homepage redesign also changes auth/database/member features | `SCOPE_BLOCKED`; restore, remove, or split |
+| Two agents repeatedly add/remove the same route | `CONCURRENT_WRITE_BLOCKED`; declare owner or split lifecycle |
+| Parent pointer follows every moving child head | Freeze child first; do not chase |
+| PR is mergeable but diff is contaminated or head unstable | Mergeability is not approval |
+| `avg >= 8` but hard gate failed | Block PASS |
+| Missing runtime/export/specialist evidence | NOT_VERIFIED and block claim |
+| Static artifact forced through interactive gates | Use applicable domain reviewer |
+| Best attempt called complete | Use bounded/blocking decision honestly |
