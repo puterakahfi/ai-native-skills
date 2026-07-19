@@ -1,8 +1,29 @@
 # Phase 13 — Delivery and Anti-Loop
 
-Deliver only from the current facade verdict, redesign acceptance criteria, evidence coverage, primary-domain coverage, contextual hard gates, preservation status, and approval boundary.
+Deliver only from the current scope-diff status, facade verdict, redesign acceptance criteria, evidence coverage, primary-domain coverage, contextual hard gates, preservation status, and approval boundary.
 
-Average score is supporting information. It is never the sole delivery rule.
+Average score is supporting information. Mergeability is repository information. Neither is a delivery decision.
+
+## Pre-delivery scope gate
+
+For repository patch runs, load `scope-diff-integrity.md` and require:
+
+```text
+scope_diff_report.status = PASS
+OUT_OF_SCOPE = []
+UNKNOWN = []
+preserved-path violations = []
+all REQUIRED_DEPENDENCY entries have causal evidence and approval
+```
+
+When scope is blocked:
+
+```text
+Decision: SCOPE_BLOCKED
+Action: restore, remove, split, or explicitly re-approve the dependency
+```
+
+A clean design score cannot override a contaminated delivery diff. Scope contamination cannot be converted into a non-blocking accepted risk.
 
 ## Delivery decisions
 
@@ -11,13 +32,14 @@ Average score is supporting information. It is never the sole delivery rule.
 Deliver as accepted only when all are true:
 
 ```text
+scope integrity passes when applicable
 facade verdict is PASS
 redesign acceptance criteria pass
 primary-domain coverage is BUILT_IN or ADAPTER_COVERED
 all applicable contextual hard gates pass
 required evidence is available
 no release-blocking NOT_VERIFIED remains
-brand, content, asset, behavior, and design-system locks pass
+brand, content, asset, behavior, path, and design-system locks pass
 implementation/export checks required by the delivery boundary pass
 ```
 
@@ -26,6 +48,7 @@ implementation/export checks required by the delivery boundary pass
 Deliver conditionally only when:
 
 ```text
+scope integrity passes when applicable
 facade verdict is CONDITIONAL PASS
 no verified hard-gate failure exists
 remaining gaps are explicitly non-blocking
@@ -34,7 +57,18 @@ risk owner and expiry are recorded when relevant
 no missing specialist reviewer is being hidden
 ```
 
-Do not shorten `CONDITIONAL PASS` to `PASS` in the delivery headline.
+Do not shorten `CONDITIONAL PASS` to `PASS`. Do not use it to accept unrelated product, auth, database, user-data, or infrastructure changes.
+
+### SCOPE BLOCKED
+
+```text
+OUT_OF_SCOPE or UNKNOWN entry exists
+preserved path changed or removed
+baseline or target is not reproducible
+required dependency lacks causal evidence or approval
+```
+
+The artifact may receive a visual observation report, but it is not ready to merge or deliver. Resolve contamination and regenerate the report before facade acceptance controls delivery.
 
 ### NEEDS WORK or CRITICAL
 
@@ -69,6 +103,7 @@ Deliver the best preserved attempt with:
 ```text
 current artifact
 last known good or rollback path
+scope-diff status and contamination list
 facade verdict
 verified improvements
 remaining FAIL/PARTIAL findings
@@ -86,20 +121,23 @@ Use canonical project paths and project version-control conventions.
 ```text
 repository patch
   edit the intended canonical files
+  compare final effective diff to the captured baseline
   preserve rollback through source control
-  do not create arbitrary v2/v3/final copies unless the project requires versioned assets
+  split unrelated valuable work before removing it from this delivery
+  do not create arbitrary v2/v3/final copies unless required
 
 prototype or exported artifact
   use the declared output path
+  compare produced manifest with the approved artifact set
   retain iteration provenance in the delivery manifest
   preserve the last known good artifact when replacement is risky
 
 presentation/static/identity production
-  follow the domain's file, export, master, and naming requirements
+  follow domain file, export, master, and naming requirements
   do not impose a single-file HTML convention
 ```
 
-The workflow does not automatically commit after every creative iteration. Commit behavior follows repository policy and the user's approval mode.
+The workflow does not automatically commit after every creative iteration. Commit behavior follows repository policy and approval mode.
 
 ## Delivery manifest
 
@@ -109,8 +147,18 @@ delivery_manifest:
   design_domain: <domain>
   surface_profile: <profile>
   output_mode: <mode>
-  final_decision: <PASS | CONDITIONAL_PASS | MAX_ITERATIONS_REACHED |
-                   LIMITED_REVIEW | ROUTE_ELSEWHERE>
+  baseline_ref: <ref or original artifact>
+  target_ref: <ref or produced artifact>
+  final_decision: <PASS | CONDITIONAL_PASS | SCOPE_BLOCKED |
+                   MAX_ITERATIONS_REACHED | LIMITED_REVIEW | ROUTE_ELSEWHERE>
+  scope_diff:
+    status: <PASS | BLOCKED | NOT_APPLICABLE>
+    confirmed_scope: <summary>
+    changed_entries: []
+    required_dependencies: []
+    out_of_scope: []
+    unknown: []
+    preserved_path_violations: []
   facade_verdict: <verdict>
   coverage_mode: <mode>
   evidence_coverage: <percentage>
@@ -155,14 +203,22 @@ delivery_manifest:
 ```markdown
 # Redesign Delivery — [target]
 
-**Decision:** [PASS | CONDITIONAL PASS | MAX ITERATIONS REACHED | LIMITED REVIEW | ROUTE ELSEWHERE]
+**Decision:** [PASS | CONDITIONAL PASS | SCOPE BLOCKED | MAX ITERATIONS REACHED | LIMITED REVIEW | ROUTE ELSEWHERE]
 
+- Scope integrity: [PASS | BLOCKED | NOT APPLICABLE]
 - Design domain: [domain]
 - Facade verdict: [verdict]
 - Coverage: [mode]
 - Evidence coverage: [X%]
 - Contextual hard gates: [status]
 - Iterations: [N]
+
+## Effective delivery diff
+- Baseline: ...
+- Target: ...
+- In scope: ...
+- Required dependencies: ...
+- Out of scope / unknown: ...
 
 ## Delivered artifact
 [path or target]
@@ -188,20 +244,20 @@ delivery_manifest:
 - ...
 
 ## Next route
-[none | verification | defect fix | domain specialist | design-refinement | code review]
+[none | scope cleanup | verification | defect fix | domain specialist | design-refinement | code review]
 ```
 
 ## Anti-loop protection
 
-Increment iterations only after completed facade review.
+Increment iterations only after completed facade review. Scope cleanup before review does not consume a design iteration unless it changes the redesigned artifact.
 
 ```text
 before each fix
-  confirm active defect, governing reviewer, correction owner,
-  preservation set, and required evidence
+  confirm active defect or contamination entry, governing owner,
+  correction owner, preservation set, and required evidence
 
 after two failed patches in one region
-  re-read, replan, and consider alternative pattern or full justified rewrite
+  re-read, replan, and consider alternative pattern or justified rewrite
 
 when max_iterations is reached
   stop correction
@@ -209,15 +265,17 @@ when max_iterations is reached
   deliver honest gap report
 ```
 
-Do not keep changing unrelated regions to increase an average score. Do not replace the approved direction merely because one local fix failed.
+Do not change unrelated regions to improve a score. Do not reset the baseline to hide contamination. Do not replace the approved direction merely because one local fix failed.
 
 ## Common delivery failures
 
 | Failure | Correct behavior |
 |---|---|
+| Homepage redesign also changes auth/database/member features | `SCOPE_BLOCKED`; restore, remove, or split them |
+| PR is mergeable but final diff is contaminated | Mergeability is not scope approval |
 | `avg >= 8` but hard gate failed | Block PASS |
 | Missing runtime/export/specialist evidence | Report NOT_VERIFIED and block the corresponding claim |
-| Static artifact forced through touch/motion gates | Use the static reviewer and applicable hard gates |
+| Static artifact forced through touch/motion gates | Use static reviewer and applicable gates |
 | Identity system has only one mockup | LIMITED/NOT_VERIFIED until identity evidence exists |
 | Repository gets `final-v2-fixed` copies | Follow canonical paths and source-control policy |
 | Every iteration auto-committed | Follow approval and repository policy |
