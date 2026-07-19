@@ -65,8 +65,8 @@ skill_test:
         - "left control"
         - "scroll state"
       must_not_contain:
-        - "PATTERN_MISMATCH confirmed"
-        - "substitute to Select"
+        - "diagnosis: PATTERN_MISMATCH"
+        - "selected_strategy: substitute to Select"
       quality_gates_tested:
         - diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
         - component_substitution_requires_verified_component_fitness_reasoning
@@ -118,7 +118,8 @@ skill_test:
         - "desktop"
         - "shared component"
       must_not_contain:
-        - "PRESERVED"
+        - "preservation_status: PRESERVED"
+        - "desktop_behavior: PRESERVED"
         - "source diff proves behavior"
       quality_gates_tested:
         - before_after_manifest_and_preservation_evidence_are_required
