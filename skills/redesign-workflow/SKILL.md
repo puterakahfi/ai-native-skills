@@ -1,123 +1,143 @@
 ---
 name: redesign-workflow
-description: Delegated, domain-aware redesign workflow for existing visual surfaces — route → compose roles → inspect → direct → specify → produce under a write lease → verify scope and artifact → facade review → classify → fix → deliver.
+description: Delegated, domain-aware redesign workflow for existing visual surfaces — route → compose owners → verify decisions → inspect → direct → specify → produce under a write lease → verify provenance, scope, concurrency, and artifact → facade review → classify → fix → deliver.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.2.0
+  ai-native-skills.version: 3.3.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
   ai-native-skills.contract-version: "^2.2.0"
-  ai-native-skills.requires: "role-switcher master-design master-engineer design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement business-value-alignment skill-evolution skill-eval git-workflow"
+  ai-native-skills.requires: "role-switcher master-design master-engineer decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement business-value-alignment skill-evolution skill-eval git-workflow"
   ai-native-skills.related_skills: '["workflow-router","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
 ---
 
 # Redesign Workflow
 
-Redesign an existing visual surface through explicit ownership, bounded delegation, a clean delivery boundary, concurrency-safe writes, fresh evidence, independent review, and a verified correction loop.
+Redesign an existing visual surface through explicit ownership, verified decision provenance, bounded specialist delegation, clean final-diff scope, concurrency-safe writes, domain-appropriate evidence, independent facade review, and a verified correction loop.
 
-The workflow owns lifecycle, state, approvals, preservation, scope integrity, write coordination, iteration, and handoffs. `master-design` or a declared domain owner owns design direction. Specialist ports own narrow decisions. `master-engineer` owns repository implementation when required. `design-review` and the loaded domain reviewer own design acceptance.
+The workflow owns lifecycle, state, approvals, preservation, decision handoffs, scope integrity, write coordination, iteration, and delivery reporting. It does not own specialist design knowledge, repository implementation knowledge, or acceptance gates.
 
-## Hard Rules
+## Hard rules
 
 ```text
-1. Route before production: redesign, refinement, and audit-only are different lifecycles.
-2. Exactly one design owner must be explicit.
-3. Patch mode requires an implementation owner distinct from the reviewer.
-4. Select specialists from changed layers and acceptance criteria; do not load all skills.
-5. Record and re-check brand, content, asset, design-system, behavior, and path locks.
-6. Capture baseline and confirmed delivery scope before repository production.
-7. Every effective changed path or artifact must be classified before final review.
-8. OUT_OF_SCOPE or UNKNOWN changes block passing review and delivery.
-9. Capture an expected branch head before every repository mutation.
-10. Re-resolve the current head immediately before writing; stale-head writes are forbidden.
-11. On head drift, inspect and classify the concurrent delta before any retry.
-12. Two reversals of the same decision/path stop automatic writes; never ping-pong or force-push.
-13. Product, audience, content, trust, complexity, and existing equity drive direction—not taste.
-14. Port or profile defaults are not universal workflow rules.
-15. Copy and content that affect structure must be resolved before layout lock.
-16. Verify with evidence appropriate to design domain and artifact state.
-17. A build is not design verification; a screenshot is not runtime or interaction proof.
-18. Review only through the design-review facade and applicable domain reviewer.
+1. Route redesign, refinement, and audit-only before production.
+2. Declare exactly one design owner.
+3. Patch mode requires an implementation owner and one active repository write owner.
+4. Material scope, lock, approval, override, status, and ownership claims require decision provenance.
+5. Agent-authored summaries, PR bodies, commits, and inferences are not owner approval.
+6. Capture baseline, confirmed scope, preservation locks, and decision records before patch production.
+7. Select specialists from changed layers and acceptance criteria; never load everything by default.
+8. Product, audience, content, trust, complexity, context, and existing equity drive direction—not taste labels.
+9. Port/profile defaults are not universal workflow rules.
+10. Structural copy and content decisions precede layout lock.
+11. Every repository write uses an expected-head lease.
+12. Head drift must be inspected before retry; newest commit is not automatically authoritative.
+13. Two reversals of the same decision/path stop automatic writes; never ping-pong or force-push.
+14. Every effective changed path must be classified against verified scope.
+15. OUT_OF_SCOPE, UNKNOWN, or provenance-blocked changes block passing review and delivery.
+16. Verification evidence must match design domain, artifact state, changed layers, and delivery boundary.
+17. Build success is not design proof; screenshot evidence is not runtime or interaction proof.
+18. Acceptance runs only through design-review and the governing domain reviewer.
 19. Preserve PASS, FAIL, PARTIAL, NOT_VERIFIED, and NOT_APPLICABLE exactly.
-20. Contextual hard gates come from loaded reviewers, never from a global UI checklist.
-21. Scope integrity, concurrency integrity, and facade verdict all control delivery.
-22. Classify defect ownership before fixing.
+20. Contextual hard gates come from loaded reviewers, not a global UI checklist.
+21. Decision provenance, scope integrity, concurrency integrity, evidence, coverage, and facade verdict all control delivery.
+22. Classify root cause and correction ownership before fixing.
 23. Maximum design iterations default to 5; after two failed patches in one region, re-read and replan.
 24. Verified reusable fixes require skill-evolution and a regression eval.
-25. A bounded or concurrency-blocked attempt is never labeled PASS.
+25. Blocked or bounded attempts are never labeled PASS.
 ```
 
-## When to Use
+## Routing
 
 Use for an existing landing page, dashboard, application surface, static campaign, presentation, identity system, or other visual artifact when direction, structure, visual language, component model, or multiple design layers must change.
-
-Route elsewhere:
 
 ```text
 audit only, no production requested
   → design-audit
 
-known narrow verified failures, accepted direction
+accepted direction + known narrow verified findings
   → design-refinement
 
-net-new product or route
+broad direction, structure, concept, or multi-layer change
+  → redesign-workflow
+
+net-new product, route, or capability
   → product-development-workflow or new-feature-workflow
 
-non-visual capability
-  → new-feature-workflow
-
-general functional regression unrelated to redesign direction
+non-visual regression
   → bugfix-workflow
 ```
 
-`audit-only` remains a compatibility input, but it hands off to `design-audit`; this workflow does not silently continue into production.
+Load `references/redesign-vs-refinement.md` for boundary detail.
 
 ## Inputs
 
-```text
-target              required — URL, screenshot, artifact, repository, or named surface
-goal                 user, communication, business, or delivery outcome
-design_domain        digital-interface | visual-communication | presentation |
-                     brand-identity | other
-surface_profile      concrete profile for the selected domain
-output_mode          audit-only | spec-only | prototype | patch; default prototype
-approval_mode        autonomous | spec-gated | patch-gated | fully-gated
-max_iterations       default 5
-baseline_ref         merge base, approved commit, or original artifact
-confirmed_scope      products, routes, paths, change types, expected outputs, exclusions
-repository_branch    branch that receives patch-mode writes
-expected_head        inspected branch head used as the next write lease
-products_in_scope    existing product areas allowed to change
-content_inventory    live content to preserve, change, or remove
-required_assets      supplied logos, products, people, copy, facts, or sources
-audience             target users or viewers
-primary_cta          primary action when applicable
-viewing_context      viewports, devices, channel, final size, room, theme, inputs
-preservation_locks   brand, system, behavior, content, asset, route, and path locks
+```yaml
+redesign_input:
+  target: <required URL, screenshot, artifact, repository, or named surface>
+  goal: <user, communication, business, or delivery outcome>
+  design_domain: <digital-interface | visual-communication | presentation | brand-identity | other>
+  surface_profile: <concrete domain profile>
+  output_mode: <audit-only | spec-only | prototype | patch>
+  approval_mode: <autonomous | spec-gated | patch-gated | fully-gated>
+  max_iterations: 5
+
+  baseline_ref: <merge base, approved commit, or original artifact>
+  repository_branch: <branch or null>
+  expected_head: <inspected head or null>
+
+  decision_sources: []
+  required_authorities: []
+  previous_decision_records: []
+
+  confirmed_scope:
+    products: []
+    routes_or_surfaces: []
+    allowed_paths: []
+    allowed_change_types: []
+    expected_generated_files: []
+    expected_deletions: []
+    preserved_paths: []
+    preserved_routes: []
+    out_of_scope: []
+
+  content_inventory: []
+  required_assets: []
+  audience: <audience>
+  primary_cta: <action or null>
+  viewing_context: []
+  preservation_locks:
+    brand: []
+    design_system: []
+    content: []
+    assets: []
+    behavior: []
+    routes: []
 ```
 
-Infer missing values only when evidence is strong and record the assumption. Do not infer permission for unrelated product, route, auth, database, user-data, or infrastructure changes.
+Infer missing context only when evidence is strong and record the assumption. Never infer permission for adjacent products, routes, auth, database, user-data, infrastructure, destructive work, or approval bypass.
 
-## Canonical Flow
+## Canonical flow
 
 ```text
 0  ROUTE
    redesign | design-refinement | design-audit
 
 1  COMPOSE ROLES
-   design owner, implementation owner when needed, specialists,
-   reviewer facade, domain reviewer
+   lifecycle owner, design owner, conditional implementation owner,
+   repository write owner, selected specialists, reviewer facade, domain reviewer
 
 2  INITIALIZE
-   validate input, baseline, confirmed scope, branch, expected head, and run state
+   validate target, baseline, branch, decision sources, scope, locks,
+   approval mode, expected head, and durable state
 
 3  PREFLIGHT
-   inspect target, equity, brand, content, assets, system,
-   implementation, current diff, concurrent writers, constraints, evidence gaps
+   inspect complete target, effective diff, existing equity, content, assets,
+   system/framework, concurrent automation, constraints, and evidence gaps
 
 4  DIRECTION
-   choose and justify product/brand-appropriate direction and macrostructure
+   compare alternatives and select product/brand-appropriate direction
 
 5  LAYERED PLAN
    strategy, foundation, structure, components, expression,
@@ -127,71 +147,48 @@ Infer missing values only when evidence is strong and record the assumption. Do 
    user value, business/delivery value, measurable signals
 
 7  SPEC CONFIRMATION
-   lock scope, paths, routes, exclusions, preservation, viewing contexts,
-   acceptance criteria, delegation plan, ownership, approval boundary
+   verify decision provenance; lock scope, paths, routes, exclusions,
+   preservation, viewing contexts, acceptance evidence, delegation, and approvals
 
 8  PRODUCTION
-   acquire expected-head lease
-   verify current head
-   produce prototype or patch through delegated ports/adapters
+   acquire expected-head lease and produce through selected ports/adapters
 
 9  VERIFICATION
-   confirm final head stability
-   collect domain evidence
-   generate scope_diff_report and concurrency_report
+   confirm stable actual head; verify decision provenance, effective final diff,
+   concurrency, domain evidence, preservation, and implementation boundary
 
 10 REVIEW
-   design-review facade + loaded domain reviewer
+   design-review facade + governing domain reviewer
 
 11 DEFECT CLASSIFICATION
-   governing reviewer or causal owner, root cause, correction owner, evidence
+   governing reviewer or causal owner, evidence, root cause, correction owner
 
 12 FIX
    smallest correct correction under a fresh write lease
    → verify → focused re-review → learning review
 
 13 DELIVERY
-   PASS, permitted CONDITIONAL PASS, handoff,
-   CONCURRENT_WRITE_BLOCKED, or bounded gap report
+   accepted result, explicit approval route, integrity blocker,
+   specialist handoff, or bounded gap report
 ```
 
-```text
-route
-→ compose_roles
-→ initialize baseline + scope + expected head
-→ preflight
-→ direction
-→ plan + value + spec
-→ production under validated write lease
-   ├─ head drift COMPATIBLE → inspect, absorb, renew lease
-   ├─ overlapping implementation → reconcile under governing owner
-   └─ decision conflict / scope expansion / unknown → stop writes
-→ verification + scope diff + concurrency report
-   ├─ scope BLOCKED → restore, remove, split, or re-approve dependency
-   ├─ concurrency BLOCKED → owner coordination or isolated lifecycle branch
-   └─ integrity PASS → facade review
-      ├─ PASS / permitted CONDITIONAL PASS → delivery
-      ├─ NEEDS WORK / CRITICAL → classify → fix under fresh lease
-      ├─ LIMITED REVIEW / ROUTE ELSEWHERE → reviewer or handoff
-      └─ max iterations → bounded delivery with gap report
-```
-
-## Role Composition
+## Role composition
 
 ```yaml
 role_composition:
   lifecycle_owner: redesign-workflow
   design_owner: master-design
   implementation_owner: null
+  repository_write_owner: null
+  decision_authority_owners: []
   specialists: []
   reviewer_facade: design-review
   domain_reviewers: []
   coverage_mode: null
-  repository_write_owner: <single writer or coordination owner>
 ```
 
 ```text
-output_mode patch or executable production
+patch or executable prototype
   → implementation_owner: master-engineer or runtime equivalent
   → exactly one repository_write_owner at a time
 
@@ -205,15 +202,15 @@ presentation
   → built-in presentation reviewer
 
 brand-identity
-  → brand-identity-review when available; otherwise LIMITED or handoff
+  → brand-identity-review when available; otherwise LIMITED/handoff
 
 other
-  → declared domain reviewer; otherwise LIMITED or ROUTE_ELSEWHERE
+  → declared domain reviewer; otherwise LIMITED/ROUTE_ELSEWHERE
 ```
 
-Load `references/delegation-and-verification.md` for specialist selection, `references/scope-diff-integrity.md` for delivery-boundary validation, and `references/concurrent-write-integrity.md` for branch-write coordination.
+Load `references/delegation-and-verification.md` for specialist and evidence selection.
 
-## Durable Run State
+## Durable run state
 
 ```yaml
 run:
@@ -230,24 +227,17 @@ repository:
   branch: <branch or null>
   inspected_head: <sha or null>
   expected_head: <sha or null>
+  stable_head: <sha or null>
   write_owner: <owner or null>
   head_sequence: []
   contention_cycles: 0
 
-context:
-  target: <resolved>
-  design_domain: <domain>
-  surface_profile: <profile>
-  artifact_state: <source-only | rendered-static | rendered-interactive | mixed>
-  goal: <goal>
-  viewing_context: []
-
-roles:
-  design_owner: <owner>
-  implementation_owner: <owner or null>
-  specialists: []
-  reviewer_facade: design-review
-  domain_reviewers: []
+decisions:
+  records: []
+  authoritative_record_ids: []
+  provenance_verdict: null
+  conflicts: []
+  unresolved_requirements: []
 
 scope:
   products: []
@@ -257,20 +247,21 @@ scope:
   expected_generated_files: []
   expected_deletions: []
   preserved_paths: []
+  preserved_routes: []
   out_of_scope: []
 
-locks:
-  brand: []
-  design_system: []
-  content: []
-  assets: []
-  behavior: []
-  routes: []
-  preserved_regions: []
+roles:
+  design_owner: <owner>
+  implementation_owner: <owner or null>
+  repository_write_owner: <owner or null>
+  specialists: []
+  reviewer_facade: design-review
+  domain_reviewers: []
 
 artifacts:
   route_decision: null
   role_composition: null
+  decision_provenance_report: null
   delegation_plan: null
   preflight_report: null
   design_direction: null
@@ -287,168 +278,160 @@ artifacts:
   fix_report: null
   learning_review: null
   delivery_manifest: null
-
-review:
-  coverage_mode: null
-  loaded_reviewers: []
-  verdict: null
-  evidence_coverage: null
-  primary_domain_coverage: null
-  hard_gate_status: null
-  findings: []
-  not_verified: []
-  scope_limitations: []
 ```
 
-Allowed lifecycle states:
+Lifecycle states:
 
 ```text
 initialized → routed → roles_composed → preflight_complete → direction_selected
 → plan_ready → spec_ready → awaiting_approval → producing → verifying
-→ scope_blocked | concurrent_write_blocked | reviewing
+→ provenance_blocked | scope_blocked | concurrent_write_blocked | reviewing
 → classifying_defect → fixing → accepted → delivered
 ```
 
-## Phase Responsibilities
+## Phase responsibilities
 
-### Route and compose
+### Route, compose, initialize
 
-Load `references/redesign-vs-refinement.md`, then `role-switcher` when multiple capabilities or a specialist domain are involved. Emit one route, one role composition, and one repository write owner before production.
+Emit one lifecycle route and one explicit role composition. Capture baseline, branch, expected head, initial decision sources, confirmed scope, locks, and approval requirements before production.
 
-### Preflight and direction
+### Preflight, direction, and plan
 
-Inspect complete available evidence, current effective diff, branch head, and active automation signals. Record brand/product equity, content, audience/task, trust needs, density, interaction complexity, system/framework, assets, constraints, branch contamination, concurrent writers, and evidence gaps.
+Inspect complete available evidence, not only the visually interesting region. Direction must compare alternatives and explain why rejected options are less fit. Mark each layer `preserve`, `refine`, `replace`, or `not_applicable`. Run `business-value-alignment` before decorative production.
 
-Direction must compare alternatives and explain rejected options. Load only declared ports/adapters. Do not select genre from one label such as “SaaS” or “creative”.
-
-### Layered plan and value alignment
-
-Each layer is `preserve`, `refine`, `replace`, or `not_applicable`:
-
-```text
-strategy | foundation | structure | components | expression |
-interaction | content | implementation
-```
-
-Run `business-value-alignment` before decorative production. Changes without user, message, delivery, or business value should be narrowed or stopped.
+Load `references/phase-genre-macro.md` for direction detail.
 
 ### Spec confirmation
 
-Lock domain, direction, changed/preserved layers, content/assets, viewing contexts, acceptance evidence, delegation owners, baseline, allowed paths/routes/change types, expected outputs/deletions, preserved paths/routes, out-of-scope work, branch write owner, and approval mode.
+Run `decision-provenance` for every material scope, lock, dependency, override, ownership, or approval claim.
 
-A new route or feature absent from the approved baseline is a scope expansion unless the spec explicitly approves it.
+```text
+provenance PASS
+  → update spec only inside the verified decision boundary
+
+PROVENANCE_BLOCKED
+  → preserve last verified scope/lock
+  → stop dependent mutation
+
+ROUTE_FOR_APPROVAL
+  → pause the affected action and route to required authority
+```
+
+A new route or feature absent from the approved baseline remains a scope expansion until a verified authoritative decision explicitly includes it.
 
 ### Production
 
-Load `references/phase-produce.md`. Produce only through selected ports/adapters and confirmed scope.
+Load `references/phase-produce.md`, `references/concurrent-write-integrity.md`, and the selected design/engineering adapters.
 
-Before every repository write:
+Before every repository mutation:
 
-1. load `concurrent-write-integrity.md`;
-2. record `expected_head` and intended paths;
-3. resolve current branch head immediately before mutation;
-4. write only if heads match;
-5. if they differ, inspect the delta and classify it before retry.
+```text
+record expected head + intended paths + governing decision records
+→ resolve actual head immediately before write
+→ write only when actual == expected
+→ on drift, inspect code delta and decision provenance before retry
+```
 
-Never force-push over an uninspected concurrent commit. Never replay a stale full-file body merely with a refreshed blob SHA.
+Never force-push over uninspected concurrent work. Never replay a stale full-file body merely with a refreshed blob SHA.
 
 ### Verification
 
-Select evidence by domain, artifact state, changed layers, and delivery boundary. Missing evidence remains `NOT_VERIFIED`.
+Load:
 
-For patch runs:
+```text
+references/scope-diff-integrity.md
+references/concurrent-write-integrity.md
+references/delegation-and-verification.md
+references/visual-loop-verification.md when iterating visual output
+```
 
-- generate `scope_diff_report` from declared baseline to actual current head;
-- generate `concurrency_report` proving the artifact and manifest refer to the stable actual head;
-- block on out-of-scope/unknown paths, stale manifests, decision conflict, or repeated contention.
+Patch verification must produce:
+
+```text
+decision_provenance_report
+scope_diff_report
+concurrency_report
+domain verification evidence
+preservation results
+implementation checks required by the delivery boundary
+```
+
+All reports must reference the actual stable head or final artifact. Missing evidence remains `NOT_VERIFIED`.
 
 ### Review
 
-Invoke `design-review` only after delivery-boundary scope and concurrency integrity pass. Visual observations may be recorded earlier, but they cannot authorize merge or passing delivery.
+Load `references/phase-review-gates.md`. Invoke the facade only after applicable provenance, scope, and concurrency integrity pass.
 
-### Defect and fix
+Facade output includes domain, loaded reviewers, canonical gates, evidence coverage, primary-domain coverage, contextual hard gates, verdict, findings, limitations, and handoff.
 
-Design FAIL/PARTIAL findings use canonical gate, governing reviewer, evidence, defect class, correction owner, and fresh verification.
+### Defect, fix, and learning
 
-Scope contamination uses path classification and preservation action. Concurrent conflict uses expected/actual head, delta classification, contention cycles, and coordination action. Neither is scored as a design gate.
-
-Allowed design-defect classes:
+Load `references/phase-fix-loop.md`.
 
 ```text
-reusable_skill_defect
-reference_knowledge_defect
-workflow_orchestration_defect
-local_implementation_defect
-product_design_lock_defect
-domain_specialist_defect
+design FAIL/PARTIAL
+  → canonical gate + governing reviewer + correction owner
+
+NOT_VERIFIED
+  → return to evidence collection or narrow claim
+
+scope contamination
+  → restore, remove, preserve-and-split, or obtain verified bounded approval
+
+provenance conflict
+  → stop dependent writes and route explicit supersession/approval
+
+concurrent conflict
+  → stop writes, declare one owner, or isolate a real lifecycle boundary
 ```
 
-After a verified reusable fix, run `skill-evolution + skill-eval`.
+Apply the smallest valid correction. After a verified reusable fix, run `skill-evolution + skill-eval`.
 
-## Concurrency Decisions
+### Delivery
 
-```text
-COMPATIBLE
-  absorb delta, re-run scope/preservation, renew expected-head lease
+Load `references/phase-deliver.md`.
 
-OVERLAPPING_IMPLEMENTATION
-  reconcile one implementation under governing owner, then verify
-
-DECISION_CONFLICT
-  stop automatic writes; declare owner or split lifecycle
-
-SCOPE_EXPANSION
-  stop automatic writes; route new feature/product work separately
-
-UNKNOWN
-  stop and hand off
-
-same decision/path reversed twice
-  CONCURRENT_WRITE_BLOCKED
-  no third automatic reversal
-```
-
-Do not chase a moving child branch with repeated parent submodule-pointer commits. Freeze the child head first.
-
-## Verdict and Delivery
+Decision precedence:
 
 ```text
-PASS
-  requires acceptance, reviewer-owned hard gates, coverage, evidence,
-  preservation, scope PASS, and concurrency PASS
+PROVENANCE_BLOCKED / ROUTE_FOR_APPROVAL
+  → no passing delivery for the affected claim
 
-CONDITIONAL PASS
-  requires scope/concurrency PASS and only explicit non-blocking risks;
-  contamination or write contention cannot be accepted as risk
+SCOPE_BLOCKED
+  → restore, remove, split, or obtain verified dependency approval
 
-NEEDS WORK / CRITICAL
-  classify and fix while bounded attempts remain
+CONCURRENT_WRITE_BLOCKED
+  → stop writes and coordinate one owner/stable branch
+
+CRITICAL / NEEDS WORK
+  → fix while bounded attempts remain
 
 LIMITED REVIEW / ROUTE ELSEWHERE
-  load reviewer, narrow claim, or hand off
+  → load reviewer, narrow claim, or hand off
 
-SCOPE BLOCKED
-  restore, remove, split, or re-approve dependency
+PASS
+  → only when provenance, scope, concurrency, acceptance, evidence,
+    coverage, reviewer-owned hard gates, and preservation pass
 
-CONCURRENT WRITE BLOCKED
-  stop writes, report head drift and conflict, coordinate one owner
+CONDITIONAL PASS
+  → only explicit non-blocking risks inside verified authority;
+    contamination, missing approval, or write contention cannot be accepted as risk
 
 MAX ITERATIONS REACHED
-  deliver best preserved attempt with gaps; never label PASS
+  → deliver best preserved attempt with explicit gaps; never label PASS
 ```
 
-Average score and mergeability never override scope, concurrency, verdict, coverage, hard gates, evidence gaps, locks, or acceptance criteria.
+Average score and mergeability never override provenance, scope, concurrency, verdict, coverage, evidence gaps, hard gates, locks, or acceptance criteria.
 
-Load `references/phase-deliver.md` for reporting.
-
-## Approval Policy
+## Approval policy
 
 ```text
 autonomous
-  no routine pause; destructive, irreversible, or conflicting writes still stop
+  no routine pause, but it never means inferred consent;
+  provenance, destructive, irreversible, policy, or conflicting writes still stop
 
 spec-gated
-  pause when scope or direction materially differs from request
+  pause when scope or direction materially differs from verified request/spec
 
 patch-gated
   pause before repository patch or full-file rewrite
@@ -457,15 +440,16 @@ fully-gated
   pause before production, every patch, and full-file rewrite
 ```
 
-Always require explicit approval for destructive, irreversible, production-environment, user-content deletion, material scope-expansion, or unresolved owner-conflict actions.
+Always require explicit verified authority for destructive/irreversible work, production-environment changes, user-content deletion, material scope expansion, lock removal, approval bypass, or unresolved owner conflict.
 
-## Required Outputs
+## Required outputs
 
-Every routed redesign run exposes:
+Always expose:
 
 ```text
 route_decision
 role_composition
+decision_provenance_report
 delegation_plan
 loop_summary
 delivery_manifest
@@ -492,24 +476,27 @@ learning_review
 gap_report
 ```
 
-## Final Guard
+## Final guard
 
 ```text
 □ Correct lifecycle was selected before production.
 □ One design owner, implementation owner, and repository write owner are explicit.
-□ Specialists match changed layers.
-□ Baseline, allowed paths/routes, exclusions, and locks were recorded.
-□ Production followed delegation and confirmed scope.
-□ Every effective changed path was classified.
-□ OUT_OF_SCOPE, UNKNOWN, and preserved-path violations are empty.
+□ Material decisions have attributable sources and verified authority.
+□ Agent summaries, PR bodies, commits, and recency were not treated as approval.
+□ Supersession and authoritative conflicts are explicit.
+□ Baseline, confirmed scope, exclusions, and locks were captured.
+□ Specialists match changed layers and acceptance criteria.
+□ Production followed delegation and verified decision boundaries.
 □ Every repository write used the inspected expected head.
 □ Head drift was inspected before retry.
 □ Two reversals stopped automatic writes.
-□ Parent pointers do not chase an unstable child head.
-□ Verification matches domain and actual stable head.
-□ Review used facade and governing domain reviewer.
+□ Every effective changed path was classified.
+□ OUT_OF_SCOPE, UNKNOWN, and provenance-blocked entries are empty for PASS.
+□ Verification matches domain, artifact state, and actual stable head.
+□ Review used the facade and governing domain reviewer.
 □ PARTIAL, NOT_VERIFIED, and NOT_APPLICABLE were preserved.
-□ Scope, concurrency, and facade verdict all control delivery.
+□ Provenance, scope, concurrency, and facade verdict all control delivery.
+□ Every correction followed root-cause ownership classification.
 □ Verified reusable fixes received learning review and regression eval.
 □ Blocked or bounded attempts are labeled honestly.
 ```
