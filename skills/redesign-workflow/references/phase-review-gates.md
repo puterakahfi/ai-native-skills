@@ -11,6 +11,7 @@ Review only after Phase 8 has produced fresh evidence.
 □ design domain and surface profile resolved
 □ selected genre reference loaded
 □ genre constraints attached to the run state
+□ page shell and alignment rails declared
 □ required viewports, themes, formats, or channels captured
 □ relevant interactions and states exercised
 □ runtime or export evidence captured when required
@@ -83,6 +84,16 @@ COMPOSITION
 □ one clear focal object per viewport
 □ empty intervals are intentional and anchored
 
+ALIGNMENT CONTINUITY
+□ nav, hero, sections, contact, and footer share one declared page shell
+□ 2–4 persistent vertical rails are visible across adjacent sections
+□ section labels reuse a stable start position
+□ major headings reuse a stable main-content rail
+□ titles, descriptions, and actions align to declared supporting rails
+□ asymmetry comes from span, measure, or one declared focal exception
+□ repeated arbitrary margin-left, padding-left, or translate-x offsets = 0
+□ mobile collapses to a predictable one- or two-rail reading order
+
 STRUCTURAL LINES
 □ section dividers = 0
 □ repeated per-row separators = 0 by default
@@ -107,18 +118,34 @@ form controls, keyboard focus rings, required tables, diagrams, charts,
 and data grids whose meaning depends on lines
 ```
 
-### Required evidence for zen line density
+Allowed alignment exception:
+
+```text
+one documented focal object or illustration may break a rail when the break
+is visually intentional, remains balanced, and does not license unrelated row drift
+```
+
+### Required evidence for zen line density and alignment
 
 ```text
 1. source scan of changed visual components for:
    border-t, border-b, border-y, divide-y, divide-x, repeated <hr>,
    box-shadow separators, and pseudo-element rules
 
-2. full-page or representative viewport captures
+2. source scan for local alignment nudges:
+   translate-x, margin-left, padding-left, arbitrary ml-[...], pl-[...],
+   percentage indentation, alternating row offsets, and conflicting container widths
 
-3. visible structural-line count per inspected viewport
+3. full-page or representative viewport captures
 
-4. justification for every allowed exception
+4. visible structural-line count per inspected viewport
+
+5. alignment-rail inspection across at least three adjacent sections:
+   label start, heading start, supporting-content start, action end
+
+6. mobile reading-order inspection after desktop rails collapse
+
+7. justification for every allowed line or focal-offset exception
 ```
 
 Example failed evidence:
@@ -131,9 +158,15 @@ violations:
   - region: principles
     observation: section border-y plus per-item border-top
     class: structural_fragmentation
+  - region: page-wide
+    observation: work list uses ml-[30%], principles alternate translate-x, contact uses another offset
+    class: alignment_drift
+  - region: responsive
+    observation: desktop offsets survive stacking and create mobile zig-zag
+    class: rail_collapse_failure
 ```
 
-Any unapproved structural section border or repeated row-separator system on a zen page produces `fail` and routes to defect classification.
+Any unapproved structural section border, repeated row-separator system, or repeated arbitrary content offset on a zen page produces `fail` and routes to defect classification.
 
 ## Review mode selection
 
@@ -148,7 +181,7 @@ release review
   commit, PR, deployment, or delivery readiness
 ```
 
-A genre correction that changes containment grammar requires at least a focused review across every affected section, not only the initially reported component.
+A genre correction that changes containment grammar or alignment rails requires at least a focused review across every affected section, not only the initially reported component.
 
 ## Route from redesign state
 
@@ -174,10 +207,10 @@ Do not default every redesign to `web-marketing`. Use the actual surface and des
 
 ```text
 □ inspect every changed region
-□ inspect adjacent regions for rhythm and hierarchy regressions
+□ inspect adjacent regions for rhythm, hierarchy, and alignment regressions
 □ verify affected viewports and themes
 □ exercise changed controls and overflow
-□ run changed-file diff and genre-token scan
+□ run changed-file diff, genre-token scan, and local-offset scan
 □ capture runtime errors for interactive surfaces
 □ record any deferred build/test gates honestly
 ```
@@ -234,6 +267,8 @@ local_implementation_defect
   rule was clear and loaded, but implementation violated it
 ```
 
+Alignment drift caused by many local offsets is a structure defect, not a set of unrelated component-polish defects. Reopen the shared grid and remove the nudges instead of correcting each item independently.
+
 Do not classify solely from the visible symptom.
 
 ## Minimum report
@@ -247,6 +282,10 @@ Do not classify solely from the visible symptom.
 - Genre: [genre]
 - Genre conformance: [pass | fail | not verified]
 - Structural line count by viewport: [evidence]
+- Page shell: [value]
+- Persistent alignment rails: [evidence]
+- Arbitrary offset count: [number and regions]
+- Responsive rail collapse: [pass | fail | not verified]
 - Review coverage: [mode]
 - Hard gates: [status]
 - Critical findings: [count]
@@ -255,6 +294,7 @@ Do not classify solely from the visible symptom.
 | Cluster | Score/status | Coverage | Governing reviewer | Notes |
 |---|---:|---:|---|---|
 | Genre conformance | pass/fail | X% | design-genre | ... |
+| Alignment continuity | pass/fail | X% | redesign-workflow | ... |
 | Universal visual quality | X.X | X% | design-review | ... |
 | Domain/surface quality | X.X | X% | reviewer | ... |
 | Components | X.X | X% | reviewer | ... |
