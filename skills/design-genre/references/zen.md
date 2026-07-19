@@ -99,9 +99,58 @@ Hairlines are not automatically zen. Repeated faint lines still fragment the pag
 ❌ border-top on every project, principle, capability, or contact row
 ❌ card removal followed by divider proliferation
 ✅ larger gap between sections
-✅ asymmetric indentation
 ✅ numbered rows separated by rhythm only
 ✅ changes in measure, alignment, and typographic emphasis
+```
+
+### Alignment rail contract
+
+This is also a hard genre constraint. Zen asymmetry needs a stable hidden order.
+
+```text
+PAGE SHELL
+  use one persistent content width across nav, hero, sections, contact, and footer
+  do not alternate container widths without a declared focal reason
+
+PRIMARY RAILS
+  define 2–4 reusable vertical start positions before composing sections
+  section labels, major headings, titles, body copy, and actions should reuse them
+  adjacent sections must feel related even when their spans differ
+
+ASYMMETRY
+  create asymmetry by span, whitespace, measure, or one deliberate focal offset
+  do not shift individual rows with arbitrary margin-left, padding-left, or translate-x
+  repeated per-item nudging is drift, not Fukinsei
+
+OFFSET BUDGET
+  default arbitrary offsets: 0
+  allowed exception: one documented focal object or illustration offset per viewport
+  never alternate row offsets merely to make a list feel organic
+
+RESPONSIVE COLLAPSE
+  desktop rails must collapse predictably to one or two mobile rails
+  mobile order must remain label → title → content/action without visual zig-zag
+```
+
+Common failure pattern:
+
+```text
+section header begins on rail A
+project title begins on rail B
+principle title begins on a manually shifted rail C
+contact links use another percentage indentation
+result: every local composition looks plausible, but the full page feels crooked
+verdict: alignment continuity failure
+```
+
+```text
+❌ repeated translate-x on alternating rows
+❌ md:ml-[N%] or arbitrary padding used as section-level layout
+❌ different heading start positions without hierarchy reason
+❌ nav/footer shell wider or narrower than the page body by accident
+✅ one shared grid with different column spans
+✅ consistent label rail and main-content rail
+✅ one intentional offset used sparingly as a focal exception
 ```
 
 ### Void rule
@@ -121,10 +170,10 @@ Adapt from content length and viewport; do not fill space with containers.
 ```text
 PRIMARY CONTAINERS
   whitespace
-  alignment
+  shared alignment rails
   text measure
-  asymmetric grid position
   grouping by proximity
+  restrained asymmetrical spans
 
 SECONDARY CONTAINERS
   a quiet image field
@@ -136,6 +185,7 @@ NOT DEFAULT CONTAINERS
   pills
   section backgrounds
   boxed CTA panels
+  arbitrary per-item offsets
 ```
 
 ## Motion
@@ -153,13 +203,14 @@ prefers-reduced-motion: hard gate
 Marquee Hero (zen variant), Specimen, Studio, Atelier, Lumen
 ```
 
-A compatible macrostructure is still invalid when implemented with repeated section borders, equal cards, or dense metadata chrome.
+A compatible macrostructure is still invalid when implemented with repeated section borders, equal cards, dense metadata chrome, or broken alignment continuity.
 
 ## Nav & Footer
 
 ```text
 Nav: minimal, low contrast, transparent until scrolling only when needed
 Footer: minimal and open; whitespace may separate it from contact
+Nav, content, and footer should share the same page shell and outer rails
 ```
 
 ## Zen Review Questions
@@ -171,7 +222,10 @@ Footer: minimal and open; whitespace may separate it from contact
 4. How many structural lines are visible?
 5. Could any remaining border become spacing instead?
 6. Did card removal merely become hairline-divider repetition?
-7. With color removed, does the composition remain calm and legible?
+7. What are the persistent alignment rails across the page?
+8. Are any rows manually nudged off those rails without a functional reason?
+9. Does mobile collapse preserve a calm reading order?
+10. With color removed, does the composition remain calm and legible?
 ```
 
 ## Hard Failures
@@ -187,6 +241,10 @@ Footer: minimal and open; whitespace may separate it from contact
 ❌ bold body copy and multiple competing focal objects
 ❌ more than one decorative accent
 ❌ empty space filled because it feels "unfinished"
+❌ multiple container widths with no declared reason
+❌ repeated arbitrary margin, padding, or translate offsets used to fake asymmetry
+❌ section labels, headings, and content drifting across unrelated start positions
+❌ mobile content zig-zag caused by desktop offset rules
 ```
 
 ## Allowed Exceptions
@@ -196,7 +254,8 @@ Footer: minimal and open; whitespace may separate it from contact
 ✅ required data-table or diagram lines
 ✅ one rare list boundary hairline
 ✅ one strong focal object per viewport
+✅ one documented focal offset for an illustration or singular composition
 ✅ near-invisible texture when it does not create another surface
 ```
 
-Every exception needs a functional reason in the run state. "It looked too empty" is not a functional reason.
+Every exception needs a functional reason in the run state. "It looked too empty" or "it felt more dynamic" is not a functional reason.
