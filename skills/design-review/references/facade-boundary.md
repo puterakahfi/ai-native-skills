@@ -2,7 +2,7 @@
 
 Load this reference during classification when domain coverage, ownership, or extension behavior is relevant.
 
-`design-review` is a facade skill: callers use one review entry point while the facade selects applicable review strategies, normalizes evidence, and produces a consistent score and verdict.
+`design-review` is a facade skill: callers use one review entry point while the facade selects applicable review strategies, resolves canonical gate IDs, normalizes evidence, and produces a consistent score and verdict.
 
 ## Ownership
 
@@ -11,6 +11,7 @@ The facade owns:
 ```text
 surface and domain classification
 review profile and strategy selection
+canonical gate resolution and migration
 applicability status
 common evidence model
 score, coverage, and verdict policy
@@ -22,6 +23,7 @@ Specialist or domain-review skills own:
 
 ```text
 domain principles and thresholds
+full gate definitions
 component and platform behavior
 specialized hard gates
 production methods
@@ -75,6 +77,8 @@ A domain reviewer integrated through the facade must declare:
 ```yaml
 domain_reviewer:
   domain: <stable domain id>
+  gate_namespace: <registered uppercase prefix>
+  gate_registry_entries: []
   applies_when: []
   required_context: []
   required_evidence: []
@@ -87,21 +91,35 @@ domain_reviewer:
 It must:
 
 ```text
+register a unique namespace before exposing gates to the facade
+register every selected or reported gate ID in gate-registry.yaml
+keep full gate definitions in its own governing reference
 return PASS/FAIL/PARTIAL/NOT_VERIFIED/NOT_APPLICABLE per selected gate
 provide evidence and impact for every failed or partial gate
 identify domain-specific hard-gate triggers
 map findings into the facade finding contract
 preserve common score and coverage semantics
 state what remains outside its own scope
+add eval coverage using design_gate_ids
 ```
 
 It must not:
 
 ```text
+mint gate IDs only inside a prompt, report, or caller
+reuse another domain's namespace for unrelated meaning
 silently redefine universal gate meanings
 count missing evidence as zero
 claim coverage outside its declared domain
 perform redesign or production unless the caller owns that lifecycle
+```
+
+Registry rules and extension procedure are defined in:
+
+```text
+references/gate-registry.yaml
+references/gate-migrations.yaml
+references/gate-registry.md
 ```
 
 ## Composition Rules
@@ -113,6 +131,7 @@ choose one primary domain owner
 load secondary reviewers only for declared cross-domain concerns
 keep universal gates shared rather than duplicated per reviewer
 resolve duplicate findings under the reviewer that owns the root cause
+normalize every finding to a canonical registered ID
 do not average unrelated domain scorecards without explicit weighting
 ```
 
@@ -142,6 +161,8 @@ unsupported domain receives a full PASS
 one scorecard is forced across unrelated disciplines
 facade starts producing or redesigning without caller ownership
 new domain requires rewriting unrelated built-in strategies
+domain reviewer invents unregistered gate IDs
+alias is guessed from similar wording instead of declared migration
 ```
 
 See `docs/facade-skill-pattern.md` for the repository-wide pattern definition.
