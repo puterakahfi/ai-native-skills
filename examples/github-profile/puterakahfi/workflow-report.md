@@ -19,7 +19,8 @@ design_owner: master-design
 implementation_owner: repository patch owner
 repository_write_owner: GitHub connector
 review_facade: design-review
-domain_reviewer: rendered-static visual communication
+primary_domain_coverage: LIMITED
+domain_reason: no dedicated developer-profile or document-portfolio reviewer exists
 ```
 
 ## Baseline and Scope
@@ -104,14 +105,14 @@ Selected: **Candidate A**.
 ## Layered Plan
 
 ```text
-strategy      preserve proof-first narrative and collaboration action
-foundation    restore page/section/item/metadata relationships
-brand         lock zen, calm, no lines/cards
-structure     identity → proof → thesis → capability → focus → connect
-visual        H3/H4, weight, measure, mixed alignment
-layout        single column; centered opening only
-spacing       element < item < section
-content       shorten hero and project anatomy
+strategy       preserve proof-first narrative and collaboration action
+foundation     restore page/section/item/metadata relationships
+brand          lock zen, calm, no lines/cards
+structure      identity → proof → thesis → capability → focus → connect
+visual         H3/H4, weight, measure, mixed alignment
+layout         single column; centered opening only
+spacing        element < item < section
+content        shorten hero and project anatomy
 implementation semantic GFM/HTML only; no dependencies
 ```
 
@@ -121,10 +122,12 @@ implementation semantic GFM/HTML only; no dependencies
 user value      profile is faster to understand and feels continuous with pkahfi.com
 brand value     one personal identity across website and GitHub
 engineering     source remains maintainable and dependency-free
-evidence signal rendered desktop/narrow screenshots and foundation gate review
+evidence signal rendered desktop/narrow captures and foundation gate review
 ```
 
 ## Production
+
+### Foundation correction
 
 ```yaml
 expected_head_blob: 786fb5389fb7e308b91b3a45f75a614a649d6f92
@@ -138,18 +141,87 @@ scope_diff:
 concurrency: PASS
 ```
 
+### Focused copy-density refinement
+
+The GFM-equivalent render showed that the direction and spatial system passed, but long desktop measures and two competing bold hero levels weakened the calm hierarchy.
+
+```yaml
+expected_head_blob: 810b712b1ef66bbaebf62798cc03cf88d64c6129
+result_commit: a8d09f5a622b58e219a0c5620ab7a277c29f68c2
+result_blob: b657dc98e88414c3425248a6b43c132ef4997710
+correction:
+  - reduce positioning line from bold to plain supporting text
+  - shorten project contribution copy
+  - shorten capability descriptions
+  - reduce current-focus measure
+scope_diff:
+  in_scope:
+    - README.md
+  out_of_scope: []
+  unknown: []
+concurrency: PASS
+```
+
+## Verification Evidence
+
+```yaml
+source:
+  - final live README.md
+rendered_static:
+  - local GFM-equivalent desktop render at 1200 x 1900
+  - local GFM-equivalent narrow render at 390 x 3600
+rejected_baselines:
+  - user-provided initial desktop screenshot
+  - user-provided line-free foundation-failed desktop screenshot
+```
+
+The local renderer approximates GitHub typography, headings, links, content width, and responsive stacking. It verifies universal composition behavior but does not replace direct GitHub renderer parity.
+
+## Focused Design Review
+
+```text
+verified universal score     8.5 / 10
+evidence coverage            approximately 92 percent
+primary-domain coverage      LIMITED
+verdict                      LIMITED REVIEW
+critical findings            0
+important open findings      0
+```
+
+Foundation result:
+
+```text
+F1 HIERARCHY              PASS
+F2 GROUPING               PASS
+F3 ALIGNMENT              PASS
+F4 SPACE + RHYTHM         PASS
+F5 BALANCE                PASS
+F6 FLOW                   PASS
+F7 LEGIBILITY             PASS
+F8 SYSTEM CONSISTENCY     PASS
+F9 ACCESSIBILITY          PARTIAL
+F10 RESPONSIVE CONTINUITY PASS for local GFM-equivalent narrow rendering
+```
+
 ## Verification Status
 
 ```text
 PASS          decision provenance
 PASS          path scope
-PASS          expected-head write lease
+PASS          expected-head write leases
 PASS          source semantics
 PASS          brand-lock implementation in source
+PASS          desktop GFM-equivalent universal review
+PASS          narrow GFM-equivalent universal review
 PASS          contract CI
-NOT_VERIFIED  corrected desktop render
-NOT_VERIFIED  corrected narrow render
-NOT_VERIFIED  corrected light/dark comparison
+NOT_VERIFIED  direct GitHub desktop parity
+NOT_VERIFIED  direct GitHub narrow parity
+NOT_VERIFIED  direct GitHub dark-theme rendering
+LIMITED       primary developer-profile domain coverage
 ```
 
-Delivery remains `NOT_VERIFIED` until the corrected live README is captured and reviewed.
+## Delivery
+
+Preserve the current live README. No additional mutation is justified by the available evidence.
+
+Delivery remains **LIMITED REVIEW**, not full PASS, until direct GitHub renderer parity is captured and a dedicated developer-profile/document-portfolio reviewer exists or the claim is intentionally limited to universal design quality.
