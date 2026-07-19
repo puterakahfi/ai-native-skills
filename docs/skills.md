@@ -6,10 +6,10 @@ The goal is to keep skill authoring decisions consistent: when to create an atom
 
 Current repository inventory:
 
-- `skill`: 79
+- `skill`: 81
 - `workflow`: 9
 - `meta-skill`: 6
-- Total executable skills: 94
+- Total executable skills: 96
 
 ---
 
@@ -21,7 +21,7 @@ Agent Skills standard frontmatter only allows `name`, `description`, `license`, 
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
-| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `accessibility`, `business-value-alignment`, `experiment-design`, `master-design` |
+| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `decision-provenance`, `accessibility`, `business-value-alignment`, `master-design` |
 | `workflow` | Run a sequenced task lifecycle | “What phases must this task follow?” | `bugfix-workflow`, `deployment-workflow`, `redesign-workflow` |
 | `meta-skill` | Route or compose other skills/workflows | “Which skills/workflows should be loaded?” | `workflow-router`, `role-switcher` |
 
@@ -63,6 +63,7 @@ A good `skill` should define:
 ### Examples
 
 - `systematic-debugging` — root-cause investigation discipline.
+- `decision-provenance` — verify authority, source, scope, supersession, and conflict behind material decision claims.
 - `accessibility` — WCAG-oriented UI quality gate.
 - `master-design` — senior product design lens.
 - `business-value-alignment` — value framing and metric alignment before execution.
@@ -112,7 +113,7 @@ A good `workflow` should define:
 | `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review |
 | `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict |
 | `deployment-workflow` | pre-deploy → context-load → deploy → health-verify → confirm/rollback |
-| `redesign-workflow` | audit → spec → prototype → design-review gates → iterate → deliver |
+| `redesign-workflow` | route → compose owners → inspect → verify decision provenance → specify → produce under write lease → verify final diff/domain evidence → facade review → classify → fix → deliver |
 | `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |
 | `design-refinement` | failing-gate triage → patch → re-gate → deliver (targeted, no full redesign) |
 | `skill-doctor` | audit → triage → fix monoliths/stubs → verify length + gates |
@@ -185,6 +186,7 @@ These are adapter-like skills because they implement Native AI Core contracts wh
 - `native-ai-engineer`
 - `native-ai-runtime-agent`
 - `native-ai-runtime-ops`
+- `decision-provenance`
 
 ### When to use the adapter pattern
 
