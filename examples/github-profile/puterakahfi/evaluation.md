@@ -6,43 +6,69 @@
 profile_repository: puterakahfi/puterakahfi
 profile_url: https://github.com/puterakahfi
 initial_commit: c1a3f65b6138093e8a817019425aca23c681f0c7
-refined_commit: d5ebd185a1d78f7ce11cfba87e24c3c30092b9ff
-skill: github-profile@1.1.0
-mode: create_then_refine
+first_refinement_commit: d5ebd185a1d78f7ce11cfba87e24c3c30092b9ff
+line_free_but_foundation_failed_commit: 4319b26c20b51e1a23e350a65bf29ec01788c775
+foundation_corrected_commit: 8b09299ad169221ec2daf1a3b05110d2af229c53
+skill: github-profile@1.2.0
+workflow: redesign-workflow@3.3.0
+mode: create_then_redesign_then_correct
 output_mode: patch
 ```
 
 ## Behavioral Result
 
 ```text
-classification: APPLIED_AND_REFINED
+classification: APPLIED_REVIEWED_CORRECTED
+rendered_delivery_verdict: NOT_VERIFIED
 ```
 
-The fixture exercises the full feedback loop rather than accepting valid Markdown as finished design:
+The fixture exercises a real correction loop rather than accepting valid Markdown or a stylistic label as finished design:
 
 1. generate a proof-first profile
 2. publish to the real GitHub Profile README surface
 3. inspect a user-provided desktop screenshot
-4. identify hierarchy and differentiation failures
-5. refine the live README
-6. convert the learning into skill rules and a regression case
+4. identify generic hierarchy and brand-differentiation failures
+5. apply a local visual refinement
+6. inspect another user-provided screenshot
+7. detect that the refinement violated design foundation and brand alignment
+8. reload `redesign-workflow`, compose one design owner and selected specialists
+9. compare two valid direction candidates
+10. select and patch a foundation-led zen composition
+11. convert both failures into permanent skill rules and regression tests
 
-## Initial Source Successes
+## Preserved Equity and Locks
 
-The first version demonstrated important skill behavior:
+```yaml
+preservation_locks:
+  identity:
+    - Putera Kahfi
+    - Native AI Engineering
+    - Product and design systems
+  proof:
+    - AI Native Skills
+    - Native AI Core
+    - VisualMate
+  brand_grammar:
+    mood: zen and calm editorial
+    density: sparse but information-bearing
+    spacing: purposeful and relational
+    separators: no decorative lines
+    containment: no cards or blockquote project containers
+    expression: restrained, readable, personal
+```
 
-- audience and positioning appeared before technology detail
-- selected work appeared before capability groups
-- projects included role, contribution, and current state
-- public repositories provided direct proof
-- private implementation repositories were not exposed as public proof
-- no employer, client, revenue, user-count, or impact metrics were invented
-- no badge wall, statistics wall, trophies, counters, animation, or third-party widgets were added
-- current-focus statements were dated for maintainability
+## Version 1.0 · Source Success, Render Failure
 
-## Rendered Findings · Version 1.0.0
+The initial version passed important behavioral checks:
 
-A desktop screenshot of the live GitHub profile changed the verdict from source-only acceptance to a limited rendered review.
+- positioning before technologies
+- selected work before capability inventory
+- explicit role, contribution, and state
+- public proof without exposing private repositories
+- no fabricated employer, metric, client, or achievement claims
+- no badge wall, statistics wall, counters, animations, or third-party widgets
+
+The first screenshot produced this rendered verdict:
 
 ```text
 PASS     factual integrity
@@ -57,99 +83,156 @@ FAIL     brand differentiation
 
 Observed failures:
 
-- the hero used a generic name + role + paragraph + links pattern
-- nearly every section used the same heading-plus-paragraph treatment
-- selected projects read like documentation entries rather than proof modules
-- Native AI Engineering, How I build systems, Current focus, and Working principles repeated related ideas
+- generic name + role + paragraph + links opening
+- nearly every section used equal heading-plus-paragraph treatment
+- projects read like documentation entries
+- multiple sections repeated related ideas
 - the document was clean but visually anonymous
-- the visitor had to read too much before reaching a memorable thesis
 
-This proves that semantic correctness, restraint, and source readability are necessary but insufficient for a strong profile.
+## Version 1.1 · Distinctive but Brand-Conflicting
 
-## Refinement · Version 1.1.0
+The next refinement introduced:
 
-The refined README introduces a declared differentiation device:
+- thesis-led opening
+- blockquote proof modules
+- code-box process flow
+- reduced content overlap
+
+This improved differentiation but introduced a new root-cause defect:
 
 ```text
-primary device: thesis-led editorial opening
-supporting device: repeated GitHub-native proof blocks
+FAIL  brand continuity
 ```
 
-Changes:
+The proof blocks and code container used a technical-documentation grammar that conflicted with the established `pkahfi.com` direction: zen, more space, and no lines.
 
-- replaces the generic role subtitle with a specific engineering proposition
-- introduces a memorable system thesis in the opening viewport
-- moves selected work directly after the hero
-- renders projects as compact blockquote proof modules
-- gives the engineering thesis a distinct quote and process-flow treatment
-- merges overlapping principles into three bounded statements
-- reduces total explanatory density
-- keeps all critical information semantic and dependency-free
+Learning:
+
+```text
+distinctive ≠ brand-aligned
+GitHub-native ≠ automatically appropriate
+```
+
+## Version 1.2 Attempt · Line-Free but Foundation Failure
+
+A line-free refinement removed borders, blockquotes, code boxes, and horizontal rules. The second screenshot showed that the correction was too literal.
+
+Foundation findings:
+
+```text
+F1 HIERARCHY   FAIL     page anchor, section label, item, and metadata were too close in weight
+F2 GROUPING    FAIL     projects were visually detached by oversized gaps
+F3 ALIGNMENT   PARTIAL  centered identity worked, but the body lacked strong role anchors
+F4 RHYTHM      FAIL     large spacing repeated across unrelated transitions
+F5 BALANCE     FAIL     small content mass floated inside a tall empty canvas
+F6 FLOW        PARTIAL  order was logical, but long voids weakened continuation
+F7 LEGIBILITY  FAIL     small labels carried critical section identity
+F8 CONSISTENCY PASS     repeated roles were treated consistently
+F9 ACCESS      PASS     semantic text and links remained available
+F10 RESPONSIVE NOT_VERIFIED
+```
+
+Root cause:
+
+> “More space” was translated into more `<br>` elements instead of relational spacing. The result contained dead space rather than Ma.
+
+This directly violated `design-spacing`:
+
+```text
+sparse content needs less space, not more
+vertical rhythm first
+Ma is intentional presence, not absence
+```
+
+## Workflow Correction
+
+The correction was rerouted through `redesign-workflow`.
+
+### Role composition
+
+```yaml
+lifecycle_owner: redesign-workflow
+design_owner: master-design
+implementation_owner: master-engineer-equivalent repository patch owner
+repository_write_owner: GitHub connector
+specialists:
+  - design-foundation
+  - design-brand
+  - composition
+  - visual-hierarchy
+  - design-spacing
+  - readability
+  - content-strategy
+reviewer: design-review rendered-static facade
+```
+
+### Direction candidates
+
+```text
+A  Centered Zen Manifesto
+   centered identity opening → left-aligned proof and detail
+   hierarchy through H3/H4, weight, measure, proximity, and cadence
+
+B  Zen Technical Index
+   fully left-aligned, compact, highly utilitarian
+   faster scanning but weaker continuity with the personal-brand opening
+```
+
+Selected: **Centered Zen Manifesto**.
+
+Reason: it preserves the calm personal-brand identity while restoring a clear editorial focal sequence.
+
+### Corrected hierarchy
+
+```text
+page anchor     H3 centered name
+positioning     bold supporting role
+thesis          H4 authored proposition
+section parent  H3 left-aligned
+project item    H4 linked title
+metadata        italic supporting line
+body            concise explanatory copy
+action          bounded profile links
+```
+
+### Corrected spatial rhythm
+
+```text
+element gap < item gap < section gap
+```
+
+- related project anatomy stays attached
+- projects have stronger separation than their internal details
+- sections have the strongest pause
+- only one bounded centered opening is used
+- no decorative lines, cards, blockquotes, or visual boxes
 
 ## Contract Mapping
 
-### `backend-engineer-proof-before-badges`
-
 ```text
-PASS  selected work exists
-PASS  project ownership and contribution are explicit
-PASS  AI-native, DDD, and ports-and-adapters positioning exists
-PASS  positioning precedes technology detail
-PASS  no forbidden badge/counter/trophy behavior
+PASS  positioning before decoration
+PASS  proof before badges
+PASS  no fabricated identity or metrics
+PASS  product/founder narrative
+PASS  anti-clutter
+PASS  generic-documentation failure converted to a regression case
+PASS  brand preservation now precedes genre expression
+PASS  foundation now precedes zen styling
+PASS  dead-space failure converted to a regression case
 ```
 
-### `founder-profile-uses-product-narrative`
-
-```text
-PASS  VisualMate is framed by product purpose and ownership
-PASS  product proof precedes generic tool lists
-PASS  profile remains a personal-brand surface, not a long CV
-```
-
-### `username-only-does-not-invent-biography`
-
-```text
-PASS  only supplied, authenticated, public-repository, or public-product facts are used
-PASS  unsupported employers, metrics, clients, and achievements are excluded
-```
-
-### `explicit-clutter-request-is-reframed`
-
-```text
-PASS  proof and hierarchy control the composition
-PASS  dynamic widgets: none
-PASS  critical information is semantic text
-```
-
-### `clean-but-anonymous-needs-differentiation`
-
-```text
-PASS  rendered feedback is not dismissed because source is valid
-PASS  a recognizable engineering thesis is declared
-PASS  selected work receives a distinct proof-module treatment
-PASS  repeated sections are merged
-PASS  all major sections no longer share equal visual weight
-```
-
-## GitHub Activation Checks
+## GitHub Activation and Source Checks
 
 ```text
 PASS  repository name matches username
 PASS  repository is public
 PASS  non-empty README.md exists at repository root
 PASS  default branch is main
-```
-
-## Source Acceptance · Refined Version
-
-```text
-PASS  one semantic H1
-PASS  ordered H2/H3 hierarchy
+PASS  semantic source order
 PASS  project proof before capability inventory
-PASS  differentiation device declared and implemented
 PASS  no external image or widget dependency
-PASS  no private email or private repository details exposed
-PASS  source remains concise and human-editable
+PASS  no private email or repository details exposed
+PASS  source remains human-editable
 PASS  current statements are dated
 ```
 
@@ -157,22 +240,25 @@ PASS  current statements are dated
 
 ```text
 PASS          initial desktop render captured and reviewed
-NOT_VERIFIED  refined desktop render not yet captured
-NOT_VERIFIED  narrow-width visual screenshot not captured
+PASS          line-free foundation-failed desktop render captured and reviewed
+NOT_VERIFIED  foundation-corrected desktop render not yet captured
+NOT_VERIFIED  foundation-corrected narrow-width render not captured
 NOT_VERIFIED  light/dark visual comparison not captured
 ```
 
-The initial screenshot is valid evidence for identifying the first composition failure. The refined source must still be captured directly before a full READY verdict. Until then, retain `LIMITED REVIEW` for the live refined result.
+The screenshots are valid evidence for rejecting the earlier attempts. The current foundation-corrected source still requires direct rendering before a `READY` or full `PASS` verdict.
 
 ## Learning Result
 
 ```text
 universal design principles are portable
-surface implementation rules are contextual
+brand grammar constrains genre expression
 clean is a baseline, not differentiation
-source validity does not prove rendered hierarchy
-selected work needs visual contrast, not only factual anatomy
+distinctive is insufficient when brand-conflicting
+whitespace is relational structure, not quantity
+zen does not exempt hierarchy, grouping, balance, or legibility
+source validity does not prove rendered composition
 GitHub Profile README needs document-specific translation
 ```
 
-Potential next evolution: compare this fixture with engineer, founder, maintainer, and designer profiles before registering a dedicated `developer-profile` or `document-portfolio` review profile.
+Potential next evolution: register a dedicated `developer-profile` or `document-portfolio` reviewer after comparing additional engineer, founder, maintainer, and designer fixtures.
