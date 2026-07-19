@@ -197,6 +197,49 @@ Avoid:
 
 When screenshots are unavailable, specific text and links are valid proof.
 
+## Internal route dependency integrity
+
+An approved internal link and its destination route form one delivery dependency.
+
+```text
+approved internal link
+  → destination route exists
+  → route remains inside confirmed scope
+  → navigation and return paths remain coherent
+```
+
+Hard rules:
+
+```text
+- explicit user approval of a route overrides baseline-only scope inference
+- do not preserve an internal link while deleting or restoring away its destination
+- do not delete an approved destination route unless the same patch intentionally removes or redirects every inbound link
+- scope sanitation must classify the link and destination as one dependency bundle
+- a route introduced on the working branch may still be in scope when the user explicitly protects it
+- unresolved internal link/route mismatch is a blocking integrity failure
+```
+
+Before final-diff sanitation:
+
+```text
+□ enumerate changed internal links
+□ resolve every destination file or route
+□ record user-protected routes
+□ classify each link + destination bundle together
+□ verify navbar, footer, CTA, and back-navigation behavior after any route removal
+```
+
+Example failure:
+
+```yaml
+violation:
+  source: homepage active-work link
+  destination: /ai-designer
+  observation: link remains approved while sanitation deletes the route
+  class: internal_route_dependency_break
+  verdict: fail
+```
+
 ## Source-level genre conformance check
 
 Before handing off to rendered verification, inspect changed files for implementation symptoms.
@@ -282,6 +325,7 @@ Auto-revise when present without a functional, brief-specific reason.
 ❌ minimalist portfolio with no real work evidence
 ❌ zen page where card removal becomes repeated hairline rows
 ❌ structural section borders after a zen direction is locked
+❌ approved internal link whose destination route was removed by sanitation
 ```
 
 ## Dual-theme surfaces
