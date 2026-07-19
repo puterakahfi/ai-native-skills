@@ -7,6 +7,7 @@ skill_test:
     - id: mobile-tabs-composition
       description: Cross-device component acceptance needs a design owner, adaptive specialist, and facade reviewer.
       trigger: "Tentukan apakah tabs category ini cocok untuk mobile, tablet, dan desktop lalu review implementasinya."
+      design_gate_ids: [I4, G13, G14]
       must_contain:
         - "master-design"
         - "adaptive-component-design"
@@ -19,6 +20,7 @@ skill_test:
         - one_owner
         - specialist_boundary
         - reviewer_facade_present
+        - canonical_gate_identity
 
     - id: logo-review-composition
       description: Identity-system acceptance requires an identity owner and domain reviewer in addition to the facade.
@@ -40,6 +42,7 @@ skill_test:
     - id: static-poster-composition
       description: Static marketing review uses the design owner, relevant visual specialists, and built-in static reviewer.
       trigger: "Buat role composition untuk audit poster jualan dengan fokus harga, produk, hierarchy, dan final export."
+      design_gate_ids: [SV5, SV9, SV11, SV17, RI1]
       must_contain:
         - "master-design"
         - "design-review"
@@ -51,3 +54,4 @@ skill_test:
       quality_gates_tested:
         - static_domain_composition
         - interactive_reviewer_not_selected
+        - canonical_gate_identity
