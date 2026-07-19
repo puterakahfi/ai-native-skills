@@ -1,0 +1,109 @@
+skill_test:
+  skill: github-profile
+  version: "1.0.0"
+  description: Verify proof-first, design-driven GitHub Profile README generation across different personal-brand goals and platform constraints.
+
+  cases:
+    - id: backend-engineer-proof-before-badges
+      description: A technical profile should lead with positioning and selected work rather than a generic technology badge wall.
+      trigger: "Buatkan GitHub Profile README untuk backend engineer yang fokus pada Go, PHP, DDD, ports-and-adapters, Docker, dan AI-native engineering. Tujuannya agar calon collaborator cepat memahami kemampuan dan project utamanya."
+      must_contain:
+        - "Selected work|Selected projects|Project|Karya pilihan|Proyek pilihan"
+        - "Role|Contribution|Outcome|Peran|Kontribusi|Hasil"
+      must_contain_one_of:
+        - "AI-native"
+        - "DDD"
+        - "ports and adapters|ports-and-adapters"
+      must_not_contain:
+        - "passionate developer"
+        - "visitor counter"
+        - "trophy wall"
+      sequence_required:
+        - pattern: "backend|engineer|AI-native|arsitektur"
+          must_come_before: "badge|technology|tech stack|tools"
+      quality_gates_tested:
+        - positioning_before_decoration
+        - proof_before_badges
+        - project_context
+
+    - id: founder-profile-uses-product-narrative
+      description: A founder or product builder should not be forced into a generic engineer template.
+      trigger: "Saya founder sekaligus software engineer. Buat GitHub Profile README yang menonjolkan produk yang saya bangun, cara saya berpikir tentang product engineering, dan peluang kolaborasi. Jangan jadikan CV panjang."
+      must_contain:
+        - "product|produk"
+        - "collaborat|kolaborasi|contact|kontak"
+      must_contain_one_of:
+        - "who it serves|untuk siapa|audience|pengguna"
+        - "problem|masalah"
+        - "outcome|hasil|current stage|tahap"
+      must_not_contain:
+        - "Curriculum Vitae"
+        - "complete employment history"
+        - "passionate developer"
+      sequence_required:
+        - pattern: "product|produk|builder|founder"
+          must_come_before: "technology|tech stack|tools|badge"
+      quality_gates_tested:
+        - goal_specific_narrative
+        - product_proof
+        - bounded_content_density
+
+    - id: username-only-does-not-invent-biography
+      description: Insufficient public or supplied information must produce explicit gaps rather than plausible fabricated biography.
+      trigger: "Generate GitHub profile yang keren untuk username contoh-user. Saya belum kasih bio, project pilihan, posisi kerja, atau metric apa pun."
+      must_contain:
+        - "missing|gap|belum|dibutuhkan|NOT_VERIFIED|tidak terverifikasi"
+        - "project|proyek|evidence|bukti"
+      must_contain_one_of:
+        - "tidak mengarang|jangan mengarang|tidak akan mengarang"
+        - "verified|terverifikasi"
+        - "placeholder"
+      must_not_contain:
+        - "worked at Google"
+        - "10+ years"
+        - "millions of users"
+      quality_gates_tested:
+        - no_fabricated_identity
+        - explicit_content_gaps
+        - evidence_provenance
+
+    - id: redesign-preserves-equity-and-renders
+      description: Redesign should preserve verified equity, remove clutter selectively, and require rendered review.
+      trigger: "Redesign GitHub Profile README saya. Sekarang ada banner personal brand yang masih dipakai, tiga project utama, banyak badge, dua stats card, trophy, dan contribution snake. Pertahankan identitas brand dan project penting, tetapi bikin lebih premium dan rapi."
+      must_contain:
+        - "preserve|pertahankan"
+        - "project|proyek"
+        - "render|preview|screenshot"
+      must_contain_one_of:
+        - "design-review"
+        - "rendered-static"
+        - "LIMITED REVIEW"
+      must_not_contain:
+        - "hapus semuanya"
+        - "replace everything"
+        - "keep all widgets"
+      sequence_required:
+        - pattern: "preserve|pertahankan|inventory|inventaris"
+          must_come_before: "generate|produce|README|patch"
+      quality_gates_tested:
+        - preservation_before_redesign
+        - restrained_widget_selection
+        - rendered_verification
+
+    - id: explicit-clutter-request-is-reframed
+      description: The skill should not blindly create an unreadable wall even when the user asks for every popular widget.
+      trigger: "Buat GitHub profile yang super ramai: semua logo teknologi, semua badge, visitor counter, trophy, stats, streak, contribution snake, typing animation, GIF, dan banyak warna supaya kelihatan keren."
+      must_contain:
+        - "hierarchy|hierarki|fokus"
+        - "project|proyek|proof|bukti"
+      must_contain_one_of:
+        - "restrained|terbatas|selektif|minimal"
+        - "badge wall|widget wall|terlalu ramai|clutter"
+      must_not_contain:
+        - "include every widget"
+        - "semua widget akan dipasang"
+        - "more colors is better"
+      quality_gates_tested:
+        - anti_clutter
+        - visual_restraint
+        - graceful_degradation
