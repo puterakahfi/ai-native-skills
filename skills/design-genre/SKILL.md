@@ -19,6 +19,7 @@ metadata:
 > 3. **Load the selected genre reference before selecting macrostructure or components.**
 > 4. **Genre-specific constraints override generic workflow, macrostructure, and component defaults.**
 > 5. **Genre must match the audience mental model and explicit user direction.** Wrong genre means downstream misalignment.
+> 6. **For space-led genres, whitespace must encode hierarchy.** Parent-to-child separation must be visibly stronger than sibling separation unless another deliberate grouping cue exists.
 
 ---
 
@@ -39,6 +40,14 @@ Wrong genre = everything downstream is misaligned.
 Default only when no stronger signal exists: editorial.
 Explicit user genre direction overrides inferred product-category defaults.
 ```
+
+For space-led layouts, equal whitespace is not neutral. When a section introduction, its first child, and subsequent siblings all use nearly the same vertical interval, the hierarchy collapses into one flat group. Prefer a clear spacing ratio:
+
+```text
+parent → child group  >  sibling → sibling
+```
+
+A practical starting range is `1.25×–2×`, adapted to viewport and content. Do not add lines or cards merely to repair a spacing hierarchy failure.
 
 ---
 
@@ -105,6 +114,7 @@ genre_contract:
   composition_rules: []
   containment_rules: []
   density_rules: []
+  spacing_hierarchy_rules: []
   color_rules: []
   motion_rules: []
   hard_failures: []
@@ -125,6 +135,7 @@ Reference loaded: [path]
 Voice: [one-line description]
 Density: [sparse | moderate | dense]
 Containment grammar: [space-led | editorial rows | surfaces | mixed]
+Spacing hierarchy: [parent-group ratio or declared alternative cue]
 Motion stance: [motion-on | motion-cut | stillness]
 Theme cluster: [list of applicable themes]
 Nav range: [N-codes]
