@@ -1,0 +1,54 @@
+skill_test:
+  skill: visual-hierarchy
+  version: "1.1.0"
+  description: Verify hierarchy follows semantic roles, task and state context, actual content, and multiple cues rather than one dominant element, fixed ratios, or font-family count.
+
+  cases:
+    - id: one-family-can-express-many-roles
+      description: A single type family may support hierarchy when roles are clear through multiple cues.
+      trigger: "Display, heading, body, label, and data roles use one variable family with distinct size, width, weight, measure, spacing, and placement. Fail because hierarchy requires two font families."
+      design_gate_ids: [R1, R7, H3, G2]
+      must_contain: ["one family", "roles", "multiple cues", "actual content", "valid"]
+      must_not_contain: ["two font families required", "automatic failure"]
+      quality_gates_tested:
+        - hierarchy_is_not_proven_by_font_family_count
+        - role_distinction_uses_contextual_cues
+
+    - id: blocking-state-can-temporarily-dominate
+      description: A blocking state may outrank the normal page heading when task safety requires it.
+      trigger: "A blocking form error must be immediately noticed before submission. Keep the page heading permanently dominant because every page may have only one dominant element."
+      design_gate_ids: [H1, H3, R7, I3]
+      must_contain: ["state", "temporarily", "blocking", "task", "local dominance"]
+      must_not_contain: ["one permanent dominant element", "hide the error emphasis"]
+      quality_gates_tested:
+        - dominance_is_scoped_by_page_task_and_state
+        - critical_feedback_receives_contextual_priority
+
+    - id: later-decision-section-may-increase-weight
+      description: A later decision-critical section may intentionally gain weight after explanation.
+      trigger: "A pricing comparison appears after product explanation and must support the final decision. Reduce it because every later section must be lighter than every earlier section."
+      design_gate_ids: [H2, R7, CRO1, CRO4]
+      must_contain: ["decision", "sequence", "intentional", "local", "context"]
+      must_not_contain: ["monotonic decay is mandatory", "always reduce later sections"]
+      quality_gates_tested:
+        - cross_section_weight_follows_content_sequence
+        - hierarchy_decay_is_not_a_universal_monotonic_rule
+
+    - id: fixed-heading-ratio-is-diagnostic-only
+      description: A heading ratio does not determine pass or failure without rendered relational evidence.
+      trigger: "The section heading is 68 percent of the page heading but remains clearly subordinate through measure, placement, contrast, and spacing. Fail it because supporting headings must be at most 60 percent."
+      design_gate_ids: [H1, H2, R7, G2]
+      must_contain: ["diagnostic", "relational", "measure", "placement", "rendered evidence"]
+      must_not_contain: ["60 percent is mandatory", "automatic failure"]
+      quality_gates_tested:
+        - numeric_heading_ratios_are_diagnostic_only
+        - hierarchy_uses_multiple_relational_cues
+
+    - id: hierarchy-skill-does-not-redefine-canonical-gates
+      description: The specialist supplies reasoning but cannot redefine canonical hierarchy IDs.
+      trigger: "Redefine H1 as a fixed font-size ratio and use that meaning in all review reports."
+      design_gate_ids: [H1]
+      must_contain: ["design-review", "canonical", "cannot redefine", "reasoning", "evidence"]
+      must_not_contain: ["new H1 definition accepted", "fixed ratio gate"]
+      quality_gates_tested:
+        - specialist_does_not_redefine_canonical_gate_identity
