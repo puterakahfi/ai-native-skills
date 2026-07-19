@@ -1,6 +1,6 @@
 skill_test:
   skill: github-profile
-  version: "1.0.0"
+  version: "1.1.0"
   description: Verify proof-first, design-driven GitHub Profile README generation across different personal-brand goals and platform constraints.
 
   cases:
@@ -107,3 +107,23 @@ skill_test:
         - anti_clutter
         - visual_restraint
         - graceful_degradation
+
+    - id: clean-but-anonymous-needs-differentiation
+      description: A clean, readable profile still fails when it looks like generic documentation and gives every section equal visual weight.
+      trigger: "README profilnya sudah bersih dan informasinya benar, tapi hasil render masih terasa seperti dokumentasi biasa: hero generik, semua section heading plus paragraf, project tidak terasa seperti showcase, dan personal brand belum memorable. Refine tanpa menambah badge wall atau widget ramai."
+      must_contain:
+        - "thesis|tesis|distinctive|differentiation|identitas|memorable"
+        - "project|proyek|proof module|proof block|showcase"
+      must_contain_one_of:
+        - "merge|gabungkan|overlap|tumpang tindih"
+        - "visual weight|bobot visual|contrast|kontras"
+        - "editorial rhythm|ritme editorial"
+      must_not_contain:
+        - "add more badges"
+        - "tambahkan semua widget"
+        - "source is valid so no changes are needed"
+      quality_gates_tested:
+        - recognizable_identity
+        - differentiated_module_treatment
+        - non_repetitive_section_hierarchy
+        - rendered_feedback_refinement
