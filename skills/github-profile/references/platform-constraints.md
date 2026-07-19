@@ -1,6 +1,6 @@
 # GitHub Profile Platform Constraints
 
-Treat GitHub as the rendering platform, not as a blank web canvas. Platform validity and graceful degradation are part of the design.
+Treat GitHub as the rendering platform, not a blank web canvas. Platform validity and graceful degradation are part of the design.
 
 ## Profile README Activation
 
@@ -12,13 +12,11 @@ is public
 contains a non-empty README.md at the repository root
 ```
 
-Managed user accounts may not support profile READMEs. Verify the actual account and repository state before claiming activation.
+Managed user accounts may not support profile READMEs. Verify account and repository state before claiming activation.
 
 ## Rendering Model
 
-Use GitHub Flavored Markdown and only GitHub-supported HTML. GitHub sanitizes rendered content and does not provide arbitrary CSS or JavaScript execution.
-
-Therefore:
+Use GitHub Flavored Markdown and GitHub-supported HTML. GitHub sanitizes rendered content and does not provide arbitrary CSS or JavaScript execution.
 
 ```text
 semantic Markdown is the primary structure
@@ -28,11 +26,11 @@ scripts and interactive widgets cannot be assumed
 render behavior must be inspected on GitHub or an equivalent renderer
 ```
 
-Do not ship source that only looks correct in a local Markdown editor with different HTML or CSS behavior.
+Do not ship source that only works in a local editor with different HTML or CSS behavior.
 
 ## Source Size and Complexity
 
-GitHub may truncate very large README files. Keep profile source far below platform limits and avoid embedding giant generated SVG/XML payloads directly into the document.
+Keep profile source far below platform limits and avoid giant generated SVG/XML payloads.
 
 Prefer:
 
@@ -44,21 +42,11 @@ few external services
 human-editable sections
 ```
 
-Avoid:
-
-```text
-base64 image blobs
-huge inline SVG
-machine-generated HTML tables
-hundreds of badges
-duplicated light/dark content blocks
-```
+Avoid base64 images, huge inline SVG, machine-generated tables, hundreds of badges, and duplicated theme content.
 
 ## Images
 
-Images may use repository-relative paths or stable external URLs.
-
-For every image verify:
+Images may use repository-relative paths or stable external URLs. Verify:
 
 ```text
 source ownership and expected longevity
@@ -67,19 +55,18 @@ intrinsic and displayed size
 transparent-background behavior
 light and dark contrast
 narrow-width scaling
-link destination when the image is actionable
+link destination when actionable
 ```
 
-Critical information must also appear as semantic text. A banner that contains the person's only readable name or role is not sufficient.
+Critical information must also appear as semantic text. A banner containing the only readable name or role is insufficient.
 
 ## Theme-Aware Assets
 
-GitHub supports theme-aware image patterns in Markdown/HTML. When using separate light and dark assets:
+When using separate light and dark assets:
 
 ```text
 both variants communicate equivalent information
-both URLs resolve
-both have appropriate contrast
+both URLs resolve and retain contrast
 fallback behavior is acceptable
 nearby text remains complete without either asset
 ```
@@ -88,14 +75,12 @@ Do not create theme variants merely for decoration when one robust asset works i
 
 ## Links
 
-Verify:
-
 ```text
 relative links resolve from README.md
 external links use the intended canonical destination
 repository links point to the correct owner and branch
-mail or social links do not expose unintended private data
-image links and text links have clear labels
+contact links expose only intended information
+image and text links have clear labels
 archived or experimental work is labelled honestly
 ```
 
@@ -103,9 +88,7 @@ A visually polished profile with broken links fails delivery.
 
 ## Third-Party Widgets
 
-Generated statistics, streak cards, contribution snakes, trophies, visitor counters, dynamic typing images, and badge services are external dependencies.
-
-Classify each dependency:
+Statistics, streak cards, contribution snakes, trophies, counters, typing images, and badge services are external dependencies.
 
 ```yaml
 external_dependency:
@@ -121,36 +104,32 @@ external_dependency:
 Rules:
 
 ```text
-criticality must not be critical for third-party widgets
-unknown privacy or maintenance risk blocks automatic inclusion
+third-party widgets must never be critical
+unknown data or maintenance risk blocks automatic inclusion
 one widget should answer one visitor question
 similar widgets must not repeat the same information
 failure must leave a coherent profile
 ```
 
-Default `dynamic_widgets: minimal` means zero or one strongly justified widget, not one widget from every popular provider.
+`dynamic_widgets: minimal` means zero or one justified widget, not one from every provider.
 
-## Privacy and Safety
+## Privacy and Data Boundaries
 
-Public profile content is globally visible. Never infer or expose:
+Public profile content is broadly visible. Never infer or expose:
 
 ```text
-private email addresses
-private repository names or activity
+non-public contact details
+non-public repository names or activity
 client identities without permission
-precise personal location beyond supplied intent
-employment status not explicitly verified
-personal schedules, availability, or contact details
-analytics/tracking elements without disclosure and purpose
+precise location beyond supplied intent
+unverified role or work status
+personal schedules or availability
+tracking elements without purpose and disclosure
 ```
 
-When repository or API data is used, distinguish public facts from inference. Do not treat contribution volume as proof of employment, seniority, or expertise.
+Distinguish public facts from inference. Contribution volume does not prove employment, seniority, or expertise.
 
 ## Accessibility
-
-GitHub controls the page shell, but README authors still control content accessibility.
-
-Verify:
 
 ```text
 semantic heading order
@@ -163,11 +142,11 @@ readable body copy and lists
 logical source order
 ```
 
-Animated GIFs and contribution animations are not harmless defaults. Avoid them unless requested and ensure the profile still communicates without motion.
+Avoid animated GIFs and contribution animations by default. The profile must communicate without motion.
 
 ## HTML Layout Cautions
 
-HTML alignment, tables, details/summary, picture/source, and image sizing can be useful. They should remain:
+HTML alignment, tables, details/summary, picture/source, and image sizing may help, but must remain:
 
 ```text
 semantically understandable
@@ -177,11 +156,11 @@ usable at narrow width
 simple enough for the owner to maintain
 ```
 
-Do not use nested tables as a substitute for a responsive layout system.
+Do not use nested tables as a substitute for responsive layout.
 
 ## Repository Assets
 
-Prefer repository-owned assets under a clear path such as:
+Prefer clear repository-owned paths:
 
 ```text
 assets/profile/
@@ -189,15 +168,8 @@ assets/projects/
 assets/brand/
 ```
 
-Use lowercase predictable filenames, document generated assets, and avoid committing source credentials or private design exports.
+Use predictable lowercase filenames, document generated assets, and exclude credentials or restricted design exports.
 
 ## Verification Sources
 
-For current platform behavior, verify against official GitHub documentation:
-
-- Managing your profile README
-- About repository README files
-- Getting started with writing and formatting on GitHub
-- GitHub Flavored Markdown documentation
-
-Platform behavior is external and may change; re-check it when a render differs from expectation.
+For current behavior, verify official GitHub documentation for profile READMEs, repository READMEs, writing/formatting, and GitHub Flavored Markdown. Platform behavior may change; re-check it when rendering differs from expectation.
