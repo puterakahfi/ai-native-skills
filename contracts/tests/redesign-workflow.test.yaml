@@ -1,7 +1,7 @@
 skill_test:
   skill: redesign-workflow
   version: "3.3.0"
-  description: Verify redesign routing, ownership, delegation, decision provenance, scope and concurrency integrity, domain-aware verification, facade-controlled delivery, and bounded correction.
+  description: Verify redesign routing, ownership, adaptive delegation, decision and scope integrity, domain-aware verification, facade-controlled delivery, and bounded correction handoff.
 
   cases:
     - id: audit-only-hands-off-before-production
@@ -24,10 +24,10 @@ skill_test:
         - reviewer_is_independent
 
     - id: mobile-category-navigation-uses-adaptive-delegation
-      description: A cross-device category component must load adaptive selection rather than force desktop tabs.
+      description: A cross-device category component must use adaptive selection from task and real width rather than force desktop tabs.
       trigger: "Redesign category navigation. Desktop boleh line tabs, tetapi di tablet dan mobile jangan overlap dan semua kategori harus tetap discoverable."
       design_gate_ids: [I4, G13, G14]
-      must_contain: ["design-layout", "design-interaction", "adaptive-component-design", "task", "viewport"]
+      must_contain: ["design-layout", "design-interaction", "adaptive-component-design", "task", "actual available width"]
       must_not_contain: ["shrink the same tabs", "desktop pattern is mandatory"]
       quality_gates_tested:
         - specialists_are_selected_from_declared_changed_layers
@@ -120,16 +120,44 @@ skill_test:
         - gate_statuses_preserve_partial_not_verified_and_not_applicable
         - facade_verdict_controls_delivery_and_fix_transitions
 
-    - id: needs-work-routes-through-defect-owner
-      description: A facade failure must be classified under its governing reviewer before a fix.
-      trigger: "Review redesign tabs menghasilkan NEEDS WORK untuk I4. Perbaiki tanpa mengubah hero, cards, typography, atau desktop behavior."
-      design_gate_ids: [I4]
-      must_contain: ["governing_reviewer", "defect_class", "correction_owner", "preserve", "focused"]
-      must_not_contain: ["full redesign again", "patch design-review with tabs knowledge"]
+    - id: needs-work-routes-through-bounded-refinement-handoff
+      description: A local component failure after redesign must produce a precise design-refinement handoff rather than restart the page redesign.
+      trigger: "Review redesign category navigation menghasilkan NEEDS WORK untuk I4. Direction, hero, cards, typography, and desktop behavior pass. Tablet rail is appropriate but its previous/next controls are not synchronized with scroll state."
+      design_gate_ids: [I4, G13, G14]
+      must_contain:
+        - "IMPLEMENTATION_DEFECT"
+        - "design-refinement"
+        - "refinement_lock"
+        - "change_budget"
+        - "preserved_regions"
+        - "before_after_change_manifest"
+      must_not_contain:
+        - "full redesign again"
+        - "replace the component family"
+        - "change hero"
       quality_gates_tested:
         - every_failed_or_partial_gate_has_governing_reviewer_and_evidence
         - defect_classification_precedes_fix
-        - bounded_correction
+        - bounded_refinement_handoff
+        - passing_regions_are_protected
+
+    - id: local-pattern-mismatch-loads-adaptive-specialist
+      description: A local unfit component may load adaptive-component-design without reopening the whole accepted page direction.
+      trigger: "Page redesign direction passes, but a local filter has 30 dynamic searchable options forced into tabs. The rest of the page must remain unchanged."
+      design_gate_ids: [I4]
+      must_contain:
+        - "PATTERN_MISMATCH"
+        - "adaptive-component-design"
+        - "actual available width"
+        - "shared state"
+        - "bounded"
+      must_not_contain:
+        - "full page redesign"
+        - "shrink labels"
+      quality_gates_tested:
+        - local_component_pattern_mismatch_routes_to_adaptive_specialist
+        - accepted_direction_remains_locked
+        - substitution_requires_component_fitness_reasoning
 
     - id: missing-evidence-returns-to-verification
       description: NOT_VERIFIED is an evidence gap, not a design defect or zero score.

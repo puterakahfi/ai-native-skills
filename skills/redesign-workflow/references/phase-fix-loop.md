@@ -1,64 +1,64 @@
-# Phase 11–12 — Defect Classification, Scope Cleanup, Fix, Verify, and Learn
+# Phase 11–12 — Classify, Hand Off, Fix, Verify, and Learn
 
 Use this reference after:
 
 ```text
 design-review returns verified FAIL or PARTIAL findings
-or scope_diff_report returns BLOCKED
+scope_diff_report returns BLOCKED
+decision provenance or concurrency integrity blocks correction
 ```
 
-`NOT_VERIFIED` returns to evidence collection unless a verified implementation defect prevents verification. Scope contamination is handled as a workflow integrity blocker, not forced into a design gate.
+`NOT_VERIFIED` returns to evidence collection unless a verified implementation defect prevents verification. Do not invent a design fix for missing evidence.
 
-## Core loops
-
-### Design finding
+## Correction routes
 
 ```text
-facade finding
-→ resolve governing reviewer and root cause
-→ classify correction ownership
-→ apply the smallest valid correction
-→ verify the real case and preservation set
-→ regenerate scope diff when repository files changed
-→ focused facade re-review
-→ run learning review after a verified reusable fix
+verified local or component finding + accepted direction remains valid
+→ design-refinement with lock and change budget
+
+local component family may be unfit
+→ adaptive-component-design inside design-refinement
+
+page direction, macrostructure, visual language, or multiple foundational clusters are wrong
+→ redesign-workflow replan
+
+implementation contract is correct but local code/artifact is broken
+→ implementation owner under the refinement lock
+
+scope/provenance/concurrency blocker
+→ owning integrity contract, not a design score
+
+specialist-domain correction
+→ governing domain reviewer/specialist
 ```
 
-### Scope contamination
-
-```text
-scope_diff_report BLOCKED
-→ identify path, change type, causal owner, and preservation risk
-→ restore, remove, split, or re-approve a true dependency
-→ regenerate effective final diff
-→ proceed to facade review only after scope PASS
-```
-
-Do not patch a shared skill merely because product implementation failed. Do not patch product code to hide a missing reviewer, unsupported claim, evidence gap, or contaminated branch.
-
-## Finding, evidence gap, and scope blocker
+## Finding status boundary
 
 ```text
 FAIL / PARTIAL
   verified design condition exists
-  eligible for design-defect classification
+  eligible for diagnosis and correction
 
 NOT_VERIFIED
-  relevant evidence is missing
+  evidence is missing
   return to verification or narrow the claim
-  do not score zero or invent a design fix
 
 NOT_APPLICABLE
   no correction required
 
 SCOPE BLOCKED
-  final effective delivery diff violates confirmed scope
-  correct the delivery boundary before passing review or merge claim
+  effective delivery diff violates confirmed scope
+
+PROVENANCE BLOCKED
+  material decision source or authority is unresolved
+
+CONCURRENT WRITE BLOCKED
+  stable artifact cannot be established safely
 ```
 
-## Design defect record
+## Defect record
 
-For every failed or partial canonical gate:
+For every verified failed or partial canonical gate:
 
 ```yaml
 defect:
@@ -67,19 +67,130 @@ defect:
   status: <FAIL | PARTIAL>
   observation: <verified condition>
   evidence: []
-  impact: <user, business, accessibility, fidelity, runtime, or delivery>
+  impact: <user, accessibility, fidelity, runtime, communication, or delivery>
   affected_region: <region>
-  existing_relevant_rule: <rule or none>
-  defect_class: <class>
-  correction_owner: <skill, workflow, artifact, lock owner, or specialist>
+
+  diagnosis: <PATTERN_MISMATCH | IMPLEMENTATION_DEFECT | CONTENT_PRESSURE |
+              SYSTEM_CONSTRAINT | LOCAL_VISUAL_DEFECT | DOMAIN_SPECIALIST_DEFECT>
+  existing_component_or_design_contract: <reference or none>
+  existing_relevant_rule: <reference or none>
+  correction_owner: <owner>
   correction_scope: <smallest valid scope>
-  verification_required: []
+  adjacent_regression_gates: []
   preservation_checks: []
+  verification_required: []
 ```
 
-## Scope contamination record
+Visible symptoms do not determine ownership.
 
-For every `OUT_OF_SCOPE`, `UNKNOWN`, or preserved-path violation:
+## Diagnosis
+
+```text
+PATTERN_MISMATCH
+  component family is unfit for task/content/context
+  → adaptive-component-design + master-design
+
+IMPLEMENTATION_DEFECT
+  component contract is fit but rendering or behavior is broken
+  → local implementation owner
+
+CONTENT_PRESSURE
+  realistic content exceeds the component/layout contract
+  → adaptive-component-design and possibly design-strategy
+
+SYSTEM_CONSTRAINT
+  design-system primitive cannot satisfy the required contract
+  → design-system/ui-components + implementation owner
+
+LOCAL_VISUAL_DEFECT
+  bounded hierarchy, readability, spacing, composition, or expression failure
+  → relevant visual specialist
+
+DOMAIN_SPECIALIST_DEFECT
+  correction requires specialist-domain knowledge
+  → governing specialist/reviewer
+```
+
+Do not replace a fit component merely to avoid fixing implementation. Do not preserve an unfit component because it already exists.
+
+## Bounded refinement handoff
+
+When the accepted direction remains valid, hand the defect to `design-refinement`:
+
+```yaml
+refinement_handoff:
+  accepted_direction: <reference>
+  design_domain: <domain>
+  surface_profile: <profile>
+  coverage_mode: <mode>
+  domain_reviewers: []
+
+  target_findings:
+    - gate_id: <id>
+      governing_reviewer: <reviewer>
+      diagnosis: <class>
+      region: <region>
+      evidence: []
+
+  refinement_lock:
+    target_regions: []
+    preserved_gate_ids: []
+    preserved_regions: []
+    preserved_component_contracts: []
+    locked_content_assets_and_brand: []
+    preserved_behavior_and_states: []
+    protected_change_layers: []
+
+  change_budget:
+    allowed_regions: []
+    allowed_files_or_artifacts: []
+    allowed_component_contract_fields: []
+    allowed_visual_properties: []
+    allowed_behavioral_properties: []
+    required_dependencies: []
+    protected_or_forbidden_changes: []
+    rollback_point: <ref>
+
+  adjacent_regression_gates: []
+  required_evidence: []
+  expected_output:
+    - before_after_change_manifest
+    - preservation_evidence_report
+    - focused_design_review_result
+```
+
+A vague “make it better” handoff is invalid.
+
+## Component correction rules
+
+For adaptive components, preserve or explicitly verify:
+
+```text
+component role and user task
+actual available width and content contract
+selected value and available choices
+event semantics
+URL/query/filter state
+analytics identity
+accessible relationships and focus behavior
+loading/disabled/empty/error semantics
+```
+
+```text
+rail is fit but left arrow is missing
+→ IMPLEMENTATION_DEFECT
+→ preserve rail contract
+→ fix directional affordance state
+
+30 searchable dynamic choices are forced into tabs
+→ PATTERN_MISMATCH
+→ adaptive component decision
+→ preserve shared product state across variants
+```
+
+## Scope and integrity blockers
+
+For `OUT_OF_SCOPE`, `UNKNOWN`, or preserved-path violations:
 
 ```yaml
 scope_contamination:
@@ -88,183 +199,105 @@ scope_contamination:
   classification: <OUT_OF_SCOPE | UNKNOWN | PRESERVED_PATH_VIOLATION>
   baseline_ref: <ref>
   causal_owner: <owner or unknown>
-  reason_not_in_scope: <reason>
-  valuable_work_preservation: <branch, artifact, commit, or not applicable>
+  valuable_work_preservation: <branch, artifact, commit, or N/A>
   correction_action: <restore | remove | split | re-approve dependency | handoff>
-  approval_requirement: <none | spec re-approval | owner decision>
-  verification_required:
-    - regenerate scope_diff_report
+  verification_required: [regenerate scope_diff_report]
 ```
 
-Do not delete valuable unrelated work merely to clean the redesign. Preserve it in the rightful branch or artifact first.
+Preserve valuable unrelated work in its rightful lifecycle before removing it from the redesign delivery.
 
-## Design defect classes
-
-### `reusable_skill_defect`
-
-A reusable capability is missing or teaches materially wrong reasoning across contexts.
-
-```text
-candidate reusable rule → test on real artifact → verify → skill-evolution
-```
-
-### `reference_knowledge_defect`
-
-The owning skill is correct but its on-demand detail, matrix, examples, or evidence guidance is incomplete or misleading.
-
-### `workflow_orchestration_defect`
-
-Route, role composition, delegation, phase order, scope capture, state, approval, evidence handoff, or reviewer loading is wrong.
-
-The missing final-diff gate discovered during a real redesign is this class. The concrete product paths remain in the product run artifact; only the reusable scope reasoning is promoted.
-
-### `local_implementation_defect`
-
-Reusable rules are sufficient and repository/artifact implementation is wrong.
-
-### `product_design_lock_defect`
-
-Supplied brand, content, asset, component, behavior, path, or design-system locks conflict or cannot all be satisfied.
-
-### `domain_specialist_defect`
-
-Correction requires specialist knowledge owned by a domain reviewer or another specialist.
-
-## Classification rules
-
-```text
-missing reusable decision factor across contexts
-  → reusable_skill_defect
-
-on-demand explanation or evidence matrix incomplete
-  → reference_knowledge_defect
-
-correct skill not loaded, phase misordered, baseline/scope not captured
-  → workflow_orchestration_defect
-
-CSS, framework, state, route, export, or repository-specific bug
-  → local_implementation_defect
-
-conflicting supplied identity, content, system, or path constraint
-  → product_design_lock_defect
-
-identity, packaging, motion, or other specialist correction
-  → domain_specialist_defect
-
-unrelated effective changed path
-  → scope contamination record; do not invent a design gate
-```
-
-Visible symptoms do not determine ownership. Inspect provenance and the effective diff first.
-
-## Resolve scope contamination safely
-
-```text
-unrelated added file
-  → preserve elsewhere if valuable, then remove from effective diff
-
-unrelated modification to existing file
-  → restore baseline version or split the valid work
-
-unrelated deleted file
-  → restore it from baseline
-
-true required dependency omitted from spec
-  → document causal relationship and acceptance criterion
-  → re-enter approval policy
-
-unknown ownership
-  → remain BLOCKED and hand off to repository owner
-
-submodule pointer
-  → verify exact target commit and explain why the redesign requires it
-```
-
-Branch history does not need rewriting merely to pass this gate. The effective final diff must be clean and reproducible.
+For provenance or concurrent-write blockers, stop affected writes and follow the owning references. Do not hide those blockers inside a visual correction.
 
 ## Apply the smallest correction
 
 ```text
 preserve passing gates and accepted direction
+stay inside the refinement lock and change budget
 change only the owning layer and affected scope
-record every touched file, region, skill, or contamination entry
+record every touched region/file/contract field
 avoid drive-by redesign and opportunistic cleanup
-avoid global rules derived from one product
 retain rollback and unrelated-work preservation paths
 ```
 
-A candidate shared rule is not shared knowledge until the real artifact passes.
+A candidate reusable rule is not shared knowledge until the real artifact and preservation contract pass.
 
-## Verify by governing domain
+## Verification packet
 
-Use `delegation-and-verification.md` and governing reviewer evidence rules.
+After the correction, produce:
+
+```yaml
+focused_verification_packet:
+  target_gate_results: []
+  adjacent_regression_gate_results: []
+  affected_hard_gate_results: []
+  preservation_evidence: []
+  before_after_change_manifest: <reference>
+  change_budget_status: <PASS | EXCEEDED | NOT_VERIFIED>
+  component_state_equivalence: <PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED>
+  target_and_boundary_contexts: []
+  scope_diff_status: <PASS | BLOCKED | NOT_APPLICABLE>
+  evidence_gaps: []
+```
+
+By domain:
 
 ```text
 digital interface
-  affected rendering, states, inputs, focus, overflow, runtime, implementation
+  affected rendering, target/boundary widths, states, input modes,
+  focus, overflow, runtime, realistic content
 
 visual communication
-  final-size, crop, content/asset fidelity, export quality
+  final size, crop, content/asset fidelity, export quality
 
 presentation
-  affected slide, narrative adjacency, delivery scale, data/source
+  affected slide, adjacent narrative, delivery scale, data/source
 
 brand identity
   marks/variants, geometry, small size, mono/inverse,
   lockup/application/reproduction evidence
 
 other
-  domain reviewer evidence contract
+  governing domain reviewer evidence contract
 ```
 
-After any repository correction, also re-check:
+Build success alone is not design verification.
 
-```text
-scope_diff_report
-target gates
-adjacent regression gates
-preserved gates, paths, and locks
-affected contextual hard gates
-new evidence gaps
-```
+## Focused facade re-review
 
-If verification fails, continue the bounded loop. Do not update shared knowledge from a failed attempt.
-
-## Focused re-review
-
-Invoke the facade with inherited route and fresh evidence only after scope integrity passes:
+Invoke `design-review` after applicable integrity gates pass:
 
 ```yaml
 review_route:
   design_domain: <inherited>
   surface_profile: <inherited>
+  artifact_state: <current>
   review_depth: focused
   coverage_mode: <inherited>
   domain_reviewers: <inherited>
   selected_gate_ids: <target and adjacent gates>
-  evidence_available: <fresh packet>
-  evidence_gaps: []
+  selected_components: <affected components>
+  evidence_available: <focused verification packet>
 ```
-
-Outcomes:
 
 ```text
-PASS / permitted CONDITIONAL PASS
-  exit when acceptance, preservation, and scope also pass
+PASS
+  exit only when refinement lock, budget, preservation, and target gates pass
+
+CONDITIONAL PASS
+  only explicit non-blocking gaps outside the required refinement boundary
 
 NEEDS WORK / CRITICAL
-  iterate while bounded attempts remain
+  continue bounded loop or re-route
 
-LIMITED REVIEW
-  load reviewer or narrow claim; do not treat as fix success
-
-ROUTE ELSEWHERE
-  stop unsupported approval path
+LIMITED REVIEW / ROUTE ELSEWHERE
+  load reviewer or narrow claim
 ```
 
-## Automatic learning review
+A facade score cannot override exceeded change budget, preservation regression, or integrity blockers.
 
-After each verified reusable fix, run:
+## Learning review
+
+After each verified reusable correction:
 
 ```text
 skill-evolution + skill-eval
@@ -281,9 +314,7 @@ DEFERRED_UNVERIFIED
 NOT_WRITTEN_READ_ONLY
 ```
 
-The learning review must capture before/after evidence and owner, extract why the fix worked, remove product names and paths, test transfer conditions and counterexamples, check duplicate knowledge, add/update regression eval, run contract checks, and record the write result honestly.
-
-Do not promote an unverified idea, product-specific layout, unknown workaround, or specialist rule into the workflow by convenience.
+Promote only generalized reasoning to the correct specialist owner. Keep product names, paths, accidental breakpoints, and raw case history local.
 
 ## Iteration safety
 
@@ -292,30 +323,27 @@ loop:
   iteration: 1
   max_iterations: 5
   active_design_defects: []
-  active_scope_contamination: []
+  active_integrity_blockers: []
   target_gates: []
   preserved_gates: []
-  local_patches: []
-  learning_candidates: []
-  learning_verdicts: []
+  refinement_locks: []
+  change_budget_history: []
   facade_verdict_history: []
-  scope_status_history: []
+  learning_verdicts: []
 ```
-
-Scope sanitation before facade review does not consume a design iteration unless it changes the redesigned artifact.
 
 After two failed patches in the same region:
 
 ```text
-1. Re-read the complete affected artifact and dependencies.
-2. Reconfirm governing reviewer or causal owner.
-3. Mark preserved and locked regions and paths.
-4. Create a rewrite, split, or alternative-pattern plan.
-5. Rewrite only when justified and approved.
-6. Run full affected verification and scope diff.
+re-read the full component/artifact and dependencies
+reconfirm diagnosis and governing owner
+reconfirm protected regions and contracts
+compare alternative pattern or rewrite plans
+rewrite only when justified and approved
+run full affected verification
 ```
 
-Never apply a blind third micro-patch to the same region.
+Never apply a blind third micro-patch.
 
 ## Exit report
 
@@ -324,18 +352,18 @@ correction_report:
   iterations: <N>
   final_scope_status: <PASS | BLOCKED | NOT_APPLICABLE>
   final_facade_verdict: <verdict>
-  scope_contamination_resolved: []
-  scope_contamination_remaining: []
   target_gate_progression: []
-  preserved_gate_regressions: []
-  local_implementation_patches: []
-  product_lock_decisions: []
-  specialist_handoffs: []
+  diagnoses: []
+  change_budget_status: <PASS | EXCEEDED | NOT_VERIFIED>
+  changed_regions_and_files: []
+  preserved_regions_and_contracts: []
+  preservation_regressions: []
+  component_contract_delta: <value>
+  integrity_blockers_remaining: []
   learning_verdicts: []
-  promotion_commits: []
   residual_findings: []
   evidence_gaps: []
-  final_status: <ACCEPTED | SCOPE_BLOCKED | MAX_ITERATIONS_REACHED | LIMITED | ROUTED_ELSEWHERE>
+  final_status: <ACCEPTED | BLOCKED | MAX_ITERATIONS_REACHED | LIMITED | ROUTED_ELSEWHERE>
 ```
 
-The phase is incomplete when a verified reusable fix occurred but no learning-review verdict was recorded.
+The phase is incomplete when a correction is called accepted without a focused facade verdict, preservation evidence, and change-budget result.

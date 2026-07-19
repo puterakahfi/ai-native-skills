@@ -1,7 +1,7 @@
 skill_test:
   skill: design-refinement
-  version: "2.0.0"
-  description: Verify refinement requires covered verified findings, preserves passing work, and uses domain-appropriate evidence.
+  version: "2.1.0"
+  description: Verify refinement requires covered findings, an explicit lock and change budget, correct defect diagnosis, preservation evidence, and focused facade acceptance.
 
   cases:
     - id: limited-identity-review-cannot-complete-refinement
@@ -15,7 +15,7 @@ skill_test:
         - "REFINEMENT COMPLETE"
         - "identity system passed"
       quality_gates_tested:
-        - sufficient_domain_coverage_required
+        - primary_domain_coverage_and_governing_reviewers_must_be_sufficient
         - limited_review_cannot_certify_specialist_fix
 
     - id: static-poster-fix-uses-static-evidence
@@ -24,31 +24,118 @@ skill_test:
       design_gate_ids: [SV5, SV11, RI1]
       must_contain:
         - "preserve"
-        - "final-size"
+        - "final size"
         - "content"
         - "export"
       must_not_contain:
         - "keyboard navigation"
-        - "RI1"
+        - "evaluate RI1"
       quality_gates_tested:
-        - preserve_passing_work
+        - passing_gates_regions_component_contracts_and_assets_are_preserved_by_default
         - domain_appropriate_evidence
         - canonical_gate_identity
 
-    - id: targeted-tabs-fix-preserves-adjacent-gates
-      description: A focused interactive fix rechecks the target, adjacent regressions, and preservation set.
-      trigger: "Fix tabs yang overlap di tablet berdasarkan finding I4. Jangan ubah hero, cards, typography, atau desktop behavior."
+    - id: targeted-tabs-fix-declares-lock-and-budget
+      description: A focused tablet tabs correction must lock unrelated regions and declare allowed mutations before patching.
+      trigger: "Fix tabs yang overlap di tablet berdasarkan finding I4. Jangan ubah hero, cards, typography, visual language, atau desktop behavior."
       design_gate_ids: [I4]
       must_contain:
+        - "refinement_lock"
+        - "change_budget"
         - "I4"
-        - "preserve"
-        - "adjacent regression"
-        - "focused"
+        - "protected"
+        - "before_after_change_manifest"
       must_not_contain:
         - "full redesign"
         - "replace visual language"
+        - "re-theme"
       quality_gates_tested:
-        - target_gate_scope
-        - adjacent_regression_check
-        - preservation_contract
-        - canonical_gate_identity
+        - refinement_lock_and_change_budget_must_precede_patch
+        - passing_gates_regions_component_contracts_and_assets_are_preserved_by_default
+        - every_change_maps_to_target_finding_or_required_dependency
+
+    - id: implementation-defect-does-not-trigger-component-replacement
+      description: A fit rail with incomplete controls should be repaired, not replaced without a pattern mismatch.
+      trigger: "Horizontal category rail cocok untuk primary discovery dan swipe bekerja. Masalahnya hanya selalu ada chevron kanan, tidak pernah ada chevron kiri. Ganti saja seluruh rail menjadi Select."
+      design_gate_ids: [I4, G13, G14]
+      must_contain:
+        - "IMPLEMENTATION_DEFECT"
+        - "preserve"
+        - "component contract"
+        - "left control"
+        - "scroll state"
+      must_not_contain:
+        - "diagnosis: PATTERN_MISMATCH"
+        - "selected_strategy: substitute to Select"
+      quality_gates_tested:
+        - diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
+        - component_substitution_requires_verified_component_fitness_reasoning
+        - implementation_defect_preserves_selected_component_contract
+
+    - id: pattern-mismatch-can-load-adaptive-specialist
+      description: A locally unfit component may be substituted inside refinement when page direction remains valid and fitness evidence exists.
+      trigger: "Page direction dan macrostructure sudah diterima. Filter lokal punya 24 dynamic searchable options dengan label panjang tetapi dipaksa menjadi tabs."
+      design_gate_ids: [I4]
+      must_contain:
+        - "PATTERN_MISMATCH"
+        - "adaptive-component-design"
+        - "actual available width"
+        - "content pressure"
+        - "shared state"
+      must_not_contain:
+        - "shrink labels until they fit"
+        - "full page redesign required"
+      quality_gates_tested:
+        - component_substitution_requires_verified_component_fitness_reasoning
+        - local_component_pattern_mismatch_can_remain_bounded
+        - shared_state_equivalence_is_required
+
+    - id: out-of-budget-hero-change-blocks-refinement
+      description: A targeted tabs fix cannot pass when the same patch also changes the hero and global typography.
+      trigger: "Target finding hanya I4 pada category tabs. Patch memperbaiki tabs tetapi juga mengganti hero composition, font family global, dan card radius agar lebih modern."
+      design_gate_ids: [I4]
+      must_contain:
+        - "OUT_OF_BUDGET"
+        - "EXCEEDED"
+        - "hero"
+        - "typography"
+        - "revert"
+      must_not_contain:
+        - "REFINEMENT COMPLETE"
+        - "facade PASS overrides budget"
+      quality_gates_tested:
+        - no_drive_by_redesign_retheme_or_opportunistic_cleanup
+        - every_change_maps_to_target_finding_or_required_dependency
+        - change_budget_controls_completion
+
+    - id: protected-desktop-behavior-needs-evidence
+      description: Not touching desktop source does not prove preserved desktop behavior after shared component changes.
+      trigger: "Tablet tabs diperbaiki pada shared component. Tidak ada screenshot atau interaction test desktop karena desktop CSS tidak diedit. Nyatakan desktop behavior preserved."
+      design_gate_ids: [I4]
+      must_contain:
+        - "NOT_VERIFIED"
+        - "preservation evidence"
+        - "desktop"
+        - "shared component"
+      must_not_contain:
+        - "preservation_status: PRESERVED"
+        - "desktop_behavior: PRESERVED"
+        - "source diff proves behavior"
+      quality_gates_tested:
+        - before_after_manifest_and_preservation_evidence_are_required
+        - target_adjacent_preserved_and_affected_hard_gates_are_rechecked
+
+    - id: not-verified-finding-returns-to-evidence
+      description: Missing evidence is not eligible for speculative refinement.
+      trigger: "Review says keyboard behavior for the tabs is NOT_VERIFIED because no runtime was available. Patch keyboard behavior now based only on assumption."
+      design_gate_ids: [I7]
+      must_contain:
+        - "NOT_VERIFIED"
+        - "evidence"
+        - "do not patch"
+      must_not_contain:
+        - "FAIL I7"
+        - "refinement fix applied"
+      quality_gates_tested:
+        - target_findings_must_be_verified_FAIL_or_PARTIAL
+        - not_verified_returns_to_evidence_collection
