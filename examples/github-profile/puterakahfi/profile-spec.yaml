@@ -1,0 +1,127 @@
+github_profile_result:
+  fixture: puterakahfi
+  generated_with: github-profile@1.2.0
+  workflow: redesign-workflow@3.3.0
+  profile_goal: personal-brand
+  primary_audience:
+    - software engineers
+    - product builders
+    - AI-native engineering collaborators
+  desired_action: explore work and collaborate
+  narrative: >-
+    Putera Kahfi connects software architecture, product design, and agent-driven
+    development to build practical AI-native engineering systems.
+  baseline:
+    repository: puterakahfi/puterakahfi
+    initial_commit: c1a3f65b6138093e8a817019425aca23c681f0c7
+    latest_reviewed_failed_commit: 4319b26c20b51e1a23e350a65bf29ec01788c775
+    foundation_corrected_commit: 8b09299ad169221ec2daf1a3b05110d2af229c53
+    final_refined_commit: a8d09f5a622b58e219a0c5620ab7a277c29f68c2
+  brand_alignment:
+    source:
+      - user-authoritative statement about pkahfi.com visual direction
+      - rendered GitHub profile screenshots
+    grammar:
+      mood: zen and calm editorial
+      density: sparse but information-bearing
+      spacing: generous only when structurally earned
+      separators: none decorative
+      alignment: centered identity opening, left-aligned detailed reading
+      typography_behavior: quiet hierarchy with clear role scale
+    prohibited_treatments:
+      - horizontal dividers
+      - blockquote project cards
+      - code fences used as visual boxes
+      - decorative borders
+      - repeated oversized blank intervals
+      - tiny labels carrying primary section identity
+  preservation_locks:
+    - Putera Kahfi name
+    - puterakahfi GitHub identity
+    - Native AI Engineering positioning
+    - public project links
+    - zen personal-brand grammar
+    - no lines or cardification
+  direction_candidates:
+    - name: centered-zen-manifesto
+      fit: >-
+        A bounded centered identity opening creates a personal focal anchor, while
+        left-aligned proof and detail restore reading efficiency and visual balance.
+      risks:
+        - centered opening becomes generic when the thesis is weak
+    - name: zen-technical-index
+      fit: >-
+        Fully left-aligned and compact; strong for scanning but less continuous with
+        the personal-brand opening used by pkahfi.com.
+      risks:
+        - feels utilitarian rather than authored
+  selected_direction:
+    name: centered-zen-manifesto
+    reason: >-
+      It preserves the calm personal identity while satisfying foundation hierarchy,
+      grouping, alignment, rhythm, balance, flow, and legibility.
+  differentiation_device:
+    primary: authored Native AI Engineering thesis
+    supporting: relational editorial rhythm across identity, proof, principles, and action
+    prohibited_substitute: containment added only to create contrast
+  hierarchy_roles:
+    page_anchor: centered H3 name
+    positioning: plain supporting role
+    statement: centered H4 engineering proposition
+    section_parent: left-aligned H3
+    project_item: linked H4
+    metadata: italic supporting line
+    body: concise explanatory prose
+    action: bounded link group
+  spacing_contract:
+    relation: element_gap < item_gap < section_gap
+    rules:
+      - keep each project title, purpose, metadata, and contribution attached
+      - use stronger separation between projects than within a project
+      - use the strongest pause between different section roles
+      - reduce space when content mass becomes stranded
+      - treat Ma as purposeful pause, never maximum emptiness
+  density: concise
+  dynamic_widgets: none
+  verified_facts:
+    - claim: Public GitHub identity is Putera Kahfi / puterakahfi.
+      provenance: authenticated GitHub profile
+    - claim: ai-native-skills is a public repository of reusable agent skills and workflows.
+      provenance: https://github.com/puterakahfi/ai-native-skills
+    - claim: ai-native-core is a public runtime-agnostic contract layer for AI-native engineering.
+      provenance: https://github.com/puterakahfi/ai-native-core
+  user_supplied_facts:
+    - claim: Works across Go, PHP, Next.js, Docker, DDD, and ports-and-adapters.
+      provenance: user profile and project context
+    - claim: Builds VisualMate as an AI Creative Control System.
+      provenance: user-supplied product context
+    - claim: Maintains pkahfi.com and ai.pkahfi.com initiatives.
+      provenance: user-supplied project context
+  assumptions: []
+  content_gaps:
+    - No verified employer or client list included.
+    - No unverified revenue, user-count, conversion, or contribution metrics included.
+    - Private repositories are not used as public proof links.
+    - Current-focus statements should be reviewed when the fixture is published.
+  section_order:
+    - centered_identity_and_thesis
+    - selected_work
+    - engineering_thesis
+    - capability_groups
+    - current_focus
+    - connect
+  external_dependencies: []
+  render_evidence:
+    - user-provided desktop screenshot of version 1.0.0
+    - user-provided desktop screenshot of line-free foundation-failed version
+    - local GFM-equivalent desktop render of final refined source at 1200 x 1900
+    - local GFM-equivalent narrow render of final refined source at 390 x 3600
+  design_review_result: LIMITED_REVIEW
+  verified_universal_score: 8.5
+  evidence_coverage: approximately 92 percent
+  review_note: >-
+    The final source passes the selected universal hierarchy, grouping, alignment,
+    spatial rhythm, balance, flow, legibility, consistency, restraint, content, and
+    narrow-continuity checks in GFM-equivalent renders. Direct GitHub desktop, narrow,
+    and dark-theme parity remain NOT_VERIFIED, and no dedicated developer-profile
+    domain reviewer exists.
