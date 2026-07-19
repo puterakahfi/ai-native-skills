@@ -1,7 +1,7 @@
 skill_test:
   skill: adaptive-component-design
-  version: "1.2.0"
-  description: Verify adaptive component selection is driven by task, actual available width, realistic content pressure, state equivalence, and observed adaptation boundaries rather than fixed device labels.
+  version: "1.2.1"
+  description: Verify adaptive component selection is driven by task, evidence provenance, actual available width, realistic content pressure, state equivalence, and observed adaptation boundaries rather than fixed device labels or uploaded image dimensions.
 
   cases:
     - id: tablet-tabs-overlap-needs-diagnosis-before-fix
@@ -89,6 +89,25 @@ skill_test:
       quality_gates_tested:
         - common_viewports_are_samples_not_canonical_breakpoints
         - acceptance_criteria_cover_actual_targets_and_adaptation_boundaries
+
+    - id: downscaled-screenshot-does-not-prove-mobile-state
+      description: Uploaded artifact dimensions must not be treated as proof of the CSS viewport or available component width.
+      trigger: "This uploaded screenshot file is 358 pixels wide, so treat it as a mobile render and change the two-column cards to one column. The screenshot itself shows a sidebar and desktop line tabs."
+      design_gate_ids: [I4, G13, G14]
+      must_contain:
+        - "artifact dimensions"
+        - "CSS viewport"
+        - "actual available width"
+        - "NOT_VERIFIED"
+        - "line tabs"
+      must_not_contain:
+        - "358 proves mobile"
+        - "change the cards immediately"
+        - "mobile confirmed"
+      quality_gates_tested:
+        - screenshot_artifact_dimensions_are_not_treated_as_runtime_viewport_evidence
+        - responsive_state_requires_capture_metadata_or_browser_measurement
+        - active_component_variants_are_hypotheses_not_measurements
 
     - id: variants-preserve-state-and-semantics
       description: Different component families across widths must preserve one product state and semantic contract.
