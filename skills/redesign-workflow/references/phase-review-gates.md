@@ -88,6 +88,7 @@ ALIGNMENT CONTINUITY
 □ nav, hero, sections, contact, and footer share one declared page shell
 □ 2–4 persistent vertical rails are visible across adjacent sections
 □ section labels reuse a stable start position
+□ mixed-size eyebrow/heading pairs are optically aligned by rendered glyphs, not only layout boxes
 □ major headings reuse a stable main-content rail
 □ titles, descriptions, and actions align to declared supporting rails
 □ asymmetry comes from span, measure, or one declared focal exception
@@ -125,6 +126,8 @@ one documented focal object or illustration may break a rail when the break
 is visually intentional, remains balanced, and does not license unrelated row drift
 ```
 
+Box alignment is not optical alignment. A small uppercase label and a large display heading can occupy the same grid row yet still look vertically crooked because cap height, ascenders, and line-box metrics differ. Correct repeated label/heading relationships with one shared component or token-level optical offset. Do not add unrelated per-section nudges.
+
 ### Required evidence for zen line density and alignment
 
 ```text
@@ -143,9 +146,12 @@ is visually intentional, remains balanced, and does not license unrelated row dr
 5. alignment-rail inspection across at least three adjacent sections:
    label start, heading start, supporting-content start, action end
 
-6. mobile reading-order inspection after desktop rails collapse
+6. optical top-edge inspection for repeated eyebrow/heading pairs:
+   compare rendered glyph edges, not only DOM boxes; verify one shared correction rule
 
-7. justification for every allowed line or focal-offset exception
+7. mobile reading-order inspection after desktop rails collapse
+
+8. justification for every allowed line or focal-offset exception
 ```
 
 Example failed evidence:
@@ -161,6 +167,9 @@ violations:
   - region: page-wide
     observation: work list uses ml-[30%], principles alternate translate-x, contact uses another offset
     class: alignment_drift
+  - region: selected-work-header
+    observation: eyebrow and display heading share a grid row but rendered glyph tops are visibly misaligned
+    class: optical_alignment_failure
   - region: responsive
     observation: desktop offsets survive stacking and create mobile zig-zag
     class: rail_collapse_failure
@@ -269,6 +278,8 @@ local_implementation_defect
 
 Alignment drift caused by many local offsets is a structure defect, not a set of unrelated component-polish defects. Reopen the shared grid and remove the nudges instead of correcting each item independently.
 
+Repeated optical misalignment in the same label/heading pattern is a component-system defect. Fix the shared primitive once; do not scatter `pt-*`, `top-*`, or transforms across individual sections.
+
 Do not classify solely from the visible symptom.
 
 ## Minimum report
@@ -284,6 +295,7 @@ Do not classify solely from the visible symptom.
 - Structural line count by viewport: [evidence]
 - Page shell: [value]
 - Persistent alignment rails: [evidence]
+- Optical label/heading alignment: [pass | fail | not verified]
 - Arbitrary offset count: [number and regions]
 - Responsive rail collapse: [pass | fail | not verified]
 - Review coverage: [mode]
