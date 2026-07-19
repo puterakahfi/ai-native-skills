@@ -1,0 +1,30 @@
+migration_map:
+  id: design-review-gate-migrations
+  version: "1.0.0"
+  registry_version: "1.0.0"
+  baseline_design_review_skill_version: "3.2.0"
+  policy:
+    - all gate ids present at this baseline remain canonical unless explicitly deprecated here
+    - aliases must never be inferred from similar wording
+    - deprecated ids must declare one or more active replacements
+    - callers may read an alias but must report the canonical replacement id
+    - removals without a migration entry are forbidden
+
+retained:
+  rule: all active gate ids in gate-registry.yaml at registry version 1.0.0 are retained unchanged
+  verified_legacy_ids:
+    - G14
+    - I4
+    - G21
+    - RI1
+    - SV11
+    - PR1
+    - PR2
+    - PR3
+  note: These ids were already used by audit, refinement, workflow, or eval artifacts before the registry baseline.
+
+aliases: {}
+
+deprecated: {}
+
+reserved_namespaces: {}
