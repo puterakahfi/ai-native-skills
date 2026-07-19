@@ -1,9 +1,9 @@
 ---
 name: design-foundation
-description: Universal design foundation — the non-negotiable composition contract every design genre, brand, surface, and workflow must satisfy. Covers hierarchy, grouping, figure-ground, semantic layering, content resilience, alignment, spacing rhythm, balance, flow, legibility, consistency, accessibility, and responsive continuity.
+description: Universal design foundation — the non-negotiable composition contract every design genre, brand, surface, and workflow must satisfy. Covers 13 core graphic design principles, hierarchy, grouping, figure-ground, semantic layering, content resilience, alignment, spacing rhythm, balance, flow, legibility, consistency, accessibility, and responsive continuity.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.3.0
+  ai-native-skills.version: 1.4.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-foundation.contract.yaml
@@ -70,6 +70,41 @@ F10 RESPONSIVE CONTINUITY
     Hierarchy, grouping, reading order, layer meaning, content meaning, and interaction meaning
     survive format, viewport, and supported-content changes.
 ```
+
+---
+
+## Core Graphic Design Principle Lenses
+
+Use these 13 principles as cross-cutting composition lenses. They do not create 13 additional release gates; they deepen reasoning and map back to `F1–F10`.
+
+```text
+1.  ALIGNMENT     shared structural and optical anchors create order
+2.  CONTRAST      meaningful difference creates distinction and legibility
+3.  BALANCE       visual weight is distributed intentionally
+4.  HIERARCHY     importance and semantic order are recognizable
+5.  COLOR         hue, value, and saturation communicate identity and meaning
+6.  WHITE SPACE   negative space groups, separates, pauses, and emphasizes
+7.  PROPORTION    relative scale supports hierarchy, balance, and usability
+8.  REPETITION    coherent reuse builds recognition and consistency
+9.  RHYTHM        recurrence and spacing create cadence
+10. MOVEMENT      visual and actual motion guide attention and sequence
+11. EMPHASIS      a deliberate focal point communicates priority
+12. PROXIMITY     spatial closeness communicates relationship
+13. UNITY         all elements work as one coherent composition
+```
+
+Principle relationships matter more than isolated compliance:
+
+```text
+contrast without emphasis discipline   → everything competes
+repetition without rhythm              → mechanical monotony
+rhythm without hierarchy               → movement without meaning
+alignment without optical correction   → technically aligned, visually wrong
+white space without grouping purpose   → decorative emptiness
+variation without unity                → expressive but fragmented
+```
+
+Load `references/core-graphic-design-principles.md` for definitions, applications, review questions, failure signals, combined-use guidance, and principle-to-gate mapping.
 
 ---
 
@@ -229,7 +264,8 @@ A composition may be symmetrical, asymmetrical, centered, dense, open, flat, or 
 
 ```text
 design-foundation
-  owns reusable universal relationship knowledge and F1–F10 definitions
+  owns reusable universal relationship knowledge, the 13 principle lenses,
+  and F1–F10 definitions
 
 design-review
   evaluates F1–F10 with evidence and reports coverage/verdict
@@ -274,6 +310,7 @@ Genre-specific rules may be stricter, but may not erase foundation requirements.
 
 | Topic | File | When to load |
 |---|---|---|
+| Core graphic design principle lenses and F1–F10 mapping | `references/core-graphic-design-principles.md` | Foundation learning, visual direction, production, design review, and principle-specific diagnosis |
 | Principles and composition rationale | `references/principles.md` | Direction, planning, production |
 | Foundation gates and evidence | `references/gates.md` | Review, refinement, release verification |
 | Figure-ground, containment, layering, overlap, and evidence | `references/figure-ground-layering.md` | Surfaces, imagery behind text, sticky/fixed UI, overlays, modal/floating layers, layered static composition |
@@ -282,6 +319,7 @@ Genre-specific rules may be stricter, but may not erase foundation requirements.
 | Cross-surface content resilience regression fixtures | `references/content-resilience-fixtures.md` | Skill evaluation and PASS/FAIL discrimination across empty/minimum/normal/maximum/variant content states |
 
 ```text
+skill_view(name='design-foundation', file_path='references/core-graphic-design-principles.md')
 skill_view(name='design-foundation', file_path='references/principles.md')
 skill_view(name='design-foundation', file_path='references/gates.md')
 skill_view(name='design-foundation', file_path='references/figure-ground-layering.md')
