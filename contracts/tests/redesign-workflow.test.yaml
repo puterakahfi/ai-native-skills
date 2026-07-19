@@ -1,7 +1,7 @@
 skill_test:
   skill: redesign-workflow
-  version: "3.0.0"
-  description: Verify redesign routing, explicit ownership, deterministic delegation, domain-aware verification, facade-controlled delivery, and bounded correction.
+  version: "3.1.0"
+  description: Verify redesign routing, ownership, delegation, scope integrity, domain-aware verification, facade-controlled delivery, and bounded correction.
 
   cases:
     - id: audit-only-hands-off-before-production
@@ -88,6 +88,27 @@ skill_test:
         - domain_reviewer_matches_primary_domain
         - verification_strategy_matches_primary_design_domain_and_artifact_state
         - specialist_domain_coverage
+
+    - id: final-diff-blocks-unrelated-product-changes
+      description: A homepage redesign branch containing unrelated auth, database, and member-feature changes must be sanitized before review or merge delivery.
+      trigger: "Spec hanya mengizinkan redesign homepage dan landing components. Final branch diff juga berisi migration database, auth callback, member journal pages, dan route produk lain. Homepage-nya terlihat bagus dan branch sudah mergeable."
+      must_contain:
+        - "scope_diff_report"
+        - "OUT_OF_SCOPE"
+        - "BLOCKED"
+        - "baseline"
+        - "restore"
+        - "split"
+      must_not_contain:
+        - "final_decision: PASS"
+        - "Decision: PASS"
+        - "ready to merge"
+        - "mergeable means scope passed"
+      quality_gates_tested:
+        - final_effective_diff_must_match_confirmed_scope
+        - every_changed_path_must_be_classified
+        - scope_contamination_blocks_review_and_delivery
+        - unrelated_product_changes_are_not_design_dependencies
 
     - id: screenshot-ui-keeps-runtime-not-verified
       description: Screenshot evidence cannot approve executable interaction or runtime claims.
