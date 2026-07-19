@@ -249,12 +249,14 @@ Genre-specific rules may be stricter, but may not erase foundation requirements.
 |---|---|---|
 | Principles and composition rationale | `references/principles.md` | Direction, planning, production |
 | Foundation gates and evidence | `references/gates.md` | Review, refinement, release verification |
-| Figure-ground, containment, layering, overlap, and regression fixtures | `references/figure-ground-layering.md` | Surfaces, imagery behind text, sticky/fixed UI, overlays, modal/floating layers, layered static composition |
+| Figure-ground, containment, layering, overlap, and evidence | `references/figure-ground-layering.md` | Surfaces, imagery behind text, sticky/fixed UI, overlays, modal/floating layers, layered static composition |
+| Cross-genre figure-ground regression fixtures | `references/figure-ground-fixtures.md` | Skill evaluation, bias checks, PASS/FAIL discrimination across minimal, dense, expressive, product, static, and presentation surfaces |
 
 ```text
 skill_view(name='design-foundation', file_path='references/principles.md')
 skill_view(name='design-foundation', file_path='references/gates.md')
 skill_view(name='design-foundation', file_path='references/figure-ground-layering.md')
+skill_view(name='design-foundation', file_path='references/figure-ground-fixtures.md')
 ```
 
 ---
