@@ -77,7 +77,8 @@ skill_test:
         - "tablet"
       must_not_contain:
         - "Approved to merge: YES"
-        - "non-blocking"
+        - "I4: non-blocking"
+        - "Design: PASS WITH FLAGS"
       quality_gates_tested:
         - facade_verdict_merge_mapping
         - needs_work_blocks_approval
