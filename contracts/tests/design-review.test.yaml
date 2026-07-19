@@ -1,12 +1,13 @@
 skill_test:
   skill: design-review
-  version: "3.1.0"
-  description: Verify facade domain routing, evidence honesty, hard-gate behavior, and limited specialist coverage.
+  version: "3.3.0"
+  description: Verify facade domain routing, evidence honesty, hard-gate behavior, canonical gate identity, and specialist adapter coverage.
 
   cases:
     - id: screenshot-dashboard-runtime-not-verified
       description: A dashboard screenshot cannot prove runtime or keyboard behavior.
       trigger: "Review screenshot dashboard ini untuk kesiapan rilis. Saya hanya memberikan screenshot, tidak ada URL atau source code."
+      design_gate_ids: [RI1]
       must_contain:
         - "digital-interface"
         - "NOT_VERIFIED"
@@ -20,10 +21,12 @@ skill_test:
         - classify_before_gates
         - screenshot_does_not_prove_runtime
         - evidence_before_score
+        - every_reported_gate_id_must_be_registered
 
     - id: static-commercial-wrong-price-hard-fail
       description: Incorrect mandatory commercial content must fail the static content-fidelity hard gate.
       trigger: "Review poster jualan ini. Harga yang wajib adalah Rp2.000.000, tetapi teks pada desain tertulis Rp20.000.000."
+      design_gate_ids: [SV11]
       must_contain:
         - "visual-communication"
         - "SV11"
@@ -35,10 +38,11 @@ skill_test:
       quality_gates_tested:
         - static_content_accuracy_hard_gate
         - required_fact_fidelity
+        - canonical_gate_identity
 
     - id: logo-without-domain-reviewer-is-limited
-      description: Universal visual gates cannot certify a complete logo identity system.
-      trigger: "Review apakah konsep logo dan identity system ini sudah production-ready. Tidak ada brand identity reviewer khusus yang tersedia."
+      description: Universal visual gates cannot certify a complete logo identity system when the adapter is unavailable.
+      trigger: "Review apakah konsep logo dan identity system ini sudah production-ready. Brand-identity-review tidak tersedia pada runtime ini."
       must_contain:
         - "brand-identity"
         - "LIMITED REVIEW"
@@ -51,9 +55,27 @@ skill_test:
         - unsupported_domain_requires_reviewer
         - limited_review_verdict_ceiling
 
+    - id: logo-with-domain-reviewer-is-adapter-covered
+      description: Loading brand-identity-review changes primary-domain coverage from limited to adapter-covered.
+      trigger: "Review identity system ini dengan brand-identity-review. Brand brief, vector masters, variants, minimum-size tests, monochrome, inverse, lockups, applications, dan comparison set tersedia."
+      design_gate_ids: [BI1, BI2, BI5, BI7, BI8, BI10, BI11, BI15, BI16]
+      must_contain:
+        - "brand-identity-review"
+        - "ADAPTER_COVERED"
+        - "BI1"
+        - "BI16"
+      must_not_contain:
+        - "LIMITED REVIEW"
+        - "built-in interactive"
+      quality_gates_tested:
+        - external_domain_reviewer_loading
+        - adapter_coverage_changes_verdict_ceiling
+        - canonical_gate_identity
+
     - id: presentation-selects-presentation-strategy
       description: Presentation review must use presentation-domain gates instead of interactive gates.
       trigger: "Review deck presentasi ini untuk dipakai screen sharing. Fokus pada alur cerita, keterbacaan data, dan konsistensi slide."
+      design_gate_ids: [PR1, PR2, PR3, RI1]
       must_contain:
         - "presentation"
         - "PR1"
@@ -65,3 +87,4 @@ skill_test:
       quality_gates_tested:
         - presentation_domain_routing
         - interactive_gates_not_applied_to_static_deck
+        - canonical_gate_identity

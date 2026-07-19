@@ -1,4 +1,4 @@
-name: Skill Eval Contracts
+name: Skill and Gate Contracts
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
       - "skills/**"
       - "scripts/run-eval.sh"
       - "scripts/validate-eval-contracts.py"
+      - "scripts/validate-design-gate-registry.py"
       - ".github/workflows/skill-eval.yml"
   pull_request:
     paths:
@@ -15,6 +16,7 @@ on:
       - "skills/**"
       - "scripts/run-eval.sh"
       - "scripts/validate-eval-contracts.py"
+      - "scripts/validate-design-gate-registry.py"
       - ".github/workflows/skill-eval.yml"
   workflow_dispatch:
 
@@ -22,12 +24,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: skill-eval-contracts-${{ github.ref }}
+  group: skill-and-gate-contracts-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate:
-    name: Validate eval contracts
+    name: Validate skill and gate contracts
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -43,10 +45,14 @@ jobs:
       - name: Install validator dependency
         run: python -m pip install "PyYAML>=6,<7"
 
-      - name: Check local runner syntax
+      - name: Check local validator and runner syntax
         run: |
+          python -m py_compile scripts/validate-design-gate-registry.py
           python -m py_compile scripts/validate-eval-contracts.py
           bash -n scripts/run-eval.sh
+
+      - name: Validate canonical design gate registry
+        run: python scripts/validate-design-gate-registry.py
 
       - name: Validate repository eval contracts
         run: |

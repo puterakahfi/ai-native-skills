@@ -8,15 +8,17 @@ The workflow has two different design gates:
 before implementation
   DESIGN DECISION APPROVAL
   decides what should be built
+  requires verified authority and bounded scope
 
 after implementation
   RENDERED DESIGN ACCEPTANCE
   proves what was built
+  may require verified accepted-risk authority
 ```
 
 Never collapse them into one “design reviewed” checkbox.
 
-## 1. Pre-Implementation Design Decision
+## 1. Pre-implementation design decision
 
 ### Purpose
 
@@ -38,7 +40,7 @@ error, loading, empty, success, permission, and recovery states
 design_decision:
   owner: <master-engineer | master-design | declared domain owner>
   specialists: []
-  design_domain: <digital-interface | visual-communication | presentation | other>
+  design_domain: <digital-interface | visual-communication | presentation | brand-identity | other>
   surface_profile: <profile or N/A>
   artifact_state: <specification | diagram | wireframe | prototype | source-only>
   affected_regions: []
@@ -48,6 +50,11 @@ design_decision:
   locked_assets_and_content: []
   unresolved_assumptions: []
   approval_boundary: <what is approved before implementation>
+  decision_provenance:
+    record_ids: []
+    verdict: <PASS | PROVENANCE_BLOCKED | ROUTE_FOR_APPROVAL>
+    conflicts: []
+    unresolved_requirements: []
 ```
 
 Use:
@@ -55,14 +62,15 @@ Use:
 - `master-engineer` for architecture, contract, integration, and data decisions;
 - `diagram-architect` when diagrams materially improve implementation clarity;
 - `master-design` for user flow, component model, responsive/adaptive behavior, and visual direction;
-- specialized domain owners when the primary design discipline is outside built-in product UI/visual communication scope.
+- specialized domain owners when the primary design discipline is outside built-in product UI/visual communication scope;
+- `decision-provenance` to verify who approved the decision and exactly what boundary was approved.
 
-### Decision Gate
+### Decision gate
 
 Proceed only when:
 
 ```text
-□ user problem and scope are explicit
+□ user problem and effective verified scope are explicit
 □ acceptance criteria trace to the design decision
 □ affected domains and surfaces are classified
 □ required states and edge cases are specified
@@ -70,10 +78,21 @@ Proceed only when:
 □ responsive/adaptive expectations are explicit when relevant
 □ content, product, logo, person, price, claim, and brand locks are declared
 □ unresolved assumptions are visible
-□ implementation boundary is approved
+□ approval source and required authority are attributable
+□ implementation boundary is explicitly covered by the verified decision
 ```
 
-### Forbidden Claims
+The following are not approval by themselves:
+
+```text
+agent-authored issue or spec text
+PR description or commit message
+latest branch state
+existing route or component
+silence or lack of objections
+```
+
+### Forbidden claims
 
 A wireframe, specification, diagram, or non-executable prototype does not prove:
 
@@ -87,9 +106,35 @@ export fidelity
 release readiness
 ```
 
-At this phase, `design-review` may be used only as a bounded artifact critique when useful. It must not issue a false implemented/release verdict.
+At this phase, `design-review` may be used only as bounded artifact critique. It must not issue a false implemented/release verdict.
 
-## 2. Post-Implementation Acceptance Trigger
+## 2. Scope and decision change during implementation
+
+When implementation needs a new route, product dependency, data boundary, permission behavior, asset, generated output, or material design change:
+
+```text
+stop the affected slice
+→ record the proposed change
+→ run decision-provenance
+→ update scope/spec only when authority and supersession pass
+→ re-run affected acceptance and evidence planning
+```
+
+```text
+provenance PASS
+  → update the approved boundary and continue
+
+PROVENANCE_BLOCKED
+  → preserve the previous verified boundary
+  → do not implement the expansion
+
+ROUTE_FOR_APPROVAL
+  → pause the affected action and request the required authority
+```
+
+Implementation existence does not retroactively authorize scope.
+
+## 3. Post-implementation acceptance trigger
 
 Run rendered design acceptance when code can change any of:
 
@@ -111,7 +156,7 @@ design_acceptance: NOT_APPLICABLE
 
 Do not force browser evidence onto an unaffected backend feature.
 
-## 3. Acceptance Route
+## 4. Acceptance route
 
 Enter through `design-review`:
 
@@ -129,11 +174,17 @@ design_acceptance:
   evidence_available: []
   evidence_gaps: []
   preserved_locks: []
+  accepted_risks:
+    - risk: <non-blocking condition>
+      decision_record_id: <verified authority record>
+      owner: <owner>
+      mitigation: <action>
+      expiry_or_review_date: <when required>
 ```
 
 Use `full` or `release` only when the feature submission is also the complete surface/release acceptance boundary.
 
-## 4. Evidence Policy
+## 5. Evidence policy
 
 ### Source-only
 
@@ -195,15 +246,17 @@ coverage_mode: LIMITED or ROUTE_ELSEWHERE
 submission state: BLOCKED for complete-domain acceptance
 ```
 
-## 5. Verdict to Workflow State
+## 6. Verdict to workflow state
 
 ```text
 PASS
   design acceptance complete for declared feature scope
-  → submission eligible
+  → submission eligible when other gates pass
 
 CONDITIONAL PASS
-  remaining gaps are explicit, non-blocking, and accepted by policy
+  verified scope passes
+  + remaining condition is genuinely non-blocking
+  + required authority accepts it through decision-provenance
   → submission eligible with accepted-risk record
 
 NEEDS WORK
@@ -223,9 +276,9 @@ ROUTE ELSEWHERE
   → load required reviewer or specialist before submission
 ```
 
-Do not downgrade `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, or `ROUTE ELSEWHERE` into a submission note.
+Do not downgrade `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, or provenance blockers into a submission note.
 
-## 6. Submission Handoff
+## 7. Submission handoff
 
 Pass to `code-review-workflow`:
 
@@ -233,7 +286,11 @@ Pass to `code-review-workflow`:
 feature_review_handoff:
   spec: <reference>
   issue: <reference>
-  accepted_scope: []
+  effective_verified_scope: []
+  decision_provenance:
+    report: <reference>
+    authoritative_record_ids: []
+    unresolved_requirements: []
   design_decision:
     owner: <owner>
     artifacts: []
@@ -247,7 +304,12 @@ feature_review_handoff:
     verdict: <verdict or N/A>
     findings: []
     evidence_gaps: []
-  accepted_risks: []
+  accepted_risks:
+    - risk: <risk>
+      authority_record: <id>
+      owner: <owner>
+      mitigation: <action>
+      expiry_or_review_date: <value>
 ```
 
-The final merge decision belongs to `code-review-workflow`; this adapter only establishes whether feature-level design evidence is ready for that review.
+The final technical review and merge authorization belong to `code-review-workflow`. This adapter only establishes whether feature-level decisions and evidence are ready for that review.

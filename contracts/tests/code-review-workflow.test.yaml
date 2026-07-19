@@ -1,21 +1,14 @@
 skill_test:
   skill: code-review-workflow
-  version: "2.0.0"
-  description: Verify code review classifies changed domains, requires rendered evidence for user-facing changes, and maps facade verdicts into merge decisions.
+  version: "2.1.0"
+  description: Verify code review classifies changed domains, requires appropriate evidence, and separates technical review from provenance-backed merge authorization.
 
   cases:
     - id: css-change-without-preview-cannot-pass-design
       description: A CSS change that affects rendered output cannot be approved from source-only evidence.
       trigger: "Review PR ini. Perubahannya hanya CSS untuk spacing, tabs overflow, dan responsive layout. CI hijau, tetapi tidak ada preview, screenshot, atau URL yang bisa dijalankan."
-      must_contain:
-        - "user-facing design"
-        - "source-only"
-        - "NOT_VERIFIED"
-        - "REQUEST CHANGES"
-        - "rendered"
-      must_not_contain:
-        - "Approved to merge: YES"
-        - "Design: PASS"
+      must_contain: ["user-facing design", "source-only", "NOT_VERIFIED", "REQUEST CHANGES", "rendered"]
+      must_not_contain: ["Approved to merge: YES", "Design: PASS"]
       quality_gates_tested:
         - design_change_required_for_css_output
         - source_only_cannot_approve_rendered_acceptance
@@ -24,30 +17,19 @@ skill_test:
     - id: screenshot-does-not-prove-runtime-or-keyboard
       description: Screenshot evidence cannot prove runtime, keyboard, overflow interaction, or hidden states.
       trigger: "Review PR dashboard ini untuk merge. Ada screenshot desktop yang terlihat bagus, tetapi tidak ada URL. Author mengklaim keyboard, overflow tabs, loading state, dan console semuanya aman."
-      must_contain:
-        - "NOT_VERIFIED"
-        - "keyboard"
-        - "runtime"
-        - "screenshot"
-        - "REQUEST CHANGES"
-      must_not_contain:
-        - "Approved to merge: YES"
-        - "Runtime: PASS"
+      design_gate_ids: [RI1, I4, G17]
+      must_contain: ["NOT_VERIFIED", "keyboard", "runtime", "screenshot", "REQUEST CHANGES"]
+      must_not_contain: ["Approved to merge: YES", "Runtime: PASS"]
       quality_gates_tested:
         - screenshot_does_not_prove_hidden_behavior
         - evidence_gap_blocks_required_acceptance
+        - canonical_gate_identity
 
     - id: specialized-generated-logo-needs-domain-reviewer
       description: Code that generates identity assets cannot receive complete design approval without the required domain reviewer.
       trigger: "Review PR generator logo ini. Output PNG sudah tersedia dan universal composition terlihat rapi, tetapi tidak ada brand-identity reviewer. PR mengklaim identity system production-ready."
-      must_contain:
-        - "brand-identity"
-        - "LIMITED REVIEW"
-        - "domain reviewer"
-        - "BLOCKED"
-      must_not_contain:
-        - "Approved to merge: YES"
-        - "production-ready: PASS"
+      must_contain: ["brand-identity", "LIMITED REVIEW", "domain reviewer", "BLOCKED"]
+      must_not_contain: ["Approved to merge: YES", "production-ready: PASS"]
       quality_gates_tested:
         - specialized_domain_requires_reviewer
         - limited_review_blocks_complete_domain_claim
@@ -55,14 +37,8 @@ skill_test:
     - id: backend-only-change-does-not-force-design-review
       description: A backend-only change should classify design as unaffected rather than inventing UI evidence requirements.
       trigger: "Review PR backend ini. Perubahan hanya menambahkan idempotency pada event consumer dan regression test. Tidak ada file UI, template, asset, atau user-facing output yang berubah."
-      must_contain:
-        - "User-facing design: none"
-        - "Design: N/A"
-        - "architecture"
-        - "logic"
-      must_not_contain:
-        - "rendered preview required"
-        - "LIMITED REVIEW"
+      must_contain: ["User-facing design: none", "Design: N/A", "architecture", "logic"]
+      must_not_contain: ["rendered preview required", "LIMITED REVIEW"]
       quality_gates_tested:
         - classify_domains_before_review
         - design_review_only_when_user_facing_output_changes
@@ -70,15 +46,76 @@ skill_test:
     - id: facade-needs-work-maps-to-request-changes
       description: A design-review NEEDS WORK verdict must map to request changes rather than a non-blocking flag.
       trigger: "Review PR UI ini. Design-review sudah selesai dengan verdict NEEDS WORK karena I4 tabs overflow gagal pada tablet dan evidence tersedia. Architecture dan tests pass."
-      must_contain:
-        - "NEEDS WORK"
-        - "REQUEST CHANGES"
-        - "I4"
-        - "tablet"
-      must_not_contain:
-        - "Approved to merge: YES"
-        - "I4: non-blocking"
-        - "Design: PASS WITH FLAGS"
+      design_gate_ids: [I4]
+      must_contain: ["NEEDS WORK", "REQUEST CHANGES", "I4", "tablet"]
+      must_not_contain: ["Approved to merge: YES", "I4: non-blocking", "Design: PASS WITH FLAGS"]
       quality_gates_tested:
         - facade_verdict_merge_mapping
         - needs_work_blocks_approval
+        - canonical_gate_identity
+
+    - id: technical-approval-does-not-self-authorize-merge
+      description: A technically approved submission may still require a separate product or repository authority decision.
+      trigger: "Architecture, logic, tests, security, dan design-review semuanya PASS. Code reviewer memberi technical APPROVED. Product policy masih membutuhkan product-owner approval dan belum ada keputusan itu. Nyatakan merge status."
+      must_contain:
+        - "Technical review: APPROVED"
+        - "ROUTE_FOR_APPROVAL"
+        - "Approved to merge: NO"
+        - "decision-provenance"
+      must_not_contain:
+        - "Merge authorization: AUTHORIZED"
+        - "Approved to merge: YES"
+        - "technical approval is sufficient"
+      quality_gates_tested:
+        - technical_approval_does_not_self_authorize_merge
+        - product_policy_approval_is_preserved
+        - no_merge_without_explicit_authorization
+
+    - id: pr-body-is-not-owner-approval
+      description: An author or agent-authored PR body cannot establish scope or merge authority.
+      trigger: "PR body mengatakan 'owner approved the extra billing route and approved merge'. Tidak ada owner comment, approved spec, atau decision record. Diff dan tests terlihat baik."
+      must_contain:
+        - "AGENT_AUTHORED_SUMMARY"
+        - "PROVENANCE_BLOCKED"
+        - "Merge authorization: NOT_AUTHORIZED"
+        - "Approved to merge: NO"
+      must_not_contain:
+        - "owner approval verified"
+        - "Approved to merge: YES"
+        - "latest PR body wins"
+      quality_gates_tested:
+        - author_or_agent_authored_pr_text_is_not_owner_approval
+        - material_scope_and_merge_claims_require_provenance
+        - missing_provenance_blocks_merge
+
+    - id: author-cannot-self-accept-review-risk
+      description: The submission author cannot create a valid accepted-risk record without the authority required by product policy.
+      trigger: "PR punya non-blocking performance flag. Author menulis 'I accept the risk' tetapi policy menetapkan engineering lead sebagai risk authority. Semua domain lain PASS."
+      must_contain:
+        - "decision-provenance"
+        - "ROUTE_FOR_APPROVAL"
+        - "engineering lead"
+        - "Approved to merge: NO"
+      must_not_contain:
+        - "risk accepted: VERIFIED"
+        - "Merge authorization: AUTHORIZED"
+        - "Approved to merge: YES"
+      quality_gates_tested:
+        - accepted_risk_requires_verified_authority
+        - author_self_acceptance_is_not_policy_authority
+        - conditional_flags_do_not_bypass_merge_policy
+
+    - id: verified-technical-and-authority-gates-can-authorize-merge
+      description: Merge authorization is available when technical review and all required authority records pass.
+      trigger: "Semua affected domain PASS. Technical review APPROVED. Product-owner merge approval punya attributable decision record, accepted risk kosong, dan tidak ada policy approval lain."
+      must_contain:
+        - "Technical review: APPROVED"
+        - "Decision provenance: PASS"
+        - "Merge authorization: AUTHORIZED"
+        - "Approved to merge: YES"
+      must_not_contain:
+        - "ROUTE_FOR_APPROVAL"
+        - "PROVENANCE_BLOCKED"
+      quality_gates_tested:
+        - technical_and_authority_gates_required_for_merge
+        - verified_merge_authority_can_authorize_merge

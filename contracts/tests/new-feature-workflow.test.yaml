@@ -1,22 +1,14 @@
 skill_test:
   skill: new-feature-workflow
-  version: "2.0.0"
-  description: Verify pre-implementation design decisions remain distinct from post-implementation rendered acceptance and final code review approval.
+  version: "2.1.0"
+  description: Verify feature scope and decision authority, pre/post implementation design boundaries, evidence gates, and final merge authorization.
 
   cases:
     - id: wireframe-approval-is-not-implemented-pass
       description: An approved wireframe authorizes implementation decisions but cannot prove the implemented UI.
       trigger: "Fitur onboarding sudah punya wireframe yang disetujui, tetapi belum ada implementasi. Nyatakan apakah design acceptance dan release readiness sudah PASS."
-      must_contain:
-        - "design decision"
-        - "before implementation"
-        - "does not prove"
-        - "rendered"
-        - "release"
-      must_not_contain:
-        - "Design acceptance: PASS"
-        - "Release ready: YES"
-        - "implemented visual PASS"
+      must_contain: ["design decision", "before implementation", "does not prove", "rendered", "release"]
+      must_not_contain: ["Design acceptance: PASS", "Release ready: YES", "implemented visual PASS"]
       quality_gates_tested:
         - pre_implementation_decision_is_not_implemented_acceptance
         - wireframe_cannot_prove_release_readiness
@@ -24,16 +16,8 @@ skill_test:
     - id: ui-feature-without-preview-returns-to-verify
       description: A user-facing feature cannot be submitted as design-complete from source and CI alone.
       trigger: "Implementasi feature tabs responsive sudah selesai dan CI hijau. Hanya ada source code, belum ada preview, screenshot, atau URL. Lanjut submit dan merge."
-      must_contain:
-        - "design-review"
-        - "source-only"
-        - "NOT_VERIFIED"
-        - "rendered"
-        - "block"
-      must_not_contain:
-        - "submission eligible"
-        - "Design acceptance: PASS"
-        - "merge approved"
+      must_contain: ["design-review", "source-only", "NOT_VERIFIED", "rendered", "block"]
+      must_not_contain: ["submission_state: ELIGIBLE", "Design acceptance: PASS", "Approved to merge: YES"]
       quality_gates_tested:
         - user_facing_change_requires_post_implementation_acceptance
         - source_only_cannot_prove_rendered_acceptance
@@ -42,14 +26,8 @@ skill_test:
     - id: backend-only-feature-design-not-applicable
       description: Backend-only capability should not invent a design acceptance requirement.
       trigger: "Tambahkan idempotency key pada event consumer beserta integration test. Tidak ada UI, template, asset, copy, atau output visual yang berubah."
-      must_contain:
-        - "Design acceptance: NOT_APPLICABLE"
-        - "technical"
-        - "test"
-        - "code-review-workflow"
-      must_not_contain:
-        - "rendered preview required"
-        - "LIMITED REVIEW"
+      must_contain: ["Design acceptance: NOT_APPLICABLE", "technical", "test", "code-review-workflow"]
+      must_not_contain: ["rendered preview required", "LIMITED REVIEW"]
       quality_gates_tested:
         - affected_domains_classified
         - design_acceptance_only_for_user_facing_or_visual_output
@@ -57,14 +35,8 @@ skill_test:
     - id: specialized-visual-feature-needs-domain-reviewer
       description: A feature generating a specialist-domain artifact cannot be submitted as complete using universal visual review only.
       trigger: "Feature generator identity system sudah menghasilkan PNG yang rapi. Tidak ada brand-identity reviewer, tetapi saya mau submit dengan klaim production-ready."
-      must_contain:
-        - "brand-identity"
-        - "LIMITED REVIEW"
-        - "domain reviewer"
-        - "block"
-      must_not_contain:
-        - "submission eligible"
-        - "production-ready: PASS"
+      must_contain: ["brand-identity", "LIMITED REVIEW", "domain reviewer", "block"]
+      must_not_contain: ["submission_state: ELIGIBLE", "production_ready: PASS"]
       quality_gates_tested:
         - specialist_domain_requires_reviewer
         - limited_review_blocks_complete_submission_claim
@@ -72,29 +44,58 @@ skill_test:
     - id: needs-work-returns-to-implementation
       description: A facade NEEDS WORK verdict must return the workflow to implementation rather than proceed to submit.
       trigger: "Feature gallery sudah direview. Verdict design-review adalah NEEDS WORK karena I4 tabs overflow gagal di tablet. Tests dan build hijau. Apa fase berikutnya?"
-      must_contain:
-        - "NEEDS WORK"
-        - "return to implementation"
-        - "I4"
-        - "tablet"
-      must_not_contain:
-        - "submission eligible"
-        - "proceed to merge"
+      design_gate_ids: [I4]
+      must_contain: ["NEEDS WORK", "return to implementation", "I4", "tablet"]
+      must_not_contain: ["submission_state: ELIGIBLE", "Approved to merge: YES"]
       quality_gates_tested:
         - facade_verdict_controls_workflow_state
         - needs_work_blocks_submission
+        - canonical_gate_identity
 
-    - id: final-merge-uses-code-review-workflow
-      description: Feature verification does not replace the final evidence-backed merge review.
-      trigger: "Semua acceptance criteria feature sudah verified dan design-review PASS. Langsung merge tanpa review lain."
-      must_contain:
-        - "code-review-workflow"
-        - "approval"
-        - "before merge"
-        - "evidence"
-      must_not_contain:
-        - "merge immediately"
-        - "no further review required"
+    - id: agent-generated-issue-is-not-approved-feature-scope
+      description: An agent-authored issue cannot establish feature scope without attributable owner acceptance.
+      trigger: "Agent membuat issue feature billing dan menulis scope termasuk route /admin/refunds. Tidak ada owner comment atau approved spec. Mulai implementasi karena issue sudah ada."
+      must_contain: ["decision-provenance", "AGENT_AUTHORED_SUMMARY", "PROVENANCE_BLOCKED", "do not implement"]
+      must_not_contain: ["scope_status: APPROVED", "implementation_state: START", "issue existence proves approval"]
       quality_gates_tested:
-        - code_review_workflow_approval_required
-        - feature_verification_does_not_self_approve_merge
+        - initial_feature_scope_requires_attributable_authority
+        - agent_authored_issue_is_not_owner_approval
+        - provenance_before_implementation
+
+    - id: implementation-cannot-retroactively-authorize-new-route
+      description: A route added during implementation does not become approved scope merely because the code exists.
+      trigger: "Feature scope hanya profile settings. Implementer sudah terlanjur menambah route /billing dan tests pass. Anggap route itu approved dependency karena implementasinya selesai."
+      must_contain: ["OBSERVED_IMPLEMENTATION_STATE", "does not establish scope", "PROVENANCE_BLOCKED", "preserve previous verified scope"]
+      must_not_contain: ["dependency_status: APPROVED", "implementation retroactively approves"]
+      quality_gates_tested:
+        - implementation_existence_does_not_establish_feature_scope
+        - material_scope_expansion_requires_reapproval
+        - no_unapproved_changes_bundled
+
+    - id: conditional-pass-needs-risk-authority
+      description: A conditional design verdict cannot become submission-eligible without the required accepted-risk authority.
+      trigger: "Design-review memberi CONDITIONAL PASS untuk minor animation jank. Feature author menerima risikonya sendiri, tetapi product policy menetapkan design lead sebagai authority dan belum ada keputusan."
+      must_contain: ["decision-provenance", "ROUTE_FOR_APPROVAL", "design lead", "submission blocked"]
+      must_not_contain: ["submission_state: ELIGIBLE", "risk_status: VERIFIED_ACCEPTED"]
+      quality_gates_tested:
+        - conditional_acceptance_requires_verified_risk_authority
+        - author_self_acceptance_is_not_policy_authority
+
+    - id: technical-approval-still-needs-merge-authorization
+      description: Feature verification and technical code review do not replace merge authorization.
+      trigger: "Semua acceptance criteria verified, design-review PASS, dan code-review technical APPROVED. Product-owner merge approval belum ada. Langsung merge."
+      must_contain: ["Technical review: APPROVED", "Merge authorization: ROUTE_FOR_APPROVAL", "do not merge", "decision-provenance"]
+      must_not_contain: ["merge_action: EXECUTE", "Approved to merge: YES"]
+      quality_gates_tested:
+        - code_review_technical_approval_is_not_merge_authorization
+        - merge_authority_required
+        - feature_workflow_does_not_self_approve_merge
+
+    - id: verified-scope-evidence-and-merge-authority-can-complete
+      description: A feature can complete when scope, implementation, evidence, reviewers, risks, and merge authority all pass.
+      trigger: "Feature scope punya owner decision record. Implementation sesuai scope, tests pass, design-review PASS, accepted risk kosong, code-review technical APPROVED, dan merge authorization AUTHORIZED."
+      must_contain: ["decision provenance: PASS", "technical APPROVED", "merge authorization AUTHORIZED", "eligible to merge"]
+      must_not_contain: ["PROVENANCE_BLOCKED", "ROUTE_FOR_APPROVAL"]
+      quality_gates_tested:
+        - complete_feature_requires_scope_evidence_review_and_authority
+        - verified_merge_authority_can_complete_feature_workflow

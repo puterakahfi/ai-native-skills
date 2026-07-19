@@ -1,23 +1,23 @@
 ---
 name: code-review-workflow
-description: Evidence-backed code review workflow — classify changed domains, verify architecture, route user-facing changes through the design-review facade, inspect logic and security, then map domain verdicts into an explicit merge decision.
+description: Evidence-backed code review workflow — classify changed domains, verify architecture, route user-facing changes through the design-review facade, inspect logic and security, then separate technical approval from provenance-backed merge authorization.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.0.0
+  ai-native-skills.version: 2.1.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "architecture-review design-review master-engineer systematic-debugging security-review threat-modeling"
+  ai-native-skills.requires: "architecture-review design-review decision-provenance master-engineer systematic-debugging security-review threat-modeling"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/code-review.contract.yaml
-  ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.skill_load_order: '[{''phase'': ''architecture-check'', ''load'': [''architecture-review'']}, {''phase'': ''design-check'', ''load'': [''design-review'']}, {''phase'': ''logic-check'', ''load'': [''systematic-debugging'', ''master-engineer'']}, {''phase'': ''security-check'', ''load'': [''security-review'', ''threat-modeling'']}]'
-  ai-native-skills.skills: '{''required'': [''architecture-review''], ''optional'': [''design-review'', ''systematic-debugging'', ''master-engineer'', ''security-review'', ''threat-modeling'']}'
+  ai-native-skills.contract-version: "~0.3"
+  ai-native-skills.skill_load_order: '[{"phase":"load-context","load":["decision-provenance"]},{"phase":"architecture-check","load":["architecture-review"]},{"phase":"design-check","load":["design-review"]},{"phase":"logic-check","load":["systematic-debugging","master-engineer"]},{"phase":"security-check","load":["security-review","threat-modeling"]},{"phase":"verdict","load":["decision-provenance"]}]'
+  ai-native-skills.skills: '{"required":["architecture-review","decision-provenance"],"optional":["design-review","systematic-debugging","master-engineer","security-review","threat-modeling"]}'
 ---
 
 # Code Review Workflow
 
-Load context → classify changes → architecture → design acceptance → logic → security → verdict.
+Load context → classify changes and decision claims → architecture → design acceptance → logic → security → technical verdict → merge authorization.
 
-## Core Rule
+## Core boundary
 
 ```text
 Compiled ≠ correct.
@@ -25,24 +25,37 @@ Generated ≠ reviewed.
 Green CI ≠ architecture approval.
 Source diff ≠ rendered design evidence.
 Screenshot ≠ runtime, keyboard, or hidden-state evidence.
+Technical APPROVED ≠ automatically authorized to merge.
 ```
 
-A submission may be approved only when every affected domain has passed or has explicit non-blocking accepted risk under the product approval policy.
+A submission can report `Approved to merge: YES` only when:
 
-## Hard Rules
+```text
+all affected technical domains pass
++ applicable accepted risks are verified and non-blocking
++ decision-provenance PASS
++ required repository/product/policy approvals are satisfied
+```
+
+## Hard rules
 
 ```text
 1. Classify changed domains before selecting reviewers.
-2. Always run architecture review for code submissions.
-3. Run design review when user-facing or generated visual output can change.
-4. Enter design acceptance through the design-review facade.
-5. Changed rendered output requires fresh rendered or exported evidence.
-6. Source-only design inspection cannot approve visual or interaction acceptance.
-7. NOT_VERIFIED is an evidence gap, not PASS or zero.
-8. LIMITED REVIEW cannot approve a complete specialist-domain claim.
-9. Run security review when trust boundaries or sensitive behavior change.
-10. Every blocking verdict cites concrete evidence and affected files/regions.
-11. No merge without an explicit final verdict.
+2. Classify material scope, exception, risk, and merge claims before accepting them.
+3. Always run architecture review for code submissions.
+4. Run design review when user-facing or generated visual output can change.
+5. Enter design acceptance through the design-review facade.
+6. Changed rendered output requires fresh rendered or exported evidence.
+7. Source-only design inspection cannot approve visual or interaction acceptance.
+8. NOT_VERIFIED is an evidence gap, not PASS or zero.
+9. LIMITED REVIEW cannot approve a complete specialist-domain claim.
+10. Run security review when trust boundaries or sensitive behavior change.
+11. Every blocking verdict cites concrete evidence and affected files/regions.
+12. Agent/author PR text is not owner approval.
+13. Existing code or newest commit proves state, not scope or authority.
+14. Accepted risk requires verified authority and cannot hide a blocker.
+15. Technical review verdict and merge authorization must be reported separately.
+16. No merge without explicit technical approval and merge authorization.
 ```
 
 ## Inputs
@@ -54,6 +67,13 @@ review_context:
   engineering_rules: []
   product_design_locks: []
   changed_files: []
+
+  decision_sources: []
+  required_authorities: []
+  previous_decision_records: []
+  claimed_scope_or_exceptions: []
+  claimed_accepted_risks: []
+
   available_evidence:
     tests: []
     ci: []
@@ -62,12 +82,14 @@ review_context:
     screenshots: []
     exports: []
     accessibility: []
+
   approval_policy: <product-defined>
+  merge_authority: <role or policy>
 ```
 
-Missing contracts do not automatically block every review. Record the gap and use repository conventions, specifications, architecture, and declared design locks. Block when the missing contract prevents a required acceptance decision.
+Missing contracts do not automatically block every review. Record the gap and use repository conventions, specifications, architecture, and declared locks. Block when the gap prevents a required domain verdict or authority decision.
 
-## Phase 1 — Load Context
+## Phase 1 — Load context
 
 Inspect:
 
@@ -78,13 +100,17 @@ repository and product instructions
 engineering contracts and ADRs
 product design system, locks, and required assets
 verification evidence attached to the submission
+claimed scope, exception, accepted-risk, and merge decisions
+source references and required authorities for those decisions
 ```
 
-Claims are not evidence. “Responsive tested” requires the tested contexts and observable result.
+Claims are not evidence. Submission text such as “responsive tested”, “owner approved”, or “risk accepted” requires the relevant evidence or decision source.
 
-**Gate:** review context and evidence are declared.
+Load `decision-provenance` when a material claim affects scope, exception, accepted risk, approval, or merge permission.
 
-## Phase 2 — Classify Changed Domains
+**Gate:** context, evidence, decision sources, and approval policy are declared.
+
+## Phase 2 — Classify changed domains and claims
 
 ```yaml
 change_impact:
@@ -93,20 +119,29 @@ change_impact:
   security: <none | affected>
   data_or_migration: <none | affected>
   user_facing_design: <none | affected>
-  design_domain: <digital-interface | visual-communication | presentation | other | N/A>
+  design_domain: <digital-interface | visual-communication | presentation | brand-identity | other | N/A>
   surface_profile: <profile | N/A>
   artifact_state: <rendered-interactive | rendered-static | source-only | mixed | N/A>
   required_reviewers: []
   evidence_gaps: []
+
+material_decision_claims:
+  scope: []
+  dependency_or_exception: []
+  accepted_risk: []
+  approval_or_merge: []
+  required_authorities: []
 ```
 
 User-facing design is affected when code can change appearance, interaction, states, content fidelity, accessibility, responsiveness, or generated/exported visual output.
 
 Do not infer “no design change” because only CSS, tokens, props, content data, templates, assets, or generation configuration changed.
 
-**Gate:** affected domains and required reviewers are resolved.
+Do not infer a claim is authoritative because it appears in the latest commit or PR body.
 
-## Phase 3 — Architecture Check
+**Gate:** affected domains, reviewers, material claims, and required authorities are resolved.
+
+## Phase 3 — Architecture check
 
 Load `architecture-review`.
 
@@ -121,7 +156,7 @@ folder/package placement
 failure handling and observability implications
 test strategy and regression coverage
 ADR requirement
-secrets and obvious security baseline
+secrets and baseline security concerns
 ```
 
 Output:
@@ -130,9 +165,9 @@ Output:
 Architecture: PASS | PASS WITH FLAGS | FAIL | NOT_VERIFIED
 ```
 
-A failing applicable architecture gate blocks approval.
+A failing applicable architecture gate blocks technical approval.
 
-## Phase 4 — Design Check
+## Phase 4 — Design check
 
 Run only when `user_facing_design: affected`.
 
@@ -142,16 +177,7 @@ Load:
 references/design-review-adapter.md
 ```
 
-That adapter owns:
-
-- design-change triggers;
-- facade route fields;
-- source/rendered/static evidence policy;
-- phase-specific design-review loading;
-- facade verdict-to-merge mapping;
-- design result handoff shape.
-
-Do not maintain a duplicate design scorecard here.
+The adapter owns design-change triggers, facade route fields, evidence policy, reviewer coverage, verdict mapping, and design handoff. Do not maintain a duplicate design scorecard here.
 
 Output:
 
@@ -160,16 +186,18 @@ Design: PASS | CONDITIONAL PASS | NEEDS WORK | CRITICAL |
         LIMITED REVIEW | ROUTE_ELSEWHERE | N/A
 ```
 
+A `CONDITIONAL PASS` is technically usable only when the remaining risk is verified as non-blocking and accepted by the required authority.
+
 **Gate:** facade design acceptance is resolved for every affected user-facing surface.
 
-## Phase 5 — Logic Check
+## Phase 5 — Logic check
 
 Load `master-engineer` for complex logic. Load `systematic-debugging` when the submission claims to fix a bug or regression.
 
 Inspect:
 
 ```text
-traceability to specification and acceptance criteria
+traceability to verified specification and acceptance criteria
 business rules and state transitions
 edge cases and boundary inputs
 error, retry, idempotency, and partial failure behavior
@@ -184,18 +212,9 @@ Output:
 Logic: PASS | PASS WITH FLAGS | FAIL | NOT_VERIFIED | N/A
 ```
 
-## Phase 6 — Security Check
+## Phase 6 — Security check
 
-Load `security-review` and `threat-modeling` when the diff affects:
-
-```text
-authentication or authorization
-trust boundaries or integrations
-secrets, tokens, uploads, or untrusted input
-personal, financial, or sensitive data
-permissions, tenancy, or data isolation
-destructive or high-impact actions
-```
+Load `security-review` and `threat-modeling` when trust boundaries, authentication/authorization, secrets/tokens, untrusted input, sensitive data, permissions, tenancy, isolation, or high-impact behavior are affected.
 
 Output:
 
@@ -203,14 +222,23 @@ Output:
 Security: PASS | PASS WITH FLAGS | FAIL | NOT_VERIFIED | N/A
 ```
 
-Applicable unresolved high-risk findings block approval.
+Applicable unresolved high-risk findings block technical approval. A risk-acceptance claim must still pass decision provenance and applicable policy.
 
-## Phase 7 — Final Verdict
+## Phase 7 — Technical verdict and merge authorization
+
+Load:
+
+```text
+references/merge-authorization.md
+decision-provenance
+```
+
+### Technical review verdict
 
 ```text
 APPROVED
-  every affected domain passes
-  or only explicit accepted non-blocking flags remain
+  every affected technical domain passes
+  or only verified non-blocking flags remain
 
 REQUEST CHANGES
   correctable architecture, design, logic, security, test,
@@ -219,17 +247,46 @@ REQUEST CHANGES
 BLOCKED
   critical/hard-gate failure
   missing required specialist reviewer
-  unsafe migration/security condition
+  unsafe condition
   or the submission cannot be responsibly evaluated
 ```
 
-Output:
+### Merge authorization
+
+```text
+AUTHORIZED
+  technical verdict APPROVED
+  + provenance PASS
+  + all required policy approvals satisfied
+
+NOT_AUTHORIZED
+  technical verdict REQUEST CHANGES/BLOCKED
+  or provenance blocked
+  or a required authority rejected the action
+
+ROUTE_FOR_APPROVAL
+  technical verdict APPROVED
+  but another required authority has not decided
+```
+
+A reviewer may conclude the implementation is technically approved while still reporting:
+
+```text
+Approved to merge: NO
+Merge authorization: ROUTE_FOR_APPROVAL
+```
+
+That is not a contradiction; it preserves the authority boundary.
+
+## Required report
 
 ```markdown
 # Code Review Verdict
 
 - Submission: [link or commit range]
-- Overall: [APPROVED | REQUEST CHANGES | BLOCKED]
+- Technical review: [APPROVED | REQUEST CHANGES | BLOCKED]
+- Decision provenance: [PASS | PROVENANCE_BLOCKED | ROUTE_FOR_APPROVAL]
+- Merge authorization: [AUTHORIZED | NOT_AUTHORIZED | ROUTE_FOR_APPROVAL]
 - Approved to merge: [YES | NO]
 
 ## Change Classification
@@ -241,9 +298,14 @@ Output:
 
 ## Domain Results
 - Architecture: [result]
-- Design: [facade verdict, score, evidence coverage, primary-domain coverage]
+- Design: [facade verdict, evidence coverage, primary-domain coverage]
 - Logic: [result]
 - Security: [result]
+
+## Decision Provenance
+- Effective scope/exception decisions: [...]
+- Authoritative record IDs: [...]
+- Conflicts/unresolved approvals: [...]
 
 ## Blocking Findings
 1. **[domain] [finding]**
@@ -252,40 +314,30 @@ Output:
    - Impact: ...
    - Required correction or evidence: ...
 
-## Non-Blocking Flags
-- [explicit accepted risk or follow-up]
+## Accepted Risks / Non-Blocking Flags
+- [risk, authority record, owner, mitigation, expiry]
 
 ## Evidence Gaps
-- [missing tests, preview, state, runtime, export, or reviewer]
+- [missing tests, preview, state, runtime, export, reviewer, or decision source]
 
 ## ADR / Follow-up
 - ADR required: [YES | NO]
 - Follow-up issues: [...]
 ```
 
-Do not approve with “looks good”, “CI passed”, or a high partial design score when required evidence or primary-domain coverage is missing.
+Do not approve with “looks good”, “CI passed”, a high partial design score, author self-approval, or missing authority evidence.
 
-## Quick Reference
-
-| Phase | Capability | Exit gate |
-|---|---|---|
-| Context | repository/spec evidence | context declared |
-| Classification | changed-domain routing | reviewers selected |
-| Architecture | `architecture-review` | architecture gates resolved |
-| Design | `design-review` facade adapter | rendered/domain acceptance resolved |
-| Logic | engineering/debugging review | behavior and tests resolved |
-| Security | security/threat review | applicable risks resolved |
-| Verdict | workflow synthesis | explicit merge decision |
-
-## Auto-Fail Anti-Patterns
+## Auto-fail anti-patterns
 
 | Pattern | Why it fails |
 |---|---|
-| Approve because CI is green | CI does not prove architecture, design, or behavior |
+| Approve because CI is green | CI does not prove architecture, design, behavior, or authority |
 | Approve a visual change from diff only | Source-only evidence cannot prove rendered acceptance |
 | Treat screenshot as interaction/runtime proof | Hidden behavior remains unverified |
 | Run a hardcoded design checklist | Bypasses facade routing and domain ownership |
-| Give specialist-domain approval from universal UI gates | Required reviewer coverage is missing |
-| Skip design review because only CSS/content changed | Those changes can alter user-facing output |
-| Vague “could be better” finding | No evidence, impact, or correction contract |
-| Merge without explicit verdict | Review responsibility is ambiguous |
+| Give specialist-domain approval from universal gates | Required reviewer coverage is missing |
+| Treat PR body as product-owner approval | Agent/author summary is not authority |
+| Treat newest commit as approved scope | Recency proves state, not intent |
+| Let author accept their own risk without policy authority | Risk acceptance provenance is missing |
+| Report technical APPROVED as automatic merge permission | Review and authorization are separate |
+| Merge without explicit final statuses | Responsibility and authority are ambiguous |

@@ -1,202 +1,341 @@
-# Phase 11 — FIX, VERIFY, AND LEARN
+# Phase 11–12 — Defect Classification, Scope Cleanup, Fix, Verify, and Learn
 
-## Core rule
-
-```text
-Classify the defect
-→ fix the correct local or shared layer
-→ verify the real case
-→ run skill-evolution automatically
-→ promote only reusable reasoning with a regression eval.
-```
-
-Do not patch a shared skill merely because an implementation failed. First determine whether the failure came from missing reusable knowledge, ignored existing knowledge, workflow orchestration, reference quality, or local implementation.
-
-## Step A — Defect classification
-
-For every failed gate, record:
+Use this reference after:
 
 ```text
-Gate:
-Observed failure:
-Governing skill or workflow:
-Existing relevant rule:
-Defect class:
-  reusable_skill_defect
-  reference_knowledge_defect
-  workflow_orchestration_defect
-  local_implementation_defect
-Candidate correction layer:
-Evidence needed to prove the fix:
+design-review returns verified FAIL or PARTIAL findings
+or scope_diff_report returns BLOCKED
 ```
 
-Classification rules:
+`NOT_VERIFIED` returns to evidence collection unless a verified implementation defect prevents verification. Scope contamination is handled as a workflow integrity blocker, not forced into a design gate.
 
-- Missing reusable decision factor, reasoning step, anti-pattern, or quality gate → `reusable_skill_defect`.
-- Reusable explanation or decision matrix is incomplete but too detailed for the main skill → `reference_knowledge_defect`.
-- Correct skills were not loaded, phases were ordered incorrectly, or review was skipped → `workflow_orchestration_defect`.
-- CSS, framework behavior, product state, route, exact breakpoint, or repository-specific component bug → `local_implementation_defect`.
-- Existing rule was clear but ignored → patch the artifact or orchestration first; do not duplicate the rule.
+## Core loops
 
-## Step B — Apply the smallest candidate fix
-
-Use the correction order from the defect class:
+### Design finding
 
 ```text
-Reusable skill defect
-→ formulate a learning candidate
-→ apply the candidate reasoning to the real surface
-→ verify it
-→ promote through skill-evolution after verification.
-
-Reference knowledge defect
-→ improve the reusable reference candidate
-→ apply and verify
-→ promote after verification.
-
-Workflow orchestration defect
-→ patch workflow composition or phase ordering
-→ resume from a safe phase
-→ verify the complete affected path.
-
-Local implementation defect
-→ patch only the product artifact
-→ verify regression
-→ keep the detail in the product repository.
+facade finding
+→ resolve governing reviewer and root cause
+→ classify correction ownership
+→ apply the smallest valid correction
+→ verify the real case and preservation set
+→ regenerate scope diff when repository files changed
+→ focused facade re-review
+→ run learning review after a verified reusable fix
 ```
 
-A candidate rule is not yet shared knowledge. It becomes promotable only after the real case passes.
+### Scope contamination
 
-## Step C — Verify the real case
+```text
+scope_diff_report BLOCKED
+→ identify path, change type, causal owner, and preservation risk
+→ restore, remove, split, or re-approve a true dependency
+→ regenerate effective final diff
+→ proceed to facade review only after scope PASS
+```
 
-Run the evidence appropriate to the failure:
+Do not patch a shared skill merely because product implementation failed. Do not patch product code to hide a missing reviewer, unsupported claim, evidence gap, or contaminated branch.
 
-- render and screenshot inspection;
-- mobile, tablet, laptop, and desktop checks;
-- pointer, touch, keyboard, swipe, scroll, and resize behavior;
-- loading, empty, error, success, permission, and edge states;
-- DOM probes and accessibility checks;
-- build, lint, type, unit, integration, or end-to-end tests;
-- fixed-gate and preserved-gate re-scoring.
+## Finding, evidence gap, and scope blocker
 
-Record before and after evidence. A successful build alone is not proof that a UI/UX defect is resolved.
+```text
+FAIL / PARTIAL
+  verified design condition exists
+  eligible for design-defect classification
 
-If verification fails, continue the bounded correction loop. Do not update shared skills from the failed attempt.
+NOT_VERIFIED
+  relevant evidence is missing
+  return to verification or narrow the claim
+  do not score zero or invent a design fix
 
-## Step D — Automatic skill-evolution review
+NOT_APPLICABLE
+  no correction required
 
-After a fix passes verification, load:
+SCOPE BLOCKED
+  final effective delivery diff violates confirmed scope
+  correct the delivery boundary before passing review or merge claim
+```
+
+## Design defect record
+
+For every failed or partial canonical gate:
+
+```yaml
+defect:
+  canonical_gate_id: <id>
+  governing_reviewer: <reviewer>
+  status: <FAIL | PARTIAL>
+  observation: <verified condition>
+  evidence: []
+  impact: <user, business, accessibility, fidelity, runtime, or delivery>
+  affected_region: <region>
+  existing_relevant_rule: <rule or none>
+  defect_class: <class>
+  correction_owner: <skill, workflow, artifact, lock owner, or specialist>
+  correction_scope: <smallest valid scope>
+  verification_required: []
+  preservation_checks: []
+```
+
+## Scope contamination record
+
+For every `OUT_OF_SCOPE`, `UNKNOWN`, or preserved-path violation:
+
+```yaml
+scope_contamination:
+  path: <path or artifact>
+  change_type: <added | modified | deleted | renamed | binary | submodule>
+  classification: <OUT_OF_SCOPE | UNKNOWN | PRESERVED_PATH_VIOLATION>
+  baseline_ref: <ref>
+  causal_owner: <owner or unknown>
+  reason_not_in_scope: <reason>
+  valuable_work_preservation: <branch, artifact, commit, or not applicable>
+  correction_action: <restore | remove | split | re-approve dependency | handoff>
+  approval_requirement: <none | spec re-approval | owner decision>
+  verification_required:
+    - regenerate scope_diff_report
+```
+
+Do not delete valuable unrelated work merely to clean the redesign. Preserve it in the rightful branch or artifact first.
+
+## Design defect classes
+
+### `reusable_skill_defect`
+
+A reusable capability is missing or teaches materially wrong reasoning across contexts.
+
+```text
+candidate reusable rule → test on real artifact → verify → skill-evolution
+```
+
+### `reference_knowledge_defect`
+
+The owning skill is correct but its on-demand detail, matrix, examples, or evidence guidance is incomplete or misleading.
+
+### `workflow_orchestration_defect`
+
+Route, role composition, delegation, phase order, scope capture, state, approval, evidence handoff, or reviewer loading is wrong.
+
+The missing final-diff gate discovered during a real redesign is this class. The concrete product paths remain in the product run artifact; only the reusable scope reasoning is promoted.
+
+### `local_implementation_defect`
+
+Reusable rules are sufficient and repository/artifact implementation is wrong.
+
+### `product_design_lock_defect`
+
+Supplied brand, content, asset, component, behavior, path, or design-system locks conflict or cannot all be satisfied.
+
+### `domain_specialist_defect`
+
+Correction requires specialist knowledge owned by a domain reviewer or another specialist.
+
+## Classification rules
+
+```text
+missing reusable decision factor across contexts
+  → reusable_skill_defect
+
+on-demand explanation or evidence matrix incomplete
+  → reference_knowledge_defect
+
+correct skill not loaded, phase misordered, baseline/scope not captured
+  → workflow_orchestration_defect
+
+CSS, framework, state, route, export, or repository-specific bug
+  → local_implementation_defect
+
+conflicting supplied identity, content, system, or path constraint
+  → product_design_lock_defect
+
+identity, packaging, motion, or other specialist correction
+  → domain_specialist_defect
+
+unrelated effective changed path
+  → scope contamination record; do not invent a design gate
+```
+
+Visible symptoms do not determine ownership. Inspect provenance and the effective diff first.
+
+## Resolve scope contamination safely
+
+```text
+unrelated added file
+  → preserve elsewhere if valuable, then remove from effective diff
+
+unrelated modification to existing file
+  → restore baseline version or split the valid work
+
+unrelated deleted file
+  → restore it from baseline
+
+true required dependency omitted from spec
+  → document causal relationship and acceptance criterion
+  → re-enter approval policy
+
+unknown ownership
+  → remain BLOCKED and hand off to repository owner
+
+submodule pointer
+  → verify exact target commit and explain why the redesign requires it
+```
+
+Branch history does not need rewriting merely to pass this gate. The effective final diff must be clean and reproducible.
+
+## Apply the smallest correction
+
+```text
+preserve passing gates and accepted direction
+change only the owning layer and affected scope
+record every touched file, region, skill, or contamination entry
+avoid drive-by redesign and opportunistic cleanup
+avoid global rules derived from one product
+retain rollback and unrelated-work preservation paths
+```
+
+A candidate shared rule is not shared knowledge until the real artifact passes.
+
+## Verify by governing domain
+
+Use `delegation-and-verification.md` and governing reviewer evidence rules.
+
+```text
+digital interface
+  affected rendering, states, inputs, focus, overflow, runtime, implementation
+
+visual communication
+  final-size, crop, content/asset fidelity, export quality
+
+presentation
+  affected slide, narrative adjacency, delivery scale, data/source
+
+brand identity
+  marks/variants, geometry, small size, mono/inverse,
+  lockup/application/reproduction evidence
+
+other
+  domain reviewer evidence contract
+```
+
+After any repository correction, also re-check:
+
+```text
+scope_diff_report
+target gates
+adjacent regression gates
+preserved gates, paths, and locks
+affected contextual hard gates
+new evidence gaps
+```
+
+If verification fails, continue the bounded loop. Do not update shared knowledge from a failed attempt.
+
+## Focused re-review
+
+Invoke the facade with inherited route and fresh evidence only after scope integrity passes:
+
+```yaml
+review_route:
+  design_domain: <inherited>
+  surface_profile: <inherited>
+  review_depth: focused
+  coverage_mode: <inherited>
+  domain_reviewers: <inherited>
+  selected_gate_ids: <target and adjacent gates>
+  evidence_available: <fresh packet>
+  evidence_gaps: []
+```
+
+Outcomes:
+
+```text
+PASS / permitted CONDITIONAL PASS
+  exit when acceptance, preservation, and scope also pass
+
+NEEDS WORK / CRITICAL
+  iterate while bounded attempts remain
+
+LIMITED REVIEW
+  load reviewer or narrow claim; do not treat as fix success
+
+ROUTE ELSEWHERE
+  stop unsupported approval path
+```
+
+## Automatic learning review
+
+After each verified reusable fix, run:
 
 ```text
 skill-evolution + skill-eval
 ```
 
-Run the learning review without waiting for the user to request it.
-
-The review must decide one of:
+Allowed learning verdicts:
 
 ```text
-PROMOTE_RULE
-PROMOTE_REFERENCE
-PROMOTE_WORKFLOW
-PROMOTE_CONTRACT
+PROMOTED
 EVAL_ONLY
 LOCAL_ONLY
 DUPLICATE
 DEFERRED_UNVERIFIED
+NOT_WRITTEN_READ_ONLY
 ```
 
-Promotion rules:
+The learning review must capture before/after evidence and owner, extract why the fix worked, remove product names and paths, test transfer conditions and counterexamples, check duplicate knowledge, add/update regression eval, run contract checks, and record the write result honestly.
 
-- Extract why the fix worked, not merely which component or code was used.
-- Remove product names, route names, file paths, class names, and exact breakpoints from shared instructions.
-- Preserve the decision factors, conditions, counterexamples, and trade-offs.
-- Check the complete target skill and related skills for duplicate coverage.
-- Patch the smallest correct layer.
-- Add or update a regression eval derived from the real case.
-- Run the relevant evals and contract conformance checks.
-- Commit automatically only when repository access and approval policy permit it.
-- Store the concrete case provenance outside the reusable `SKILL.md` body.
+Do not promote an unverified idea, product-specific layout, unknown workaround, or specialist rule into the workflow by convenience.
 
-Examples:
+## Iteration safety
+
+```yaml
+loop:
+  iteration: 1
+  max_iterations: 5
+  active_design_defects: []
+  active_scope_contamination: []
+  target_gates: []
+  preserved_gates: []
+  local_patches: []
+  learning_candidates: []
+  learning_verdicts: []
+  facade_verdict_history: []
+  scope_status_history: []
+```
+
+Scope sanitation before facade review does not consume a design iteration unless it changes the redesigned artifact.
+
+After two failed patches in the same region:
 
 ```text
-Local fact:
-Creative Gallery used a shortcut rail on a narrow viewport.
-
-Reusable reason:
-When a small, high-value discovery set must remain visible but does not fit,
-preserve discoverability through reachable overflow or component substitution;
-do not hide primary choices solely to avoid layout work.
+1. Re-read the complete affected artifact and dependencies.
+2. Reconfirm governing reviewer or causal owner.
+3. Mark preserved and locked regions and paths.
+4. Create a rewrite, split, or alternative-pattern plan.
+5. Rewrite only when justified and approved.
+6. Run full affected verification and scope diff.
 ```
 
-The local fact belongs in the product design lock or regression case. The reusable reason may belong in `adaptive-component-design` when it is new and passes transfer checks.
-
-## Step E — Re-run from promoted knowledge
-
-When a shared skill, reference, workflow, or contract was promoted:
-
-1. Reload the updated source.
-2. Re-run `skill-eval` for the new regression case.
-3. Re-run related evals affected by the boundary.
-4. Re-check the original product surface where feasible.
-5. Record the promotion commit and verification result.
-
-A skill patch without a passing regression eval is incomplete.
-
----
-
-## Autonomous correction loop
-
-```text
-LOOP STATE:
-  iteration:          1
-  max:                5
-  active_layer:       [strategy | UI | UX | voice | interaction | delight | verification]
-  local_patches:      []
-  learning_candidates:[]
-  promotions:         []
-  score_history:      []
-
-LOOP BODY:
-  1. Produce or patch the current candidate.
-  2. Verify and review with evidence.
-  3. If gates fail and iterations remain:
-       classify defect
-       apply smallest candidate fix
-       iteration++
-       return to verification.
-  4. If a fix passes:
-       run skill-evolution automatically
-       promote, eval-only, or record no-promotion verdict.
-  5. Exit when delivery gates pass or max iterations is reached.
-```
+Never apply a blind third micro-patch to the same region.
 
 ## Exit report
 
-```text
-CORRECTION AND LEARNING REPORT
-────────────────────────────────────
-Iterations: <N>
-Score progression: <list>
-Local implementation patches: <list>
-Learning candidates reviewed: <count>
-Promoted skill/reference/workflow/contract changes: <list or none>
-Eval-only additions: <list or none>
-Local-only lessons: <list or none>
-Duplicate/deferred candidates: <list or none>
-Promotion commits: <sha list or not written>
-Residual gaps: <list or none>
-Final status: PASS | MAX_REACHED_WITH_GAPS
+```yaml
+correction_report:
+  iterations: <N>
+  final_scope_status: <PASS | BLOCKED | NOT_APPLICABLE>
+  final_facade_verdict: <verdict>
+  scope_contamination_resolved: []
+  scope_contamination_remaining: []
+  target_gate_progression: []
+  preserved_gate_regressions: []
+  local_implementation_patches: []
+  product_lock_decisions: []
+  specialist_handoffs: []
+  learning_verdicts: []
+  promotion_commits: []
+  residual_findings: []
+  evidence_gaps: []
+  final_status: <ACCEPTED | SCOPE_BLOCKED | MAX_ITERATIONS_REACHED | LIMITED | ROUTED_ELSEWHERE>
 ```
 
-## Hard failures
-
-The phase fails when:
-
-- a shared skill is patched from an unverified idea;
-- product-specific implementation history is copied into reusable instructions;
-- an existing rule is duplicated instead of tested;
-- a promoted patch has no regression eval;
-- the agent claims a repository update without a write result or commit;
-- delivery occurs without running learning review for verified fixes.
+The phase is incomplete when a verified reusable fix occurred but no learning-review verdict was recorded.

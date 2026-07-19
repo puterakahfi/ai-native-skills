@@ -1,0 +1,336 @@
+registry:
+  id: design-review-gates
+  version: 1.1.0
+  design_review_skill_version: 3.3.0
+  canonical_source: skills/design-review/references/gate-registry.yaml
+  migration_map: skills/design-review/references/gate-migrations.yaml
+  allowed_statuses: [active, deprecated, reserved]
+  allowed_design_domains:
+    - universal
+    - digital-interface
+    - visual-communication
+    - presentation
+    - brand-identity
+
+applicability_groups:
+  all-built-in: [web-marketing, web-application, mobile-application, desktop-application, static-marketing, presentation]
+  interactive: [web-marketing, web-application, mobile-application, desktop-application]
+  interactive-when-theme-exists: [web-marketing, web-application, mobile-application, desktop-application]
+  interactive-when-motion-exists: [web-marketing, web-application, mobile-application, desktop-application]
+  static-and-presentation: [static-marketing, presentation]
+  presentation: [presentation]
+  web-marketing: [web-marketing]
+  brand-identity: [brand-identity]
+
+namespaces:
+  G: {purpose: shared-and-cross-surface-design-quality}
+  R: {purpose: universal-review-qualities}
+  C: {purpose: composition}
+  H: {purpose: visual-hierarchy}
+  CP: {purpose: content-and-action-integrity}
+  I: {purpose: interaction-and-adaptive-behavior}
+  T: {purpose: theme-system-behavior}
+  RI: {purpose: runtime-integrity}
+  CRO: {purpose: conversion-and-persuasion}
+  SV: {purpose: static-visual-communication}
+  PR: {purpose: presentation}
+  BI: {purpose: brand-identity-system-quality}
+
+extension_policy:
+  namespace_format: ^[A-Z][A-Z0-9]{0,5}$
+  gate_id_format: ^<namespace>[1-9][0-9]*$
+  collision_policy: reject
+  ownership_policy: one-canonical-owner-per-active-gate
+  definition_policy: full-gate-definitions-stay-in-the-governing-owner-reference
+  external_owner_policy: repo-relative-skill-reference
+
+gate_groups:
+  universal:
+    defaults:
+      owner: universal-gates.md
+      design_domain: universal
+      status: active
+      applicability: all-built-in
+      default_weight: 1
+      hard_gate_policy: false
+    gates:
+      G1: {canonical_name: system-consistency, title: System Consistency}
+      G2: {canonical_name: typographic-scale, title: Typographic Scale}
+      G3: {canonical_name: color-semantics, title: Color Semantics}
+      G4: {canonical_name: figure-ground, title: Figure/Ground}
+      G5: {canonical_name: spatial-rhythm, title: Spatial Rhythm}
+      G7: {canonical_name: layout-logic, title: Layout Logic}
+      G8: {canonical_name: first-impression, title: First Impression}
+      G9: {canonical_name: reading-measure, title: Reading Measure}
+      G10:
+        canonical_name: contrast
+        title: Contrast
+        hard_gate_policy: {when: [accessibility-required, mandatory-information-legibility]}
+      G11: {canonical_name: type-legibility, title: Type Legibility}
+      G12: {canonical_name: cognitive-ease, title: Cognitive Ease}
+      R1: {canonical_name: type-roles, title: Type Roles}
+      R2: {canonical_name: color-control, title: Color Control}
+      R3: {canonical_name: space-system, title: Space System}
+      R5: {canonical_name: voice, title: Voice}
+      R6: {canonical_name: composition-intent, title: Composition Intent}
+      R7: {canonical_name: hierarchy, title: Hierarchy}
+      R8: {canonical_name: restraint, title: Restraint}
+      C1: {canonical_name: focal-point, title: Focal Point}
+      C2: {canonical_name: weight-distribution, title: Weight Distribution}
+      C3: {canonical_name: alignment, title: Alignment}
+      H1: {canonical_name: dominant-supporting, title: Dominant/Supporting}
+      H2: {canonical_name: cross-section-decay, title: Cross-Section Decay}
+      H3: {canonical_name: role-taxonomy, title: Role Taxonomy}
+      CP1: {canonical_name: message-specificity, title: Message Specificity}
+      CP2: {canonical_name: content-proportion, title: Content Proportion}
+      CP3: {canonical_name: no-slop, title: No Slop}
+
+  interactive:
+    defaults:
+      owner: interactive-surface-gates.md
+      design_domain: digital-interface
+      status: active
+      applicability: interactive
+      default_weight: 1
+      hard_gate_policy: false
+    gates:
+      G6: {canonical_name: pattern-fit, title: Pattern Fit}
+      G13: {canonical_name: adaptive-layout, title: Adaptive Layout, default_weight: 2}
+      G14:
+        canonical_name: target-reachability
+        title: Target Reachability
+        default_weight: 2
+        hard_gate_policy: {when: [critical-control-unreachable, required-touch-target-overlap]}
+      G15: {canonical_name: adaptive-type, title: Adaptive Type}
+      G16:
+        canonical_name: semantic-structure
+        title: Semantic Structure
+        default_weight: 2
+        hard_gate_policy: {when: [release-review, accessibility-required]}
+      G17:
+        canonical_name: interactive-accessibility
+        title: Interactive Accessibility
+        default_weight: 2
+        hard_gate_policy: {when: [release-review, task-blocking-accessibility-failure]}
+      I1: {canonical_name: task-continuity, title: Task Continuity, default_weight: 2}
+      I2: {canonical_name: state-coverage, title: State Coverage, default_weight: 2}
+      I3: {canonical_name: feedback, title: Feedback}
+      I4: {canonical_name: overflow-strategy, title: Overflow Strategy, default_weight: 2}
+      I5: {canonical_name: resize-and-orientation, title: Resize and Orientation}
+      I6:
+        canonical_name: input-parity
+        title: Input Parity
+        default_weight: 2
+        hard_gate_policy: {when: [critical-action-has-no-alternative-input]}
+      I7:
+        canonical_name: focus-and-modal-safety
+        title: Focus and Modal Safety
+        default_weight: 2
+        hard_gate_policy: {when: [release-review, modal-or-overlay-applicable]}
+      CP4: {canonical_name: status-and-action-honesty, title: Status and Action Honesty}
+
+  theme:
+    defaults:
+      owner: interactive-surface-gates.md
+      design_domain: digital-interface
+      status: active
+      applicability: interactive-when-theme-exists
+      default_weight: 1
+      hard_gate_policy: false
+    gates:
+      T1: {canonical_name: token-architecture, title: Token Architecture}
+      T2: {canonical_name: toggle-accessibility, title: Toggle Accessibility}
+      T3: {canonical_name: multi-theme-qa, title: Multi-Theme QA}
+      T4: {canonical_name: contrast-and-inversion, title: Contrast and Inversion}
+
+  motion:
+    defaults:
+      owner: interactive-surface-gates.md
+      design_domain: digital-interface
+      status: active
+      applicability: interactive-when-motion-exists
+      default_weight: 1
+      hard_gate_policy: false
+    gates:
+      G18: {canonical_name: motion-purpose, title: Motion Purpose}
+      G19: {canonical_name: timing-and-easing, title: Timing and Easing}
+      G20: {canonical_name: motion-performance, title: Motion Performance}
+      G21:
+        canonical_name: reduced-motion
+        title: Reduced Motion
+        default_weight: 2
+        hard_gate_policy: {when: [release-review, motion-applicable]}
+      G22: {canonical_name: motion-hierarchy, title: Motion Hierarchy}
+
+  runtime:
+    defaults:
+      owner: interactive-surface-gates.md
+      design_domain: digital-interface
+      status: active
+      applicability: interactive
+      default_weight: 2
+      hard_gate_policy: {when: [release-review, rendered-interactive]}
+    gates:
+      RI1: {canonical_name: runtime-integrity, title: Runtime Integrity}
+
+  conversion:
+    defaults:
+      owner: interactive-surface-gates.md
+      design_domain: digital-interface
+      status: active
+      applicability: web-marketing
+      default_weight: 1
+      hard_gate_policy: false
+    gates:
+      CRO1: {canonical_name: attention-flow, title: Attention Flow}
+      CRO2: {canonical_name: trust-integrity, title: Trust Integrity}
+      CRO3: {canonical_name: value-recognition, title: Value Recognition}
+      CRO4: {canonical_name: persuasion-sequence, title: Persuasion Sequence}
+
+  static-visual:
+    defaults:
+      owner: static-visual-gates.md
+      design_domain: visual-communication
+      status: active
+      applicability: static-and-presentation
+      default_weight: 1
+      hard_gate_policy: false
+    gates:
+      SV1: {canonical_name: primary-message, title: Primary Message}
+      SV2: {canonical_name: attention-flow, title: Attention Flow}
+      SV3: {canonical_name: information-priority, title: Information Priority}
+      SV4: {canonical_name: channel-fit, title: Channel Fit}
+      SV5:
+        canonical_name: actual-size-legibility
+        title: Actual-Size Legibility
+        default_weight: 2
+        hard_gate_policy: {when: [mandatory-information, delivery-size]}
+      SV6:
+        canonical_name: text-survival
+        title: Text Survival
+        default_weight: 2
+        hard_gate_policy: {when: [mandatory-information, delivery-size]}
+      SV7: {canonical_name: background-interference, title: Background Interference}
+      SV8:
+        canonical_name: brand-fidelity
+        title: Brand Fidelity
+        default_weight: 2
+        hard_gate_policy: {when: [commercial-or-identity-critical, required-reference-or-fact]}
+      SV9:
+        canonical_name: product-fidelity
+        title: Product Fidelity
+        default_weight: 2
+        hard_gate_policy: {when: [commercial-or-identity-critical, required-reference-or-fact]}
+      SV10:
+        canonical_name: human-fidelity
+        title: Human Fidelity
+        default_weight: 2
+        hard_gate_policy: {when: [commercial-or-identity-critical, required-reference-or-fact]}
+      SV11:
+        canonical_name: content-accuracy
+        title: Content Accuracy
+        default_weight: 2
+        hard_gate_policy: {when: [commercial-or-identity-critical, required-reference-or-fact]}
+      SV12:
+        canonical_name: crop-safety
+        title: Crop Safety
+        default_weight: 2
+        hard_gate_policy: {when: [essential-content, required-crop-or-safe-area]}
+      SV13:
+        canonical_name: safe-areas-and-overlays
+        title: Safe Areas and Overlays
+        default_weight: 2
+        hard_gate_policy: {when: [essential-content, required-crop-or-safe-area]}
+      SV14:
+        canonical_name: bleed-and-trim
+        title: Bleed and Trim
+        default_weight: 2
+        hard_gate_policy: {when: [print-delivery]}
+      SV15: {canonical_name: subject-separation, title: Subject Separation}
+      SV16: {canonical_name: balance-at-final-ratio, title: Balance at Final Ratio}
+      SV17:
+        canonical_name: resolution
+        title: Resolution
+        default_weight: 2
+        hard_gate_policy: {when: [declared-delivery-resolution]}
+      SV18: {canonical_name: edge-and-mask-quality, title: Edge and Mask Quality}
+      SV19: {canonical_name: lighting-and-perspective, title: Lighting and Perspective}
+      SV20: {canonical_name: compression-and-color, title: Compression and Color}
+      SV21: {canonical_name: generative-artifact-control, title: Generative Artifact Control}
+
+  presentation:
+    defaults:
+      owner: static-visual-gates.md
+      design_domain: presentation
+      status: active
+      applicability: presentation
+      default_weight: 1
+      hard_gate_policy: false
+    gates:
+      PR1: {canonical_name: one-dominant-idea, title: One Dominant Idea, default_weight: 2}
+      PR2: {canonical_name: narrative-continuity, title: Narrative Continuity, default_weight: 2}
+      PR3: {canonical_name: data-clarity, title: Data Clarity, default_weight: 2}
+      PR4: {canonical_name: deck-consistency, title: Deck Consistency}
+      PR5: {canonical_name: delivery-context, title: Delivery Context}
+
+  brand-identity:
+    defaults:
+      owner: skills/brand-identity-review/references/identity-gates.md
+      design_domain: brand-identity
+      status: active
+      applicability: brand-identity
+      default_weight: 1
+      hard_gate_policy: false
+    gates:
+      BI1: {canonical_name: brand-logic-alignment, title: Brand Logic Alignment, default_weight: 2}
+      BI2: {canonical_name: concept-to-symbol-translation, title: Concept-to-Symbol Translation, default_weight: 2}
+      BI3: {canonical_name: distinctiveness, title: Distinctiveness, default_weight: 2}
+      BI4:
+        canonical_name: name-and-mark-recognition
+        title: Name and Mark Recognition
+        default_weight: 2
+        hard_gate_policy: {when: [required-primary-mark-recognition, required-name-or-initial-reading]}
+      BI5:
+        canonical_name: construction-consistency
+        title: Construction Consistency
+        default_weight: 2
+        hard_gate_policy: {when: [identity-system-release, material-master-variant-drift]}
+      BI6: {canonical_name: optical-balance, title: Optical Balance, default_weight: 2}
+      BI7:
+        canonical_name: small-size-survival
+        title: Small-Size Survival
+        default_weight: 2
+        hard_gate_policy: {when: [declared-minimum-size, constrained-reproduction-context]}
+      BI8:
+        canonical_name: monochrome-and-inverse
+        title: Monochrome and Inverse
+        default_weight: 2
+        hard_gate_policy: {when: [required-one-color-use, required-inverse-or-restricted-production]}
+      BI9:
+        canonical_name: clear-space-and-minimum-size
+        title: Clear Space and Minimum Size
+        default_weight: 2
+        hard_gate_policy: {when: [production-guideline-delivery, required-placement-protection]}
+      BI10:
+        canonical_name: lockup-system
+        title: Lockup System
+        default_weight: 2
+        hard_gate_policy: {when: [multiple-required-placements, required-lockup-unusable]}
+      BI11:
+        canonical_name: variant-consistency
+        title: Variant Consistency
+        default_weight: 2
+        hard_gate_policy: {when: [multi-variant-system, material-identity-drift]}
+      BI12: {canonical_name: typography-integration, title: Typography Integration}
+      BI13: {canonical_name: color-system-robustness, title: Color System Robustness}
+      BI14: {canonical_name: application-fidelity, title: Application Fidelity}
+      BI15:
+        canonical_name: reproduction-readiness
+        title: Reproduction Readiness
+        default_weight: 2
+        hard_gate_policy: {when: [production-handoff, canonical-master-or-format-unavailable]}
+      BI16:
+        canonical_name: similarity-risk-screening
+        title: Similarity Risk Screening
+        default_weight: 2
+        hard_gate_policy: {when: [obvious-close-similarity, material-identity-risk]}

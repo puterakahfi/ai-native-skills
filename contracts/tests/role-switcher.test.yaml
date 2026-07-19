@@ -1,12 +1,13 @@
 skill_test:
   skill: role-switcher
-  version: "1.2.0"
+  version: "1.3.0"
   description: Verify design role composition separates owner, specialists, reviewer facade, and domain reviewer.
 
   cases:
     - id: mobile-tabs-composition
       description: Cross-device component acceptance needs a design owner, adaptive specialist, and facade reviewer.
       trigger: "Tentukan apakah tabs category ini cocok untuk mobile, tablet, dan desktop lalu review implementasinya."
+      design_gate_ids: [I4, G13, G14]
       must_contain:
         - "master-design"
         - "adaptive-component-design"
@@ -19,27 +20,45 @@ skill_test:
         - one_owner
         - specialist_boundary
         - reviewer_facade_present
+        - canonical_gate_identity
 
     - id: logo-review-composition
-      description: Identity-system acceptance requires an identity owner and domain reviewer in addition to the facade.
-      trigger: "Review logo dan identity system ini untuk memastikan siap dipakai sebagai brand utama."
+      description: Identity-system acceptance uses the installed brand identity adapter in addition to the facade.
+      trigger: "Review logo dan identity system ini untuk memastikan siap dipakai sebagai brand utama. brand-identity-review tersedia."
+      design_gate_ids: [BI1, BI2, BI5, BI7, BI11, BI16]
       must_contain:
         - "design-review"
-        - "brand-identity"
-        - "domain reviewer"
-      must_contain_one_of:
-        - "LIMITED"
-        - "brand-identity reviewer"
+        - "brand-identity-review"
+        - "ADAPTER_COVERED"
+        - "BI"
       must_not_contain:
         - "built-in interactive strategy"
         - "master-design is automatically the identity expert"
+        - "LIMITED REVIEW"
       quality_gates_tested:
         - facade_not_domain_expert
         - specialized_domain_reviewer_required
+        - installed_adapter_selected
+        - canonical_gate_identity
+
+    - id: missing-logo-reviewer-falls-back-to-limited
+      description: Identity acceptance remains limited when the required adapter is unavailable.
+      trigger: "Review identity system ini, tetapi brand-identity-review tidak terpasang di runtime."
+      must_contain:
+        - "LIMITED REVIEW"
+        - "brand-identity-review"
+        - "install"
+      must_not_contain:
+        - "built-in interactive"
+        - "ADAPTER_COVERED"
+      quality_gates_tested:
+        - missing_reviewer_limits_verdict
+        - specialized_domain_never_falls_back_to_ui_gates
 
     - id: static-poster-composition
       description: Static marketing review uses the design owner, relevant visual specialists, and built-in static reviewer.
       trigger: "Buat role composition untuk audit poster jualan dengan fokus harga, produk, hierarchy, dan final export."
+      design_gate_ids: [SV5, SV9, SV11, SV17, RI1]
       must_contain:
         - "master-design"
         - "design-review"
@@ -51,3 +70,4 @@ skill_test:
       quality_gates_tested:
         - static_domain_composition
         - interactive_reviewer_not_selected
+        - canonical_gate_identity
