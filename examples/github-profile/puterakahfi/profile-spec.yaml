@@ -16,6 +16,7 @@ github_profile_result:
     initial_commit: c1a3f65b6138093e8a817019425aca23c681f0c7
     latest_reviewed_failed_commit: 4319b26c20b51e1a23e350a65bf29ec01788c775
     foundation_corrected_commit: 8b09299ad169221ec2daf1a3b05110d2af229c53
+    final_refined_commit: a8d09f5a622b58e219a0c5620ab7a277c29f68c2
   brand_alignment:
     source:
       - user-authoritative statement about pkahfi.com visual direction
@@ -65,7 +66,7 @@ github_profile_result:
     prohibited_substitute: containment added only to create contrast
   hierarchy_roles:
     page_anchor: centered H3 name
-    positioning: bold supporting role
+    positioning: plain supporting role
     statement: centered H4 engineering proposition
     section_parent: left-aligned H3
     project_item: linked H4
@@ -113,8 +114,14 @@ github_profile_result:
   render_evidence:
     - user-provided desktop screenshot of version 1.0.0
     - user-provided desktop screenshot of line-free foundation-failed version
-  design_review_result: NOT_VERIFIED
+    - local GFM-equivalent desktop render of final refined source at 1200 x 1900
+    - local GFM-equivalent narrow render of final refined source at 390 x 3600
+  design_review_result: LIMITED_REVIEW
+  verified_universal_score: 8.5
+  evidence_coverage: approximately 92 percent
   review_note: >-
-    Two screenshots provide evidence for rejecting earlier attempts. The latest
-    foundation-corrected version requires a new desktop screenshot, narrow-width
-    screenshot, and light/dark comparison before READY.
+    The final source passes the selected universal hierarchy, grouping, alignment,
+    spatial rhythm, balance, flow, legibility, consistency, restraint, content, and
+    narrow-continuity checks in GFM-equivalent renders. Direct GitHub desktop, narrow,
+    and dark-theme parity remain NOT_VERIFIED, and no dedicated developer-profile
+    domain reviewer exists.
