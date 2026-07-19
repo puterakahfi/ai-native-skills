@@ -1,129 +1,223 @@
 ---
 name: visual-hierarchy
-description: 'Visual hierarchy system — dominant/supporting/accent triad, inter-section weight decay, heading competition prevention.
-
-  '
+description: Relational visual hierarchy for page, section, group, item, metadata, action, and state roles. Uses scale, contrast, measure, placement, spacing, containment, repetition, imagery, and motion together; numeric ratios are diagnostics rather than universal laws. Does not redefine canonical design-review gate IDs.
+license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
+  ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.tags: '[''design'', ''hierarchy'', ''typography'', ''weight'', ''contrast'']'
+  ai-native-skills.related_skills: '["master-design","design-foundation","design-visual","composition","design-typography","readability","design-review"]'
 ---
 
 # Visual Hierarchy
 
-## When to Load
+Hierarchy communicates importance, relationship, sequence, and action through the complete system—not only font size.
 
-Load when:
-- Multiple sections each have a large heading (competition risk)
-- H1 and H2 feel similar in weight
-- Page feels "noisy" or lacks clear reading priority
-- User eye doesn't know where to go next after hero
+## Hard rules
 
----
-
-## The Triad: Dominant / Supporting / Accent
-
-Every page has exactly one dominant element. One. Not one per section — one per page.
-
-```
-Dominant (1×):   H1 hero name — largest, highest contrast, most weight
-Supporting (N×): Section headings (H2) — clearly subordinate to dominant
-Accent (N×):     Labels, tags, meta — decorative, never competes
-
-Scale law: Supporting must be ≤ 60% of dominant size
-           Accent must be ≤ 40% of dominant size
-
-Example:
-  Dominant H1:  56px (3.5rem)
-  Supporting H2: 32px (2rem)   → 32/56 = 57% ✅
-  Accent label: 11px (0.69rem) → 11/56 = 20% ✅
-
-VIOLATION: H2 "One codebase. Five products." at 64px with H1 at 56px
-  → H2 > H1 → hierarchy inverted → FAIL
+```text
+1. Map semantic and task roles before styling them.
+2. Hierarchy is relational across page, section, group, item, metadata, action, and state.
+3. The number of hierarchy levels follows content and task complexity.
+4. A page may have one principal anchor, several task anchors, or state-dependent dominance.
+5. Numeric size ratios and contrast deltas are diagnostics, not universal pass rules.
+6. Use multiple cues when one cue is ambiguous.
+7. Section headings need not always decay monotonically; narrative and task context decide.
+8. Large type is not automatically dominant when placement, contrast, imagery, or motion says otherwise.
+9. Actual content, responsive contexts, and states must be verified.
+10. Canonical H1–H3 identity and verdicts remain owned by design-review.
 ```
 
----
+## Role map
 
-## Inter-Section Weight Decay
-
-As user scrolls down, section headings must progressively carry less weight than the hero.
-
-```
-Section 1 (Hero):    H1 — maximum weight — page anchor
-Section 2 (Work):    H2 — ≤ 60% of H1 weight — clearly subordinate
-Section 3 (About):   H2 — same or less than section 2 — no escalation
-Section 4 (Contact): H2 — minimal — directional, not declarative
-
-Weight = f(size, contrast, spacing above)
-  More space above = more weight (isolation effect)
-  Less space above = less weight (context absorbed by prior section)
-
-VIOLATION: About H2 "One codebase. Five products." = large, bold, lots of space above
-  → reads as second hero → user confused about page structure
-FIX: reduce size OR reduce isolation spacing OR make it a supporting statement, not a heading
+```yaml
+hierarchy_role_map:
+  page_anchor: []
+  task_or_state_anchors: []
+  section_roles: []
+  group_parents: []
+  sibling_items: []
+  metadata: []
+  primary_actions: []
+  secondary_actions: []
+  status_and_feedback: []
+  decorative_or_atmospheric_elements: []
 ```
 
----
+Common semantic roles:
 
-## Heading Role Taxonomy
+```text
+ANCHOR
+  Establishes page, task, message, or state identity.
 
-Before writing any heading, declare its role:
+SECTION
+  Introduces a content or task region.
 
-```
-Role: ANCHOR      → H1 only. Full weight. Establishes identity.
-Role: SECTION     → H2. Navigational. "What this section is about."
-                     Should be short (≤ 4 words) and directional.
-Role: STATEMENT   → H2 styled differently. Bold claim. Used in About/manifesto.
-                     DANGER: competes with H1 if same size. Must be smaller.
-Role: LABEL       → Not a heading. Use <div class="section-label">. Decorative.
-```
-pkahfi.com heading map:
-  Hero:     "Putera Kahfi."        → ANCHOR    (H1, clamp max 3.5rem)
-  Work:     "Selected work"        → LABEL     (sr-only H2, visible div)
-  About:    "One codebase..."      → STATEMENT (H2, clamp max 2rem — MUST be < H1 max)
-  Contact:  "Let's talk."          → SECTION   (H2, clamp max 2.5rem, directional)
+STATEMENT
+  Delivers an authored claim or narrative beat.
 
-VIOLATION: About H2 clamp(2.5rem,...,4rem) > H1 clamp max → hierarchy inverted → FAIL
-FIX: About STATEMENT H2 max = 60% of H1 max. If H1 max = 3.5rem → About H2 max = 2.1rem
-```
+GROUP_PARENT
+  Explains or labels a related item set.
 
----
+ITEM
+  A repeated comparable unit.
 
-## Contrast as Hierarchy Signal
+METADATA
+  Supporting detail, status, source, time, category, or qualifier.
 
-Size alone is not enough — contrast differentiates hierarchy levels.
+ACTION
+  Enables task progression or conversion.
 
-```
-Level 1 (Dominant):   color: var(--bright)   — #f2f2ea — near white
-Level 2 (Supporting): color: var(--text)     — #d0d0c5 — off-white
-Level 3 (Body):       color: var(--subtle)   — #78786f — warm gray
-Level 4 (Accent):     color: var(--muted)    — #565652 — dark gray
+FEEDBACK
+  Communicates loading, success, error, warning, or system state.
 
-Rule: each level must have visually distinct contrast from adjacent levels.
-      ΔL* (CIELAB lightness delta) ≥ 15 between adjacent levels.
-
-VIOLATION: heading and body text same color → hierarchy collapse → FAIL
+ATMOSPHERE
+  Supports tone or composition but must not outrank meaningful content.
 ```
 
----
+## Hierarchy cues
 
-## Gate: Visual Hierarchy (for redesign-workflow integration)
+Evaluate together:
 
+```text
+scale
+weight
+typeface or style
+contrast
+measure and line breaks
+position
+spacing and isolation
+containment
+repetition
+imagery mass
+motion or state change
+interaction affordance
 ```
-Gate H1: Dominant/Supporting Ratio
-  □ Supporting H2 ≤ 60% of H1 size
-  □ No H2 larger than H1 — ever
-  □ Accent elements ≤ 40% of H1 size
-  Score: __ / 10
 
-Gate H2: Inter-Section Weight Decay
-  □ No section heading carries more visual weight than hero H1
-  □ About/manifesto headings are sized as STATEMENT (< H1), not ANCHOR
-  □ Contact heading is directional and minimal
-  Score: __ / 10
+A hierarchy role should normally use at least two cues when importance could otherwise be ambiguous.
 
-Gate H3: Contrast Levels
-  □ At least 3 distinct contrast levels visible on page
-  □ Adjacent hierarchy levels have ΔL* ≥ 15
-  Score: __ / 10
+## Dominance
+
+Dominance is scoped:
+
+```text
+page-level identity or message
+section-level narrative anchor
+task-level current work area
+state-level warning or blocking error
+modal or overlay context
+```
+
+A blocking error may temporarily outrank the page heading. A dense application may have several strong task anchors. A presentation may reset dominance on each slide. Do not force one permanent dominant element across every surface and state.
+
+## Cross-section rhythm
+
+Check whether section weight supports the intended sequence:
+
+```text
+progressive explanation
+  weight may reduce after the main promise
+
+editorial narrative
+  selected later statements may intentionally rise again
+
+application task flow
+  task headings and state changes may dominate locally
+
+comparison or pricing
+  decision-critical regions may increase weight after explanation
+```
+
+Failure occurs when weight changes are accidental, unrelated to content priority, or create competing anchors without a clear reading path.
+
+## Type hierarchy
+
+One or multiple font families may work. Verify roles through:
+
+```text
+character and semantic fit
+size and measure
+weight and style
+contrast
+spacing and placement
+responsive behavior
+actual content length
+legibility
+```
+
+Do not require display and body roles to use different families. Do not accept two families merely because they are different.
+
+## Contrast and emphasis
+
+Contrast may come from lightness, hue, saturation, size, weight, enclosure, motion, or position. Ensure:
+
+```text
+important information is perceivable
+supporting information remains readable
+color is not the only cue for critical state
+accent does not compete with primary action or message
+repeated roles use coherent emphasis
+```
+
+Exact numeric contrast deltas may help diagnose a case but do not replace visual and accessibility verification.
+
+## Responsive and state hierarchy
+
+For each relevant context:
+
+```text
+page/task identity remains clear
+groups remain subordinate to parents
+primary and secondary actions retain priority
+metadata does not become illegible
+stacking does not invert reading order
+long labels and localization do not collapse roles
+loading/error/success states have appropriate temporary emphasis
+```
+
+## Output
+
+```yaml
+visual_hierarchy_contract:
+  role_map:
+  principal_and_local_anchors: []
+  cue_strategy_by_role: []
+  section_weight_sequence: []
+  action_priority: []
+  state_priority: []
+  responsive_role_rules: []
+  ambiguity_risks: []
+  required_rendered_evidence: []
+```
+
+## Review handoff
+
+`design-review` owns canonical hierarchy gate identity and verdict. This skill supplies reasoning and evidence for applicable canonical concerns such as dominant/supporting relationships, cross-section weight, role taxonomy, hierarchy, type roles, and flow.
+
+Do not redefine `H1`, `H2`, `H3`, or other registered IDs here.
+
+## Anti-slop checks
+
+```text
+one giant heading used as the entire hierarchy system
+all section headings use equal scale, spacing, and contrast
+small muted text carries critical content
+all cards have equal weight despite different importance
+accent labels and badges compete with actions
+large type copied from a reference without content fit
+arbitrary heading shrinkage used only to satisfy a ratio
+```
+
+## Final guard
+
+```text
+□ Semantic and task roles were mapped before styling.
+□ Page, local task, and state dominance are explicit.
+□ Hierarchy uses multiple contextual cues.
+□ Section weight follows content and task sequence.
+□ Typography roles work with actual content and viewing context.
+□ Actions, metadata, and feedback have appropriate priority.
+□ Responsive and state changes preserve relationships.
+□ Numeric ratios remained diagnostic rather than universal.
+□ Canonical review gates were not redefined.
 ```
