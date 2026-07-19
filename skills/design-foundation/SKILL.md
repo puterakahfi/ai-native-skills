@@ -1,9 +1,9 @@
 ---
 name: design-foundation
-description: Universal design foundation — the non-negotiable composition contract every design genre, brand, surface, and workflow must satisfy. Covers hierarchy, grouping, alignment, spacing rhythm, balance, flow, legibility, consistency, accessibility, and responsive continuity.
+description: Universal design foundation — the non-negotiable composition contract every design genre, brand, surface, and workflow must satisfy. Covers hierarchy, grouping, figure-ground, semantic layering, alignment, spacing rhythm, balance, flow, legibility, consistency, accessibility, and responsive continuity.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-foundation.contract.yaml
@@ -39,7 +39,7 @@ F1  HIERARCHY
     Importance levels and semantic roles are distinguishable at a glance.
 
 F2  GROUPING
-    Proximity, similarity, enclosure, and sequence communicate what belongs together.
+    Proximity, similarity, common region, figure-ground, containment, and sequence communicate what belongs together.
 
 F3  ALIGNMENT
     Elements share meaningful structural or optical anchors; exceptions are intentional.
@@ -48,7 +48,7 @@ F4  SPACE + RHYTHM
     Spacing expresses relationship, sequence, and emphasis instead of repeating one gap.
 
 F5  BALANCE
-    Visual mass, contrast, density, direction, imagery, and empty space are distributed intentionally.
+    Visual mass, contrast, density, direction, imagery, depth, overlap, and empty space are distributed intentionally.
 
 F6  FLOW
     The eye and the user can follow the intended reading, task, or narrative order.
@@ -63,7 +63,7 @@ F9  ACCESSIBILITY + AFFORDANCE
     Interaction remains perceivable, operable, understandable, and keyboard/touch safe.
 
 F10 RESPONSIVE CONTINUITY
-    Hierarchy, grouping, reading order, and interaction meaning survive format or viewport changes.
+    Hierarchy, grouping, reading order, layer meaning, and interaction meaning survive format or viewport changes.
 ```
 
 ---
@@ -98,9 +98,31 @@ Rules:
 - parent → child-group separation is stronger than child → child separation
 - enclosure is optional; cards and borders are not required for grouping
 - similarity must not erase meaningful differences in status, priority, or role
+- foreground, background, and containment relationships must remain understandable
 ```
 
 A practical starting point is a between-group interval around `1.25×–2×` the within-group interval, then verify visually in context.
+
+### 2b. Figure-ground and semantic layers preserve relationships
+
+```text
+- the intended foreground remains distinguishable from its background
+- surfaces and elevation communicate containment, priority, transience, focus, or state
+- shadows, blur, glass, borders, and gradients do not replace hierarchy or grouping
+- sticky, fixed, floating, or overlapping layers do not hide required content or actions
+- interactive layers preserve object/task context and provide a clear continuation or recovery path
+- layer meaning survives crop, theme, viewport, orientation, localization, and text scaling changes
+```
+
+Use semantic layer roles before arbitrary z-index values:
+
+```text
+canvas → content → containment → floating → modal → system/critical
+```
+
+Not every artifact needs every layer. A flat design can pass; a highly layered design can pass. Review the relationship, not the quantity of depth effects.
+
+Load `references/figure-ground-layering.md` when the artifact includes surfaces, imagery behind text, overlap, sticky/fixed UI, popovers, drawers, dialogs, layered compositions, or depth effects.
 
 ### 3. Alignment uses shared anchors
 
@@ -129,10 +151,10 @@ Box alignment is not always optical alignment. Mixed font sizes, icons, and irre
 Evaluate together:
 
 ```text
-scale + contrast + density + position + direction + color + imagery + empty space
+scale + contrast + density + position + direction + color + imagery + depth + overlap + empty space
 ```
 
-A composition may be symmetrical, asymmetrical, centered, dense, or open. It passes when the weight distribution feels intentional and supports the message or task.
+A composition may be symmetrical, asymmetrical, centered, dense, open, flat, or layered. It passes when the weight distribution feels intentional and supports the message or task.
 
 ### 6. Flow is an ordered experience
 
@@ -140,7 +162,7 @@ A composition may be symmetrical, asymmetrical, centered, dense, or open. It pas
 - the first focal point is clear
 - the next intended region is discoverable
 - reading order and DOM/task order do not conflict
-- transitions between sections or states preserve context
+- transitions between sections, states, or layers preserve context
 - CTAs and actions appear after sufficient meaning, not before it
 - decorative motion must not hijack the intended flow
 ```
@@ -153,6 +175,7 @@ A composition may be symmetrical, asymmetrical, centered, dense, or open. It pas
 - desktop rails collapse into predictable mobile order
 - labels, titles, content, and actions do not zig-zag accidentally
 - touch targets, overflow, localization, and text scaling remain safe
+- floating, sticky, modal, and overlapping relationships remain safe and understandable
 ```
 
 ---
@@ -162,15 +185,15 @@ A composition may be symmetrical, asymmetrical, centered, dense, or open. It pas
 | Gate | Universal question | Failure signal |
 |---|---|---|
 | F1 Hierarchy | Are importance levels and semantic roles unambiguous? | Parent and child compete; headings, labels, and metadata collapse into one level. |
-| F2 Grouping | Do proximity and visual relationships show what belongs together? | Related items feel detached or unrelated items read as one group. |
+| F2 Grouping | Do proximity, common region, figure-ground, and containment show what belongs together? | Related items detach, unrelated items merge, or foreground/background ownership becomes unclear. |
 | F3 Alignment | Do repeated elements use meaningful structural or optical anchors? | Accidental drift, almost-aligned edges, or per-item nudging. |
 | F4 Spatial Rhythm | Does spacing encode grouping, sequence, and emphasis? | One gap everywhere; parent-to-group and sibling gaps feel equal. |
-| F5 Balance | Is visual weight distributed intentionally? | One region feels stranded, overloaded, or accidentally dominant. |
-| F6 Flow | Is the intended reading/task sequence clear? | Competing focal points, unclear next step, broken order. |
-| F7 Legibility | Is content readable in the real context? | Weak contrast, poor measure, tiny metadata, dense or orphaned text. |
+| F5 Balance | Are visual mass, depth, overlap, and empty space distributed intentionally? | One region or layer is stranded, overloaded, obscured, or accidentally dominant. |
+| F6 Flow | Is the intended reading/task sequence clear? | Competing focal points, unclear next step, broken order, or lost context after a layer/state change. |
+| F7 Legibility | Is content readable in the real context? | Weak contrast, poor measure, tiny metadata, dense/orphaned text, or background interference. |
 | F8 Consistency | Are repeated roles governed coherently? | Same role changes treatment without reason; duplicate token vocabularies. |
-| F9 Accessibility | Are interaction and information accessible? | Missing labels, focus, contrast, touch size, reduced motion, or semantic order. |
-| F10 Responsive Continuity | Do relationships and behavior survive viewport/format change? | Grouping breaks, order changes incorrectly, overflow, mobile zig-zag. |
+| F9 Accessibility | Are interaction and information accessible? | Missing labels, focus, contrast, touch size, reduced motion, semantic order, or layer operability. |
+| F10 Responsive Continuity | Do relationships and behavior survive viewport/format change? | Grouping breaks, order changes incorrectly, overflow, mobile zig-zag, or unsafe layer occlusion. |
 
 **A verified foundation failure blocks release approval. A source-only suspicion is `NOT_VERIFIED` until rendered or runtime evidence exists.**
 
@@ -207,6 +230,7 @@ Genre/brand own expression.
 
 FOUNDATION                         GENRE / BRAND
 clear grouping                     cards, borders, whitespace, or color fields
+clear figure-ground                flat, outlined, elevated, glass, textured, cinematic
 stable hierarchy                   exact typeface, weights, and scale magnitude
 intentional alignment              symmetric, asymmetric, centered, editorial grid
 readable contrast                  exact palette and accent behavior
@@ -225,10 +249,14 @@ Genre-specific rules may be stricter, but may not erase foundation requirements.
 |---|---|---|
 | Principles and composition rationale | `references/principles.md` | Direction, planning, production |
 | Foundation gates and evidence | `references/gates.md` | Review, refinement, release verification |
+| Figure-ground, containment, layering, overlap, and evidence | `references/figure-ground-layering.md` | Surfaces, imagery behind text, sticky/fixed UI, overlays, modal/floating layers, layered static composition |
+| Cross-genre figure-ground regression fixtures | `references/figure-ground-fixtures.md` | Skill evaluation, bias checks, PASS/FAIL discrimination across minimal, dense, expressive, product, static, and presentation surfaces |
 
 ```text
 skill_view(name='design-foundation', file_path='references/principles.md')
 skill_view(name='design-foundation', file_path='references/gates.md')
+skill_view(name='design-foundation', file_path='references/figure-ground-layering.md')
+skill_view(name='design-foundation', file_path='references/figure-ground-fixtures.md')
 ```
 
 ---

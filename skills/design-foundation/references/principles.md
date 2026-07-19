@@ -17,6 +17,10 @@ HIERARCHY
 GROUPING
   What belongs together before labels are read?
 
+FIGURE / GROUND + LAYERS
+  What is canvas, content, containment, floating, modal, or system-level?
+  What may overlap, what may be obscured, and why?
+
 ALIGNMENT
   Which shared structural and optical anchors create order?
 
@@ -24,22 +28,22 @@ SPACE
   Which gaps mean within-group, sibling, parent-group, and section transition?
 
 BALANCE
-  Where is the visual mass and what counterbalances it?
+  Where are visual mass, depth, overlap, and counterweight?
 
 FLOW
   What is seen first, second, and acted on next?
 
 LEGIBILITY
-  Does every role survive actual-size viewing?
+  Does every role survive actual-size viewing and its real background?
 
 CONSISTENCY
-  Which repeated roles and tokens must remain coherent?
+  Which repeated roles, tokens, surfaces, and layer semantics must remain coherent?
 
 ACCESSIBILITY
   Can the information and interaction be perceived and operated safely?
 
 RESPONSIVE CONTINUITY
-  Which relationships must survive stacking, resizing, orientation, and input changes?
+  Which relationships must survive stacking, resizing, orientation, theme, crop, and input changes?
 ```
 
 Unresolved foundation questions block final direction approval.
@@ -75,7 +79,7 @@ Hierarchy cues include:
 
 ```text
 scale, weight, family, width, measure, contrast, placement, spacing,
-repetition, sequence, imagery, and motion priority
+repetition, sequence, imagery, depth, and motion priority
 ```
 
 Use at least two cues when a nested relationship remains ambiguous. Numeric type ratios are useful diagnostics, not universal pass/fail laws.
@@ -106,6 +110,7 @@ alignment       → shared structural relationship
 continuity      → path, sequence, or reading direction
 enclosure       → only when function or comparison needs it
 common region   → background/surface when genuinely meaningful
+figure-ground   → ownership between content and its surrounding field
 ```
 
 Rules:
@@ -116,6 +121,7 @@ Rules:
 □ parent → child-group separation is stronger than child → child separation
 □ enclosure does not replace weak proximity or hierarchy
 □ same-looking items do not hide different maturity, priority, or state
+□ surfaces and background fields clarify ownership instead of fragmenting one task
 ```
 
 Practical starting point:
@@ -125,6 +131,38 @@ between-group interval ≈ 1.25×–2× within-group interval
 ```
 
 This is a diagnostic range, not a universal token mandate. Verify at the actual viewport or output size.
+
+---
+
+## 2b. Figure–Ground and Semantic Layering
+
+```text
+Figure-ground answers what is foreground, what supports it, what contains it,
+what floats above it, and what temporarily blocks it.
+```
+
+Use semantic roles before implementation values:
+
+```text
+canvas → content → containment → floating → modal → system/critical
+```
+
+Minimum requirements:
+
+```text
+□ intended foreground is distinguishable from its background
+□ depth communicates containment, priority, transience, focus, or state
+□ equal semantic roles do not receive arbitrary unequal elevation
+□ overlap has an owner, a reason, a safe region, and a continuity plan
+□ sticky or fixed elements do not cover required content or actions
+□ text-on-image survives the full required area, crop, theme, and viewport set
+□ interactive layers preserve context and provide a clear continuation or recovery path
+□ shadows, blur, glass, gradients, outlines, and borders do not replace grouping or hierarchy
+```
+
+A flat composition can pass. A highly layered composition can pass. Depth quantity is not the quality criterion.
+
+Load `figure-ground-layering.md` for detailed evidence rules, handoff boundaries, and cross-genre fixtures.
 
 ---
 
@@ -174,6 +212,7 @@ Questions for every significant interval:
 - Is it within a group, between siblings, between parent and child group,
   between sections, or before a focal action?
 - Would a different interval clarify the hierarchy?
+- Is the visible interval the intentional result after adjacent wrappers combine?
 ```
 
 Requirements:
@@ -184,6 +223,7 @@ Requirements:
 □ large empty intervals have an anchor and a structural reason
 □ sparse and dense sections are adjusted from evidence, not assumptions
 □ whitespace does not strand content or conceal the next step
+□ each major section boundary has one deliberate spacing owner
 ```
 
 Dead space is not simply “large space.” It is space with no understandable job. Breathing room is space that improves grouping, focus, pacing, or comprehension.
@@ -197,20 +237,21 @@ Balance is not symmetry.
 Evaluate together:
 
 ```text
-scale + contrast + density + position + direction + color + imagery + empty space
+scale + contrast + density + position + direction + color + imagery + depth + overlap + empty space
 ```
 
 Requirements:
 
 ```text
-□ no region dominates accidentally
+□ no region or visual layer dominates accidentally
 □ empty space balances rather than abandons content
 □ asymmetrical layouts have a stable counterweight
 □ focal emphasis supports the message or task
-□ decorative accents do not distort the intended weight distribution
+□ decorative accents and depth effects do not distort the intended weight distribution
+□ overlap does not hide required information, evidence, status, or action
 ```
 
-Valid results may be symmetrical, asymmetrical, centered, dense, open, static, or dynamic.
+Valid results may be symmetrical, asymmetrical, centered, dense, open, flat, layered, static, or dynamic.
 
 ---
 
@@ -227,7 +268,8 @@ Requirements:
 □ the next intended region or action is discoverable
 □ content sequence matches the intended narrative or task
 □ visual order and semantic/DOM order do not conflict
-□ section and state transitions preserve context
+□ section, state, and layer transitions preserve context
+□ an interactive layer communicates what changed and how to continue or recover
 □ motion supports rather than hijacks the sequence
 ```
 
@@ -238,6 +280,7 @@ Common failure patterns:
 - CTA before enough meaning or proof exists
 - desktop visual order that becomes confusing after mobile stacking
 - metadata or decoration interrupting the main reading path
+- a drawer, dialog, popover, or sheet loses the selected object or next valid action
 ```
 
 ---
@@ -253,7 +296,7 @@ Always inspect in the real context:
 
 ```text
 viewport, distance, resolution, theme, orientation, localization,
-text scaling, feed size, slide room size, or printed output
+text scaling, feed size, slide room size, crop, overlay, or printed output
 ```
 
 Requirements:
@@ -263,6 +306,7 @@ Requirements:
 □ line length and paragraph measure suit the medium
 □ secondary content remains readable instead of becoming visual dust
 □ contrast supports essential information
+□ imagery, texture, glow, blur, and gradients do not interfere with required text or symbols
 □ dense information is chunked and scannable
 ```
 
@@ -278,9 +322,11 @@ Consistency is not forced sameness; it is coherent reuse plus justified exceptio
 Requirements:
 
 ```text
-□ repeated colors, spacing roles, type roles, states, and components are coherent
+□ repeated colors, spacing roles, type roles, states, surfaces, and components are coherent
+□ semantic layer/elevation roles are coherent where a system exists
 □ the implementation uses the existing token/system mechanism when available
 □ no duplicate token vocabulary is created without a migration reason
+□ arbitrary z-index escalation does not replace semantic layer ownership
 □ one-off static artifacts remain internally consistent even without software tokens
 □ exceptions are documented and purposeful
 ```
@@ -301,11 +347,12 @@ Always evaluate where applicable:
 □ focus is visible
 □ controls have understandable labels and states
 □ semantic order supports assistive technology
+□ interactive layers expose understandable state, focus/input ownership, dismissal, and recovery
 □ reduced-motion preferences are respected
 □ color is not the only carrier of essential meaning
 ```
 
-Genre and brand do not exempt accessibility.
+Genre and brand do not exempt accessibility. Detailed modal safety and input parity remain owned by interactive surface gates.
 
 ---
 
@@ -324,6 +371,8 @@ Requirements:
 □ labels, titles, content, and actions do not zig-zag accidentally
 □ overflow, long words, localization, and text scaling remain safe
 □ interaction patterns adapt to input and available space
+□ sticky, fixed, floating, modal, and overlapping relationships remain safe and understandable
+□ crop and theme changes preserve figure-ground distinction where applicable
 ```
 
-A responsive layout fails when all elements technically fit but the original hierarchy, grouping, or flow no longer survives.
+A responsive layout fails when all elements technically fit but the original hierarchy, grouping, layer meaning, or flow no longer survives.
