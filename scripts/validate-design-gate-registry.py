@@ -17,7 +17,10 @@ REFERENCES_DIR = REGISTRY_PATH.parent
 
 NAMESPACE_RE = re.compile(r"^[A-Z][A-Z0-9]{0,5}$")
 CANONICAL_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-TABLE_GATE_RE = re.compile(r"^\|\s*([A-Z][A-Z0-9]{0,5}[1-9][0-9]*)\s+([^|]+?)\s*\|", re.MULTILINE)
+TABLE_GATE_RE = re.compile(
+    r"^\|\s*([A-Z][A-Z0-9]{0,5}[1-9][0-9]*)\s+([^|]+?)\s*\|",
+    re.MULTILINE,
+)
 
 
 class RegistryError(ValueError):
@@ -61,14 +64,34 @@ def resolve_namespace(gate_id: str, namespaces: dict[str, Any]) -> str:
         namespace
         for namespace in namespaces
         if gate_id.startswith(namespace)
-        and gate_id[len(namespace):].isdigit()
-        and int(gate_id[len(namespace):]) > 0
+        and gate_id[len(namespace) :].isdigit()
+        and int(gate_id[len(namespace) :]) > 0
     ]
     if len(matches) != 1:
         raise RegistryError(
-            f"gate id '{gate_id}' must resolve to exactly one registered namespace; matches={matches}"
+            f"gate id '{gate_id}' must resolve to exactly one registered namespace; "
+            f"matches={matches}"
         )
     return matches[0]
+
+
+def resolve_owner_path(owner: str) -> Path:
+    """Resolve built-in owner filenames or repo-relative external owner paths."""
+    raw = Path(owner)
+    if raw.is_absolute():
+        raise RegistryError(f"owner path must be repository-relative: {owner}")
+
+    candidate = ROOT / raw if owner.startswith("skills/") else REFERENCES_DIR / raw
+    resolved = candidate.resolve()
+    root = ROOT.resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError as error:
+        raise RegistryError(f"owner path escapes repository root: {owner}") from error
+
+    if not resolved.is_file():
+        raise RegistryError(f"owner reference does not exist: {resolved}")
+    return resolved
 
 
 def validate_hard_gate_policy(value: Any, label: str) -> None:
@@ -80,13 +103,20 @@ def validate_hard_gate_policy(value: Any, label: str) -> None:
         raise RegistryError(f"{label}.when contains duplicates")
 
 
-def flatten_registry(document: dict[str, Any]) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
+def flatten_registry(
+    document: dict[str, Any],
+) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
     metadata = require_mapping(document.get("registry"), f"{REGISTRY_PATH}: registry")
     require_string(metadata.get("id"), f"{REGISTRY_PATH}: registry.id")
-    registry_version = require_string(metadata.get("version"), f"{REGISTRY_PATH}: registry.version")
+    registry_version = require_string(
+        metadata.get("version"), f"{REGISTRY_PATH}: registry.version"
+    )
 
     allowed_statuses = set(
-        require_string_list(metadata.get("allowed_statuses"), f"{REGISTRY_PATH}: registry.allowed_statuses")
+        require_string_list(
+            metadata.get("allowed_statuses"),
+            f"{REGISTRY_PATH}: registry.allowed_statuses",
+        )
     )
     allowed_domains = set(
         require_string_list(
@@ -109,7 +139,9 @@ def flatten_registry(document: dict[str, Any]) -> tuple[dict[str, dict[str, Any]
         if not NAMESPACE_RE.fullmatch(namespace):
             raise RegistryError(f"{REGISTRY_PATH}: invalid namespace '{namespace}'")
         require_string(
-            require_mapping(config, f"{REGISTRY_PATH}: namespaces.{namespace}").get("purpose"),
+            require_mapping(config, f"{REGISTRY_PATH}: namespaces.{namespace}").get(
+                "purpose"
+            ),
             f"{REGISTRY_PATH}: namespaces.{namespace}.purpose",
         )
 
@@ -120,12 +152,10 @@ def flatten_registry(document: dict[str, Any]) -> tuple[dict[str, dict[str, Any]
     for group_name, raw_group in gate_groups.items():
         group = require_mapping(raw_group, f"{REGISTRY_PATH}: gate_groups.{group_name}")
         defaults = require_mapping(
-            group.get("defaults"),
-            f"{REGISTRY_PATH}: gate_groups.{group_name}.defaults",
+            group.get("defaults"), f"{REGISTRY_PATH}: gate_groups.{group_name}.defaults"
         )
         raw_gates = require_mapping(
-            group.get("gates"),
-            f"{REGISTRY_PATH}: gate_groups.{group_name}.gates",
+            group.get("gates"), f"{REGISTRY_PATH}: gate_groups.{group_name}.gates"
         )
         if not raw_gates:
             raise RegistryError(f"{REGISTRY_PATH}: gate group '{group_name}' has no gates")
@@ -133,6 +163,7 @@ def flatten_registry(document: dict[str, Any]) -> tuple[dict[str, dict[str, Any]
         for gate_id, raw_gate in raw_gates.items():
             if gate_id in normalized:
                 raise RegistryError(f"{REGISTRY_PATH}: duplicate gate id '{gate_id}'")
+
             gate = dict(defaults)
             gate.update(require_mapping(raw_gate, f"{REGISTRY_PATH}: gate {gate_id}"))
             namespace = resolve_namespace(gate_id, namespaces)
@@ -140,8 +171,7 @@ def flatten_registry(document: dict[str, Any]) -> tuple[dict[str, dict[str, Any]
             gate["namespace"] = namespace
 
             canonical_name = require_string(
-                gate.get("canonical_name"),
-                f"{REGISTRY_PATH}: {gate_id}.canonical_name",
+                gate.get("canonical_name"), f"{REGISTRY_PATH}: {gate_id}.canonical_name"
             )
             if not CANONICAL_NAME_RE.fullmatch(canonical_name):
                 raise RegistryError(
@@ -150,23 +180,22 @@ def flatten_registry(document: dict[str, Any]) -> tuple[dict[str, dict[str, Any]
             name_key = (namespace, canonical_name)
             if name_key in names_by_namespace:
                 raise RegistryError(
-                    f"{REGISTRY_PATH}: duplicate canonical name '{canonical_name}' in namespace '{namespace}'"
+                    f"{REGISTRY_PATH}: duplicate canonical name '{canonical_name}' "
+                    f"in namespace '{namespace}'"
                 )
             names_by_namespace.add(name_key)
 
             require_string(gate.get("title"), f"{REGISTRY_PATH}: {gate_id}.title")
             owner = require_string(gate.get("owner"), f"{REGISTRY_PATH}: {gate_id}.owner")
-            owner_path = REFERENCES_DIR / owner
-            if not owner_path.is_file():
-                raise RegistryError(f"{REGISTRY_PATH}: {gate_id} owner does not exist: {owner_path}")
+            resolve_owner_path(owner)
 
             design_domain = require_string(
-                gate.get("design_domain"),
-                f"{REGISTRY_PATH}: {gate_id}.design_domain",
+                gate.get("design_domain"), f"{REGISTRY_PATH}: {gate_id}.design_domain"
             )
             if design_domain not in allowed_domains:
                 raise RegistryError(
-                    f"{REGISTRY_PATH}: {gate_id} has unsupported design_domain '{design_domain}'"
+                    f"{REGISTRY_PATH}: {gate_id} has unsupported design_domain "
+                    f"'{design_domain}'"
                 )
 
             status = require_string(gate.get("status"), f"{REGISTRY_PATH}: {gate_id}.status")
@@ -181,7 +210,8 @@ def flatten_registry(document: dict[str, Any]) -> tuple[dict[str, dict[str, Any]
             )
             if applicability not in applicability_groups:
                 raise RegistryError(
-                    f"{REGISTRY_PATH}: {gate_id} references unknown applicability group '{applicability}'"
+                    f"{REGISTRY_PATH}: {gate_id} references unknown applicability group "
+                    f"'{applicability}'"
                 )
 
             weight = gate.get("default_weight")
@@ -208,24 +238,23 @@ def flatten_registry(document: dict[str, Any]) -> tuple[dict[str, dict[str, Any]
 
 def validate_owner_definitions(gates: dict[str, dict[str, Any]]) -> None:
     discovered: dict[str, str] = {}
+    owner_refs = sorted({gate["owner"] for gate in gates.values()})
 
-    owner_paths = sorted({REFERENCES_DIR / gate["owner"] for gate in gates.values()})
-    for owner_path in owner_paths:
+    for owner_ref in owner_refs:
+        owner_path = resolve_owner_path(owner_ref)
         text = owner_path.read_text(encoding="utf-8")
         for gate_id, title in TABLE_GATE_RE.findall(text):
             if gate_id in discovered:
                 raise RegistryError(
                     f"gate '{gate_id}' is defined by multiple owners: "
-                    f"{discovered[gate_id]} and {owner_path.name}"
+                    f"{discovered[gate_id]} and {owner_ref}"
                 )
-            discovered[gate_id] = owner_path.name
+            discovered[gate_id] = owner_ref
 
             if gate_id not in gates:
-                raise RegistryError(
-                    f"{owner_path}: defines unregistered gate '{gate_id}'"
-                )
+                raise RegistryError(f"{owner_path}: defines unregistered gate '{gate_id}'")
             registry_gate = gates[gate_id]
-            if registry_gate["owner"] != owner_path.name:
+            if registry_gate["owner"] != owner_ref:
                 raise RegistryError(
                     f"{owner_path}: gate '{gate_id}' owner mismatch; "
                     f"registry says {registry_gate['owner']}"
@@ -248,7 +277,8 @@ def validate_owner_definitions(gates: dict[str, dict[str, Any]]) -> None:
     )
     if non_active_definitions:
         raise RegistryError(
-            f"non-active gates still defined as active owner-table rows: {non_active_definitions}"
+            f"non-active gates still defined as active owner-table rows: "
+            f"{non_active_definitions}"
         )
 
 
@@ -266,8 +296,7 @@ def validate_migrations(
 ) -> None:
     document = load_yaml(MIGRATIONS_PATH)
     metadata = require_mapping(
-        document.get("migration_map"),
-        f"{MIGRATIONS_PATH}: migration_map",
+        document.get("migration_map"), f"{MIGRATIONS_PATH}: migration_map"
     )
     migration_registry_version = require_string(
         metadata.get("registry_version"),
@@ -281,8 +310,7 @@ def validate_migrations(
 
     aliases = require_mapping(document.get("aliases", {}), f"{MIGRATIONS_PATH}: aliases")
     deprecated = require_mapping(
-        document.get("deprecated", {}),
-        f"{MIGRATIONS_PATH}: deprecated",
+        document.get("deprecated", {}), f"{MIGRATIONS_PATH}: deprecated"
     )
     reserved_namespaces = require_mapping(
         document.get("reserved_namespaces", {}),
@@ -303,12 +331,11 @@ def validate_migrations(
     for deprecated_id, config_value in deprecated.items():
         if deprecated_id not in gates or gates[deprecated_id]["status"] != "deprecated":
             raise RegistryError(
-                f"{MIGRATIONS_PATH}: deprecated id '{deprecated_id}' "
-                f"must exist in the registry with status deprecated"
+                f"{MIGRATIONS_PATH}: deprecated id '{deprecated_id}' must exist "
+                f"in the registry with status deprecated"
             )
         config = require_mapping(
-            config_value,
-            f"{MIGRATIONS_PATH}: deprecated.{deprecated_id}",
+            config_value, f"{MIGRATIONS_PATH}: deprecated.{deprecated_id}"
         )
         replacements = require_string_list(
             config.get("replaced_by"),
@@ -317,15 +344,15 @@ def validate_migrations(
         for replacement in replacements:
             if replacement not in gates or gates[replacement]["status"] != "active":
                 raise RegistryError(
-                    f"{MIGRATIONS_PATH}: deprecated id '{deprecated_id}' "
-                    f"targets non-active replacement '{replacement}'"
+                    f"{MIGRATIONS_PATH}: deprecated id '{deprecated_id}' targets "
+                    f"non-active replacement '{replacement}'"
                 )
 
     for namespace in reserved_namespaces:
         if namespace in namespaces:
             raise RegistryError(
-                f"{MIGRATIONS_PATH}: reserved namespace '{namespace}' "
-                f"already exists in the registry"
+                f"{MIGRATIONS_PATH}: reserved namespace '{namespace}' already exists "
+                f"in the registry"
             )
         if not NAMESPACE_RE.fullmatch(namespace):
             raise RegistryError(
@@ -340,8 +367,7 @@ def validate_migrations(
         )
     for gate_id in verified_legacy_ids:
         gate_id = require_string(
-            gate_id,
-            f"{MIGRATIONS_PATH}: retained.verified_legacy_ids",
+            gate_id, f"{MIGRATIONS_PATH}: retained.verified_legacy_ids"
         )
         if gate_id not in gates or gates[gate_id]["status"] != "active":
             raise RegistryError(
