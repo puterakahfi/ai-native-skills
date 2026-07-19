@@ -100,13 +100,17 @@ CHECK:
 □ large empty intervals have an anchor and purpose
 □ dense and sparse regions are proportioned intentionally
 □ transitions between regions feel neither collapsed nor abandoned
+□ each major section boundary has one declared spacing owner
 
 FAIL examples:
 - parent-to-children gap equals sibling-to-sibling gap
 - every section uses the same top/bottom padding regardless of content
+- adjacent sections each add a full boundary interval and create accidental double spacing
 - content appears stranded inside a large void
 - spacing is compensated with borders instead of corrected relationally
 ```
+
+A section transition may be owned by the previous section, the following section, or a shared layout primitive. The failure is not the implementation method; it is an unintended sum of independent intervals with no clear structural job.
 
 ---
 
@@ -238,54 +242,4 @@ For a focused visual iteration, inspect in this order:
 3. F3 Alignment  — what shared anchors create hidden order?
 4. F4 Rhythm     — do gaps encode those relationships?
 5. F5 Balance    — where is visual mass and counterweight?
-6. F6 Flow       — what does the eye/user do next?
-7. F7 Legibility — does it survive actual-size viewing?
-8. F10 Responsive continuity when multiple formats/viewports apply
 ```
-
-F8 and F9 remain mandatory when their evidence and medium are applicable.
-
----
-
-## Foundation Scorecard Template
-
-```text
-FOUNDATION GATES
-────────────────────────────────────────────────────
-F1  Hierarchy             PASS | FAIL | NOT_VERIFIED
-F2  Grouping              PASS | FAIL | NOT_VERIFIED
-F3  Alignment             PASS | FAIL | NOT_VERIFIED
-F4  Spatial rhythm        PASS | FAIL | NOT_VERIFIED
-F5  Balance               PASS | FAIL | NOT_VERIFIED
-F6  Flow                  PASS | FAIL | NOT_VERIFIED
-F7  Legibility            PASS | FAIL | NOT_VERIFIED
-F8  System consistency    PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
-F9  Accessibility         PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
-F10 Responsive continuity PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
-────────────────────────────────────────────────────
-Evidence gaps: [...] 
-Blocking failures: [...] 
-RESULT: all applicable verified gates pass → continue to genre/domain gates
-        any verified fail → classify and correct before release approval
-```
-
-## Defect Classification Hints
-
-```text
-hierarchy/grouping/spacing failure across multiple regions
-  → foundation or structure defect
-
-one repeated pattern fails everywhere
-  → component-system defect
-
-rule exists but implementation ignores it
-  → local implementation defect
-
-foundation rule absent or misleading
-  → design-foundation knowledge defect
-
-workflow never loaded foundation before production
-  → workflow orchestration defect
-```
-
-Do not fix a foundation failure by adding decoration. Correct the relationship first.
