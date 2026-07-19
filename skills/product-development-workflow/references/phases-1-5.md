@@ -2,9 +2,9 @@
 
 ## Phase 1 — Discovery
 
-**Goal:** Understand the product opportunity before defining a solution.
+**Goal:** Understand the opportunity, evidence quality, and likely decision owners before defining a solution.
 
-Load on entry:
+Load:
 
 ```text
 model-selection
@@ -18,31 +18,32 @@ decision-making
 Produce:
 
 ```text
-target user segments
-jobs-to-be-done and pains
-existing alternatives and workarounds
+target users and jobs-to-be-done
+pains, alternatives, and workarounds
 opportunity and business-value brief
 success signals and open assumptions
 experiment recommendation when evidence is weak
 ranked product direction
+decision domains and likely responsible owners
 ```
 
-**Gate:** opportunity and business value are explicit before PRD. An `EXPERIMENT_FIRST` verdict must produce an experiment design before PRD/build.
+**Gate:** opportunity, value, evidence gaps, and decision owners are explicit before PRD.
 
-**Done when:** one direction is recommended with user value, business value, metrics, assumptions, and experiment plan when needed.
+An `EXPERIMENT_FIRST` verdict produces an experiment design before PRD/build.
 
 ---
 
 ## Phase 2 — Requirements / PRD
 
-**Goal:** Convert the approved opportunity into a testable product contract.
+**Goal:** Convert the recommended opportunity into a testable product contract with verified scope authority.
 
-Load on entry:
+Load:
 
 ```text
 product-requirements
 business-value-alignment
 product-manager
+decision-provenance
 ```
 
 Produce:
@@ -57,9 +58,10 @@ functional and non-functional requirements
 observable acceptance criteria
 constraints, dependencies, risks, and open questions
 launch criteria
+decision sources and required authorities
 ```
 
-Every acceptance criterion needs a stable ID because implementation and Phase 6 evidence must trace back to it.
+Every acceptance criterion needs a stable ID:
 
 ```yaml
 acceptance_criterion:
@@ -68,25 +70,39 @@ acceptance_criterion:
   context: <user, state, device, data, or system condition>
   evidence_plan: []
   affected_domains: []
+  scope_decision_record_ids: []
 ```
 
-**Gate:** PRD readiness passes before MVP planning or technical specification.
+Run `decision-provenance` before calling a PRD approved or ready for downstream execution.
 
-**Done when:** `PRD READINESS` is `READY`, or explicit blockers prevent progress.
+```text
+agent-generated PRD draft
+  → useful artifact
+  → not owner approval by itself
+
+verified authority covers the exact PRD version and scope
+  → PRD may be treated as effective
+
+conflict or missing authority
+  → PROVENANCE_BLOCKED or ROUTE_FOR_APPROVAL
+```
+
+**Gate:** PRD readiness and scope provenance pass before MVP planning or technical specification.
 
 ---
 
 ## Phase 3 — MVP Slice
 
-**Goal:** Select the smallest valuable release slice or experiment.
+**Goal:** Select the smallest valuable release slice or experiment and verify who approved it.
 
-Load on entry:
+Load:
 
 ```text
 business-value-alignment
 experiment-design
 product-manager
 decision-making
+decision-provenance
 spike when a reversible uncertainty needs proof
 ```
 
@@ -99,21 +115,32 @@ deferred criteria and scope
 success metric mapping
 experiment or validation plan
 risks and assumptions
+MVP decision record IDs
 ```
 
-Removing a criterion from the MVP requires an explicit scope decision; it cannot simply disappear from the later acceptance matrix.
+Removing or deferring a criterion requires an explicit bounded scope decision; it cannot silently disappear from the later acceptance matrix.
 
-**Gate:** the slice is smaller than the full product and maps to value and success metrics.
+```text
+verified MVP decision
+  → record effective scope and deferred criteria
 
-**Done when:** one MVP slice is approved.
+agent summary or newest document only
+  → NON_AUTHORITATIVE
+  → keep previous verified scope
+
+additional authority required
+  → ROUTE_FOR_APPROVAL
+```
+
+**Gate:** the slice is smaller than the full product, value-aligned, and approved by the required authority.
 
 ---
 
 ## Phase 4 — Technical Spec
 
-**Goal:** Translate the approved PRD/MVP into agent-executable work and evidence plans.
+**Goal:** Translate the verified PRD/MVP into agent-executable work and evidence plans.
 
-Load on entry:
+Load:
 
 ```text
 spec-workflow
@@ -121,7 +148,8 @@ native-ai-engineer
 master-engineer
 api-contract
 data-modeling
-diagram-architect when decision-bearing diagrams help
+diagram-architect when useful
+decision-provenance when a new dependency or boundary is introduced
 ```
 
 Produce:
@@ -134,6 +162,7 @@ criterion-to-task traceability
 affected-domain classification
 verification and preview/runtime plan
 required reviewer plan
+approved dependency and exception records
 ```
 
 Minimum traceability:
@@ -144,19 +173,20 @@ task:
   acceptance_criteria: [AC-01, AC-03]
   affected_domains: [logic, user_facing_design]
   evidence_required: []
+  decision_record_ids: []
 ```
 
-**Gate:** every implementation task traces to one or more in-scope PRD criteria.
+A dependency, route, data boundary, or exception absent from the verified PRD/MVP must be approved or routed before implementation.
 
-**Done when:** the technical plan can produce direct evidence for each criterion.
+**Gate:** every task traces to one or more in-scope criteria and every material expansion has decision provenance.
 
 ---
 
 ## Phase 5 — Implementation
 
-**Goal:** Build and verify the approved MVP feature slices without losing product-level traceability.
+**Goal:** Build and verify approved MVP slices without losing product-level traceability.
 
-Load on entry:
+Load:
 
 ```text
 new-feature-workflow
@@ -165,28 +195,31 @@ master-engineer
 systematic-debugging when failures occur
 ```
 
-Run each implementation slice through `new-feature-workflow`:
+Run each slice through `new-feature-workflow`:
 
 ```text
-plan against existing PRD/spec
-→ pre-implementation design decision when affected
+plan against verified PRD/MVP/spec
+→ verify feature scope and design-decision authority
 → implement with tests
 → technical and rendered/static verification
-→ submit evidence
-→ code-review-workflow verdict
+→ submit decision/evidence handoff
+→ code-review technical verdict + merge authorization
 ```
 
-Produce one package per feature slice:
+Produce one package per slice:
 
 ```yaml
 feature_evidence_package:
   feature: <feature>
   acceptance_criteria: []
+  effective_verified_scope: []
+  decision_provenance_report: <reference>
   changed_files_or_artifacts: []
   technical_evidence: []
   design_route_and_verdict: <value or NOT_APPLICABLE>
-  security_performance_accessibility_evidence: []
+  other_domain_evidence: []
   code_review_verdict: <APPROVED | REQUEST CHANGES | BLOCKED>
+  merge_authorization: <AUTHORIZED | NOT_AUTHORIZED | ROUTE_FOR_APPROVAL>
   known_limitations: []
   accepted_risks: []
 ```
@@ -195,11 +228,12 @@ Rules:
 
 ```text
 REQUEST CHANGES or BLOCKED returns to implementation/verification
+NOT_AUTHORIZED or ROUTE_FOR_APPROVAL blocks merge action
 source-only user-facing changes remain NOT_VERIFIED
-feature-level PASS does not yet prove cross-feature product acceptance
-scope drift requires PRD/MVP/spec update and reapproval
+feature-level PASS does not prove cross-feature product acceptance
+scope drift requires provenance-backed PRD/MVP/spec update
 ```
 
-**Gate:** every completed feature traces to acceptance criteria, contains direct evidence, and receives the required code-review verdict.
+**Gate:** every completed slice traces to criteria, contains direct evidence, preserves verified scope, and has required review/authorization statuses.
 
-**Done when:** all feature slices needed by the MVP have reviewable evidence packages ready for product-level reconciliation in Phase 6.
+**Done when:** all slices needed by the MVP have evidence packages ready for Phase 6 reconciliation.
