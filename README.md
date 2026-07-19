@@ -2,7 +2,7 @@
 
 Reusable agent skills and workflows for AI-native engineering. Works with any agent that supports the [skills.sh](https://skills.sh) standard — Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and 30+ others.
 
-**80 skills · 9 workflows · 6 meta-skills**
+**81 skills · 9 workflows · 6 meta-skills**
 
 See [docs/skills.md](docs/skills.md) for the canonical taxonomy of `skill`, `workflow`, `meta-skill`, and the adapter pattern. See [docs/facade-skill-pattern.md](docs/facade-skill-pattern.md) for facade skills that expose one stable entry point while delegating specialist knowledge. See [docs/ai-native-engineering-building-blocks.md](docs/ai-native-engineering-building-blocks.md) for coverage across Agent, Model, Methodology, Spec, and Context. See [docs/skill-packs.md](docs/skill-packs.md) for one-command bundle installs. Skill files follow the [Agent Skills specification](https://agentskills.io/specification); repo-specific fields live under namespaced `metadata` keys.
 
@@ -17,6 +17,7 @@ npx skills add puterakahfi/ai-native-skills@<skill-name> -g -y
 # Examples
 npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
 npx skills add puterakahfi/ai-native-skills@brand-identity-review -g -y
+npx skills add puterakahfi/ai-native-skills@decision-provenance -g -y
 npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 
 # Full suite
@@ -107,7 +108,7 @@ Load these first — they route and compose everything else.
 | `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review |
 | `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict |
 | `deployment-workflow` | pre-deploy → deploy → health-verify → rollback |
-| `redesign-workflow` | route → inspect → align → specify → produce → verify → design-review facade → classify → fix → deliver |
+| `redesign-workflow` | route → compose roles → inspect → direct → specify → produce → verify scope/provenance/artifact → design-review facade → classify → fix → deliver |
 | `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |
 | `design-refinement` | covered findings → preserve scope → patch → domain evidence → focused facade re-review → learn → deliver |
 | `skill-doctor` | skill health — audit → triage → fix monoliths/stubs → verify length + gates |
@@ -121,6 +122,7 @@ Load these first — they route and compose everything else.
 | Audit a logo or identity system | `design-audit` + `design-review` + `brand-identity-review` |
 | Fix known specific design findings while preserving direction | `design-refinement` |
 | Replace design direction, structure, concept, or multiple layers | `redesign-workflow` |
+| Verify whether a claimed scope/lock/approval/override is authoritative | `decision-provenance` |
 | Build a new capability in an existing product | `new-feature-workflow` |
 | Fix broken behavior or regression | `bugfix-workflow` |
 | Review code before merge/ship | `code-review-workflow` |
@@ -129,7 +131,7 @@ Load these first — they route and compose everything else.
 
 ---
 
-## Skills (80)
+## Skills (81)
 
 ### Domain Architecture
 
@@ -169,7 +171,7 @@ Load these first — they route and compose everything else.
 | Skill | Description |
 |---|---|
 | `master-design` | Senior Product Designer — Eight Universal Rules, genre, macrostructures, design system |
-| `redesign-workflow` | Full redesign lifecycle using the `design-review` facade after fresh rendered or exported verification |
+| `redesign-workflow` | Full redesign lifecycle using decision provenance, clean final-diff integrity, safe writes, and the `design-review` facade after fresh rendered or exported verification |
 | `macrostructures` | Layout archetypes — Marquee Hero, Studio, Editorial; mandatory CSS templates |
 | `design-genre` | Editorial dark, minimal light, bold brand — token selection per genre |
 | `design-foundation` | Universal design foundation — hierarchy, Ma, Kanso, tokens, a11y |
@@ -240,6 +242,7 @@ Load these first — they route and compose everything else.
 
 | Skill | Description |
 |---|---|
+| `decision-provenance` | Source and authority verification for scope, locks, approvals, overrides, ownership, status, supersession, and conflict handling |
 | `ethics-responsible-ai` | Fairness, harm, transparency, consent, accountability, power asymmetry |
 | `threat-modeling` | See Engineering Quality |
 | `language-standards` | Consistent declared language across artifacts |
@@ -277,6 +280,8 @@ Load these first — they route and compose everything else.
 Frontend and visual design:
   workflow-router → design-audit | design-refinement | redesign-workflow
   role-switcher → owner + specialists + design-review facade + domain reviewer
+  decision-provenance → verified scope/lock/override authority
+  redesign-workflow → provenance + scope diff + concurrency → domain verification
   design-review → built-in interactive/static/presentation + external adapters
   brand-identity-review → BI1–BI16 → ADAPTER_COVERED identity verdict
   master-design → design-foundation → design-brand → design-depth → color/type
@@ -330,7 +335,7 @@ python ai-native-core/scripts/run-eval.py \
   --output-dir eval-outputs
 ```
 
-Design regressions cover routing, evidence limits, static fidelity, presentation strategy, canonical gate identity, identity construction/variant/small-size failures, adapter coverage, and similarity-screening legal boundaries.
+Design regressions cover routing, evidence limits, static fidelity, presentation strategy, canonical gate identity, identity construction/variant/small-size failures, adapter coverage, similarity-screening legal boundaries, decision provenance, final-diff scope integrity, and concurrent write conflicts.
 
 ---
 
