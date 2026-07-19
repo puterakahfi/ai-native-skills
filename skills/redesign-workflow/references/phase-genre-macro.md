@@ -1,36 +1,79 @@
-# Phase 0.5 / 0.6 / 0.75 — Genre, Macrostructure, Visual Language, Layered Plan
+# Phase 3–4 — Genre, Macrostructure, Visual Language, and Layered Plan
 
-## Phase 0.5: GENRE + MACROSTRUCTURE PICK
+## Phase 3A: Genre resolution
 
-### Gate A: Genre Detection
+Load `design-genre/SKILL.md` first. Genre selection is incomplete until the selected genre reference is loaded and its constraints are stored in run state.
 
+### Signal routing
+
+```text
+Explicit user genre direction
+  → authoritative unless a locked brand/design system conflicts
+
+ZEN / MINIMALIST
+  zen, stillness, restraint, ma, sparse, wabi-sabi, negative space,
+  quiet senior portfolio, focus on space, few interruptions
+
+EDITORIAL
+  personal portfolio, publication, studio, writing, art direction
+
+MODERN-MINIMAL
+  SaaS, enterprise, developer tool, dashboard, productivity
+
+ATMOSPHERIC
+  generative media, music, video, cinematic, ambient creative tool
+
+PLAYFUL
+  consumer, casual, family, social, friendly, lifestyle
 ```
-Signal → Genre:
-  personal page + no CTA + showcase only     → editorial
-  SaaS product + pricing + CTAs              → modern-minimal
-  creative portfolio + visual work           → atmospheric
-  game / toy / consumer app                  → playful
 
-State:
-  Genre: [name]
-  Signals matched: [list]
+Do not let product-category signals silently override an explicit genre. A personal engineering portfolio can remain zen even when its content includes SaaS, APIs, agents, and developer tools.
+
+### Mandatory genre handoff
+
+```yaml
+genre_contract:
+  genre: <zen-minimalist | editorial | modern-minimal | atmospheric | playful>
+  signals_matched: []
+  explicit_user_direction: <value | none>
+  reference_loaded: <path>
+  composition_rules: []
+  containment_rules: []
+  density_rules: []
+  line_or_surface_budget: []
+  color_rules: []
+  motion_rules: []
+  hard_failures: []
 ```
 
-### Gate B: Macrostructure Pick
+Hard rule:
 
-**Step 1 — Extract brief signals:**
-```
-□ Primary goal:    [convert | showcase | inform | entertain]
-□ Identity weight: [high = person leads | low = work leads]
-□ Content volume:  [N products / N sections]
-□ Audience:        [hiring manager | client | developer | general]
-□ CTA present:     [yes | no]
-□ Visual assets:   [yes | no]
+```text
+selected genre reference
+  > generic redesign production defaults
+  > macrostructure template defaults
+  > component template defaults
 ```
 
-**Step 2 — Signal → Pattern:**
+If a generic rule conflicts with the selected genre reference, follow the genre reference and record the override.
 
-| Goal | Identity | Volume | Audience | Best macrostructure |
+## Phase 3B: Macrostructure pick
+
+### Extract brief signals
+
+```text
+□ Primary goal:    convert | showcase | inform | entertain | brand
+□ Identity weight: high = person leads | low = work leads
+□ Content volume:  N products / N sections
+□ Audience:        hiring manager | client | developer | general
+□ CTA present:     yes | no
+□ Visual assets:   yes | no
+□ Genre contract:  resolved | unresolved
+```
+
+### Signal → pattern
+
+| Goal | Identity | Volume | Audience | Candidate macrostructure |
 |---|---|---|---|---|
 | showcase | high | ≤3 | hiring manager | Marquee Hero or Specimen |
 | showcase | high | ≤3 | creative client | Studio or Atelier |
@@ -39,138 +82,168 @@ State:
 | convert | low | medium | general | Newsprint or Manifesto |
 | brand | high | low | general | Manifesto or Lumen |
 
-**Step 3 — Diversification check (secondary — brief-match WINS if conflict):**
+Candidate does not equal approval. Validate it against the loaded genre reference.
+
+```text
+Example:
+  Bento may fit volume=4+, but must be rejected for zen prose when it would
+  create equal cards, dense containment, or multiple focal objects.
 ```
+
+### Diversification check
+
+```text
 Previous macrostructure: [name | none]
 Candidate: [name]
-Must differ on ≥2 axes IF previous exists.
-Axes: layout-lead / heading / divider / button / image / reveal
+Must differ on at least two axes when variety is needed.
+Axes: layout lead / heading / divider / button / image / reveal
+
+Brief match and genre conformance always outrank forced variety.
 ```
 
-**Step 4 — State pick with justification (mandatory):**
+### State pick with justification
+
+```yaml
+design_direction:
+  genre: <name>
+  genre_reference: <path>
+  macrostructure: <name>
+  visual_language: <short definition>
+  justified_by:
+    - signal: <signal>
+      reason: <reason>
+  rejected_options:
+    - option: <name>
+      reason: <genre or brief conflict>
+  inherited_hard_constraints:
+    - <constraint copied from genre contract>
 ```
-Macrostructure: [name]
-Genre: [name]
 
-Justified by:
-  - [signal] → [why it supports this pick]
+## Phase 3C: Visual language definition
 
-NOT chosen [alt] because:
-  - [reason]
-```
-
-**pkahfi.com reference example:**
-```
-showcase + identity high + ≤2 products + hiring manager → Marquee Hero
-NOT Studio: Studio = 50/50 split; pkahfi.com identity must lead
-```
-
----
-
-## Phase 0.6: VISUAL LANGUAGE DEFINITION
-
-Translate theme word → concrete rules BEFORE touching UI.
-"Minimalist" ≠ color swap. Define values first.
+Translate the genre into concrete rules before touching UI. A theme word or palette swap is insufficient.
 
 ### Zen / Minimalist
 
-**Core values:**
-```
-Ma / emptiness     → negative space IS content, not unused area
-Restraint          → remove elements before styling them
-Stillness          → no hover lift, bounce, glow, decorative urgency
-One focal object   → one strong anchor per viewport
-Low density        → few cards, few badges, few borders
-Muted contrast     → ink/stone/paper/sage; accent is rare
+Load `design-genre/references/zen.md`. Do not summarize away its hard constraints.
+
+```text
+Core:
+  Ma / emptiness   → negative space performs grouping and separation
+  Restraint        → remove before styling
+  Stillness        → no hover lift, glow, or decorative urgency
+  One focal object → one dominant anchor per viewport
+  Low interruption→ few containers, badges, surfaces, and lines
+
+Containment:
+  whitespace > alignment > proximity > text measure > rare surface
+  structural section borders = 0
+  repeated row separators = 0 by default
+  dense-list exception = one leading or trailing hairline, not per row
+  visible structural lines = target 0, maximum 1 per typical viewport
+
+Layout:
+  asymmetrical whitespace, narrow measures, intentional intervals
+  no equal-weight card catalog
+  no card-to-hairline substitution
+
+Typography:
+  fewer sizes, lighter weights, generous leading, one display moment
+
+Motion:
+  stillness; restrained fade only when useful
 ```
 
-**Palette:** paper white, warm ivory, mist gray, charcoal, ink black, stone, sage  
-**NOT:** bright startup blue, neon, gradient mesh, glassmorphism  
+Auto-fail after a zen request:
 
-**Layout:** large asymmetrical whitespace, narrow columns, intentional empty areas  
-**NOT:** equal-weight card catalogs, filling grid space because it exists  
-
-**Typography:** fewer sizes, lighter weights, larger line-height, one display moment per viewport  
-**NOT:** font-black everywhere, H1/H2/H3 all shouting  
-
-**Motion:** fade, slow reveal, opacity, tiny translate for orientation only  
-**NOT:** hover lift on every card, springy/bouncy motion  
-
-**Auto-fail if any after zen request:**
-```
-❌ Palette changed to brown/warm but density stays high
-❌ Many cards + many badges + many tags = catalog, not zen
-❌ Every section has bold headline + bordered card cluster
-❌ Accent on labels, icons, badges, CTA, logo, bullets all at once
-❌ Dark mode = heavy charcoal panel inversion only
-❌ Motion added before silence and spacing are solved
+```text
+❌ palette becomes warm but density remains high
+❌ cards are removed and every row gains border-top/border-bottom
+❌ ordinary sections are divided with border-y
+❌ more than one visible structural line in a typical viewport without domain need
+❌ every section has a headline followed by a ruled list
+❌ metadata becomes repeated badges, tags, or labels
+❌ motion or decoration is used before spacing and silence are solved
 ```
 
-**Zen check before calling pass:**
-```
-1. What did we remove?
-2. Where is the intentional emptiness?
-3. What is the single focal object per viewport?
-4. Which elements became quieter, not just recolored?
-5. With color removed — does composition still feel calm?
+Zen check before production:
+
+```text
+1. What will be removed?
+2. Which relationships are communicated by space alone?
+3. What is the focal object in each viewport?
+4. What is the structural line budget?
+5. Which generic component defaults are explicitly overridden?
 ```
 
----
+### Other genres
 
-## Phase 0.75: LAYERED REDESIGN PLAN
+Load the corresponding `design-genre/references/<genre>.md` and copy its concrete constraints into `genre_contract`. Do not improvise from the genre name alone.
 
-Classify work into layers. Each iteration names ONE primary layer.
+## Phase 4: Layered redesign plan
 
-```
-Layer 0: Strategy   — why the surface exists, what is remembered first
-Layer 1: UI         — visual structure, typography, color, spacing, hierarchy
-Layer 2: UX         — navigation, CTA clarity, hover/focus/tap, a11y behavior
-Layer 3: Voice      — copy specificity, H1 stance, status language, no buzzwords
-Layer 4: Interaction— hover, focus, scroll, theme transition, reduced motion
-Layer 5: Delight    — motion detail, illustration, texture, visual metaphor
-Layer 6: Verification—browser checks, DOM probes, theme QA, git diff
-```
+Classify work into layers. Each iteration names one primary layer.
 
-**Layer dependency — do not skip:**
-```
-Strategy failure   → blocks UI polish
-UI failure         → blocks Delight
-UX failure         → blocks final Verification
-Voice failure      → blocks motion/illustration polish
+```text
+Layer 0: Strategy    — why the surface exists, what is remembered first
+Layer 1: UI          — structure, typography, color, spacing, hierarchy
+Layer 2: UX          — navigation, CTA clarity, states, accessibility
+Layer 3: Voice       — copy specificity, labels, status language
+Layer 4: Interaction — hover, focus, scroll, theme, reduced motion
+Layer 5: Delight     — illustration, texture, visual metaphor
+Layer 6: Verification— browser checks, DOM probes, genre conformance, diff
 ```
 
-**Iteration Declaration (emit at start of each iteration):**
-```
-Iteration N focus:
-  Primary layer: [name]
-  Secondary: [optional]
-  Not touching: [deferred]
-  Success criteria: [specific checks]
+### Dependency rule
+
+```text
+Strategy failure → blocks UI polish
+UI failure       → blocks Delight
+UX failure       → blocks final Verification
+Genre failure    → reopens UI direction; do not treat as local polish
+Voice failure    → blocks motion/illustration polish
 ```
 
-### Layer 5 — Delight asset classification:
-```
-□ code/vector (SVG/CSS/canvas)     → generatable by coding agent
-□ raster AI image (DALL·E/ComfyUI) → requires available generator
-□ user-supplied                     → optimize + integrate
-□ video/ambient motion              → requires video tooling or fallback
+### Iteration declaration
+
+```yaml
+iteration:
+  number: <N>
+  primary_layer: <name>
+  secondary_layer: <name | none>
+  not_touching: []
+  success_criteria: []
+  genre_constraints_under_test: []
 ```
 
-**Do not imply access to raster generators unless runtime exposes the tool.**
+### Delight classification
 
-**Delight gates:**
-```
-□ Enhancement clarifies character, meaning, or memory
-□ Not hiding weak copy or missing content
-□ Has named role: orientation / affordance / emphasis / atmosphere / reward
-□ Removable without breaking comprehension
-□ Lightweight — no a11y or performance cost
+```text
+□ code/vector                     → coding agent may produce
+□ raster AI image                 → requires available image generator
+□ user-supplied                   → optimize and integrate
+□ video/ambient motion            → requires tooling or fallback
 ```
 
-**Common Delight failures:**
+Do not imply access to unavailable generators.
+
+Delight gates:
+
+```text
+□ clarifies character, meaning, memory, or orientation
+□ not hiding weak copy or missing content
+□ has a named role
+□ removable without breaking comprehension
+□ respects the selected genre contract
+□ lightweight and accessible
 ```
-❌ Accessory drift: image present but does not advance the story
-❌ Cardification: generated image boxed like product card
-❌ Figure/ground mismatch: asset creates its own surface
-❌ Generic motif: zen rocks on a software portfolio
+
+Common failures:
+
+```text
+❌ accessory drift
+❌ cardification of an illustration
+❌ figure/ground mismatch
+❌ generic genre motif
+❌ using lines, surfaces, or texture to fill intentional emptiness
 ```
