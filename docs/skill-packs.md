@@ -10,7 +10,7 @@ Install bundles for common use cases. Each pack installs a workflow plus the cap
 
 ## Redesign Pack
 
-Delegated UI/UX and visual redesign loop — route, explicit design/implementation ownership, strategy, visual direction, layout, adaptive components, interaction behavior, design system, domain verification, facade review, correction, and learning.
+Delegated UI/UX and visual redesign loop — route, explicit design/implementation ownership, verified decision provenance, strategy, visual direction, layout, adaptive components, interaction behavior, design system, domain verification, facade review, correction, and learning.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -19,6 +19,7 @@ npx skills add puterakahfi/ai-native-skills \
   --skill master-design \
   --skill master-engineer \
   --skill business-value-alignment \
+  --skill decision-provenance \
   --skill design-foundation \
   --skill design-brand \
   --skill design-visual \
@@ -58,7 +59,7 @@ npx skills add puterakahfi/ai-native-skills \
   -g -y
 ```
 
-The pack includes the current `brand-identity-review` adapter. Other specialist domains still require their own reviewer when complete domain approval is requested.
+The pack includes `decision-provenance` for scope/lock/override authority and the current `brand-identity-review` adapter. Other specialist domains still require their own reviewer when complete domain approval is requested.
 
 ---
 
@@ -168,9 +169,10 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Workflow / Meta-skill | Requires |
 |---|---|
-| `redesign-workflow` | role-switcher; explicit design and implementation owners; strategy/visual/layout/interaction/system ports; audit/review/refinement; value alignment; learning/eval; governing domain reviewer |
+| `redesign-workflow` | role-switcher; explicit design, implementation, and repository write owners; decision-provenance for scope/lock/override authority; strategy/visual/layout/interaction/system ports; audit/review/refinement; value alignment; learning/eval; governing domain reviewer |
 | `design-refinement` | design-audit, design-review, governing domain reviewer, master-design, skill-evolution, skill-eval |
 | `brand-identity-review` | design-review, design-brand, composition, visual-hierarchy, design-typography, design-color |
+| `decision-provenance` | authoritative source references, decision-domain owner/policy, previous decision records when applicable |
 | `skill-evolution` | skill-eval, git-workflow |
 | `role-switcher` | engineering/design/product/research owners, design-review, brand-identity-review, debugging, architecture/security review, plan |
 | `workflow-router` | design audit/refinement/redesign/review, brand-identity-review, feature/bug/review/deploy/product workflows, learning/eval/git, skill-doctor, spec-workflow |
