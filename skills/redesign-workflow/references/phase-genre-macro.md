@@ -1,176 +1,272 @@
-# Phase 0.5 / 0.6 / 0.75 — Genre, Macrostructure, Visual Language, Layered Plan
+# Phase 4–5 — Direction, Macrostructure, and Layered Plan
 
-## Phase 0.5: GENRE + MACROSTRUCTURE PICK
+Use this reference after preflight and role composition. Direction is a product and communication decision, not a one-keyword genre lookup.
 
-### Gate A: Genre Detection
+## Direction inputs
 
-```
-Signal → Genre:
-  personal page + no CTA + showcase only     → editorial
-  SaaS product + pricing + CTAs              → modern-minimal
-  creative portfolio + visual work           → atmospheric
-  game / toy / consumer app                  → playful
+Record the strongest available signals:
 
-State:
-  Genre: [name]
-  Signals matched: [list]
-```
-
-### Gate B: Macrostructure Pick
-
-**Step 1 — Extract brief signals:**
-```
-□ Primary goal:    [convert | showcase | inform | entertain]
-□ Identity weight: [high = person leads | low = work leads]
-□ Content volume:  [N products / N sections]
-□ Audience:        [hiring manager | client | developer | general]
-□ CTA present:     [yes | no]
-□ Visual assets:   [yes | no]
+```yaml
+direction_inputs:
+  product_positioning: <position>
+  primary_goal: <convert | complete-task | discover | compare | learn | showcase | trust | other>
+  audience_expectations: []
+  brand_maturity_and_equity: []
+  content_volume_and_type: []
+  interaction_complexity: <low | medium | high>
+  trust_and_risk_requirement: <low | medium | high>
+  viewing_contexts: []
+  available_assets: []
+  existing_hallmarks_to_preserve: []
+  category_or_competitive_signals: []
+  technical_and_delivery_constraints: []
+  evidence_gaps: []
 ```
 
-**Step 2 — Signal → Pattern:**
+Do not decide direction from a single label such as `SaaS`, `creative`, `premium`, `minimal`, or `zen`.
 
-| Goal | Identity | Volume | Audience | Best macrostructure |
-|---|---|---|---|---|
-| showcase | high | ≤3 | hiring manager | Marquee Hero or Specimen |
-| showcase | high | ≤3 | creative client | Studio or Atelier |
-| showcase | low | 4+ | any | Bento or Workbench |
-| inform | low | high | developer | Long Document or Almanac |
-| convert | low | medium | general | Newsprint or Manifesto |
-| brand | high | low | general | Manifesto or Lumen |
+## Candidate directions
 
-**Step 3 — Diversification check (secondary — brief-match WINS if conflict):**
-```
-Previous macrostructure: [name | none]
-Candidate: [name]
-Must differ on ≥2 axes IF previous exists.
-Axes: layout-lead / heading / divider / button / image / reveal
-```
+Generate a small set of materially different candidates. Each candidate states:
 
-**Step 4 — State pick with justification (mandatory):**
-```
-Macrostructure: [name]
-Genre: [name]
-
-Justified by:
-  - [signal] → [why it supports this pick]
-
-NOT chosen [alt] because:
-  - [reason]
+```yaml
+direction_candidate:
+  name: <descriptive direction>
+  genre_or_influences: []
+  visual_language:
+    hierarchy: <rules>
+    density: <rules>
+    typography: <role and tone>
+    color: <role and restraint>
+    depth: <stance>
+    imagery: <stance>
+    motion: <stance>
+  macrostructure: <candidate structure>
+  supports:
+    - <input signal and reason>
+  risks:
+    - <trade-off>
+  conflicts_with_locks: []
 ```
 
-**pkahfi.com reference example:**
-```
-showcase + identity high + ≤2 products + hiring manager → Marquee Hero
-NOT Studio: Studio = 50/50 split; pkahfi.com identity must lead
-```
+A genre may inform the direction, but it does not replace product reasoning.
 
----
+## Direction decision
 
-## Phase 0.6: VISUAL LANGUAGE DEFINITION
+Select one candidate using:
 
-Translate theme word → concrete rules BEFORE touching UI.
-"Minimalist" ≠ color swap. Define values first.
-
-### Zen / Minimalist
-
-**Core values:**
-```
-Ma / emptiness     → negative space IS content, not unused area
-Restraint          → remove elements before styling them
-Stillness          → no hover lift, bounce, glow, decorative urgency
-One focal object   → one strong anchor per viewport
-Low density        → few cards, few badges, few borders
-Muted contrast     → ink/stone/paper/sage; accent is rare
+```text
+fit with the primary user or viewer task
+fit with product positioning and trust requirement
+fit with brand equity and preservation locks
+fit with content density and information complexity
+fit with available assets and production constraints
+fit with viewing contexts and interaction mode
+differentiation without category confusion
+cost and reversibility of implementation
 ```
 
-**Palette:** paper white, warm ivory, mist gray, charcoal, ink black, stone, sage  
-**NOT:** bright startup blue, neon, gradient mesh, glassmorphism  
+Record rejected options and why they are less fit.
 
-**Layout:** large asymmetrical whitespace, narrow columns, intentional empty areas  
-**NOT:** equal-weight card catalogs, filling grid space because it exists  
-
-**Typography:** fewer sizes, lighter weights, larger line-height, one display moment per viewport  
-**NOT:** font-black everywhere, H1/H2/H3 all shouting  
-
-**Motion:** fade, slow reveal, opacity, tiny translate for orientation only  
-**NOT:** hover lift on every card, springy/bouncy motion  
-
-**Auto-fail if any after zen request:**
-```
-❌ Palette changed to brown/warm but density stays high
-❌ Many cards + many badges + many tags = catalog, not zen
-❌ Every section has bold headline + bordered card cluster
-❌ Accent on labels, icons, badges, CTA, logo, bullets all at once
-❌ Dark mode = heavy charcoal panel inversion only
-❌ Motion added before silence and spacing are solved
+```yaml
+design_direction:
+  selected: <candidate>
+  rationale:
+    product: []
+    audience: []
+    brand: []
+    content: []
+    interaction_and_context: []
+  rejected_options:
+    - option: <name>
+      reason: <specific mismatch or trade-off>
+  assumptions: []
+  evidence_gaps: []
 ```
 
-**Zen check before calling pass:**
-```
-1. What did we remove?
-2. Where is the intentional emptiness?
-3. What is the single focal object per viewport?
-4. Which elements became quieter, not just recolored?
-5. With color removed — does composition still feel calm?
+## Macrostructure selection
+
+Choose page/artifact shape from relationships between content and tasks, not from a fixed industry map.
+
+Evaluate:
+
+```text
+what must be understood or acted on first
+whether identity, work, product, data, or action leads
+number and hierarchy of sections/items
+sequence versus comparison needs
+repeated versus unique content modules
+navigation depth and return paths
+viewport and delivery constraints
+existing information architecture and user familiarity
 ```
 
----
+Examples of valid reasoning:
 
-## Phase 0.75: LAYERED REDESIGN PLAN
+```text
+high-identity portfolio with a small curated body of work
+  → identity-led opening with editorial sequence may fit
 
-Classify work into layers. Each iteration names ONE primary layer.
+high-density operational dashboard
+  → task and status hierarchy may require an application shell,
+    not a marketing macrostructure
 
-```
-Layer 0: Strategy   — why the surface exists, what is remembered first
-Layer 1: UI         — visual structure, typography, color, spacing, hierarchy
-Layer 2: UX         — navigation, CTA clarity, hover/focus/tap, a11y behavior
-Layer 3: Voice      — copy specificity, H1 stance, status language, no buzzwords
-Layer 4: Interaction— hover, focus, scroll, theme transition, reduced motion
-Layer 5: Delight    — motion detail, illustration, texture, visual metaphor
-Layer 6: Verification—browser checks, DOM probes, theme QA, git diff
-```
+pricing comparison with complex constraints
+  → comparison-first structure may fit better than a narrative landing page
 
-**Layer dependency — do not skip:**
-```
-Strategy failure   → blocks UI polish
-UI failure         → blocks Delight
-UX failure         → blocks final Verification
-Voice failure      → blocks motion/illustration polish
+mobile discovery surface with many peer categories
+  → category access pattern must be chosen with adaptive-component-design,
+    not forced into the desktop navigation shape
 ```
 
-**Iteration Declaration (emit at start of each iteration):**
-```
-Iteration N focus:
-  Primary layer: [name]
-  Secondary: [optional]
-  Not touching: [deferred]
-  Success criteria: [specific checks]
+Load `macrostructures` only when a page-level archetype is useful. A custom structure is allowed when no catalog pattern fits, provided the reasoning and acceptance criteria are explicit.
+
+## Visual-language translation
+
+Translate adjectives into observable rules.
+
+Weak:
+
+```text
+premium
+minimal
+zen
+modern
 ```
 
-### Layer 5 — Delight asset classification:
-```
-□ code/vector (SVG/CSS/canvas)     → generatable by coding agent
-□ raster AI image (DALL·E/ComfyUI) → requires available generator
-□ user-supplied                     → optimize + integrate
-□ video/ambient motion              → requires video tooling or fallback
+Usable:
+
+```yaml
+visual_language:
+  focal_policy: one dominant action or idea per viewing context
+  density: low in narrative sections, compact where comparison requires it
+  typography: restrained role count with strong size/weight contrast only at primary hierarchy
+  color: neutral base, one controlled action accent, semantic states remain distinct
+  depth: subtle hierarchy through surface relationships; no decorative glass by default
+  imagery: product evidence and authored assets before generic atmosphere
+  motion: orientation and feedback only; reduced-motion equivalent required
+  whitespace: intentional grouping and pacing, not arbitrary emptiness
 ```
 
-**Do not imply access to raster generators unless runtime exposes the tool.**
+Do not equate minimalism with warm brown, large empty areas, or removal of necessary information. Do not equate premium with gradients, glass, glow, shadows, or motion.
 
-**Delight gates:**
-```
-□ Enhancement clarifies character, meaning, or memory
-□ Not hiding weak copy or missing content
-□ Has named role: orientation / affordance / emphasis / atmosphere / reward
-□ Removable without breaking comprehension
-□ Lightweight — no a11y or performance cost
+## Layered redesign plan
+
+Classify every affected layer:
+
+```text
+strategy        purpose, positioning, user value, communication objective
+foundation      brand, tokens, typography roles, color semantics, accessibility baseline
+structure       information architecture, macrostructure, grid, page rhythm
+components      navigation, hero, forms, cards, tables, rails, sections, footer
+expression      imagery, iconography, illustration, depth, texture, motion
+interaction     states, input behavior, feedback, overflow, focus, recovery
+content         copy, labels, proof, data, CTA, microcopy
+implementation  repository structure, component integration, runtime constraints
 ```
 
-**Common Delight failures:**
+Each layer is:
+
+```text
+preserve | refine | replace | not_applicable
 ```
-❌ Accessory drift: image present but does not advance the story
-❌ Cardification: generated image boxed like product card
-❌ Figure/ground mismatch: asset creates its own surface
-❌ Generic motif: zen rocks on a software portfolio
+
+```yaml
+layered_redesign_plan:
+  strategy:
+    action: preserve
+    reason: <reason>
+  foundation:
+    action: refine
+    scope: []
+    owner: <port/adapter>
+  structure:
+    action: replace
+    scope: []
+    owner: design-layout
+  components:
+    action: refine
+    scope: []
+    owner: <adapters>
+  expression:
+    action: refine
+    scope: []
+    owner: design-visual
+  interaction:
+    action: replace
+    scope: []
+    owner: design-interaction
+  content:
+    action: refine
+    scope: []
+    owner: design-strategy
+  implementation:
+    action: refine
+    scope: []
+    owner: master-engineer
 ```
+
+## Dependency order
+
+```text
+unresolved strategy or content structure
+  blocks final layout lock
+
+unresolved structure
+  blocks detailed component placement
+
+unresolved component behavior
+  blocks final expression and verification
+
+missing preservation decisions
+  block production
+
+visual polish
+  never compensates for task, content, or interaction failure
+```
+
+## Iteration declaration
+
+For every correction iteration:
+
+```yaml
+iteration_focus:
+  iteration: <N>
+  primary_layer: <layer>
+  secondary_layers: []
+  target_findings: []
+  preserved_layers_and_regions: []
+  not_touching: []
+  success_criteria: []
+  required_evidence: []
+```
+
+Avoid broad unbounded “make it better” iterations.
+
+## Expression and delight boundary
+
+Expression must have a named role:
+
+```text
+orientation
+affordance
+emphasis
+atmosphere
+identity
+continuity
+feedback
+reward
+```
+
+Reject expression that:
+
+```text
+hides weak copy or missing content
+creates a competing surface or focal point
+uses a generic motif unrelated to the product
+adds accessibility or performance cost without value
+is impossible to produce with available tools
+breaks brand or asset locks
+```
+
+Do not imply access to image, video, or 3D generation tools unless the runtime actually exposes them.
