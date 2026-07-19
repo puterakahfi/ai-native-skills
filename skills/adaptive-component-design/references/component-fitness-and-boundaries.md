@@ -20,19 +20,46 @@ SYSTEM_CONSTRAINT
 
 Visible overflow alone does not prove `PATTERN_MISMATCH`. A valid horizontal rail with a missing left control is an implementation defect. Eight dynamic searchable choices forced into tabs are a pattern mismatch.
 
+## Visual evidence provenance
+
+Before calling a screenshot mobile, tablet, desktop, narrow, or wide, distinguish three different measurements:
+
+```text
+artifact_dimensions
+  pixel dimensions of the uploaded or embedded image file
+
+rendered_css_viewport
+  browser CSS viewport that produced the interface
+
+available_container_width
+  width left for the component after shell, sidebar, gutters, and adjacent controls
+```
+
+They may all be different. Chat applications, issue trackers, documents, and image pipelines may resize a screenshot after capture. A 358px-wide artifact can still depict a tablet or desktop render. Active component variants such as a desktop sidebar, line tabs, or a multi-column table may support a hypothesis about the original state, but they do not replace capture metadata or runtime measurement.
+
+When provenance is unavailable:
+
+```text
+artifact width only
+→ rendered viewport: NOT_VERIFIED
+→ available container width: NOT_VERIFIED
+→ do not patch responsive composition from the artifact width alone
+```
+
 ## Decision sequence
 
 1. Name the task and priority.
-2. Measure actual container width after shell, gutters, sidebars, and adjacent controls.
-3. Inventory realistic option count, label lengths, content growth, visibility needs, and frequency.
-4. Identify input and display contexts: touch, pointer, keyboard, mixed, orientation, zoom, and text scaling.
-5. Diagnose the problem class.
-6. Compare preserve, reflow, resize, scroll, collapse, disclose, hide, and substitute.
-7. Select the smallest pattern that preserves task completion and discoverability.
-8. Find the actual passing/failure boundary with realistic content.
-9. Define shared value, state, events, URL/query behavior, analytics identity, accessible relationships, and focus behavior.
-10. Record rejected alternatives and trade-offs.
-11. Verify immediately before and after every adaptation boundary.
+2. Establish evidence provenance: artifact dimensions, known CSS viewport, and known container width.
+3. Measure actual container width after shell, gutters, sidebars, and adjacent controls.
+4. Inventory realistic option count, label lengths, content growth, visibility needs, and frequency.
+5. Identify input and display contexts: touch, pointer, keyboard, mixed, orientation, zoom, and text scaling.
+6. Diagnose the problem class.
+7. Compare preserve, reflow, resize, scroll, collapse, disclose, hide, and substitute.
+8. Select the smallest pattern that preserves task completion and discoverability.
+9. Find the actual passing/failure boundary with realistic content.
+10. Define shared value, state, events, URL/query behavior, analytics identity, accessible relationships, and focus behavior.
+11. Record rejected alternatives and trade-offs.
+12. Verify immediately before and after every adaptation boundary.
 
 ## Component fitness record
 
@@ -42,6 +69,12 @@ component_fitness:
   component_role: <navigation | filter | selection | comparison | editing | other>
   user_task: <task>
   diagnosis: <PATTERN_MISMATCH | IMPLEMENTATION_DEFECT | CONTENT_PRESSURE | SYSTEM_CONSTRAINT>
+
+  evidence_provenance:
+    artifact_dimensions: <width x height or unknown>
+    rendered_css_viewport: <width x height or NOT_VERIFIED>
+    available_container_width: <px, bounded range, or NOT_VERIFIED>
+    source: <browser evidence | capture metadata | uploaded artifact | other>
 
   content_contract:
     option_count: <range>
@@ -152,7 +185,7 @@ portrait and landscape
 touch, pointer, keyboard, and mixed input
 ```
 
-Common phone, tablet, laptop, and desktop sizes are useful samples, not universal completion criteria.
+Common phone, tablet, laptop, and desktop sizes are useful samples, not universal completion criteria. Uploaded image dimensions are artifact metadata, not a substitute for these runtime contexts.
 
 ## Handoff
 
@@ -174,6 +207,7 @@ adaptive_component_handoff:
 ## Completion guard
 
 ```text
+□ Screenshot artifact dimensions are separated from CSS viewport and available container width.
 □ Actual available width is measured.
 □ Pattern mismatch and implementation defect are separated.
 □ Component choice follows task and realistic content.
