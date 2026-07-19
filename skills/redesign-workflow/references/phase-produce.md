@@ -2,6 +2,8 @@
 
 Load this reference only after route, roles, direction, layered plan, value alignment, spec, and approval boundary are explicit.
 
+Load `quality-levels.md` before production. Q0 blocks production. Every produced artifact must reach at least Q1 `FOUNDATION_SAFE` before it may be handed to rendered verification.
+
 Production implements the approved design contract through selected ports and adapters. It does not invent a second direction or import generic UI defaults as universal rules.
 
 ## Entry packet
@@ -11,11 +13,23 @@ production_input:
   design_domain: <domain>
   surface_profile: <profile>
   output_mode: <prototype | patch>
+  quality_target: <Q1_FOUNDATION_SAFE | Q2_RENDER_VERIFIED | Q3_PIXEL_POLISHED | Q4_PIXEL_MATCHED>
   design_owner: <owner>
   implementation_owner: <owner or null>
   delegation_plan: <selected ports and adapters>
   direction: <approved direction>
   layered_plan: <preserve/refine/replace decisions>
+  foundation_axis_contract:
+    F1_hierarchy: <resolved relationship>
+    F2_grouping: <resolved relationship>
+    F3_alignment: <resolved system>
+    F4_space_and_rhythm: <resolved system>
+    F5_balance: <resolved intent>
+    F6_flow: <resolved order>
+    F7_legibility: <resolved context>
+    F8_system_consistency: <resolved system>
+    F9_accessibility_and_affordance: <resolved baseline>
+    F10_responsive_continuity: <resolved transformation>
   acceptance_criteria: []
   viewing_contexts: []
   locks:
@@ -27,7 +41,9 @@ production_input:
     preserved_regions: []
 ```
 
-Stop when the packet is incomplete or the approval policy has not passed.
+Stop when the packet is incomplete, any required foundation axis remains unresolved, or the approval policy has not passed.
+
+F1–F10 are planning and assessment axes. Production and review findings still use canonical registered gate IDs through `design-review`.
 
 ## Production sequence
 
@@ -40,11 +56,12 @@ Stop when the packet is incomplete or the approval policy has not passed.
 6. Apply visual language, type, color, composition, depth, imagery, and motion.
 7. Preserve locked assets, content, behavior, and accepted regions.
 8. Produce a renderable/exportable artifact.
-9. Record what changed and why.
-10. Hand off to domain-appropriate verification.
+9. Check the produced artifact against the Q1 foundation-safe contract.
+10. Record what changed and why.
+11. Hand off to domain-appropriate verification.
 ```
 
-The sequence may overlap during implementation, but later styling must not hide unresolved content, structure, interaction, or accessibility problems.
+The sequence may overlap during implementation, but later styling must not hide unresolved content, structure, interaction, accessibility, or foundation problems.
 
 ## Delegation rules
 
@@ -156,7 +173,7 @@ make changed regions and states inspectable
 record mock data or simulated behavior honestly
 ```
 
-A prototype does not prove production runtime, data integration, or release readiness.
+A prototype does not prove production runtime, data integration, Q2 rendered verification, or release readiness.
 
 ### Patch
 
@@ -183,9 +200,23 @@ record generated or placeholder assets as such
 
 When imagery or motion tooling is unavailable, choose an honest fallback rather than claiming generation occurred.
 
-## Production self-check
+## Q1 foundation-safe self-check
 
 Before verification:
+
+```text
+□ F1–F10 foundation-axis contract is resolved in the produced artifact.
+□ Parent, child, sibling, metadata, and action roles do not collapse unintentionally.
+□ Grouping and spacing communicate relationships rather than repeat one arbitrary gap.
+□ Shared structural or optical alignment logic exists; local nudges do not replace it.
+□ Typography, measure, contrast, density, and content fit the intended context.
+□ Balance, focal order, and reading/task flow are deliberate.
+□ Responsive/adaptive transformation preserves hierarchy, grouping, and usability.
+□ Existing design system, brand, accessibility, and behavior locks are preserved.
+□ No component or decoration was selected only from agent preference.
+```
+
+## Production self-check
 
 ```text
 □ Output follows the approved direction and layered plan.
@@ -198,6 +229,7 @@ Before verification:
 □ Preserved regions and behaviors were not changed accidentally.
 □ Artifact can be rendered or exported for the declared verification strategy.
 □ Implementation changes have a rollback path.
+□ Current evidence supports Q1_FOUNDATION_SAFE and no higher visual claim is made yet.
 ```
 
 ## Production report
@@ -206,8 +238,13 @@ Before verification:
 production_report:
   output_mode: <prototype | patch>
   artifact: <path or target>
+  quality_target: <level>
+  quality_achieved: Q1_FOUNDATION_SAFE
   design_owner: <owner>
   implementation_owner: <owner or null>
+  foundation_axis_summary:
+    passed: []
+    blocked: []
   adapters_used:
     - capability: <skill>
       reason: <trace to plan or criterion>
@@ -223,4 +260,4 @@ production_report:
   ready_for_verification: true | false
 ```
 
-`ready_for_verification` means a current artifact exists. It does not mean the artifact passed.
+`ready_for_verification` means a current Q1 candidate exists. It does not mean the artifact rendered correctly, passed review, reached Q2/Q3, or is ready for delivery.

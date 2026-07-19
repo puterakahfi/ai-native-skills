@@ -1,6 +1,21 @@
 # Universal Gates
 
-Load this reference for every visual review. These gates evaluate principles that can apply across interactive products, static marketing visuals, and presentations.
+Load this reference for every visual review. These gates evaluate principles that apply across interactive products, static marketing visuals, and presentations.
+
+`design-foundation` owns the universal composition knowledge. This file is its review adapter: it maps hierarchy, grouping, alignment, spacing, balance, flow, legibility, consistency, accessibility, and responsive continuity into evidence-backed review gates.
+
+```text
+FOUNDATION SOURCE OF TRUTH
+  skills/design-foundation/SKILL.md
+  skills/design-foundation/references/principles.md
+  skills/design-foundation/references/gates.md
+
+UNIVERSAL REVIEW ADAPTER
+  this file
+
+GENRE / DOMAIN EXTENSIONS
+  selected genre + surface/domain gates
+```
 
 Use profile-specific thresholds from `review-profiles.md`, `interactive-surface-gates.md`, or `static-visual-gates.md`. Do not turn one implementation heuristic into a universal law.
 
@@ -14,6 +29,25 @@ Source or tokens available          → score implementation/system consistency 
 No rendered visual                  → visual gates are NOT_VERIFIED
 No declared system or repeated set  → token gates may be NOT_APPLICABLE
 ```
+
+## Foundation-axis mapping
+
+F1–F10 are **foundation axes**, not canonical reportable gate IDs. Every scored or reported finding must use the registered canonical IDs shown on the right.
+
+```text
+F1  Hierarchy                   → G2, G8, R7, H1, H2, H3
+F2  Grouping                    → G4, G5, G7, G12
+F3  Alignment                   → C3, G7, R3
+F4  Space + Rhythm              → G5, R3, G4
+F5  Balance                     → C1, C2, R6, R8
+F6  Flow                        → G8, G12, H2 + applicable surface gates
+F7  Legibility                  → G2, G9, G10, G11, R1
+F8  System Consistency          → G1, G3, R2
+F9  Accessibility + Affordance  → G10 + applicable interactive/static hard gates
+F10 Responsive Continuity       → C3, G5, G7 + responsive surface gates
+```
+
+A universal score cannot override a verified foundation-axis failure. The final verdict records the axis assessment, but findings and scores use canonical gate IDs from the registry.
 
 ## Design consistency
 
@@ -47,14 +81,23 @@ Presentation: test at room or screen-share scale, not only editor zoom.
 
 These are starting points, not automatic pass/fail values detached from context.
 
-## Spacing, layout, and alignment
+## Spacing, grouping, layout, and alignment
 
 | Gate | Review question | Pass evidence |
 |---|---|---|
-| G5 Spatial Rhythm | Do spacing changes express grouping, sequence, and emphasis rather than repeating one gap everywhere? | Related elements cluster; section and component spacing have intentional rhythm. |
+| G5 Spatial Rhythm | Do spacing changes express grouping, sequence, and emphasis rather than repeating one gap everywhere? | Related elements cluster; parent-to-child-group separation is stronger than sibling separation when applicable; section and component spacing have intentional rhythm. |
 | G7 Layout Logic | Does the layout structure match content quantity, priority, comparison needs, and viewing context? | Column count, grouping, stacking, and alignment support the content instead of forcing it. |
-| R3 Space System | Are repeated spacing decisions consistent enough to create rhythm and implementation stability? | Named tokens or a coherent base grid where source exists; visually consistent intervals for static artifacts. |
+| R3 Space System | Are repeated spacing decisions consistent enough to create rhythm and implementation stability? | Named tokens or a coherent base grid where source exists; visually consistent relational intervals for static artifacts. |
 | C3 Alignment | Do elements align to meaningful anchors, grids, optical relationships, or intentional exceptions? | No accidental drift, almost-aligned edges, or unexplained floating elements. |
+
+Grouping review must explicitly compare:
+
+```text
+within item
+between siblings
+parent → child group
+between major sections
+```
 
 Do not require every distance to be identical or every element to sit on a mathematically rigid grid. Optical correction is valid when intentional and consistent.
 
@@ -69,17 +112,17 @@ Do not require every distance to be identical or every element to sit on a mathe
 
 Balance is not the same as symmetry. Review optical mass, direction, scale, contrast, density, and empty space together.
 
-## Visual hierarchy
+## Visual hierarchy and flow
 
 | Gate | Review question | Pass evidence |
 |---|---|---|
 | G8 First Impression | Can the viewer identify the primary message or task within the expected attention window? | Opening hierarchy communicates purpose before details. |
 | R7 Hierarchy | Are importance levels distinguishable without too many competing weights? | Dominant, supporting, and tertiary roles are clear; exceptions are purposeful. |
 | H1 Dominant/Supporting | Is the relationship between the primary anchor and supporting content unambiguous? | Supporting content reinforces rather than competes with the primary anchor. |
-| H2 Cross-Section Decay | Across a long page, deck, or multi-region artifact, does later content preserve the intended global hierarchy? | A secondary section or slide element does not accidentally overpower the primary narrative anchor. |
+| H2 Cross-Section Decay | Across a long page, deck, or multi-region artifact, does later content preserve the intended global hierarchy and flow? | A secondary section or slide element does not accidentally overpower the primary narrative anchor; the next region remains discoverable. |
 | H3 Role Taxonomy | Can headings, labels, statements, metadata, and annotations be identified by role? | Similar roles look related; different roles do not collapse into one style. |
 
-Do not enforce a universal numeric H2/H1 ratio. Use measured ratios as evidence only when they explain an observed hierarchy problem.
+Nested hierarchy should use at least two cues when spacing or typography alone remains ambiguous. Do not enforce a universal numeric H2/H1 ratio. Use measured ratios as evidence only when they explain an observed hierarchy problem.
 
 ## Color and expression
 
@@ -111,20 +154,52 @@ color-only status communication
 
 A flag becomes a failed gate only when evidence shows it harms clarity, truth, accessibility, brand, or task performance.
 
-## Universal quick review
-
-For a quick review, score only the applicable subset:
+## Foundation failure handoff
 
 ```text
-G2  typographic hierarchy
-G5  spatial rhythm
-G8  first impression
+failure appears across genres or surfaces
+  → design-foundation knowledge or workflow orchestration defect
+
+foundation rule exists but one implementation ignores it
+  → local implementation defect
+
+one repeated component pattern fails everywhere
+  → component-system defect
+
+failure is stricter stylistic expression only
+  → design-genre defect
+```
+
+Examples:
+
+```text
+parent/child/sibling hierarchy collapses in zen, SaaS, and editorial
+  → foundation defect
+
+only zen page exceeds its structural-line budget
+  → genre defect
+
+one SectionHeader component misaligns every eyebrow
+  → component-system defect
+```
+
+## Universal quick review
+
+For a quick review, assess the applicable foundation axes through canonical gate IDs:
+
+```text
+F1  hierarchy / role clarity
+F2  grouping
+F3  alignment
+F4  spatial rhythm
+F5  balance
+F6  flow
+F7  legibility
+
+Canonical scoring subset:
 G10 contrast
-C1  focal point
-C2  balance
-C3  alignment
-R7  hierarchy
 CP1 message specificity
+applicable registered accessibility/responsive gates
 ```
 
 Any score below 5 is critical. Continue to profile-specific hard gates before declaring the artifact safe or release-ready.
