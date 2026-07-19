@@ -1,81 +1,21 @@
 # GitHub-Native Visual System
 
-Translate design principles into the controls GitHub Profile README actually provides. Do not imitate a normal website with fragile HTML.
+Translate design principles into controls GitHub Profile README actually provides. Do not imitate a normal website with fragile HTML. Load `visual-directions.md` when direction selection or comparison is required.
 
 ## Medium Translation
 
 | Design concern | GitHub-native control |
 |---|---|
 | Hierarchy | heading levels, opening order, concise lead, emphasis, section grouping |
-| Typography | semantic headings, bold/italic/code roles, restrained image-based display type |
-| Spacing | section breaks, blank lines, dividers, concise modules, controlled table density |
+| Typography | semantic headings, bold/italic/code roles, restrained image display type |
+| Spacing | section breaks, blank lines, dividers, concise modules, table density |
 | Composition | section order, alignment, image scale, project grouping, whitespace |
 | Color | brand assets, badges, diagrams, theme-aware images; never color alone |
-| Depth | grouping, contrast between text and visual modules, selective cards/illustrations |
-| Rhythm | repeatable section pattern, consistent project anatomy, predictable heading cadence |
+| Depth | grouping, contrast between text and visual modules, selective visuals |
+| Rhythm | repeatable section pattern, project anatomy, heading cadence |
 | Responsiveness | single-column priority, flexible images, minimal fixed-width tables |
 
-The GitHub page chrome already supplies navigation, avatar, bio, contribution graph, pinned repositories, and activity. The README should complement these elements rather than duplicate all of them.
-
-## Direction Selection
-
-### Text-first
-
-Best for technical authority, maintainers, writers, and profiles with strong written proof.
-
-```text
-semantic headings
-short lead paragraph
-few or no decorative badges
-project descriptions with direct links
-small capability groups
-```
-
-Strength: robust, accessible, maintainable.
-Risk: can feel generic without strong positioning and evidence.
-
-### Editorial
-
-Best for personal brands combining engineering, product, design, or writing.
-
-```text
-strong thesis-driven opening
-intentional section titles
-alternating concise narrative and proof modules
-one restrained accent graphic or wordmark
-```
-
-Strength: distinctive through voice and hierarchy.
-Risk: vague manifesto content can overwhelm proof.
-
-### Showcase
-
-Best for product builders and portfolios with strong visual assets.
-
-```text
-compact hero
-selected project visuals
-short project context and outcome
-clear repository/product destinations
-minimal supporting stack
-```
-
-Strength: immediate shipped-work proof.
-Risk: screenshots can become an unlabelled image gallery.
-
-### Branded
-
-Best when a mature personal identity system already exists.
-
-```text
-verified wordmark or banner
-consistent asset style
-brand vocabulary in section labels
-restrained badge and icon treatment
-```
-
-Strength: recognition and continuity.
-Risk: over-branding can reduce technical readability and theme compatibility.
+GitHub already supplies navigation, avatar, bio, contribution graph, pinned repositories, and activity. The README should complement rather than duplicate them.
 
 ## Opening Viewport
 
@@ -92,11 +32,10 @@ one primary action, optionally one secondary action
 Do not spend the entire opening on:
 
 ```text
-a full-width decorative banner with no semantic text
-typing animations
-visitor counters
+a decorative banner with no semantic text
+typing animations or visitor counters
 large technology icon grids
-multiple GitHub statistics cards
+multiple statistics cards
 long autobiography
 ```
 
@@ -114,7 +53,7 @@ project modules:           3–6 selected items
 social/contact actions:    1 primary + bounded secondary links
 ```
 
-Increase density only when the content and audience genuinely require it.
+Increase density only when content and audience genuinely require it.
 
 ## Section Rhythm
 
@@ -128,13 +67,7 @@ short action or transition
 breathing space
 ```
 
-Avoid consecutive walls of:
-
-```text
-badges → icons → stats → trophies → activity graph → counters
-```
-
-These modules have similar visual weight and produce no clear focal hierarchy.
+Avoid consecutive walls of badges → icons → stats → trophies → activity → counters. They have similar visual weight and produce no focal hierarchy.
 
 ## Project Module Patterns
 
@@ -158,13 +91,11 @@ One sentence describing the problem and audience.
 
 ### Visual showcase
 
-Place the visual near the project name and always provide adjacent semantic text. Keep image aspect ratios consistent across the selected set.
+Place the visual near the project name and provide adjacent semantic text. Keep image aspect ratios consistent across the selected set.
 
 ## Capability Presentation
 
 Prefer capability groups over unbounded logo grids.
-
-Good:
 
 ```markdown
 **Architecture:** DDD, ports and adapters, event-driven systems  
@@ -172,7 +103,7 @@ Good:
 **AI-native systems:** agents, skills, context, evals
 ```
 
-Use badges only when they improve scanning or brand recognition. Maintain consistent badge style, height, capitalization, and ordering.
+Use badges only when they improve scanning or recognition. Keep style, height, capitalization, and ordering consistent.
 
 ## Typography Roles
 
@@ -192,23 +123,23 @@ Do not use heading levels solely to change visual size. Keep semantic order inta
 
 Centered alignment works for a short hero, but long centered body text is difficult to scan. Return to left alignment for project narratives and detailed content.
 
-HTML tables can simulate columns, but they often compress poorly on narrow screens. Use them only for short, balanced modules with a readable single-column fallback. Never hide essential reading order inside a visual grid.
+HTML tables can simulate columns, but they compress poorly on narrow screens. Use them only for short modules with a readable single-column fallback. Never hide essential reading order inside a grid.
 
 ## Color and Theme
 
 ```text
 semantic text remains readable in both themes
-transparent images must work on light and dark backgrounds
-light/dark variants use equivalent information
-brand color appears as accent, not as the sole hierarchy mechanism
-badges from different vendors must not create accidental rainbow noise
+transparent images work on light and dark backgrounds
+light/dark variants communicate equivalent information
+brand color is an accent, not the sole hierarchy mechanism
+mixed badge vendors do not create accidental rainbow noise
 ```
 
-When no reliable brand system exists, GitHub-native neutral styling is better than an arbitrary palette.
+Without a reliable brand system, GitHub-native neutral styling is better than an arbitrary palette.
 
 ## Iconography and Images
 
-Use a coherent icon family or native text labels. Mixed icon styles, emoji, vendor logos, and custom illustrations create visual fragmentation.
+Use a coherent icon family or native text labels. Mixed emoji, vendor logos, and custom illustrations create fragmentation.
 
 Every meaningful image needs:
 
@@ -221,8 +152,6 @@ fallback meaning in nearby text
 ```
 
 ## Narrow-Screen Test
-
-At narrow width verify:
 
 ```text
 hero remains concise
