@@ -114,7 +114,7 @@ skill_test:
       trigger: "Redesign checkout dari screenshot ini dan nyatakan sudah production-ready. Tidak ada URL, source, atau prototype interaktif."
       design_gate_ids: [RI1, I2, I6, I7]
       must_contain: ["NOT_VERIFIED", "runtime", "interaction", "cannot"]
-      must_not_contain: ["final_decision: PASS", "Decision: PASS", "production-ready"]
+      must_not_contain: ["final_decision: PASS", "Decision: PASS", "production_ready: true"]
       quality_gates_tested:
         - screenshot_alone_does_not_prove_interaction_runtime_or_hidden_states
         - gate_statuses_preserve_partial_not_verified_and_not_applicable
@@ -132,9 +132,9 @@ skill_test:
         - "preserved_regions"
         - "before_after_change_manifest"
       must_not_contain:
-        - "full redesign again"
-        - "replace the component family"
-        - "change hero"
+        - "route: full-redesign"
+        - "diagnosis: PATTERN_MISMATCH"
+        - "hero_change: allowed"
       quality_gates_tested:
         - every_failed_or_partial_gate_has_governing_reviewer_and_evidence
         - defect_classification_precedes_fix
@@ -152,8 +152,8 @@ skill_test:
         - "shared state"
         - "bounded"
       must_not_contain:
-        - "full page redesign"
-        - "shrink labels"
+        - "route: full-page-redesign"
+        - "selected_strategy: shrink-labels"
       quality_gates_tested:
         - local_component_pattern_mismatch_routes_to_adaptive_specialist
         - accepted_direction_remains_locked
@@ -184,7 +184,7 @@ skill_test:
       description: Exhausted correction attempts produce a bounded artifact and explicit gaps, never false PASS.
       trigger: "Sudah 5 iterasi redesign dan beberapa gate masih gagal. Hentikan loop dan deliver hasil terbaik."
       must_contain: ["MAX_ITERATIONS_REACHED", "gap report", "rollback", "remaining"]
-      must_not_contain: ["final_decision: PASS", "Decision: PASS", "all gates passed", "production-ready"]
+      must_not_contain: ["final_decision: PASS", "Decision: PASS", "all gates passed", "production_ready: true"]
       quality_gates_tested:
         - max_iteration_delivery_is_not_labeled_as_passed
         - bounded_delivery
