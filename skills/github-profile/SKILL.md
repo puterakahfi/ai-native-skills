@@ -1,9 +1,9 @@
 ---
 name: github-profile
-description: Generate or redesign a GitHub Profile README as an evidence-backed personal brand and technical portfolio — resolve audience and positioning, build a clear content hierarchy, compose a GitHub-native visual system, produce maintainable GFM/HTML, render it, and verify it through the design-review facade.
+description: Generate or redesign a GitHub Profile README as an evidence-backed personal brand and technical portfolio — resolve audience and positioning, build a clear content hierarchy, compose a distinctive GitHub-native visual system, produce maintainable GFM/HTML, render it, and verify it through the design-review facade.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.requires: "design-foundation design-strategy design-visual composition visual-hierarchy readability content-strategy copywriting accessibility design-review skill-eval"
@@ -21,9 +21,10 @@ HARD RULES
 5. Use GitHub-native Markdown/HTML that remains readable when images or widgets fail.
 6. External cards, counters, and generated SVGs are optional dependencies, never critical content.
 7. Default to restrained visual density; badge walls, animation walls, and stat walls are failures.
-8. Verify light/dark rendering, narrow screens, alt text, links, and source maintainability.
-9. Review the rendered artifact; raw README source is not visual evidence.
-10. Repository mutation, approval, and write ownership belong to the calling workflow.
+8. Clean and readable is the baseline—not a sufficient visual direction. Create one recognizable thesis, module treatment, or brand cue.
+9. Verify light/dark rendering, narrow screens, alt text, links, and source maintainability.
+10. Review the rendered artifact; raw README source is not visual evidence.
+11. Repository mutation, approval, and write ownership belong to the calling workflow.
 ```
 
 ## Purpose and Boundary
@@ -85,13 +86,17 @@ Infer only low-risk presentation choices. Mark missing factual content as a gap;
 
 3. STRUCTURE
    Order content by visitor decision needs; keep identity and proof before detail.
+   Merge sections that repeat the same idea in different words.
 
 4. DIRECT
    Apply design-foundation, then choose a GitHub-appropriate direction.
+   Declare one differentiation device: thesis, project-module treatment,
+   diagram, visual asset, or distinctive editorial rhythm.
    Load references/visual-system.md only after content roles are known.
 
 5. COMPOSE
-   Produce semantic GFM/HTML with restrained assets and graceful fallback.
+   Produce semantic GFM/HTML with restrained assets, contrasting module roles,
+   graceful fallback, and a scannable first viewport.
    Load references/platform-constraints.md and references/templates.md.
 
 6. RENDER
@@ -124,10 +129,13 @@ Load only the references required by the current mode and uncertainty.
 ```text
 required roles: identity → positioning → proof → selected work → current focus → action
 optional roles: capabilities → principles → writing → community → personal interests
-default budget: one hero treatment, one accent system, zero–two dynamic widgets
+default budget: one hero treatment, one differentiation device, one accent system,
+                zero–two dynamic widgets
 ```
 
 A technology list supports positioning; it is not the positioning. Statistics support proof; they do not replace project context, role, or impact.
+
+A sequence of headings plus paragraphs may be semantically correct while still failing visually. At least one major content role must receive a distinct GitHub-native treatment—such as a thesis block, compact proof module, diagram, repository-owned visual, or intentionally different editorial cadence. Do not give every section equal visual weight.
 
 ## Output Contract
 
@@ -146,6 +154,7 @@ github_profile_result:
   content_gaps: []
   preservation_locks: []
   selected_direction: <direction and reason>
+  differentiation_device: <declared visual or editorial device>
   section_order: []
   external_dependencies: []
   readme: <complete markdown>
@@ -161,19 +170,23 @@ For `patch`, hand the proposed content and file boundary to the repository write
 □ Identity, audience, desired action, and profile narrative are explicit.
 □ Every factual claim is supplied, repository-verifiable, or marked unverified.
 □ The first screen communicates identity, value, and proof before decoration.
+□ A recognizable thesis, module treatment, or brand cue differentiates the profile.
 □ Section order follows visitor questions and one dominant hierarchy.
-□ Selected work explains context, role, outcome, and a useful destination.
+□ Repetitive sections are merged rather than restating the same positioning.
+□ Selected work explains context, role, outcome/current state, and a useful destination.
+□ Major content roles do not all use identical heading-plus-paragraph treatment.
 □ Badges and widgets support meaning rather than dominate it.
 □ Critical information survives blocked images and unavailable services.
 □ Alt text, links, themes, narrow width, and source maintainability are verified.
 □ Rendered output received design-review or is honestly NOT_VERIFIED.
 ```
 
-Common failures: generic greeting + badge/stat wall; claims without project evidence; cards without role or outcome; essential text only inside a hero image; mixed visual styles; broken theme contrast; counters/trophies as credibility substitutes; critical third-party widgets; fabricated current work; or copied identity.
+Common failures: generic greeting + badge/stat wall; clean but anonymous documentation layout; claims without project evidence; cards without role or outcome; repeated thesis across multiple sections; essential text only inside a hero image; mixed visual styles; broken theme contrast; counters/trophies as credibility substitutes; critical third-party widgets; fabricated current work; or copied identity.
 
 ```text
 FINAL REMINDER
 Purpose before decoration. Proof before badges. One narrative before many modules.
+Readable is mandatory; recognizable is the next gate.
 Use verified facts, GitHub-native structure, graceful fallback, and maintainable source.
 Render before review. Preserve NOT_VERIFIED when evidence is missing.
 Repository writes require an explicit calling workflow and verified tool evidence.
