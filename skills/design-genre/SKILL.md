@@ -1,78 +1,106 @@
 ---
 name: design-genre
-description: Design genre classification — zen-minimalist, editorial, modern-minimal, atmospheric, and playful. Determines voice, density, structure, color, motion stance, and which slop gates apply. Run before any design decision.
+description: Design genre classification — zen-minimalist, editorial, modern-minimal, atmospheric, and playful. Runs after design-foundation and determines voice, density, containment, color, motion stance, and genre-specific slop gates without overriding universal composition quality.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-genre.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
-  ai-native-skills.related_skills: '["ux-ui-patterns", "design-system", "master-design", "redesign-workflow"]'
+  ai-native-skills.related_skills: '["design-foundation","ux-ui-patterns","design-system","master-design","redesign-workflow"]'
 ---
 
 # Design Genre Skill
 
-> **HARD RULES — apply always, top and bottom of every engagement:**
-> 1. **Genre = composition + density + voice + color + motion stance, not just palette.**
-> 2. **Declare the genre token before any design decision.** Everything downstream follows it.
-> 3. **Load the selected genre reference before selecting macrostructure or components.**
-> 4. **Genre-specific constraints override generic workflow, macrostructure, and component defaults.**
-> 5. **Genre must match the audience mental model and explicit user direction.** Wrong genre means downstream misalignment.
-> 6. **For space-led genres, whitespace must encode hierarchy.** Parent-to-child separation must be visibly stronger than sibling separation unless another deliberate grouping cue exists.
-> 7. **Spacing alone is not enough when nested levels remain visually equal.** Parent and child must differ through at least two cues chosen from scale, weight, measure, contrast, placement, and spacing.
+> **HARD RULES — apply always:**
+> 1. **Resolve `design-foundation` first.** Genre expresses hierarchy, grouping, alignment, spacing, balance, flow, legibility, and responsiveness; it does not replace them.
+> 2. **Genre = composition expression + density + voice + color + motion stance, not just palette.**
+> 3. **Declare the genre token before genre-specific design decisions.**
+> 4. **Load the selected genre reference before selecting macrostructure or components.**
+> 5. **Genre-specific constraints override generic workflow, macrostructure, and component defaults — but never foundation requirements.**
+> 6. **Genre must match the audience mental model and explicit user direction.** Wrong genre means downstream misalignment.
+
+---
+
+## Layer Relationship
+
+```text
+design-foundation
+  owns: hierarchy, grouping, alignment, space rhythm, balance, flow,
+        legibility, consistency, accessibility, responsive continuity
+
+          ↓ expressed through
+
+design-genre
+  owns: density, containment grammar, visual voice, color stance,
+        motion stance, texture, stylistic restraint/expression
+
+          ↓ constrained by
+
+design-brand / DESIGN.md
+  owns: identity, assets, semantic tokens, product-specific locks
+```
+
+A genre may make a foundation rule stricter. It may not remove it.
 
 ---
 
 ## Core Principle
 
 ```text
-Genre scopes everything downstream:
+Genre scopes downstream expression:
   - Which macrostructures fit
   - Which density and containment grammar is valid
   - Which theme cluster to rotate
   - Which nav/footer archetypes are appropriate
   - What voice/copy fixtures to use
-  - Which slop gates and hard constraints apply
+  - Which additional slop gates and hard constraints apply
 
-Pick genre BEFORE picking layout, colors, fonts, cards, borders, or motion.
-Wrong genre = everything downstream is misaligned.
-
-Default only when no stronger signal exists: editorial.
-Explicit user genre direction overrides inferred product-category defaults.
+Foundation remains active underneath:
+  - parent/child/sibling hierarchy
+  - grouping by relationship
+  - structural and optical alignment
+  - intentional spatial rhythm
+  - balance and focal order
+  - reading/task flow
+  - legibility, accessibility, responsive continuity
 ```
 
-For space-led layouts, equal whitespace is not neutral. When a section introduction, its first child, and subsequent siblings all use nearly the same vertical interval, the hierarchy collapses into one flat group.
-
-Required relationship:
+Pick genre **after foundation resolution** and before layout, colors, fonts, cards, borders, or motion.
 
 ```text
-parent → child group  >  sibling → sibling
-parent display scale  >  child title scale
-```
-
-Practical starting ranges, adapted to viewport and content:
-
-```text
-spacing contrast:  parent-group interval ≈ 1.25×–2× sibling interval
-scale contrast:    child title ≈ 55%–75% of parent display size
-```
-
-These are review ranges, not mechanical tokens. The rendered hierarchy must be unmistakable. Do not add lines, cards, pills, or section surfaces merely to repair a parent-child hierarchy failure.
-
-Failure pattern:
-
-```text
-parent headline is large
-child titles are almost as large
-parent-child gap and sibling gaps feel similar
-result: introduction and items read as one flat group
-verdict: hierarchy contrast failure
+No strong genre signal → editorial default
+Explicit user genre direction → overrides inferred product-category defaults
+Foundation failure → fix foundation; do not switch genre as a workaround
 ```
 
 ---
 
-## Genre Detection (Signal-Based)
+## Required Foundation Handoff
+
+Before genre detection, foundation state must include:
+
+```yaml
+foundation_handoff:
+  hierarchy_roles: []
+  parent_child_groups: []
+  sibling_sets: []
+  structural_anchors: []
+  optical_corrections: []
+  spatial_rhythm_rules: []
+  balance_strategy: <value | unresolved>
+  flow_sequence: []
+  legibility_requirements: []
+  responsive_continuity_rules: []
+  unresolved_foundation_gaps: []
+```
+
+If foundation is unresolved, genre selection may be exploratory but production must not begin.
+
+---
+
+## Genre Detection — Signal Based
 
 ```text
 ZEN / MINIMALIST:
@@ -97,7 +125,7 @@ EDITORIAL:
   foundry, publication, art direction
 ```
 
-### Conflict policy
+### Conflict Policy
 
 ```text
 Explicit user direction exists
@@ -111,6 +139,16 @@ No strong signal
 ```
 
 Do not silently route a personal engineering site to `modern-minimal` merely because it mentions SaaS, agents, APIs, or developer tools when the user explicitly requests zen or space-led minimalism.
+
+Do not use a genre change to hide a foundation problem:
+
+```text
+flat hierarchy        ≠ “modern minimal”
+misalignment          ≠ “editorial asymmetry”
+excessive empty space ≠ “zen”
+random color          ≠ “playful”
+weak contrast         ≠ “atmospheric”
+```
 
 ---
 
@@ -130,13 +168,13 @@ Record the loaded constraints in run state:
 
 ```yaml
 genre_contract:
+  foundation_reference: <design-foundation path>
+  inherited_foundation_rules: []
   genre: <name>
   reference: <loaded file>
-  composition_rules: []
+  composition_expression: []
   containment_rules: []
   density_rules: []
-  spacing_hierarchy_rules: []
-  type_hierarchy_rules: []
   color_rules: []
   motion_rules: []
   hard_failures: []
@@ -148,32 +186,34 @@ A genre label without its loaded constraint set is unresolved and must not proce
 
 ## Genre Output Format
 
-Emit once before design starts:
+Emit once before genre-specific production starts:
 
 ```text
+Foundation: [resolved | unresolved]
+Foundation reference: [path]
+Foundation gaps: [list]
 Genre: [zen-minimalist | editorial | modern-minimal | atmospheric | playful]
 Signal: [what triggered this — or "default" if editorial]
-Reference loaded: [path]
+Genre reference loaded: [path]
 Voice: [one-line description]
 Density: [sparse | moderate | dense]
 Containment grammar: [space-led | editorial rows | surfaces | mixed]
-Spacing hierarchy: [parent-group ratio or declared alternative cue]
-Type hierarchy: [parent/child scale contrast or declared alternative cue]
 Motion stance: [motion-on | motion-cut | stillness]
 Theme cluster: [list of applicable themes]
 Nav range: [N-codes]
 Footer range: [Ft-codes]
 Macrostructure range: [applicable macrostructures]
+Inherited foundation rules: [short list]
 Hard genre constraints: [short list]
-
-If wrong: say "genre: [X]" and redirect before production.
 ```
+
+If wrong, say `genre: [X]` and redirect before production.
 
 ---
 
 ## References — Genre Catalog
 
-Each genre is a standalone file. Load only the selected one.
+Each genre is a standalone expression contract. Load only the selected one.
 
 | Genre | File | Default? |
 |---|---|---|
@@ -184,4 +224,4 @@ Each genre is a standalone file. Load only the selected one.
 | Playful | [references/playful.md](references/playful.md) | |
 | Genre × Macrostructure compatibility | [references/genre-compatibility.md](references/genre-compatibility.md) | |
 
-> **Reminder:** the selected reference is a constraint contract, not inspiration. Generic workflow defaults cannot override it.
+> **Reminder:** genre is an extension contract, not the universal base. Generic defaults cannot override genre; genre cannot override foundation.
