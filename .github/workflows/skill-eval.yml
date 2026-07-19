@@ -1,0 +1,95 @@
+name: Skill Eval Contracts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "contracts/tests/**"
+      - "skills/**"
+      - "scripts/run-eval.sh"
+      - "scripts/validate-eval-contracts.py"
+      - ".github/workflows/skill-eval.yml"
+  pull_request:
+    paths:
+      - "contracts/tests/**"
+      - "skills/**"
+      - "scripts/run-eval.sh"
+      - "scripts/validate-eval-contracts.py"
+      - ".github/workflows/skill-eval.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skill-eval-contracts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate eval contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout ai-native-skills
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install validator dependency
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Check local runner syntax
+        run: |
+          python -m py_compile scripts/validate-eval-contracts.py
+          bash -n scripts/run-eval.sh
+
+      - name: Validate repository eval contracts
+        run: |
+          python scripts/validate-eval-contracts.py \
+            --write-smoke-outputs .tmp/eval-smoke-outputs
+
+      - name: Checkout pinned ai-native-core runner
+        uses: actions/checkout@v6
+        with:
+          repository: puterakahfi/ai-native-core
+          ref: 5c4c6f21859636a4a143a511030879c9923b2ef1
+          path: .deps/ai-native-core
+
+      - name: Validate contracts with canonical core runner
+        env:
+          SKILL_EVAL_TESTS_DIR: ${{ github.workspace }}/contracts/tests
+        run: |
+          python .deps/ai-native-core/scripts/run-eval.py \
+            --all \
+            --validate-tests
+
+      - name: Verify wrapper integration
+        env:
+          AI_NATIVE_CORE_DIR: ${{ github.workspace }}/.deps/ai-native-core
+        run: |
+          bash scripts/run-eval.sh --all --validate-tests
+
+      - name: Run per-case runner compatibility smoke
+        env:
+          AI_NATIVE_CORE_DIR: ${{ github.workspace }}/.deps/ai-native-core
+        run: |
+          mkdir -p .tmp/eval-reports
+          bash scripts/run-eval.sh \
+            --all \
+            --output-dir .tmp/eval-smoke-outputs \
+            --report-json .tmp/eval-reports/contract-smoke.json
+
+      - name: Upload compatibility report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: skill-eval-contract-smoke
+          path: .tmp/eval-reports/contract-smoke.json
+          if-no-files-found: warn
+          retention-days: 14
