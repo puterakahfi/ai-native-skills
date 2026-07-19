@@ -3,23 +3,27 @@
 Apply design in this order. Load each delegated skill before using its templates.
 
 ```text
-0. Preservation check    → existing brand, DESIGN.md, tokens, and framework conventions
-1. Genre contract        → selected design-genre reference and hard constraints
-2. Visual language       → phase-genre-macro.md
-3. Macrostructure        → macrostructures skill, filtered by genre constraints
-4. Design system tokens  → design-system skill
-5. Theme architecture    → dark-light-theming skill
-6. Motion                → motion-design only when the genre allows it
-7. Content               → content-strategy
-8. Components            → ui-components + trusted behavior patterns
-9. Component pass        → navbar → hero → sections → lists/cards → contact → footer
-10. Genre conformance    → source-level and rendered checks before verification handoff
+0. Preservation check      → existing brand, DESIGN.md, tokens, framework conventions
+1. Foundation contract     → hierarchy, grouping, alignment, space, balance, flow,
+                             legibility, consistency, accessibility, responsiveness
+2. Genre contract          → selected design-genre reference and stricter expression rules
+3. Visual language         → phase-genre-macro.md
+4. Macrostructure          → macrostructures skill, filtered by foundation + genre
+5. Design-system tokens    → design-system skill
+6. Theme architecture      → dark-light-theming skill
+7. Motion                  → motion-design only when foundation, task, and genre allow it
+8. Content                 → content-strategy
+9. Components              → ui-components + trusted behavior patterns
+10. Component pass         → navbar → hero → sections → collections → closing → footer
+11. Foundation conformance → source-level and rendered relationship checks
+12. Genre conformance      → source-level and rendered expression checks
 ```
 
 ## Precedence
 
 ```text
-brand and DESIGN.md locks
+design-foundation hard requirements
+  > brand and DESIGN.md locks
   > explicit user direction
   > loaded genre reference
   > redesign specification
@@ -27,15 +31,15 @@ brand and DESIGN.md locks
   > macrostructure and component template defaults
 ```
 
-A generic recommendation such as cards, hairlines, section backgrounds, or hover motion must be rejected when the loaded genre contract forbids it.
+Foundation owns universal relationship quality. Brand and genre own expression. A generic recommendation such as cards, hairlines, section backgrounds, hover motion, or equal sizing must be rejected when it breaks the foundation or loaded genre contract.
 
 ## Preservation-first production
 
 ```text
 Existing brand tokens      → preserve or map semantically
-Existing type scale        → audit and refine; do not replace mechanically
+Existing type scale        → audit relational hierarchy; do not replace mechanically
 Existing theme infra       → extend; never create a parallel system
-Existing sound primitives  → reuse behavior, adapt visual expression to genre
+Existing sound primitives  → reuse behavior, adapt expression to foundation + genre
 No usable system           → use fallback values and record why
 ```
 
@@ -47,29 +51,126 @@ Record production context once per artifact or durable run state.
 
 ```yaml
 production_context:
+  foundation_reference: <path>
+  foundation_axes:
+    hierarchy: <rule>
+    grouping: <rule>
+    alignment: <rule>
+    spatial_rhythm: <rule>
+    balance: <rule>
+    flow: <rule>
+    responsive_continuity: <rule>
   macrostructure: <name>
   genre: <name>
   genre_reference: <path>
   theme: <light-only | dark-only | dual-theme>
   iteration: <N>
-  pre_emit: <P H E S R V>
+  pre_emit: <F P H E S R V G>
 ```
 
 Do not add repetitive comments to every component file.
+
+## Foundation-first composition policy
+
+### Hierarchy
+
+```text
+□ primary, supporting, and tertiary roles are recognizable at a glance
+□ parent and child levels do not compete at equal visual weight
+□ sibling items look related but remain subordinate to their parent
+□ nested relationships use at least two cues when one is ambiguous
+□ later sections preserve the intended global hierarchy
+```
+
+Hierarchy cues:
+
+```text
+scale / weight / measure / contrast / placement / spacing / repetition / sequence
+```
+
+Do not rely on one large H1 while child titles, metadata, and sibling spacing remain flat.
+
+### Grouping
+
+```text
+□ related elements cluster more strongly than unrelated elements
+□ within-group spacing is tighter than between-group spacing where applicable
+□ parent → child-group separation is stronger than child → child separation
+□ enclosure is added only when function or comparison benefits
+□ maturity, priority, and state are not flattened by identical treatment
+```
+
+Practical diagnostic starting point:
+
+```text
+between-group interval ≈ 1.25×–2× within-group interval
+```
+
+Verify visually; do not force the ratio as a universal token.
+
+### Alignment
+
+```text
+□ repeated roles reuse stable structural anchors
+□ optical alignment is checked for mixed type sizes, icons, and irregular shapes
+□ local transforms and arbitrary margins do not replace a shared grid
+□ asymmetry has visible balancing logic
+□ responsive collapse preserves predictable order
+```
+
+### Space and rhythm
+
+```text
+□ spacing changes according to relationship and importance
+□ one repeated interval is not used for every level
+□ large empty intervals have an anchor and structural purpose
+□ whitespace groups, separates, pauses, emphasizes, or resolves intentionally
+```
+
+### Balance
+
+Review together:
+
+```text
+scale + contrast + density + position + direction + color + imagery + empty space
+```
+
+Do not add decoration to compensate for weak weight distribution.
+
+### Flow
+
+```text
+□ first focal point is clear
+□ next intended region or action is discoverable
+□ reading/task order matches semantic order
+□ transitions preserve context
+□ motion and metadata do not interrupt the intended path
+```
+
+### Responsive continuity
+
+```text
+□ hierarchy survives viewport or orientation change
+□ grouped content stays grouped after stacking
+□ rails collapse into predictable mobile order
+□ overflow, localization, text scaling, and touch behavior remain safe
+```
 
 ## Design-system policy
 
 ### Typography
 
-Preserve a coherent existing scale. When none exists, establish a restrained hierarchy and verify narrow widths.
+Preserve a coherent existing scale. When none exists, establish a restrained role taxonomy and verify actual viewports.
 
 ```text
-□ H1 remains dominant without overflow
-□ H2 is subordinate
+□ dominant, supporting, child, body, label, metadata, and action roles are distinct
+□ child titles remain subordinate to their parent section or page statement
 □ body measure and leading remain readable
-□ responsive sizes are verified between breakpoints
+□ responsive sizes preserve hierarchy between breakpoints
 □ selected genre weight and density rules are respected
 ```
+
+Numeric ratios are evidence, not universal laws.
 
 ### Color semantics
 
@@ -81,36 +182,38 @@ background / foreground / surface / border / primary / muted / status / interact
 
 Do not create a parallel token vocabulary merely to satisfy a template.
 
-### Figure and ground
+### Figure, ground, and grouping
 
 Long pages need readable grouping, but grouping does not always require visible boundaries.
 
-Use the lightest genre-permitted method:
+Use the lightest foundation- and genre-permitted method:
 
 ```text
-1. proximity and whitespace
-2. alignment and text measure
-3. asymmetrical placement
-4. subtle tonal or texture shift when allowed
-5. line or surface only when the selected genre and function allow it
+1. proximity and relational spacing
+2. hierarchy and text measure
+3. shared alignment anchors
+4. intentional asymmetrical placement
+5. subtle tonal or texture shift when allowed
+6. line or surface only when function and genre allow it
 ```
 
-A requirement for figure/ground separation never overrides a genre rule that forbids section borders or background swaps.
+A grouping requirement never justifies breaking a genre line/surface budget.
 
 ### Whitespace rhythm
 
 ```text
-Hero:    deliberate opening interval with an anchor
-Content: consistent large rhythm adapted to content and viewport
-Contact: enough room to resolve the page without becoming a boxed campaign CTA
-Footer: quiet closing interval
+Hero:       deliberate opening interval with an anchor
+Section:    clear parent introduction and subordinate child group
+Collection: sibling rhythm tighter than parent-to-collection rhythm
+Closing:    enough room to resolve without becoming a boxed campaign CTA
+Footer:     quiet closing interval
 ```
 
-Do not fill intentional space because it appears unfinished.
+Do not fill intentional space because it appears unfinished. Do not preserve empty space that has no understandable relationship or anchor.
 
 ## Collection layout
 
-Choose from evidence weight and user task, not item count alone.
+Choose from evidence weight, hierarchy, and user task, not item count alone.
 
 ```text
 primary evidence   → weighted sequence, case-study excerpt, or asymmetric feature
@@ -121,9 +224,22 @@ interactive group  → surface only when state and containment require it
 
 Live, planned, and experimental work must not receive equal visual weight by default.
 
+For every collection declare:
+
+```yaml
+collection_hierarchy:
+  parent_intro: <role>
+  child_group: <role>
+  sibling_items: <role>
+  parent_to_group_interval: <token/value>
+  sibling_interval: <token/value>
+  child_title_role: <type role>
+  supporting_role: <type role>
+```
+
 ## Space-first genre policy
 
-For `zen-minimalist`, `editorial-minimal`, or any explicitly space-led direction, load and enforce the genre line/surface budget.
+For `zen-minimalist`, `editorial-minimal`, or any explicitly space-led direction, load and enforce the genre line/surface budget after foundation grouping is solved.
 
 ### Zen containment order
 
@@ -155,19 +271,17 @@ form controls, focus rings, required tables, diagrams, charts, and explicit data
 
 ### Card-to-line substitution failure
 
-This is a reusable defect pattern:
-
 ```text
-iteration N: every item is a card
+iteration N:   every item is a card
 iteration N+1: cards removed, every item receives border-top/border-bottom
-result: containment density remains; only the drawing primitive changed
-verdict: genre failure, not successful refinement
+result:        containment density remains; only the drawing primitive changed
+verdict:       genre failure, not successful refinement
 ```
 
 Preferred replacements:
 
 ```text
-project separation    → larger vertical gaps + alternating alignment or measure
+project separation    → hierarchy + parent/group/sibling spacing
 principle separation  → numbered prose with rhythm only
 capability separation → definition list or grouped sentence
 contact links         → open stack with proximity and hover color
@@ -240,11 +354,23 @@ violation:
   verdict: fail
 ```
 
-## Source-level genre conformance check
+## Source-level conformance checks
 
 Before handing off to rendered verification, inspect changed files for implementation symptoms.
 
-For zen or space-led surfaces, search relevant files for:
+### Foundation symptoms
+
+```text
+repeated equal spacing at every hierarchy level
+child titles using the same role as parent headings
+per-item translate/margin nudges
+conflicting container widths
+visual order that differs from semantic order
+metadata below readable size
+parallel token systems
+```
+
+### Zen or space-led symptoms
 
 ```text
 border-t border-b border-y divide-y divide-x
@@ -258,11 +384,12 @@ Classify each occurrence:
 - token: <class or style>
   region: <component>
   purpose: <functional reason | decorative grouping>
+  foundation_allowed: <yes | no>
   genre_allowed: <yes | no>
-  action: <keep | remove | replace with space>
+  action: <keep | remove | replace relationally>
 ```
 
-A source scan is not visual verification, but obvious genre violations must be fixed before rendering.
+A source scan is not visual verification, but obvious foundation or genre violations must be fixed before rendering.
 
 ## First impression
 
@@ -270,6 +397,7 @@ A source scan is not visual verification, but obvious genre violations must be f
 H1 = stance, not job-title boilerplate
 Supporting line = what is actually built or changed
 Primary action = meaningful next step
+First viewport = one clear focal path, not several equal anchors
 ```
 
 ## Accessibility baseline
@@ -298,16 +426,17 @@ Accessibility controls are not removed to satisfy visual minimalism.
 Score 1–5. Any axis below 3 requires revision.
 
 ```text
-P Philosophy   — every element has a reason
-H Hierarchy    — focal order is immediate
-E Execution    — spacing and alignment are coherent
-S Specificity  — content is concrete
-R Restraint    — unnecessary interruption removed
-V Variety      — not another generic template
-G Genre        — loaded hard constraints are visibly respected
+F Foundation  — hierarchy, grouping, alignment, balance, and flow are coherent
+P Philosophy  — every element has a reason
+H Hierarchy   — focal and nested role order is immediate
+E Execution   — spacing and alignment are coherent
+S Specificity — content is concrete
+R Restraint   — unnecessary interruption removed
+V Variety     — not another generic template
+G Genre       — loaded hard constraints are visibly respected
 ```
 
-For zen, `G` fails when line density, surface density, or motion exceeds the genre budget even if individual elements look tasteful.
+For zen, `G` fails when line density, surface density, or motion exceeds the genre budget even if individual elements look tasteful. `F` fails for every genre when parent/child/sibling relationships, grouping, balance, or flow remain ambiguous.
 
 ## Slop red list
 
@@ -322,6 +451,9 @@ Auto-revise when present without a functional, brief-specific reason.
 ❌ three consecutive card-led major sections
 ❌ every metadata value turned into a pill
 ❌ giant rounded CTA panel used only for impact
+❌ parent, child group, and siblings using equal spacing and visual weight
+❌ grouping repaired with boxes before proximity and hierarchy are fixed
+❌ arbitrary offsets used to fake balance or asymmetry
 ❌ minimalist portfolio with no real work evidence
 ❌ zen page where card removal becomes repeated hairline rows
 ❌ structural section borders after a zen direction is locked
@@ -335,7 +467,9 @@ Preserve the existing theme mechanism. Verify both modes and reversibility.
 ```text
 □ light inspected
 □ dark inspected
+□ hierarchy and grouping survive contrast changes
 □ toggle label describes next action
 □ toggle remains reversible
+□ foundation gates pass in both themes
 □ genre line/surface budget passes in both themes
 ```
