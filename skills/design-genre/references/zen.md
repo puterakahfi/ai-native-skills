@@ -1,15 +1,18 @@
 # Genre: Zen / Minimalist
 
-> Still, deliberate, unhurried — every element earns its place.
+> Still, deliberate, unhurried — every element earns its place, and empty space performs real structural work.
 
 ## Signal Words
-```
+
+```text
 zen, minimalist, ma, stillness, restraint, breathe, quiet, monk,
-sparse, wabi-sabi, negative space, personal portfolio (senior/expert level)
+sparse, wabi-sabi, negative space, personal portfolio (senior/expert level),
+space-led, calm, low interruption
 ```
 
 ## Voice & Copy
-```
+
+```text
 Voice:     Still, deliberate, unhurried
 Copy tone: Short sentences, no filler. Specificity over warmth.
            "I build systems meant to last." NOT "passionate engineer".
@@ -17,96 +20,183 @@ Copy tone: Short sentences, no filler. Specificity over warmth.
 ```
 
 ## Typography
-```
-Pair:      Light-weight display serif (wt 300) + Light sans (wt 300–400)
-           Recommended: Fraunces 300 + Inter 300
+
+```text
+Pair:      Light-weight display serif or restrained display sans + light sans
+           Recommended starting point: Fraunces 300 + Inter 300
 
 HIERARCHY RULE: restraint = no decoration, NOT no size
-  H1: weight 300 + size LARGE (clamp text-3xl → text-4xl) — dominant focal object
-  H2: weight 300 + size medium (clamp text-xl → text-2xl) — subordinate
-  body: weight 300–400 + size base — quiet
-  ❌ weight 300 + size small → hierarchy collapses → FAIL
-  ✅ weight 300 + size large → zen dominant without loudness
+  H1: weight 300–500 + LARGE size — dominant focal object
+  H2: lighter or smaller — clearly subordinate
+  body: weight 300–400 + quiet readable measure
+  ❌ light weight + small size everywhere → hierarchy collapses
+  ✅ one large calm focal statement → zen dominance without loudness
 
-H1/body ratio: ≥ 3.5x (heavier fonts cap at 3.0x — not applicable here)
-Leading: 1.7–1.8 · Hero bio: max 44ch
-ALL-CAPS: forbidden — use letter-spacing 0.08–0.12em on labels instead
-font-variation-settings: "wght" 300 — explicit for variable fonts
+Leading: generous; body line-height usually 1.65–1.8
+Hero bio: max 44–52ch
+Repeated ALL-CAPS labels: avoid; sentence case or quiet tracked labels are preferred
 ```
 
 ## Color
-```
-Dark mode primary
-Bg: warm dark (#0c0b09) — NOT cold black (#000000)
-Ink steps: muted / subtle / ink / bright (4 steps only)
-Accent: ONE purpose-only — sage/stone for status ONLY
-  sage dark:  #7a9e7a
-  sage light: #4a7a4a
 
-FORBIDDEN: amber/orange/yellow (#d97706 and variants)
-border: rgba(255,255,248,0.06) — barely-there
+```text
+Dark mode:
+  bg: warm dark, not cold absolute black
+  ink: muted / subtle / ink / bright — limited steps
+  accent: one purpose-only sage/stone role
 
-LIGHT MODE:
-  bg = pure white (#ffffff) — NOT warm ivory (Kanso: remove before adding)
-  Work rows: transparent on white (no card needed)
+Light mode:
+  pure white or a deliberately approved paper tone
+  work rows remain transparent; no card is needed
+
+Border color, when an allowed exception exists:
+  barely visible, never a recurring page motif
+
+FORBIDDEN:
+  startup-blue takeover, amber/orange/yellow drift, neon, gradient mesh,
+  multiple decorative accents, contrast used to compensate for weak spacing
 ```
 
-## Layout — 7 Wabi-Sabi Principles Applied
-```
-Fukinsei (不均斉): asymmetry — 2-col about (heading left, content right)
-Kanso (簡素):     simplicity — remove before adding
+## Layout — Wabi-Sabi Principles Applied
+
+```text
+Fukinsei (不均斉): asymmetry — balance without mirrored grids
+Kanso (簡素):     remove before adding
 Seijaku (静寂):   silence — space is the divider, not lines
+Ma (間):          intentional intervals with a visual anchor
+Shibui (渋い):    quiet depth; no spectacle
+```
 
-LINE RULE (Seijaku + oneness):
-  ZERO structural borders between sections
-  Borders split the page = NOT zen = FAIL
-  Section separation = padding rhythm ONLY
-  Exception: work-row border-top — one internal list system, not section divider
-  ❌ hero border-bottom → splits identity from work
-  ❌ section border-top → fragments oneness
-  ✅ padding change → page breathes as one whole
+### Structural line contract
 
-VOID RULE (Ma 間 — intentional space):
-  Every space needs a visual anchor
-  Hero MUST have anchor below bio: contact row OR scroll cue
-  Without anchor → hero reads abandoned → FAIL
-  Section padding: clamp(64px,8vh,80px) consistent rhythm
+This is a hard genre constraint.
 
-Work rows:
-  Dark: subtle surface bg (warm-700 #222018) — Shibui subtle lift
-  Light: transparent — white page is enough
+```text
+SECTION DIVIDERS
+  allowed: 0
+  section border-top / border-bottom / border-y → FAIL
+
+REPEATED ROW SEPARATORS
+  default: 0
+  do not remove cards and replace every card boundary with a hairline
+
+DENSE LIST EXCEPTION
+  one list system may use ONE leading or trailing hairline for orientation
+  do not place a border between every item
+  prefer spacing, indentation, numbering, alignment, and typographic weight
+
+VISIBLE LINE BUDGET
+  target: 0 structural lines in most viewports
+  maximum: 1 visible structural hairline in a viewport, excluding controls,
+           form fields, focus rings, and necessary data-table grids
+```
+
+Hairlines are not automatically zen. Repeated faint lines still fragment the page and increase visual interruption.
+
+```text
+❌ hero border-bottom
+❌ border-y around every section
+❌ border-top on every project, principle, capability, or contact row
+❌ card removal followed by divider proliferation
+✅ larger gap between sections
+✅ asymmetric indentation
+✅ numbered rows separated by rhythm only
+✅ changes in measure, alignment, and typographic emphasis
+```
+
+### Void rule
+
+```text
+Every large empty interval needs a visual anchor before or after it.
+Hero should resolve into a CTA, contact cue, work preview, or quiet illustration.
+Empty space without relationship reads abandoned; intentional space reads composed.
+
+Section rhythm starting point:
+  clamp(64px, 8vh, 96px)
+Adapt from content length and viewport; do not fill space with containers.
+```
+
+### Containment grammar
+
+```text
+PRIMARY CONTAINERS
+  whitespace
+  alignment
+  text measure
+  asymmetric grid position
+  grouping by proximity
+
+SECONDARY CONTAINERS
+  a quiet image field
+  one rare anchor surface when interaction or comparison requires it
+
+NOT DEFAULT CONTAINERS
+  cards
+  borders
+  pills
+  section backgrounds
+  boxed CTA panels
 ```
 
 ## Motion
-```
+
+```text
 Stance: STILLNESS
-Only permitted: color-shift transition (150–200ms ease)
-Reveal: fade + translateY(6–8px), max 500ms
-NO: hover lift · bounce · glow · scale transforms
-prefers-reduced-motion: hard gate — must be respected
+Only permitted by default: color transition and restrained fade/translateY 6–8px
+No hover lift, bounce, glow, scale choreography, or motion on every row
+prefers-reduced-motion: hard gate
 ```
 
 ## Macrostructures
-```
+
+```text
 Marquee Hero (zen variant), Specimen, Studio, Atelier, Lumen
 ```
 
+A compatible macrostructure is still invalid when implemented with repeated section borders, equal cards, or dense metadata chrome.
+
 ## Nav & Footer
-```
-Nav:    minimal (N1a) — transparent until scrolled, bg+blur on scroll
-Footer: minimal (Ft1)
+
+```text
+Nav: minimal, low contrast, transparent until scrolling only when needed
+Footer: minimal and open; whitespace may separate it from contact
 ```
 
-## Slop Gates
+## Zen Review Questions
+
+```text
+1. What was removed rather than restyled?
+2. Where does empty space perform grouping or separation?
+3. What is the single focal object in this viewport?
+4. How many structural lines are visible?
+5. Could any remaining border become spacing instead?
+6. Did card removal merely become hairline-divider repetition?
+7. With color removed, does the composition remain calm and legible?
 ```
-❌ Amber/orange/yellow accent anywhere
-❌ ALL-CAPS nav — sentence case only
-❌ Hover lift or box-shadow glow on interactive elements
-❌ Hero without anchor below bio
-❌ Bold/700+ weight in body text
-❌ Background color swap between sections (borders too)
-❌ More than 1 accent color
-✅ Sage/stone for single-purpose status only
-✅ Dot-grid texture at opacity ≤ 0.03
-✅ One strong focal object per viewport (H1)
+
+## Hard Failures
+
+```text
+❌ structural section borders
+❌ repeated border-separated rows across multiple sections
+❌ more than one visible structural line in a typical viewport without domain need
+❌ card-to-hairline substitution
+❌ background color swap between ordinary sections
+❌ hover lift or shadow glow
+❌ repeated badges/pills for plain metadata
+❌ bold body copy and multiple competing focal objects
+❌ more than one decorative accent
+❌ empty space filled because it feels "unfinished"
 ```
+
+## Allowed Exceptions
+
+```text
+✅ form controls and focus rings
+✅ required data-table or diagram lines
+✅ one rare list boundary hairline
+✅ one strong focal object per viewport
+✅ near-invisible texture when it does not create another surface
+```
+
+Every exception needs a functional reason in the run state. "It looked too empty" is not a functional reason.
