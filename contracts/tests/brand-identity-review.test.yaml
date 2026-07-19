@@ -1,0 +1,102 @@
+skill_test:
+  skill: brand-identity-review
+  version: "1.0.0"
+  description: Verify brand identity review evaluates meaning, construction, recognition, system consistency, evidence, and similarity risk without claiming legal clearance.
+
+  cases:
+    - id: concept-to-symbol-must-be-integrated
+      description: A compound brand concept must become one understandable symbol rather than unrelated decoration.
+      trigger: "Review logo brand Panda Mie. Brief meminta konsep panda dan mie menyatu agar langsung dipahami. Output hanya menaruh ikon kepala panda di kiri dan mangkuk mie terpisah di kanan tanpa hubungan bentuk."
+      design_gate_ids: [BI1, BI2]
+      must_contain:
+        - "BI2"
+        - "FAIL"
+        - "concept-to-symbol"
+        - "separate"
+      must_not_contain:
+        - "BI2: PASS"
+        - "strong concept integration"
+      quality_gates_tested:
+        - concept_translation_is_not_decoration
+        - brand_context_precedes_relevance_score
+
+    - id: variant-drift-is-critical-for-system-release
+      description: Required variants that change core geometry fail identity-system consistency.
+      trigger: "Review identity system untuk release. Primary mark, black version, dan inverse version tersedia, tetapi upper loop, counter width, dan terminal shape berubah di setiap variant sehingga terlihat seperti logo berbeda."
+      design_gate_ids: [BI5, BI8, BI11]
+      must_contain:
+        - "BI11"
+        - "CRITICAL"
+        - "variant"
+        - "construction"
+      must_not_contain:
+        - "PASS"
+        - "cosmetic only"
+      quality_gates_tested:
+        - required_variants_preserve_one_identity
+        - contextual_hard_gate_blocks_release
+
+    - id: small-size-collapse-blocks-declared-use
+      description: A mark required as favicon cannot pass when its critical counter disappears at the declared size.
+      trigger: "Logo wajib dipakai sebagai favicon 16px. Pada test 16px, counter huruf P menutup dan bentuknya terbaca seperti angka 8 penuh, bukan P."
+      design_gate_ids: [BI4, BI7]
+      must_contain:
+        - "BI7"
+        - "CRITICAL"
+        - "16px"
+        - "recognition"
+      must_not_contain:
+        - "production-ready"
+        - "BI7: PASS"
+      quality_gates_tested:
+        - declared_minimum_size_requires_direct_test
+        - recognition_failure_blocks_required_use
+
+    - id: one-mockup-cannot-prove-complete-system
+      description: One large color mockup cannot prove construction, variants, reproduction, or release readiness.
+      trigger: "Saya hanya punya satu mockup logo warna di billboard. Tidak ada vector master, monochrome, inverse, minimum-size test, lockup, clear-space, atau export package. Nyatakan identity system production-ready."
+      design_gate_ids: [BI5, BI7, BI8, BI9, BI10, BI15]
+      must_contain:
+        - "NOT_VERIFIED"
+        - "vector"
+        - "monochrome"
+        - "production-ready"
+      must_not_contain:
+        - "PASS"
+        - "evidence complete"
+      quality_gates_tested:
+        - application_mockup_does_not_replace_master_evidence
+        - missing_evidence_blocks_release_claim
+
+    - id: similarity-screening-is-not-legal-clearance
+      description: A design comparison may flag risk but cannot provide trademark clearance.
+      trigger: "Bandingkan monogram ini dengan lima kompetitor yang saya berikan. Bentuknya sangat dekat dengan salah satu kompetitor. Berikan trademark clearance final."
+      design_gate_ids: [BI3, BI16]
+      must_contain:
+        - "BI16"
+        - "HIGH"
+        - "legal"
+        - "not provided"
+      must_not_contain:
+        - "trademark cleared"
+        - "legally available"
+        - "guaranteed original"
+      quality_gates_tested:
+        - obvious_similarity_is_escalated
+        - design_screening_does_not_claim_legal_clearance
+
+    - id: complete-evidence-can-pass-through-facade
+      description: A complete coherent identity system can receive adapter-covered domain approval while keeping legal boundaries explicit.
+      trigger: "Review full identity system. Brand brief, semantic rationale, canonical vectors, optical overlays, size tests, mono/inverse, clear space, lockups, variants, typography, color, applications, export package, and comparison set are available. All applicable BI gates pass and no material similarity risk is found."
+      design_gate_ids: [BI1, BI2, BI3, BI4, BI5, BI6, BI7, BI8, BI9, BI10, BI11, BI12, BI13, BI14, BI15, BI16]
+      must_contain:
+        - "ADAPTER_COVERED"
+        - "PASS"
+        - "brand-identity-review"
+        - "legal clearance: not provided"
+      must_not_contain:
+        - "LIMITED REVIEW"
+        - "trademark guaranteed"
+      quality_gates_tested:
+        - complete_domain_evidence_can_pass
+        - facade_mapping_preserves_legal_boundary
