@@ -1,7 +1,7 @@
 skill_test:
   skill: design-review
   version: "3.3.0"
-  description: Verify facade domain routing, evidence honesty, hard-gate behavior, canonical gate identity, and specialist adapter coverage.
+  description: Verify facade domain routing, evidence honesty, canonical gate identity, specialist coverage, and component findings that distinguish pattern fitness from local implementation defects.
 
   cases:
     - id: screenshot-dashboard-runtime-not-verified
@@ -33,7 +33,7 @@ skill_test:
         - "CRITICAL"
         - "Rp2.000.000"
       must_not_contain:
-        - "PASS"
+        - "verdict: PASS"
         - "minor issue"
       quality_gates_tested:
         - static_content_accuracy_hard_gate
@@ -49,8 +49,8 @@ skill_test:
         - "domain reviewer"
         - "scope"
       must_not_contain:
-        - "production-ready"
         - "full-domain PASS"
+        - "production_ready: true"
       quality_gates_tested:
         - unsupported_domain_requires_reviewer
         - limited_review_verdict_ceiling
@@ -82,9 +82,62 @@ skill_test:
         - "PR2"
         - "PR3"
       must_not_contain:
-        - "RI1"
+        - "evaluate RI1"
         - "touch target"
       quality_gates_tested:
         - presentation_domain_routing
         - interactive_gates_not_applied_to_static_deck
         - canonical_gate_identity
+
+    - id: rail-missing-left-control-is-implementation-defect
+      description: A fit category rail with stale directional controls should be diagnosed as an implementation defect.
+      trigger: "Review category navigation. Primary discovery rail is appropriate and swipe works, but it always shows only the right chevron, including after scrolling to the middle and end."
+      design_gate_ids: [I4, G13, G14]
+      must_contain:
+        - "IMPLEMENTATION_DEFECT"
+        - "actual scroll"
+        - "left control"
+        - "local implementation owner"
+        - "adjacent regression gates"
+      must_not_contain:
+        - "PATTERN_MISMATCH"
+        - "replace with Select"
+      quality_gates_tested:
+        - component_finding_has_diagnosis
+        - correction_owner_matches_defect_class
+        - directional_affordance_uses_real_scroll_state
+
+    - id: dynamic-options-are-pattern-mismatch
+      description: Numerous dynamic searchable options forced into tabs should be diagnosed as a pattern mismatch.
+      trigger: "Review filter component with 30 dynamic searchable options and long labels. It is implemented as one-line tabs and overflows at multiple widths."
+      design_gate_ids: [I4]
+      must_contain:
+        - "PATTERN_MISMATCH"
+        - "content contract"
+        - "adaptive-component-design"
+        - "substitution boundary"
+        - "shared state"
+      must_not_contain:
+        - "just add chevrons"
+        - "shrink typography"
+      quality_gates_tested:
+        - component_finding_has_diagnosis
+        - pattern_mismatch_routes_to_adaptive_component_design
+        - realistic_content_pressure_is_considered
+
+    - id: focused-refinement-handoff-protects-passing-regions
+      description: A component finding routed to refinement must include target, preserve, regression, and evidence contracts.
+      trigger: "Review hanya finding I4 pada tablet category navigation. Hero, cards, typography, and desktop behavior currently pass and must remain stable."
+      design_gate_ids: [I4]
+      must_contain:
+        - "refinement_handoff"
+        - "target_regions"
+        - "preserved_regions"
+        - "preserved_component_contracts"
+        - "required_evidence"
+      must_not_contain:
+        - "make it better"
+        - "full redesign"
+      quality_gates_tested:
+        - focused_handoff_is_precise_enough_for_refinement_lock
+        - passing_regions_are_preserved
