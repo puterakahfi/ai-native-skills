@@ -41,6 +41,9 @@ genre_contract:
   containment_rules: []
   density_rules: []
   line_or_surface_budget: []
+  alignment_rails: []
+  arbitrary_offset_budget: <number>
+  responsive_collapse_rules: []
   color_rules: []
   motion_rules: []
   hard_failures: []
@@ -109,6 +112,14 @@ design_direction:
   genre_reference: <path>
   macrostructure: <name>
   visual_language: <short definition>
+  page_shell: <width/token/primitive>
+  primary_alignment_rails:
+    - <label rail>
+    - <main heading rail>
+    - <supporting content rail>
+    - <action rail if applicable>
+  focal_offsets: []
+  responsive_rail_collapse: <rule>
   justified_by:
     - signal: <signal>
       reason: <reason>
@@ -118,6 +129,8 @@ design_direction:
   inherited_hard_constraints:
     - <constraint copied from genre contract>
 ```
+
+A macrostructure is incomplete until its page shell and persistent alignment rails are declared. Local component grids must inherit from those rails instead of inventing new start positions.
 
 ## Phase 3C: Visual language definition
 
@@ -136,16 +149,25 @@ Core:
   Low interruption→ few containers, badges, surfaces, and lines
 
 Containment:
-  whitespace > alignment > proximity > text measure > rare surface
+  whitespace > shared alignment rails > proximity > text measure > rare surface
   structural section borders = 0
   repeated row separators = 0 by default
   dense-list exception = one leading or trailing hairline, not per row
   visible structural lines = target 0, maximum 1 per typical viewport
 
+Alignment:
+  one persistent page shell across nav, hero, sections, contact, and footer
+  define 2–4 reusable vertical start positions
+  major labels, headings, titles, content, and actions reuse those rails
+  asymmetry comes from span, measure, and whitespace—not repeated manual nudging
+  arbitrary per-item offset budget = 0 by default
+  one documented focal illustration offset may be allowed
+
 Layout:
   asymmetrical whitespace, narrow measures, intentional intervals
   no equal-weight card catalog
   no card-to-hairline substitution
+  no unrelated section-specific alignment systems
 
 Typography:
   fewer sizes, lighter weights, generous leading, one display moment
@@ -163,7 +185,11 @@ Auto-fail after a zen request:
 ❌ more than one visible structural line in a typical viewport without domain need
 ❌ every section has a headline followed by a ruled list
 ❌ metadata becomes repeated badges, tags, or labels
-❌ motion or decoration is used before spacing and silence are solved
+❌ repeated translate-x, arbitrary percentage margins, or padding offsets create row drift
+❌ headings and body blocks begin on unrelated rails without hierarchy reason
+❌ nav, page content, and footer use accidentally different shells
+❌ mobile reading order zig-zags because desktop offsets survive collapse
+❌ motion or decoration is used before spacing, alignment, and silence are solved
 ```
 
 Zen check before production:
@@ -173,7 +199,10 @@ Zen check before production:
 2. Which relationships are communicated by space alone?
 3. What is the focal object in each viewport?
 4. What is the structural line budget?
-5. Which generic component defaults are explicitly overridden?
+5. What are the persistent page rails?
+6. Which elements are allowed to break a rail, and why?
+7. How do the rails collapse on mobile?
+8. Which generic component defaults are explicitly overridden?
 ```
 
 ### Other genres
@@ -186,7 +215,7 @@ Classify work into layers. Each iteration names one primary layer.
 
 ```text
 Layer 0: Strategy    — why the surface exists, what is remembered first
-Layer 1: UI          — structure, typography, color, spacing, hierarchy
+Layer 1: UI          — structure, typography, color, spacing, hierarchy, alignment rails
 Layer 2: UX          — navigation, CTA clarity, states, accessibility
 Layer 3: Voice       — copy specificity, labels, status language
 Layer 4: Interaction — hover, focus, scroll, theme, reduced motion
@@ -197,11 +226,12 @@ Layer 6: Verification— browser checks, DOM probes, genre conformance, diff
 ### Dependency rule
 
 ```text
-Strategy failure → blocks UI polish
-UI failure       → blocks Delight
-UX failure       → blocks final Verification
-Genre failure    → reopens UI direction; do not treat as local polish
-Voice failure    → blocks motion/illustration polish
+Strategy failure  → blocks UI polish
+UI failure        → blocks Delight
+Alignment failure → reopens UI structure; do not patch with local offsets
+UX failure        → blocks final Verification
+Genre failure     → reopens UI direction; do not treat as local polish
+Voice failure     → blocks motion/illustration polish
 ```
 
 ### Iteration declaration
@@ -214,6 +244,8 @@ iteration:
   not_touching: []
   success_criteria: []
   genre_constraints_under_test: []
+  alignment_rails_under_test: []
+  forbidden_local_offsets: []
 ```
 
 ### Delight classification
@@ -235,6 +267,7 @@ Delight gates:
 □ has a named role
 □ removable without breaking comprehension
 □ respects the selected genre contract
+□ respects the declared page rails unless it is the documented focal exception
 □ lightweight and accessible
 ```
 
@@ -246,4 +279,5 @@ Common failures:
 ❌ figure/ground mismatch
 ❌ generic genre motif
 ❌ using lines, surfaces, or texture to fill intentional emptiness
+❌ using illustration offsets as permission for unrelated content drift
 ```
