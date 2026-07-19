@@ -1,9 +1,9 @@
 ---
 name: skill-eval
-description: Skill application verifier — tests whether a skill was actually applied (behavior + gate compliance) or just loaded and ignored. Produces PASS/FAIL per quality gate.
+description: Skill application verifier — evaluates per-case agent outputs against regression contracts and classifies behavior as APPLIED, PARTIAL, GHOST, or INCOMPLETE. Separates contract validation from real behavioral evaluation.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/skill-eval.contract.yaml
@@ -12,163 +12,234 @@ metadata:
 
 # Skill Eval
 
-## Classification Model
+`skill loaded` does not mean `skill applied`.
 
-```
-Skill loaded ≠ Skill applied
+```text
+APPLIED
+  every required behavior appears and no forbidden behavior appears
 
-1. Load skill → read → ignore → answer from general knowledge  [GHOST]
-2. Load skill → partially follow → gates violated              [PARTIAL]
-3. Load skill → fully apply → output matches contract          [APPLIED]
-```
+PARTIAL
+  skill-specific behavior is present, but assertions or ordering rules fail
 
-**Run when:** adding a new skill, regression testing after model/prompt change, debugging agent drift, quality audit.
+GHOST
+  forbidden/generic behavior appears, indicating the skill was ignored or overridden
 
----
-
-## 3 Levels of Verification
-
-### Level 1: Structural Check
-```
-skill: role-switcher
-expected structure:
-  - "Roles active: ..." line at top
-  - ## <Lens> sections
-  - ## Synthesis section with P1/P2/P3
-
-verdict: PASS if structure present, FAIL if flat generic output
+INCOMPLETE
+  the required per-case output was not supplied
 ```
 
-### Level 2: Gate Compliance Check
-```
-skill: systematic-debugging
-gate: understand_before_fixing
-test: send a bug report
-expected: "root cause" appears BEFORE "fix" in output
-violation: agent proposes fix in first paragraph → FAIL
-```
+Use after skill changes, routing changes, model upgrades, prompt changes, AGENTS/context changes, or a verified regression.
 
-### Level 3: Generic Response Detection
-```
-Generic response signals (FAIL):
-- "Sure! Here are some suggestions..."
-- "Great question! Generally speaking..."
-- "I'll help you with that..."
+## Two Evaluation Layers
 
-Skill-applied signals (PASS):
-- Structured output matching skill's output format
-- References skill-specific frameworks/checklists
-- States active roles / active phase
+### Contract validation
+
+Checks that test files are structurally executable:
+
+```text
+skill exists
+filename matches skill name
+test version matches skill version
+case IDs are unique
+triggers are non-empty
+assertions are well formed
+positive and negative rules do not directly contradict
+canonical runner accepts the schema
 ```
 
----
+Contract validation does not prove an agent applied the skill.
 
-## How to Run an Eval
+### Behavioral evaluation
 
-### Step 1: Load test case
-```yaml
-# from contracts/tests/<skill>.test.yaml
-skill: role-switcher
-case: design-audit
-trigger: "Audit design ini — apa yang kurang?"
-must_contain: ["Roles active:", "master-design", "Synthesis"]
-must_not_contain: ["Here are some suggestions", "Generally speaking"]
+For each case:
+
+```text
+load the target skill
+send the exact trigger without hints
+capture the complete agent output
+save one output file for that case
+run the canonical evaluator
 ```
 
-### Step 2: Send trigger
+Behavioral evaluation requires real outputs. Synthetic CI smoke outputs only prove runner compatibility.
+
+## Contract Format
+
+Store cases at:
+
+```text
+contracts/tests/<skill-name>.test.yaml
 ```
-[Load skill: role-switcher]
-[Send trigger verbatim — do not add context or hints]
-```
-
-### Step 3: Evaluate output
-```
-SKILL EVAL RESULT — role-switcher / design-audit
-─────────────────────────────────────────────────
-Trigger: "Audit design ini — apa yang kurang?"
-
-must_contain:
-  [✓] "Roles active:"
-  [✓] "master-design"
-  [✓] "Synthesis"
-  [✗] "ux-psychology"    ← MISSING
-
-must_not_contain:
-  [✓] "Here are some suggestions" — not found
-
-Gate compliance:
-  [✓] intent_must_be_detected_before_role_selection
-  [✗] multi_role_output_must_be_structured_by_lens — ux-psychology lens absent
-
-Verdict: PARTIAL — skill loaded but ux-psychology role not activated
-```
-
-### Step 4: Classify
-
-| Classification | Signal |
-|---|---|
-| **APPLIED** | All must_contain met, no must_not_contain violated, gates honored |
-| **PARTIAL** | Some must_contain missing OR some gates violated |
-| **GHOST** | must_not_contain violated (generic response) OR no skill structure in output |
-
----
-
-## Writing New Test Cases
 
 ```yaml
-# contracts/tests/<skill-name>.test.yaml
 skill_test:
-  skill: <skill-name>
-  version: "0.1.0"
-  description: <what this tests>
+  skill: role-switcher
+  version: "1.2.0"
+  description: Verify bounded role composition.
 
   cases:
-    - id: <case-id>
-      description: <what this case verifies>
-      trigger: "<exact prompt to send — no hints>"
+    - id: mobile-tabs-composition
+      description: Cross-device acceptance needs owner, specialist, and reviewer.
+      trigger: "Tentukan apakah tabs ini cocok untuk mobile dan tablet lalu review implementasinya."
       must_contain:
-        - "<string unique to skill behavior>"
+        - "master-design"
+        - "adaptive-component-design"
+        - "design-review"
+      must_contain_one_of:
+        - "BUILT_IN"
+        - "built-in interactive"
       must_not_contain:
-        - "<generic response string that signals skill not applied>"
-      must_contain_one_of:        # optional — verdict patterns
-        - "APPROVED"
-        - "REQUEST CHANGES"
-      sequence_required:          # optional — ordering check
-        - pattern: "root cause"
-          must_come_before: "fix|solution"
+        - "all skills"
+      sequence_required:
+        - pattern: "Owner"
+          must_come_before: "Specialist|Reviewer"
       quality_gates_tested:
-        - <gate_id from contract>
+        - one_owner
+        - reviewer_facade_present
 ```
 
-**Rules for good test cases:**
-- Trigger = canonical use case — most natural way to invoke the skill (no hints)
-- `must_contain` strings must be **unique to skill behavior** — not things any LLM would say
-- `must_not_contain` must catch **generic LLM responses** — the "skill not applied" signal
-- One test case per quality gate where possible
+Rules:
 
----
+- The trigger is natural and contains no instruction to apply the skill.
+- Assertions are specific enough to distinguish skill behavior from generic prose.
+- Each case represents one coherent behavior or gate cluster.
+- `must_not_contain` targets meaningful regressions, not common words.
+- Test version matches `metadata["ai-native-skills.version"]` in the governing `SKILL.md`.
 
-## Automated Runner
+## Output Layout
+
+Recommended per-case layout:
+
+```text
+eval-outputs/
+├── design-review/
+│   ├── screenshot-dashboard-runtime-not-verified.txt
+│   └── logo-without-domain-reviewer-is-limited.txt
+└── workflow-router/
+    ├── audit-only-routes-to-design-audit.txt
+    └── known-tabs-failure-routes-to-refinement.txt
+```
+
+Do not evaluate several different triggers against one shared output. Each case requires its own generated response.
+
+## Running Contract Validation
+
+Validate repository rules and create deterministic compatibility fixtures:
 
 ```bash
-./scripts/run-eval.sh role-switcher          # single skill
-./scripts/run-eval.sh --all                  # all skills
-./scripts/run-eval.sh --all --report eval-results/$(date +%Y%m%d).json
+python scripts/validate-eval-contracts.py
+
+python scripts/validate-eval-contracts.py \
+  --write-smoke-outputs .tmp/eval-smoke-outputs
 ```
 
----
+Validate contracts through the canonical `ai-native-core` runner:
 
-## Regression Schedule & Anti-Patterns
+```bash
+AI_NATIVE_CORE_DIR=../ai-native-core \
+  bash scripts/run-eval.sh --all --validate-tests
+```
 
-Run after: skill update, model upgrade, weekly cron, AGENTS.md change.
-If a skill regresses (was APPLIED, now PARTIAL/GHOST) → patch the skill before merging.
+The GitHub workflow `.github/workflows/skill-eval.yml` performs these checks automatically.
 
-| Anti-Pattern | Why It Fails |
+## Running Behavioral Evals
+
+One skill with per-case outputs:
+
+```bash
+AI_NATIVE_CORE_DIR=../ai-native-core \
+  bash scripts/run-eval.sh \
+    --skill design-review \
+    --output-dir eval-outputs \
+    --report-json eval-results/design-review.json
+```
+
+One specific case:
+
+```bash
+AI_NATIVE_CORE_DIR=../ai-native-core \
+  bash scripts/run-eval.sh \
+    --skill design-review \
+    --case screenshot-dashboard-runtime-not-verified \
+    --output-file eval-outputs/design-review/screenshot-dashboard-runtime-not-verified.txt
+```
+
+All skills:
+
+```bash
+AI_NATIVE_CORE_DIR=../ai-native-core \
+  bash scripts/run-eval.sh \
+    --all \
+    --output-dir eval-outputs \
+    --report-json eval-results/all.json
+```
+
+The wrapper resolves the runner from:
+
+```text
+AI_NATIVE_CORE_DIR
+.ai-native-skills/.deps/ai-native-core
+../ai-native-core
+```
+
+## Classification Rules
+
+```text
+APPLIED
+  all must_contain assertions pass
+  at least one must_contain_one_of option passes when declared
+  no must_not_contain assertion is found
+  all sequence rules pass
+
+PARTIAL
+  one or more required assertions or sequence rules fail
+  and no forbidden behavior is detected
+
+GHOST
+  a forbidden pattern is detected
+
+INCOMPLETE
+  a per-case output file is missing
+```
+
+A non-APPLIED result exits non-zero.
+
+## Report Requirements
+
+A useful report includes:
+
+```text
+skill and case ID
+exact trigger provenance
+model/runtime/context version
+classification
+failed assertions
+raw output location
+report timestamp
+```
+
+Do not patch a skill from a failed eval until the failure is classified as:
+
+```text
+skill instruction gap
+routing/composition gap
+context conflict
+model behavior drift
+test contract defect
+local product override
+```
+
+## Anti-Patterns
+
+| Anti-pattern | Why it fails |
 |---|---|
-| Test with leading context ("using the role-switcher skill...") | Hints the agent, not a real test |
-| must_contain: "good" | Too generic — any LLM output contains "good" |
-| must_not_contain: "the" | Too broad — will always fail |
-| Only test structural output, skip gate compliance | Catches GHOST but misses PARTIAL |
-| Never re-run after model change | Model updates can silently break skill behavior |
+| Send a hint such as “use role-switcher” | Tests compliance with the hint, not natural activation |
+| Reuse one output for unrelated cases | Different triggers require different evidence |
+| Treat contract smoke as behavioral proof | Synthetic text never proves model behavior |
+| Use vague required words such as “good” | Generic outputs pass accidentally |
+| Use broad forbidden words such as “the” | Valid outputs fail accidentally |
+| Ignore missing outputs | Evaluation coverage is overstated |
+| Patch the skill before classifying the failure | Test, routing, or context defects get copied into skill knowledge |
+| Never rerun after model/context changes | Drift remains invisible |
 
-> **HARD RULE:** Trigger must be sent verbatim with no hints. Any context that names the skill invalidates the eval.
+> **Hard rule:** Send each case trigger verbatim without skill names, hints, or extra steering context.
