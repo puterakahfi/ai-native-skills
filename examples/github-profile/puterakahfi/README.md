@@ -1,109 +1,77 @@
 <!--
-Fixture generated with github-profile@1.0.0.
-Publish only after reviewing current-focus statements and rendering on GitHub.
+Fixture generated with github-profile@1.1.0.
+Keep dated statements and project status current when updating.
 -->
 
 <div align="center">
 
 # Putera Kahfi
 
-**Software Engineer · Native AI Engineering · Product & Design Systems**
+**Software Engineer building Native AI systems, products, and design infrastructure.**
 
-I design software systems and agent-driven development environments where roles,
-contracts, skills, evidence, and review gates are explicit.
+### Building systems where AI agents operate through explicit roles, contracts, skills, and evidence.
 
-[Explore the work](#selected-work) · [Read the engineering thesis](#native-ai-engineering) · [Connect](#connect)
+I connect software architecture, product design, and agent-driven development so agents can make traceable decisions, implement safely, verify results, and improve the system from evidence.
+
+[Building now](#building-now) · [Engineering thesis](#engineering-thesis) · [Connect](#connect)
 
 </div>
 
 ---
 
-## Native AI Engineering
+## Building now
 
-My work connects **software architecture**, **product design**, and **AI agents**.
-The goal is not to make agents generate more output. It is to make them work inside
-clear boundaries: understand context, make traceable decisions, implement safely,
-verify the result, and improve the system from evidence.
+Selected work that represents the system I am building—not a complete project archive.
 
-I am especially interested in:
+> ### [AI Native Skills →](https://github.com/puterakahfi/ai-native-skills)
+>
+> **Reusable engineering and design capabilities for coding agents.**
+>
+> Creator and maintainer — turns engineering, product, design, review, and delivery practices into bounded skills and workflows with explicit quality gates.
+>
+> `open source` · `actively refined`
 
-- domain-driven design and ports-and-adapters
-- agent roles, skills, workflows, context, and evaluation
-- product engineering with Go, PHP, Next.js, and Docker
-- design systems that remain useful across different surfaces and constraints
+> ### [Native AI Core →](https://github.com/puterakahfi/ai-native-core)
+>
+> **Runtime-agnostic contracts for Native AI Engineering.**
+>
+> Framework and contract designer — defines shared domain concepts, lifecycle rules, ports, skill contracts, workflow contracts, and adapter boundaries.
+>
+> `open source` · `public core`
 
-## Selected work
+> ### [VisualMate →](https://www.visualmate.id/)
+>
+> **AI Creative Control System for structured, reviewable creative workflows.**
+>
+> Product builder and system designer — connects product direction, workflow architecture, design-system thinking, and AI-assisted creative production.
+>
+> `product` · `private implementation`
 
-### [AI Native Skills](https://github.com/puterakahfi/ai-native-skills)
+## Engineering thesis
 
-Reusable agent skills and workflows for AI-native engineering across coding agents
-and development environments.
+> **AI agents should not only generate artifacts. They should improve the engineering system that produces them.**
 
-**Role:** Creator and maintainer  
-**Contribution:** Encodes engineering, product, design, review, and delivery practices
-as bounded capabilities with explicit quality gates.  
-**Current state:** Public and actively refined.
+```text
+CONTEXT → DECISION → IMPLEMENTATION → VERIFICATION → LEARNING
+```
 
-### [Native AI Core](https://github.com/puterakahfi/ai-native-core)
+- **Explicit boundaries over hidden assumptions.** Roles, contracts, ports, and ownership should be visible.
+- **Evidence before completion claims.** A generated result is not finished until it has been tested and reviewed.
+- **Universal principles, contextual implementation.** Architecture and design principles travel across mediums; implementation rules do not.
 
-A runtime-agnostic contract layer for Native AI Engineering.
+## Working across
 
-**Role:** Framework and contract designer  
-**Contribution:** Defines shared domain concepts, lifecycle rules, ports, skill
-contracts, workflow contracts, and adapter boundaries.  
-**Current state:** Public core used to keep runtime and product adapters aligned.
-
-### [VisualMate](https://www.visualmate.id/)
-
-An AI Creative Control System for turning creative work into structured,
-reviewable workflows rather than one-shot generation.
-
-**Role:** Product builder and system designer  
-**Contribution:** Product direction, workflow architecture, design-system thinking,
-and AI-assisted creative production.  
-**Current state:** Product work; implementation repositories remain private.
-
-## How I build systems
-
-**Architecture**  
-Domain-driven design, ports-and-adapters, API contracts, event-driven systems,
-and explicit ownership boundaries.
-
-**Product engineering**  
-Go, PHP, Next.js, Docker, modular systems, developer experience, and iterative delivery.
-
-**Native AI systems**  
-Agent roles, reusable skills, context engineering, workflow orchestration,
-decision provenance, behavioral evaluation, and review gates.
-
-**Design collaboration**  
-Information hierarchy, adaptive components, design systems, cross-medium design,
-and evidence-backed design review.
+- **Software architecture** — domain-driven design, ports-and-adapters, API contracts, event-driven systems, and explicit ownership boundaries.
+- **Product engineering** — Go, PHP, Next.js, Docker, modular systems, developer experience, and iterative delivery.
+- **Native AI systems** — agent roles, reusable skills, context engineering, orchestration, behavioral evaluation, and review gates.
+- **Design systems** — information hierarchy, adaptive components, cross-medium design, and evidence-backed design review.
 
 ## Current focus · July 2026
 
-- refining Native AI Engineering into a practical public framework
-- testing whether design capabilities remain applicable across UI, static visuals,
-  identity systems, and constrained documents such as GitHub Profile READMEs
-- building product workflows where agents can refine, implement, test, review,
-  and learn instead of stopping at generation
-
-## Working principles
-
-- **Explicit boundaries over hidden assumptions.**
-- **Evidence before completion claims.**
-- **Proof before decoration.**
-- **Universal principles, contextual implementation.**
-- **Agents should improve the engineering system, not only produce artifacts.**
+Refining Native AI Engineering into a practical public framework and testing whether reusable design capabilities remain effective across UI, static visuals, identity systems, and constrained documents such as this profile.
 
 ## Connect
 
-The best starting point is the work itself:
+[GitHub](https://github.com/puterakahfi) · [pkahfi.com](https://pkahfi.com/) · [AI products and resources](https://ai.pkahfi.com/) · [VisualMate](https://www.visualmate.id/)
 
-- [GitHub](https://github.com/puterakahfi)
-- [Personal site](https://pkahfi.com/)
-- [AI products and resources](https://ai.pkahfi.com/)
-- [VisualMate](https://www.visualmate.id/)
-
-I am open to conversations around software architecture, AI-native engineering,
-agent-driven development, product systems, and design-system infrastructure.
+Open to conversations around software architecture, Native AI Engineering, agent-driven development, product systems, and design-system infrastructure.
