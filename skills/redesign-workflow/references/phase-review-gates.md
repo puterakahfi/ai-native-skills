@@ -1,35 +1,69 @@
-# Phase 9 — Design Review Facade Adapter
+# Phase 10 — Design Review Facade Adapter
 
-This reference integrates `redesign-workflow` with the canonical `design-review` facade skill.
+Use this reference after fresh verification of the current redesign artifact.
 
-Do not maintain a duplicate scorecard here. Domain classification, reviewer selection, gate definitions, applicability, evidence normalization, scoring, hard-gate policy, coverage, verdicts, and report format are owned by `skills/design-review/` and its loaded domain reviewers.
+`redesign-workflow` supplies context and evidence. `design-review` owns classification, canonical gate resolution, applicability, scoring, coverage, verdict, and reporting. Built-in or external domain reviewers own specialist gates, evidence interpretation, hard-gate triggers, and correction knowledge.
+
+Do not maintain a duplicate scorecard here.
 
 ## Entry condition
 
-Review only after Phase 8 verification has produced fresh evidence for the redesigned artifact.
-
 ```text
-□ target rendered or inspected in the declared artifact state
-□ design domain and surface profile resolved
-□ built-in or adapter reviewer coverage resolved
-□ required viewports, formats, themes, or channels captured
-□ relevant interactions and states exercised when interactive
-□ runtime or export evidence captured when required
-□ preservation locks checked
-□ verification report attached to the current iteration
+□ current artifact exists in the declared artifact state
+□ design domain and surface profile are resolved
+□ role composition and reviewer coverage are explicit
+□ required viewing contexts were captured
+□ affected states/interactions were exercised when applicable
+□ runtime, export, or specialist evidence was captured when required
+□ preservation locks were checked
+□ verification report belongs to the current iteration
+□ evidence gaps are recorded honestly
 ```
 
-A successful build alone is not visual verification. A good-looking screenshot alone is not interaction, runtime, export, or specialist-domain verification.
+A build alone is not visual verification. A screenshot alone is not interaction, runtime, responsive, export, or specialist-domain proof.
 
-## Facade loading policy
+## Reviewer route
 
-Start Phase 9 with `design-review/SKILL.md`. Then load references only when entering the phase that owns them.
+```text
+digital-interface
+  design-review facade
+  + built-in interactive reviewer
+  coverage: BUILT_IN
+
+visual-communication
+  design-review facade
+  + built-in static reviewer
+  coverage: BUILT_IN
+
+presentation
+  design-review facade
+  + built-in presentation reviewer
+  coverage: BUILT_IN
+
+brand-identity
+  design-review facade
+  + brand-identity-review when available
+  coverage: ADAPTER_COVERED
+  fallback: LIMITED or ROUTE_ELSEWHERE
+
+other
+  design-review facade
+  + declared external domain reviewer
+  fallback: LIMITED or ROUTE_ELSEWHERE
+```
+
+Universal visual gates never replace a required specialist reviewer.
+
+## Phase-specific loading
 
 ```text
 CLASSIFY / ROUTE
+  design-review/SKILL.md
   design-review/references/review-routing.md
-  design-review/references/facade-boundary.md only when scope or extension is unclear
-  design-review/references/review-profiles.md only for a built-in profile
+  design-review/references/facade-boundary.md when coverage is unclear
+  design-review/references/gate-registry.yaml for selected or prior gate IDs
+  design-review/references/gate-migrations.yaml only for real aliases/deprecations
+  design-review/references/review-profiles.md only for built-in profiles
 
 UNIVERSAL REVIEW
   design-review/references/universal-gates.md
@@ -37,10 +71,10 @@ UNIVERSAL REVIEW
 DOMAIN / SURFACE REVIEW
   design-review/references/interactive-surface-gates.md OR
   design-review/references/static-visual-gates.md OR
-  declared external domain reviewer
+  loaded external domain reviewer
 
 COMPONENT REVIEW
-  design-review/references/component-review.md only for selected components
+  design-review/references/component-review.md only for affected components
 
 EVIDENCE + SCORE
   design-review/references/evidence-and-scoring.md
@@ -49,156 +83,161 @@ REPORT
   design-review/references/review-report.md
 ```
 
-Do not preload every review reference defensively. Each completed review phase produces the handoff context for the next phase.
-
-During an active visual loop, also load `iteration-review-mode.md`.
-
-## Review mode selection
-
-```text
-focused iteration
-  Use when one layer, component, or declared gate changed.
-  Review touched gates plus adjacent regression checks.
-  Do not run or display the full inventory.
-
-full review
-  Use for a major multi-layer change, audit handoff, or final design approval.
-  Full means full only for domains covered by built-in or loaded adapter reviewers.
-
-release review
-  Use for commit, PR, deployment, or delivery readiness.
-  All applicable contextual hard gates and required domain evidence must be verified.
-```
+During a focused iteration, also use `iteration-review-mode.md`. Do not load the full gate inventory defensively.
 
 ## Route from redesign state
 
-Map redesign state into the facade route:
-
 ```yaml
 review_route:
-  design_domain: <digital-interface | visual-communication | presentation | other>
-  surface_profile: <from preflight/spec>
-  artifact_state: <rendered-interactive | rendered-static | mixed>
+  design_domain: <domain>
+  surface_profile: <profile>
+  artifact_state: <rendered-interactive | rendered-static | source-only | mixed>
   review_depth: <focused | full | release>
   coverage_mode: <BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE>
-  domain_reviewers: <built-in and external reviewers loaded>
-  viewing_context: <from spec and verification>
-  selected_lenses: <from changed layers and acceptance criteria>
-  selected_components: <changed or high-risk components>
-  applicable_hard_gates: <from loaded reviewers>
-  evidence_available: <from verification report>
+  domain_reviewers: []
+  viewing_context: []
+  selected_gate_ids: []
+  selected_components: []
+  changed_layers: []
+  acceptance_criteria: []
+  evidence_available: []
   evidence_gaps: []
+  preservation_locks: []
 ```
 
-Do not default every redesign to `web-marketing`. Use the declared product surface and design domain.
+Every selected or reported design gate must be active and canonical in the registry.
 
-Built-in facade coverage includes:
+## Review mode
 
 ```text
-digital-interface    web, mobile, desktop, and responsive product UI
-visual-communication poster, flyer, banner, social, ad, and thumbnail
-presentation         slides and decks
+focused
+  target findings or changed layers
+  adjacent regression gates
+  preserved gates and locks
+  affected contextual hard gates
+
+full
+  all applicable universal and loaded domain gates
+  major present components
+  full only with BUILT_IN or ADAPTER_COVERED primary-domain coverage
+
+release
+  full review
+  required runtime/export/specialist production evidence
+  all applicable contextual hard gates verified
+  no complete approval with insufficient coverage
 ```
 
-Identity systems, packaging, motion/video, industrial, spatial, fashion, and service-design disciplines require a domain reviewer for a complete verdict. Universal gates alone produce `LIMITED REVIEW`.
+## Gate status preservation
 
-## Lightweight iteration evidence
-
-During creative iteration, keep the loop proportional to the changed layer:
-
-```text
-□ inspect all changed regions in the browser or final artifact
-□ inspect adjacent regions for hierarchy and spacing regression
-□ verify relevant viewports or final output ratios
-□ verify every affected theme when theme behavior changed
-□ exercise changed controls and overflow behavior
-□ compare required logos, products, people, or content when fidelity applies
-□ run changed-file diff checks when repository files changed
-□ capture runtime errors when the changed flow is interactive
-□ capture export evidence when the output is static or presentation-based
-```
-
-Do not reflexively run full build, lint, or every test after each small visual adjustment. Run them at the appropriate commit, PR, deploy, or release boundary, or when the changed implementation requires them.
-
-If a full command is blocked by missing shared configuration, record the concrete blocker once. Do not repeat the same failing command as a substitute for fresh design evidence.
-
-## Review decision
-
-Use the verdict from the `design-review` facade:
+Every selected gate receives exactly one:
 
 ```text
 PASS
-  → proceed to delivery when redesign acceptance criteria also pass
-
-CONDITIONAL PASS
-  → proceed only when evidence gaps or accepted risks fit the current approval boundary
-
-NEEDS WORK
-  → proceed to Phase 10 defect classification
-
-CRITICAL
-  → stop delivery and proceed to Phase 10 defect classification immediately
-
-LIMITED REVIEW
-  → do not claim complete domain approval; load the required domain reviewer,
-    narrow the delivery claim, or route to the domain specialist
+FAIL
+PARTIAL
+NOT_VERIFIED
+NOT_APPLICABLE
 ```
 
-A score of 8 or above does not override a failed contextual hard gate, insufficient release evidence, or missing primary-domain coverage.
+Rules:
+
+```text
+missing evidence → NOT_VERIFIED, not FAIL and not zero
+irrelevant gate → NOT_APPLICABLE
+mixed verified scope → PARTIAL with missing scope named
+FAIL/PARTIAL → eligible for defect handoff
+NOT_VERIFIED → evidence gap or verification handoff, not design-fix evidence
+```
+
+## Verdict mapping
+
+```text
+PASS
+  → delivery only when redesign acceptance criteria, preservation locks,
+    required evidence, and contextual hard gates also pass
+
+CONDITIONAL PASS
+  → delivery only when remaining gaps are explicitly non-blocking,
+    accepted, and inside the approval boundary
+
+NEEDS WORK
+  → Phase 11 defect classification when iterations remain
+
+CRITICAL
+  → block passing delivery and classify immediately
+
+LIMITED REVIEW
+  → load the required domain reviewer, narrow the approval claim,
+    or hand off to the specialist
+
+ROUTE ELSEWHERE
+  → stop unsupported approval; do not continue scoring as if covered
+```
+
+An average at or above 8 never overrides a contextual hard-gate failure, missing primary-domain coverage, or required `NOT_VERIFIED` evidence.
 
 ## Defect handoff
 
-For each failed or partial gate, pass this structure to Phase 10:
+For each failed or partial gate:
 
 ```yaml
 defect_candidate:
-  gate: <id>
-  governing_reviewer: <design-review built-in or domain reviewer>
-  region: <affected region>
+  canonical_gate_id: <id>
+  governing_reviewer: <built-in or external reviewer>
+  status: <FAIL | PARTIAL>
   observation: <verified condition>
   evidence: []
   impact: <user, business, accessibility, fidelity, runtime, or delivery impact>
+  affected_region: <region>
   recommendation: <correction direction>
-  suspected_layer: <foundation | structure | component | expression | interaction | content | implementation>
+  suspected_layer: <strategy | foundation | structure | component |
+                    expression | interaction | content | implementation |
+                    product-lock | domain-specialist>
 ```
 
-Do not classify the correction layer solely from the visible symptom. Phase 10 owns final defect classification.
+Do not infer correction ownership from the visible symptom. Phase 11 owns classification.
 
-Do not copy a specialist-domain correction into the facade. Route the defect to the governing reviewer or specialist skill.
+For `NOT_VERIFIED`:
 
-## Output
+```yaml
+evidence_gap:
+  canonical_gate_id: <id>
+  governing_reviewer: <reviewer>
+  missing_evidence: []
+  claim_blocked: <claim>
+  next_verification: <required action>
+```
 
-Render the scorecard as normal markdown, never as a fenced wall of text.
-
-Minimum output:
+## Review output
 
 ```markdown
-## [target] · Design Review · Iteration [N]
+## [target] · Redesign Review · Iteration [N]
 
-**X.XX / 10** — [verdict] · Coverage [X%]
+**X.XX / 10** — [VERDICT] · Evidence coverage [X%]
 
 - Design domain: [domain]
-- Review coverage: [BUILT_IN | ADAPTER_COVERED | LIMITED]
-- Loaded reviewers: [list]
-- Hard gates: [status]
-- Critical findings: [count]
-- Important findings: [count]
+- Primary-domain coverage: [BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE]
+- Loaded reviewers: [reviewers]
+- Contextual hard gates: [status]
+- Acceptance criteria: [status]
 
-| Cluster | Score | Coverage | Governing reviewer | Notes |
-|---|---:|---:|---|---|
-| Universal visual quality | X.X | X% | design-review | ... |
-| Domain/surface quality | X.X | X% | [reviewer] | ... |
-| Components | X.X | X% | [reviewer] | ... |
-| Runtime, export, or fidelity | X.X | X% | [reviewer] | ... |
+### Findings
+- `[gate]` [FAIL/PARTIAL] — [observation] → [correction direction]
 
-**Open findings**
-- `[gate]` [score/status] — [observation] → [correction direction]
+### Not verified
+- `[gate]` — [missing evidence and blocked claim]
 
-**Not verified**
-- [gate and missing evidence]
+### Preservation
+- Passed: ...
+- Failed: ...
+- Not verified: ...
 
-**Scope limitations**
-- [unsupported or uncovered domain concerns]
+### Scope limitations
+- ...
+
+### Handoff
+[delivery | defect classification | verification | domain reviewer | route elsewhere]
 ```
 
-The full report contract remains in `design-review/references/review-report.md`.
+The full score/report semantics remain owned by `design-review/references/evidence-and-scoring.md` and `review-report.md`.
