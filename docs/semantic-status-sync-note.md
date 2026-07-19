@@ -1,1 +1,0 @@
-Temporary synchronization note for the Semantic Status Encoding refinement branch. Remove before the final PR.
