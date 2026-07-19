@@ -85,7 +85,7 @@ These are starting points, not automatic pass/fail values detached from context.
 
 | Gate | Review question | Pass evidence |
 |---|---|---|
-| G5 Spatial Rhythm | Do spacing changes express grouping, sequence, and emphasis rather than repeating one gap everywhere? | Related elements cluster; parent-to-child-group separation is stronger than sibling separation when applicable; section and component spacing have intentional rhythm. |
+| G5 Spatial Rhythm | Do spacing changes express grouping, sequence, and emphasis rather than repeating one gap everywhere? | Related elements cluster; parent-to-child-group separation is stronger than sibling separation when applicable; major section boundaries have one deliberate spacing owner instead of accidental compounded intervals. |
 | G7 Layout Logic | Does the layout structure match content quantity, priority, comparison needs, and viewing context? | Column count, grouping, stacking, and alignment support the content instead of forcing it. |
 | R3 Space System | Are repeated spacing decisions consistent enough to create rhythm and implementation stability? | Named tokens or a coherent base grid where source exists; visually consistent relational intervals for static artifacts. |
 | C3 Alignment | Do elements align to meaningful anchors, grids, optical relationships, or intentional exceptions? | No accidental drift, almost-aligned edges, or unexplained floating elements. |
@@ -98,6 +98,8 @@ between siblings
 parent → child group
 between major sections
 ```
+
+For each major transition, inspect the effective interval after adjacent margins, paddings, layout gaps, and wrappers combine. A large transition may be valid, but its structural job and spacing owner must be clear. Do not approve an unintended double interval merely because both individual section tokens are valid in isolation.
 
 Do not require every distance to be identical or every element to sit on a mathematically rigid grid. Optical correction is valid when intentional and consistent.
 
