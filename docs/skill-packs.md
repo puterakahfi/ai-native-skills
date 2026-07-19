@@ -134,7 +134,7 @@ npx skills add puterakahfi/ai-native-skills \
 
 ## Product Development Pack
 
-Full product lifecycle — discovery, verified PRD/MVP decisions, implementation, product acceptance, release approval, delivery, launch, and learning.
+Full product lifecycle — discovery, verified PRD/MVP decisions, implementation, product acceptance, release approval, authorized deployment, launch, and learning.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -152,9 +152,37 @@ npx skills add puterakahfi/ai-native-skills \
   --skill threat-modeling \
   --skill code-review-workflow \
   --skill deployment-workflow \
+  --skill context-manager \
+  --skill security-review \
+  --skill architecture-review \
   --skill observability-design \
+  --skill resilience-engineering \
+  --skill incident-response \
   -g -y
 ```
+
+---
+
+## Deployment Pack
+
+Immutable release candidate, technical readiness, provenance-backed deployment authorization, direct environment verification, and explicit confirm-or-rollback outcome.
+
+```bash
+npx skills add puterakahfi/ai-native-skills \
+  --skill deployment-workflow \
+  --skill decision-provenance \
+  --skill context-manager \
+  --skill security-review \
+  --skill architecture-review \
+  --skill code-review-workflow \
+  --skill master-engineer \
+  --skill observability-design \
+  --skill resilience-engineering \
+  --skill incident-response \
+  -g -y
+```
+
+The pack does not define provider commands or environment policy. Product adapters still supply the actual deployment mechanism, protected-environment rules, artifact identity method, health checks, and rollback procedure.
 
 ---
 
@@ -206,5 +234,5 @@ npx skills add puterakahfi/ai-native-skills -g -y
 | `bugfix-workflow` | systematic-debugging, master-engineer, security-review, test-driven-development |
 | `code-review-workflow` | architecture/design/logic/security reviewers; decision-provenance for risk and merge authority |
 | `new-feature-workflow` | engineering/design owners; decision-provenance for feature scope/decisions/risks; spec, tests, design review, code review |
-| `deployment-workflow` | master-engineer, observability-design, resilience-engineering |
+| `deployment-workflow` | decision-provenance for candidate/environment/action authority; context-manager; security/code review; immutable candidate identity; observability; resilience; rollback and incident ownership |
 | `skill-doctor` | skill-eval |
