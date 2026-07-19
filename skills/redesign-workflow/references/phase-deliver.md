@@ -1,86 +1,178 @@
-# Phase 7 — DELIVER + PITFALLS + ANTI-LOOP
+# Phase 12 — DELIVER + PITFALLS + ANTI-LOOP
 
-## FILE MANAGEMENT — HARD RULE
+Load `quality-levels.md` before choosing delivery language or declaring the redesign complete.
 
-```
-ONE file per project. PATCH/WRITE in-place. NEVER create versioned files.
-  ❌ pkahfi-v2.html, pkahfi-v3.html, output-final.html → FORBIDDEN
-  ✅ pkahfi.html → patched every iteration, versioned via git
+## File management — hard rule
 
-Versioning = git commits, not filenames.
-After each iteration: git commit -m "redesign: iter N — <what changed>"
+```text
+ONE canonical file/path per project surface. PATCH/WRITE in-place.
+NEVER create versioned output files merely to preserve iterations.
 
-If write_file full rewrite needed (2 failed patches):
-  → overwrite SAME file, git commit, continue
-  → never create new filename
-```
+❌ pkahfi-v2.html, pkahfi-v3.html, output-final.html
+✅ pkahfi.html or the existing repository path, versioned through git
 
----
-
-## Phase 7: DELIVER
-
-Only when: overall avg >= 8.0 AND G21 = 10 AND touchFail = 0.
-
-```
-1. Ensure file is at canonical output_path (single file, no version suffix)
-2. git commit -m "redesign: final — <target> iter N"
-3. MEDIA: output_path → deliver as file
-3. Gate report summary
-4. Key changes table: before → after
-5. If max_iterations reached: honest gap report
-
-Format:
-  REDESIGN COMPLETE — <target>
-  ──────────────────────────────
-  Gates: all passing (avg X.X / 10)
-  Iterations: N
-  Skills patched: [list]
-
-  Key changes:
-    Before: [issue]   After: [fix applied]
-    ...
-
-  MEDIA: /path/to/output.html
+Versioning = commits, not filenames.
 ```
 
----
+When a full rewrite is required after two failed patches, overwrite the same canonical path, commit it, and continue. Do not create another artifact name.
 
-## PITFALLS
+## Delivery quality gate
 
-### CSS patch corruption (most common failure)
-3+ micro-patches to same CSS block → rules nest inside wrong selectors.  
-Symptom: page goes white, `document.styleSheets.length === 0`.  
-**Rule: after 2 failed patches on same region → `write_file` full rewrite. Never a 3rd patch.**
+Delivery status must match evidence:
 
-### min-height:100vh void
-`min-height:100vh` + sparse content = 60% dead space on mobile.  
-**Rule: NO min-height:100vh on hero. Use `padding-top:clamp(120px,16vh,180px)` + `padding-bottom:clamp(80px,14vh,140px)`.**
+```text
+Q1 FOUNDATION-SAFE
+  acceptable as an implementation candidate or bounded handoff
+  never call it final, pixel-polished, or pixel-perfect
 
-### Sticky vs fixed nav
-`position:fixed` requires JS scroll detection for background. `position:sticky` = CSS-only, no jank.  
-**Rule: always `position:sticky; top:0` for nav unless product explicitly requires fixed.**
+Q2 RENDER-VERIFIED
+  acceptable for visual review
+  remaining optical or regression gaps must be stated
+
+Q3 PIXEL-POLISHED
+  default target for final redesign delivery
+  requires rendered verification, optical correction, adjacent-regression check,
+  and all applicable foundation/system/genre/domain/accessibility/runtime gates passing
+
+Q4 PIXEL-MATCHED
+  only when a locked reference/spec and comparison evidence exist
+```
+
+A high average score does not advance the quality level when required evidence is missing.
+
+## Final delivery eligibility
+
+Final `REDESIGN COMPLETE` delivery requires:
+
+```text
+□ target quality level reached
+□ foundation gates F1–F10 pass with evidence
+□ applicable design-system, brand, genre, domain, and content gates pass
+□ required routes/artifacts, viewports, themes, and states inspected
+□ changed and adjacent regions re-inspected after the final patch
+□ optical correction complete
+□ runtime/export blockers resolved or explicitly outside the requested boundary
+□ accessibility hard gates pass
+□ touch target failures = 0 for applicable interactive surfaces
+□ unresolved gaps = 0 for Q3/Q4 final approval
+```
+
+If the project has a legacy score contract, its threshold still applies, but the score cannot replace the quality-level evidence.
+
+## Delivery procedure
+
+```text
+1. Ensure every artifact is at its canonical path.
+2. Confirm the current commit matches the verified artifact.
+3. Record quality target and achieved quality level.
+4. Commit with a descriptive final message when repository write was requested.
+5. Deliver the artifact or repository/PR reference.
+6. Include gate summary, verification matrix, and key changes.
+7. Include an honest gap report when the target level was not reached.
+```
+
+Recommended format:
+
+```text
+REDESIGN COMPLETE — <target>
+──────────────────────────────
+Quality target:   Q3 PIXEL-POLISHED
+Quality achieved: Q3 PIXEL-POLISHED
+Foundation gates: F1–F10 PASS
+Contextual gates: PASS
+Viewports/themes: <verified matrix>
+Routes/states:    <verified matrix>
+Iterations:       N
+Skills patched:   [list]
+
+Key changes:
+  Before: [issue]   After: [fix applied]
+  ...
+```
+
+When the target level is not reached:
+
+```text
+REDESIGN HANDOFF — <target>
+────────────────────────────
+Quality target:   Q3 PIXEL-POLISHED
+Quality achieved: Q1 FOUNDATION-SAFE | Q2 RENDER-VERIFIED
+Blocking evidence: [missing or failed checks]
+Remaining gaps:    [specific list]
+Next correction:   [specific action]
+```
+
+Do not hide a Q1 or Q2 handoff behind words such as `final`, `perfect`, `complete`, or `release-ready`.
+
+## Pixel-perfect language
+
+Use `pixel-perfect` only when all of the following are true:
+
+```text
+□ user explicitly requests or accepts that term
+□ Q4 pixel-matched evidence exists
+□ reference/spec and tolerance are declared
+□ comparison covers required states and viewports
+□ deviations are documented and approved
+```
+
+Otherwise prefer:
+
+```text
+foundation-safe
+render-verified
+pixel-polished
+pixel-matched within declared tolerance
+```
+
+## Pitfalls
+
+### CSS patch corruption
+
+Three or more blind micro-patches to the same CSS block can corrupt selector structure.
+
+**Rule:** after two failed patches on the same region, use rewrite safety. Re-read the whole region or file, then replace the canonical implementation coherently. Never apply a blind third patch.
+
+### Viewport-height void
+
+`min-height: 100vh` on sparse content can create dead space, especially on mobile.
+
+**Rule:** choose height and section rhythm from content, task, device chrome, and composition. Do not use a fixed hero recipe as a universal replacement.
+
+### Sticky versus fixed navigation
+
+Do not enforce one positioning method universally. Select sticky, fixed, static, or contextual navigation from product behavior, scroll requirements, safe areas, and existing system constraints.
 
 ### Color-only status signals
-Status dot without `aria-label` = WCAG 1.4.1 failure (color alone).  
-**Rule: `<div class="status-dot" role="img" aria-label="Status: Live"></div>`**
+
+Status cannot rely on color alone. Supply visible text or an accessible label and preserve sufficient contrast.
 
 ### Improvised behavior
-Agent writes component behavior from memory = wrong a11y, wrong interaction.  
-**Rule: check `ux-patterns-for-developers` catalog before writing any component behavior.**
 
----
+Do not implement interaction from memory when an established pattern or existing product primitive is available. Inspect the trusted behavior source first.
 
-## Anti-Loop Protection
+### Build as visual proof
 
-```
+A successful lint, typecheck, test, or build is implementation evidence—not proof of hierarchy, alignment, spacing, balance, flow, responsiveness, or optical finish.
+
+### Screenshot as runtime proof
+
+A screenshot is visual evidence for the captured state only. It does not prove keyboard operation, dynamic states, route integrity, console health, or responsive behavior outside that capture.
+
+## Anti-loop protection
+
+```text
 Before each produce/fix:
   iteration_count++
   if iteration_count > max_iterations:
-    deliver current best
-    report remaining failures
-    STOP
+    stop correction
+    deliver the best achieved quality level
+    report remaining failures and missing evidence honestly
 
-If same gate fails 2 iterations in a row:
-  → try different approach for that specific gate
-  → do not keep applying same fix that isn't working
+If the same gate fails two iterations in a row:
+  classify why the approach failed
+  change the correction strategy for that gate
+  do not repeat the same patch with slightly different numbers
 ```
+
+Maximum iterations protect the workflow from endless correction. They do not convert unresolved failures into a pass or elevate the achieved quality level.
