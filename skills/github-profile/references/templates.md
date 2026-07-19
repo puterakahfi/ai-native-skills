@@ -1,17 +1,17 @@
 # GitHub Profile Templates
 
-These are structural starting points, not visual identities to copy verbatim. Replace every placeholder with supplied or verified content, remove irrelevant modules, and select one coherent direction.
+Structural starting points, not identities to copy. Replace placeholders with supplied or verified content, remove irrelevant modules, and select one coherent direction.
 
 ## Template A — Concise Technical Authority
 
-Use for engineers, architects, maintainers, or technical leaders who need a durable text-first profile.
+Use for engineers, architects, maintainers, or technical leaders who need durable text-first proof.
 
 ```markdown
 # Name
 
 **Specific role or positioning**
 
-One concise sentence describing the systems, products, or problems you work on and for whom.
+One sentence describing the systems, products, or problems you work on and for whom.
 
 [Selected work](#selected-work) · [Writing](LINK) · [Contact](LINK)
 
@@ -45,7 +45,7 @@ Primary action and bounded secondary links.
 
 ## Template B — Editorial Personal Brand
 
-Use for multi-disciplinary engineers, designers, builders, researchers, or writers with one unifying thesis.
+Use for multi-disciplinary builders with one unifying thesis.
 
 ```markdown
 <div align="center">
@@ -74,7 +74,6 @@ A short paragraph defining the recurring problem space, approach, and audience.
 
 - Specific principle visible in the work
 - Specific principle visible in the work
-- Specific principle visible in the work
 
 ## Now
 
@@ -94,7 +93,7 @@ Use when shipped products and product thinking are the strongest proof.
 
 **Builder of specific products for a specific audience**
 
-One sentence connecting product mission, technical capability, and customer/user value.
+One sentence connecting product mission, technical capability, and user value.
 
 [Product](LINK) · [Selected builds](#selected-builds) · [Contact](LINK)
 
@@ -173,19 +172,7 @@ Short project context, role, contribution, and outcome.
 [Explore project →](LINK)
 ```
 
-The image must not contain the only available project explanation.
-
-## Optional Module — Technology Badges
-
-Use a small, coherent subset after capabilities are already described.
-
-```markdown
-### Core tools
-
-BADGES_FOR_ONLY_THE_PRIMARY_TOOLS
-```
-
-Do not include a badge for every dependency, platform, editor, or tool ever used.
+The image must not contain the only project explanation.
 
 ## Optional Module — Theme-Aware Image
 
@@ -202,11 +189,11 @@ Verify actual GitHub rendering and preserve nearby semantic text.
 ## Template Selection Rules
 
 ```text
-technical authority   → A unless a mature brand or visual portfolio justifies B
-multi-disciplinary    → B only with a clear unifying thesis
-product founder       → C with product proof before technology lists
-open-source maintainer→ D with project health and contribution routes
-mixed goal            → select one primary template, borrow at most two modules
+technical authority    → A unless mature brand or visual proof justifies B
+multi-disciplinary     → B only with a clear unifying thesis
+product founder        → C with product proof before technology lists
+open-source maintainer → D with project health and contribution routes
+mixed goal             → one primary template, borrow at most two modules
 ```
 
-Never concatenate all four templates. A template is successful when the final README no longer feels like a template.
+Never concatenate all four templates. Success means the final README no longer feels like a template.
