@@ -1,6 +1,6 @@
 # Skill Packs
 
-Install bundles for common use cases. Each pack installs a workflow plus all skills it depends on.
+Install bundles for common use cases. Each pack installs a workflow plus the capabilities its documented composition expects.
 
 > **Why packs?** The Agent Skills spec has no native dependency resolution. Skills declare
 > `metadata["ai-native-skills.requires"]` for agent-side awareness, but the CLI does not auto-install
@@ -10,25 +10,44 @@ Install bundles for common use cases. Each pack installs a workflow plus all ski
 
 ## Redesign Pack
 
-Full UI/UX and visual redesign loop — audit, domain review, design system, depth, genre, layout, copy, gates, and verified-case learning promotion.
+Delegated UI/UX and visual redesign loop — route, explicit design/implementation ownership, strategy, visual direction, layout, adaptive components, interaction behavior, design system, domain verification, facade review, correction, and learning.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
   --skill redesign-workflow \
+  --skill role-switcher \
+  --skill master-design \
+  --skill master-engineer \
+  --skill business-value-alignment \
   --skill design-foundation \
   --skill design-brand \
+  --skill design-visual \
   --skill design-genre \
   --skill design-depth \
   --skill design-color \
   --skill design-typography \
-  --skill design-spacing \
   --skill design-iconography \
-  --skill design-visual \
+  --skill composition \
+  --skill readability \
+  --skill motion-design \
   --skill design-layout \
+  --skill macrostructures \
+  --skill responsiveness \
   --skill adaptive-component-design \
+  --skill ui-components \
+  --skill design-spacing \
   --skill design-strategy \
+  --skill content-strategy \
+  --skill information-architecture \
+  --skill copywriting \
+  --skill ux-psychology \
+  --skill cro \
   --skill design-interaction \
+  --skill ux-ui-patterns \
+  --skill ux-patterns-for-developers \
   --skill design-system \
+  --skill accessibility \
+  --skill dark-light-theming \
   --skill design-audit \
   --skill design-review \
   --skill brand-identity-review \
@@ -36,16 +55,10 @@ npx skills add puterakahfi/ai-native-skills \
   --skill skill-evolution \
   --skill skill-eval \
   --skill git-workflow \
-  --skill master-design \
-  --skill macrostructures \
-  --skill ui-components \
-  --skill composition \
-  --skill visual-hierarchy \
-  --skill copywriting \
-  --skill ux-psychology \
-  --skill accessibility \
   -g -y
 ```
+
+The pack includes the current `brand-identity-review` adapter. Other specialist domains still require their own reviewer when complete domain approval is requested.
 
 ---
 
@@ -155,7 +168,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Workflow / Meta-skill | Requires |
 |---|---|
-| `redesign-workflow` | design foundation/brand/genre/depth/color/type/spacing/iconography, adaptive component design, audit/review/refinement, identity reviewer when identity is in scope, learning/eval/git, master-design, composition, hierarchy, copy, UX, accessibility |
+| `redesign-workflow` | role-switcher; explicit design and implementation owners; strategy/visual/layout/interaction/system ports; audit/review/refinement; value alignment; learning/eval; governing domain reviewer |
 | `design-refinement` | design-audit, design-review, governing domain reviewer, master-design, skill-evolution, skill-eval |
 | `brand-identity-review` | design-review, design-brand, composition, visual-hierarchy, design-typography, design-color |
 | `skill-evolution` | skill-eval, git-workflow |
