@@ -139,6 +139,42 @@ Choose layout from content weight, not card count alone.
 
 Do not give live, planned, and experimental items equal visual weight merely because they share a component type.
 
+### Space-first minimalism guard
+
+When the selected genre is `minimal`, `zen`, `editorial-minimal`, or otherwise explicitly space-led, whitespace and alignment are the primary containers. Cards are exceptions, not the default grammar.
+
+```text
+DEFAULT ORDER OF PREFERENCE
+1. whitespace + typographic hierarchy
+2. alignment + grid position
+3. hairline divider or subtle background shift
+4. open editorial row or list
+5. card/surface only when grouping, interaction, or comparison truly requires it
+```
+
+Use proof without turning every proof point into a component:
+
+```text
+status        → plain supporting text before badge/pill
+capabilities  → sentence, definition list, or editorial row before chips
+projects      → weighted sequence or rows before equal cards
+principles    → numbered prose/list before bento cards
+contact       → open composition before a full-width rounded CTA panel
+```
+
+Treat these as review-triggering symptoms:
+
+```text
+- card inside card or surface inside surface
+- three or more consecutive major sections primarily composed of cards
+- every metadata value rendered as a pill or badge
+- bento layout used for prose that does not need comparison
+- large rounded CTA panel used only to create visual impact
+- whitespace reduced because each concept was given its own container
+```
+
+A minimal page may still contain one or two anchor surfaces. The failure is not the existence of a card; it is allowing cards to replace page rhythm, hierarchy, and space.
+
 ---
 
 ## Portfolio and Product-Hub Proof Architecture
@@ -227,6 +263,10 @@ Auto-revise if present without a brief-specific reason.
 ❌ 6+ feature cards in an equal-size grid without prioritization
 ❌ All-caps nav with 5+ items
 ❌ Minimalist portfolio that removes project evidence and leaves only philosophy
+❌ Card inside card used to simulate depth
+❌ Three consecutive major sections built primarily from rounded cards
+❌ Every label, status, or capability turned into a badge or pill
+❌ Giant rounded CTA panel when open layout and whitespace would communicate better
 ```
 
 ---
