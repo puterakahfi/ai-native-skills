@@ -1,292 +1,297 @@
 # Phase 7 — PRODUCTION
 
-Apply design in this order. Load each skill before using its templates.
+Apply design in this order. Load each delegated skill before using its templates.
 
 ```text
 0. Preservation check    → existing brand, DESIGN.md, tokens, and framework conventions
-1. Genre tokens         → design-genre skill
-2. Visual language      → phase-genre-macro.md Phase 0.6
-3. Macrostructure       → macrostructures skill
-4. Design system tokens → design-system skill
-5. Theme architecture   → dark-light-theming skill
-6. Motion               → motion-design skill (only if motion-on)
-7. Content              → content-strategy skill
-8. Components           → ui-components (template) + ux-patterns-for-developers (behavior)
-9. Component pass       → component-redesign-pass.md (navbar → hero → sections → cards/rows → contact → footer)
+1. Genre contract        → selected design-genre reference and hard constraints
+2. Visual language       → phase-genre-macro.md
+3. Macrostructure        → macrostructures skill, filtered by genre constraints
+4. Design system tokens  → design-system skill
+5. Theme architecture    → dark-light-theming skill
+6. Motion                → motion-design only when the genre allows it
+7. Content               → content-strategy
+8. Components            → ui-components + trusted behavior patterns
+9. Component pass        → navbar → hero → sections → lists/cards → contact → footer
+10. Genre conformance    → source-level and rendered checks before verification handoff
 ```
 
-## Preservation-first production policy
-
-Existing systems are authoritative unless the redesign spec explicitly reopens them.
+## Precedence
 
 ```text
-Existing brand tokens found      → preserve or map semantically; do not replace by taste
-Existing type scale found        → audit and refine; do not force a new mathematical scale
-Existing theme infrastructure    → extend it; never introduce a parallel theme system
-Existing component primitives    → reuse them when behavior and accessibility are sound
-No usable system found           → use the fallback production defaults below
+brand and DESIGN.md locks
+  > explicit user direction
+  > loaded genre reference
+  > redesign specification
+  > generic production defaults
+  > macrostructure and component template defaults
 ```
 
-A fallback is not a mandate. Record why it was used in the run state or delivery manifest.
+A generic recommendation such as cards, hairlines, section backgrounds, or hover motion must be rejected when the loaded genre contract forbids it.
 
----
-
-## Implementation Stamp
-
-Record the production context once per artifact, not once per source file.
-
-For a standalone stylesheet or generated prototype, a source comment is acceptable:
-
-```css
-/*
- * macrostructure: [name]
- * genre:          [genre]
- * theme:          [light-only | dark-only | dual-theme]
- * iteration:      [N]
- * pre-emit:       P_ H_ E_ S_ R_ V_
- */
-```
-
-For component repositories using Tailwind, CSS-in-JS, design tokens, or multiple style files:
+## Preservation-first production
 
 ```text
-- store the stamp in the durable run state, redesign report, or delivery manifest
-- optionally place one comment in the primary global theme file
-- never add repetitive stamp comments to every TSX, JSX, Vue, Svelte, or component file
+Existing brand tokens      → preserve or map semantically
+Existing type scale        → audit and refine; do not replace mechanically
+Existing theme infra       → extend; never create a parallel system
+Existing sound primitives  → reuse behavior, adapt visual expression to genre
+No usable system           → use fallback values and record why
 ```
 
----
+Fallbacks are not mandates.
 
-## Design System Policy
+## Implementation stamp
 
-### Typographic scale
+Record production context once per artifact or durable run state.
 
-Preserve a coherent existing type scale when present. When no usable scale exists, use this as a fallback starting point — not an invariant:
-
-```css
---text-xs:   0.563rem;
---text-sm:   0.75rem;
---text-base: 1rem;
---text-lg:   1.333rem;
---text-xl:   1.777rem;
---text-2xl:  2.369rem;
---text-3xl:  3.157rem;
---text-4xl:  4.209rem;
+```yaml
+production_context:
+  macrostructure: <name>
+  genre: <name>
+  genre_reference: <path>
+  theme: <light-only | dark-only | dual-theme>
+  iteration: <N>
+  pre_emit: <P H E S R V>
 ```
 
-Responsive constraints still apply:
+Do not add repetitive comments to every component file.
+
+## Design-system policy
+
+### Typography
+
+Preserve a coherent existing scale. When none exists, establish a restrained hierarchy and verify narrow widths.
 
 ```text
-- prevent heading overflow at narrow widths
-- keep mobile H1/body contrast intentional rather than mechanically oversized
-- preserve readable line length and line-height
-- use fluid sizing only when intermediate widths have been verified
+□ H1 remains dominant without overflow
+□ H2 is subordinate
+□ body measure and leading remain readable
+□ responsive sizes are verified between breakpoints
+□ selected genre weight and density rules are respected
 ```
 
 ### Color semantics
 
-Use one semantic token per role. Map existing tokens before creating new ones.
+Map existing semantic roles before creating new ones.
 
-```css
---live:              /* LIVE status — nowhere else */
---interactive-hover: /* hover state — nowhere else */
---bg:                /* base background */
---bg-alt:            /* alternate section (figure/ground) */
---surface:           /* card/elevated surface */
---border:            /* dividers */
---bright:            /* headings, primary content */
---text:              /* body text */
---subtle:            /* supporting info */
---muted:             /* decorative, disabled */
+```text
+background / foreground / surface / border / primary / muted / status / interactive
 ```
 
-Do not create duplicate semantic systems when the repository already uses names such as `background`, `foreground`, `primary`, `muted`, and `border`. Extend or document the mapping instead.
+Do not create a parallel token vocabulary merely to satisfy a template.
 
-### Figure / ground
+### Figure and ground
 
-Never leave a long page as one undifferentiated flat field. Use the lightest sufficient method:
+Long pages need readable grouping, but grouping does not always require visible boundaries.
 
-```css
-background-image: radial-gradient(circle, #1e1e1e 1px, transparent 1px);
-background-size: 32px 32px;
-/* OR: linear-gradient(180deg, #0f0f0f 0%, #0a0a0a 100%) */
-/* OR: alternating section backgrounds, borders, rhythm, or surface depth */
+Use the lightest genre-permitted method:
+
+```text
+1. proximity and whitespace
+2. alignment and text measure
+3. asymmetrical placement
+4. subtle tonal or texture shift when allowed
+5. line or surface only when the selected genre and function allow it
 ```
 
-Texture is optional. Figure/ground separation is required.
+A requirement for figure/ground separation never overrides a genre rule that forbids section borders or background swaps.
 
 ### Whitespace rhythm
 
 ```text
-Hero:    padding-top clamp(120px,16vh,180px) — avoid min-height:100vh when it creates a void
-Content: 80–96px padding as a starting range
-Contact: 48–64px padding as a starting range
-Footer:  24–32px padding as a starting range
+Hero:    deliberate opening interval with an anchor
+Content: consistent large rhythm adapted to content and viewport
+Contact: enough room to resolve the page without becoming a boxed campaign CTA
+Footer: quiet closing interval
 ```
 
-These ranges may be adapted to the existing system, density, device class, and content length.
+Do not fill intentional space because it appears unfinished.
 
-### Collection layout
+## Collection layout
 
-Choose layout from content weight, not card count alone.
+Choose from evidence weight and user task, not item count alone.
 
 ```text
-1 primary item  → full-width feature
-2 primary items → stacked or asymmetric split when their evidence needs room
-3 primary items → editorial grid, 3-column grid, or stacked sequence
-4+ items        → grouped grid, list, filter, or progressive disclosure
+primary evidence   → weighted sequence, case-study excerpt, or asymmetric feature
+secondary evidence → open list, editorial rows, compact index, or disclosure
+comparison task    → cards/table only when comparison genuinely benefits
+interactive group  → surface only when state and containment require it
 ```
 
-Do not give live, planned, and experimental items equal visual weight merely because they share a component type.
+Live, planned, and experimental work must not receive equal visual weight by default.
 
-### Space-first minimalism guard
+## Space-first genre policy
 
-When the selected genre is `minimal`, `zen`, `editorial-minimal`, or otherwise explicitly space-led, whitespace and alignment are the primary containers. Cards are exceptions, not the default grammar.
+For `zen-minimalist`, `editorial-minimal`, or any explicitly space-led direction, load and enforce the genre line/surface budget.
+
+### Zen containment order
 
 ```text
-DEFAULT ORDER OF PREFERENCE
-1. whitespace + typographic hierarchy
-2. alignment + grid position
-3. hairline divider or subtle background shift
-4. open editorial row or list
-5. card/surface only when grouping, interaction, or comparison truly requires it
+1. whitespace
+2. proximity
+3. alignment
+4. text measure and indentation
+5. numbering or quiet labels
+6. rare genre-approved line or surface exception
 ```
 
-Use proof without turning every proof point into a component:
+**Do not place hairlines at position three as a generic minimal solution.** A hairline is still a visual interruption.
+
+### Zen structural line budget
 
 ```text
-status        → plain supporting text before badge/pill
-capabilities  → sentence, definition list, or editorial row before chips
-projects      → weighted sequence or rows before equal cards
-principles    → numbered prose/list before bento cards
-contact       → open composition before a full-width rounded CTA panel
+section borders:          0
+repeated row separators:  0 by default
+dense-list exception:     one leading OR trailing hairline for one list system
+visible structural lines: target 0; maximum 1 per typical viewport
 ```
 
-Treat these as review-triggering symptoms:
+Excluded from this budget only when functionally necessary:
 
 ```text
-- card inside card or surface inside surface
-- three or more consecutive major sections primarily composed of cards
-- every metadata value rendered as a pill or badge
-- bento layout used for prose that does not need comparison
-- large rounded CTA panel used only to create visual impact
-- whitespace reduced because each concept was given its own container
+form controls, focus rings, required tables, diagrams, charts, and explicit data grids
 ```
 
-A minimal page may still contain one or two anchor surfaces. The failure is not the existence of a card; it is allowing cards to replace page rhythm, hierarchy, and space.
+### Card-to-line substitution failure
 
----
-
-## Portfolio and Product-Hub Proof Architecture
-
-For portfolios, personal sites, studios, product ecosystems, and open-source hubs, minimalism must not erase proof.
+This is a reusable defect pattern:
 
 ```text
-Above the fold:
+iteration N: every item is a card
+iteration N+1: cards removed, every item receives border-top/border-bottom
+result: containment density remains; only the drawing primitive changed
+verdict: genre failure, not successful refinement
+```
+
+Preferred replacements:
+
+```text
+project separation    → larger vertical gaps + alternating alignment or measure
+principle separation  → numbered prose with rhythm only
+capability separation → definition list or grouped sentence
+contact links         → open stack with proximity and hover color
+section separation    → padding rhythm only
+```
+
+## Portfolio and product-hub proof
+
+Minimalism must not erase truth, but proof does not require chrome.
+
+```text
+Above fold:
   stance + domain + clear next action
 
 Primary evidence:
-  2–4 selected real works with status, outcome, role, or concrete scope
+  selected real work with status, role, scope, and link
 
 Secondary evidence:
-  open source, writing, standards, experiments, or process artifacts
-
-Trust structure:
-  honest status labels; released/open work outranks planned/lab work
+  writing, open source, standards, and experiments with honest maturity
 
 Avoid:
-  a visually beautiful page made mostly of abstract philosophy
-  equal cards that hide which work is real, active, or important
-  unsupported metrics, fake logos, fake testimonials, or invented outcomes
+  abstract philosophy without evidence
+  equal cards that flatten maturity
+  fake metrics, logos, testimonials, or outcomes
+  metadata rendered as repeated badges merely to look structured
 ```
 
-When real screenshots or product assets are unavailable, use honest structured evidence: product name, category, status, scope, link, and a specific description. Do not fabricate visual proof.
+When screenshots are unavailable, specific text and links are valid proof.
 
----
+## Source-level genre conformance check
 
-## First Impression (50ms)
+Before handing off to rendered verification, inspect changed files for implementation symptoms.
+
+For zen or space-led surfaces, search relevant files for:
 
 ```text
-H1 = stance, not job title
-FAIL: "Full Stack Engineer specializing in scalable architecture"
-PASS: "One codebase. Five products." / "I build systems meant to last."
+border-t border-b border-y divide-y divide-x
+rounded-* shadow-* ring-* bg-card bg-secondary
+badge pill chip hover:-translate hover:scale
 ```
 
-The supporting line should resolve what the person or product actually does. A stance without domain clarity is incomplete.
+Classify each occurrence:
 
----
+```yaml
+- token: <class or style>
+  region: <component>
+  purpose: <functional reason | decorative grouping>
+  genre_allowed: <yes | no>
+  action: <keep | remove | replace with space>
+```
 
-## Accessibility Baseline
+A source scan is not visual verification, but obvious genre violations must be fixed before rendering.
+
+## First impression
+
+```text
+H1 = stance, not job-title boilerplate
+Supporting line = what is actually built or changed
+Primary action = meaningful next step
+```
+
+## Accessibility baseline
 
 ```html
 <a href="#main">Skip to content</a>
 <nav aria-label="Main navigation">
 <main id="main">
-<section aria-labelledby="[id]">
+<section aria-labelledby="section-title">
 <footer>
-<!-- H1→H2→H3 — no skipping -->
-<!-- sr-only H2 if section visually unlabelled -->
-<!-- Links: descriptive text, rel="noopener" for external -->
-<!-- Skip link: first focusable element, min-height 44px -->
 ```
 
----
-
-## Pre-Emit Self-Critique
-
-Score 1–5. Any axis below 3 requires revision before emit.
-
 ```text
-P (Philosophy):  Every element has a reason to exist?     __ /5
-H (Hierarchy):   Visual hierarchy immediately readable?   __ /5
-E (Execution):   Spacing, scale, alignment consistent?    __ /5
-S (Specificity): Copy specific, not generic? No slop?     __ /5
-R (Restraint):   Anything decorative that could be cut?   __ /5
-V (Variety):     Structurally different from last output? __ /5
-
-Stamp: pre-emit P_ H_ E_ S_ R_ V_
+□ semantic heading order
+□ descriptive links
+□ external rel="noopener noreferrer"
+□ keyboard-visible focus
+□ touch targets at least 44×44px where interactive
+□ reduced-motion behavior
 ```
 
----
+Accessibility controls are not removed to satisfy visual minimalism.
 
-## Slop Red List
+## Pre-emit critique
 
-Auto-revise if present without a brief-specific reason.
+Score 1–5. Any axis below 3 requires revision.
 
 ```text
-❌ "Get started for free" as primary CTA when the product does not require it
-❌ H1 + 3 bullet features + CTA button as the default template
-❌ "Trusted by X companies" logo row without verified data
-❌ Testimonial grid with fabricated or irrelevant star ratings
-❌ Gradient mesh background used as a substitute for composition
-❌ "Seamless", "leverage", "world-class", "cutting-edge" in generic copy
-❌ 6+ feature cards in an equal-size grid without prioritization
-❌ All-caps nav with 5+ items
-❌ Minimalist portfolio that removes project evidence and leaves only philosophy
-❌ Card inside card used to simulate depth
-❌ Three consecutive major sections built primarily from rounded cards
-❌ Every label, status, or capability turned into a badge or pill
-❌ Giant rounded CTA panel when open layout and whitespace would communicate better
+P Philosophy   — every element has a reason
+H Hierarchy    — focal order is immediate
+E Execution    — spacing and alignment are coherent
+S Specificity  — content is concrete
+R Restraint    — unnecessary interruption removed
+V Variety      — not another generic template
+G Genre        — loaded hard constraints are visibly respected
 ```
 
----
+For zen, `G` fails when line density, surface density, or motion exceeds the genre budget even if individual elements look tasteful.
 
-## Theme System for Dual-Theme Surfaces
+## Slop red list
+
+Auto-revise when present without a functional, brief-specific reason.
 
 ```text
-Preserve existing infra — do not add a second system:
-  next-themes + class  → .dark / dark: utilities
-  next-themes + data   → [data-theme="dark"]
-  custom/localStorage  → inspect existing script first
+❌ generic H1 + three bullets + CTA template
+❌ fake trust logos, ratings, metrics, or testimonials
+❌ gradient mesh used instead of composition
+❌ six or more equal cards without prioritization
+❌ cards nested inside cards
+❌ three consecutive card-led major sections
+❌ every metadata value turned into a pill
+❌ giant rounded CTA panel used only for impact
+❌ minimalist portfolio with no real work evidence
+❌ zen page where card removal becomes repeated hairline rows
+❌ structural section borders after a zen direction is locked
+```
 
-Toggle requirements:
-  □ one toggle in global nav
-  □ aria-label = next action: "Switch to dark theme" / "Switch to light theme"
-  □ touch target ≥ 44×44px
-  □ no hydration mismatch on SSR
+## Dual-theme surfaces
 
-Verify both modes:
-  □ Light screenshot/DOM ✓
-  □ Toggle → dark screenshot/DOM ✓
-  □ Toggle back → state reversible ✓
+Preserve the existing theme mechanism. Verify both modes and reversibility.
+
+```text
+□ light inspected
+□ dark inspected
+□ toggle label describes next action
+□ toggle remains reversible
+□ genre line/surface budget passes in both themes
 ```
