@@ -176,6 +176,29 @@ A composition may be symmetrical, asymmetrical, centered, dense, or open. It pas
 
 ---
 
+## Ownership and Handoff
+
+```text
+design-foundation
+  owns reusable universal relationship knowledge and F1–F10 definitions
+
+design-review
+  evaluates F1–F10 with evidence and reports coverage/verdict
+
+design-genre
+  adds stricter expression constraints without redefining the foundation
+
+design-system / brand
+  implements semantic tokens and product-specific rules
+
+design workflows
+  load foundation before direction/production and classify the correct fix layer
+```
+
+A local visual defect should not automatically patch this skill. Promote it here only when the missing or misleading rule is reusable across genres and surfaces.
+
+---
+
 ## What Foundation Does Not Dictate
 
 ```text
