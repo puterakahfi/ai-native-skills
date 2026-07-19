@@ -20,6 +20,7 @@ metadata:
 > 4. **Genre-specific constraints override generic workflow, macrostructure, and component defaults.**
 > 5. **Genre must match the audience mental model and explicit user direction.** Wrong genre means downstream misalignment.
 > 6. **For space-led genres, whitespace must encode hierarchy.** Parent-to-child separation must be visibly stronger than sibling separation unless another deliberate grouping cue exists.
+> 7. **Spacing alone is not enough when nested levels remain visually equal.** Parent and child must differ through at least two cues chosen from scale, weight, measure, contrast, placement, and spacing.
 
 ---
 
@@ -41,13 +42,33 @@ Default only when no stronger signal exists: editorial.
 Explicit user genre direction overrides inferred product-category defaults.
 ```
 
-For space-led layouts, equal whitespace is not neutral. When a section introduction, its first child, and subsequent siblings all use nearly the same vertical interval, the hierarchy collapses into one flat group. Prefer a clear spacing ratio:
+For space-led layouts, equal whitespace is not neutral. When a section introduction, its first child, and subsequent siblings all use nearly the same vertical interval, the hierarchy collapses into one flat group.
+
+Required relationship:
 
 ```text
 parent → child group  >  sibling → sibling
+parent display scale  >  child title scale
 ```
 
-A practical starting range is `1.25×–2×`, adapted to viewport and content. Do not add lines or cards merely to repair a spacing hierarchy failure.
+Practical starting ranges, adapted to viewport and content:
+
+```text
+spacing contrast:  parent-group interval ≈ 1.25×–2× sibling interval
+scale contrast:    child title ≈ 55%–75% of parent display size
+```
+
+These are review ranges, not mechanical tokens. The rendered hierarchy must be unmistakable. Do not add lines, cards, pills, or section surfaces merely to repair a parent-child hierarchy failure.
+
+Failure pattern:
+
+```text
+parent headline is large
+child titles are almost as large
+parent-child gap and sibling gaps feel similar
+result: introduction and items read as one flat group
+verdict: hierarchy contrast failure
+```
 
 ---
 
@@ -115,6 +136,7 @@ genre_contract:
   containment_rules: []
   density_rules: []
   spacing_hierarchy_rules: []
+  type_hierarchy_rules: []
   color_rules: []
   motion_rules: []
   hard_failures: []
@@ -136,6 +158,7 @@ Voice: [one-line description]
 Density: [sparse | moderate | dense]
 Containment grammar: [space-led | editorial rows | surfaces | mixed]
 Spacing hierarchy: [parent-group ratio or declared alternative cue]
+Type hierarchy: [parent/child scale contrast or declared alternative cue]
 Motion stance: [motion-on | motion-cut | stillness]
 Theme cluster: [list of applicable themes]
 Nav range: [N-codes]
