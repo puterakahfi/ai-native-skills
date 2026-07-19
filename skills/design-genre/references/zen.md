@@ -2,6 +2,34 @@
 
 > Still, deliberate, unhurried — every element earns its place, and empty space performs real structural work.
 
+## Foundation Inheritance
+
+Zen is an expression layer, not the owner of universal composition quality.
+
+```text
+Inherited from design-foundation:
+  hierarchy
+  grouping
+  structural + optical alignment
+  spatial rhythm
+  balance
+  reading/task flow
+  legibility
+  system consistency
+  accessibility
+  responsive continuity
+
+Zen adds stricter expression constraints:
+  low interruption
+  space-led containment
+  near-zero structural lines
+  rare surfaces
+  restrained color and motion
+  one calm focal object
+```
+
+A hierarchy, grouping, balance, alignment, or flow defect must be fixed in the foundation relationship first. Do not label the defect “zen asymmetry” or repair it with more empty space.
+
 ## Signal Words
 
 ```text
@@ -25,10 +53,12 @@ Copy tone: Short sentences, no filler. Specificity over warmth.
 Pair:      Light-weight display serif or restrained display sans + light sans
            Recommended starting point: Fraunces 300 + Inter 300
 
-HIERARCHY RULE: restraint = no decoration, NOT no size
-  H1: weight 300–500 + LARGE size — dominant focal object
-  H2: lighter or smaller — clearly subordinate
-  body: weight 300–400 + quiet readable measure
+FOUNDATION HIERARCHY, ZEN EXPRESSION:
+  one large calm focal statement
+  child and supporting roles remain unmistakably subordinate
+  fewer visible type steps, but no role collapse
+  restraint = no decoration, NOT no hierarchy
+
   ❌ light weight + small size everywhere → hierarchy collapses
   ✅ one large calm focal statement → zen dominance without loudness
 
@@ -105,7 +135,7 @@ Hairlines are not automatically zen. Repeated faint lines still fragment the pag
 
 ### Alignment rail contract
 
-This is also a hard genre constraint. Zen asymmetry needs a stable hidden order.
+Foundation requires meaningful alignment. Zen makes the hidden order quieter and stricter.
 
 ```text
 PAGE SHELL
@@ -152,6 +182,19 @@ verdict: alignment continuity failure
 ✅ consistent label rail and main-content rail
 ✅ one intentional offset used sparingly as a focal exception
 ```
+
+### Spacing expression
+
+Foundation owns relational spacing. Zen expresses it with quiet, visible intervals rather than boundaries.
+
+```text
+parent → child group must remain distinct
+sibling items form a tighter repeated rhythm
+within-item details cluster closely
+between-section intervals provide a calm pause
+```
+
+Do not increase every gap equally. Equal large gaps flatten grouping just as equal small gaps do.
 
 ### Void rule
 
@@ -203,7 +246,7 @@ prefers-reduced-motion: hard gate
 Marquee Hero (zen variant), Specimen, Studio, Atelier, Lumen
 ```
 
-A compatible macrostructure is still invalid when implemented with repeated section borders, equal cards, dense metadata chrome, or broken alignment continuity.
+A compatible macrostructure is still invalid when implemented with repeated section borders, equal cards, dense metadata chrome, broken hierarchy, or broken alignment continuity.
 
 ## Nav & Footer
 
@@ -216,21 +259,23 @@ Nav, content, and footer should share the same page shell and outer rails
 ## Zen Review Questions
 
 ```text
-1. What was removed rather than restyled?
-2. Where does empty space perform grouping or separation?
-3. What is the single focal object in this viewport?
-4. How many structural lines are visible?
-5. Could any remaining border become spacing instead?
-6. Did card removal merely become hairline-divider repetition?
-7. What are the persistent alignment rails across the page?
-8. Are any rows manually nudged off those rails without a functional reason?
-9. Does mobile collapse preserve a calm reading order?
-10. With color removed, does the composition remain calm and legible?
+1. Did the design-foundation gates pass before zen conformance was evaluated?
+2. What was removed rather than restyled?
+3. Where does empty space perform grouping or separation?
+4. What is the single focal object in this viewport?
+5. How many structural lines are visible?
+6. Could any remaining border become spacing instead?
+7. Did card removal merely become hairline-divider repetition?
+8. What are the persistent alignment rails across the page?
+9. Are any rows manually nudged off those rails without a functional reason?
+10. Does mobile collapse preserve a calm reading order?
+11. With color removed, does the composition remain calm and legible?
 ```
 
 ## Hard Failures
 
 ```text
+❌ treating a foundation defect as a zen style choice
 ❌ structural section borders
 ❌ repeated border-separated rows across multiple sections
 ❌ more than one visible structural line in a typical viewport without domain need
@@ -244,6 +289,7 @@ Nav, content, and footer should share the same page shell and outer rails
 ❌ multiple container widths with no declared reason
 ❌ repeated arbitrary margin, padding, or translate offsets used to fake asymmetry
 ❌ section labels, headings, and content drifting across unrelated start positions
+❌ parent, child group, and siblings using equal visual weight
 ❌ mobile content zig-zag caused by desktop offset rules
 ```
 
