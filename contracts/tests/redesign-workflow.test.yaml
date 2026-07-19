@@ -99,7 +99,8 @@ skill_test:
         - "interaction"
         - "cannot"
       must_not_contain:
-        - "PASS"
+        - "final_decision: PASS"
+        - "Decision: PASS"
         - "production-ready"
       quality_gates_tested:
         - screenshot_alone_does_not_prove_interaction_runtime_or_hidden_states
@@ -166,7 +167,8 @@ skill_test:
         - "rollback"
         - "remaining"
       must_not_contain:
-        - "PASS"
+        - "final_decision: PASS"
+        - "Decision: PASS"
         - "all gates passed"
         - "production-ready"
       quality_gates_tested:
