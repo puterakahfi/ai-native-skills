@@ -1,6 +1,7 @@
 github_profile_result:
   fixture: puterakahfi
-  generated_with: github-profile@1.1.0
+  generated_with: github-profile@1.2.0
+  workflow: redesign-workflow@3.3.0
   profile_goal: personal-brand
   primary_audience:
     - software engineers
@@ -10,18 +11,75 @@ github_profile_result:
   narrative: >-
     Putera Kahfi connects software architecture, product design, and agent-driven
     development to build practical AI-native engineering systems.
+  baseline:
+    repository: puterakahfi/puterakahfi
+    initial_commit: c1a3f65b6138093e8a817019425aca23c681f0c7
+    latest_reviewed_failed_commit: 4319b26c20b51e1a23e350a65bf29ec01788c775
+    foundation_corrected_commit: 8b09299ad169221ec2daf1a3b05110d2af229c53
+  brand_alignment:
+    source:
+      - user-authoritative statement about pkahfi.com visual direction
+      - rendered GitHub profile screenshots
+    grammar:
+      mood: zen and calm editorial
+      density: sparse but information-bearing
+      spacing: generous only when structurally earned
+      separators: none decorative
+      alignment: centered identity opening, left-aligned detailed reading
+      typography_behavior: quiet hierarchy with clear role scale
+    prohibited_treatments:
+      - horizontal dividers
+      - blockquote project cards
+      - code fences used as visual boxes
+      - decorative borders
+      - repeated oversized blank intervals
+      - tiny labels carrying primary section identity
+  preservation_locks:
+    - Putera Kahfi name
+    - puterakahfi GitHub identity
+    - Native AI Engineering positioning
+    - public project links
+    - zen personal-brand grammar
+    - no lines or cardification
+  direction_candidates:
+    - name: centered-zen-manifesto
+      fit: >-
+        A bounded centered identity opening creates a personal focal anchor, while
+        left-aligned proof and detail restore reading efficiency and visual balance.
+      risks:
+        - centered opening becomes generic when the thesis is weak
+    - name: zen-technical-index
+      fit: >-
+        Fully left-aligned and compact; strong for scanning but less continuous with
+        the personal-brand opening used by pkahfi.com.
+      risks:
+        - feels utilitarian rather than authored
   selected_direction:
-    name: editorial-technical-authority
+    name: centered-zen-manifesto
     reason: >-
-      The subject spans engineering, design, and product work, but the strongest
-      public proof is technical. A thesis-led editorial opening keeps the identity
-      distinctive while selected public repositories provide direct evidence.
+      It preserves the calm personal identity while satisfying foundation hierarchy,
+      grouping, alignment, rhythm, balance, flow, and legibility.
   differentiation_device:
-    primary: thesis-led opening plus GitHub-native proof blocks
-    rationale: >-
-      The first rendered version was readable but visually resembled generic
-      documentation. The refined version gives the engineering thesis a memorable
-      system statement and renders selected projects as repeated evidence modules.
+    primary: authored Native AI Engineering thesis
+    supporting: relational editorial rhythm across identity, proof, principles, and action
+    prohibited_substitute: containment added only to create contrast
+  hierarchy_roles:
+    page_anchor: centered H3 name
+    positioning: bold supporting role
+    statement: centered H4 engineering proposition
+    section_parent: left-aligned H3
+    project_item: linked H4
+    metadata: italic supporting line
+    body: concise explanatory prose
+    action: bounded link group
+  spacing_contract:
+    relation: element_gap < item_gap < section_gap
+    rules:
+      - keep each project title, purpose, metadata, and contribution attached
+      - use stronger separation between projects than within a project
+      - use the strongest pause between different section roles
+      - reduce space when content mass becomes stranded
+      - treat Ma as purposeful pause, never maximum emptiness
   density: concise
   dynamic_widgets: none
   verified_facts:
@@ -44,14 +102,9 @@ github_profile_result:
     - No unverified revenue, user-count, conversion, or contribution metrics included.
     - Private repositories are not used as public proof links.
     - Current-focus statements should be reviewed when the fixture is published.
-  preservation_locks:
-    - Putera Kahfi name
-    - puterakahfi GitHub identity
-    - Native AI Engineering positioning
-    - public project links
   section_order:
-    - hero_and_thesis_statement
-    - selected_work_proof_blocks
+    - centered_identity_and_thesis
+    - selected_work
     - engineering_thesis
     - capability_groups
     - current_focus
@@ -59,9 +112,9 @@ github_profile_result:
   external_dependencies: []
   render_evidence:
     - user-provided desktop screenshot of version 1.0.0
-  design_review_result: LIMITED_REVIEW
+    - user-provided desktop screenshot of line-free foundation-failed version
+  design_review_result: NOT_VERIFIED
   review_note: >-
-    The desktop screenshot exposed a clean-but-anonymous documentation layout,
-    flat hierarchy, repetitive section treatment, and excess explanatory density.
-    Version 1.1.0 addresses those findings. A new desktop screenshot, narrow-width
-    screenshot, and light/dark comparison are still required before READY.
+    Two screenshots provide evidence for rejecting earlier attempts. The latest
+    foundation-corrected version requires a new desktop screenshot, narrow-width
+    screenshot, and light/dark comparison before READY.
