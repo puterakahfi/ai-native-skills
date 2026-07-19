@@ -1,0 +1,63 @@
+skill_test:
+  skill: design-visual
+  version: "1.1.0"
+  description: Verify the visual port resolves foundation and locks first, inherits accepted direction when available, and loads only specialist adapters required by active visual concerns.
+
+  cases:
+    - id: foundation-and-locks-precede-genre
+      description: Genre and effects cannot be selected before foundation and valid brand/product locks are resolved.
+      trigger: "Skip hierarchy, content, brand, and design-system analysis. Pick atmospheric genre first and let it determine everything else."
+      design_gate_ids: [R6, R7, G1, CP3]
+      must_contain: ["foundation", "locks", "before", "context", "cannot"]
+      must_not_contain: ["genre first regardless", "skip foundation"]
+      quality_gates_tested:
+        - foundation_is_resolved_before_expression
+        - brand_product_and_system_locks_are_applied
+
+    - id: accepted-direction-does-not-require-new-genre-selection
+      description: A clear accepted visual direction can be inherited without reopening genre selection.
+      trigger: "The visual direction contract is approved and specifies hierarchy, composition, density, type, color, depth, imagery, motion, and restraint. Restart genre selection anyway before a small visual implementation task."
+      must_contain: ["inherit", "accepted direction", "active concern", "do not reopen", "preserve"]
+      must_not_contain: ["genre selection is always mandatory", "replace approved direction"]
+      quality_gates_tested:
+        - accepted_direction_can_be_inherited
+        - genre_is_optional_when_direction_contract_is_complete
+
+    - id: premium-alone-does-not-load-depth
+      description: Saying premium is not sufficient reason to load depth and effect adapters.
+      trigger: "The only visual concern is typography hierarchy on a flat service page. The user says premium, so load depth and add atmosphere, glow, and 3D."
+      design_gate_ids: [R6, R8, CP3]
+      must_contain: ["active concern", "typography", "depth is optional", "named role", "do not load"]
+      must_not_contain: ["premium requires depth", "add glow and 3D"]
+      quality_gates_tested:
+        - only_active_visual_adapters_are_loaded
+        - depth_is_role_driven
+
+    - id: page-direction-change-loads-composition-and-hierarchy
+      description: A page-level direction change must include relational composition and hierarchy reasoning.
+      trigger: "Replace the landing-page visual direction, section pacing, and focal sequence. Load only color and typography; skip composition and visual hierarchy."
+      design_gate_ids: [C1, C2, C3, H1, H2, H3]
+      must_contain: ["composition", "visual-hierarchy", "focal sequence", "role", "required"]
+      must_not_contain: ["color and typography are sufficient", "skip hierarchy"]
+      quality_gates_tested:
+        - page_level_direction_loads_composition_and_hierarchy
+        - visual_direction_is_relational_not_palette_only
+
+    - id: motion-adapter-is-not-loaded-for-still-direction
+      description: An intentionally still direction must not receive decorative motion by default.
+      trigger: "The selected direction explicitly requires stillness. Add staggered reveals and floating motion because modern landing pages need animation."
+      design_gate_ids: [G18, G22, R6]
+      must_contain: ["stillness", "motion stance", "not required", "preserve", "purpose"]
+      must_not_contain: ["animation is mandatory", "add floating motion"]
+      quality_gates_tested:
+        - motion_is_loaded_only_when_active
+        - accepted_motion_stance_is_preserved
+
+    - id: adapters-return-one-reconciled-handoff
+      description: The visual port must synthesize specialist outputs into one direction instead of returning contradictions.
+      trigger: "Typography recommends restrained editorial roles, color recommends playful saturation, depth recommends cinematic atmosphere, and composition recommends dense utility layout. Return all opinions without resolving them."
+      must_contain: ["reconcile", "selected direction", "trade-off", "one handoff", "design owner"]
+      must_not_contain: ["unresolved pile of opinions", "implementation decides randomly"]
+      quality_gates_tested:
+        - specialist_outputs_are_synthesized
+        - final_visual_direction_is_coherent
