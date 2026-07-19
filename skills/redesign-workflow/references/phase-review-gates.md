@@ -1,35 +1,32 @@
 # Phase 9 — Design Review Facade Adapter
 
-This reference integrates `redesign-workflow` with the canonical `design-review` facade skill.
-
-Do not maintain a duplicate scorecard here. Domain classification, reviewer selection, gate definitions, applicability, evidence normalization, scoring, hard-gate policy, coverage, verdicts, and report format are owned by `skills/design-review/` and its loaded domain reviewers.
+This reference integrates `redesign-workflow` with the canonical `design-review` facade. The facade owns universal and domain scoring. The redesign workflow additionally owns conformance to the explicit design direction and loaded genre contract.
 
 ## Entry condition
 
-Review only after Phase 8 verification has produced fresh evidence for the redesigned artifact.
+Review only after Phase 8 has produced fresh evidence.
 
 ```text
 □ target rendered or inspected in the declared artifact state
 □ design domain and surface profile resolved
-□ built-in or adapter reviewer coverage resolved
-□ required viewports, formats, themes, or channels captured
-□ relevant interactions and states exercised when interactive
+□ selected genre reference loaded
+□ genre constraints attached to the run state
+□ required viewports, themes, formats, or channels captured
+□ relevant interactions and states exercised
 □ runtime or export evidence captured when required
 □ preservation locks checked
 □ verification report attached to the current iteration
 ```
 
-A successful build alone is not visual verification. A good-looking screenshot alone is not interaction, runtime, export, or specialist-domain verification.
+A successful build is not visual verification. A screenshot alone is not runtime or interaction verification.
 
 ## Facade loading policy
 
-Start Phase 9 with `design-review/SKILL.md`. Then load references only when entering the phase that owns them.
+Start with `design-review/SKILL.md`, then load only applicable references.
 
 ```text
 CLASSIFY / ROUTE
   design-review/references/review-routing.md
-  design-review/references/facade-boundary.md only when scope or extension is unclear
-  design-review/references/review-profiles.md only for a built-in profile
 
 UNIVERSAL REVIEW
   design-review/references/universal-gates.md
@@ -37,7 +34,7 @@ UNIVERSAL REVIEW
 DOMAIN / SURFACE REVIEW
   design-review/references/interactive-surface-gates.md OR
   design-review/references/static-visual-gates.md OR
-  declared external domain reviewer
+  declared external reviewer
 
 COMPONENT REVIEW
   design-review/references/component-review.md only for selected components
@@ -49,128 +46,197 @@ REPORT
   design-review/references/review-report.md
 ```
 
-Do not preload every review reference defensively. Each completed review phase produces the handoff context for the next phase.
-
 During an active visual loop, also load `iteration-review-mode.md`.
+
+## Contextual hard gate: genre conformance
+
+This gate runs before the facade verdict is accepted.
+
+```yaml
+genre_conformance_gate:
+  genre: <name>
+  reference: <loaded path>
+  constraints_tested: []
+  source_evidence: []
+  rendered_evidence: []
+  violations: []
+  status: pass | fail | not_verified
+```
+
+Rules:
+
+```text
+- explicit genre constraints are hard gates when applicable
+- a high universal score cannot override a genre violation
+- source evidence may identify obvious failures before rendering
+- rendered evidence is required for final pass
+- not_verified cannot be reported as pass
+```
+
+### Zen / space-led conformance gate
+
+When genre is `zen-minimalist`, `editorial-minimal`, or explicitly space-led, verify:
+
+```text
+COMPOSITION
+□ whitespace and proximity perform most grouping
+□ one clear focal object per viewport
+□ empty intervals are intentional and anchored
+
+STRUCTURAL LINES
+□ section dividers = 0
+□ repeated per-row separators = 0 by default
+□ at most one rare list-boundary hairline is justified
+□ typical viewport shows target 0 and maximum 1 structural line
+
+CONTAINMENT
+□ cards are rare exceptions
+□ no card-to-hairline substitution
+□ no repeated bordered metadata rows across multiple sections
+□ no giant boxed CTA used only for visual impact
+
+MOTION AND EXPRESSION
+□ no hover lift, bounce, glow, or decorative urgency
+□ accent and texture remain rare
+```
+
+Functional exclusions from the line budget:
+
+```text
+form controls, keyboard focus rings, required tables, diagrams, charts,
+and data grids whose meaning depends on lines
+```
+
+### Required evidence for zen line density
+
+```text
+1. source scan of changed visual components for:
+   border-t, border-b, border-y, divide-y, divide-x, repeated <hr>,
+   box-shadow separators, and pseudo-element rules
+
+2. full-page or representative viewport captures
+
+3. visible structural-line count per inspected viewport
+
+4. justification for every allowed exception
+```
+
+Example failed evidence:
+
+```yaml
+violations:
+  - region: selected-work
+    observation: every project row uses border-top
+    class: card_to_hairline_substitution
+  - region: principles
+    observation: section border-y plus per-item border-top
+    class: structural_fragmentation
+```
+
+Any unapproved structural section border or repeated row-separator system on a zen page produces `fail` and routes to defect classification.
 
 ## Review mode selection
 
 ```text
 focused iteration
-  Use when one layer, component, or declared gate changed.
-  Review touched gates plus adjacent regression checks.
-  Do not run or display the full inventory.
+  changed gates plus adjacent regressions
 
 full review
-  Use for a major multi-layer change, audit handoff, or final design approval.
-  Full means full only for domains covered by built-in or loaded adapter reviewers.
+  multi-layer direction or final design approval
 
 release review
-  Use for commit, PR, deployment, or delivery readiness.
-  All applicable contextual hard gates and required domain evidence must be verified.
+  commit, PR, deployment, or delivery readiness
 ```
 
-## Route from redesign state
+A genre correction that changes containment grammar requires at least a focused review across every affected section, not only the initially reported component.
 
-Map redesign state into the facade route:
+## Route from redesign state
 
 ```yaml
 review_route:
   design_domain: <digital-interface | visual-communication | presentation | other>
-  surface_profile: <from preflight/spec>
+  surface_profile: <from spec>
   artifact_state: <rendered-interactive | rendered-static | mixed>
   review_depth: <focused | full | release>
   coverage_mode: <BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE>
-  domain_reviewers: <built-in and external reviewers loaded>
-  viewing_context: <from spec and verification>
-  selected_lenses: <from changed layers and acceptance criteria>
-  selected_components: <changed or high-risk components>
-  applicable_hard_gates: <from loaded reviewers>
-  evidence_available: <from verification report>
+  domain_reviewers: []
+  genre_reviewer: <loaded design-genre reference>
+  selected_lenses: []
+  selected_components: []
+  applicable_hard_gates: []
+  evidence_available: []
   evidence_gaps: []
 ```
 
-Do not default every redesign to `web-marketing`. Use the declared product surface and design domain.
-
-Built-in facade coverage includes:
-
-```text
-digital-interface    web, mobile, desktop, and responsive product UI
-visual-communication poster, flyer, banner, social, ad, and thumbnail
-presentation         slides and decks
-```
-
-Identity systems, packaging, motion/video, industrial, spatial, fashion, and service-design disciplines require a domain reviewer for a complete verdict. Universal gates alone produce `LIMITED REVIEW`.
+Do not default every redesign to `web-marketing`. Use the actual surface and design domain.
 
 ## Lightweight iteration evidence
 
-During creative iteration, keep the loop proportional to the changed layer:
-
 ```text
-□ inspect all changed regions in the browser or final artifact
-□ inspect adjacent regions for hierarchy and spacing regression
-□ verify relevant viewports or final output ratios
-□ verify every affected theme when theme behavior changed
-□ exercise changed controls and overflow behavior
-□ compare required logos, products, people, or content when fidelity applies
-□ run changed-file diff checks when repository files changed
-□ capture runtime errors when the changed flow is interactive
-□ capture export evidence when the output is static or presentation-based
+□ inspect every changed region
+□ inspect adjacent regions for rhythm and hierarchy regressions
+□ verify affected viewports and themes
+□ exercise changed controls and overflow
+□ run changed-file diff and genre-token scan
+□ capture runtime errors for interactive surfaces
+□ record any deferred build/test gates honestly
 ```
 
-Do not reflexively run full build, lint, or every test after each small visual adjustment. Run them at the appropriate commit, PR, deploy, or release boundary, or when the changed implementation requires them.
-
-If a full command is blocked by missing shared configuration, record the concrete blocker once. Do not repeat the same failing command as a substitute for fresh design evidence.
+Do not use repeated full builds as a substitute for fresh visual evidence.
 
 ## Review decision
 
-Use the verdict from the `design-review` facade:
+Use the facade verdict only after contextual hard gates are applied.
 
 ```text
 PASS
-  → proceed to delivery when redesign acceptance criteria also pass
+  facade passes + genre conformance passes + redesign acceptance passes
 
 CONDITIONAL PASS
-  → proceed only when evidence gaps or accepted risks fit the current approval boundary
+  only when remaining evidence gaps fit the approval boundary and no genre hard gate fails
 
 NEEDS WORK
-  → proceed to Phase 10 defect classification
+  failed genre or scored gate → Phase 10 defect classification
 
 CRITICAL
-  → stop delivery and proceed to Phase 10 defect classification immediately
+  blocking runtime, accessibility, fidelity, or destructive failure
 
 LIMITED REVIEW
-  → do not claim complete domain approval; load the required domain reviewer,
-    narrow the delivery claim, or route to the domain specialist
+  missing domain coverage or rendered evidence; never claim full approval
 ```
 
-A score of 8 or above does not override a failed contextual hard gate, insufficient release evidence, or missing primary-domain coverage.
+A score of 8 or above does not override a failed genre hard gate, missing release evidence, or insufficient domain coverage.
 
 ## Defect handoff
-
-For each failed or partial gate, pass this structure to Phase 10:
 
 ```yaml
 defect_candidate:
   gate: <id>
-  governing_reviewer: <design-review built-in or domain reviewer>
+  governing_reviewer: <genre reference | design-review | domain reviewer>
   region: <affected region>
   observation: <verified condition>
   evidence: []
-  impact: <user, business, accessibility, fidelity, runtime, or delivery impact>
-  recommendation: <correction direction>
+  impact: <user | business | accessibility | fidelity | runtime | delivery>
+  recommendation: <direction>
   suspected_layer: <foundation | structure | component | expression | interaction | content | implementation>
 ```
 
-Do not classify the correction layer solely from the visible symptom. Phase 10 owns final defect classification.
+For recurring genre violations, consider:
 
-Do not copy a specialist-domain correction into the facade. Route the defect to the governing reviewer or specialist skill.
+```text
+workflow_orchestration_defect
+  selected reference was not loaded or its constraints were not propagated
 
-## Output
+reference_knowledge_defect
+  genre rule was ambiguous or allowed a recurring wrong interpretation
 
-Render the scorecard as normal markdown, never as a fenced wall of text.
+local_implementation_defect
+  rule was clear and loaded, but implementation violated it
+```
 
-Minimum output:
+Do not classify solely from the visible symptom.
+
+## Minimum report
 
 ```markdown
 ## [target] · Design Review · Iteration [N]
@@ -178,27 +244,27 @@ Minimum output:
 **X.XX / 10** — [verdict] · Coverage [X%]
 
 - Design domain: [domain]
-- Review coverage: [BUILT_IN | ADAPTER_COVERED | LIMITED]
-- Loaded reviewers: [list]
+- Genre: [genre]
+- Genre conformance: [pass | fail | not verified]
+- Structural line count by viewport: [evidence]
+- Review coverage: [mode]
 - Hard gates: [status]
 - Critical findings: [count]
 - Important findings: [count]
 
-| Cluster | Score | Coverage | Governing reviewer | Notes |
+| Cluster | Score/status | Coverage | Governing reviewer | Notes |
 |---|---:|---:|---|---|
+| Genre conformance | pass/fail | X% | design-genre | ... |
 | Universal visual quality | X.X | X% | design-review | ... |
-| Domain/surface quality | X.X | X% | [reviewer] | ... |
-| Components | X.X | X% | [reviewer] | ... |
-| Runtime, export, or fidelity | X.X | X% | [reviewer] | ... |
+| Domain/surface quality | X.X | X% | reviewer | ... |
+| Components | X.X | X% | reviewer | ... |
+| Runtime/export/fidelity | X.X | X% | reviewer | ... |
 
 **Open findings**
-- `[gate]` [score/status] — [observation] → [correction direction]
+- [gate] — [observation] → [correction]
 
 **Not verified**
-- [gate and missing evidence]
-
-**Scope limitations**
-- [unsupported or uncovered domain concerns]
+- [missing evidence]
 ```
 
 The full report contract remains in `design-review/references/review-report.md`.
