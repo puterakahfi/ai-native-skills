@@ -177,6 +177,91 @@ violations:
 
 Any unapproved structural section border, repeated row-separator system, or repeated arbitrary content offset on a zen page produces `fail` and routes to defect classification.
 
+## Contextual hard gate: portfolio publication eligibility
+
+Apply this gate to portfolios, product hubs, personal sites, showcase pages, and any redesign that publishes a project inventory.
+
+The content inventory is not an archive. Honest status labeling does not justify publishing every project.
+
+```yaml
+publication_eligibility_gate:
+  items_reviewed: []
+  published_items: []
+  hidden_items: []
+  user_overrides: []
+  violations: []
+  status: pass | fail | not_verified
+```
+
+Classify every candidate item before it receives homepage visibility:
+
+```text
+RELEASED_AND_REACHABLE
+  shipped or public; destination works; evidence is inspectable
+
+ACTIVE_AND_MAINTAINED
+  currently used, maintained, or materially progressing
+
+ACTIVE_WORK_IN_PROGRESS
+  not released, but strategically active and intentionally shown
+
+DORMANT_OR_ABANDONED
+  stalled, neglected, or no longer representative
+
+STALE_OR_BROKEN
+  dead link, misleading status, outdated claim, or unavailable destination
+
+SPECULATIVE
+  idea only; no meaningful artifact or active execution
+```
+
+Publication defaults:
+
+```text
+□ RELEASED_AND_REACHABLE may be shown
+□ ACTIVE_AND_MAINTAINED may be shown with accurate status
+□ ACTIVE_WORK_IN_PROGRESS may be shown only when it has strategic value and clear labeling
+□ DORMANT_OR_ABANDONED is hidden by default
+□ STALE_OR_BROKEN is hidden until corrected
+□ SPECULATIVE is hidden unless the user explicitly requests a roadmap surface
+□ explicit user inclusion or exclusion overrides inferred eligibility
+```
+
+Hard rules:
+
+```text
+- transparency is not inventory dumping
+- “Lab”, “Planned”, or “Experiment” is not automatic permission to publish
+- a project must not be labeled live without verified public evidence
+- dormant projects must not borrow credibility from released work
+- when filtering leaves one item, simplify the section rather than preserving an empty catalog pattern
+- user feedback that an item is dormant, abandoned, or not ready is authoritative
+```
+
+Required evidence:
+
+```text
+1. item name and claimed maturity
+2. source of truth: user instruction, repository evidence, reachable URL, or active artifact
+3. publication decision: show | hide | move to roadmap
+4. reason for every ACTIVE_WORK_IN_PROGRESS item kept visible
+5. confirmation that navigation and section copy still match the filtered inventory
+```
+
+Example failure:
+
+```yaml
+violations:
+  - region: wider-ecosystem
+    observation: dormant projects remain visible because they are labeled Lab
+    class: publication_eligibility_failure
+  - region: navigation
+    observation: section still promises a broad ecosystem after inventory was reduced to one active item
+    class: content_structure_mismatch
+```
+
+A portfolio or product hub cannot pass review while user-declared dormant, abandoned, stale, or misleading projects remain published.
+
 ## Review mode selection
 
 ```text
@@ -247,7 +332,7 @@ LIMITED REVIEW
   missing domain coverage or rendered evidence; never claim full approval
 ```
 
-A score of 8 or above does not override a failed genre hard gate, missing release evidence, or insufficient domain coverage.
+A score of 8 or above does not override a failed genre hard gate, publication-eligibility gate, missing release evidence, or insufficient domain coverage.
 
 ## Defect handoff
 
@@ -280,6 +365,8 @@ Alignment drift caused by many local offsets is a structure defect, not a set of
 
 Repeated optical misalignment in the same label/heading pattern is a component-system defect. Fix the shared primitive once; do not scatter `pt-*`, `top-*`, or transforms across individual sections.
 
+Publishing dormant work despite an existing live-content rule is a workflow-enforcement defect. Add or strengthen the publication gate instead of merely relabeling dormant items.
+
 Do not classify solely from the visible symptom.
 
 ## Minimum report
@@ -292,6 +379,7 @@ Do not classify solely from the visible symptom.
 - Design domain: [domain]
 - Genre: [genre]
 - Genre conformance: [pass | fail | not verified]
+- Publication eligibility: [pass | fail | not verified]
 - Structural line count by viewport: [evidence]
 - Page shell: [value]
 - Persistent alignment rails: [evidence]
@@ -306,6 +394,7 @@ Do not classify solely from the visible symptom.
 | Cluster | Score/status | Coverage | Governing reviewer | Notes |
 |---|---:|---:|---|---|
 | Genre conformance | pass/fail | X% | design-genre | ... |
+| Publication eligibility | pass/fail | X% | redesign-workflow | ... |
 | Alignment continuity | pass/fail | X% | redesign-workflow | ... |
 | Universal visual quality | X.X | X% | design-review | ... |
 | Domain/surface quality | X.X | X% | reviewer | ... |
