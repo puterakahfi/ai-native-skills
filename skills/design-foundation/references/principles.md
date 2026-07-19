@@ -6,6 +6,46 @@ Foundation principles describe **relationships**, not a preferred visual style.
 
 ---
 
+## Universal Foundation Checklist
+
+Before choosing a genre or polishing components, answer:
+
+```text
+HIERARCHY
+  What is parent, child group, sibling, and supporting detail?
+
+GROUPING
+  What belongs together before labels are read?
+
+ALIGNMENT
+  Which shared structural and optical anchors create order?
+
+SPACE
+  Which gaps mean within-group, sibling, parent-group, and section transition?
+
+BALANCE
+  Where is the visual mass and what counterbalances it?
+
+FLOW
+  What is seen first, second, and acted on next?
+
+LEGIBILITY
+  Does every role survive actual-size viewing?
+
+CONSISTENCY
+  Which repeated roles and tokens must remain coherent?
+
+ACCESSIBILITY
+  Can the information and interaction be perceived and operated safely?
+
+RESPONSIVE CONTINUITY
+  Which relationships must survive stacking, resizing, orientation, and input changes?
+```
+
+Unresolved foundation questions block final direction approval.
+
+---
+
 ## 1. Hierarchy — Visual Structure
 
 ```text
