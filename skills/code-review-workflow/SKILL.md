@@ -27,22 +27,21 @@ Source diff ≠ rendered design evidence.
 Screenshot ≠ runtime, keyboard, or hidden-state evidence.
 ```
 
-A submission may be approved only when every affected review domain has either passed or has explicit non-blocking accepted risk under the product approval policy.
+A submission may be approved only when every affected domain has passed or has explicit non-blocking accepted risk under the product approval policy.
 
 ## Hard Rules
 
 ```text
 1. Classify changed domains before selecting reviewers.
-2. Always run architecture review for a code submission.
-3. Run design review when user-facing appearance, interaction, state, content fidelity,
-   accessibility, responsiveness, or generated/exported visuals can change.
-4. Design review must enter through the design-review facade.
-5. Changed rendered behavior requires fresh rendered or exported evidence.
+2. Always run architecture review for code submissions.
+3. Run design review when user-facing or generated visual output can change.
+4. Enter design acceptance through the design-review facade.
+5. Changed rendered output requires fresh rendered or exported evidence.
 6. Source-only design inspection cannot approve visual or interaction acceptance.
-7. NOT_VERIFIED is an evidence gap, not a PASS or zero score.
+7. NOT_VERIFIED is an evidence gap, not PASS or zero.
 8. LIMITED REVIEW cannot approve a complete specialist-domain claim.
 9. Run security review when trust boundaries or sensitive behavior change.
-10. Every blocking verdict must cite concrete evidence and affected files/regions.
+10. Every blocking verdict cites concrete evidence and affected files/regions.
 11. No merge without an explicit final verdict.
 ```
 
@@ -66,7 +65,7 @@ review_context:
   approval_policy: <product-defined>
 ```
 
-Missing product contracts do not automatically block every review. Record the gap and review against repository conventions, specifications, existing architecture, and declared design locks. Block only when the missing contract prevents a required acceptance decision.
+Missing contracts do not automatically block every review. Record the gap and use repository conventions, specifications, architecture, and declared design locks. Block when the missing contract prevents a required acceptance decision.
 
 ## Phase 1 — Load Context
 
@@ -77,17 +76,15 @@ submission diff and description
 linked issue/spec/acceptance criteria
 repository and product instructions
 engineering contracts and ADRs
-product design system, visual locks, and required assets
+product design system, locks, and required assets
 verification evidence attached to the submission
 ```
 
-Record evidence separately from claims. A PR description saying “responsive tested” is not evidence unless the tested viewports and result are available.
+Claims are not evidence. “Responsive tested” requires the tested contexts and observable result.
 
-**Gate:** review context and available evidence are explicit.
+**Gate:** review context and evidence are declared.
 
 ## Phase 2 — Classify Changed Domains
-
-Classify each affected domain before reviewing:
 
 ```yaml
 change_impact:
@@ -103,30 +100,23 @@ change_impact:
   evidence_gaps: []
 ```
 
-User-facing design is affected when the diff can change:
+User-facing design is affected when code can change appearance, interaction, states, content fidelity, accessibility, responsiveness, or generated/exported visual output.
 
-- rendered appearance, typography, spacing, hierarchy, color, assets, or content;
-- interaction, navigation, focus, overflow, responsive/adaptive behavior, or state feedback;
-- loading, empty, error, permission, success, or destructive states;
-- generated/exported poster, slide, thumbnail, PDF, or other visual output;
-- accessibility semantics or operability;
-- logo, product, person, price, claim, or other required fidelity.
+Do not infer “no design change” because only CSS, tokens, props, content data, templates, assets, or generation configuration changed.
 
-Do not infer “no design change” merely because only CSS, tokens, component props, content data, or generated templates changed.
-
-**Gate:** all changed domains and required reviewers are resolved.
+**Gate:** affected domains and required reviewers are resolved.
 
 ## Phase 3 — Architecture Check
 
 Load `architecture-review`.
 
-Review only against evidence and applicable contracts:
+Review applicable concerns:
 
 ```text
 stack and dependency policy
-layer and module boundaries
+layer/module boundaries
 data ownership and migrations
-API/event contracts and compatibility
+API/event compatibility
 folder/package placement
 failure handling and observability implications
 test strategy and regression coverage
@@ -146,98 +136,28 @@ A failing applicable architecture gate blocks approval.
 
 Run only when `user_facing_design: affected`.
 
-### 4.1 Resolve facade route
-
-Start with `design-review/SKILL.md` and declare:
-
-```yaml
-design_review_route:
-  design_domain: <domain>
-  surface_profile: <profile>
-  artifact_state: <state>
-  review_depth: <focused | release>
-  coverage_mode: <BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE>
-  domain_reviewers: []
-  selected_components: []
-  changed_regions: []
-  required_viewing_contexts: []
-  evidence_available: []
-  evidence_gaps: []
-```
-
-Use `focused` for an ordinary PR affecting bounded regions. Use `release` only when this review is the final design acceptance boundary and all required evidence is available.
-
-### 4.2 Apply artifact-state evidence policy
+Load:
 
 ```text
-source-only
-  inspect implementation, tokens, semantics, content, and declared state coverage
-  mark rendered visual, interaction, runtime, and export claims NOT_VERIFIED
-  do not approve changed rendered output
-
-rendered-interactive or mixed
-  inspect changed regions at required viewports/themes
-  exercise changed interactions, states, and expected inputs
-  capture runtime evidence when executable behavior changed
-  inspect accessibility semantics/focus when affected
-
-rendered-static or mixed static output
-  inspect final size and actual destination context
-  verify crop, safe area, fidelity, mandatory content, and export integrity
+references/design-review-adapter.md
 ```
 
-A screenshot may verify visible composition but cannot prove keyboard operation, overflow behavior after interaction, reduced motion, console/runtime health, or hidden states.
+That adapter owns:
 
-### 4.3 Run selected facade phases
+- design-change triggers;
+- facade route fields;
+- source/rendered/static evidence policy;
+- phase-specific design-review loading;
+- facade verdict-to-merge mapping;
+- design result handoff shape.
 
-```text
-CLASSIFY / ROUTE
-→ UNIVERSAL REVIEW
-→ applicable domain/surface reviewer
-→ selected component review
-→ EVIDENCE + SCORE
-→ REPORT
-```
+Do not maintain a duplicate design scorecard here.
 
-Do not copy a local mini-scorecard into this workflow. The facade and loaded domain reviewers own gates, scoring, coverage, and verdict.
-
-Design result:
+Output:
 
 ```text
-PASS
-CONDITIONAL PASS
-NEEDS WORK
-CRITICAL
-LIMITED REVIEW
-ROUTE_ELSEWHERE
-N/A
-```
-
-### 4.4 Map design verdict to review decision
-
-```text
-PASS
-  eligible for approval
-
-CONDITIONAL PASS
-  eligible only when every remaining risk is explicit, non-blocking,
-  and accepted by the configured authority
-
-NEEDS WORK
-  request changes
-
-CRITICAL
-  block
-
-LIMITED REVIEW
-  block complete-domain approval; obtain the required domain reviewer
-  or narrow the claim and merge scope
-
-ROUTE_ELSEWHERE
-  block until the required specialist reviewer is available
-
-NOT_VERIFIED evidence required for changed acceptance
-  request evidence or changes; do not silently approve
+Design: PASS | CONDITIONAL PASS | NEEDS WORK | CRITICAL |
+        LIMITED REVIEW | ROUTE_ELSEWHERE | N/A
 ```
 
 **Gate:** facade design acceptance is resolved for every affected user-facing surface.
@@ -270,9 +190,9 @@ Load `security-review` and `threat-modeling` when the diff affects:
 
 ```text
 authentication or authorization
-trust boundaries or external integrations
+trust boundaries or integrations
 secrets, tokens, uploads, or untrusted input
-personal, financial, or other sensitive data
+personal, financial, or sensitive data
 permissions, tenancy, or data isolation
 destructive or high-impact actions
 ```
@@ -283,25 +203,24 @@ Output:
 Security: PASS | PASS WITH FLAGS | FAIL | NOT_VERIFIED | N/A
 ```
 
-Applicable unresolved high-risk security findings block approval.
+Applicable unresolved high-risk findings block approval.
 
 ## Phase 7 — Final Verdict
-
-Map all domain results into one merge decision:
 
 ```text
 APPROVED
   every affected domain passes
-  or only explicit non-blocking accepted flags remain
+  or only explicit accepted non-blocking flags remain
 
 REQUEST CHANGES
-  correctable architecture, design, logic, security, test, or evidence gaps remain
+  correctable architecture, design, logic, security, test,
+  reviewer, or evidence gaps remain
 
 BLOCKED
   critical/hard-gate failure
   missing required specialist reviewer
   unsafe migration/security condition
-  submission cannot be responsibly evaluated
+  or the submission cannot be responsibly evaluated
 ```
 
 Output:
@@ -337,7 +256,7 @@ Output:
 - [explicit accepted risk or follow-up]
 
 ## Evidence Gaps
-- [missing tests, preview, viewport, state, runtime, export, or reviewer]
+- [missing tests, preview, state, runtime, export, or reviewer]
 
 ## ADR / Follow-up
 - ADR required: [YES | NO]
@@ -352,8 +271,8 @@ Do not approve with “looks good”, “CI passed”, or a high partial design 
 |---|---|---|
 | Context | repository/spec evidence | context declared |
 | Classification | changed-domain routing | reviewers selected |
-| Architecture | `architecture-review` | applicable architecture gates resolved |
-| Design | `design-review` facade | rendered/domain acceptance resolved |
+| Architecture | `architecture-review` | architecture gates resolved |
+| Design | `design-review` facade adapter | rendered/domain acceptance resolved |
 | Logic | engineering/debugging review | behavior and tests resolved |
 | Security | security/threat review | applicable risks resolved |
 | Verdict | workflow synthesis | explicit merge decision |
@@ -366,7 +285,7 @@ Do not approve with “looks good”, “CI passed”, or a high partial design 
 | Approve a visual change from diff only | Source-only evidence cannot prove rendered acceptance |
 | Treat screenshot as interaction/runtime proof | Hidden behavior remains unverified |
 | Run a hardcoded design checklist | Bypasses facade routing and domain ownership |
-| Give logo/identity approval from universal UI gates | Specialist-domain coverage is missing |
+| Give specialist-domain approval from universal UI gates | Required reviewer coverage is missing |
 | Skip design review because only CSS/content changed | Those changes can alter user-facing output |
 | Vague “could be better” finding | No evidence, impact, or correction contract |
 | Merge without explicit verdict | Review responsibility is ambiguous |
