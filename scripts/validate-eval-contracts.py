@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,9 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 TESTS_DIR = ROOT / "contracts" / "tests"
 SKILLS_DIR = ROOT / "skills"
+GATE_REGISTRY_PATH = (
+    ROOT / "skills" / "design-review" / "references" / "gate-registry.yaml"
+)
 
 
 class ContractError(ValueError):
@@ -39,6 +43,55 @@ def load_yaml(path: Path) -> dict[str, Any]:
     if not isinstance(document, dict):
         raise ContractError(f"{path}: root must be a mapping")
     return document
+
+
+def load_active_design_gate_ids() -> set[str]:
+    if not GATE_REGISTRY_PATH.is_file():
+        raise ContractError(f"Missing design gate registry: {GATE_REGISTRY_PATH}")
+
+    document = load_yaml(GATE_REGISTRY_PATH)
+    gate_groups = document.get("gate_groups")
+    if not isinstance(gate_groups, dict) or not gate_groups:
+        raise ContractError(f"{GATE_REGISTRY_PATH}: gate_groups must be a non-empty mapping")
+
+    active_ids: set[str] = set()
+    for group_name, raw_group in gate_groups.items():
+        if not isinstance(raw_group, dict):
+            raise ContractError(
+                f"{GATE_REGISTRY_PATH}: gate_groups.{group_name} must be a mapping"
+            )
+        defaults = raw_group.get("defaults")
+        gates = raw_group.get("gates")
+        if not isinstance(defaults, dict):
+            raise ContractError(
+                f"{GATE_REGISTRY_PATH}: gate_groups.{group_name}.defaults must be a mapping"
+            )
+        if not isinstance(gates, dict) or not gates:
+            raise ContractError(
+                f"{GATE_REGISTRY_PATH}: gate_groups.{group_name}.gates must be a non-empty mapping"
+            )
+
+        default_status = defaults.get("status")
+        for gate_id, raw_gate in gates.items():
+            if not isinstance(gate_id, str) or not gate_id:
+                raise ContractError(
+                    f"{GATE_REGISTRY_PATH}: gate id must be a non-empty string"
+                )
+            if not isinstance(raw_gate, dict):
+                raise ContractError(
+                    f"{GATE_REGISTRY_PATH}: gate '{gate_id}' must be a mapping"
+                )
+            status = raw_gate.get("status", default_status)
+            if status == "active":
+                if gate_id in active_ids:
+                    raise ContractError(
+                        f"{GATE_REGISTRY_PATH}: duplicate active gate id '{gate_id}'"
+                    )
+                active_ids.add(gate_id)
+
+    if not active_ids:
+        raise ContractError(f"{GATE_REGISTRY_PATH}: no active design gates found")
+    return active_ids
 
 
 def load_skill_version(skill_name: str) -> str:
@@ -69,10 +122,35 @@ def load_skill_version(skill_name: str) -> str:
         raise ContractError(f"{skill_file}: metadata must be a mapping")
 
     version = metadata.get("ai-native-skills.version")
-    return require_string(str(version) if version is not None else None, f"{skill_file}: version")
+    return require_string(
+        str(version) if version is not None else None,
+        f"{skill_file}: version",
+    )
 
 
-def validate_case(path: Path, case: Any, index: int, seen_ids: set[str]) -> dict[str, Any]:
+def find_design_gate_references(
+    texts: list[str],
+    active_design_gate_ids: set[str],
+) -> set[str]:
+    combined = "\n".join(texts)
+    found: set[str] = set()
+    for gate_id in sorted(active_design_gate_ids, key=len, reverse=True):
+        pattern = re.compile(
+            rf"(?<![A-Z0-9]){re.escape(gate_id)}(?![A-Z0-9])",
+            re.IGNORECASE,
+        )
+        if pattern.search(combined):
+            found.add(gate_id)
+    return found
+
+
+def validate_case(
+    path: Path,
+    case: Any,
+    index: int,
+    seen_ids: set[str],
+    active_design_gate_ids: set[str],
+) -> dict[str, Any]:
     label = f"{path}: cases[{index}]"
     if not isinstance(case, dict):
         raise ContractError(f"{label} must be a mapping")
@@ -82,13 +160,33 @@ def validate_case(path: Path, case: Any, index: int, seen_ids: set[str]) -> dict
         raise ContractError(f"{path}: duplicate case id '{case_id}'")
     seen_ids.add(case_id)
 
-    require_string(case.get("description"), f"{label}.description")
-    require_string(case.get("trigger"), f"{label}.trigger")
+    description = require_string(case.get("description"), f"{label}.description")
+    trigger = require_string(case.get("trigger"), f"{label}.trigger")
 
     must_contain = string_list(case.get("must_contain"), f"{label}.must_contain")
     must_not_contain = string_list(case.get("must_not_contain"), f"{label}.must_not_contain")
     one_of = string_list(case.get("must_contain_one_of"), f"{label}.must_contain_one_of")
-    quality_gates = string_list(case.get("quality_gates_tested"), f"{label}.quality_gates_tested")
+    quality_gates = string_list(
+        case.get("quality_gates_tested"),
+        f"{label}.quality_gates_tested",
+    )
+    design_gate_ids = string_list(
+        case.get("design_gate_ids"),
+        f"{label}.design_gate_ids",
+    )
+
+    invalid_design_gates = sorted(
+        gate_id
+        for gate_id in design_gate_ids
+        if gate_id not in active_design_gate_ids
+    )
+    if invalid_design_gates:
+        raise ContractError(
+            f"{label}.design_gate_ids contains unregistered or non-active ids: "
+            f"{invalid_design_gates}"
+        )
+    if len(set(design_gate_ids)) != len(design_gate_ids):
+        raise ContractError(f"{label}.design_gate_ids contains duplicates")
 
     sequence_required = case.get("sequence_required", [])
     if not isinstance(sequence_required, list):
@@ -101,7 +199,10 @@ def validate_case(path: Path, case: Any, index: int, seen_ids: set[str]) -> dict
             raise ContractError(f"{sequence_label} must be a mapping")
         normalized_sequences.append(
             {
-                "pattern": require_string(sequence.get("pattern"), f"{sequence_label}.pattern"),
+                "pattern": require_string(
+                    sequence.get("pattern"),
+                    f"{sequence_label}.pattern",
+                ),
                 "must_come_before": require_string(
                     sequence.get("must_come_before"),
                     f"{sequence_label}.must_come_before",
@@ -121,16 +222,44 @@ def validate_case(path: Path, case: Any, index: int, seen_ids: set[str]) -> dict
     if overlap:
         raise ContractError(f"{label} has contradictory exact patterns: {overlap}")
 
+    referenced_design_gates = find_design_gate_references(
+        [
+            description,
+            trigger,
+            *must_contain,
+            *must_not_contain,
+            *one_of,
+            *(
+                item
+                for sequence in normalized_sequences
+                for item in (sequence["pattern"], sequence["must_come_before"])
+            ),
+        ],
+        active_design_gate_ids,
+    )
+    undeclared_references = sorted(
+        referenced_design_gates - set(design_gate_ids)
+    )
+    if undeclared_references:
+        raise ContractError(
+            f"{label} references canonical design gate ids without declaring "
+            f"design_gate_ids: {undeclared_references}"
+        )
+
     return {
         "id": case_id,
         "must_contain": must_contain,
         "must_not_contain": must_not_contain,
         "must_contain_one_of": one_of,
         "sequence_required": normalized_sequences,
+        "design_gate_ids": design_gate_ids,
     }
 
 
-def validate_contract(path: Path) -> tuple[str, list[dict[str, Any]]]:
+def validate_contract(
+    path: Path,
+    active_design_gate_ids: set[str],
+) -> tuple[str, list[dict[str, Any]]]:
     document = load_yaml(path)
     skill_test = document.get("skill_test")
     if not isinstance(skill_test, dict):
@@ -143,22 +272,36 @@ def validate_contract(path: Path) -> tuple[str, list[dict[str, Any]]]:
             f"{path}: skill '{skill_name}' does not match filename '{expected_name}'"
         )
 
-    test_version = require_string(skill_test.get("version"), f"{path}: skill_test.version")
+    test_version = require_string(
+        skill_test.get("version"),
+        f"{path}: skill_test.version",
+    )
     skill_version = load_skill_version(skill_name)
     if test_version != skill_version:
         raise ContractError(
             f"{path}: test version {test_version} does not match skill version {skill_version}"
         )
 
-    require_string(skill_test.get("description"), f"{path}: skill_test.description")
+    require_string(
+        skill_test.get("description"),
+        f"{path}: skill_test.description",
+    )
 
     cases = skill_test.get("cases")
     if not isinstance(cases, list) or not cases:
-        raise ContractError(f"{path}: skill_test.cases must be a non-empty list")
+        raise ContractError(
+            f"{path}: skill_test.cases must be a non-empty list"
+        )
 
     seen_ids: set[str] = set()
     normalized_cases = [
-        validate_case(path, case, index, seen_ids)
+        validate_case(
+            path,
+            case,
+            index,
+            seen_ids,
+            active_design_gate_ids,
+        )
         for index, case in enumerate(cases)
     ]
     return skill_name, normalized_cases
@@ -189,7 +332,8 @@ def write_smoke_output(
         )
         if selected is None:
             raise ContractError(
-                f"{skill_name}/{case['id']}: every must_contain_one_of option conflicts with a forbidden pattern"
+                f"{skill_name}/{case['id']}: every must_contain_one_of option "
+                f"conflicts with a forbidden pattern"
             )
         parts.append(selected)
 
@@ -202,20 +346,29 @@ def write_smoke_output(
     ]
     if collisions:
         raise ContractError(
-            f"{skill_name}/{case['id']}: synthetic passing output hits forbidden patterns {collisions}"
+            f"{skill_name}/{case['id']}: synthetic passing output hits "
+            f"forbidden patterns {collisions}"
         )
 
     case_dir = output_root / skill_name
     case_dir.mkdir(parents=True, exist_ok=True)
-    (case_dir / f"{case['id']}.txt").write_text(output, encoding="utf-8")
+    (case_dir / f"{case['id']}.txt").write_text(
+        output,
+        encoding="utf-8",
+    )
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Validate skill eval contracts")
+    parser = argparse.ArgumentParser(
+        description="Validate skill eval contracts"
+    )
     parser.add_argument(
         "--write-smoke-outputs",
         type=Path,
-        help="Write deterministic per-case passing outputs for runner compatibility smoke tests",
+        help=(
+            "Write deterministic per-case passing outputs for "
+            "runner compatibility smoke tests"
+        ),
     )
     return parser.parse_args()
 
@@ -230,16 +383,32 @@ def main() -> int:
     if not paths:
         raise ContractError(f"No eval contracts found in {TESTS_DIR}")
 
+    active_design_gate_ids = load_active_design_gate_ids()
     total_cases = 0
+    design_gate_references = 0
+
     for path in paths:
-        skill_name, cases = validate_contract(path)
+        skill_name, cases = validate_contract(
+            path,
+            active_design_gate_ids,
+        )
         total_cases += len(cases)
+        design_gate_references += sum(
+            len(case["design_gate_ids"]) for case in cases
+        )
         if args.write_smoke_outputs:
             for case in cases:
-                write_smoke_output(args.write_smoke_outputs, skill_name, case)
+                write_smoke_output(
+                    args.write_smoke_outputs,
+                    skill_name,
+                    case,
+                )
         print(f"✓ {skill_name}: {len(cases)} case(s)")
 
-    print(f"Validated {len(paths)} eval contract(s), {total_cases} case(s)")
+    print(
+        f"Validated {len(paths)} eval contract(s), {total_cases} case(s), "
+        f"{design_gate_references} canonical design-gate reference(s)"
+    )
     if args.write_smoke_outputs:
         print(f"Smoke outputs written to {args.write_smoke_outputs}")
     return 0
@@ -249,5 +418,8 @@ if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except (ContractError, yaml.YAMLError) as error:
-        print(f"eval contract validation failed: {error}", file=sys.stderr)
+        print(
+            f"eval contract validation failed: {error}",
+            file=sys.stderr,
+        )
         raise SystemExit(1) from error
