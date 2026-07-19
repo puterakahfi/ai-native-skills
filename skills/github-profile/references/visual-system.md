@@ -2,18 +2,59 @@
 
 Translate design principles into controls GitHub Profile README actually provides. Do not imitate a normal website with fragile HTML. Load `visual-directions.md` when direction selection or comparison is required.
 
+## Foundation Before Direction
+
+A GitHub Profile README must first satisfy the relational foundation:
+
+```text
+page anchor → section parent → item → metadata → action
+related content groups more tightly than unrelated content
+repeated roles share stable alignment and treatment
+spacing communicates hierarchy instead of repeating one gap
+the visual mass fits the available canvas
+the reading path remains obvious at desktop and narrow width
+```
+
+Genre and brand decide how these relationships are expressed. They may not remove them.
+
+## Brand Grammar Lock
+
+Before choosing a module treatment, inspect supplied or established brand references. Record stable grammar rather than copying surface decoration.
+
+```text
+mood
+content density
+spacing rhythm
+separator behavior
+alignment behavior
+typography behavior
+asset language
+prohibited treatments
+```
+
+Examples:
+
+```text
+zen, generous spacing, no lines    → whitespace and cadence create grouping
+technical, compact, structured     → bounded labels and denser proof anatomy may fit
+editorial, expressive type         → thesis and scale contrast carry identity
+visual portfolio                   → owned imagery carries proof; text remains semantic
+```
+
+A GitHub-native pattern is not automatically brand-compatible. Blockquotes, tables, code boxes, badge rows, and horizontal rules may be valid platform controls while still being wrong for a line-free or calm identity.
+
 ## Medium Translation
 
 | Design concern | GitHub-native control |
 |---|---|
-| Hierarchy | heading levels, opening order, concise lead, emphasis, section grouping |
-| Typography | semantic headings, bold/italic/code roles, restrained image display type |
-| Spacing | section breaks, blank lines, dividers, concise modules, table density |
-| Composition | section order, alignment, image scale, project grouping, whitespace |
-| Color | brand assets, badges, diagrams, theme-aware images; never color alone |
-| Depth | grouping, contrast between text and visual modules, selective visuals |
-| Rhythm | repeatable section pattern, project anatomy, heading cadence |
-| Responsiveness | single-column priority, flexible images, minimal fixed-width tables |
+| Hierarchy | opening order, semantic heading levels, weight, measure, placement, spacing |
+| Typography | H3/H4 roles when H1/H2 rules conflict with a line-free brand; restrained bold/italic roles |
+| Spacing | blank lines, bounded `<br>` spacing, heading margins, concise modules |
+| Composition | mixed alignment, project grouping, content measure, visual-mass distribution |
+| Color | links and owned assets; never color alone |
+| Depth | optional containment; flat composition is valid |
+| Rhythm | parent/item/metadata cadence and sentence-length variation |
+| Responsiveness | single-column priority and semantic source order |
 
 GitHub already supplies navigation, avatar, bio, contribution graph, pinned repositories, and activity. The README should complement rather than duplicate them.
 
@@ -22,24 +63,26 @@ GitHub already supplies navigation, avatar, bio, contribution graph, pinned repo
 The opening should usually contain:
 
 ```text
-name or recognizable identity
-specific role/positioning
-one sentence explaining value or focus
-one proof cue or selected-work bridge
-one primary action, optionally one secondary action
+page anchor: name or recognizable identity
+supporting role: specific positioning
+statement: one value proposition or thesis
+proof bridge: selected-work destination
+bounded secondary action
 ```
 
-Do not spend the entire opening on:
+Use at least two cues for important role differences when scale alone is weak:
 
 ```text
-a decorative banner with no semantic text
-typing animations or visitor counters
-large technology icon grids
-multiple statistics cards
-long autobiography
+scale + weight
+scale + placement
+weight + measure
+placement + isolation
+spacing + repetition
 ```
 
-The opening must also contain or lead directly into one recognizable idea. A centered name, generic role line, paragraph, and three links is readable but often anonymous. Strengthen it with a specific thesis, product promise, distinctive phrase, visual system, or proof cue that could not be swapped onto another profile without becoming false.
+Do not spend the entire opening on a decorative banner, typing animation, icon grid, statistic cards, long autobiography, or unanchored empty space.
+
+A centered opening may be appropriate for identity and still return to left alignment for detailed reading. Centering the entire document is a safe-default failure.
 
 ## Differentiation Gate
 
@@ -49,82 +92,113 @@ Choose one primary device:
 
 ```text
 thesis-led opening       a concise belief or system statement
-proof-module treatment   projects rendered as compact, repeated evidence blocks
+proof-module treatment   repeated project anatomy
 system diagram           a small semantic flow or architecture map
-owned visual asset       brand mark, illustration, or theme-aware project visual
-editorial rhythm         deliberate contrast between thesis, proof, capability, and action
+owned visual asset       brand mark or theme-aware project visual
+editorial rhythm         deliberate contrast between identity, proof, detail, and action
 ```
 
-A device passes only when it supports the person's actual positioning. Generic quotes, arbitrary ASCII art, random gradients, and decorative banners do not count.
+The device passes only when it supports actual positioning and the established brand grammar. A conflicting device fails even when it looks distinctive in isolation.
 
-## Visual Budget
+## Spatial Rhythm
 
-Default limits are heuristics, not universal gates:
+Spacing is structure. Start with three relational levels:
 
 ```text
-hero visual systems:       1
-differentiation devices:   1 primary
-accent styles:             1 primary + 1 supporting
-badge rows above projects: 0–1
-third-party widgets:       0–2
-animated assets:           0 by default
-project modules:           3–6 selected items
-social/contact actions:    1 primary + bounded secondary links
+element gap       within one statement or metadata group
+item gap          between comparable projects or principles
+section gap       between different content roles
 ```
 
-Increase density only when content and audience genuinely require it.
+Verify:
+
+```text
+within-group spacing is tighter than between-group spacing
+parent-to-item transition is clear
+section gaps are visibly stronger than sibling gaps
+large intervals have a named grouping, pacing, framing, or narrative role
+sparse content does not receive exaggerated spacing merely to look premium
+```
+
+A practical starting relation is:
+
+```text
+element < item < section
+```
+
+Do not translate this into a fixed pixel ratio without rendering. GitHub heading margins and line wrapping affect the final rhythm.
+
+### Zen / Ma correction
+
+```text
+Ma = purposeful pause
+Ma ≠ maximum empty area
+```
+
+For zen profiles:
+
+```text
+use a small number of meaningful pauses
+keep related project anatomy visually attached
+avoid repeating `<br><br><br>` at every transition
+let precise copy and hierarchy earn the space
+reduce space when visual mass becomes stranded
+```
 
 ## Section Rhythm
 
-Use a repeatable cadence:
+Use a repeatable cadence while varying role weight:
 
 ```text
-section heading
-one-sentence framing when needed
-proof or content module
-short action or transition
-breathing space
+section parent
+optional one-sentence frame
+item title
+purpose
+metadata
+contribution or outcome
+item gap
 ```
 
-Repeat anatomy inside a role, but vary treatment between roles. Project proof, engineering thesis, capability inventory, and contact action should not all look like identical heading-plus-paragraph sections.
-
-Avoid consecutive walls of badges → icons → stats → trophies → activity → counters. They have similar visual weight and produce no focal hierarchy.
+Project proof, engineering thesis, capability inventory, current focus, and contact action should not all look identical.
 
 ## Project Module Patterns
 
-### Narrative project
+### Line-free narrative project
+
+Best for zen, editorial, or no-card brands:
 
 ```markdown
-### Project Name
+#### [Project Name →](...)
+
+Specific purpose or audience value.
+
+*Role · evidence type · current state*
+
+Meaningful ownership, contribution, or verified outcome.
+```
+
+Keep the title, purpose, metadata, and contribution closer to one another than to the next project.
+
+### Narrative project with labels
+
+```markdown
+#### Project Name
 One sentence describing the problem and audience.
 
 **Role:** What was owned  
 **Contribution:** The meaningful work or decision  
-**Outcome:** Verified result or current state  
-[Repository](...) · [Product](...) · [Case study](...)
+**Outcome:** Verified result or current state
 ```
-
-### Compact proof block
-
-Use a GitHub-native blockquote when selected work needs stronger contrast without fragile HTML:
-
-```markdown
-> ### [Project Name →](...)
->
-> **Specific purpose or audience value.**
->
-> Role — meaningful ownership and contribution.
->
-> `status` · `evidence type`
-```
-
-Use the same anatomy across selected projects. Keep descriptions bounded so the blocks remain scannable.
 
 ### Compact selected-work list
 
 ```markdown
 - **Project Name** — problem, contribution, and outcome. [Explore →](...)
 ```
+
+### Contained proof block
+
+Blockquotes or tables are optional, not preferred defaults. Use only when the brand permits containment and the content genuinely needs stronger common-region grouping.
 
 ### Visual showcase
 
@@ -135,70 +209,64 @@ Place the visual near the project name and provide adjacent semantic text. Keep 
 Prefer capability groups over unbounded logo grids.
 
 ```markdown
-**Architecture:** DDD, ports and adapters, event-driven systems  
-**Product engineering:** Go, PHP, Next.js, Docker  
-**AI-native systems:** agents, skills, context, evals
+- **Architecture** — DDD, ports-and-adapters, event-driven systems
+- **Product engineering** — Go, PHP, Next.js, Docker
+- **AI-native systems** — agents, skills, context, evaluation
 ```
 
-Use badges only when they improve scanning or recognition. Keep style, height, capitalization, and ordering consistent.
+Bullets may improve scanning without violating a line-free brand. Restraint does not require removing every structural cue.
 
 ## Typography Roles
 
 ```text
-H1       identity only; normally one
-H2       primary profile sections
-H3       projects, products, or bounded subsections
-bold     labels and short emphasis
-italic   occasional nuance, not body styling
-code     technologies, commands, repository names, file paths
-quote    a meaningful principle, proof block, or testimonial with provenance
+page anchor     strongest identity role
+positioning     supporting role below the anchor
+thesis          authored statement; locally dominant
+section parent  H3 or equivalent GitHub-native role
+item title      H4 or strong linked title
+body            explanatory prose
+metadata        italic or short supporting detail
 ```
 
-Do not use heading levels solely to change visual size. Keep semantic order intact.
+Do not make critical labels tiny merely to appear refined. Small muted text carrying section identity is a legibility and hierarchy failure.
 
-## Alignment and Grids
+## Alignment and Balance
 
-Centered alignment works for a short hero, but long centered body text is difficult to scan. Return to left alignment for project narratives and detailed content.
+Use stable anchors:
 
-HTML tables can simulate columns, but they compress poorly on narrow screens. Use them only for short modules with a readable single-column fallback. Never hide essential reading order inside a grid.
+```text
+center anchor for a bounded identity opening when brand-appropriate
+left content edge for project narratives and detailed reading
+consistent project-title and metadata starts
+```
+
+Evaluate visual mass across the whole README. A narrow cluster floating inside a very tall empty canvas is not automatically balanced or zen.
+
+HTML tables can simulate columns, but they compress poorly on narrow screens and introduce containment. Avoid them for line-free brands.
 
 ## Color and Theme
 
 ```text
 semantic text remains readable in both themes
+links remain distinguishable
 transparent images work on light and dark backgrounds
 light/dark variants communicate equivalent information
 brand color is an accent, not the sole hierarchy mechanism
-mixed badge vendors do not create accidental rainbow noise
 ```
 
 Without a reliable brand system, GitHub-native neutral styling is better than an arbitrary palette.
 
-## Iconography and Images
-
-Use a coherent icon family or native text labels. Mixed emoji, vendor logos, and custom illustrations create fragmentation.
-
-Every meaningful image needs:
-
-```text
-useful alt text
-stable source or repository-owned asset
-appropriate dimensions
-clear role in the hierarchy
-fallback meaning in nearby text
-```
-
 ## Narrow-Screen Test
 
 ```text
-hero remains concise
-images scale without horizontal scrolling
-project order remains logical
-proof blocks remain readable and do not become nested noise
-HTML tables do not crush text
-badge rows wrap without becoming dominant
+opening remains concise
+forced line breaks do not create awkward fragments
+project anatomy stays grouped
+section gaps do not become excessive scrolling
+metadata remains readable
 links remain distinguishable
-no essential text is baked only into a wide image
+reading order stays semantic
+no essential text is baked only into an image
 ```
 
 A desktop-only README is not finished.
