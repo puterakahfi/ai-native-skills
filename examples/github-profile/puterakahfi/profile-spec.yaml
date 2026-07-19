@@ -1,6 +1,6 @@
 github_profile_result:
   fixture: puterakahfi
-  generated_with: github-profile@1.0.0
+  generated_with: github-profile@1.1.0
   profile_goal: personal-brand
   primary_audience:
     - software engineers
@@ -16,7 +16,13 @@ github_profile_result:
       The subject spans engineering, design, and product work, but the strongest
       public proof is technical. A thesis-led editorial opening keeps the identity
       distinctive while selected public repositories provide direct evidence.
-  density: balanced
+  differentiation_device:
+    primary: thesis-led opening plus GitHub-native proof blocks
+    rationale: >-
+      The first rendered version was readable but visually resembled generic
+      documentation. The refined version gives the engineering thesis a memorable
+      system statement and renders selected projects as repeated evidence modules.
+  density: concise
   dynamic_widgets: none
   verified_facts:
     - claim: Public GitHub identity is Putera Kahfi / puterakahfi.
@@ -44,15 +50,18 @@ github_profile_result:
     - Native AI Engineering positioning
     - public project links
   section_order:
-    - hero
-    - thesis
-    - selected_work
-    - working_system
+    - hero_and_thesis_statement
+    - selected_work_proof_blocks
+    - engineering_thesis
+    - capability_groups
     - current_focus
     - connect
   external_dependencies: []
-  render_evidence: []
-  design_review_result: NOT_VERIFIED
+  render_evidence:
+    - user-provided desktop screenshot of version 1.0.0
+  design_review_result: LIMITED_REVIEW
   review_note: >-
-    Source and content architecture are prepared. Rendered desktop, narrow-width,
-    and theme evidence are still required before delivery is classified READY.
+    The desktop screenshot exposed a clean-but-anonymous documentation layout,
+    flat hierarchy, repetitive section treatment, and excess explanatory density.
+    Version 1.1.0 addresses those findings. A new desktop screenshot, narrow-width
+    screenshot, and light/dark comparison are still required before READY.
