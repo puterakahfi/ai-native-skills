@@ -7,10 +7,10 @@ Foundation gates evaluate universal relationships. Profile and genre references 
 ## Evidence Policy
 
 ```text
-RENDERED evidence available     → evaluate visual relationship gates
-SOURCE/system evidence available→ evaluate consistency and implementation gates
-INTERACTION evidence available  → evaluate affordance, order, and responsive behavior
-missing required evidence       → NOT_VERIFIED, never PASS
+RENDERED evidence available      → evaluate visual relationship gates
+SOURCE/system evidence available → evaluate consistency and implementation gates
+INTERACTION evidence available   → evaluate affordance, order, and responsive behavior
+missing required evidence        → NOT_VERIFIED, never PASS
 ```
 
 Use measurements to explain an observed problem. Do not turn one ratio or token heuristic into a universal law.
@@ -225,6 +225,25 @@ FAIL examples:
 - horizontal navigation overlaps or hides without an adaptive pattern
 - local offsets produce mobile drift
 ```
+
+---
+
+## Quick Foundation Review
+
+For a focused visual iteration, inspect in this order:
+
+```text
+1. F1 Hierarchy  — what is parent, child group, sibling, and detail?
+2. F2 Grouping   — what belongs together before labels are read?
+3. F3 Alignment  — what shared anchors create hidden order?
+4. F4 Rhythm     — do gaps encode those relationships?
+5. F5 Balance    — where is visual mass and counterweight?
+6. F6 Flow       — what does the eye/user do next?
+7. F7 Legibility — does it survive actual-size viewing?
+8. F10 Responsive continuity when multiple formats/viewports apply
+```
+
+F8 and F9 remain mandatory when their evidence and medium are applicable.
 
 ---
 
