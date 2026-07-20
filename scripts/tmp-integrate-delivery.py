@@ -19,32 +19,26 @@ try:
     exec(compile(source, str(body_path), "exec"), globals(), globals())
 except BaseException as exc:
     error = f"{type(exc).__name__}: {exc}"
-    subprocess.run(["git", "reset", "--hard", "HEAD"], check=True)
+    subprocess.run(["/usr/bin/git", "reset", "--hard", "HEAD"], check=True)
     Path("contracts/tests/.delivery-integration-error").write_text(
         error + "\n",
         encoding="utf-8",
     )
 
-staging_paths = (
-    ".github/workflows/skill-eval.yml",
-    ".github/workflows/tmp-integrate-delivery-work-breakdown.yml",
-    "scripts/tmp-integrate-delivery.py",
-)
-for staging_path in staging_paths:
-    subprocess.run(
-        ["git", "update-index", "--skip-worktree", staging_path],
-        check=True,
-    )
-
-hook = Path(".git/hooks/pre-commit")
-hook.write_text(
+bin_dir = Path("/tmp/delivery-git-bin")
+bin_dir.mkdir(parents=True, exist_ok=True)
+git_wrapper = bin_dir / "git"
+git_wrapper.write_text(
     "#!/bin/sh\n"
-    "git restore --staged -- "
-    + " ".join(staging_paths)
-    + " 2>/dev/null || true\n",
+    "if [ \"$1\" = \"add\" ] && [ \"$2\" = \".\" ]; then\n"
+    "  exec /usr/bin/git add README.md docs contracts skills\n"
+    "fi\n"
+    "exec /usr/bin/git \"$@\"\n",
     encoding="utf-8",
 )
-os.chmod(hook, 0o755)
+os.chmod(git_wrapper, 0o755)
+with Path(os.environ["GITHUB_PATH"]).open("a", encoding="utf-8") as path_file:
+    path_file.write(str(bin_dir) + "\n")
 
 if error is not None:
     print(error)
