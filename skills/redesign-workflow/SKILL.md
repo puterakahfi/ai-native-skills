@@ -11,7 +11,7 @@ metadata:
   ai-native-skills.pack: packs/redesign/pack.yaml
   ai-native-skills.pack-version: "1.0.0"
   ai-native-skills.requires: "role-switcher master-design master-engineer business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement skill-evolution skill-eval git-workflow"
-  ai-native-skills.related_skills: '["workflow-router","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
+  ai-native-skills.related_skills: '["workflow-router","design-genre","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
 ---
 
 # Redesign Workflow
@@ -53,30 +53,32 @@ Load `references/dependencies-and-installation.md` for the complete dependency c
 5. Agent summaries, PR bodies, commits, recency, and inference are not owner approval.
 6. Capture baseline, confirmed scope, preservation locks, and decision records before patch production.
 7. When a target belongs to a recognizable surface family, inspect canonical adjacent surfaces and capture shared visual personality before changing expression.
-8. Translate supported personality labels into observable hierarchy, composition, density, containment, separator, type, color, depth, imagery, motion, and restraint rules.
-9. If rendered personality evidence is missing, preserve existing expression by default and keep optical or personality-continuity claims NOT_VERIFIED.
-10. Select specialists from changed layers and acceptance criteria; never load everything by default.
-11. A structure or component patch that changes borders, separators, containment, spacing, density, depth, type, color, imagery, icons, or motion is also an expression change and must route applicable visual specialists.
-12. Product, audience, content, trust, complexity, context, and existing equity drive direction—not taste labels.
-13. Port/profile defaults are not universal workflow rules.
-14. Structural copy and content decisions precede layout lock.
-15. Audit repeated treatments before production and acceptance; every repeated treatment needs a supported semantic, interaction, system, compositional, or emotional role.
-16. Every repository write uses an expected-head lease.
-17. Inspect head drift before retry; newest commit is not automatically authoritative.
-18. Two reversals of the same decision/path stop automatic writes; never ping-pong or force-push.
-19. Classify every effective changed path against verified scope.
-20. OUT_OF_SCOPE, UNKNOWN, or provenance-blocked changes block passing review and delivery.
-21. Verification evidence must match domain, artifact state, changed layers, and delivery boundary.
-22. Build success is not design proof; screenshot evidence is not runtime or interaction proof.
-23. Acceptance runs only through design-review and the governing domain reviewer.
-24. Preserve PASS, FAIL, PARTIAL, NOT_VERIFIED, and NOT_APPLICABLE exactly.
-25. Contextual hard gates come from loaded reviewers, not a global UI checklist.
-26. Provenance, scope, concurrency, evidence, coverage, visual continuity, and facade verdict all control delivery.
-27. Classify root cause and correction ownership before fixing.
-28. Maximum design iterations default to 5; after two failed patches in one region, re-read and replan.
-29. Verified reusable fixes require skill-evolution and a regression eval.
-30. Blocked or bounded attempts are never labeled PASS.
-31. Never claim a complete redesign environment from the workflow entrypoint alone.
+8. Resolve supported personality labels through design-genre and the selected canonical genre reference; do not invent genre semantics inside the workflow.
+9. Translate supported personality and genre rules into observable hierarchy, composition, density, containment, separator, type, color, depth, imagery, motion, restraint, and exception rules.
+10. If rendered personality evidence is missing, preserve existing expression by default and keep optical or personality-continuity claims NOT_VERIFIED.
+11. Select specialists from changed layers and acceptance criteria; never load everything by default.
+12. A structure or component patch that changes borders, separators, containment, spacing, density, depth, type, color, imagery, icons, or motion is also an expression change and must route applicable visual specialists.
+13. Product, audience, content, trust, complexity, context, and existing equity drive direction—not taste labels.
+14. Port/profile defaults are not universal workflow rules.
+15. Structural copy and content decisions precede layout lock.
+16. Audit repeated treatments before production and acceptance; every repeated treatment needs a supported semantic, interaction, system, compositional, emotional, or genre role.
+17. Genre exceptions such as a necessary structural line require an explicit functional reason; do not convert restraint into a universal ban.
+18. Every repository write uses an expected-head lease.
+19. Inspect head drift before retry; newest commit is not automatically authoritative.
+20. Two reversals of the same decision/path stop automatic writes; never ping-pong or force-push.
+21. Classify every effective changed path against verified scope.
+22. OUT_OF_SCOPE, UNKNOWN, or provenance-blocked changes block passing review and delivery.
+23. Verification evidence must match domain, artifact state, changed layers, and delivery boundary.
+24. Build success is not design proof; screenshot evidence is not runtime or interaction proof.
+25. Acceptance runs only through design-review and the governing domain reviewer.
+26. Preserve PASS, FAIL, PARTIAL, NOT_VERIFIED, and NOT_APPLICABLE exactly.
+27. Contextual hard gates come from loaded reviewers, not a global UI checklist.
+28. Provenance, scope, concurrency, evidence, coverage, visual continuity, and facade verdict all control delivery.
+29. Classify root cause and correction ownership before fixing.
+30. Maximum design iterations default to 5; after two failed patches in one region, re-read and replan.
+31. Verified reusable fixes require skill-evolution and a regression eval.
+32. Blocked or bounded attempts are never labeled PASS.
+33. Never claim a complete redesign environment from the workflow entrypoint alone.
 ```
 
 ## Route
@@ -149,6 +151,14 @@ redesign_input:
     evidence_gaps: []
 
   preservation_locks: <brand, system, content, asset, behavior, route locks>
+  visual_personality_handoff:
+    supported_traits: []
+    selected_or_inherited_genre:
+    canonical_genre_reference:
+    genre_contract_reference:
+    local_surface_family_constraints: []
+    intentional_supersessions: []
+    unresolved_questions: []
   visual_personality_locks:
     hierarchy_behavior:
     composition_behavior:
@@ -163,12 +173,13 @@ redesign_input:
     interaction_expression:
     restraint_rules: []
     repeated_treatment_rules: []
+    functional_exceptions: []
     prohibited_drift: []
 ```
 
 Infer missing context only when evidence is strong and record the assumption. Never infer permission for adjacent products, routes, auth, database, user-data, infrastructure, destructive work, approval bypass, or intentional visual-personality supersession.
 
-Load `references/visual-personality-preservation.md` when the target belongs to a recognizable surface family or the patch changes expression.
+Load `references/visual-personality-preservation.md` when the target belongs to a recognizable surface family or the patch changes expression. When a genre is selected or inherited, load `design-genre` and only the canonical reference selected by its contract.
 
 ## Canonical flow
 
@@ -190,8 +201,9 @@ Load `references/visual-personality-preservation.md` when the target belongs to 
    concurrent automation, constraints, and evidence gaps
 
 4  DIRECTION
-   compare alternatives; translate supported personality into observable rules;
-   select product/brand-appropriate direction
+   compare alternatives; resolve or inherit expression through design-genre;
+   load the selected canonical genre reference; translate supported personality
+   and genre rules into observable constraints; select product/brand-appropriate direction
 
 5  LAYERED PLAN
    strategy, foundation, structure, components, expression,
@@ -202,16 +214,16 @@ Load `references/visual-personality-preservation.md` when the target belongs to 
 
 7  SPEC CONFIRMATION
    verify decisions; lock scope, paths, routes, exclusions, preservation,
-   visual personality, evidence, delegation, ownership, and approvals
+   genre and visual personality, evidence, delegation, ownership, and approvals
 
 8  PRODUCTION
    acquire expected-head lease and produce through selected ports/adapters;
-   audit repeated treatments introduced or materially increased by the patch
+   audit repeated treatments and functional exceptions introduced or materially changed
 
 9  VERIFICATION
    confirm stable actual head; verify decision provenance, final diff,
-   concurrency, domain evidence, visual continuity, repeated treatments,
-   preservation, and implementation boundary
+   concurrency, domain evidence, genre conformance, visual continuity,
+   repeated treatments, functional exceptions, preservation, and implementation boundary
 
 10 REVIEW
    design-review facade + governing domain reviewer
@@ -270,17 +282,19 @@ tokens/theme/system governance
   → design-system and applicable adapters
 
 surface-family continuity or visual-personality preservation
-  → design-brand + design-visual and applicable adapters
+  → design-brand + design-genre + selected canonical genre reference
+  → design-visual and applicable adapters
 
 structure/components introducing or increasing borders, separators,
 containment, density, spacing, depth, typography roles, accent distribution,
 imagery, icon containers, or motion
   → classify expression as changed
-  → load design-brand, design-visual, and applicable design-layout adapters
-  → include repeated-treatment audit in verification
+  → load design-brand, design-genre when a genre is selected or inherited,
+    design-visual, and applicable design-layout adapters
+  → include repeated-treatment and functional-exception audit in verification
 ```
 
-Do not classify a border-heavy, card-heavy, depth-heavy, or spacing-heavy patch as layout-only merely because the user task is information architecture.
+Do not classify a border-heavy, card-heavy, depth-heavy, or spacing-heavy patch as layout-only merely because the user task is information architecture. Do not classify all lines as forbidden when the selected genre contract permits a functional exception.
 
 Load `references/delegation-and-verification.md` for the complete matrix.
 
@@ -295,6 +309,7 @@ Load only when applicable:
 | State, phase handoffs, approval, outputs | `references/orchestration-state-and-decisions.md` |
 | Decision authority and supersession | `decision-provenance` |
 | Direction and macrostructure | `references/phase-genre-macro.md` |
+| Genre selection and canonical expression references | `design-genre` |
 | Surface-family and visual-personality continuity | `references/visual-personality-preservation.md` |
 | Delegation and domain evidence | `references/delegation-and-verification.md` |
 | Production policy | `references/phase-produce.md` |
@@ -315,8 +330,10 @@ scope_diff_report
 concurrency_report
 domain verification evidence
 preservation results
+genre_contract_reference when genre is selected or inherited
 visual_continuity_report when visual personality or expression is active
 repeated_treatment_audit when repeated treatments changed
+functional_exception_report when a genre exception is retained or introduced
 implementation checks required by the delivery boundary
 ```
 
@@ -340,6 +357,9 @@ VISUAL_CONTINUITY_NOT_VERIFIED
   → collect rendered evidence or preserve existing expression
   → do not claim personality continuity from source alone
 
+UNSUPPORTED_GENRE_EXCEPTION
+  → remove it or provide a functional reason supported by the canonical genre reference
+
 integrity PASS
   → facade acceptance may proceed
 ```
@@ -361,7 +381,7 @@ scope/provenance/concurrency blocker
 visual-personality drift with accepted structure/IA
   → preserve passing structure and interaction
   → patch only the causal expression layer
-  → rerun repeated-treatment audit and focused rendered review
+  → rerun genre, repeated-treatment, exception, and focused rendered review
 
 verified reusable correction
   → skill-evolution + skill-eval
@@ -374,12 +394,13 @@ Apply the smallest valid correction and preserve accepted direction, passing reg
 ```text
 PASS
   requires provenance, scope, concurrency, acceptance, evidence,
-  coverage, reviewer-owned hard gates, visual continuity, and preservation to pass
+  coverage, reviewer-owned hard gates, genre conformance, visual continuity,
+  supported exceptions, and preservation to pass
 
 CONDITIONAL PASS
   allows only explicit non-blocking risk inside verified authority;
-  missing approval, contamination, write contention, or unverified material
-  visual-personality change cannot be accepted as risk
+  missing approval, contamination, write contention, unsupported genre exception,
+  or unverified material visual-personality change cannot be accepted as risk
 
 NEEDS WORK / CRITICAL
   fix while bounded attempts remain
@@ -391,7 +412,7 @@ MAX ITERATIONS REACHED
   deliver best preserved attempt with explicit gaps; never label PASS
 ```
 
-Average score and mergeability never override provenance, scope, concurrency, verdict, coverage, evidence gaps, hard gates, visual-personality locks, preservation, or acceptance criteria.
+Average score and mergeability never override provenance, scope, concurrency, verdict, coverage, evidence gaps, hard gates, genre contract, visual-personality locks, preservation, or acceptance criteria.
 
 ## Approval boundary
 
@@ -422,16 +443,17 @@ Always require explicit verified authority for destructive/irreversible work, pr
 □ Agent summaries, PR bodies, commits, and recency were not treated as approval.
 □ Baseline, confirmed scope, exclusions, and preservation locks are captured.
 □ Canonical adjacent surfaces and shared visual personality were inspected when applicable.
-□ Personality labels became observable implementation and restraint rules.
+□ Personality labels were resolved through design-genre and the selected canonical reference.
+□ Genre and local personality rules became observable implementation, restraint, and exception rules.
 □ Missing rendered evidence preserved existing expression and NOT_VERIFIED claims.
 □ Specialists match all changed layers, including expression introduced by structural patches.
-□ Repeated treatments were audited before production and acceptance.
+□ Repeated treatments and functional exceptions were audited before production and acceptance.
 □ Production followed delegation and verified decision boundaries.
 □ Every write used the inspected expected head; drift was inspected before retry.
 □ Two reversals stopped automatic writes.
 □ Every effective changed path was classified.
 □ OUT_OF_SCOPE, UNKNOWN, and provenance-blocked entries are empty for PASS.
-□ Verification matches domain, artifact state, actual stable head, and visual-continuity boundary.
+□ Verification matches domain, artifact state, actual stable head, genre contract, and visual-continuity boundary.
 □ Review used the facade and governing domain reviewer.
 □ PARTIAL, NOT_VERIFIED, and NOT_APPLICABLE were preserved.
 □ Integrity reports and facade verdict all control delivery.
