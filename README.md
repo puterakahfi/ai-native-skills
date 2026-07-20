@@ -6,7 +6,7 @@ This repository turns engineering methods and Native AI contracts into reusable 
 
 Works with agents that support the [Agent Skills specification](https://agentskills.io/specification) or the [skills.sh](https://skills.sh) ecosystem, including Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and other compatible runtimes.
 
-**83 skills · 9 workflows · 6 meta-skills**
+**84 skills · 9 workflows · 6 meta-skills**
 
 ## Start here
 
@@ -16,6 +16,7 @@ Works with agents that support the [Agent Skills specification](https://agentski
 | Install a complete workflow and its documented dependencies | [Skill packs](docs/skill-packs.md) |
 | Let the agent choose the correct workflow | `workflow-router` |
 | Compose engineering, design, product, and review roles | `role-switcher` |
+| Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code | `implementation-context-discovery` |
 | Diagnose discovery for a catalog, registry, directory, feed, or result set | `collection-discovery-design` |
 | Bootstrap an AI-native Hermes profile | [`hermes-profile-bootstrap`](#hermes-profile-bootstrap) |
 | Browse the complete capability taxonomy | [docs/skills.md](docs/skills.md) |
@@ -51,6 +52,7 @@ Examples:
 
 ```bash
 npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
+npx skills add puterakahfi/ai-native-skills@implementation-context-discovery -g -y
 npx skills add puterakahfi/ai-native-skills@decision-provenance -g -y
 npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 npx skills add puterakahfi/ai-native-skills@chatgpt-app-development -g -y
@@ -74,7 +76,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Type | Primary job | Examples |
 |---|---|---|
-| `skill` | One reusable capability or expert lens | `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `chatgpt-app-development`, `brand-identity-review` |
+| `skill` | One reusable capability or expert lens | `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `chatgpt-app-development`, `brand-identity-review` |
 | `workflow` | An ordered lifecycle with phases and gates | `bugfix-workflow`, `redesign-workflow`, `deployment-workflow` |
 | `meta-skill` | Route or compose other capabilities | `workflow-router`, `role-switcher` |
 
@@ -110,15 +112,16 @@ A `SKILL.md` should remain the lean executable entry point. Load references only
 | Build a product from discovery through launch | `product-development-workflow` |
 | Build a ChatGPT App from zero | `product-development-workflow` + `chatgpt-app-development` |
 | Add ChatGPT App integration to an existing product | `new-feature-workflow` + `chatgpt-app-development` |
+| Map an accepted feature/design into an existing repository stack before implementation | `implementation-context-discovery` |
 | Specify requirements before implementation | `spec-workflow` |
 | Build a new capability in an existing product | `new-feature-workflow` |
 | Investigate and fix a regression | `bugfix-workflow` |
 | Review code before merge or release | `code-review-workflow` |
 | Deploy, verify health, and confirm or roll back | `deployment-workflow` |
 | Audit an existing design without changing it | `design-audit` |
-| Fix known design findings while preserving direction | `design-refinement` |
+| Fix known design findings while preserving direction and repository conventions | `design-refinement` |
 | Replace design direction, structure, or multiple layers | `redesign-workflow` |
-| Verify scope, approval, ownership, or override authority | `decision-provenance` |
+| Verify scope, approval, ownership, dependency, or override authority | `decision-provenance` |
 | Audit and repair skill quality | `skill-doctor` |
 
 Use [`workflow-router`](skills/workflow-router/SKILL.md) when the request has not yet been classified.
@@ -138,6 +141,17 @@ broad request
 Examples:
 
 ```text
+Repository-backed redesign or feature
+  design/feature decision
+  → implementation-context-discovery
+      repository evidence
+      canonicality and convention locks
+      reuse / extend / compose / semantic-native / dependency decision
+      implementation mapping
+  → master-engineer implementation
+  → architecture-review
+  → design-review when user-facing
+
 Design work
   workflow-router → design-audit | design-refinement | redesign-workflow
   role-switcher → design owner + specialists + design-review + domain reviewer
@@ -145,15 +159,18 @@ Design work
   → design-interaction + adaptive-component-design
 
 Engineering quality
-  architecture-review → security-review → code-review-workflow → skill-eval
+  implementation-context-discovery when convention evidence is material
+  → architecture-review → security-review → code-review-workflow → skill-eval
 
 Product delivery
   product-development-workflow → spec-workflow → new-feature-workflow
-  → code-review-workflow → deployment-workflow → observability-design
+  → implementation-context-discovery → code-review-workflow
+  → deployment-workflow → observability-design
 
 ChatGPT App product delivery
   product-development-workflow | new-feature-workflow
   → chatgpt-app-development + native-ai-engineer
+  → implementation-context-discovery for the product repository
   → architecture/security/design verification
   → deployment-workflow and actual ChatGPT integration evidence
 ```
@@ -189,38 +206,21 @@ Validate one skill package with the Agent Skills reference validator:
 skills-ref validate skills/<skill-name>
 ```
 
-Behavioral cases live under `contracts/tests/<skill-name>.test.yaml` and can be run through a checked-out `ai-native-core` runner:
+Run behavioral regression cases:
 
 ```bash
-python ai-native-core/scripts/run-eval.py \
-  --skill <skill-name> \
-  --output-dir eval-outputs
+bash scripts/run-eval.sh
 ```
 
-Executable capability and contract changes are validated by the **Skill and Gate Contracts** workflow. It verifies validator and runner syntax, canonical gate identity, repository eval contracts, the pinned core runner, wrapper integration, and per-case compatibility smoke.
+Repository CI also validates:
 
-A green workflow is necessary for affected paths but not sufficient by itself. Visual, runtime, interaction, security, architecture, and product claims still require evidence appropriate to their domain.
-
-## Contributing
-
-Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before adding or refining a capability.
-
-The guide covers:
-
-- repository and contract boundaries;
-- skill, workflow, and meta-skill authoring;
-- references and behavioral eval cases;
-- contract-compatible adapter metadata;
-- validation commands and quality gates;
-- documentation and pull-request responsibilities.
-
-## Canonical documentation
-
-- [Skills taxonomy and complete inventory](docs/skills.md)
-- [Skill packs](docs/skill-packs.md)
-- [Facade skill pattern](docs/facade-skill-pattern.md)
-- [AI-native engineering building blocks](docs/ai-native-engineering-building-blocks.md)
-- [Contributing](CONTRIBUTING.md)
+- skill frontmatter and taxonomy;
+- contract-backed adapter path/version conformance;
+- structured boundary declarations;
+- behavioral evaluation contracts;
+- canonical design gate identity;
+- machine-readable skill-pack manifests and documented commands;
+- compatibility with the pinned `ai-native-core` runner.
 
 ## Related repositories
 
