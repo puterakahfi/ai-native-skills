@@ -1,9 +1,9 @@
 name: Fix component family conformance declarations
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - 59-component-family-design
     paths:
       - .github/workflows/fix-component-family-conformance.yml
 
