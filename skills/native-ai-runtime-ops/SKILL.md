@@ -3,7 +3,7 @@ name: native-ai-runtime-ops
 description: Ops skill for AI-native runtime hosts — SSH/VPS access, agent profile bootstrap, gateway service setup, project checkout, backup/restore, and session-state safety.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/native-ai-runtime-ops.contract.yaml
@@ -11,6 +11,42 @@ metadata:
 ---
 
 # Native AI Runtime Ops
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/runtime/native-ai-runtime-ops.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- runtime_host
+- access_method
+- profile_name
+- operational_goal
+- safety_constraints
+allowed_outputs:
+- runtime_access_plan
+- ssh_connection_handoff
+- canonical_runtime_bootstrap_plan
+- profile_installation_plan
+- project_checkout_plan
+- backup_restore_plan
+- single_writer_policy
+- healthcheck_report
+- operational_runbook
+quality_gates:
+- do_not_commit_secrets_or_live_state
+- enforce_single_writer_session_state
+- verify_ssh_access_before_runtime_setup
+- verify_profile_installation_and_skill_mounts
+- verify_project_checkout_and_dependency_readiness
+- define_backup_restore_before_treating_remote_as_canonical
+- record_commands_and_actual_outputs
+```
+
+Treat runtime_host, access_method, profile_name, operational_goal, and safety_constraints as required operating inputs. Produce the access, SSH, bootstrap, installation, checkout, backup/restore, single-writer, healthcheck, and runbook outputs. A remote runtime is not canonical until backup and restore are defined, and every operational claim must preserve the commands and actual outputs.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, security, incident, resilience, or product evidence.
+
 
 ## Overview
 

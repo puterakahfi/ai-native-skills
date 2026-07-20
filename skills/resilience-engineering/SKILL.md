@@ -3,7 +3,7 @@ name: resilience-engineering
 description: Design for failure before failure happens — failure mode analysis, chaos engineering, circuit breakers, graceful degradation, blast radius minimization, RTO/RPO design, and load shedding.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/resilience-engineering.contract.yaml
@@ -12,6 +12,36 @@ metadata:
 ---
 
 # Resilience Engineering
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/quality/resilience-engineering.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- system_or_service_description
+allowed_outputs:
+- failure_mode_analysis
+- chaos_experiment_plan
+- circuit_breaker_design
+- graceful_degradation_strategy
+- blast_radius_map
+- rto_rpo_design
+quality_gates:
+- failure_modes_must_be_identified_before_chaos_testing
+- circuit_breaker_must_have_fallback_defined
+- graceful_degradation_preferred_over_total_failure
+- blast_radius_must_be_minimized_by_design
+- chaos_experiments_must_have_hypothesis_and_abort_condition
+- rto_and_rpo_must_be_explicitly_defined
+- load_shedding_strategy_must_exist_for_saturation
+- resilience_tests_must_run_in_staging_before_prod
+```
+
+Begin with system_or_service_description, identify failure modes before chaos work, then produce failure analysis, chaos plan, circuit-breaker design, graceful-degradation strategy, blast-radius map, and RTO/RPO design. Every chaos experiment needs a hypothesis and abort condition; resilience is verified in staging before production.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, security, incident, resilience, or product evidence.
+
 
 > **Design for failure, not just success. Test failure modes with chaos before production. Graceful degradation beats hard failure.**
 

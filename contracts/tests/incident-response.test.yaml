@@ -1,0 +1,24 @@
+skill_test:
+  skill: incident-response
+  version: 1.0.1
+  description: Verify incident-response exposes and applies its reviewed runtime or security contract interface.
+  cases:
+  - id: incident-postmortem-reaches-systemic-cause
+    description: Handle an incident from declared severity through prevention without human blame.
+    trigger: Apply incident-response to a realistic runtime, operations, resilience, incident, observability, or security
+      task and report the contract-backed result.
+    must_contain:
+    - five_whys_must_reach_systemic_cause_not_human_error
+    - postmortem_must_include_what_went_well
+    - incident_timeline
+    - triage_decision
+    - mitigation_steps
+    - postmortem_document
+    - prevention_recommendations
+    - incident_description
+    must_not_contain:
+    - name a person as the root cause
+    - skip postmortem
+    quality_gates_tested:
+    - five_whys_must_reach_systemic_cause_not_human_error
+    - postmortem_must_include_what_went_well

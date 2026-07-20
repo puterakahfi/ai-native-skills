@@ -3,7 +3,7 @@ name: security-review
 description: Security baseline validation skill — detect secrets, injection vectors, auth gaps, and dependency vulnerabilities before merge or deploy. Blocks deployment until security gate passes.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/security/security-review.contract.yaml
@@ -11,6 +11,37 @@ metadata:
 ---
 
 # Security Review
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/security/security-review.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- code_or_diff
+- security_baseline_ref
+allowed_outputs:
+- security_verdict
+- secret_detection_report
+- vulnerability_list
+- dependency_risk_report
+- blocking_violations
+- recommendations
+quality_gates:
+- no_hardcoded_secrets_or_credentials
+- no_sql_injection_vectors
+- input_sanitization_verified
+- output_encoding_verified
+- authorization_checks_present
+- dependency_vulnerabilities_checked
+- no_sensitive_data_in_logs
+- security_verdict_required_before_deploy
+```
+
+Review code_or_diff against security_baseline_ref and emit a security_verdict, secret report, vulnerability list, dependency risk report, blocking violations, and recommendations. Verify output encoding alongside sanitization and authorization; deployment remains blocked until the verdict is explicit.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, security, incident, resilience, or product evidence.
+
 
 ## The Core Rule
 

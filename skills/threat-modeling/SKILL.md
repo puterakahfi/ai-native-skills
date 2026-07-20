@@ -3,7 +3,7 @@ name: threat-modeling
 description: Proactive security threat identification before implementation — STRIDE analysis per trust boundary, data flow mapping, mitigation planning, and risk rating. Security gate before any feature goes to code.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/security/threat-modeling.contract.yaml
@@ -12,6 +12,35 @@ metadata:
 ---
 
 # Threat Modeling
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/security/threat-modeling.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- feature_or_system_description
+allowed_outputs:
+- threat_model_document
+- stride_analysis
+- trust_boundary_map
+- mitigation_plan
+- risk_rating_per_threat
+quality_gates:
+- threat_modeling_must_happen_before_implementation_not_after
+- all_trust_boundaries_must_be_identified
+- stride_must_be_applied_per_trust_boundary
+- every_threat_must_have_explicit_mitigation_or_accepted_risk
+- data_flows_must_be_mapped_including_external_dependencies
+- privilege_escalation_paths_must_be_identified
+- threat_model_must_be_updated_when_architecture_changes
+- risk_rating_must_use_consistent_scoring
+```
+
+Start from feature_or_system_description before implementation. Produce the threat model, STRIDE analysis, trust-boundary map, mitigation plan, and consistent risk ratings. Map external dependencies in data flows, identify privilege-escalation paths, and update the model whenever architecture changes.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, security, incident, resilience, or product evidence.
+
 
 ## Order of Operations
 

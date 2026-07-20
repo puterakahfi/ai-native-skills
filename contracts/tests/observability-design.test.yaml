@@ -1,0 +1,18 @@
+skill_test:
+  skill: observability-design
+  version: 1.0.1
+  description: Verify observability-design exposes and applies its reviewed runtime or security contract interface.
+  cases:
+  - id: observability-starts-from-system-description
+    description: Design complete observability for a described distributed system.
+    trigger: Apply observability-design to a realistic runtime, operations, resilience, incident, observability, or security
+      task and report the contract-backed result.
+    must_contain:
+    - system_description
+    - three_pillars_must_all_be_addressed_logs_metrics_traces
+    - dashboards_must_answer_four_golden_signals
+    must_not_contain:
+    - design without a system description
+    quality_gates_tested:
+    - three_pillars_must_all_be_addressed_logs_metrics_traces
+    - dashboards_must_answer_four_golden_signals

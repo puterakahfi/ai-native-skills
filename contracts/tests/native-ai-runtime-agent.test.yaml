@@ -1,0 +1,22 @@
+skill_test:
+  skill: native-ai-runtime-agent
+  version: 1.0.1
+  description: Verify native-ai-runtime-agent exposes and applies its reviewed runtime or security contract interface.
+  cases:
+  - id: runtime-agent-reports-evidence-backed-state
+    description: Execute against repository and product bindings and report plan, output, verification, and adapter state.
+    trigger: Apply native-ai-runtime-agent to a realistic runtime, operations, resilience, incident, observability, or security
+      task and report the contract-backed result.
+    must_contain:
+    - execution_plan
+    - verification_result
+    - workflow_output
+    - adapter_state
+    - verify_against_source_of_truth
+    - execution_evidence_required_before_claiming_done
+    must_not_contain:
+    - claim done without verification
+    - copy product facts into core
+    quality_gates_tested:
+    - verify_against_source_of_truth
+    - execution_evidence_required_before_claiming_done
