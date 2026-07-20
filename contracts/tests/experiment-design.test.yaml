@@ -1,0 +1,21 @@
+skill_test:
+  skill: experiment-design
+  version: 1.0.1
+  description: Verify experiment-design exposes and applies its reviewed product, research, experiment, or decision contract
+    interface.
+  cases:
+  - id: experiment-starts-from-users-hypothesis-and-risk
+    description: Design the smallest test for a named target segment and riskiest assumption.
+    trigger: Apply experiment-design to a realistic product, research, experiment, business-value, or decision task and report
+      the contract-backed result.
+    must_contain:
+    - hypothesis_or_opportunity
+    - target_users
+    - riskiest_assumption_must_be_named_before_test_design
+    - smallest_test_must_be_smaller_than_building_the_full_solution
+    must_not_contain:
+    - build the full solution as the first test
+    - design the test before naming target users
+    quality_gates_tested:
+    - riskiest_assumption_must_be_named_before_test_design
+    - smallest_test_must_be_smaller_than_building_the_full_solution
