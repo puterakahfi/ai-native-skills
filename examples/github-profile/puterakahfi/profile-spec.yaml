@@ -1,6 +1,6 @@
 github_profile_result:
   fixture: puterakahfi
-  generated_with: github-profile@1.2.0
+  generated_with: github-profile@1.3.0
   workflow: redesign-workflow@3.3.0
   profile_goal: personal-brand
   primary_audience:
@@ -11,6 +11,7 @@ github_profile_result:
   narrative: >-
     Putera Kahfi connects software architecture, product design, and agent-driven
     development to build practical AI-native engineering systems.
+  content_archetype: editorial-personal-brand with technical-authority proof
   baseline:
     repository: puterakahfi/puterakahfi
     initial_commit: c1a3f65b6138093e8a817019425aca23c681f0c7
@@ -40,8 +41,55 @@ github_profile_result:
     - puterakahfi GitHub identity
     - Native AI Engineering positioning
     - public project links
+    - one verified project and proof set across variants
     - zen personal-brand grammar
     - no lines or cardification
+  variant_set:
+    locked_fact_set:
+      projects:
+        - AI Native Skills
+        - Native AI Core
+        - VisualMate
+      capabilities:
+        - Software architecture
+        - Product engineering
+        - Native AI systems
+        - Design systems
+      current_focus_date: July 2026
+      contact_destinations:
+        - GitHub
+        - pkahfi.com
+        - ai.pkahfi.com
+        - VisualMate
+    selected_for_publication: zen-minimalist
+    variants:
+      - name: zen-minimalist
+        publication_status: aligned
+        density: sparse
+        alignment: centered opening then left reading
+        expression: restrained
+        proof_treatment: proximity-led narrative projects
+        differentiation_device: quiet authored thesis and relational rhythm
+        word_count: 355
+        brand_fit: strongest
+      - name: modern-professional
+        publication_status: aligned
+        density: balanced
+        alignment: left
+        expression: contemporary
+        proof_treatment: explicit ownership, state, and contribution anatomy
+        differentiation_device: crisp professional hierarchy and action clarity
+        word_count: 319
+        brand_fit: adapted to remove separators and cards
+      - name: creative-editorial
+        publication_status: exploratory
+        density: balanced
+        alignment: mixed editorial
+        expression: expressive but controlled
+        proof_treatment: premise, work, and evidence pattern
+        differentiation_device: numbered systems and authored section vocabulary
+        word_count: 387
+        brand_fit: compatible through cadence rather than decoration
   direction_candidates:
     - name: centered-zen-manifesto
       fit: >-
@@ -57,6 +105,7 @@ github_profile_result:
         - feels utilitarian rather than authored
   selected_direction:
     name: centered-zen-manifesto
+    profile_variant: zen-minimalist
     reason: >-
       It preserves the calm personal identity while satisfying foundation hierarchy,
       grouping, alignment, rhythm, balance, flow, and legibility.
@@ -104,9 +153,9 @@ github_profile_result:
     - Private repositories are not used as public proof links.
     - Current-focus statements should be reviewed when the fixture is published.
   section_order:
-    - centered_identity_and_thesis
+    - identity_and_thesis
     - selected_work
-    - engineering_thesis
+    - engineering_thesis_or_operating_model
     - capability_groups
     - current_focus
     - connect
@@ -114,14 +163,15 @@ github_profile_result:
   render_evidence:
     - user-provided desktop screenshot of version 1.0.0
     - user-provided desktop screenshot of line-free foundation-failed version
-    - local GFM-equivalent desktop render of final refined source at 1200 x 1900
-    - local GFM-equivalent narrow render of final refined source at 390 x 3600
+    - local GFM-equivalent desktop and narrow renders of the final live zen-minimalist source
+    - local GFM-equivalent desktop and narrow comparative renders for all three variants
   design_review_result: LIMITED_REVIEW
   verified_universal_score: 8.5
-  evidence_coverage: approximately 92 percent
-  review_note: >-
-    The final source passes the selected universal hierarchy, grouping, alignment,
-    spatial rhythm, balance, flow, legibility, consistency, restraint, content, and
-    narrow-continuity checks in GFM-equivalent renders. Direct GitHub desktop, narrow,
-    and dark-theme parity remain NOT_VERIFIED, and no dedicated developer-profile
-    domain reviewer exists.
+  evidence_coverage: approximately 92 percent for the published zen-minimalist fixture
+  variant_review_note: >-
+    All three variants preserve the locked fact set and are materially distinct in
+    density, alignment, hierarchy, proof treatment, and editorial voice. Zen Minimalist
+    has the strongest current brand fit; Modern Professional is an aligned professional
+    alternative; Creative Editorial remains exploratory until its authored voice is
+    explicitly preferred. Direct GitHub parity and a dedicated developer-profile reviewer
+    remain unavailable.

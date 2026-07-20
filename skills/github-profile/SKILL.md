@@ -1,12 +1,12 @@
 ---
 name: github-profile
-description: Generate or redesign a GitHub Profile README as an evidence-backed personal brand and technical portfolio — resolve audience and positioning, preserve established brand grammar, build a clear content hierarchy, compose a distinctive GitHub-native visual system, produce maintainable GFM/HTML, render it, and verify it through the design-review facade.
+description: Generate or redesign a GitHub Profile README as an evidence-backed personal brand and technical portfolio — resolve audience and positioning, preserve established brand grammar, select or compare profile variants, build a clear content hierarchy, compose maintainable GFM/HTML, render it, and verify it through the design-review facade.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.0
+  ai-native-skills.version: 1.3.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.requires: "design-foundation design-brand design-strategy design-visual composition visual-hierarchy readability content-strategy copywriting accessibility design-review skill-eval"
+  ai-native-skills.requires: "design-foundation design-brand design-genre design-spacing design-strategy design-visual composition visual-hierarchy readability content-strategy copywriting accessibility design-review skill-eval"
   ai-native-skills.related_skills: '["design-typography","design-color","design-iconography","information-architecture","dark-light-theming","redesign-workflow","design-refinement","git-workflow"]'
 ---
 
@@ -22,17 +22,18 @@ HARD RULES
 6. External cards, counters, and generated SVGs are optional dependencies, never critical content.
 7. Default to restrained visual density; badge walls, animation walls, and stat walls are failures.
 8. An established personal-brand grammar is a preservation lock. Do not introduce a conflicting visual language merely to make the profile more distinctive.
-9. Clean and readable is the baseline—not a sufficient visual direction. Create one recognizable thesis, module treatment, or brand cue inside the accepted brand grammar.
-10. Verify light/dark rendering, narrow screens, alt text, links, and source maintainability.
-11. Review the rendered artifact; raw README source is not visual evidence.
-12. Repository mutation, approval, and write ownership belong to the calling workflow.
+9. A variant changes expression—not facts, evidence strength, or approved strategy.
+10. Clean and readable is the baseline—not a sufficient visual direction. Create one recognizable thesis, module treatment, or brand cue inside the accepted brand grammar.
+11. Verify light/dark rendering, narrow screens, alt text, links, and source maintainability.
+12. Review the rendered artifact; raw README source is not visual evidence.
+13. Repository mutation, approval, and write ownership belong to the calling workflow.
 ```
 
 ## Purpose and Boundary
 
-Use this skill to create, redesign, or refine the `README.md` shown on a personal GitHub profile.
+Use this skill to create, redesign, refine, or compare variants of the `README.md` shown on a personal GitHub profile.
 
-It owns profile strategy, content architecture, brand translation, GitHub-native visual composition, README generation, dependency choices, and domain verification. It composes existing design skills rather than redefining hierarchy, composition, readability, copywriting, accessibility, or review rules.
+It owns profile strategy, content architecture, brand translation, variant selection, GitHub-native visual composition, README generation, dependency choices, and domain verification. It composes existing design skills rather than redefining hierarchy, composition, spacing, readability, copywriting, accessibility, or review rules.
 
 It does not own repository authorization, private-data discovery, custom illustration production, employment verification, or general GitHub account configuration.
 
@@ -41,8 +42,8 @@ It does not own repository authorization, private-data discovery, custom illustr
 ```yaml
 github_profile_input:
   username: <required for repository-backed work>
-  mode: create | redesign | refine
-  output_mode: readme-only | spec-and-readme | patch
+  mode: create | redesign | refine | compare-variants
+  output_mode: readme-only | spec-and-readme | variant-set | patch
   goal: hiring | consulting | freelance | open-source | founder | personal-brand | community | mixed
   primary_audience: <who should understand and act>
   desired_action: <view projects | contact | hire | collaborate | sponsor | follow | other>
@@ -76,6 +77,10 @@ github_profile_input:
   existing_readme: <optional>
   preservation_locks: []
   prohibited_content: []
+  content_archetype: auto | technical-authority | editorial-personal-brand | product-builder | open-source-maintainer | custom
+  variant: auto | zen-minimalist | modern-professional | creative-editorial | custom
+  requested_variants: []
+  comparison_mode: none | concept | rendered
   density: concise | balanced | rich
   visual_direction: auto | text-first | editorial | zen-editorial | showcase | branded
   dynamic_widgets: none | minimal | selective
@@ -95,35 +100,40 @@ Infer only low-risk presentation choices. Mark missing factual content as a gap;
    Load references/strategy-and-content.md.
 
 3. STRUCTURE
-   Order content by visitor decision needs; keep identity and proof before detail.
-   Merge sections that repeat the same idea in different words.
+   Select a content archetype and order content by visitor decision needs.
+   Keep identity and proof before detail. Merge repeated ideas.
+   Content archetype decides information roles; it does not decide visual style.
 
 4. DIRECT
    Apply design-foundation.
    When an established brand exists, apply design-brand and lock its mood,
    density, spacing, separator behavior, and prohibited treatments.
-   Choose a GitHub-appropriate direction inside those locks.
-   Declare one differentiation device: thesis, project-module treatment,
-   diagram, visual asset, or distinctive editorial rhythm.
-   Load references/visual-system.md only after content and brand roles are known.
+   Select or compare profile variants through references/variant-selection.md.
+   Resolve variant axes through references/variant-system.md.
+   Choose a GitHub-appropriate visual direction inside those locks.
+   Declare one differentiation device inside the accepted brand grammar.
 
 5. COMPOSE
    Produce semantic GFM/HTML with restrained assets, contrasting content roles,
    graceful fallback, brand-consistent spacing, and a scannable first viewport.
+   Load the selected file under references/variants/.
    Load references/platform-constraints.md and references/templates.md.
 
 6. RENDER
    Render through GitHub or equivalent GFM at desktop and narrow width.
+   For variant comparison, use the same facts, completeness, and viewports.
    Inspect both themes when theme-dependent assets are used.
 
 7. REVIEW
    Load references/verification.md and route the rendered-static artifact through
    design-review using only universal/static gates applicable to this medium.
-   Compare the render against both GitHub constraints and the accepted brand grammar.
+   Compare the render against GitHub constraints, the accepted brand grammar,
+   and the declared variant contract.
 
 8. REFINE
    Correct the smallest failing layer while preserving accepted narrative,
-   verified facts, links, visual direction, and brand grammar.
+   verified facts, links, selected variant, visual direction, and brand grammar.
+   Change variant only when audience, goal, proof, or brand evidence disproves it.
 ```
 
 ## Reference Loading
@@ -131,12 +141,17 @@ Infer only low-risk presentation choices. Mark missing factual content as a gap;
 | Need | Load |
 |---|---|
 | Audience, positioning, evidence, content order | `references/strategy-and-content.md` |
+| Variant architecture and invariant facts | `references/variant-system.md` |
+| Variant selection or multi-variant comparison | `references/variant-selection.md` |
+| Zen minimalist expression | `references/variants/zen-minimalist.md` |
+| Modern professional expression | `references/variants/modern-professional.md` |
+| Creative editorial expression | `references/variants/creative-editorial.md` |
 | Hierarchy, density, modules, brand translation, visual directions | `references/visual-system.md` |
 | GFM/HTML, images, themes, links, privacy, dependencies | `references/platform-constraints.md` |
-| Starting structures without cloning a generic template | `references/templates.md` |
+| Content archetype starting structures | `references/templates.md` |
 | Render evidence, acceptance checks, design-review handoff | `references/verification.md` |
 
-Load only the references required by the current mode and uncertainty.
+Load only the references required by the current mode, selected variant, and uncertainty.
 
 ## Composition Contract
 
@@ -146,6 +161,7 @@ optional roles: capabilities → principles → writing → community → person
 default budget: one hero treatment, one differentiation device, one accent system,
                 zero–two dynamic widgets
 brand constraint: differentiation must use the established brand grammar when one exists
+variant constraint: expression may change; verified facts and proof strength may not
 ```
 
 A technology list supports positioning; it is not the positioning. Statistics support proof; they do not replace project context, role, or impact.
@@ -153,6 +169,23 @@ A technology list supports positioning; it is not the positioning. Statistics su
 A sequence of headings plus paragraphs may be semantically correct while still failing visually. At least one major content role must receive a distinct GitHub-native treatment—such as a thesis statement, compact proof module, diagram, repository-owned visual, or intentionally different editorial cadence. Do not give every section equal visual weight.
 
 Distinct treatment does not mean card treatment. For zen, editorial, or line-free brands, contrast may come from whitespace, sentence length, label scale, alignment, and cadence. Borders, blockquotes, tables, code boxes, chips, and dividers are prohibited when they conflict with the brand grammar.
+
+## Variant Contract
+
+```text
+zen-minimalist
+  calm thesis-led identity, purposeful Ma, no containment by default
+
+modern-professional
+  balanced density, crisp proof hierarchy, clear actions, contemporary restraint
+
+creative-editorial
+  authored voice, intentional editorial rhythm, one coherent expressive device
+```
+
+A variant name is insufficient. Record resolved density, alignment, expression, proof emphasis, thesis emphasis, containment, separators, assets, widget policy, and brand overrides.
+
+When several variants are requested, lock one verified fact set and one content inventory. Differences must come from composition and expression—not fabricated projects, altered outcomes, or unequal proof completeness.
 
 ## Output Contract
 
@@ -166,6 +199,9 @@ github_profile_result:
   primary_audience: <resolved>
   desired_action: <resolved>
   narrative: <one sentence>
+  content_archetype: <resolved>
+  selected_variant: <variant and reason>
+  variant_axes: {}
   verified_facts: []
   assumptions: []
   content_gaps: []
@@ -183,6 +219,23 @@ github_profile_result:
   design_review_result: <verdict or NOT_VERIFIED>
 ```
 
+For `variant-set`, return:
+
+```yaml
+variant_recommendation:
+  locked_fact_set: []
+  requested_variants: []
+  selected_for_publication: <variant or NOT_SELECTED>
+  alternatives:
+    - name:
+      audience_fit:
+      brand_fit:
+      key_tradeoff:
+      publication_status: aligned | exploratory | rejected
+      readme: <complete markdown>
+      render_evidence: []
+```
+
 For `patch`, hand the proposed content and file boundary to the repository write owner. Do not claim a branch changed without tool evidence.
 
 ## Acceptance Checks
@@ -190,11 +243,14 @@ For `patch`, hand the proposed content and file boundary to the repository write
 ```text
 □ Identity, audience, desired action, and profile narrative are explicit.
 □ Every factual claim is supplied, repository-verifiable, or marked unverified.
-□ Existing personal-brand references were inventoried before visual direction selection.
+□ Existing personal-brand references were inventoried before variant selection.
 □ Mood, density, spacing, separator behavior, and prohibited treatments are preserved.
+□ Content archetype and visual variant are not confused.
 □ The first screen communicates identity, value, and proof before decoration.
 □ A recognizable thesis, module treatment, or brand cue differentiates the profile.
 □ The differentiation device belongs to the accepted brand grammar.
+□ Selected variant is expressed through several resolved axes, not a label alone.
+□ Multi-variant outputs preserve one verified fact and proof set.
 □ Section order follows visitor questions and one dominant hierarchy.
 □ Repetitive sections are merged rather than restating the same positioning.
 □ Selected work explains context, role, outcome/current state, and a useful destination.
@@ -205,11 +261,12 @@ For `patch`, hand the proposed content and file boundary to the repository write
 □ Rendered output received design-review or is honestly NOT_VERIFIED.
 ```
 
-Common failures: generic greeting + badge/stat wall; clean but anonymous documentation layout; distinctive treatment that conflicts with the existing brand; card or blockquote modules inside a line-free zen identity; claims without project evidence; cards without role or outcome; repeated thesis across multiple sections; essential text only inside a hero image; mixed visual styles; broken theme contrast; counters/trophies as credibility substitutes; critical third-party widgets; fabricated current work; or copied identity.
+Common failures: generic greeting + badge/stat wall; clean but anonymous documentation layout; variant names that only rename headings; modern interpreted as card dashboard; creative interpreted as random emoji, ASCII, animations, or mixed styles; minimalist interpreted as tiny text and maximum emptiness; variant outputs with different facts or proof strength; distinctive treatment that conflicts with the existing brand; card or blockquote modules inside a line-free zen identity; claims without project evidence; essential text only inside a hero image; broken theme contrast; critical third-party widgets; fabricated current work; or copied identity.
 
 ```text
 FINAL REMINDER
 Purpose before decoration. Proof before badges. One narrative before many modules.
+Content archetype decides what belongs; variant decides how it is expressed.
 Readable is mandatory; recognizable is the next gate; brand continuity constrains both.
 Use verified facts, GitHub-native structure, graceful fallback, and maintainable source.
 Render before review. Preserve NOT_VERIFIED when evidence is missing.

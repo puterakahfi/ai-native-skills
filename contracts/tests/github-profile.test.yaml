@@ -1,7 +1,7 @@
 skill_test:
   skill: github-profile
-  version: "1.2.0"
-  description: Verify proof-first, brand-aligned, foundation-led GitHub Profile README generation across personal-brand goals and platform constraints.
+  version: "1.3.0"
+  description: Verify proof-first, brand-aligned, foundation-led GitHub Profile README generation and materially distinct variants across personal-brand goals and platform constraints.
 
   cases:
     - id: backend-engineer-proof-before-badges
@@ -150,3 +150,85 @@ skill_test:
         - non_card_grouping
         - visual_mass_balance
         - readable_role_hierarchy
+
+    - id: explicit-three-variant-request-preserves-one-fact-set
+      description: Minimalist, modern, and creative outputs must differ through expression while preserving the same verified facts, projects, links, and proof strength.
+      trigger: "Buat tiga varian GitHub Profile README dari data yang sama: minimalist, modern professional, dan creative editorial. Jangan ubah project, role, link, atau claim antar-varian."
+      must_contain:
+        - "zen-minimalist|minimalist"
+        - "modern-professional|modern professional"
+        - "creative-editorial|creative editorial"
+        - "same facts|fact set|verified facts|fakta yang sama"
+      must_contain_one_of:
+        - "variant axes|density|alignment|expression"
+        - "hierarchy|rhythm|proof treatment|ritme"
+      must_not_contain:
+        - "different projects for each variant"
+        - "invent extra metrics for the modern version"
+        - "creative variant may fabricate assets"
+      quality_gates_tested:
+        - invariant_fact_set
+        - materially_distinct_variants
+        - equal_proof_completeness
+        - comparable_rendering
+
+    - id: modern-professional-is-not-card-dashboard
+      description: A modern professional profile should feel contemporary through hierarchy, proof, and action clarity rather than default cards, gradients, or stats widgets.
+      trigger: "Buat versi modern professional untuk GitHub profile saya. Saya ingin kelihatan current dan profesional, tapi bukan dashboard, bukan card grid, dan bukan stats wall."
+      must_contain:
+        - "modern-professional|modern professional"
+        - "proof|project|proyek|selected work"
+      must_contain_one_of:
+        - "balanced density|kepadatan seimbang"
+        - "crisp hierarchy|hierarki yang jelas"
+        - "clear action|CTA|action clarity"
+      must_not_contain:
+        - "cards everywhere"
+        - "gradient hero is required"
+        - "GitHub stats are the primary proof"
+      quality_gates_tested:
+        - modern_without_dashboard_grammar
+        - professional_proof_hierarchy
+        - bounded_contemporary_expression
+
+    - id: creative-editorial-remains-readable-and-proof-led
+      description: Creative expression must come from one coherent authored device while keeping project evidence, semantic text, and narrow-width reading intact.
+      trigger: "Buat varian creative editorial untuk designer-engineer. Boleh lebih expressive dan memorable, tapi jangan pakai emoji wall, ASCII random, typing animation, atau visual yang bikin project proof hilang."
+      must_contain:
+        - "creative-editorial|creative editorial"
+        - "authored|editorial|expressive device|perangkat ekspresif"
+        - "proof|evidence|project|proyek"
+      must_contain_one_of:
+        - "one coherent|satu perangkat|single device"
+        - "narrow width|mobile|responsive"
+        - "semantic text|teks semantik"
+      must_not_contain:
+        - "random ASCII"
+        - "emoji wall"
+        - "typing animation as identity"
+        - "change style every section"
+      quality_gates_tested:
+        - coherent_creative_device
+        - proof_survives_expression
+        - readable_creativity
+        - responsive_editorial_flow
+
+    - id: brand-lock-overrides-variant-default-treatment
+      description: A requested variant must adapt inside established brand rules instead of overriding them.
+      trigger: "Pakai varian modern professional, tetapi brand saya zen, no lines, no cards, dan calm editorial. Jangan hilangkan karakter brand hanya karena variannya modern."
+      must_contain:
+        - "brand lock|brand grammar|preservation lock"
+        - "modern-professional|modern professional"
+        - "adapt|override|menyesuaikan"
+      must_contain_one_of:
+        - "proximity|whitespace|spacing"
+        - "remove separators|tanpa separator|no lines"
+        - "crisp proof hierarchy|hierarki proof"
+      must_not_contain:
+        - "variant always overrides brand"
+        - "modern requires cards"
+        - "ignore the no-lines rule"
+      quality_gates_tested:
+        - brand_precedence_over_variant_defaults
+        - variant_adaptation
+        - foundation_preservation

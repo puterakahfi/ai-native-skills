@@ -1,10 +1,29 @@
-# GitHub Profile Templates
+# GitHub Profile Content Archetypes
 
-Structural starting points, not identities to copy. Replace placeholders with supplied or verified content, remove irrelevant modules, and select one coherent direction.
+Structural starting points, not identities or visual styles to copy. Replace placeholders with supplied or verified content, remove irrelevant modules, and select one coherent content strategy.
 
-## Template A — Concise Technical Authority
+## Archetype vs Variant
 
-Use for engineers, architects, maintainers, or technical leaders who need durable text-first proof.
+```text
+content archetype  decides which information roles belong
+profile variant    decides how those roles are visually expressed
+```
+
+Examples:
+
+```text
+technical-authority + zen-minimalist
+technical-authority + modern-professional
+product-builder + modern-professional
+product-builder + creative-editorial
+open-source-maintainer + modern-professional
+```
+
+Do not encode a visual variant by silently changing the facts, project set, or proof strength.
+
+## Archetype A — Concise Technical Authority
+
+Use for engineers, architects, maintainers, or technical leaders who need durable proof.
 
 ```markdown
 # Name
@@ -43,7 +62,7 @@ Problem, role, meaningful contribution, and verified outcome or current state.
 Primary action and bounded secondary links.
 ```
 
-## Template B — Editorial Personal Brand
+## Archetype B — Editorial Personal Brand
 
 Use for multi-disciplinary builders with one unifying thesis.
 
@@ -84,7 +103,7 @@ Dated, verified current focus.
 One primary contact action plus relevant channels.
 ```
 
-## Template C — Product Builder or Founder
+## Archetype C — Product Builder or Founder
 
 Use when shipped products and product thinking are the strongest proof.
 
@@ -123,7 +142,7 @@ Short capability groups spanning product, engineering, design collaboration, or 
 Specific collaboration fit and one primary action.
 ```
 
-## Template D — Open-Source Maintainer
+## Archetype D — Open-Source Maintainer
 
 Use when maintained repositories, contribution quality, and community clarity are primary.
 
@@ -186,14 +205,16 @@ The image must not contain the only project explanation.
 
 Verify actual GitHub rendering and preserve nearby semantic text.
 
-## Template Selection Rules
+## Archetype Selection Rules
 
 ```text
-technical authority    → A unless mature brand or visual proof justifies B
+technical authority    → A unless the dominant goal is product or community
 multi-disciplinary     → B only with a clear unifying thesis
 product founder        → C with product proof before technology lists
 open-source maintainer → D with project health and contribution routes
-mixed goal             → one primary template, borrow at most two modules
+mixed goal             → one primary archetype; borrow at most two modules
 ```
 
-Never concatenate all four templates. Success means the final README no longer feels like a template.
+After archetype selection, independently select a profile variant through `variant-selection.md`.
+
+Never concatenate all four archetypes. Success means the final README no longer feels like a template, while its information roles remain explainable.
