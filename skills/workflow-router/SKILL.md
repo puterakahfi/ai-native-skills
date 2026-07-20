@@ -3,13 +3,13 @@ name: workflow-router
 description: Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, or verified-case skill evolution. Route before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.4.1
+  ai-native-skills.version: 1.5.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow"
+  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/workflow-router.contract.yaml
   ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow"]'
+  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow"]'
 ---
 
 # Workflow Router
@@ -75,6 +75,23 @@ No execution before routing. The artifact noun does not determine the lifecycle:
 | Plan or specify | `spec-workflow` | product-manager, plan, relevant owners |
 | Explore a reversible idea | `spike` | plan, experiment skills |
 | Promote a verified lesson | `skill-evolution` | skill-eval, git-workflow |
+
+## Delivery Topology Overlay
+
+Lifecycle selection does not choose repository topology.
+
+```text
+one independently releasable slice
+  → delivery-work-breakdown may classify feature or standalone change
+
+multiple dependent slices forming one outcome
+  → delivery-work-breakdown
+  → release_unit: epic
+  → child PRs target the epic/integration branch
+  → final epic PR targets the release branch after integrated acceptance
+```
+
+Load `delivery-work-breakdown` before Git execution for new apps, broad multi-slice capabilities, epic/feature/task decomposition, feature-flag exceptions, or unresolved base/PR targets. Repository defaults, green CI, and mergeability cannot choose the PR target.
 
 ## Platform Specialist Overlays
 
@@ -212,6 +229,7 @@ Design-related?
   then resolve domain reviewer and coverage
   ↓
 New capability? → new-feature-workflow
+  multi-slice or target unresolved? → delivery-work-breakdown
   ↓
 Code/PR acceptance? → code-review-workflow
   ↓
@@ -304,5 +322,6 @@ skill-evolution → skill-eval → git-workflow when promotable and writable
 | Logo audit uses UI/static gates only | Load `brand-identity-review` or return LIMITED REVIEW |
 | Identity adapter exists but router ignores it | Route to `brand-identity-review` with BI namespace |
 | ChatGPT App target creates a competing primary workflow | Preserve lifecycle and add `chatgpt-app-development` as overlay |
+| Child work targets the default branch automatically | Run `delivery-work-breakdown` and preserve the governing release unit |
 | One request executes competing primary workflows | Select one lifecycle and explicit handoffs |
 | Reviewer selected before domain classification | Resolve lifecycle and domain first |

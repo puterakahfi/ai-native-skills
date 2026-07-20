@@ -3,20 +3,21 @@ name: new-feature-workflow
 description: Evidence-backed new-feature workflow — verify scope and decision authority, approve architecture/design decisions, discover repository implementation context, implement with tests, verify technical, convention, and rendered outcomes, submit a decision ledger, and merge only through code-review-workflow approval plus merge authorization.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.2.0
+  ai-native-skills.version: 2.3.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "master-engineer master-design implementation-context-discovery decision-provenance spec-workflow test-driven-development architecture-review code-review-workflow design-review"
+  ai-native-skills.requires: "master-engineer master-design delivery-work-breakdown implementation-context-discovery decision-provenance spec-workflow test-driven-development architecture-review code-review-workflow design-review"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/new-feature.contract.yaml
   ai-native-skills.contract-version: ~0.4
-  ai-native-skills.skill_load_order: '[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["master-engineer","test-driven-development"]},{"phase":"verify","load":["architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]'
-  ai-native-skills.skills: '{"required":["master-engineer","implementation-context-discovery","decision-provenance","test-driven-development","architecture-review","code-review-workflow"],"optional":["diagram-architect","master-design","design-review"]}'
+  ai-native-skills.skill_load_order: '[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"delivery-topology","load":["delivery-work-breakdown","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["master-engineer","test-driven-development"]},{"phase":"verify","load":["architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]'
+  ai-native-skills.skills: '{"required":["master-engineer","delivery-work-breakdown","implementation-context-discovery","decision-provenance","test-driven-development","architecture-review","code-review-workflow"],"optional":["diagram-architect","master-design","design-review"]}'
 ---
 
 # New Feature Workflow
 
 ```text
 verified scope
+→ approved delivery topology
 → approved architecture/design decisions
 → repository implementation-context mapping
 → implementation with tests
@@ -85,6 +86,19 @@ feature:
   problem: <problem>
   issue_ref: <issue or task>
 
+  delivery_topology:
+    release_unit: <standalone_change | feature | epic | product_release>
+    parent_ref: <epic/product ref or null>
+    acceptance_criteria_refs: []
+    dependency_refs: []
+    independently_releasable: <true | false | unknown>
+    feature_flag_policy_ref: <record | null | unknown>
+    release_branch: <product-defined>
+    integration_branch: <branch | not_applicable | unknown>
+    base_branch: <explicit>
+    pr_target: <explicit>
+    topology_record_ref: <delivery-work-breakdown output>
+
   decision_sources: []
   required_authorities: []
   previous_decision_records: []
@@ -144,6 +158,16 @@ Run `decision-provenance` for initial scope and claimed approval. An agent-autho
 Replace “works correctly” with observable behavior, context, and expected result.
 
 **Done when:** scope, criteria, issue, authorities, affected capability families, and evidence plan are explicit.
+
+## Phase 1B — Delivery topology
+
+**Gate:** release unit, parent, acceptance traceability, dependency graph, base branch, and PR target are explicit before branch creation or PR submission.
+
+Load `delivery-work-breakdown`. A dependent child of an epic branches from and targets the approved epic/integration branch. Direct-to-release requires independent releasability or an approved default-safe feature flag with no unflagged incomplete path.
+
+Block orphan tasks, dependency cycles, unknown targets, and any target justified only by the repository default branch.
+
+**Done when:** the topology verdict is PASS and recorded in workflow context.
 
 ## Phase 2 — Architecture and design decision
 
@@ -298,6 +322,7 @@ effective scope and exclusions
 authoritative decision-record IDs
 acceptance-criteria checklist
 design/architecture decisions and locks
+delivery topology record, release unit, parent, base branch, and PR target
 implementation_context_profile and convention locks
 reuse/extension/composition/native/dependency decisions
 implementation mapping and prohibited parallel systems
@@ -337,13 +362,14 @@ REQUEST CHANGES / BLOCKED / NOT_AUTHORIZED
   → return to implementation, verification, context discovery, or authority resolution
 ```
 
-Feature-level `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, `NOT_VERIFIED`, provenance blocker, implementation-context blocker, or architecture failure cannot be downgraded to a non-blocking merge flag.
+Feature-level `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, `NOT_VERIFIED`, provenance blocker, delivery-topology mismatch, implementation-context blocker, or architecture failure cannot be downgraded to a non-blocking merge flag.
 
 ## Quick reference
 
 | Phase | Primary gate | Done when |
 |---|---|---|
 | Plan | Spec + scope provenance | Scope, criteria, issue, authorities, affected domains explicit |
+| Delivery topology | Release unit + hierarchy + PR target | Parent, dependencies, base branch, target, and exception evidence explicit |
 | Architecture/design | Decision authority | Boundaries, contexts, states, locks, criteria explicit |
 | Implementation context | Repository evidence + mapping | Canonicality, locks, selected adapters, dependency authority explicit |
 | Implement | Traceability | Criteria implemented with tests and no silent drift |
@@ -356,6 +382,8 @@ Feature-level `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, `NO
 | Anti-pattern | Correct behavior |
 |---|---|
 | Agent-generated issue means scope approved | Verify attributable authority |
+| Default branch becomes the PR target | Consume the approved delivery topology |
+| Green child CI means the epic is complete | Run integrated epic acceptance |
 | Design says Select, so any Select library is allowed | Map the capability through implementation context |
 | Installed package means canonical | Inspect usage, ownership, conventions, and decisions |
 | Fit shared component rebuilt locally | Report convention drift and reuse/extend/compose |

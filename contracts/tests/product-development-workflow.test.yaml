@@ -1,6 +1,6 @@
 skill_test:
   skill: product-development-workflow
-  version: "2.2.0"
+  version: "2.3.0"
   description: Verify product-level acceptance reconciles every criterion, reviewer, decision source, platform specialist gate, accepted risk, and release approval before delivery actions.
 
   cases:
@@ -141,3 +141,10 @@ skill_test:
         - release_ready_requires_complete_reconciliation
         - release_action_requires_verified_authority
         - release_preparation_follows_acceptance_and_approval
+
+    - id: multi-slice-mvp-requires-epic-acceptance
+      description: Product delivery creates an epic before dependent feature branches and verifies one integrated release unit.
+      trigger: Seven dependent MVP slices are approved; merge each directly to main when child CI passes.
+      must_contain: [delivery-work-breakdown, "release_unit: epic", integration branch, end-to-end acceptance, release authorization]
+      must_not_contain: [child CI proves product acceptance, direct child PR to main]
+      quality_gates_tested: [mvp_release_unit_and_topology_defined_before_implementation, child_evidence_reconciled_at_epic_acceptance, release_ready_does_not_self_authorize_release]
