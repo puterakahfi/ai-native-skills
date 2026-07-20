@@ -6,7 +6,7 @@ This repository turns engineering methods and Native AI contracts into reusable 
 
 Works with agents that support the [Agent Skills specification](https://agentskills.io/specification) or the [skills.sh](https://skills.sh) ecosystem, including Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and other compatible runtimes.
 
-**81 skills · 9 workflows · 6 meta-skills**
+**82 skills · 9 workflows · 6 meta-skills**
 
 ## Start here
 
@@ -35,7 +35,7 @@ agents, native-ai-fw, and product repositories
 
 - [`ai-native-core`](https://github.com/puterakahfi/ai-native-core) defines the public, runtime-agnostic contracts.
 - `ai-native-skills` implements reusable capabilities that agents can load and execute.
-- [`native-ai-fw`](https://github.com/puterakahfi/ai-native-fw) provides orchestration, discovery, adapters, context packs, and product-control behavior.
+- [`native-ai-fw`](https://github.com/puterakahfi/native-ai-fw) provides orchestration, discovery, adapters, context packs, and product-control behavior.
 - Product repositories apply and validate the capabilities in real systems.
 
 ## Install
@@ -52,12 +52,13 @@ Examples:
 npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
 npx skills add puterakahfi/ai-native-skills@decision-provenance -g -y
 npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
+npx skills add puterakahfi/ai-native-skills@chatgpt-app-development -g -y
 npx skills add puterakahfi/ai-native-skills@brand-identity-review -g -y
 ```
 
 ### Install a workflow pack
 
-Workflows compose other capabilities. The Agent Skills specification does not currently provide native transitive dependency installation, so [`docs/skill-packs.md`](docs/skill-packs.md) provides verified bundle commands for redesign, product delivery, engineering quality, identity review, deployment, and other common flows.
+Workflows compose other capabilities. The Agent Skills specification does not currently provide native transitive dependency installation, so [`docs/skill-packs.md`](docs/skill-packs.md) provides verified bundle commands for redesign, product delivery, ChatGPT App product delivery, engineering quality, identity review, deployment, and other common flows.
 
 ### Install the full suite
 
@@ -71,7 +72,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Type | Primary job | Examples |
 |---|---|---|
-| `skill` | One reusable capability or expert lens | `systematic-debugging`, `decision-provenance`, `brand-identity-review` |
+| `skill` | One reusable capability or expert lens | `systematic-debugging`, `decision-provenance`, `chatgpt-app-development`, `brand-identity-review` |
 | `workflow` | An ordered lifecycle with phases and gates | `bugfix-workflow`, `redesign-workflow`, `deployment-workflow` |
 | `meta-skill` | Route or compose other capabilities | `workflow-router`, `role-switcher` |
 
@@ -105,6 +106,8 @@ A `SKILL.md` should remain the lean executable entry point. Load references only
 | User intent | Start with |
 |---|---|
 | Build a product from discovery through launch | `product-development-workflow` |
+| Build a ChatGPT App from zero | `product-development-workflow` + `chatgpt-app-development` |
+| Add ChatGPT App integration to an existing product | `new-feature-workflow` + `chatgpt-app-development` |
 | Specify requirements before implementation | `spec-workflow` |
 | Build a new capability in an existing product | `new-feature-workflow` |
 | Investigate and fix a regression | `bugfix-workflow` |
@@ -122,7 +125,7 @@ Use [`workflow-router`](skills/workflow-router/SKILL.md) when the request has no
 
 ```text
 broad request
-  → workflow-router selects the lifecycle
+  → workflow-router selects the lifecycle and platform/domain overlays
   → role-switcher assigns one owner and narrow specialists
   → workflow runs ordered phases and gates
   → skills provide reusable domain behavior
@@ -143,6 +146,12 @@ Engineering quality
 Product delivery
   product-development-workflow → spec-workflow → new-feature-workflow
   → code-review-workflow → deployment-workflow → observability-design
+
+ChatGPT App product delivery
+  product-development-workflow | new-feature-workflow
+  → chatgpt-app-development + native-ai-engineer
+  → architecture/security/design verification
+  → deployment-workflow and actual ChatGPT integration evidence
 ```
 
 ## Hermes Profile Bootstrap
@@ -212,5 +221,5 @@ The guide covers:
 ## Related repositories
 
 - [`ai-native-core`](https://github.com/puterakahfi/ai-native-core) — canonical domain, contracts, ports, and quality standards
-- [`native-ai-fw`](https://github.com/puterakahfi/ai-native-fw) — orchestration and product runtime adapter
+- [`native-ai-fw`](https://github.com/puterakahfi/native-ai-fw) — orchestration and product runtime adapter
 - [`skills.sh`](https://skills.sh) — compatible skill discovery and installation ecosystem

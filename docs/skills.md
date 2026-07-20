@@ -6,10 +6,10 @@ The goal is to keep skill authoring decisions consistent: when to create an atom
 
 Current repository inventory:
 
-- `skill`: 81
+- `skill`: 82
 - `workflow`: 9
 - `meta-skill`: 6
-- Total executable skills: 96
+- Total executable skills: 97
 
 ---
 
@@ -21,7 +21,7 @@ Agent Skills standard frontmatter only allows `name`, `description`, `license`, 
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
-| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `decision-provenance`, `accessibility`, `business-value-alignment`, `master-design` |
+| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `decision-provenance`, `accessibility`, `business-value-alignment`, `chatgpt-app-development`, `master-design` |
 | `workflow` | Run a sequenced task lifecycle | “What phases must this task follow?” | `bugfix-workflow`, `deployment-workflow`, `redesign-workflow` |
 | `meta-skill` | Route or compose other skills/workflows | “Which skills/workflows should be loaded?” | `workflow-router`, `role-switcher` |
 
@@ -70,6 +70,7 @@ A good `skill` should define:
 - `experiment-design` — minimum viable experiment design before PRD/MVP/build.
 - `copywriting` — product messaging capability.
 - `native-ai-engineer` — Native AI layer-boundary and contract reasoning.
+- `chatgpt-app-development` — ChatGPT Apps SDK/MCP product boundary, cost ownership, tool/widget/auth/security, and release discipline.
 
 ---
 
@@ -154,12 +155,28 @@ A good `meta-skill` should define:
 
 | Meta-skill | Responsibility |
 |---|---|
-| `workflow-router` | Detect task type — bug, feature, review, deploy, spike — and route to the correct workflow. |
-| `role-switcher` | Detect user intent and compose expert role lenses, such as design + UX psychology + product management. |
+| `workflow-router` | Detect task type and preserve one primary lifecycle while applying platform/domain specialist overlays. |
+| `role-switcher` | Detect user intent and compose one owner with narrow expert role lenses, such as design, product, engineering, and platform specialists. |
 | `design-layout` | Route layout decisions — macrostructures, responsiveness, ui-components, spatial structure. |
 | `design-visual` | Route visual design — genre selection, motion, composition, readability. |
 | `design-strategy` | Route UX strategy — ux-psychology, information-architecture, cro, copywriting, content-strategy. |
 | `design-interaction` | Route interaction patterns — ux-ui-patterns, ux-patterns-for-developers, behavior. |
+
+### Platform specialist overlay example
+
+A specialized target platform normally adds a skill to an existing lifecycle rather than introducing a new workflow.
+
+```text
+ChatGPT App product from zero
+  primary lifecycle: product-development-workflow
+  platform specialist: chatgpt-app-development
+
+Existing product adds ChatGPT App integration
+  primary lifecycle: new-feature-workflow
+  platform specialist: chatgpt-app-development
+```
+
+The router chooses the lifecycle and overlay. The specialist executes its domain behavior without becoming the lifecycle owner.
 
 ---
 
@@ -188,6 +205,8 @@ These are adapter-like skills because they implement Native AI Core contracts wh
 - `native-ai-runtime-ops`
 - `decision-provenance`
 
+A platform-specific reusable capability such as `chatgpt-app-development` may remain an ordinary skill without `implements` metadata when no stable runtime-agnostic core contract has been established. Do not invent a core contract only to classify the skill.
+
 ### When to use the adapter pattern
 
 Use `metadata["ai-native-skills.type"]: skill` plus adapter metadata when:
@@ -207,6 +226,7 @@ Use `metadata["ai-native-skills.type"]: skill` plus adapter metadata when:
 | A multi-phase lifecycle with gates | `metadata["ai-native-skills.type"]: workflow` |
 | An intent router or skill composer | `metadata["ai-native-skills.type"]: meta-skill` |
 | A runtime/product implementation of a core contract | `metadata["ai-native-skills.type"]: skill` + adapter pattern |
+| Reusable platform-specific specialist knowledge without a stable core contract | `metadata["ai-native-skills.type"]: skill` without invented `implements` metadata |
 | A product-specific override | Product/app adapter layer, not this repo by default |
 | A temporary idea or scratch note | Do not put it in `skills/` |
 
@@ -267,7 +287,9 @@ skills-ref validate skills/<skill-name>
 1. **Calling everything a skill.** If phase order matters, create a workflow.
 2. **Calling a router a workflow.** If it only selects another process, create a meta-skill.
 3. **Creating product-specific base skills.** Product-specific behavior belongs in product/app adapters unless it is broadly reusable.
-4. **Inventing a new category casually.** A new category value affects README, docs, validation, examples, and downstream consumers.
-5. **Using adapter as a type before tooling supports it.** Keep adapter semantics in `metadata["ai-native-skills.implements"]` and `compat/` until the repo formally adopts `skill-adapter`.
-6. **Writing no-op skills.** If the document does not change agent behavior or quality gates, it should not be a skill.
-7. **Mixing routing and execution.** Meta-skills decide the route; workflows and skills perform the work.
+4. **Creating a platform workflow when an overlay is enough.** Preserve the product/feature lifecycle and load a platform specialist skill.
+5. **Inventing a new category casually.** A new category value affects README, docs, validation, examples, and downstream consumers.
+6. **Using adapter as a type before tooling supports it.** Keep adapter semantics in `metadata["ai-native-skills.implements"]` and `compat/` until the repo formally adopts `skill-adapter`.
+7. **Inventing a core contract for platform-specific knowledge.** Wait until a stable runtime-agnostic boundary is proven.
+8. **Writing no-op skills.** If the document does not change agent behavior or quality gates, it should not be a skill.
+9. **Mixing routing and execution.** Meta-skills decide the route; workflows and skills perform the work.

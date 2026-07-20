@@ -3,9 +3,9 @@ name: product-development-workflow
 description: End-to-end digital product workflow from zero to launch — discovery, provenance-backed PRD and MVP decisions, technical specification, feature implementation, product acceptance, release readiness, delivery approval, launch, and learning.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.1.0
+  ai-native-skills.version: 2.2.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "product-requirements business-value-alignment experiment-design user-research product-manager decision-provenance master-design master-engineer spec-workflow new-feature-workflow code-review-workflow design-review deployment-workflow observability-design"
+  ai-native-skills.requires: "product-requirements business-value-alignment experiment-design user-research product-manager decision-provenance master-design master-engineer native-ai-engineer chatgpt-app-development spec-workflow new-feature-workflow code-review-workflow design-review deployment-workflow observability-design"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/product-development.contract.yaml
   ai-native-skills.contract-version: "~0.3"
@@ -34,6 +34,8 @@ Discovery → verified PRD → authorized MVP slice → technical spec → featu
 13. Release, deploy, and launch actions require the approvals defined by product policy.
 14. Release artifacts do not convert NOT_READY into RELEASE_READY.
 15. Deployment is not launch; launch includes users, support, analytics, and feedback.
+16. Specialized delivery platforms load their specialist capability without replacing this lifecycle.
+17. For ChatGPT Apps, generation surface and cost ownership are product acceptance criteria when pricing or quota claims depend on them.
 ```
 
 ## Route boundary
@@ -97,6 +99,39 @@ Load `decision-provenance` whenever a PRD/MVP scope, scope removal, accepted ris
 | 9 | Launch | product, content, analytics, support | Launch approval and feedback loop live |
 | 10 | Learn | metrics, research, decision making | Owned next action updates PRD/backlog |
 
+## Conditional platform specialists
+
+Load platform specialists only when the product target requires them.
+
+### ChatGPT App
+
+When the product includes a ChatGPT App, Apps SDK integration, MCP-backed tools, or ChatGPT widget, load `chatgpt-app-development` during:
+
+```text
+Discovery / Requirements
+  verify primary value, target ChatGPT surface, plan/workspace assumptions,
+  generation surface, cost owner, data scope, and distribution intent
+
+Technical Spec
+  define MCP tools/resources, product-core boundary, widget/state model,
+  native capability handoff, auth, security, deployment, and observability
+
+Implementation
+  execute through new-feature-workflow while keeping MCP/widget code as adapters
+
+Product Acceptance
+  verify actual ChatGPT runtime behavior, cost boundary, tool routing,
+  auth/authorization, widget interaction, accessibility, privacy, and security
+
+Release / Deploy / Launch
+  re-check current official platform requirements, production endpoint health,
+  publication metadata, pricing disclosures, support, and feedback loop
+```
+
+Use `native-ai-engineer` with it when domain contracts, runtime binding, adapter placement, or cross-module ownership are in scope.
+
+The ChatGPT App specialist does not create a competing workflow and does not carry product-specific rules into reusable skills.
+
 ## Decision provenance boundary
 
 Verify claims such as:
@@ -108,6 +143,8 @@ Verify claims such as:
 “all merged features mean the product is ready”
 “RELEASE_READY means release now”
 “the latest report supersedes the previous decision”
+“native ChatGPT generation means the developer cannot be billed”
+“this ChatGPT capability is available to every target user”
 ```
 
 ```text
@@ -150,6 +187,16 @@ product_acceptance:
   accepted_risks: []
   release_eligibility: <RELEASE_READY | NOT_READY>
   release_approval: <APPROVED | NOT_APPROVED | ROUTE_FOR_APPROVAL>
+```
+
+For a ChatGPT App whose pricing or product promise depends on user-owned native generation, the matrix must include direct evidence that:
+
+```text
+generation_surface = chatgpt-native
+cost_owner = end-user-chatgpt or declared workspace
+native handoff path does not call the developer model/image API client
+pricing copy separates product subscription from ChatGPT plan requirements
+capability availability and limits are not overclaimed
 ```
 
 Load `references/acceptance-and-release.md` for the complete evidence, reviewer, risk, decision, and release contract.
