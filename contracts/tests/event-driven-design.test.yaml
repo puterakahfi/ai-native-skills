@@ -1,0 +1,23 @@
+skill_test:
+  skill: event-driven-design
+  version: 1.0.1
+  description: Verify event-driven-design exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: saga-and-data-boundaries-are-explicit
+    description: Design an event flow with compensation, idempotency, DLQ, and separate producer-consumer data ownership.
+    trigger: Apply event-driven-design to a realistic architecture or engineering decision and report the contract-backed
+      result.
+    must_contain:
+    - saga_must_define_compensating_transactions
+    - no_direct_db_sharing_between_producer_and_consumer
+    - event_catalog_entry
+    - producer_consumer_contract
+    - saga_design
+    - dead_letter_queue_strategy
+    - business_flow_or_domain_event
+    must_not_contain:
+    - share one database
+    - omit compensation
+    quality_gates_tested:
+    - saga_must_define_compensating_transactions
+    - no_direct_db_sharing_between_producer_and_consumer

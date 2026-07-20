@@ -1,0 +1,25 @@
+skill_test:
+  skill: systematic-debugging
+  version: 1.0.1
+  description: Verify systematic-debugging exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: debugging-proves-root-cause-before-fix
+    description: Investigate a reproducible bug, establish feedback, add regression coverage, fix one cause, and verify.
+    trigger: Apply systematic-debugging to a realistic architecture or engineering decision and report the contract-backed
+      result.
+    must_contain:
+    - root_cause_statement
+    - hypothesis_list
+    - fix_implementation
+    - verification_result
+    - bug_description
+    - reproduction_context
+    - no_fixes_without_root_cause_investigation
+    - regression_test_required_before_fix
+    - verify_fix_with_full_test_suite
+    must_not_contain:
+    - try random fixes
+    quality_gates_tested:
+    - no_fixes_without_root_cause_investigation
+    - regression_test_required_before_fix
+    - verify_fix_with_full_test_suite

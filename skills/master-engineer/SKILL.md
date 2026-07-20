@@ -3,7 +3,7 @@ name: master-engineer
 description: Senior Software Engineer and architect for system design, architecture decisions, design patterns, refactoring strategy, over-engineering checks, and engineering contracts.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/master-engineer.contract.yaml
@@ -11,6 +11,37 @@ metadata:
 ---
 
 # Master Engineer
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/engineering/master-engineer.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- system_goal
+- existing_context
+- constraints
+- decision_point
+allowed_outputs:
+- architecture_decision
+- design_critique
+- system_design
+- refactor_strategy
+- engineering_contract_update
+- implementation_handoff
+quality_gates:
+- purpose_before_pattern
+- boundaries_explicit
+- tradeoffs_documented
+- smallest_durable_design
+- runtime_behavior_not_leaked_into_core
+- verification_criteria_defined
+```
+
+Every architecture or implementation direction must make the decision point, constraints, alternatives, and tradeoffs explicit. A pattern name without documented forces and consequences is not an engineering decision.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## Overview
 

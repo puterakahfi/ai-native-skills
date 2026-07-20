@@ -1,0 +1,20 @@
+skill_test:
+  skill: micro-frontend
+  version: 1.0.1
+  description: Verify micro-frontend exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: mfe-boundary-remains-independent-and-isolated
+    description: Design an MFE boundary with independent deployment, isolated CSS, shared tokens, and load fallback.
+    trigger: Apply micro-frontend to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - each_mfe_must_be_independently_deployable
+    - css_must_be_isolated_per_mfe
+    - design_token_sharing_strategy_must_be_defined
+    - application_description
+    must_not_contain:
+    - shared global CSS is fine
+    - deploy only through the monolith
+    quality_gates_tested:
+    - each_mfe_must_be_independently_deployable
+    - css_must_be_isolated_per_mfe
+    - design_token_sharing_strategy_must_be_defined

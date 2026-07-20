@@ -3,7 +3,7 @@ name: test-driven-development
 description: 'TDD: enforce RED-GREEN-REFACTOR cycle — tests written before implementation, every time.'
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/test-driven-development.contract.yaml
@@ -11,6 +11,32 @@ metadata:
 ---
 
 # Test-Driven Development (TDD)
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/engineering/test-driven-development.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- feature_or_behavior_to_implement
+allowed_outputs:
+- failing_test
+- passing_implementation
+- refactored_code
+- test_suite
+quality_gates:
+- test_must_be_written_before_implementation
+- test_must_fail_before_implementation_red
+- implementation_must_make_test_pass_green
+- refactor_must_not_break_tests
+- no_implementation_without_test
+- no_skipped_tests_in_final_output
+```
+
+Follow red-green-refactor: write and observe the failing test first, make it pass with the smallest implementation, refactor without breaking tests, and finish with no skipped tests.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## Overview
 

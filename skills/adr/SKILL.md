@@ -3,7 +3,7 @@ name: adr
 description: Author and maintain Architecture Decision Records — context, options considered, decision, consequences, and tradeoffs. Immutable once accepted. Superseding pattern for changed decisions.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/architecture/adr.contract.yaml
@@ -11,6 +11,34 @@ metadata:
 ---
 
 # Architecture Decision Record (ADR)
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/architecture/adr.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- decision_context
+- options_considered
+allowed_outputs:
+- adr_document
+- decision_log_entry
+- superseded_adr_reference
+quality_gates:
+- adr_must_state_status_explicitly
+- context_must_explain_why_decision_was_needed
+- all_options_considered_must_be_listed
+- decision_must_be_stated_in_one_sentence
+- consequences_must_include_tradeoffs_not_just_benefits
+- adr_must_be_immutable_once_accepted
+- superseding_adr_must_reference_original
+- decision_must_be_traceable_to_forcing_function
+```
+
+Accepted ADRs stay immutable. A replacement decision must be authored as a new ADR, include a superseded_adr_reference, and point back to the original record so the decision history remains traceable.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## When to Write an ADR
 

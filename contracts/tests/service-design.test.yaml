@@ -1,0 +1,24 @@
+skill_test:
+  skill: service-design
+  version: 1.0.1
+  description: Verify service-design exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: service-boundaries-own-data-and-failure-modes
+    description: Decompose a domain into services with explicit data ownership and communication rationale.
+    trigger: Apply service-design to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - service_boundary_map
+    - communication_pattern_decision
+    - api_contract_outline
+    - data_ownership_map
+    - decomposition_rationale
+    - domain_context
+    - each_service_must_own_its_data
+    - no_shared_database_across_services
+    - failure_modes_must_be_considered_per_communication_pattern
+    must_not_contain:
+    - use one shared database
+    quality_gates_tested:
+    - each_service_must_own_its_data
+    - no_shared_database_across_services
+    - failure_modes_must_be_considered_per_communication_pattern

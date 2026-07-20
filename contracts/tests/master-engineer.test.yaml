@@ -1,0 +1,14 @@
+skill_test:
+  skill: master-engineer
+  version: 1.0.1
+  description: Verify master-engineer exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: engineering-decision-documents-tradeoffs
+    description: Choose a durable architecture direction and document alternatives, consequences, and verification.
+    trigger: Apply master-engineer to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - tradeoffs_documented
+    must_not_contain:
+    - tradeoffs are unnecessary
+    quality_gates_tested:
+    - tradeoffs_documented

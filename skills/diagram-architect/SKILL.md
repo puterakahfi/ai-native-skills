@@ -3,7 +3,7 @@ name: diagram-architect
 description: Turns architecture, workflows, runtime state, contracts, ownership, and decision context into clear diagrams. Produces a renderer-agnostic spec first, then renders via Mermaid, SVG, Excalidraw, or ASCII.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/visual-thinking/diagram-architect.contract.yaml
@@ -11,6 +11,43 @@ metadata:
 ---
 
 # Diagram Architect
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/visual-thinking/diagram-architect.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- diagram_subject
+- diagram_purpose
+- audience
+- source_context
+allowed_outputs:
+- diagram_brief
+- diagram_type_decision
+- renderer_agnostic_diagram_spec
+- nodes
+- edges
+- boundaries
+- legend
+- constraints
+- renderer_recommendation
+- verification_checklist
+- implementation_handoff
+quality_gates:
+- preserve_architecture_truth_over_visual_novelty
+- separate_conceptual_spec_from_renderer_format
+- name_source_of_truth_for_nodes_edges_and_boundaries
+- label_ownership_and_directionality
+- show_constraints_and_non_goals_when_they_prevent_misinterpretation
+- choose_renderer_after_diagram_spec_exists
+- verify_required_nodes_edges_boundaries_and_labels
+```
+
+Do not choose a renderer until diagram_subject, diagram_purpose, audience, and source_context are known. Missing or conflicting source context must be reported rather than replaced with invented nodes, edges, or ownership.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## Overview
 

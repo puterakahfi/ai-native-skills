@@ -1,0 +1,22 @@
+skill_test:
+  skill: test-driven-development
+  version: 1.1.1
+  description: Verify test-driven-development exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: tdd-refactor-keeps-tests-green-and-unskipped
+    description: Implement one behavior through observed red, green, and safe refactor with no skipped final tests.
+    trigger: Apply test-driven-development to a realistic architecture or engineering decision and report the contract-backed
+      result.
+    must_contain:
+    - refactor_must_not_break_tests
+    - no_skipped_tests_in_final_output
+    - passing_implementation
+    - refactored_code
+    - test_suite
+    - feature_or_behavior_to_implement
+    must_not_contain:
+    - skip failing tests
+    - refactor may break tests
+    quality_gates_tested:
+    - refactor_must_not_break_tests
+    - no_skipped_tests_in_final_output

@@ -3,7 +3,7 @@ name: spike
 description: Throwaway experiments to validate an idea before build — produces a verdict, not production code.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/spike.contract.yaml
@@ -11,6 +11,33 @@ metadata:
 ---
 
 # Spike
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/engineering/spike.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- question_or_uncertainty
+allowed_outputs:
+- spike_result
+- feasibility_verdict
+- approach_recommendation
+- throwaway_prototype
+- learnings_summary
+quality_gates:
+- spike_must_have_a_clear_question_to_answer
+- spike_output_is_throwaway_not_production_code
+- spike_must_produce_a_verdict_not_just_code
+- time_box_must_be_respected
+- spike_result_must_inform_real_implementation_plan
+- do_not_ship_spike_code_directly
+```
+
+A spike begins with one uncertainty and an explicit time box. Its prototype is throwaway, its output includes a feasibility verdict and implementation recommendation, and spike code must never be shipped directly.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 Use this skill when the user wants to **feel out an idea** before committing to a real build — validating feasibility, comparing approaches, or surfacing unknowns that no amount of research will answer. Spikes are disposable by design. Throw them away once they've paid their debt.
 

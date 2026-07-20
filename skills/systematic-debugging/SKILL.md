@@ -3,7 +3,7 @@ name: systematic-debugging
 description: 4-phase root cause debugging — investigate, analyze, hypothesize, fix. Enforces finding root cause before attempting any fix.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/systematic-debugging.contract.yaml
@@ -11,6 +11,35 @@ metadata:
 ---
 
 # Systematic Debugging
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/quality/systematic-debugging.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- bug_description
+- reproduction_context
+allowed_outputs:
+- root_cause_statement
+- tight_feedback_loop
+- hypothesis_list
+- fix_implementation
+- regression_test
+- verification_result
+quality_gates:
+- no_fixes_without_root_cause_investigation
+- tight_feedback_loop_must_exist_before_fixing
+- one_change_at_a_time
+- regression_test_required_before_fix
+- after_3_failed_fixes_question_architecture
+- verify_fix_with_full_test_suite
+```
+
+Require a reproducible bug description and reproduction context. Establish a tight feedback loop, state root cause and hypotheses, add the regression test before the fix, then report implementation and verification evidence.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## Overview
 

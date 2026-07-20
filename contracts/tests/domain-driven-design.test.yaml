@@ -1,0 +1,28 @@
+skill_test:
+  skill: domain-driven-design
+  version: 1.0.1
+  description: Verify domain-driven-design exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: ddd-model-preserves-core-invariants
+    description: Model bounded contexts, aggregates, value objects, events, and directed context relationships.
+    trigger: Apply domain-driven-design to a realistic architecture or engineering decision and report the contract-backed
+      result.
+    must_contain:
+    - every_aggregate_must_have_a_single_root
+    - value_objects_must_be_immutable
+    - domain_events_must_be_named_in_past_tense
+    - context_map_must_define_upstream_downstream_relationships
+    - bounded_context_map
+    - aggregate_design
+    - ubiquitous_language_glossary
+    - domain_event_catalog
+    - context_map_relationships
+    - domain_description
+    must_not_contain:
+    - multiple aggregate roots are fine
+    - mutable value object
+    quality_gates_tested:
+    - every_aggregate_must_have_a_single_root
+    - value_objects_must_be_immutable
+    - domain_events_must_be_named_in_past_tense
+    - context_map_must_define_upstream_downstream_relationships

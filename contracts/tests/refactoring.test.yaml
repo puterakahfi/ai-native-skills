@@ -1,0 +1,25 @@
+skill_test:
+  skill: refactoring
+  version: 1.0.1
+  description: Verify refactoring exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: refactoring-does-not-hide-feature-or-bug-work
+    description: Refactor a module while preserving behavior, coverage, and independently verifiable steps.
+    trigger: Apply refactoring to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - no_feature_added_during_refactoring
+    - no_bug_fixed_during_refactoring
+    - test_coverage_must_not_decrease
+    - refactored_code
+    - refactoring_plan
+    - test_suite_update
+    - complexity_delta
+    - code_or_module
+    - refactoring_goal
+    must_not_contain:
+    - add a feature during refactoring
+    - fix the bug as part of cleanup
+    quality_gates_tested:
+    - no_feature_added_during_refactoring
+    - no_bug_fixed_during_refactoring
+    - test_coverage_must_not_decrease

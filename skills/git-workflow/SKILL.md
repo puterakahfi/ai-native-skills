@@ -3,7 +3,7 @@ name: git-workflow
 description: Source control operations — branching, committing, PR/MR submission, and merge. Branch strategy, naming convention, commit format, and protected branch policy are product-defined.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/git-workflow.contract.yaml
@@ -11,6 +11,33 @@ metadata:
 ---
 
 # Git Workflow
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/engineering/git-workflow.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- intent
+allowed_outputs:
+- branch_created
+- commits_authored
+- pr_or_mr_opened
+- merge_executed
+- conflict_report
+quality_gates:
+- branch_must_be_created_from_correct_base
+- commit_message_must_follow_convention
+- no_direct_push_to_protected_branch
+- pr_must_reference_issue_before_submit
+- conflicts_must_be_resolved_before_merge
+- no_force_push_to_shared_branch
+```
+
+Treat intent as the operation request and report actual execution state. Do not claim branch creation, commits, PR opening, merge, or conflict resolution unless the corresponding action was completed and evidenced.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## The Core Rules
 

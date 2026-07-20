@@ -1,0 +1,24 @@
+skill_test:
+  skill: systems-thinking
+  version: 1.0.1
+  description: Verify systems-thinking exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: system-change-analyzes-second-order-and-metric-risks
+    description: Evaluate a system intervention through loops, second-order effects, Conway alignment, and Goodhart risk.
+    trigger: Apply systems-thinking to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - second_order_effects_must_be_analyzed_not_just_first
+    - conways_law_must_be_applied_to_team_and_architecture_alignment
+    - goodharts_law_risk_must_be_assessed_for_any_new_metric
+    - feedback_loop_map
+    - emergence_analysis
+    - second_order_effects
+    - conways_law_analysis
+    - unintended_consequences_report
+    - system_or_decision_description
+    must_not_contain:
+    - only analyze first-order effects
+    quality_gates_tested:
+    - second_order_effects_must_be_analyzed_not_just_first
+    - conways_law_must_be_applied_to_team_and_architecture_alignment
+    - goodharts_law_risk_must_be_assessed_for_any_new_metric

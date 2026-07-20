@@ -3,7 +3,7 @@ name: model-selection
 description: Select model class for AI-native engineering tasks. Use when choosing between fast, reasoning, coding-agent, vision, or local/private models based on task intent, risk, capabilities, context, cost, latency, fallback, and verification needs.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/model-selection.contract.yaml
@@ -12,6 +12,41 @@ metadata:
 ---
 
 # Model Selection
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/runtime/model-selection.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- task_intent
+- task_risk
+- required_capabilities
+- context_constraints
+allowed_outputs:
+- model_selection_decision
+- model_routing_plan
+- fallback_model_plan
+- cost_latency_quality_tradeoff
+- verification_plan
+- escalation_policy
+quality_gates:
+- task_intent_must_be_classified_before_model_choice
+- required_capabilities_must_be_explicit
+- privacy_constraints_must_override_cost_and_latency_preferences
+- high_risk_tasks_must_use_reasoning_or_specialized_review_model
+- coding_tasks_with_repo_changes_must_prefer_coding_agent_or_tool_capable_model
+- vision_tasks_must_require_vision_capability
+- fallback_must_be_defined_for_unavailable_or_failing_model
+- decision_must_record_cost_latency_quality_tradeoff
+- verification_plan_must_match_task_risk
+- model_choice_must_not_claim_unsupported_capabilities
+```
+
+Record the model_selection_decision, routing and fallback plans, cost-latency-quality tradeoff, verification plan, and escalation policy. Never select a model before classifying task intent, risk, capabilities, and context constraints.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## Overview
 

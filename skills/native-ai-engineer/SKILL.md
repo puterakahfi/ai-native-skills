@@ -3,7 +3,7 @@ name: native-ai-engineer
 description: Domain contract architect for AI-native systems — layer placement, runtime boundaries, adapter design, and mapping AI runtimes to abstract ports.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/native-ai-engineer.contract.yaml
@@ -11,6 +11,39 @@ metadata:
 ---
 
 # Native AI Engineer
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/runtime/native-ai-engineer.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- architecture_question
+- existing_context
+- target_layer_decision
+- constraints
+allowed_outputs:
+- layer_placement_decision
+- domain_contract_update
+- runtime_mapping
+- adapter_boundary_review
+- skill_contract_design
+- workflow_contract_design
+- learning_capture_decision
+- implementation_handoff
+quality_gates:
+- classify_by_responsibility_not_visibility
+- keep_runtime_implementation_out_of_core_domain
+- keep_product_specific_facts_out_of_public_core
+- map_abstract_ports_to_runtime_capabilities
+- define_contract_before_adapter_automation
+- include_verification_and_learning_policy
+```
+
+Start from the architecture question, existing context, target-layer decision, and constraints. Keep universal domain contracts, runtime mappings, adapter boundaries, executable skill/workflow contracts, and learning capture in their owning layers.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## Overview
 

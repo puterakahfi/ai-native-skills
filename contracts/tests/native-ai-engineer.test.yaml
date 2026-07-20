@@ -1,0 +1,25 @@
+skill_test:
+  skill: native-ai-engineer
+  version: 1.0.1
+  description: Verify native-ai-engineer exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: native-ai-placement-keeps-layer-ownership
+    description: Place a new capability across core, skills, runtime, and product layers from explicit constraints.
+    trigger: Apply native-ai-engineer to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - domain_contract_update
+    - adapter_boundary_review
+    - skill_contract_design
+    - workflow_contract_design
+    - learning_capture_decision
+    - architecture_question
+    - existing_context
+    - target_layer_decision
+    - constraints
+    - classify_by_responsibility_not_visibility
+    - define_contract_before_adapter_automation
+    must_not_contain:
+    - put everything in the most visible repository
+    quality_gates_tested:
+    - classify_by_responsibility_not_visibility
+    - define_contract_before_adapter_automation
