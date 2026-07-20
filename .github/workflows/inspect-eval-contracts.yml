@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   inspect:
@@ -17,18 +18,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Print eval inventory and representative contracts
+      - name: Publish eval inventory and representative contracts
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
-          echo '=== EVAL INVENTORY ==='
-          find . -type f \( -iname '*eval*.yaml' -o -iname '*eval*.yml' -o -path '*/evals/*' \) | sort
-          echo '=== REPRESENTATIVE CONTRACTS ==='
-          count=0
-          while IFS= read -r file; do
-            [ -z "$file" ] && continue
-            echo "--- $file ---"
-            sed -n '1,260p' "$file"
-            count=$((count + 1))
-            [ "$count" -ge 8 ] && break
-          done < <(find . -type f \( -iname '*eval*.yaml' -o -iname '*eval*.yml' -o -path '*/evals/*' \) | sort)
+          report=/tmp/eval-contract-report.md
+          {
+            echo '## Temporary eval contract inspection'
+            echo
+            echo '### Inventory'
+            echo '```text'
+            find . -type f \( -iname '*eval*.yaml' -o -iname '*eval*.yml' -o -iname '*eval*.json' -o -iname '*eval*.jsonl' -o -path '*/evals/*' \) | sort | head -80
+            echo '```'
+            echo
+            echo '### Representative files'
+            count=0
+            while IFS= read -r file; do
+              [ -z "$file" ] && continue
+              echo
+              echo "#### \`$file\`"
+              echo '```yaml'
+              sed -n '1,260p' "$file"
+              echo '```'
+              count=$((count + 1))
+              [ "$count" -ge 3 ] && break
+            done < <(find . -type f \( -iname '*eval*.yaml' -o -iname '*eval*.yml' -o -iname '*eval*.json' -o -iname '*eval*.jsonl' -o -path '*/evals/*' \) | sort)
+          } > "$report"
+          gh pr comment "$PR_NUMBER" --body-file "$report"
