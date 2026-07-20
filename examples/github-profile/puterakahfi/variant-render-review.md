@@ -15,6 +15,7 @@ viewing_contexts:
   - local GFM-equivalent narrow at 390 px viewport
   - three direct GitHub desktop screenshots for modern-professional
   - direct GitHub desktop screenshot of initial creative-editorial publication
+  - direct GitHub desktop screenshot after creative-editorial focused refinement
 comparison_control:
   - same verified identity
   - same selected projects and links
@@ -23,7 +24,7 @@ comparison_control:
   - same brand lock
 ```
 
-The comparative images were captured in the execution session and are not committed to the repository. Direct GitHub desktop parity is verified for the final Modern Professional source. Creative Editorial has direct initial-render evidence and a focused correction pending re-render. Direct GitHub narrow, dark-theme, and complete primary-domain coverage remain `NOT_VERIFIED`.
+The comparative images were captured in the execution session and are not committed to the repository. Direct GitHub desktop parity is verified for the final Modern Professional and refined Creative Editorial sources. Direct GitHub narrow, dark-theme, and complete primary-domain coverage remain `NOT_VERIFIED`.
 
 ## Invariant Fact Check
 
@@ -45,8 +46,8 @@ The variants differ materially without changing evidence completeness.
 | Variant | Verified universal score | Evidence coverage | Coverage verdict | Publication status |
 |---|---:|---:|---|---|
 | Zen Minimalist | 8.6 / 10 | ~90% | LIMITED REVIEW | aligned alternative |
-| Modern Professional | 8.8 / 10 direct final render | ~95% | LIMITED REVIEW | accepted aligned option |
-| Creative Editorial | 8.3 / 10 direct initial render | ~92% | LIMITED REVIEW | active live test; correction pending re-render |
+| Modern Professional | 8.8 / 10 direct final render | ~95% | LIMITED REVIEW | accepted option |
+| Creative Editorial | 8.8 / 10 direct refined render | ~95% | LIMITED REVIEW | active live test / accepted option |
 
 Scores describe verified universal visual scope only. They do not provide complete developer-profile domain approval. Direct GitHub screenshots verify real-platform composition but do not silently replace the controlled comparative-render evidence.
 
@@ -112,7 +113,7 @@ No critical or important desktop finding remains open for Modern Professional.
 - `F8`, `CP1` PARTIAL — repeated `The premise / The work / The evidence` bold labels made the authored profile feel like a form or schema.
 - `F6`, `CP2` PARTIAL — Working materials formed a dense résumé-like block and weakened Current field notes and Open paths below it.
 
-**Focused correction applied**
+**Focused correction**
 
 ```text
 role line                  plain supporting text
@@ -125,19 +126,31 @@ last project → practice    strongest section transition
 working materials          shortened semantic bullets
 ```
 
-The correction preserves the Creative Editorial direction while removing form-like repetition. Post-correction direct GitHub render remains `NOT_VERIFIED`.
+The refined direct GitHub screenshot verifies:
+
+- `F1` hierarchy — name, supporting role, authored tension, explanatory lines, and action bridge have distinct roles.
+- `F2` grouping — each numbered project keeps premise, contribution, and evidence attached while sibling systems remain separate.
+- `F3` alignment — a bounded centered opening transitions cleanly into one stable left reading edge.
+- `F4` space and rhythm — project internals, sibling gaps, and the transition into The practice have distinct strengths.
+- `F5` balance — the expressive opening is counterweighted by structured semantic proof without dead space.
+- `F6` flow — Systems in motion leads naturally into practice, materials, current field notes, and open paths.
+- `F7` legibility — italic framing remains subordinate, prose stays readable, and capability bullets reduce lower-page density.
+- `F8` system consistency — numbering and premise/prose/evidence cadence repeat coherently without becoming a form.
+- Brand compatibility — creativity comes from language, rhythm, and authored structure rather than decoration.
+
+No critical or important desktop finding remains open for Creative Editorial.
 
 ## Foundation Summary
 
 ```text
-F1 hierarchy               PASS in equivalent renders and final modern desktop; creative correction pending direct verification
-F2 grouping                PASS across variants; creative sibling rhythm corrected
+F1 hierarchy               PASS across all variants; verified directly for final modern and creative desktop
+F2 grouping                PASS across all variants
 F3 alignment               PASS across all variants
-F4 space + rhythm          PASS for zen/modern; creative correction pending direct verification
+F4 space + rhythm          PASS after direct modern and creative refinements
 F5 balance                 PASS across all variants
-F6 flow                    PASS for zen/modern; creative lower-page correction pending direct verification
+F6 flow                    PASS across all variants
 F7 legibility              PASS across all variants
-F8 system consistency      PASS within each variant; creative form-like repetition corrected
+F8 system consistency      PASS within each variant
 F9 accessibility           PARTIAL; semantic source passes, direct narrow/theme evidence missing
 F10 responsive continuity  PASS in local equivalent narrow renders; direct GitHub narrow NOT_VERIFIED
 ```
@@ -160,9 +173,9 @@ The variant requirement passes: differences are visible in hierarchy, density, a
 ## Recommendation
 
 ```text
-active live test  creative-editorial after focused correction
+active live test  creative-editorial
 accepted option   modern-professional
 aligned option    zen-minimalist
 ```
 
-Remain `LIMITED REVIEW` because the corrected Creative Editorial direct render, direct GitHub narrow and dark-theme evidence, and a suitable primary-domain reviewer are unavailable.
+Remain `LIMITED REVIEW` because direct GitHub narrow and dark-theme evidence plus a suitable primary-domain reviewer are unavailable. Both refined Modern Professional and Creative Editorial desktop renders are accepted within verified universal scope.
