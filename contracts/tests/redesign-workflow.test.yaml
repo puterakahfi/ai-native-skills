@@ -1,7 +1,7 @@
 skill_test:
   skill: redesign-workflow
-  version: "3.4.0"
-  description: Verify redesign routing, ownership, adaptive delegation, decision and scope integrity, domain-aware verification, facade-controlled delivery, and bounded correction handoff.
+  version: "3.5.0"
+  description: Verify redesign routing, ownership, adaptive delegation, decision and scope integrity, visual-personality preservation, domain-aware verification, facade-controlled delivery, and bounded correction handoff.
 
   cases:
     - id: audit-only-hands-off-before-production
@@ -168,6 +168,32 @@ skill_test:
       quality_gates_tested:
         - gate_statuses_preserve_partial_not_verified_and_not_applicable
         - missing_evidence_is_not_design_failure
+
+    - id: structural-redesign-preserves-surface-family-personality
+      description: An IA-led redesign must detect expression drift and preserve the established surface-family personality.
+      trigger: "Redesign /ai-skills menjadi intent-routed workflow directory. Site pkahfi sudah punya karakter zen, spacious, dan low-containment. Implementasi awal menambah border di tiap section, divider di tiap row, serta box pada tiap disclosure. IA dan interaction baru sudah benar, tetapi pixel screenshot belum tersedia."
+      must_contain:
+        - "surface_family_baseline"
+        - "visual_personality_locks"
+        - "design-brand"
+        - "design-visual"
+        - "repeated_treatment_audit"
+        - "visual_continuity_report"
+        - "NOT_VERIFIED"
+        - "preserve accepted"
+      must_not_contain:
+        - "layout-only"
+        - "border every section"
+        - "restart the whole redesign"
+        - "Decision: PASS"
+        - "visual continuity verified from source"
+      quality_gates_tested:
+        - canonical_surface_family_is_inspected_when_applicable
+        - personality_labels_are_translated_to_observable_rules
+        - structural_expression_changes_route_visual_specialists
+        - repeated_treatments_require_named_roles
+        - accepted_ia_is_preserved_during_expression_correction
+        - rendered_evidence_controls_visual_continuity_pass
 
     - id: average-score-cannot-override-critical-verdict
       description: A high average cannot authorize delivery when a contextual hard gate fails.
