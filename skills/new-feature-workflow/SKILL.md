@@ -1,57 +1,71 @@
 ---
 name: new-feature-workflow
-description: Evidence-backed new feature workflow — verify scope and decision authority, approve design decisions, implement with tests, verify technical and rendered outcomes, submit a decision ledger, and merge only through code-review-workflow approval plus merge authorization.
+description: Evidence-backed new-feature workflow — verify scope and decision authority, approve architecture/design decisions, discover repository implementation context, implement with tests, verify technical, convention, and rendered outcomes, submit a decision ledger, and merge only through code-review-workflow approval plus merge authorization.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.1.0
+  ai-native-skills.version: 2.2.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "master-engineer master-design decision-provenance spec-workflow test-driven-development code-review-workflow design-review"
+  ai-native-skills.requires: "master-engineer master-design implementation-context-discovery decision-provenance spec-workflow test-driven-development architecture-review code-review-workflow design-review"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/new-feature.contract.yaml
-  ai-native-skills.contract-version: "~0.4"
-  ai-native-skills.skill_load_order: '[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","diagram-architect","master-design","decision-provenance"]},{"phase":"implement","load":["master-engineer","test-driven-development"]},{"phase":"verify","load":["design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]'
-  ai-native-skills.skills: '{"required":["master-engineer","decision-provenance","test-driven-development","code-review-workflow"],"optional":["diagram-architect","master-design","design-review"]}'
+  ai-native-skills.contract-version: ~0.4
+  ai-native-skills.skill_load_order: '[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["master-engineer","test-driven-development"]},{"phase":"verify","load":["architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]'
+  ai-native-skills.skills: '{"required":["master-engineer","implementation-context-discovery","decision-provenance","test-driven-development","architecture-review","code-review-workflow"],"optional":["diagram-architect","master-design","design-review"]}'
 ---
 
 # New Feature Workflow
 
-Plan verified scope → approve decisions → implement → verify → submit decision/evidence handoff → technical review and merge authorization.
+```text
+verified scope
+→ approved architecture/design decisions
+→ repository implementation-context mapping
+→ implementation with tests
+→ technical, convention, runtime, and rendered verification
+→ decision/evidence handoff
+→ independent review and merge authorization
+```
 
 ## Core boundary
 
 ```text
 Spec before implementation.
-Decision authority before material scope or lock changes.
+Decision authority before material scope, dependency, exception, or lock changes.
 Design decision before implementation when affected.
+Implementation-context mapping before code in an existing repository.
 Rendered acceptance after implementation when user-facing output changes.
-Code-review technical approval + merge authorization before merge.
+Architecture and code-review approval before merge.
 ```
 
-A wireframe or specification decides what to build. It does not prove the implemented result. A technical review verdict does not automatically prove the responsible authority permits merge.
+A wireframe or specification decides what to build. `implementation-context-discovery` decides how the accepted capability maps to the repository. Neither proves the implemented result. Technical review and merge authority remain independent.
 
 ## Hard rules
 
 ```text
-1. Define the problem, effective verified scope, acceptance criteria, and affected domains before coding.
-2. Material scope, lock, dependency, exception, and approval claims require decision provenance.
+1. Define problem, verified scope, criteria, and affected domains before coding.
+2. Material scope, lock, dependency, migration, exception, and approval claims require decision provenance.
 3. Agent-authored issue/spec/PR text is not owner approval by itself.
-4. Separate pre-implementation design decision from post-implementation acceptance.
-5. Never claim implemented PASS from a wireframe, diagram, or source-only artifact.
-6. Implementation must trace to verified scope and decisions.
-7. A new route, product dependency, data boundary, permission behavior, or material lock change requires explicit bounded approval.
-8. Write tests as part of implementation.
-9. User-facing or generated visual changes require fresh rendered/exported evidence.
-10. Source-only evidence cannot approve changed visual or interaction behavior.
-11. LIMITED REVIEW cannot authorize complete specialist-domain acceptance.
-12. Conditional acceptance requires verified non-blocking risk authority.
-13. Submit spec, issue, decision ledger, technical evidence, and applicable design evidence together.
-14. Final technical review and merge authorization belong to code-review-workflow.
-15. Do not bundle unrelated or unapproved changes.
+4. Separate pre-implementation design and implementation-context decisions from post-implementation acceptance.
+5. Never claim implemented PASS from a wireframe, mapping, diagram, or source-only artifact.
+6. Implementation must trace to verified scope, design decisions, convention locks, and implementation mapping.
+7. Existing repositories require implementation-context discovery before code when framework/component/styling/icon/state/form/query/data/build conventions are affected.
+8. Package presence alone does not establish canonical status.
+9. Reuse, bounded extension, composition, or semantic-native implementation precedes a dependency proposal.
+10. A new dependency requires a proven capability gap, consequences, and verified authority.
+11. A new route, data boundary, permission behavior, product dependency, framework/system change, or material lock change requires explicit bounded approval.
+12. Write tests as part of implementation.
+13. User-facing or generated visual changes require fresh rendered/exported evidence.
+14. Source-only evidence cannot approve changed visual, interaction, runtime, or accessibility behavior.
+15. Run architecture-review after implementation; pre-code discovery cannot self-certify.
+16. LIMITED REVIEW cannot authorize complete specialist-domain acceptance.
+17. Conditional acceptance requires verified non-blocking risk authority.
+18. Submit spec, issue, decision ledger, implementation-context handoff, technical evidence, and applicable design evidence together.
+19. Final technical review and merge authorization belong to code-review-workflow.
+20. Do not bundle unrelated, unapproved, or opportunistic migration work.
 ```
 
 ## When to use
 
-Use when adding a new capability to an existing product or codebase.
+Use when adding a capability to an existing product or codebase.
 
 ```text
 product from zero        → product-development-workflow
@@ -80,6 +94,7 @@ feature:
     scope_out: []
     approved_dependencies: []
     preserved_routes_or_boundaries: []
+    prohibited_parallel_systems: []
 
   acceptance_criteria: []
   affected_domains:
@@ -89,6 +104,18 @@ feature:
     security: <true | false>
     user_facing_design: <true | false>
     generated_or_exported_visual: <true | false>
+
+  implementation_context:
+    repository_ref: <ref>
+    affected_capability_families: []
+    profile_ref: <implementation_context_profile or null>
+    canonicality_decisions: []
+    convention_locks: []
+    reuse_extension_decisions: []
+    dependency_decisions: []
+    implementation_mapping: []
+    evidence_gaps: []
+
   technical_approach: <summary>
   verification_plan: []
   approval_policy: <product-defined>
@@ -106,138 +133,190 @@ problem and intended outcome
 scope in and scope out
 observable acceptance criteria
 technical approach
-architecture, logic, data, security, and design impact
+architecture, logic, data, security, design, and implementation-system impact
 issue tracker reference
 verification and evidence plan
 decision sources and required authorities
 ```
 
-Run `decision-provenance` for the initial feature scope and any claimed approval. An agent-authored issue or generated spec is not automatically an approved system of record.
+Run `decision-provenance` for initial scope and claimed approval. An agent-authored issue or generated spec is not automatically an approved system of record.
 
-Replace vague criteria such as “works correctly” with behavior, context, and expected result.
+Replace “works correctly” with observable behavior, context, and expected result.
 
-**Done when:** scope, affected domains, criteria, issue, verification plan, and authoritative decision records are explicit.
+**Done when:** scope, criteria, issue, authorities, affected capability families, and evidence plan are explicit.
 
-## Phase 2 — Design decision
+## Phase 2 — Architecture and design decision
 
-**Gate:** applicable architecture/design decisions have verified authority before implementation.
+**Gate:** applicable decisions have verified authority before implementation mapping.
 
 Required when the feature changes:
 
 ```text
-system boundaries, contracts, integration, or data model
-user flow, information architecture, component model, or interaction
-responsive/adaptive behavior or visual direction
+system boundaries, contracts, integration, data model, or permissions
+user flow, IA, component model, interaction, responsive behavior, or visual direction
 required states, content, assets, or fidelity locks
-specialized generated/exported visual behavior
+specialized generated/exported behavior
+framework or shared implementation-system responsibilities
 ```
 
-Load only relevant owners and specialists:
+Load only relevant owners:
 
 ```text
 master-engineer       architecture, contracts, data, integration
 master-design         task flow, component model, responsive behavior, visual direction
 diagram-architect     decision-bearing diagrams when useful
 decision-provenance   authority, scope, supersession, unresolved approval
-specialized owner     domains outside built-in product UI/visual communication
+specialized owner     domains outside built-in coverage
 ```
 
-Load `references/design-decision-and-acceptance.md` for the decision schema, evidence boundary, risk provenance, and handoff.
+Load `references/design-decision-and-acceptance.md` for decision schema and handoff.
 
-**Done when:** the verified approval boundary, required states/contexts, locks, assumptions, and implementation-ready criteria are explicit.
+**Done when:** approval boundary, required states/contexts, locks, assumptions, and implementation-ready criteria are explicit.
 
-## Phase 3 — Implement
+## Phase 3 — Implementation-context discovery
 
-**Gate:** implementation traces to effective verified scope and approved decisions.
+**Gate:** repository convention locks and implementation mapping exist before code production.
+
+Load `implementation-context-discovery` for the affected capability families.
+
+Inspect applicable evidence:
+
+```text
+engineering contracts and ADRs
+package manifests and lockfiles
+workspace/framework configuration and aliases
+shared components, registry, primitives, variants, tokens, imports
+icon wrappers and repeated icon usage
+state, form, query, validation, animation, table, and data tooling
+build, lint, test, Storybook, examples, migrations, and deprecations
+```
+
+Produce:
+
+```text
+implementation_context_profile
+canonicality_decisions
+convention_locks
+reuse_extension_decisions
+new_dependency_decisions
+implementation_mapping
+prohibited_parallel_systems
+evidence gaps and verification plan
+```
+
+Decision order:
+
+```text
+reuse
+→ existing variant
+→ bounded extension
+→ compose canonical primitives
+→ product-specific component
+→ semantic native element
+→ dependency only after a proven capability gap
+```
+
+`package.json` presence is insufficient. A source-copied component system may be canonical through registry/source/import evidence. A legacy or transitive package is not automatically valid for new work.
+
+When a dependency candidate remains `ROUTE_FOR_APPROVAL` or material canonicality is `unknown`, stop the affected implementation slice.
+
+**Done when:** the selected implementation path, expected paths/imports, protected systems, dependency authority, and evidence gaps are explicit.
+
+## Phase 4 — Implement
+
+**Gate:** code traces to verified scope, decisions, convention locks, and implementation mapping.
 
 Load `master-engineer` and `test-driven-development`.
 
 ```text
 implement one approved slice at a time
+reuse/extend/compose mapped canonical systems
 write tests at the relevant boundary
-trace changed paths/behavior to acceptance criteria
-preserve declared design, content, route, and asset locks
-keep unrelated cleanup outside the submission
+trace changed paths, imports, dependencies, and behavior to criteria
+preserve design, content, route, asset, and repository-convention locks
+keep unrelated cleanup and migration outside the submission
 ```
 
-When implementation needs material scope or decision change:
+When implementation needs a material scope, dependency, mapping, or decision change:
 
 ```text
 stop the affected slice
-→ run decision-provenance
+→ decision-provenance and/or implementation-context-discovery
 → reapprove or route for approval
-→ update spec, evidence plan, and traceability
-→ continue only after the relevant authority gate passes
+→ update spec, locks, mapping, evidence plan, and traceability
+→ continue only after the relevant gate passes
 ```
 
-Existing implementation does not retroactively approve the expansion.
+Existing implementation does not retroactively approve expansion.
 
-**Done when:** scoped criteria are implemented with tests and no unapproved change is bundled.
+**Done when:** criteria are implemented with tests and no unapproved change or parallel system is bundled.
 
-## Phase 4 — Verify
+## Phase 5 — Verify
 
-**Gate:** technical evidence, applicable rendered acceptance, and accepted-risk provenance exist before submission.
+**Gate:** technical evidence, implementation-context conformance, applicable rendered acceptance, architecture review, and accepted-risk provenance exist before submission.
 
-Technical evidence may include:
+Technical and convention evidence may include:
 
 ```text
 tests and regression tests
 type, lint, and build output
 contract, migration, runtime, or integration evidence
+changed import/path/dependency audit
+canonical component/token/icon/state/form/query/data mapping check
+local parallel-system inspection
+architecture-review
 security evidence when affected
 ```
 
-For user-facing or generated/exported visual changes, load:
-
-```text
-design-review
-references/design-decision-and-acceptance.md
-```
+For user-facing or generated/exported visual changes, load `design-review` and the applicable domain reviewers.
 
 Evidence boundary:
 
 ```text
-rendered interactive → affected contexts, states, inputs, runtime, accessibility
-rendered static      → final size, crop, fidelity, content, export
-source-only          → rendered behavior remains NOT_VERIFIED
-specialized domain   → load domain reviewer or block complete acceptance
-backend-only         → Design acceptance: NOT_APPLICABLE
+source/import mapping → static convention alignment only
+build/tests           → executed technical checks only
+rendered interactive  → affected contexts/states/inputs/runtime/accessibility
+rendered static       → final size/crop/fidelity/content/export
+specialized domain    → governing reviewer or complete acceptance blocked
+backend-only          → design acceptance NOT_APPLICABLE
 ```
 
-For `CONDITIONAL PASS` or another non-blocking exception, run `decision-provenance` against the product's accepted-risk authority. Missing authority is not an accepted risk.
+For `CONDITIONAL PASS` or another non-blocking exception, run `decision-provenance` against accepted-risk authority.
 
-**Done when:** technical evidence exists and every applicable design/risk verdict is resolved for the verified feature scope.
+**Done when:** technical, convention, architecture, design, and risk evidence is resolved for verified scope.
 
-## Phase 5 — Submit
+## Phase 6 — Submit
 
-**Gate:** submission references spec, issue, decision ledger, scope, and evidence.
+**Gate:** submission references spec, issue, decision ledger, implementation context, scope, and evidence.
 
 Include:
 
 ```text
 what changed and why
 spec and issue reference
-effective verified scope and excluded scope
+effective scope and exclusions
 authoritative decision-record IDs
 acceptance-criteria checklist
-approved decision artifacts and locks when applicable
+design/architecture decisions and locks
+implementation_context_profile and convention locks
+reuse/extension/composition/native/dependency decisions
+implementation mapping and prohibited parallel systems
 implementation diff and technical evidence
-design-review route, verdict, findings, and gaps when applicable
-accepted risks with authority, owner, mitigation, and expiry when required
+architecture-review result
+design-review route/verdict/findings/gaps when applicable
+accepted risks with authority, owner, mitigation, expiry
 confirmation that unrelated/unapproved changes are absent
 ```
 
-Use the handoff schema in `references/design-decision-and-acceptance.md`.
+Do not submit as design-complete while rendered evidence is `NOT_VERIFIED`. Do not claim owner approval without an attributable source. Do not claim stack conformance merely because no dependency file changed.
 
-Do not submit as design-complete while rendered evidence remains `NOT_VERIFIED`. Do not claim “owner approved” without an attributable decision source.
+**Done when:** submission is traceable, authority-backed, and evidence-backed.
 
-**Done when:** the submission is traceable, provenance-backed, evidence-backed, and ready for independent review.
+## Phase 7 — Review
 
-## Phase 6 — Review
+**Gate:** explicit `code-review-workflow` approval and merge authorization before merge.
 
-**Gate:** explicit `code-review-workflow` technical approval and merge authorization before merge.
-
-Pass the complete feature handoff to `code-review-workflow`. It returns:
+Pass the complete handoff to code review.
 
 ```text
 Technical review:
@@ -252,38 +331,38 @@ APPROVED + AUTHORIZED
   → eligible to merge under product policy
 
 APPROVED + ROUTE_FOR_APPROVAL
-  → technically ready, but do not merge yet
+  → technically ready, but do not merge
 
 REQUEST CHANGES / BLOCKED / NOT_AUTHORIZED
-  → return to implementation, verification, or authority resolution
+  → return to implementation, verification, context discovery, or authority resolution
 ```
 
-A feature-level `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, or provenance blocker cannot be downgraded to a non-blocking merge flag.
-
-**Done when:** technical reviewers approve, merge authority is verified, and the submission is merged according to product policy.
+Feature-level `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, `NOT_VERIFIED`, provenance blocker, implementation-context blocker, or architecture failure cannot be downgraded to a non-blocking merge flag.
 
 ## Quick reference
 
 | Phase | Primary gate | Done when |
 |---|---|---|
-| Plan | Spec + scope provenance | Scope, criteria, issue, authorities, verification plan explicit |
-| Design decision | Decision authority | Boundary, contexts, states, locks, and owner records explicit |
-| Implement | Traces to verified scope | Criteria implemented with tests and no silent expansion |
-| Verify | Evidence + risk authority | Technical/design evidence and conditional risks resolved |
-| Submit | Complete decision/evidence handoff | Submission is traceable and reviewable |
-| Review | Technical + authority gates | Explicit merge authorization issued |
+| Plan | Spec + scope provenance | Scope, criteria, issue, authorities, affected domains explicit |
+| Architecture/design | Decision authority | Boundaries, contexts, states, locks, criteria explicit |
+| Implementation context | Repository evidence + mapping | Canonicality, locks, selected adapters, dependency authority explicit |
+| Implement | Traceability | Criteria implemented with tests and no silent drift |
+| Verify | Evidence + independent reviews | Technical, convention, architecture, design, risk evidence resolved |
+| Submit | Complete handoff | Submission is traceable and reviewable |
+| Review | Technical + merge authority | Explicit authorization issued |
 
 ## Common pitfalls
 
 | Anti-pattern | Correct behavior |
 |---|---|
-| Agent-generated issue means scope approved | Verify attributable owner/system-of-record acceptance |
-| Existing route means it belongs to the feature | Existing state does not establish current scope |
-| Wireframe reviewed, therefore UI passed | Treat it as a decision; verify implementation later |
-| CI green, therefore feature complete | Collect all required technical and design evidence |
-| CSS/source inspection used as visual acceptance | Render the output or mark NOT_VERIFIED |
-| Specialist visual accepted with universal gates | Load domain reviewer or block complete acceptance |
-| Conditional PASS without risk authority | Route to accepted-risk authority |
-| Submit first, collect evidence during review | Resolve verification before submission |
-| Technical approval means merge now | Wait for explicit merge authorization |
-| Scope grows during implementation | Stop, verify provenance, and reapprove the boundary |
+| Agent-generated issue means scope approved | Verify attributable authority |
+| Design says Select, so any Select library is allowed | Map the capability through implementation context |
+| Installed package means canonical | Inspect usage, ownership, conventions, and decisions |
+| Fit shared component rebuilt locally | Report convention drift and reuse/extend/compose |
+| New icon/component library added for convenience | Require capability gap and authority |
+| Native HTML is always forbidden | Evaluate semantic sufficiency and repository precedent |
+| Wireframe or mapping reviewed, therefore UI passed | Verify implementation later |
+| CI green, therefore feature complete | Collect architecture, runtime, design, and risk evidence |
+| No package change means no stack drift | Inspect local parallel systems and imports |
+| Technical approval means merge now | Wait for merge authorization |
+| Scope or dependency grows during implementation | Stop, re-map, verify provenance, and reapprove |
