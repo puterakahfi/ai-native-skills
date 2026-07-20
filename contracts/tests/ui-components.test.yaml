@@ -1,17 +1,18 @@
 skill_test:
   skill: ui-components
-  version: "1.2.0"
-  description: Verify ui-components selects a fitting capability before mapping it to the repository's canonical implementation systems.
+  version: "1.3.0"
+  description: Verify ui-components selects a fitting capability before mapping actual components, variants, canonical registry options, typography roles, and semantic-native eligibility.
 
   cases:
-    - id: pattern-selection-precedes-template-copy
-      description: Component selection must use the decision tree and content volume before an implementation reference is used.
-      trigger: "Choose a hero component for a page with a short headline, long supporting proof, and several actions, then select the implementation approach."
+    - id: pattern-selection-precedes-implementation-mapping
+      description: Component selection must use the decision tree and content volume before repository implementation choices are made.
+      trigger: "Choose a hero for a page with a short headline, long supporting proof, and several actions, then select the repository implementation approach."
       must_contain:
         - "brief_signals"
         - "content_inventory"
         - "pattern_selected_from_decision_tree_not_arbitrary"
         - "hero_pattern_matches_content_volume"
+        - "implementation-context-discovery"
       must_not_contain:
         - "copy the first template before selecting a pattern"
       sequence_required:
@@ -21,14 +22,15 @@ skill_test:
         - pattern_selected_from_decision_tree_not_arbitrary
         - hero_pattern_matches_content_volume
 
-    - id: selected-component-capability-does-not-authorize-new-library
-      description: A selected UI pattern must be mapped through existing repository components and conventions before code.
-      trigger: "The design decision selects a searchable selector. The repository already has canonical Input, Popover, Command, form conventions, Tailwind tokens, and Lucide. Use a generic template and install another component/icon library instead."
+    - id: component-coverage-precedes-template-or-library
+      description: A selected UI capability must map through actual repository coverage before code or a new library.
+      trigger: "The selected pattern needs a searchable selector. Canonical Input, Popover, Command, variants, form conventions, tokens, and Lucide exist. The proposal copies a generic template and installs another component/icon library."
       must_contain:
         - "implementation-context-discovery"
-        - "canonical"
+        - "component capability coverage"
+        - "canonical variants"
         - "compose"
-        - "repository"
+        - "typography roles"
         - "rejected alternatives"
         - "architecture-review"
       must_not_contain:
@@ -37,20 +39,53 @@ skill_test:
         - "new icon family"
       sequence_required:
         - pattern: "pattern|capability"
-          must_come_before: "implementation-context-discovery|implementation context"
-        - pattern: "implementation-context-discovery|implementation context"
-          must_come_before: "architecture and design verification"
+          must_come_before: "component capability coverage|implementation-context-discovery"
+      quality_gates_tested:
+        - pattern_selected_from_decision_tree_not_arbitrary
+        - hero_pattern_matches_content_volume
+
+    - id: missing-local-component-checks-canonical-registry
+      description: An absent local component available from the accepted canonical registry precedes a parallel library or custom primitive.
+      trigger: "The pattern requires Dialog. The repository uses a source-component system, Dialog is absent locally, and the configured canonical registry provides a fit Dialog. Choose the implementation handoff."
+      must_contain:
+        - "canonical registry"
+        - "add_canonical_registry_component"
+        - "repository-owned"
+        - "verification"
+      must_not_contain:
+        - "install a second component library"
+        - "build a div overlay first"
+        - "missing locally proves capability gap"
+      quality_gates_tested:
+        - pattern_selected_from_decision_tree_not_arbitrary
+        - hero_pattern_matches_content_volume
+
+    - id: typography-handoff-uses-semantic-roles
+      description: Text hierarchy must map to repository roles rather than arbitrary route-local classes.
+      trigger: "A pattern needs page title, section title, body, labels, metadata, and code. The repository already has semantic typography roles and representative usage. Produce the handoff."
+      must_contain:
+        - "typography_handoff"
+        - "page_title"
+        - "section_title"
+        - "body"
+        - "label"
+        - "metadata"
+        - "code"
+        - "bounded_extensions"
+      must_not_contain:
+        - "invent an unrelated local type scale"
+        - "font package alone decides"
       quality_gates_tested:
         - pattern_selected_from_decision_tree_not_arbitrary
         - hero_pattern_matches_content_volume
 
     - id: semantic-native-structure-remains-eligible
-      description: A component library does not require wrappers for semantic structures with no additional product contract.
-      trigger: "A documentation section needs headings, a list, links, and a simple native disclosure. No shared abstraction or product state is required. Reject it because every element must use the component library."
+      description: A component library does not require wrappers for semantic structures with no richer product contract.
+      trigger: "A documentation section needs headings, a list, links, and simple details/summary. No shared abstraction or additional product state is required. Reject it because every element must use the component library."
       must_contain:
-        - "semantic native"
+        - "semantic_native"
         - "valid"
-        - "no shared abstraction"
+        - "no richer shared interaction"
         - "accessibility"
       must_not_contain:
         - "every element must use the component library"
