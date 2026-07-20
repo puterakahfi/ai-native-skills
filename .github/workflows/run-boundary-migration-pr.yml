@@ -36,8 +36,8 @@ jobs:
       - name: Apply reviewed migration
         run: python /tmp/apply_boundary_migration.py
 
-      - name: Remove PR migration runner
-        run: rm .github/workflows/run-boundary-migration-pr.yml
+      - name: Preserve workflow files for connector-managed policy update
+        run: git checkout HEAD -- .github/workflows
 
       - name: Inspect migration diff
         run: |
