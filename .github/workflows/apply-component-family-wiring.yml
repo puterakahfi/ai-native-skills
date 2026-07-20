@@ -1,9 +1,9 @@
 name: Apply component family wiring
 
 on:
-  push:
+  pull_request:
     branches:
-      - 59-component-family-design
+      - main
     paths:
       - .github/workflows/apply-component-family-wiring.yml
 
@@ -31,24 +31,15 @@ jobs:
               p = Path(path)
               text = p.read_text()
               if old not in text:
-                  raise SystemExit(f'Expected text not found in {path}: {old[:100]!r}')
+                  raise SystemExit(f'Expected text not found in {path}: {old[:140]!r}')
               p.write_text(text.replace(old, new, 1))
 
-          # adaptive-component-design
-          replace(
-              'skills/adaptive-component-design/SKILL.md',
-              'ai-native-skills.version: 1.2.3',
-              'ai-native-skills.version: 1.2.4',
-          )
-          replace(
-              'skills/adaptive-component-design/SKILL.md',
-              '"accessibility","ui-components"]',
-              '"accessibility","ui-components","component-family-design"]',
-          )
+          replace('skills/adaptive-component-design/SKILL.md', 'ai-native-skills.version: 1.2.3', 'ai-native-skills.version: 1.2.4')
+          replace('skills/adaptive-component-design/SKILL.md', '"accessibility","ui-components"]', '"accessibility","ui-components","component-family-design"]')
           replace(
               'skills/adaptive-component-design/SKILL.md',
               '10. Different component families must preserve product meaning and controlled state.\n11. Verify realistic content, text expansion, states, input modes, and boundary widths.',
-              '10. Different component patterns must preserve product meaning and controlled state.\n11. When an accepted organism or template family exists, cross-context substitutions must remain declared variants of that family unless component-family-design approves a new family.\n12. Verify realistic content, text expansion, states, input modes, and boundary widths.',
+              '10. Different component patterns must preserve product meaning and controlled state.\n11. When an accepted organism or template family exists, cross-context substitutions must remain declared variants of that family unless `component-family-design` approves a new family.\n12. Verify realistic content, text expansion, states, input modes, and boundary widths.',
           )
           replace(
               'skills/adaptive-component-design/SKILL.md',
@@ -61,17 +52,8 @@ jobs:
               'shared state and semantics contract\naccepted component family and variant identity when applicable\nrealistic content stress results',
           )
 
-          # implementation-context-discovery
-          replace(
-              'skills/implementation-context-discovery/SKILL.md',
-              'ai-native-skills.version: 1.1.0',
-              'ai-native-skills.version: 1.2.0',
-          )
-          replace(
-              'skills/implementation-context-discovery/SKILL.md',
-              '"adaptive-component-design","new-feature-workflow"',
-              '"adaptive-component-design","component-family-design","new-feature-workflow"',
-          )
+          replace('skills/implementation-context-discovery/SKILL.md', 'ai-native-skills.version: 1.1.0', 'ai-native-skills.version: 1.2.0')
+          replace('skills/implementation-context-discovery/SKILL.md', '"adaptive-component-design","new-feature-workflow"', '"adaptive-component-design","component-family-design","new-feature-workflow"')
           replace(
               'skills/implementation-context-discovery/SKILL.md',
               '3. Inspect actual source, exports, variants, stories/examples, representative usage, and ownership.\n4. Map requested component capability coverage before creating a component.',
@@ -90,7 +72,7 @@ jobs:
           replace(
               'skills/implementation-context-discovery/SKILL.md',
               'For every requested capability, review installed components, variants, bounded extension, composition, canonical registry availability, semantic-native eligibility, and interaction/accessibility/token contracts.',
-              'For every requested capability, review installed components, variants, bounded extension, composition, canonical registry availability, semantic-native eligibility, and interaction/accessibility/token contracts. For organisms and templates, consume the accepted family contract from component-family-design and map it to actual repository source, configuration adapters, routes, and imports.',
+              'For every requested capability, review installed components, variants, bounded extension, composition, canonical registry availability, semantic-native eligibility, and interaction/accessibility/token contracts. For organisms and templates, consume the accepted family contract from `component-family-design` and map it to actual repository source, configuration adapters, routes, and imports.',
           )
           replace(
               'skills/implementation-context-discovery/SKILL.md',
@@ -98,17 +80,8 @@ jobs:
               'component_system_map: []\n    canonical_component_inventory: []\n    canonical_component_family_inventory: []\n    organism_inventory: []\n    template_inventory: []\n    route_to_family_instance_map: []',
           )
 
-          # design-review
-          replace(
-              'skills/design-review/SKILL.md',
-              'ai-native-skills.version: 3.3.0',
-              'ai-native-skills.version: 3.4.0',
-          )
-          replace(
-              'skills/design-review/SKILL.md',
-              '"design-system","adaptive-component-design"',
-              '"design-system","component-family-design","adaptive-component-design"',
-          )
+          replace('skills/design-review/SKILL.md', 'ai-native-skills.version: 3.3.0', 'ai-native-skills.version: 3.4.0')
+          replace('skills/design-review/SKILL.md', '"design-system","adaptive-component-design"', '"design-system","component-family-design","adaptive-component-design"')
           replace(
               'skills/design-review/SKILL.md',
               '16. Review does not silently become redesign or implementation.',
@@ -117,7 +90,7 @@ jobs:
           replace(
               'skills/design-review/SKILL.md',
               'Phase 5 — COMPONENT REVIEW\n   Load component-review.md only for present or required interactive components.',
-              'Phase 5 — COMPONENT + FAMILY REVIEW\n   Load component-review.md for present or required interactive components.\n   Load component-family-design evidence when repeated organisms, templates, or equivalent route roles are in scope.',
+              'Phase 5 — COMPONENT + FAMILY REVIEW\n   Load component-review.md for present or required interactive components.\n   Load `component-family-design` evidence when repeated organisms, templates, or equivalent route roles are in scope.',
           )
           replace(
               'skills/design-review/SKILL.md',
@@ -125,31 +98,14 @@ jobs:
               'A build is not visual verification. One route screenshot is not cross-route component-family verification. A screenshot is not interaction or runtime verification.',
           )
 
-          # redesign-workflow
-          replace(
-              'skills/redesign-workflow/SKILL.md',
-              'ai-native-skills.version: 3.5.0',
-              'ai-native-skills.version: 3.6.0',
-          )
-          replace(
-              'skills/redesign-workflow/SKILL.md',
-              'ai-native-skills.pack-version: "1.1.0"',
-              'ai-native-skills.pack-version: "1.2.0"',
-          )
-          replace(
-              'skills/redesign-workflow/SKILL.md',
-              'design-visual design-layout design-strategy',
-              'design-visual design-layout component-family-design design-strategy',
-          )
-          replace(
-              'skills/redesign-workflow/SKILL.md',
-              '"adaptive-component-design","macrostructures"',
-              '"component-family-design","adaptive-component-design","macrostructures"',
-          )
+          replace('skills/redesign-workflow/SKILL.md', 'ai-native-skills.version: 3.5.0', 'ai-native-skills.version: 3.6.0')
+          replace('skills/redesign-workflow/SKILL.md', 'ai-native-skills.pack-version: "1.1.0"', 'ai-native-skills.pack-version: "1.2.0"')
+          replace('skills/redesign-workflow/SKILL.md', 'design-visual design-layout design-strategy', 'design-visual design-layout component-family-design design-strategy')
+          replace('skills/redesign-workflow/SKILL.md', '"adaptive-component-design","macrostructures"', '"component-family-design","adaptive-component-design","macrostructures"')
           replace(
               'skills/redesign-workflow/SKILL.md',
               '11. For repository patch or executable prototype output, discover implementation context before code production.',
-              '11. When a redesign creates or changes a repeated organism, page shell, or equivalent cross-route role, run component-family-design before code production.\n12. For repository patch or executable prototype output, discover implementation context before code production.',
+              '11. When a redesign creates or changes a repeated organism, page shell, or equivalent cross-route role, run `component-family-design` before code production.\n12. For repository patch or executable prototype output, discover implementation context before code production.',
           )
           replace(
               'skills/redesign-workflow/SKILL.md',
@@ -167,12 +123,7 @@ jobs:
               'family reuse/variant decisions, route-instance mapping, component reuse/extension decisions, implementation mapping, and dependency authority',
           )
 
-          # redesign pack
-          replace(
-              'packs/redesign/pack.yaml',
-              'version: "1.1.0"',
-              'version: "1.2.0"',
-          )
+          replace('packs/redesign/pack.yaml', 'version: "1.1.0"', 'version: "1.2.0"')
           replace(
               'packs/redesign/pack.yaml',
               'description: Complete dependency bundle for delegated redesign with repository implementation-context preservation.',
