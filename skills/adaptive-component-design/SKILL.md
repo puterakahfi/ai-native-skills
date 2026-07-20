@@ -3,14 +3,14 @@ name: adaptive-component-design
 description: Selects, preserves, or substitutes UI component patterns across available widths and input contexts from the user task, real container width, realistic content pressure, discoverability, accessibility, and interaction cost. Use when a component fits one context but overlaps, clips, hides choices, or becomes awkward in another.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.3
+  ai-native-skills.version: 1.2.4
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/adaptive-component-design.contract.yaml
   ai-native-skills.contract-version: "~1.1"
   ai-native-skills.boundary.covers: '["component_fitness_diagnosis","context_specific_component_selection","cross_context_component_substitution","responsive_pattern_transformation","navigation_component_adaptation","content_density_adaptation","interaction_mode_adaptation","shared_state_and_semantics_across_variants","overflow_and_disclosure_affordance_behavior","adaptation_boundary_verification"]'
   ai-native-skills.boundary.delegates: '["visual_style_and_brand_expression","page_level_macrostructure_selection","design_token_definition","generic_breakpoint_and_fluid_grid_mechanics","implementation_framework_specific_code","product_specific_component_library_mapping"]'
-  ai-native-skills.related_skills: '["master-design","design-review","design-refinement","responsiveness","design-strategy","ux-ui-patterns","ux-patterns-for-developers","accessibility","ui-components"]'
+  ai-native-skills.related_skills: '["master-design","design-review","design-refinement","responsiveness","design-strategy","ux-ui-patterns","ux-patterns-for-developers","accessibility","ui-components","component-family-design"]'
 ---
 
 # Adaptive Component Design
@@ -101,10 +101,11 @@ It delegates visual style and brand expression, page-level macrostructure, desig
 7. Preserve a fit component when the issue is local implementation.
 8. Replace an unfit component even when it already exists in the design system.
 9. Keep primary choices discoverable unless a product reason justifies disclosure.
-10. Different component families must preserve product meaning and controlled state.
-11. Verify realistic content, text expansion, states, input modes, and boundary widths.
-12. Screenshots alone do not prove keyboard, dynamic affordances, state equivalence, or the viewport that produced the artifact.
-13. Implemented output requires independent design-review evidence.
+10. Different component patterns must preserve product meaning and controlled state.
+11. When an accepted organism or template family exists, substitutions must remain declared variants of that family unless `component-family-design` approves a new family.
+12. Verify realistic content, text expansion, states, input modes, and boundary widths.
+13. Screenshots alone do not prove keyboard, dynamic affordances, state equivalence, family identity, or the viewport that produced the artifact.
+14. Implemented output requires independent design-review evidence.
 ```
 
 ## Diagnose before fixing
@@ -251,6 +252,7 @@ selected and rejected patterns
 adaptation mode by actual context
 observed adaptation boundaries
 shared state and semantics contract
+accepted component family and variant identity when applicable
 realistic content stress results
 rendered evidence at target and boundary contexts
 interaction evidence for applicable input modes

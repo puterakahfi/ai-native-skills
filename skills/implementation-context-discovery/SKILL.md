@@ -3,14 +3,14 @@ name: implementation-context-discovery
 description: Discover an existing repository's implementation ecosystem before code production. Maps canonical frameworks, real component and variant coverage, registry availability, typography roles, styling, icons, utilities, state/form/query/data tooling, and build/test conventions; then selects semantic-native use, reuse, extension, composition, canonical registry addition, product-specific implementation, or an evidence-backed dependency candidate.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/implementation-context-discovery.contract.yaml
   ai-native-skills.contract-version: ^1.1.0
   ai-native-skills.boundary.covers: '["repository_implementation_ecosystem_discovery","canonical_framework_runtime_and_tooling_classification","component_system_shared_utility_variant_and_registry_inventory","component_capability_coverage_mapping","typography_role_and_token_mapping","semantic_native_eligibility_mapping","styling_token_and_iconography_implementation_mapping","state_form_query_data_and_build_test_tooling_mapping","repository_convention_lock_definition","reuse_extension_composition_registry_native_or_dependency_decision","capability_gap_and_parallel_system_diagnosis","new_dependency_evidence_and_consequence_record","implementation_mapping_before_code_production","implementation_context_verification_planning"]'
   ai-native-skills.boundary.delegates: '["product_specific_component_implementation","design_pattern_or_component_fitness_selection","visual_style_brand_or_design_system_definition","runtime_behavior_visual_quality_or_accessibility_acceptance","architecture_compliance_acceptance_after_implementation","dependency_purchase_legal_or_licensing_approval","product_specific_migration_execution","backend_domain_or_business_policy","repository_write_or_merge_execution"]'
-  ai-native-skills.related_skills: '["master-engineer","architecture-review","ui-components","design-system","design-iconography","design-typography","adaptive-component-design","new-feature-workflow","design-refinement","redesign-workflow","code-review-workflow"]'
+  ai-native-skills.related_skills: '["master-engineer","architecture-review","ui-components","design-system","design-iconography","design-typography","adaptive-component-design","component-family-design","new-feature-workflow","design-refinement","redesign-workflow","code-review-workflow"]'
 ---
 
 # Implementation Context Discovery
@@ -76,6 +76,20 @@ architecture-review
 14. Source alignment does not prove component fitness, runtime, visual, interaction, or accessibility acceptance.
 15. Unknown or conflicting context remains `NOT_VERIFIED`.
 
+## Organism and template family mapping
+
+When the requested capability is an organism, shell, or repeated cross-route region:
+
+```text
+consume the accepted family contract from component-family-design
+→ inventory actual organism and template source
+→ map route instances and configuration adapters
+→ verify canonical variants and shared ownership
+→ prohibit route-local duplication when the family fits
+```
+
+Repository discovery does not define the family anatomy. It maps the accepted family to real paths, imports, variants, stories, route adapters, tokens, and migration status.
+
 ## Required evidence
 
 ```text
@@ -84,6 +98,7 @@ manifests, lockfiles, workspace and framework configuration
 aliases and composition roots
 component registry configuration
 component source, exports, variants, stories, tests, and usage
+organism and template source, route instances, family variants, slots, and configuration adapters
 canonical registry availability
 font loaders, type tokens, semantic roles, and usage
 styling configuration and semantic tokens
@@ -124,7 +139,7 @@ For source-copied systems such as shadcn/ui, inspect registry configuration, sha
 
 ### 3. Map component coverage and typography
 
-For every requested capability, review installed components, variants, bounded extension, composition, canonical registry availability, semantic-native eligibility, and interaction/accessibility/token contracts.
+For every requested capability, review installed components, variants, bounded extension, composition, canonical registry availability, semantic-native eligibility, and interaction/accessibility/token contracts. For organisms and templates, consume the accepted family contract from `component-family-design` and map it to actual repository source, configuration adapters, routes, and imports.
 
 Choose one coverage status:
 
@@ -207,6 +222,10 @@ implementation_context_discovery:
     framework_runtime_map: []
     component_system_map: []
     canonical_component_inventory: []
+    canonical_component_family_inventory: []
+    organism_inventory: []
+    template_inventory: []
+    route_to_family_instance_map: []
     component_capability_coverage_map: []
     component_variant_inventory: []
     typography_role_map: []

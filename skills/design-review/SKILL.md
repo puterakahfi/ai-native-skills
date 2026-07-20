@@ -3,13 +3,13 @@ name: design-review
 description: Facade skill for evidence-backed review of digital interfaces and visual communication artifacts — classify the target, select applicable domain reviewers and canonical gates, normalize evidence, then score and report with explicit coverage.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.3.0
+  ai-native-skills.version: 3.4.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.pattern: facade
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/design-review.contract.yaml
   ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.related_skills: '["brand-identity-review","design-audit","design-refinement","redesign-workflow","master-design","design-foundation","design-system","adaptive-component-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
+  ai-native-skills.related_skills: '["brand-identity-review","design-audit","design-refinement","redesign-workflow","master-design","design-foundation","design-system","component-family-design","adaptive-component-design","accessibility","readability","responsiveness","motion-design","composition","visual-hierarchy","copywriting","cro"]'
 ---
 
 # Design Review
@@ -36,7 +36,9 @@ The facade owns classification, reviewer routing, canonical gate resolution, app
 13. Hard gates are contextual and reviewer-owned.
 14. Unsupported domains require an adapter or an explicitly limited review.
 15. Unknown gate IDs are rejected, never guessed.
-16. Review does not silently become redesign or implementation.
+16. When equivalent shared organisms or templates appear across routes, review family consistency across the relevant route set rather than accepting one route in isolation.
+17. Route-specific differences must trace to declared slots or bounded variants when a fit family exists.
+18. Review does not silently become redesign or implementation.
 ```
 
 ## Inputs
@@ -86,8 +88,9 @@ Phase 4 — DOMAIN / SURFACE REVIEW
   Brand identity → brand-identity-review
   Other specialized domain → declared reviewer or limited scope
 
-Phase 5 — COMPONENT REVIEW
-  Load component-review.md only for present or required interactive components.
+Phase 5 — COMPONENT + FAMILY REVIEW
+  Load component-review.md for present or required interactive components.
+  Load `component-family-design` evidence when repeated organisms, templates, or equivalent route roles are in scope.
 
 Phase 6 — EVIDENCE + SCORE
   Normalize findings, validate gate IDs, assign statuses, scores, weights,
@@ -233,7 +236,7 @@ other specialized domain
   registered hard gates from its loaded reviewer
 ```
 
-A build is not visual verification. A screenshot is not interaction or runtime verification. Universal evidence is not specialist-domain proof.
+A build is not visual verification. One route screenshot is not cross-route component-family verification. A screenshot is not interaction or runtime verification. Universal evidence is not specialist-domain proof.
 
 ## Score and Verdict
 

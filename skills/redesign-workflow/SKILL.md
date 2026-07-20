@@ -3,7 +3,7 @@ name: redesign-workflow
 description: Delegated, domain-aware redesign workflow for existing visual surfaces — route → compose owners → verify decisions → inspect → direct → specify → map repository implementation context → produce under a write lease → verify provenance, scope, conventions, concurrency, and artifact → facade review → classify → fix → deliver.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.5.0
+  ai-native-skills.version: 3.6.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
@@ -11,9 +11,9 @@ metadata:
   ai-native-skills.boundary.covers: '["existing_visual_surface_redesign","redesign_vs_refinement_vs_audit_routing","explicit_design_implementation_and_repository_write_ownership","confirmed_scope_and_baseline_capture","final_effective_diff_integrity","concurrent_branch_write_detection_and_coordination","brand_content_asset_behavior_route_and_path_preservation","direction_macrostructure_and_layered_change_planning","user_and_business_value_alignment","delegated_design_and_implementation_work","prototype_or_repository_patch_production","domain_appropriate_verification","design_review_facade_acceptance","bounded_fix_iterations_and_learning_promotion","passing_delivery_or_honest_blocker_reporting"]'
   ai-native-skills.boundary.delegates: '["net_new_product_definition","audit_only_work_after_route_handoff","known_narrow_refinement_after_route_handoff","non_visual_feature_development","unrelated_product_route_auth_data_or_infrastructure_changes","general_bugfix_workflow","deployment_or_publishing","legal_trademark_clearance","force_overwrite_of_uninspected_concurrent_work","destructive_repository_operations_without_approval"]'
   ai-native-skills.pack: packs/redesign/pack.yaml
-  ai-native-skills.pack-version: "1.1.0"
-  ai-native-skills.requires: "role-switcher master-design master-engineer implementation-context-discovery business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit architecture-review design-review design-refinement skill-evolution skill-eval git-workflow"
-  ai-native-skills.related_skills: '["workflow-router","architecture-review","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
+  ai-native-skills.pack-version: "1.2.0"
+  ai-native-skills.requires: "role-switcher master-design master-engineer implementation-context-discovery business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout component-family-design design-strategy design-interaction design-system design-audit architecture-review design-review design-refinement skill-evolution skill-eval git-workflow"
+  ai-native-skills.related_skills: '["workflow-router","architecture-review","component-family-design","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
 ---
 
 # Redesign Workflow
@@ -100,28 +100,29 @@ Load `references/dependencies-and-installation.md` for the complete dependency c
 8. Product, audience, content, trust, complexity, context, and existing equity drive direction—not taste labels.
 9. Port/profile defaults are not universal workflow rules.
 10. Structural copy and content decisions precede layout lock.
-11. For repository patch or executable prototype output, discover implementation context before code production.
-12. Package presence alone does not establish canonical framework, component, styling, icon, state, form, query, or data systems.
-13. Reuse, bounded extension, composition, or semantic-native implementation precedes a new dependency proposal.
-14. Implementation mapping must name canonical paths/imports and prohibited parallel systems before production.
-15. A new dependency requires a proven capability gap, consequences, and verified authority.
-16. Every repository write uses an expected-head lease.
-17. Inspect head drift before retry; newest commit is not automatically authoritative.
-18. Two reversals of the same decision/path stop automatic writes; never ping-pong or force-push.
-19. Classify every effective changed path against verified scope.
-20. OUT_OF_SCOPE, UNKNOWN, provenance-blocked, or implementation-context-blocked changes block passing review and delivery.
-21. Verification evidence must match domain, artifact state, changed layers, and delivery boundary.
-22. Build success is not design or architecture proof; screenshot evidence is not runtime or interaction proof.
-23. Repository-context discovery cannot self-certify the implementation it guided; run architecture-review after code.
-24. Acceptance runs through design-review, governing domain reviewer, and architecture-review when code is delivered.
-25. Preserve PASS, FAIL, PARTIAL, NOT_VERIFIED, and NOT_APPLICABLE exactly.
-26. Contextual hard gates come from loaded reviewers, not a global UI checklist.
-27. Provenance, scope, implementation context, concurrency, evidence, coverage, and facade verdict all control delivery.
-28. Classify root cause and correction ownership before fixing.
-29. Maximum design iterations default to 5; after two failed patches in one region, re-read and replan.
-30. Verified reusable fixes require skill-evolution and a regression eval.
-31. Blocked or bounded attempts are never labeled PASS.
-32. Never claim a complete redesign environment from the workflow entrypoint alone.
+11. When a redesign creates or changes a repeated organism, page shell, or equivalent cross-route role, run `component-family-design` before code production.
+12. For repository patch or executable prototype output, discover implementation context before code production.
+13. Package presence alone does not establish canonical framework, component, styling, icon, state, form, query, or data systems.
+14. Reuse, bounded extension, composition, or semantic-native implementation precedes a new dependency proposal.
+15. Implementation mapping must name canonical paths/imports and prohibited parallel systems before production.
+16. A new dependency requires a proven capability gap, consequences, and verified authority.
+17. Every repository write uses an expected-head lease.
+18. Inspect head drift before retry; newest commit is not automatically authoritative.
+19. Two reversals of the same decision/path stop automatic writes; never ping-pong or force-push.
+20. Classify every effective changed path against verified scope.
+21. OUT_OF_SCOPE, UNKNOWN, provenance-blocked, or implementation-context-blocked changes block passing review and delivery.
+22. Verification evidence must match domain, artifact state, changed layers, and delivery boundary.
+23. Build success is not design or architecture proof; screenshot evidence is not runtime or interaction proof.
+24. Repository-context discovery cannot self-certify the implementation it guided; run architecture-review after code.
+25. Acceptance runs through design-review, governing domain reviewer, and architecture-review when code is delivered.
+26. Preserve PASS, FAIL, PARTIAL, NOT_VERIFIED, and NOT_APPLICABLE exactly.
+27. Contextual hard gates come from loaded reviewers, not a global UI checklist.
+28. Provenance, scope, implementation context, concurrency, evidence, coverage, and facade verdict all control delivery.
+29. Classify root cause and correction ownership before fixing.
+30. Maximum design iterations default to 5; after two failed patches in one region, re-read and replan.
+31. Verified reusable fixes require skill-evolution and a regression eval.
+32. Blocked or bounded attempts are never labeled PASS.
+33. Never claim a complete redesign environment from the workflow entrypoint alone.
 ```
 
 ## Route
@@ -216,7 +217,7 @@ Infer missing context only when evidence is strong and record the assumption. Ne
 
 3  PREFLIGHT
    inspect complete target, effective diff, equity, content, assets,
-   system/framework, shared components, tokens, icons, repository conventions,
+   system/framework, shared components, organism and template families, route instances, tokens, icons, repository conventions,
    concurrent automation, constraints, and evidence gaps
    → patch/prototype: run implementation-context-discovery
 
@@ -224,7 +225,7 @@ Infer missing context only when evidence is strong and record the assumption. Ne
    compare alternatives and select product/brand-appropriate direction
 
 5  LAYERED PLAN
-   strategy, foundation, structure, components, expression,
+   strategy, foundation, structure, component capability, component-family and template composition, expression,
    interaction, content, implementation capability requirements
 
 6  VALUE ALIGNMENT
@@ -233,7 +234,7 @@ Infer missing context only when evidence is strong and record the assumption. Ne
 7  SPEC CONFIRMATION
    verify decisions; lock scope, paths, routes, exclusions, preservation,
    evidence, delegation, ownership, approvals, convention locks,
-   reuse/extension decisions, implementation mapping, and dependency authority
+   family reuse/variant decisions, route-instance mapping, component reuse/extension decisions, implementation mapping, and dependency authority
 
 8  PRODUCTION
    acquire expected-head lease and produce through selected ports/adapters
