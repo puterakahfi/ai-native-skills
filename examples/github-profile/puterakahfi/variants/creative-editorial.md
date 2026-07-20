@@ -9,7 +9,7 @@ Brand adaptation: no H1/H2 divider lines, cards, or decorative containers.
 
 ### Putera Kahfi
 
-**Software Engineer · Native AI Engineering · Product & Design Systems**
+Software Engineer · Native AI Engineering · Product & Design Systems
 
 #### I am interested in the space between a generated artifact and a system that can explain, verify, and improve it.
 
@@ -26,27 +26,33 @@ Explicit roles, contracts, skills, decisions, and evidence are the method.
 
 #### 01 · [AI Native Skills →](https://github.com/puterakahfi/ai-native-skills)
 
-**The premise** — reusable engineering and design capabilities for coding agents.
+*Premise — reusable engineering and design capabilities for coding agents.*
 
-**The work** — creator and maintainer; turns engineering, product, design, review, and delivery practices into bounded skills with explicit quality gates.
+I create and maintain a system that turns engineering, product, design, review, and delivery practices into bounded skills with explicit quality gates.
 
-**The evidence** — open source and actively refined.
+*Evidence — Open source · Actively refined*
+
+<br>
 
 #### 02 · [Native AI Core →](https://github.com/puterakahfi/ai-native-core)
 
-**The premise** — runtime-agnostic contracts for Native AI Engineering.
+*Premise — runtime-agnostic contracts for Native AI Engineering.*
 
-**The work** — framework and contract designer; defines domain concepts, lifecycle rules, ports, contracts, and adapter boundaries.
+I design the shared domain concepts, lifecycle rules, ports, contracts, and adapter boundaries that keep runtime and product implementations aligned.
 
-**The evidence** — open-source public core.
+*Evidence — Open source · Public core*
+
+<br>
 
 #### 03 · [VisualMate →](https://www.visualmate.id/)
 
-**The premise** — an AI Creative Control System for structured, reviewable creative workflows.
+*Premise — an AI Creative Control System for structured, reviewable creative workflows.*
 
-**The work** — product builder and system designer; connects product direction, workflow architecture, design systems, and AI-assisted creative production.
+I connect product direction, workflow architecture, design systems, and AI-assisted creative production as product builder and system designer.
 
-**The evidence** — active product with private implementation.
+*Evidence — Active product · Private implementation*
+
+<br>
 
 <a id="the-practice"></a>
 
@@ -64,10 +70,10 @@ Explicit roles, contracts, skills, decisions, and evidence are the method.
 
 #### Working materials
 
-**Software architecture** — domain-driven design, ports-and-adapters, API contracts, and event-driven systems.  
-**Product engineering** — Go, PHP, Next.js, Docker, modular systems, and developer experience.  
-**Native AI systems** — agent roles, skills, context, orchestration, behavioral evaluation, and review gates.  
-**Design systems** — hierarchy, adaptive components, cross-medium design, and evidence-backed review.
+- **Software architecture** — DDD, ports-and-adapters, API contracts, event-driven systems
+- **Product engineering** — Go, PHP, Next.js, Docker, modular delivery
+- **Native AI systems** — roles, skills, context, orchestration, evaluation
+- **Design systems** — hierarchy, adaptive components, cross-medium review
 
 ### Current field notes · July 2026
 
