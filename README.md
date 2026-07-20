@@ -6,7 +6,7 @@ This repository turns engineering methods and Native AI contracts into reusable 
 
 Works with agents that support the [Agent Skills specification](https://agentskills.io/specification) or the [skills.sh](https://skills.sh) ecosystem, including Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and other compatible runtimes.
 
-**82 skills · 9 workflows · 6 meta-skills**
+**83 skills · 9 workflows · 6 meta-skills**
 
 ## Start here
 
@@ -16,6 +16,7 @@ Works with agents that support the [Agent Skills specification](https://agentski
 | Install a complete workflow and its documented dependencies | [Skill packs](docs/skill-packs.md) |
 | Let the agent choose the correct workflow | `workflow-router` |
 | Compose engineering, design, product, and review roles | `role-switcher` |
+| Diagnose discovery for a catalog, registry, directory, feed, or result set | `collection-discovery-design` |
 | Bootstrap an AI-native Hermes profile | [`hermes-profile-bootstrap`](#hermes-profile-bootstrap) |
 | Browse the complete capability taxonomy | [docs/skills.md](docs/skills.md) |
 | Contribute a skill, workflow, reference, or eval case | [CONTRIBUTING.md](CONTRIBUTING.md) |
@@ -53,6 +54,7 @@ npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
 npx skills add puterakahfi/ai-native-skills@decision-provenance -g -y
 npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 npx skills add puterakahfi/ai-native-skills@chatgpt-app-development -g -y
+npx skills add puterakahfi/ai-native-skills@collection-discovery-design -g -y
 npx skills add puterakahfi/ai-native-skills@brand-identity-review -g -y
 ```
 
@@ -72,7 +74,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Type | Primary job | Examples |
 |---|---|---|
-| `skill` | One reusable capability or expert lens | `systematic-debugging`, `decision-provenance`, `chatgpt-app-development`, `brand-identity-review` |
+| `skill` | One reusable capability or expert lens | `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `chatgpt-app-development`, `brand-identity-review` |
 | `workflow` | An ordered lifecycle with phases and gates | `bugfix-workflow`, `redesign-workflow`, `deployment-workflow` |
 | `meta-skill` | Route or compose other capabilities | `workflow-router`, `role-switcher` |
 
@@ -139,6 +141,8 @@ Examples:
 Design work
   workflow-router → design-audit | design-refinement | redesign-workflow
   role-switcher → design owner + specialists + design-review + domain reviewer
+  collection-heavy surface → information-architecture → collection-discovery-design
+  → design-interaction + adaptive-component-design
 
 Engineering quality
   architecture-review → security-review → code-review-workflow → skill-eval
