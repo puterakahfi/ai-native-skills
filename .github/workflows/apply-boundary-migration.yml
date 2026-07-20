@@ -1,0 +1,353 @@
+name: Apply Boundary Migration
+
+on:
+  push:
+    branches:
+      - 25-boundary-declarations
+    paths:
+      - .github/workflows/apply-boundary-migration.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply reviewed adapter declarations
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+
+          ROOT = Path.cwd()
+
+          MIGRATIONS = {
+              "skills/adaptive-component-design/SKILL.md": {
+                  "covers": [
+                      "component_fitness_diagnosis",
+                      "context_specific_component_selection",
+                      "cross_context_component_substitution",
+                      "responsive_pattern_transformation",
+                      "navigation_component_adaptation",
+                      "content_density_adaptation",
+                      "interaction_mode_adaptation",
+                      "shared_state_and_semantics_across_variants",
+                      "overflow_and_disclosure_affordance_behavior",
+                      "adaptation_boundary_verification",
+                  ],
+                  "delegates": [
+                      "visual_style_and_brand_expression",
+                      "page_level_macrostructure_selection",
+                      "design_token_definition",
+                      "generic_breakpoint_and_fluid_grid_mechanics",
+                      "implementation_framework_specific_code",
+                      "product_specific_component_library_mapping",
+                  ],
+                  "version": ("1.2.1", "1.2.2"),
+                  "replace": (
+                      "This skill owns component fitness, adaptation/substitution, shared state semantics, overflow/disclosure affordances, and boundary evidence. It does not own page macrostructure, visual language, product strategy, generic breakpoint mechanics, or final acceptance.",
+                      "This skill owns component fitness, context-specific selection, cross-context substitution, responsive pattern transformation, navigation and content-density adaptation, interaction-mode adaptation, shared state semantics, overflow/disclosure affordances, and adaptation-boundary evidence.\n\nIt delegates visual style and brand expression, page-level macrostructure, design-token definition, generic breakpoint and fluid-grid mechanics, framework-specific implementation code, and product-specific component-library mapping to the corresponding specialist or implementation owner. `master-engineer` owns repository implementation when required; `design-review` owns final acceptance.",
+                  ),
+              },
+              "skills/decision-provenance/SKILL.md": {
+                  "covers": [
+                      "material_decision_claim_verification",
+                      "source_attribution",
+                      "decision_domain_authority_matching",
+                      "explicit_supersession_and_conflict_detection",
+                      "scope_lock_route_approval_status_and_ownership_claims",
+                      "policy_and_required_approval_preservation",
+                      "decision_ledger_output",
+                  ],
+                  "delegates": [
+                      "making_product_or_design_decisions_for_the_owner",
+                      "bypassing_legal_security_repository_or_organizational_policy",
+                      "proving_runtime_or_design_quality",
+                      "inventing_missing_decision_sources",
+                      "treating_agent_authored_text_as_owner_approval",
+                  ],
+                  "version": ("1.0.0", "1.0.1"),
+                  "replace": (
+                      "An agent must never convert its own summary, inference, PR body, commit message, or previous output into user approval merely because it is recent or confidently worded.\n\n## Hard rules",
+                      "An agent must never convert its own summary, inference, PR body, commit message, or previous output into user approval merely because it is recent or confidently worded.\n\n## Boundary\n\nThis skill verifies material decision claims, source attribution, domain authority, supersession, conflicts, scope and approval claims, policy requirements, and the resulting decision ledger. It does not make product or design decisions for the owner, bypass legal/security/repository/organizational policy, invent missing sources, or treat agent-authored text as approval. Runtime, technical, and design quality remain owned by their governing verification and review capabilities.\n\n## Hard rules",
+                  ),
+              },
+              "skills/design-color/SKILL.md": {
+                  "covers": [
+                      "hue_saturation_value_decisions",
+                      "palette_construction",
+                      "color_harmony_rules",
+                      "color_psychology_validation",
+                      "genre_to_palette_mapping",
+                  ],
+                  "delegates": [
+                      "contrast_ratio_wcag",
+                      "semantic_token_naming",
+                      "dark_light_switching",
+                      "component_level_color",
+                  ],
+              },
+              "skills/design-depth/SKILL.md": {
+                  "covers": [
+                      "depth_need_assessment",
+                      "surface_and_elevation_relationships",
+                      "atmosphere_and_imagery_integration",
+                      "overlap_and_layer_architecture",
+                      "optional_typography_interleave",
+                      "responsive_depth_fallback",
+                      "depth_effect_restraint",
+                  ],
+                  "delegates": [
+                      "illustration_creation",
+                      "product_specific_elevation_token_values",
+                      "motion_timing_and_reduced_motion_implementation",
+                      "page_macrostructure",
+                      "independent_design_acceptance",
+                  ],
+              },
+              "skills/design-iconography/SKILL.md": {
+                  "covers": [
+                      "icon_family_selection",
+                      "style_consistency_rules",
+                      "sizing_optical_alignment",
+                      "genre_to_icon_mapping",
+                      "a11y_attribute_rules",
+                  ],
+                  "delegates": [
+                      "svg_component_implementation",
+                      "icon_animation",
+                      "token_sizing_values",
+                  ],
+              },
+              "skills/design-spacing/SKILL.md": {
+                  "covers": [
+                      "visual_rhythm_decisions",
+                      "ma_intentional_space",
+                      "spatial_hierarchy_logic",
+                      "breathing_room_vs_dead_space",
+                  ],
+                  "delegates": [
+                      "token_values",
+                      "8px_grid_rules",
+                      "css_var_declarations",
+                  ],
+              },
+              "skills/design-typography/SKILL.md": {
+                  "covers": [
+                      "typeface_personality_and_selection",
+                      "display_body_pairing",
+                      "modular_scale_selection",
+                      "hierarchy_h1_to_caption",
+                      "leading_tracking_rhythm",
+                      "font_rendering_antialiasing",
+                      "genre_to_typeface_mapping",
+                  ],
+                  "delegates": [
+                      "contrast_ratio_wcag",
+                      "characters_per_line",
+                      "minimum_font_size_px",
+                  ],
+              },
+              "skills/redesign-workflow/SKILL.md": {
+                  "covers": [
+                      "existing_visual_surface_redesign",
+                      "redesign_vs_refinement_vs_audit_routing",
+                      "explicit_design_implementation_and_repository_write_ownership",
+                      "confirmed_scope_and_baseline_capture",
+                      "final_effective_diff_integrity",
+                      "concurrent_branch_write_detection_and_coordination",
+                      "brand_content_asset_behavior_route_and_path_preservation",
+                      "direction_macrostructure_and_layered_change_planning",
+                      "user_and_business_value_alignment",
+                      "delegated_design_and_implementation_work",
+                      "prototype_or_repository_patch_production",
+                      "domain_appropriate_verification",
+                      "design_review_facade_acceptance",
+                      "bounded_fix_iterations_and_learning_promotion",
+                      "passing_delivery_or_honest_blocker_reporting",
+                  ],
+                  "delegates": [
+                      "net_new_product_definition",
+                      "audit_only_work_after_route_handoff",
+                      "known_narrow_refinement_after_route_handoff",
+                      "non_visual_feature_development",
+                      "unrelated_product_route_auth_data_or_infrastructure_changes",
+                      "general_bugfix_workflow",
+                      "deployment_or_publishing",
+                      "legal_trademark_clearance",
+                      "force_overwrite_of_uninspected_concurrent_work",
+                      "destructive_repository_operations_without_approval",
+                  ],
+                  "version": ("3.4.0", "3.4.1"),
+                  "replace": (
+                      "The workflow owns lifecycle, state transitions, approvals, preservation, integrity gates, iteration, and handoffs. Specialist skills own narrow design decisions. `master-engineer` owns repository implementation when required. `design-review` and the governing domain reviewer own acceptance.\n\n## Dependency and installation model",
+                      "The workflow owns lifecycle, state transitions, approvals, preservation, integrity gates, iteration, and handoffs. Specialist skills own narrow design decisions. `master-engineer` owns repository implementation when required. `design-review` and the governing domain reviewer own acceptance.\n\nIt routes net-new product definition, audit-only work, known narrow refinements, non-visual feature development, and general bug fixes to their owning workflows. It does not own unrelated product/route/auth/data/infrastructure changes, deployment or publishing, legal or trademark clearance, force-overwriting uninspected concurrent work, or destructive repository operations without approval.\n\n## Dependency and installation model",
+                  ),
+              },
+              "skills/skill-evolution/SKILL.md": {
+                  "covers": [
+                      "post_fix_learning_review",
+                      "reusable_reason_extraction",
+                      "local_vs_shared_knowledge_classification",
+                      "target_layer_selection",
+                      "minimal_skill_or_reference_patch",
+                      "regression_eval_creation",
+                      "skill_version_and_promotion_decision",
+                      "provenance_logging_outside_skill_body",
+                  ],
+                  "delegates": [
+                      "solving_the_original_product_issue",
+                      "copying_product_implementation_into_shared_skills",
+                      "storing_product_specific_breakpoints_routes_or_component_names_in_shared_skills",
+                      "promoting_unverified_anecdotes",
+                      "bypassing_repository_write_or_approval_policy",
+                      "replacing_product_design_locks_or_architecture_decisions",
+                  ],
+                  "version": ("1.0.0", "1.0.1"),
+                  "replace": (
+                      "Do not copy the implementation story into `SKILL.md`. Shared skills store reusable decision logic. Product repositories store product-specific decisions and implementation details. Tests store concrete regression cases.\n\n## Automatic invocation",
+                      "Do not copy the implementation story into `SKILL.md`. Shared skills store reusable decision logic. Product repositories store product-specific decisions and implementation details. Tests store concrete regression cases.\n\n## Boundary\n\nThis workflow owns post-fix learning review, reusable-reason extraction, local-versus-shared classification, target-layer selection, minimal shared patches, regression evidence, version/promotion decisions, and provenance kept outside the reusable skill body. It does not solve the original product issue, copy product implementation into shared skills, store product-specific routes/breakpoints/component names as universal guidance, promote unverified anecdotes, bypass repository approval policy, or replace product design locks and architecture decisions.\n\n## Automatic invocation",
+                  ),
+              },
+          }
+
+          def replace_once(text: str, old: str, new: str, path: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f"{path}: expected one replacement anchor, found {count}")
+              return text.replace(old, new, 1)
+
+          def compact_json(values: list[str]) -> str:
+              return json.dumps(values, separators=(",", ":"))
+
+          for relative, migration in MIGRATIONS.items():
+              path = ROOT / relative
+              text = path.read_text(encoding="utf-8")
+              if "ai-native-skills.boundary.covers:" in text or "ai-native-skills.boundary.delegates:" in text:
+                  raise RuntimeError(f"{relative}: boundary metadata already exists")
+
+              version = migration.get("version")
+              if version:
+                  old, new = version
+                  text = replace_once(
+                      text,
+                      f"  ai-native-skills.version: {old}",
+                      f"  ai-native-skills.version: {new}",
+                      relative,
+                  )
+
+              contract_line = next(
+                  (line for line in text.splitlines() if line.startswith("  ai-native-skills.contract-version:")),
+                  None,
+              )
+              if contract_line is None:
+                  raise RuntimeError(f"{relative}: contract-version metadata not found")
+              declaration = (
+                  contract_line
+                  + "\n  ai-native-skills.boundary.covers: '"
+                  + compact_json(migration["covers"])
+                  + "'\n  ai-native-skills.boundary.delegates: '"
+                  + compact_json(migration["delegates"])
+                  + "'"
+              )
+              text = replace_once(text, contract_line, declaration, relative)
+
+              if migration.get("replace"):
+                  text = replace_once(text, migration["replace"][0], migration["replace"][1], relative)
+
+              path.write_text(text, encoding="utf-8")
+
+          contributing = ROOT / "CONTRIBUTING.md"
+          text = contributing.read_text(encoding="utf-8")
+          text = replace_once(
+              text,
+              '  ai-native-skills.contract-version: "^1.0.0"\n```\n\nWhen the universal capability contract, terminology, boundary, or quality standard changes, update `ai-native-core` first.',
+              '  ai-native-skills.contract-version: "^1.0.0"\n  ai-native-skills.boundary.covers: \'["<reviewed-contract-cover-item>"]\'\n  ai-native-skills.boundary.delegates: \'["<reviewed-contract-does-not-cover-item>"]\'\n```\n\nWhen the implemented contract declares non-empty `boundary.covers` or `boundary.does_not_cover`, review the executable skill and its handoffs, then add exact structured declarations. Do not bulk-copy contract values without verifying actual ownership. Missing declarations are `NOT_CHECKABLE`; explicit delegated-responsibility overclaims are `ERROR`. See the canonical [`adapter-conformance` guide](https://github.com/puterakahfi/ai-native-core/blob/main/docs/adapter-conformance.md).\n\nWhen the universal capability contract, terminology, boundary, or quality standard changes, update `ai-native-core` first.',
+              "CONTRIBUTING.md",
+          )
+          text = replace_once(
+              text,
+              'python ai-native-core/scripts/run-eval.py \\\n  --skill <skill-name> \\\n  --output-dir eval-outputs\n```\n\nChanges to executable skills',
+              'python ai-native-core/scripts/run-eval.py \\\n  --skill <skill-name> \\\n  --output-dir eval-outputs\n```\n\nValidate adapter paths, pinned versions, interface coverage, and structured boundaries with a checked-out core at `ai-native-core/`:\n\n```bash\nbash ai-native-core/scripts/validate-implements.sh ai-native-core\npython ai-native-core/scripts/validate-conformance.py ai-native-core .\n```\n\nA zero process exit means no critical declaration error. It does not replace behavioral, runtime, visual, security, or product evidence. `NOT_CHECKABLE` must be eliminated for adapters whose contracts define string boundary items.\n\nChanges to executable skills',
+              "CONTRIBUTING.md",
+          )
+          text = replace_once(
+              text,
+              '- validation through the pinned `ai-native-core` runner;\n- wrapper integration;',
+              '- validation through the pinned `ai-native-core` runner;\n- adapter path/version and structured boundary conformance;\n- wrapper integration;',
+              "CONTRIBUTING.md",
+          )
+          text = replace_once(
+              text,
+              '- [ ] Frontmatter, paths, links, and declared dependencies are valid.\n- [ ] Required references are linked from the executable skill.',
+              '- [ ] Frontmatter, paths, links, and declared dependencies are valid.\n- [ ] Contract-backed adapters declare reviewed `covers` and `delegates` metadata when the core contract has a boundary.\n- [ ] Required references are linked from the executable skill.',
+              "CONTRIBUTING.md",
+          )
+          contributing.write_text(text, encoding="utf-8")
+
+          workflow = ROOT / ".github/workflows/skill-eval.yml"
+          text = workflow.read_text(encoding="utf-8")
+          text = replace_once(
+              text,
+              "          ref: 5c4c6f21859636a4a143a511030879c9923b2ef1",
+              "          ref: b60eb2da7d3a31ce0d539f38da58e8a70806c353",
+              str(workflow),
+          )
+          text = replace_once(
+              text,
+              '          path: .deps/ai-native-core\n\n      - name: Validate contracts with canonical core runner',
+              '          path: .deps/ai-native-core\n\n      - name: Validate adapter paths and pinned versions\n        run: bash .deps/ai-native-core/scripts/validate-implements.sh .deps/ai-native-core\n\n      - name: Validate adapter interface and boundary conformance\n        shell: bash\n        run: |\n          set -o pipefail\n          mkdir -p .tmp/conformance\n          python .deps/ai-native-core/scripts/validate-conformance.py \\\n            .deps/ai-native-core \\\n            . | tee .tmp/conformance/report.txt\n          grep -Eq \'^Not checkable:[[:space:]]+0$\' .tmp/conformance/report.txt\n          grep -Eq \'^Errors:[[:space:]]+0$\' .tmp/conformance/report.txt\n\n      - name: Validate contracts with canonical core runner',
+              str(workflow),
+          )
+          text = replace_once(
+              text,
+              '      - name: Upload compatibility report\n        if: always()',
+              '      - name: Upload adapter conformance report\n        if: always()\n        uses: actions/upload-artifact@v7\n        with:\n          name: adapter-conformance\n          path: .tmp/conformance/report.txt\n          if-no-files-found: error\n          retention-days: 14\n\n      - name: Upload compatibility report\n        if: always()',
+              str(workflow),
+          )
+          workflow.write_text(text, encoding="utf-8")
+
+          for relative, migration in MIGRATIONS.items():
+              text = (ROOT / relative).read_text(encoding="utf-8")
+              expected_covers = "  ai-native-skills.boundary.covers: '" + compact_json(migration["covers"]) + "'"
+              expected_delegates = "  ai-native-skills.boundary.delegates: '" + compact_json(migration["delegates"]) + "'"
+              if expected_covers not in text or expected_delegates not in text:
+                  raise RuntimeError(f"{relative}: declaration verification failed")
+
+          for temporary in [
+              ".github/workflows/boundary-inventory.yml",
+              ".github/workflows/boundary-review-required.yml",
+              ".github/workflows/workflow-inventory.yml",
+              ".github/workflows/apply-boundary-migration.yml",
+          ]:
+              path = ROOT / temporary
+              if path.exists():
+                  path.unlink()
+          audit_dir = ROOT / "audit"
+          if audit_dir.exists():
+              for child in audit_dir.iterdir():
+                  child.unlink()
+              audit_dir.rmdir()
+          PY
+
+      - name: Inspect migration diff
+        run: |
+          git diff --check
+          git status --short
+
+      - name: Commit migration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: declare contract adapter boundaries [skip ci]"
+          git push origin HEAD:${GITHUB_REF_NAME}
