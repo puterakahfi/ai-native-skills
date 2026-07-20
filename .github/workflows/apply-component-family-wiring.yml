@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: write
-  issues: write
 
 jobs:
   wire:
@@ -23,8 +22,6 @@ jobs:
 
       - name: Apply owner wiring
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -49,21 +46,8 @@ jobs:
           context = 'skills/implementation-context-discovery/SKILL.md'
           replace(context, 'ai-native-skills.version: 1.1.0', 'ai-native-skills.version: 1.2.0')
           replace(context, '"adaptive-component-design","new-feature-workflow"', '"adaptive-component-design","component-family-design","new-feature-workflow"')
-          replace(context, '## Required evidence', '''## Organism and template family mapping
-
-When the requested capability is an organism, shell, or repeated cross-route region:
-
-```text
-consume the accepted family contract from component-family-design
-→ inventory actual organism and template source
-→ map route instances and configuration adapters
-→ verify canonical variants and shared ownership
-→ prohibit route-local duplication when the family fits
-```
-
-Repository discovery does not define the family anatomy. It maps the accepted family to real paths, imports, variants, stories, route adapters, tokens, and migration status.
-
-## Required evidence''')
+          family_mapping = '## Organism and template family mapping\n\nWhen the requested capability is an organism, shell, or repeated cross-route region:\n\n```text\nconsume the accepted family contract from component-family-design\n→ inventory actual organism and template source\n→ map route instances and configuration adapters\n→ verify canonical variants and shared ownership\n→ prohibit route-local duplication when the family fits\n```\n\nRepository discovery does not define the family anatomy. It maps the accepted family to real paths, imports, variants, stories, route adapters, tokens, and migration status.\n\n## Required evidence'
+          replace(context, '## Required evidence', family_mapping)
           replace(context, 'component source, exports, variants, stories, tests, and usage\ncanonical registry availability', 'component source, exports, variants, stories, tests, and usage\norganism and template source, route instances, family variants, slots, and configuration adapters\ncanonical registry availability')
           replace(context, 'For every requested capability, review installed components, variants, bounded extension, composition, canonical registry availability, semantic-native eligibility, and interaction/accessibility/token contracts.', 'For every requested capability, review installed components, variants, bounded extension, composition, canonical registry availability, semantic-native eligibility, and interaction/accessibility/token contracts. For organisms and templates, consume the accepted family contract from `component-family-design` and map it to actual repository source, configuration adapters, routes, and imports.')
           replace(context, 'component_system_map: []\n    canonical_component_inventory: []', 'component_system_map: []\n    canonical_component_inventory: []\n    canonical_component_family_inventory: []\n    organism_inventory: []\n    template_inventory: []\n    route_to_family_instance_map: []')
@@ -81,7 +65,7 @@ Repository discovery does not define the family anatomy. It maps the accepted fa
           replace(redesign, 'design-visual design-layout design-strategy', 'design-visual design-layout component-family-design design-strategy')
           replace(redesign, '"adaptive-component-design","macrostructures"', '"component-family-design","adaptive-component-design","macrostructures"')
           replace(redesign, '11. For repository patch or executable prototype output, discover implementation context before code production.', '11. When a redesign creates or changes a repeated organism, page shell, or equivalent cross-route role, run `component-family-design` before code production.\n12. For repository patch or executable prototype output, discover implementation context before code production.')
-          for old_number, new_number, text in [
+          renumber = [
               (12, 13, 'Package presence alone does not establish canonical framework, component, styling, icon, state, form, query, or data systems.'),
               (13, 14, 'Reuse, bounded extension, composition, or semantic-native implementation precedes a new dependency proposal.'),
               (14, 15, 'Implementation mapping must name canonical paths/imports and prohibited parallel systems before production.'),
@@ -103,7 +87,8 @@ Repository discovery does not define the family anatomy. It maps the accepted fa
               (30, 31, 'Verified reusable fixes require skill-evolution and a regression eval.'),
               (31, 32, 'Blocked or bounded attempts are never labeled PASS.'),
               (32, 33, 'Never claim a complete redesign environment from the workflow entrypoint alone.'),
-          ]:
+          ]
+          for old_number, new_number, text in renumber:
               replace(redesign, f'{old_number}. {text}', f'{new_number}. {text}')
           replace(redesign, 'system/framework, shared components, tokens, icons, repository conventions,', 'system/framework, shared components, organism and template families, route instances, tokens, icons, repository conventions,')
           replace(redesign, 'strategy, foundation, structure, components, expression,\n   interaction, content, implementation capability requirements', 'strategy, foundation, structure, component capability, component-family and template composition, expression,\n   interaction, content, implementation capability requirements')
@@ -112,20 +97,26 @@ Repository discovery does not define the family anatomy. It maps the accepted fa
           pack = 'packs/redesign/pack.yaml'
           replace(pack, 'version: "1.1.0"', 'version: "1.2.0"')
           replace(pack, 'description: Complete dependency bundle for delegated redesign with repository implementation-context preservation.', 'description: Complete dependency bundle for delegated redesign with component-family consistency and repository implementation-context preservation.')
-          replace(pack, '''    - name: ui-components
-      classification: adapter
-      port: layout
-      reason: Select suitable component capabilities and hand them to repository implementation-context mapping.
-''', '''    - name: ui-components
-      classification: adapter
-      port: layout
-      reason: Select suitable component capabilities and classify their hierarchy before family and repository mapping.
-    - name: component-family-design
-      classification: adapter
-      port: layout
-      when: The redesign creates or changes a repeated organism, page shell, template, or equivalent product role across routes.
-      reason: Preserve invariant anatomy, configurable slots, bounded variants, adaptive family identity, and route-to-family mappings.
-''')
+          old_ui = '\n'.join([
+              '    - name: ui-components',
+              '      classification: adapter',
+              '      port: layout',
+              '      reason: Select suitable component capabilities and hand them to repository implementation-context mapping.',
+              '',
+          ])
+          new_ui = '\n'.join([
+              '    - name: ui-components',
+              '      classification: adapter',
+              '      port: layout',
+              '      reason: Select suitable component capabilities and classify their hierarchy before family and repository mapping.',
+              '    - name: component-family-design',
+              '      classification: adapter',
+              '      port: layout',
+              '      when: The redesign creates or changes a repeated organism, page shell, template, or equivalent product role across routes.',
+              '      reason: Preserve invariant anatomy, configurable slots, bounded variants, adaptive family identity, and route-to-family mappings.',
+              '',
+          ])
+          replace(pack, old_ui, new_ui)
           PY
 
       - name: Commit wiring
