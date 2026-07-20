@@ -93,30 +93,6 @@ jobs:
           replace(redesign, 'system/framework, shared components, tokens, icons, repository conventions,', 'system/framework, shared components, organism and template families, route instances, tokens, icons, repository conventions,')
           replace(redesign, 'strategy, foundation, structure, components, expression,\n   interaction, content, implementation capability requirements', 'strategy, foundation, structure, component capability, component-family and template composition, expression,\n   interaction, content, implementation capability requirements')
           replace(redesign, 'reuse/extension decisions, implementation mapping, and dependency authority', 'family reuse/variant decisions, route-instance mapping, component reuse/extension decisions, implementation mapping, and dependency authority')
-
-          pack = 'packs/redesign/pack.yaml'
-          replace(pack, 'version: "1.1.0"', 'version: "1.2.0"')
-          replace(pack, 'description: Complete dependency bundle for delegated redesign with repository implementation-context preservation.', 'description: Complete dependency bundle for delegated redesign with component-family consistency and repository implementation-context preservation.')
-          old_ui = '\n'.join([
-              '    - name: ui-components',
-              '      classification: adapter',
-              '      port: layout',
-              '      reason: Select suitable component capabilities and hand them to repository implementation-context mapping.',
-              '',
-          ])
-          new_ui = '\n'.join([
-              '    - name: ui-components',
-              '      classification: adapter',
-              '      port: layout',
-              '      reason: Select suitable component capabilities and classify their hierarchy before family and repository mapping.',
-              '    - name: component-family-design',
-              '      classification: adapter',
-              '      port: layout',
-              '      when: The redesign creates or changes a repeated organism, page shell, template, or equivalent product role across routes.',
-              '      reason: Preserve invariant anatomy, configurable slots, bounded variants, adaptive family identity, and route-to-family mappings.',
-              '',
-          ])
-          replace(pack, old_ui, new_ui)
           PY
 
       - name: Commit wiring
@@ -128,7 +104,6 @@ jobs:
           git add skills/adaptive-component-design/SKILL.md \
             skills/implementation-context-discovery/SKILL.md \
             skills/design-review/SKILL.md \
-            skills/redesign-workflow/SKILL.md \
-            packs/redesign/pack.yaml
+            skills/redesign-workflow/SKILL.md
           git commit -m 'refine(design): enforce component-family consistency'
           git push origin HEAD:59-component-family-design
