@@ -46,8 +46,8 @@ The variants differ materially without changing evidence completeness.
 | Variant | Verified universal score | Evidence coverage | Coverage verdict | Publication status |
 |---|---:|---:|---|---|
 | Zen Minimalist | 8.6 / 10 | ~90% | LIMITED REVIEW | aligned alternative |
-| Modern Professional | 8.8 / 10 direct final render | ~95% | LIMITED REVIEW | accepted option |
-| Creative Editorial | 8.8 / 10 direct refined render | ~95% | LIMITED REVIEW | active live test / accepted option |
+| Modern Professional | 8.8 / 10 direct final render | ~95% | LIMITED REVIEW | active / selected |
+| Creative Editorial | 8.8 / 10 direct refined render | ~95% | LIMITED REVIEW | accepted option |
 
 Scores describe verified universal visual scope only. They do not provide complete developer-profile domain approval. Direct GitHub screenshots verify real-platform composition but do not silently replace the controlled comparative-render evidence.
 
@@ -173,8 +173,8 @@ The variant requirement passes: differences are visible in hierarchy, density, a
 ## Recommendation
 
 ```text
-active live test  creative-editorial
-accepted option   modern-professional
+active profile    modern-professional
+accepted option   creative-editorial
 aligned option    zen-minimalist
 ```
 
