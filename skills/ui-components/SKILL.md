@@ -4,7 +4,7 @@ description: 'UI component patterns — exact CSS templates, behavior specs, int
 
   '
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/ux-ui-patterns.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
@@ -13,9 +13,26 @@ metadata:
 
 # UI Components
 
+## Core contract interface
+
+```yaml
+required_inputs:
+  - brief_signals
+  - content_inventory
+allowed_outputs:
+  - pattern_selection
+  - decision_tree_path
+  - pattern_gate_scores
+quality_gates:
+  - pattern_selected_from_decision_tree_not_arbitrary
+  - hero_pattern_matches_content_volume
+```
+
+Component work starts with `brief_signals` and `content_inventory`. Select the pattern through the relevant decision tree, record the `decision_tree_path`, and verify that the hero pattern matches content volume. Only after selection may the chosen template be copied verbatim.
+
 ## ⚠️ HARD RULES
 
-1. **Copy template verbatim — zero improvisation.** Improvisation = bugs. Template = correct behavior on all viewports.
+1. **Select first, then copy the chosen template verbatim.** Pattern selection comes from the decision tree, brief signals, and content inventory; improvising after selection still creates bugs.
 2. **External behavior:** check `ux-patterns-for-developers` before writing component behavior.
 3. **After 2 failed patches → `write_file` full rewrite.** Do not keep patching broken CSS.
 
@@ -54,6 +71,6 @@ Load each reference file when working on those components:
 
 ## ⚠️ HARD RULES (reminder)
 
-1. **Copy template verbatim — zero improvisation.**
+1. **Select through the decision tree, then copy the chosen template verbatim.**
 2. **External behavior:** check `ux-patterns-for-developers` before writing component behavior.
 3. **After 2 failed patches → `write_file` full rewrite.**

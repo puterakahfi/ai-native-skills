@@ -3,7 +3,7 @@ name: api-contract
 description: Design, enforce, and version API contracts between services — OpenAPI spec, consumer-driven contract testing, breaking change detection, versioning strategy, and deprecation lifecycle.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/architecture/api-contract.contract.yaml
@@ -12,6 +12,30 @@ metadata:
 ---
 
 # API Contract
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - api_description_or_spec
+allowed_outputs:
+  - openapi_spec
+  - contract_test_suite
+  - versioning_decision
+  - breaking_change_report
+  - consumer_impact_analysis
+quality_gates:
+  - api_must_have_explicit_versioning_strategy
+  - breaking_changes_must_be_detected_before_deploy
+  - contract_tests_must_exist_for_every_consumer
+  - no_undocumented_endpoints_in_production
+  - error_responses_must_follow_consistent_schema
+  - backward_compatibility_must_be_preserved_within_major_version
+  - api_design_must_be_consumer_driven
+  - deprecation_must_be_announced_before_removal
+```
+
+Start from the `api_description_or_spec`; missing source material is `NOT_VERIFIED`, not permission to invent an API. Return only the applicable declared outputs. Preserve backward compatibility within one major version, detect breaking changes before deploy, reject undocumented production endpoints, and announce deprecation before removal.
 
 > **HARD RULES**
 > - Contract before implementation — write the OpenAPI spec first, then code

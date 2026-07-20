@@ -1,0 +1,23 @@
+skill_test:
+  skill: ethics-responsible-ai
+  version: "1.0.1"
+  description: Verify ethics-responsible-ai exposes and applies its core contract interface.
+
+  cases:
+    - id: prelaunch-ethics-accountability
+      description: A known conformance gap must be handled through explicit inputs, outputs, and blocking gates.
+      trigger: "Apply ethics-responsible-ai to a realistic change and report the contract-backed decision."
+      must_contain:
+        - "affected_groups_must_be_identified_before_launch"
+        - "training_data_bias_must_be_audited"
+        - "ai_involvement_must_be_disclosed_to_users"
+        - "accountability_must_be_assigned_for_ai_errors"
+        - "harm_must_be_assessed_not_assumed_negligible"
+      must_not_contain:
+        - "harm is negligible by default"
+      quality_gates_tested:
+        - affected_groups_must_be_identified_before_launch
+        - training_data_bias_must_be_audited
+        - ai_involvement_must_be_disclosed_to_users
+        - accountability_must_be_assigned_for_ai_errors
+        - harm_must_be_assessed_not_assumed_negligible
