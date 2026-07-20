@@ -39,7 +39,7 @@ skill_test:
         - pattern: "pattern|capability"
           must_come_before: "implementation-context-discovery|implementation context"
         - pattern: "implementation-context-discovery|implementation context"
-          must_come_before: "implementation|code"
+          must_come_before: "architecture and design verification"
       quality_gates_tested:
         - pattern_selected_from_decision_tree_not_arbitrary
         - hero_pattern_matches_content_volume
