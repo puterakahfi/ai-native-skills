@@ -1,0 +1,168 @@
+name: Refine Design Conformance Evals
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/refine-design-conformance-evals.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Narrow regression cases to migration delta
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          root = Path.cwd()
+          configs = {
+              "accessibility": {
+                  "id": "explicit-accessibility-interface-and-alt-text",
+                  "items": ["all_images_must_have_meaningful_alt_text", "accessibility_audit_report", "wcag_violation_list", "remediation_plan", "aria_recommendations", "keyboard_navigation_map", "ui_component_or_page"],
+                  "gates": ["all_images_must_have_meaningful_alt_text"],
+              },
+              "adaptive-component-design": {
+                  "id": "requested-component-is-evaluated-across-contexts",
+                  "items": ["requested_component_is_treated_as_a_proposed_solution_not_an_immutable_requirement", "tabs_and_horizontal_collections_expose_truthful_overflow_affordance", "touch_pointer_and_keyboard_interactions_are_defined_when_applicable", "interactive_targets_do_not_overlap_or_clip", "viewport_strategy", "component_substitution_matrix", "adaptation_boundary_map", "component_selection_rationale", "rejected_component_alternatives", "product_intent", "user_tasks", "content_inventory", "component_inventory", "target_contexts"],
+                  "gates": ["requested_component_is_treated_as_a_proposed_solution_not_an_immutable_requirement", "tabs_and_horizontal_collections_expose_truthful_overflow_affordance", "touch_pointer_and_keyboard_interactions_are_defined_when_applicable", "interactive_targets_do_not_overlap_or_clip"],
+              },
+              "dark-light-theming": {
+                  "id": "both-theme-token-map-and-fouc-strategy",
+                  "items": ["tokens_mapped_for_both_themes", "theme_token_map", "fouc_prevention_strategy", "theming_gate_scores", "color_token_map", "theme_toggle_requirement"],
+                  "gates": ["tokens_mapped_for_both_themes"],
+              },
+              "design-brand": {
+                  "id": "brand-identifier-resolves-locks-before-expression",
+                  "items": ["brand_tokens_respected_not_overridden", "brand_identifier"],
+                  "gates": ["brand_tokens_respected_not_overridden"],
+              },
+              "design-color": {
+                  "id": "palette-outputs-use-semantic-component-roles",
+                  "items": ["no_hardcoded_hex_in_components", "palette_primitives", "semantic_role_mapping", "accent_definition", "temperature_rationale"],
+                  "gates": ["no_hardcoded_hex_in_components"],
+              },
+              "design-depth": {
+                  "id": "depth-spec-preserves-legibility-and-operation",
+                  "items": ["body_text_and_controls_remain_legible_and_operable", "depth_role_map", "layer_stack_declaration", "atmosphere_spec", "elevation_or_surface_spec", "imagery_integration_spec"],
+                  "gates": ["body_text_and_controls_remain_legible_and_operable"],
+              },
+              "design-foundation": {
+                  "id": "foundation-f5-rejects-dead-space-shortcuts",
+                  "items": ["F5_no_dead_space_no_min_height_100vh"],
+                  "gates": ["F5_no_dead_space_no_min_height_100vh"],
+                  "design_gate_ids": ["F5"],
+              },
+              "design-genre": {
+                  "id": "genre-selection-records-candidates-and-tradeoffs",
+                  "items": ["rejected_candidates_and_tradeoffs_are_recorded", "genre_candidates", "selected_expression_family", "signal_justification", "expression_constraints", "genre_reference_selection"],
+                  "gates": ["rejected_candidates_and_tradeoffs_are_recorded"],
+              },
+              "design-iconography": {
+                  "id": "iconography-starts-from-genre-and-returns-spec",
+                  "items": ["sizing_spec", "stroke_weight_spec", "a11y_pattern", "genre_selection"],
+                  "gates": ["one_icon_family_per_product"],
+              },
+              "design-patterns": {
+                  "id": "pattern-choice-compares-alternatives-and-forces",
+                  "items": ["alternative_patterns_must_be_considered", "no_pattern_applied_speculatively", "implementation_must_preserve_open_closed_principle", "pattern_recommendation", "pattern_justification", "implementation_sketch", "trade_off_analysis", "anti_pattern_warnings", "problem_description"],
+                  "gates": ["alternative_patterns_must_be_considered", "no_pattern_applied_speculatively", "implementation_must_preserve_open_closed_principle"],
+              },
+              "design-refinement": {
+                  "id": "refinement-outputs-remain-explicit-and-bounded",
+                  "items": ["refinement_route_decision", "component_fitness_or_defect_diagnosis", "targeted_patch_plan", "refined_artifact", "gate_status_delta_report"],
+                  "gates": ["every_change_maps_to_target_finding_or_required_dependency"],
+              },
+              "design-system": {
+                  "id": "design-system-emits-semantic-token-contract",
+                  "items": ["spacing_multiples_of_base_unit", "token_map", "semantic_role_assignments", "token_violation_list", "design_system_gate_scores", "color_palette", "type_scale_intent"],
+                  "gates": ["spacing_multiples_of_base_unit"],
+              },
+              "design-typography": {
+                  "id": "typography-contract-bounds-families-and-prefers-variable",
+                  "items": ["max_two_typefaces_plus_mono", "variable_fonts_preferred", "typeface_pair", "hierarchy_mapping", "rhythm_spec", "rendering_spec", "genre_selection"],
+                  "gates": ["max_two_typefaces_plus_mono", "variable_fonts_preferred"],
+              },
+              "design-visual": {
+                  "id": "visual-direction-is-distinctive-and-system-coherent",
+                  "items": ["visual_language_is_distinctive_without_becoming_inconsistent", "visual_direction_candidates", "adapter_loading_plan", "composition_strategy", "hierarchy_role_map", "typography_role_strategy"],
+                  "gates": ["visual_language_is_distinctive_without_becoming_inconsistent"],
+              },
+              "master-design": {
+                  "id": "requested-solution-is-treated-as-proposal",
+                  "items": ["requested_solution_is_evaluated_not_followed_blindly"],
+                  "gates": ["requested_solution_is_evaluated_not_followed_blindly"],
+              },
+              "readability": {
+                  "id": "readability-rejects-unframed-void-before-focus",
+                  "items": ["no_unframed_void_before_focal_point", "legibility_score", "line_length_audit", "dead_space_verdict", "readability_gate_scores", "text_content_inventory", "rendered_layout_ref"],
+                  "gates": ["no_unframed_void_before_focal_point"],
+              },
+              "responsiveness": {
+                  "id": "responsive-audit-blocks-mobile-overflow",
+                  "items": ["no_horizontal_overflow_on_mobile", "breakpoint_audit", "touch_target_report", "type_scaling_audit", "responsiveness_gate_scores", "layout_artifact"],
+                  "gates": ["no_horizontal_overflow_on_mobile"],
+              },
+              "ux-psychology": {
+                  "id": "ux-findings-name-principles-and-actionable-friction",
+                  "items": ["no_vague_feedback_like_confusing_or_overwhelming", "cognitive_load_report", "habit_loop_analysis", "heuristic_violation_list", "behavioral_friction_map", "improvement_recommendations", "ui_or_flow_to_analyze"],
+                  "gates": ["no_vague_feedback_like_confusing_or_overwhelming"],
+              },
+              "ux-ui-patterns": {
+                  "id": "pattern-decision-exposes-path-and-gate-scores",
+                  "items": ["decision_tree_path", "pattern_gate_scores", "brief_signals", "content_inventory"],
+                  "gates": ["pattern_selected_from_decision_tree_not_arbitrary"],
+              },
+          }
+
+          for skill, config in configs.items():
+              path = root / "contracts" / "tests" / f"{skill}.test.yaml"
+              doc = yaml.safe_load(path.read_text(encoding="utf-8"))
+              test = doc["skill_test"]
+              matches = [case for case in test["cases"] if case.get("id") == config["id"]]
+              if len(matches) != 1:
+                  raise SystemExit(f"{path}: expected exactly one case {config['id']}")
+              case = matches[0]
+              case["must_contain"] = config["items"]
+              case["quality_gates_tested"] = config["gates"]
+              if config.get("design_gate_ids"):
+                  case["design_gate_ids"] = config["design_gate_ids"]
+              elif "design_gate_ids" in case:
+                  del case["design_gate_ids"]
+              path.write_text(yaml.safe_dump(doc, sort_keys=False, width=120), encoding="utf-8")
+          PY
+
+      - name: Validate changed YAML shape
+        run: |
+          python scripts/validate-eval-contracts.py --write-smoke-outputs .tmp/eval-smoke-outputs
+          git diff --check
+
+      - name: Commit eval refinement
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add contracts/tests
+          git commit -m "test: narrow design conformance regression cases [skip ci]"
+          git push origin HEAD:${HEAD_BRANCH}
