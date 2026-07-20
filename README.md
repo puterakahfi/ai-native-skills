@@ -8,6 +8,18 @@ Works with agents that support the [Agent Skills specification](https://agentski
 
 **81 skills · 9 workflows · 6 meta-skills**
 
+## Start here
+
+| Goal | Start with |
+|---|---|
+| Install one reusable capability | [Single skill](#install-one-skill) |
+| Install a complete workflow and its documented dependencies | [Skill packs](docs/skill-packs.md) |
+| Let the agent choose the correct workflow | `workflow-router` |
+| Compose engineering, design, product, and review roles | `role-switcher` |
+| Bootstrap an AI-native Hermes profile | [`hermes-profile-bootstrap`](#hermes-profile-bootstrap) |
+| Browse the complete capability taxonomy | [docs/skills.md](docs/skills.md) |
+| Contribute a skill, workflow, reference, or eval case | [CONTRIBUTING.md](CONTRIBUTING.md) |
+
 ## Where this repository fits
 
 ```text
@@ -25,18 +37,6 @@ agents, native-ai-fw, and product repositories
 - `ai-native-skills` implements reusable capabilities that agents can load and execute.
 - [`native-ai-fw`](https://github.com/puterakahfi/ai-native-fw) provides orchestration, discovery, adapters, context packs, and product-control behavior.
 - Product repositories apply and validate the capabilities in real systems.
-
-## Start here
-
-| Goal | Start with |
-|---|---|
-| Install one reusable capability | [Single skill](#install-one-skill) |
-| Install a complete workflow and its documented dependencies | [Skill packs](docs/skill-packs.md) |
-| Let the agent choose the correct workflow | `workflow-router` |
-| Compose engineering, design, product, and review roles | `role-switcher` |
-| Bootstrap an AI-native Hermes profile | [`hermes-profile-bootstrap`](#hermes-profile-bootstrap) |
-| Browse the complete capability taxonomy | [docs/skills.md](docs/skills.md) |
-| Contribute a skill, workflow, reference, or eval case | [CONTRIBUTING.md](CONTRIBUTING.md) |
 
 ## Install
 
@@ -184,9 +184,9 @@ python ai-native-core/scripts/run-eval.py \
   --output-dir eval-outputs
 ```
 
-Pull requests run the **Skill and Gate Contracts** workflow. It verifies validator and runner syntax, canonical gate identity, repository eval contracts, the pinned core runner, wrapper integration, and per-case compatibility smoke.
+Executable capability and contract changes are validated by the **Skill and Gate Contracts** workflow. It verifies validator and runner syntax, canonical gate identity, repository eval contracts, the pinned core runner, wrapper integration, and per-case compatibility smoke.
 
-A green workflow is necessary but not sufficient. Visual, runtime, interaction, security, architecture, and product claims still require evidence appropriate to their domain.
+A green workflow is necessary for affected paths but not sufficient by itself. Visual, runtime, interaction, security, architecture, and product claims still require evidence appropriate to their domain.
 
 ## Contributing
 
