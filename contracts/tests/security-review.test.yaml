@@ -1,0 +1,25 @@
+skill_test:
+  skill: security-review
+  version: 1.0.1
+  description: Verify security-review exposes and applies its reviewed runtime or security contract interface.
+  cases:
+  - id: security-verdict-verifies-output-encoding
+    description: Review a code diff against a security baseline and produce a blocking verdict.
+    trigger: Apply security-review to a realistic runtime, operations, resilience, incident, observability, or security task
+      and report the contract-backed result.
+    must_contain:
+    - output_encoding_verified
+    - security_verdict
+    - secret_detection_report
+    - vulnerability_list
+    - dependency_risk_report
+    - recommendations
+    - code_or_diff
+    - security_baseline_ref
+    - security_verdict_required_before_deploy
+    must_not_contain:
+    - approve deployment without a verdict
+    - ignore output encoding
+    quality_gates_tested:
+    - output_encoding_verified
+    - security_verdict_required_before_deploy

@@ -1,0 +1,27 @@
+skill_test:
+  skill: native-ai-runtime-ops
+  version: 1.0.1
+  description: Verify native-ai-runtime-ops exposes and applies its reviewed runtime or security contract interface.
+  cases:
+  - id: canonical-runtime-requires-backup-and-command-evidence
+    description: Bootstrap a canonical remote runtime with restore planning and actual operational evidence.
+    trigger: Apply native-ai-runtime-ops to a realistic runtime, operations, resilience, incident, observability, or security
+      task and report the contract-backed result.
+    must_contain:
+    - define_backup_restore_before_treating_remote_as_canonical
+    - record_commands_and_actual_outputs
+    - runtime_access_plan
+    - ssh_connection_handoff
+    - canonical_runtime_bootstrap_plan
+    - profile_installation_plan
+    - project_checkout_plan
+    - access_method
+    - profile_name
+    - operational_goal
+    - safety_constraints
+    must_not_contain:
+    - treat remote as canonical without restore
+    - report commands without outputs
+    quality_gates_tested:
+    - define_backup_restore_before_treating_remote_as_canonical
+    - record_commands_and_actual_outputs

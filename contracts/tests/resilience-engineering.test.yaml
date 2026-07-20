@@ -1,0 +1,24 @@
+skill_test:
+  skill: resilience-engineering
+  version: 1.0.1
+  description: Verify resilience-engineering exposes and applies its reviewed runtime or security contract interface.
+  cases:
+  - id: resilience-plan-covers-failure-and-recovery
+    description: Design resilience for a service with explicit degradation, blast radius, chaos, and recovery objectives.
+    trigger: Apply resilience-engineering to a realistic runtime, operations, resilience, incident, observability, or security
+      task and report the contract-backed result.
+    must_contain:
+    - chaos_experiment_plan
+    - circuit_breaker_design
+    - graceful_degradation_strategy
+    - blast_radius_map
+    - rto_rpo_design
+    - system_or_service_description
+    - failure_modes_must_be_identified_before_chaos_testing
+    - rto_and_rpo_must_be_explicitly_defined
+    must_not_contain:
+    - run chaos without an abort condition
+    - omit recovery objectives
+    quality_gates_tested:
+    - failure_modes_must_be_identified_before_chaos_testing
+    - rto_and_rpo_must_be_explicitly_defined

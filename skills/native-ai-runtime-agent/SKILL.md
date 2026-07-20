@@ -3,7 +3,7 @@ name: native-ai-runtime-agent
 description: Runtime agent skill for ai-native-fw product adapters — loads repo context, product bindings, source-of-truth files, workflow rules, and verification policy before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/native-ai-runtime-agent.contract.yaml
@@ -11,6 +11,32 @@ metadata:
 ---
 
 # Native AI Runtime Agent
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/runtime/native-ai-runtime-agent.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- repo_context
+- product_bindings
+allowed_outputs:
+- execution_plan
+- verification_result
+- workflow_output
+- adapter_state
+quality_gates:
+- load_repo_context_before_execution
+- respect_product_binding_contracts
+- verify_against_source_of_truth
+- no_product_facts_leaked_to_core
+- execution_evidence_required_before_claiming_done
+```
+
+Load repo_context and product_bindings before execution. Return an execution_plan, workflow_output, verification_result, and adapter_state backed by source-of-truth evidence; never move product facts into core or claim completion without executed verification.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, security, incident, resilience, or product evidence.
+
 
 ## Overview
 

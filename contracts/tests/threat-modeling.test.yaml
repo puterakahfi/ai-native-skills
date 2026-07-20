@@ -1,0 +1,24 @@
+skill_test:
+  skill: threat-modeling
+  version: 1.0.1
+  description: Verify threat-modeling exposes and applies its reviewed runtime or security contract interface.
+  cases:
+  - id: threat-model-tracks-flows-privilege-and-change
+    description: Threat-model a feature before implementation and keep the model aligned with architecture changes.
+    trigger: Apply threat-modeling to a realistic runtime, operations, resilience, incident, observability, or security task
+      and report the contract-backed result.
+    must_contain:
+    - data_flows_must_be_mapped_including_external_dependencies
+    - privilege_escalation_paths_must_be_identified
+    - threat_model_must_be_updated_when_architecture_changes
+    - threat_model_document
+    - trust_boundary_map
+    - risk_rating_per_threat
+    - feature_or_system_description
+    must_not_contain:
+    - ignore external dependencies
+    - leave the model stale after architecture changes
+    quality_gates_tested:
+    - data_flows_must_be_mapped_including_external_dependencies
+    - privilege_escalation_paths_must_be_identified
+    - threat_model_must_be_updated_when_architecture_changes
