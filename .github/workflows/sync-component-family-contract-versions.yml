@@ -1,0 +1,60 @@
+name: Sync component family contract versions
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/sync-component-family-contract-versions.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 59-component-family-design
+          fetch-depth: 0
+
+      - name: Sync eval and core pin versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              'contracts/tests/adaptive-component-design.test.yaml': [('version: 1.2.3', 'version: 1.2.4')],
+              'contracts/tests/implementation-context-discovery.test.yaml': [('version: "1.1.0"', 'version: "1.2.0"')],
+              'contracts/tests/design-review.test.yaml': [('version: "3.3.0"', 'version: "3.4.0"')],
+              'contracts/tests/redesign-workflow.test.yaml': [('version: 3.5.0', 'version: 3.6.0')],
+              '.github/workflows/skill-eval.yml': [('ref: c0793dee9598ebb207a8fcca65e5a1d43f7ac48a', 'ref: 2aa6c6f12772397ed6e27def0cb0605b96924bad')],
+          }
+
+          for path, pairs in replacements.items():
+              p = Path(path)
+              text = p.read_text()
+              for old, new in pairs:
+                  if old not in text:
+                      raise SystemExit(f'Missing version anchor in {path}: {old}')
+                  text = text.replace(old, new, 1)
+              p.write_text(text)
+          PY
+
+      - name: Commit synchronized versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add contracts/tests/adaptive-component-design.test.yaml \
+            contracts/tests/implementation-context-discovery.test.yaml \
+            contracts/tests/design-review.test.yaml \
+            contracts/tests/redesign-workflow.test.yaml \
+            .github/workflows/skill-eval.yml
+          git commit -m 'test(design): sync component-family contract versions'
+          git push origin HEAD:59-component-family-design
