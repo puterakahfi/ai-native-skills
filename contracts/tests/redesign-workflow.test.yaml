@@ -1,6 +1,6 @@
 skill_test:
   skill: redesign-workflow
-  version: 3.5.0
+  version: 3.6.0
   description: Verify redesign routing, ownership, implementation-context mapping, adaptive delegation, decision and scope integrity, domain-aware verification, facade-controlled delivery, and bounded correction handoff.
   cases:
   - id: audit-only-hands-off-before-production
