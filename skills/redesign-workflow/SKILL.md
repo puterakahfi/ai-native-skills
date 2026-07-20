@@ -9,7 +9,8 @@ metadata:
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
   ai-native-skills.contract-version: "^2.2.0"
   ai-native-skills.pack: packs/redesign/pack.yaml
-  ai-native-skills.requires: "role-switcher master-design master-engineer decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement business-value-alignment skill-evolution skill-eval git-workflow"
+  ai-native-skills.pack-version: "1.0.0"
+  ai-native-skills.requires: "role-switcher master-design master-engineer business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement skill-evolution skill-eval git-workflow"
   ai-native-skills.related_skills: '["workflow-router","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
 ---
 
@@ -27,6 +28,9 @@ Runtime composition and package installation are separate concerns.
 ai-native-skills.requires
   → backward-compatible runtime capability hint
   → does not prove that dependencies are installed
+
+ai-native-skills.pack + ai-native-skills.pack-version
+  → bind this workflow version to one canonical manifest contract
 
 packs/redesign/pack.yaml
   → canonical ordered dependency inventory
