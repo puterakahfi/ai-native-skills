@@ -12,7 +12,7 @@ metadata:
   ai-native-skills.boundary.delegates: '["net_new_product_definition","audit_only_work_after_route_handoff","known_narrow_refinement_after_route_handoff","non_visual_feature_development","unrelated_product_route_auth_data_or_infrastructure_changes","general_bugfix_workflow","deployment_or_publishing","legal_trademark_clearance","force_overwrite_of_uninspected_concurrent_work","destructive_repository_operations_without_approval"]'
   ai-native-skills.pack: packs/redesign/pack.yaml
   ai-native-skills.pack-version: "1.1.0"
-  ai-native-skills.requires: "role-switcher master-design master-engineer implementation-context-discovery business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement skill-evolution skill-eval git-workflow"
+  ai-native-skills.requires: "role-switcher master-design master-engineer implementation-context-discovery business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit architecture-review design-review design-refinement skill-evolution skill-eval git-workflow"
   ai-native-skills.related_skills: '["workflow-router","architecture-review","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
 ---
 
