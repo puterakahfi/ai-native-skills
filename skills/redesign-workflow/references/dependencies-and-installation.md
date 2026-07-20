@@ -25,25 +25,35 @@ packs/redesign/pack.yaml
 It owns:
 
 ```text
-- ordered local dependency inventory
+- manifest schema and pack version
+- ordered local or explicitly pinned external dependency inventory
 - required, conditional, port, adapter, domain-reviewer, and optional classification
 - conditions for contextual capabilities
-- compatibility projection for ai-native-skills.requires
+- exact compatibility projection for ai-native-skills.requires
 - minimum and complete installation profiles
-- documentation binding for the public install command
+- exact documentation binding for the public install command
 ```
 
-`metadata["ai-native-skills.requires"]` remains a backward-compatible runtime hint. It is not the package manifest and must not be interpreted as proof that dependencies were installed.
+The workflow binds the manifest with:
+
+```text
+ai-native-skills.pack
+ai-native-skills.pack-version
+```
+
+`metadata["ai-native-skills.requires"]` remains a backward-compatible runtime hint. It is not the package manifest and must not be interpreted as proof that dependencies were installed. Its order and membership are generated from the manifest compatibility projection and validated exactly.
 
 ## Dependency classes
 
 ```text
 required
-  lifecycle capability needed for a normal redesign run
+  universal lifecycle capability needed for a normal redesign run
 
 conditional
   capability required only under a declared execution condition
-  example: master-engineer for patch production
+  examples: master-engineer for patch production,
+            design-brand when brand locks are in scope,
+            git-workflow for repository-backed delivery
 
 port
   stable concern-level routing capability
@@ -62,13 +72,13 @@ optional
   example: workflow-router before entrypoint selection
 ```
 
-Do not promote every contextual adapter into a universal hard dependency. Installation may provide the complete pack while runtime composition still loads only the capabilities relevant to the task.
+Do not promote every contextual capability into a universal hard dependency. Installation may provide the complete pack while runtime composition still loads only the capabilities relevant to the task.
 
 ## Installation profiles
 
 ### Complete
 
-Use the complete profile for a ready-to-run general redesign environment. The generated command is documented in `docs/skill-packs.md` and validated against the manifest.
+Use the complete profile for a ready-to-run general redesign environment. The generated command is documented in `docs/skill-packs.md` and validated byte-for-byte after surrounding whitespace normalization.
 
 ```text
 python scripts/validate-skill-packs.py \
@@ -79,7 +89,7 @@ python scripts/validate-skill-packs.py \
 
 ### Minimum
 
-The minimum profile installs the workflow, required lifecycle capabilities, and concern ports. Contextual adapters must already be installed or added separately before a task that needs them.
+The minimum profile installs the workflow, universal lifecycle capabilities, and concern ports. Conditional capabilities and adapters must already be installed or added separately before a task that needs them.
 
 The minimum profile is useful for controlled runtimes with their own capability resolver. It is not the recommended manual install path for general users.
 
@@ -89,11 +99,12 @@ Before claiming redesign capability is ready:
 
 ```text
 1. resolve the selected installation profile
-2. verify each required local skill is available
-3. inspect output mode and load conditional capabilities
-4. resolve changed concerns through ports
-5. select only applicable adapters and domain reviewers
-6. report missing capabilities as a blocker or explicit limited mode
+2. verify each universal required skill is available
+3. inspect output mode, domain, brand locks, evidence needs, and delivery boundary
+4. load conditional capabilities whose activation conditions are true
+5. resolve changed concerns through ports
+6. select only applicable adapters and domain reviewers
+7. report missing capabilities as a blocker or explicit limited mode
 ```
 
 Never claim a complete redesign environment from the presence of `redesign-workflow` alone.
@@ -110,13 +121,18 @@ python -m unittest tests/test_validate_skill_packs.py
 Validation fails when:
 
 ```text
-- a referenced local skill is missing
+- the manifest schema version is unsupported
+- a pack, profile, skill, concern, port, or domain identifier is invalid
+- the repository coordinate is invalid
+- a referenced local skill is missing or has a mismatched name
+- an external dependency lacks an explicit repository and ref
 - a dependency is duplicated
 - a classification is invalid
-- a conditional dependency has no condition
+- a conditional dependency or domain reviewer has no activation condition
 - an adapter references an unknown port
 - a domain reviewer has no declared domain
 - a pack dependency is unknown or cyclic
-- workflow metadata drifts from the compatibility projection
-- documented install order or membership drifts from the selected profile
+- workflow manifest path or pack-version metadata drifts
+- ai-native-skills.requires membership, order, or uniqueness drifts
+- the documented repository, skills, order, flags, or full command drifts
 ```
