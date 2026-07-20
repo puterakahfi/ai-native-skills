@@ -20,7 +20,9 @@ github_profile_result:
     final_zen_commit: a8d09f5a622b58e219a0c5620ab7a277c29f68c2
     modern_initial_commit: c64aa8dab45e8c6e70739246e8a16ac0664a1f19
     modern_refined_commit: fac5b937aa79bcd76e1129175f3e2dd6655ce951
-    active_final_commit: a402084de2ca5bff45664409036ff78d776afdc0
+    modern_final_commit: a402084de2ca5bff45664409036ff78d776afdc0
+    creative_initial_commit: e891b409d51b0f68eabe4ccbaac16ab307d82e5d
+    active_final_commit: 65cd122e2dabf8ce17df38d4a68d376ed0dc8a86
   brand_alignment:
     source:
       - user-authoritative statement about pkahfi.com visual direction
@@ -30,8 +32,8 @@ github_profile_result:
       density: sparse to balanced but information-bearing
       spacing: generous only when structurally earned
       separators: none decorative
-      alignment: left for the active professional variant
-      typography_behavior: quiet hierarchy with one dominant emphasis tier per module
+      alignment: bounded centered opening followed by left-aligned reading
+      typography_behavior: authored thesis with subordinate role and evidence framing
     prohibited_treatments:
       - horizontal dividers
       - blockquote project cards
@@ -40,6 +42,7 @@ github_profile_result:
       - repeated oversized blank intervals
       - tiny labels carrying primary section identity
       - repeated bold labels that flatten hierarchy
+      - form-like proof schemas masquerading as editorial expression
   preservation_locks:
     - Putera Kahfi name
     - puterakahfi GitHub identity
@@ -65,7 +68,7 @@ github_profile_result:
         - pkahfi.com
         - ai.pkahfi.com
         - VisualMate
-    selected_for_publication: modern-professional
+    selected_for_publication: creative-editorial
     variants:
       - name: zen-minimalist
         publication_status: aligned-alternative
@@ -76,21 +79,21 @@ github_profile_result:
         differentiation_device: quiet authored thesis and relational rhythm
         brand_fit: strong aligned alternative
       - name: modern-professional
-        publication_status: active-selected
+        publication_status: accepted-option
         density: balanced
         alignment: left
         expression: contemporary
         proof_treatment: purpose, one italic evidence line, and contribution prose
         differentiation_device: memorable proposition plus crisp professional hierarchy
-        brand_fit: strongest active fit after direct GitHub render refinement
+        brand_fit: verified aligned option after direct GitHub render refinement
       - name: creative-editorial
-        publication_status: exploratory
+        publication_status: active-live-test
         density: balanced
         alignment: mixed editorial
         expression: expressive but controlled
-        proof_treatment: premise, work, and evidence pattern
-        differentiation_device: numbered systems and authored section vocabulary
-        brand_fit: compatible through cadence rather than decoration
+        proof_treatment: italic premise, natural contribution prose, and subordinate evidence
+        differentiation_device: numbered systems plus authored section language and cadence
+        brand_fit: verified through language and rhythm rather than decoration
   direction_candidates:
     - name: centered-zen-manifesto
       fit: >-
@@ -106,37 +109,39 @@ github_profile_result:
         - repeated labels or excessive bold can flatten hierarchy
     - name: creative-editorial-systems
       fit: >-
-        Numbered systems and authored section language create a memorable editorial voice
-        while semantic text preserves project proof.
+        Numbered systems, authored tension, and semantic project prose create a memorable
+        editorial voice while preserving verifiable technical proof.
       risks:
-        - authored voice may become stronger than the intended personal brand
+        - repeated vocabulary can feel like a form rather than authored prose
   selected_direction:
-    name: modern-professional-left-index
-    profile_variant: modern-professional
+    name: creative-editorial-systems
+    profile_variant: creative-editorial
     reason: >-
-      The final direct GitHub desktop render shows the strongest balance of professional
-      scanning, project proof, memorable positioning, brand continuity, and maintainable
-      GitHub-native composition.
+      The refined direct GitHub desktop render preserves the calm personal brand while
+      producing the strongest authored identity, clear project proof, coherent editorial
+      rhythm, and maintainable GitHub-native composition.
   differentiation_device:
-    primary: explicit AI-native engineering proposition
-    supporting: concise evidence metadata and balanced left-aligned rhythm
-    prohibited_substitute: cards, dividers, gradients, stats widgets, or repeated bold labels
+    primary: numbered systems with authored editorial tension
+    supporting: premise, first-person contribution prose, and evidence cadence
+    prohibited_substitute: cards, dividers, random visual motifs, or repeated bold form labels
   hierarchy_roles:
-    page_anchor: left-aligned H3 name
+    page_anchor: centered H3 name
     positioning: plain supporting role
-    statement: one dominant bold engineering proposition
+    statement: centered H4 authored tension
+    explanation: two concise supporting lines
     section_parent: left-aligned H3
-    project_item: linked H4
-    project_purpose: plain concise sentence
+    project_item: numbered linked H4
+    project_premise: one italic editorial frame
+    project_body: natural first-person contribution prose
     metadata: one italic evidence line
-    body: concise contribution prose
     action: bounded link group
   spacing_contract:
     relation: element_gap < item_gap < section_gap
     rules:
-      - keep each project title, purpose, metadata, and contribution attached
+      - keep each numbered project title, premise, contribution, and evidence attached
       - use one stronger bounded pause between sibling projects
-      - use the strongest pause between selected systems and operating model
+      - use the strongest pause between the final project and The practice
+      - preserve a compact rhythm inside principles and working materials
       - avoid increasing all gaps uniformly
       - reduce space when content mass becomes stranded
   density: balanced
@@ -162,27 +167,29 @@ github_profile_result:
     - Private repositories are not used as public proof links.
     - Current-focus statements should be reviewed when their date becomes stale.
   section_order:
-    - identity_positioning_and_proposition
-    - selected_systems
-    - operating_model
-    - working_across_with_dated_current_focus
-    - connect
+    - identity_positioning_and_authored_tension
+    - systems_in_motion
+    - the_practice
+    - principles_and_working_materials
+    - current_field_notes
+    - open_paths
   external_dependencies: []
   render_evidence:
     - user-provided desktop screenshot of version 1.0.0
     - user-provided desktop screenshot of line-free foundation-failed version
     - local GFM-equivalent desktop and narrow renders of the zen-minimalist source
     - local GFM-equivalent desktop and narrow comparative renders for all three variants
-    - direct GitHub desktop screenshot of initial modern-professional publication
-    - direct GitHub desktop screenshot after main focused refinement
-    - direct GitHub desktop screenshot after final spacing and timestamp polish
+    - three direct GitHub desktop screenshots of modern-professional refinement
+    - direct GitHub desktop screenshot of initial creative-editorial publication
+    - direct GitHub desktop screenshot after creative-editorial focused refinement
   design_review_result: LIMITED_REVIEW
   verified_universal_score: 8.8
-  evidence_coverage: approximately 95 percent for the active modern-professional desktop fixture
+  evidence_coverage: approximately 95 percent for the active creative-editorial desktop fixture
   variant_review_note: >-
     All three variants preserve the locked fact set and are materially distinct in density,
-    alignment, hierarchy, proof treatment, and editorial voice. Modern Professional is now
-    selected after three direct GitHub desktop review cycles. Final desktop hierarchy,
-    grouping, alignment, rhythm, balance, flow, legibility, consistency, and brand fit pass
-    within verified universal scope. Direct GitHub narrow and dark-theme evidence plus a
-    dedicated developer-profile reviewer remain unavailable.
+    alignment, hierarchy, proof treatment, rhythm, and editorial voice. Creative Editorial is
+    active after two direct GitHub desktop review cycles; Modern Professional remains an
+    accepted aligned option and Zen Minimalist remains a strong alternative. Final desktop
+    hierarchy, grouping, alignment, rhythm, balance, flow, legibility, consistency, and brand
+    fit pass within verified universal scope. Direct GitHub narrow and dark-theme evidence
+    plus a dedicated developer-profile reviewer remain unavailable.
