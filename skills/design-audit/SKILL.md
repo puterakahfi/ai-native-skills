@@ -1,19 +1,19 @@
 ---
 name: design-audit
-description: Standalone facade-backed design audit — classify an existing artifact, capture appropriate evidence, invoke the applicable design-review domain strategy, and produce a prioritized gap report without redesigning.
+description: Standalone facade-backed design audit — classify an existing artifact, capture appropriate evidence, invoke applicable design-review and specialist routes, and produce a prioritized gap report without redesigning.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.1.0
+  ai-native-skills.version: 2.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.related_skills: '["redesign-workflow","design-review","design-refinement","master-design","accessibility","readability","responsiveness"]'
+  ai-native-skills.related_skills: '["redesign-workflow","design-review","design-refinement","master-design","collection-discovery-design","adaptive-component-design","accessibility","readability","responsiveness"]'
 ---
 
 # Design Audit
 
 Inspect → classify → capture → review → prioritize → report. No redesign output.
 
-`design-audit` owns evidence capture, gap analysis, prioritization, and lifecycle recommendation. The `design-review` facade owns domain routing, applicability, evidence normalization, scoring, coverage, verdict, and report semantics.
+`design-audit` owns evidence capture, gap analysis, prioritization, and lifecycle recommendation. The `design-review` facade owns domain routing, applicability, evidence normalization, scoring, coverage, verdict, and report semantics. Narrow specialists own their domain diagnosis when the finding exceeds universal or component-level review.
 
 ## Hard Rules
 
@@ -28,6 +28,7 @@ Inspect → classify → capture → review → prioritize → report. No redesi
 8. Unsupported primary domains produce LIMITED REVIEW, not a full pass.
 9. Every gap needs evidence, impact, governing reviewer, and correction direction.
 10. Audit does not silently become redesign or implementation.
+11. Do not reduce a collection-wide retrieval failure to one component defect.
 ```
 
 ## When to Use
@@ -40,7 +41,8 @@ Use for:
 - pre-redesign assessment;
 - deciding between local fix, refinement, redesign, or specialist review;
 - built-in facade domains: digital interface, visual communication, and presentation;
-- specialized domains when an appropriate domain reviewer is available.
+- specialized domains when an appropriate domain reviewer is available;
+- collection-heavy surfaces where catalogs, registries, directories, feeds, galleries, tables, libraries, or search results may need specialist discovery diagnosis.
 
 Output: an evidence-backed gap report and prioritized action, not a replacement artifact.
 
@@ -77,6 +79,7 @@ audit_context:
   review_depth: <quick | focused | full | release>
   coverage_mode: <BUILT_IN | ADAPTER_COVERED | LIMITED | ROUTE_ELSEWHERE>
   domain_reviewers: []
+  specialist_lenses: []
   viewing_context: []
   required_assets: []
   evidence_available: []
@@ -87,6 +90,8 @@ audit_context:
 Use `design-review/references/facade-boundary.md` when scope or domain coverage is unclear.
 
 Do not continue as a complete audit when `coverage_mode` is `ROUTE_ELSEWHERE`. For `LIMITED`, continue only with an explicitly limited universal review and state that no complete domain verdict is possible.
+
+For a material collection surface, add `collection-discovery-design` as a specialist lens when the audit needs to judge retrieval modes, collection organization, search/browse balance, filters/facets, sorting, traversal, progressive disclosure, or context restoration.
 
 ### Step 2 — Capture current state
 
@@ -125,7 +130,20 @@ source-only
   visual/interaction claims remain NOT_VERIFIED until rendered
 ```
 
-A build is not visual verification. A screenshot is not keyboard, motion, runtime, or hidden-state evidence.
+Collection evidence may additionally require:
+
+```text
+collection inventory and item schema
+current count and expected growth
+retrieval tasks and their priority
+meaningful grouping/filter/sort dimensions
+query, filter, sort, position, URL, and restoration state
+empty, no-result, loading, error, partial, stale, and end states
+realistic desktop/mobile or other context captures
+measured performance when performance is claimed
+```
+
+A build is not visual verification. A screenshot is not keyboard, motion, runtime, restoration, dynamic loading, or hidden-state evidence.
 
 ### Step 3 — Run facade review
 
@@ -147,6 +165,9 @@ DOMAIN / SURFACE REVIEW
 
 COMPONENT REVIEW
   component-review.md only for selected components
+
+SPECIALIST COLLECTION REVIEW
+  collection-discovery-design only when collection strategy is material
 
 EVIDENCE + SCORE
   evidence-and-scoring.md
@@ -189,12 +210,43 @@ gap:
     user: <impact>
     business_or_delivery: <impact when relevant>
   correction_direction: <behavior or design requirement>
-  suspected_layer: <foundation | structure | component | expression | interaction | content | implementation | domain-specialist>
+  suspected_layer: <foundation | structure | collection-strategy | component | expression | interaction | content | implementation | domain-specialist>
   effort: <low | medium | high>
   confidence: <high | medium | low>
 ```
 
-Combine repeated symptoms under one root cause. Do not multiply one spacing, token, state, or domain defect into many independent penalties.
+Combine repeated symptoms under one root cause. Do not multiply one spacing, token, state, collection strategy, or domain defect into many independent penalties.
+
+#### Collection strategy versus component defect
+
+```text
+COLLECTION_STRATEGY_DEFECT
+  retrieval modes, organization, search/browse balance, narrowing, traversal,
+  disclosure, or collection state are wrong or missing across the surface
+  → governing specialist: collection-discovery-design
+
+PATTERN_MISMATCH
+  the accepted strategy exists, but a selected component family does not fit
+  its task, content, or context
+  → governing specialist: adaptive-component-design
+
+IMPLEMENTATION_DEFECT
+  the accepted strategy and component are fit, but behavior/rendering is broken
+  → governing owner: local implementation owner
+```
+
+Examples:
+
+```text
+600 records, flat list, no lookup path, no narrowing model, no position restoration
+→ COLLECTION_STRATEGY_DEFECT
+
+30 dynamic searchable options forced into one-line tabs
+→ PATTERN_MISMATCH
+
+fit pagination control fails to preserve the active filters in its URL
+→ IMPLEMENTATION_DEFECT, with collection-state regression evidence
+```
 
 ### Step 5 — Prioritize
 
@@ -223,13 +275,17 @@ Coverage gaps do not become cosmetic findings. They limit the verdict.
 local implementation/content/asset fix
   governing rule exists and the defect is isolated
 
+collection-discovery-design specialist
+  collection retrieval or discovery strategy is missing or wrong
+  and the audit needs a diagnosis/strategy handoff before components
+
 design-refinement
   direction is sound
   primary-domain coverage is sufficient
   failures are specific and passing work should be preserved
 
 redesign-workflow
-  direction, macrostructure, or component model is wrong
+  direction, macrostructure, component model, or collection model is broadly wrong
   failures reveal a broad design-system or experience problem
 
 domain specialist / reviewer
@@ -239,7 +295,7 @@ ready
   score, hard gates, coverage, and declared purpose all pass
 ```
 
-Do not route from average score alone. Consider coverage, hard gates, root cause, direction, and domain ownership.
+Do not route from average score alone. Consider coverage, hard gates, root cause, direction, collection ownership, and domain ownership.
 
 ## Audit Report
 
@@ -254,6 +310,7 @@ Use `design-review/references/review-report.md` and append the lifecycle recomme
 - Artifact state: [state]
 - Coverage mode: [mode]
 - Loaded reviewers: [reviewers]
+- Specialist lenses: [lenses]
 - Goal: [goal]
 
 ## Verdict
@@ -278,7 +335,7 @@ Use `design-review/references/review-report.md` and append the lifecycle recomme
 - Domain limitations: ...
 
 ## Recommended Action
-[local fix | design-refinement | redesign-workflow | domain specialist | ready]
+[local fix | collection-discovery-design | design-refinement | redesign-workflow | domain specialist | ready]
 ```
 
 The audit ends with the report. Produce or patch only when the user or calling workflow explicitly requests the next lifecycle.

@@ -1,0 +1,133 @@
+skill_test:
+  skill: collection-discovery-design
+  version: "1.0.0"
+  description: Verify collection discovery diagnoses retrieval pressure before selecting replaceable adapters.
+
+  cases:
+    - id: same-collection-different-context-adapters
+      description: The same capability registry uses different disclosure adapters by context without changing its discovery strategy.
+      trigger: "A registry contains 9 workflows, 6 meta-skills, and 79 atomic skills. Desktop users can scan grouped rows comfortably. On mobile, showing all 15 routing entries before the next section creates a long default journey. Choose the collection discovery strategy and adapters."
+      must_contain:
+        - "retrieval mode"
+        - "BROWSE_OVERLOAD"
+        - "CROSS_CONTEXT_PRESSURE"
+        - "grouped"
+        - "mobile"
+        - "preview"
+        - "show all"
+        - "desktop"
+        - "state"
+      must_not_contain:
+        - "94 items means pagination"
+        - "Use pagination on every viewport"
+        - "Convert every group to tabs"
+      sequence_required:
+        - pattern: "retrieval mode"
+          must_come_before: "preview|show all|pagination|tabs"
+        - pattern: "BROWSE_OVERLOAD"
+          must_come_before: "preview|show all"
+      quality_gates_tested:
+        - diagnosis_uses_combined_pressures_not_item_count_alone
+        - discovery_strategy_precedes_component_or_adapter_selection
+        - cross_context_adapters_preserve_query_filter_sort_selection_and_semantics
+
+    - id: deterministic-comparison-results
+      description: Task-oriented results justify pagination only after deterministic navigation and comparison needs are established.
+      trigger: "A procurement search returns about 1,000 products. Users search known SKUs, compare shortlisted results, share filtered result URLs, return to a known result position, and export complete review batches. Recommend the discovery strategy."
+      must_contain:
+        - "known_item_lookup"
+        - "COMPARISON_PRESSURE"
+        - "CONTEXT_LOSS_RISK"
+        - "search"
+        - "filters"
+        - "sort"
+        - "pagination"
+        - "deterministic"
+        - "share"
+        - "return"
+      must_not_contain:
+        - "because there are more than 50"
+        - "infinite scroll by default"
+        - "count alone"
+      sequence_required:
+        - pattern: "COMPARISON_PRESSURE"
+          must_come_before: "pagination"
+        - pattern: "CONTEXT_LOSS_RISK"
+          must_come_before: "pagination"
+      quality_gates_tested:
+        - adapter_capabilities_trace_to_diagnosis_user_tasks_and_constraints
+        - traversal_strategy_preserves_required_position_context_and_shareability
+        - pagination_tabs_infinite_scroll_and_other_adapters_are_not_selected_by_count_threshold_alone
+
+    - id: exploratory-continuous-feed
+      description: A large exploratory collection can reject pagination when positional precision is not the primary task.
+      trigger: "A visual inspiration feed continuously receives new items. Users explore casually, save items, and rarely need a stable page number, but must be able to recover position, stop loading, and use keyboard and assistive technology. Recommend the discovery strategy."
+      must_contain:
+        - "exploratory_browse"
+        - "UPDATE_STREAM_PRESSURE"
+        - "CONTEXT_LOSS_RISK"
+        - "infinite scroll"
+        - "position"
+        - "recovery"
+        - "stop"
+        - "accessibility"
+        - "save"
+      must_not_contain:
+        - "Large data always requires pagination"
+        - "No stopping mechanism is needed"
+        - "Pagination is mandatory"
+      sequence_required:
+        - pattern: "UPDATE_STREAM_PRESSURE"
+          must_come_before: "infinite scroll"
+        - pattern: "CONTEXT_LOSS_RISK"
+          must_come_before: "infinite scroll"
+      quality_gates_tested:
+        - primary_and_secondary_retrieval_modes_are_explicit
+        - adapter_capabilities_trace_to_diagnosis_user_tasks_and_constraints
+        - rendered_and_runtime_claims_use_appropriate_evidence
+
+    - id: few-stable-groups-with-searchable-items
+      description: Stable peer categories may use tabs while the large item collection still requires independent lookup and narrowing.
+      trigger: "A knowledge base has four stable peer content types and thousands of searchable articles inside them. Users frequently switch content type, search exact terms, filter by owner and status, and open a detail page. Choose the strategy without treating tabs as the complete discovery model."
+      must_contain:
+        - "known_item_lookup"
+        - "NARROWING_GAP"
+        - "tabs"
+        - "stable"
+        - "search"
+        - "filters"
+        - "detail"
+        - "state"
+      must_not_contain:
+        - "Tabs replace search"
+        - "Put thousands of articles directly in tabs"
+        - "item count alone"
+      sequence_required:
+        - pattern: "NARROWING_GAP"
+          must_come_before: "tabs|search|filters"
+      quality_gates_tested:
+        - browse_search_and_narrowing_roles_are_explicit
+        - grouping_facets_and_sorting_trace_to_meaningful_user_decisions
+        - adapter_capabilities_trace_to_diagnosis_user_tasks_and_constraints
+
+    - id: audit-routes-strategy-not-component-only
+      description: A collection-wide retrieval failure routes to collection discovery rather than being reduced to one component mismatch.
+      trigger: "Audit a directory with 600 mixed records. It exposes one flat list, no known-item search, no meaningful grouping, no active-filter state, no traversal model, and loses position after opening a record. The individual row component renders correctly. Classify the root cause and correction owner."
+      must_contain:
+        - "collection strategy"
+        - "collection-discovery-design"
+        - "LOOKUP_PRESSURE"
+        - "NARROWING_GAP"
+        - "CONTEXT_LOSS_RISK"
+        - "not an implementation defect"
+      must_not_contain:
+        - "just add pagination"
+        - "row component is broken"
+        - "adaptive-component-design is the only owner"
+      sequence_required:
+        - pattern: "LOOKUP_PRESSURE"
+          must_come_before: "collection-discovery-design"
+      quality_gates_tested:
+        - diagnosis_uses_combined_pressures_not_item_count_alone
+        - discovery_strategy_precedes_component_or_adapter_selection
+        - adapter_capabilities_trace_to_diagnosis_user_tasks_and_constraints
