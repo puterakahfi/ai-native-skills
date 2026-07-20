@@ -1,0 +1,42 @@
+name: Workflow Inventory
+
+on:
+  push:
+    branches:
+      - 25-boundary-declarations
+    paths:
+      - .github/workflows/workflow-inventory.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Capture workflow sources
+        run: |
+          mkdir -p audit
+          {
+            echo '# Workflow Inventory'
+            echo
+            for file in .github/workflows/*; do
+              echo "## $file"
+              echo
+              echo '```yaml'
+              cat "$file"
+              echo '```'
+              echo
+            done
+          } > audit/workflow-inventory.md
+      - name: Commit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/workflow-inventory.md
+          git commit -m "chore(audit): capture workflow inventory [skip ci]"
+          git push origin HEAD:${GITHUB_REF_NAME}
