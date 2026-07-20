@@ -3,7 +3,7 @@ name: content-strategy
 description: Content strategy for digital products — microcopy, tone of voice, content hierarchy, onboarding copy, empty states, and error messages. The words are the design. Scored 0–10, minimum 8 to pass.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/content/content-strategy.contract.yaml
@@ -12,6 +12,24 @@ metadata:
 ---
 
 # Content Strategy Skill
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - content_inventory
+  - audience_profile
+allowed_outputs:
+  - content_structure
+  - tone_guidelines
+  - microcopy_variants
+  - content_gate_scores
+quality_gates:
+  - information_sequenced_by_user_mental_model
+  - tone_consistent_across_sections
+```
+
+Sequence information from the audience's mental model and task progression, not the author's internal organization. The declared tone must remain consistent across sections; contextual variation may change intensity, never identity.
 
 ## ⚠️ HARD RULES — Read Before Writing Any Copy
 

@@ -3,7 +3,7 @@ name: data-modeling
 description: Data modeling skill — schema design, normalization tradeoffs, migration patterns, polyglot persistence decisions, index strategy, and soft delete governance. For engineers who need to decide WHERE and HOW data lives.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/data-modeling.contract.yaml
@@ -12,6 +12,25 @@ metadata:
 ---
 
 # Data Modeling Skill
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - domain_context
+  - entity_inventory
+allowed_outputs:
+  - schema_definition
+  - migration_plan
+  - model_alignment_verdict
+  - data_modeling_gate_scores
+quality_gates:
+  - schema_reflects_domain_not_database_convenience
+  - migrations_are_reversible_or_documented
+  - no_implicit_coupling_across_bounded_contexts
+```
+
+A migration must be reversible or explicitly document why rollback is unsafe and what recovery path replaces it. Cross-bounded-context relationships require an explicit integration contract; do not create implicit database coupling between contexts.
 
 > **HARD RULES**
 > - **Model the domain, not the UI** — schema driven by read/write access patterns, not forms or screens
