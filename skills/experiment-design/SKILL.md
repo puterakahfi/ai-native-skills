@@ -3,7 +3,7 @@ name: experiment-design
 description: Design minimum viable experiments for product and business learning. Use when value is plausible but assumptions are unverified, especially after business-value-alignment recommends EXPERIMENT_FIRST before PRD, MVP, or implementation.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product/experiment-design.contract.yaml
@@ -12,6 +12,42 @@ metadata:
 ---
 
 # Experiment Design
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/product/experiment-design.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- hypothesis_or_opportunity
+- target_users
+- riskiest_assumption
+allowed_outputs:
+- experiment_spec
+- hypothesis_statement
+- riskiest_assumption
+- smallest_test
+- success_criteria
+- guardrail_criteria
+- decision_rule
+- learning_plan
+- no_build_recommendation
+quality_gates:
+- hypothesis_must_be_falsifiable
+- riskiest_assumption_must_be_named_before_test_design
+- smallest_test_must_be_smaller_than_building_the_full_solution
+- success_criteria_must_be_measurable_before_running_experiment
+- guardrail_criteria_must_prevent_harm_or_misleading_learning
+- decision_rule_must_define_pass_partial_fail_actions
+- experiment_must_state_what_will_not_be_built_yet
+- data_collection_plan_must_respect_privacy_and_consent
+- learning_must_feed_prd_mvp_slice_or_stop_decision
+```
+
+Resolve hypothesis_or_opportunity, target_users, and riskiest_assumption before test design. Use the smallest ethical test that can falsify the hypothesis, state what will not be built yet, define measurable success and guardrails before execution, and map PASS, PARTIAL, and FAIL to PRD, narrower learning, pivot, or stop decisions.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace user evidence, product approval, experiment results, decision provenance, engineering review, or business outcome proof.
+
 
 > **Hypothesis before test. Minimum detectable effect before sample size. No peeking at results before the predetermined end.**
 

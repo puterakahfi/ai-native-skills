@@ -3,7 +3,7 @@ name: product-manager
 description: Product management skill — write PRDs, define acceptance criteria, break down tasks, set scope, and prioritize. Ensures every feature has testable criteria and explicit scope before implementation starts.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product/product-manager.contract.yaml
@@ -11,6 +11,35 @@ metadata:
 ---
 
 # Product Manager
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/product/product-manager.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- product_intent_or_feature_request
+allowed_outputs:
+- product_intent_document
+- prd
+- feature_spec
+- acceptance_criteria
+- task_breakdown
+- priority_list
+- out_of_scope_list
+quality_gates:
+- acceptance_criteria_must_be_testable_not_vague
+- scope_in_and_scope_out_must_both_be_explicit
+- tasks_must_trace_to_acceptance_criteria
+- no_implementation_detail_in_prd_without_engineering_review
+- priority_must_be_explicit_not_implicit
+- prd_must_define_success_metric
+```
+
+Start from an attributable product_intent_or_feature_request. Produce the appropriate product intent, PRD or feature spec, testable acceptance criteria, task breakdown, explicit priority list, and out-of-scope list. Every task traces to acceptance criteria; implementation detail requires engineering review rather than being smuggled into product definition.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace user evidence, product approval, experiment results, decision provenance, engineering review, or business outcome proof.
+
 
 ## The Core Rule
 

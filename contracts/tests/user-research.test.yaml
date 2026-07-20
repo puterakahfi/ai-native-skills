@@ -1,0 +1,23 @@
+skill_test:
+  skill: user-research
+  version: 1.0.1
+  description: Verify user-research exposes and applies its reviewed product, research, experiment, or decision contract interface.
+  cases:
+  - id: research-output-remains-evidence-grounded
+    description: Synthesize research toward JTBD, insights, a provisional persona, and gate scores from a stated goal.
+    trigger: Apply user-research to a realistic product, research, experiment, business-value, or decision task and report
+      the contract-backed result.
+    must_contain:
+    - jtbd_statements
+    - insight_synthesis
+    - persona_sketch
+    - research_gate_scores
+    - research_goal
+    - insights_grounded_in_evidence_not_assumption
+    - jtbd_framed_as_job_not_feature
+    must_not_contain:
+    - present assumptions as interview evidence
+    - write the requested feature as a JTBD statement
+    quality_gates_tested:
+    - insights_grounded_in_evidence_not_assumption
+    - jtbd_framed_as_job_not_feature
