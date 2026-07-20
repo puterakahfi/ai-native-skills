@@ -1,0 +1,20 @@
+skill_test:
+  skill: business-value-alignment
+  version: 1.0.1
+  description: Verify business-value-alignment exposes and applies its reviewed product, research, experiment, or decision
+    contract interface.
+  cases:
+  - id: value-analysis-starts-from-request-or-opportunity
+    description: Evaluate a feature request before PRD or implementation and issue an evidence-labeled value verdict.
+    trigger: Apply business-value-alignment to a realistic product, research, experiment, business-value, or decision task
+      and report the contract-backed result.
+    must_contain:
+    - request_or_opportunity
+    - user_value_must_be_explicit_before_solution_recommendation
+    - stop_continue_or_experiment_verdict_must_be_explicit
+    must_not_contain:
+    - start implementation before value analysis
+    - treat assumptions as known facts
+    quality_gates_tested:
+    - user_value_must_be_explicit_before_solution_recommendation
+    - stop_continue_or_experiment_verdict_must_be_explicit

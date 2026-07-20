@@ -6,11 +6,13 @@ adr
 ai-system-design
 api-contract
 architecture-review
+business-value-alignment
 content-strategy
 context-engineering
 context-manager
 dark-light-theming
 data-modeling
+decision-making
 design-brand
 design-color
 design-depth
@@ -27,6 +29,7 @@ diagram-architect
 domain-driven-design
 ethics-responsible-ai
 event-driven-design
+experiment-design
 git-workflow
 hermes-profile-bootstrap
 incident-response
@@ -45,6 +48,7 @@ observability-design
 onboarding
 plan
 ports-and-adapters
+product-manager
 prompt-optimizer
 readability
 redesign-workflow
@@ -65,6 +69,7 @@ technical-debt-governance
 test-driven-development
 threat-modeling
 ui-components
+user-research
 ux-psychology
 ux-ui-patterns
 web-performance

@@ -3,7 +3,7 @@ name: decision-making
 description: Engineering decision-making frameworks — reversibility classification, pre-mortem, OODA loop, options thinking, epistemic humility, and decision traceability. For making better decisions faster, and knowing when to delay.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product/decision-making.contract.yaml
@@ -12,6 +12,29 @@ metadata:
 ---
 
 # Decision Making Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/product/decision-making.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- decision_context
+- options_list
+allowed_outputs:
+- reversibility_verdict
+- premortem_risks
+- recommended_option
+- decision_gate_scores
+quality_gates:
+- reversibility_classified_before_deciding
+- premortem_run_for_irreversible_decisions
+```
+
+Resolve decision_context and options_list before analysis. Classify reversibility before choosing, run a premortem for irreversible decisions, then return reversibility_verdict, premortem_risks, recommended_option, and decision_gate_scores. Preserve alternatives and uncertainty instead of presenting one option as inevitable.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace user evidence, product approval, experiment results, decision provenance, engineering review, or business outcome proof.
+
 
 ## HARD RULES
 

@@ -1,0 +1,20 @@
+skill_test:
+  skill: product-manager
+  version: 1.0.1
+  description: Verify product-manager exposes and applies its reviewed product, research, experiment, or decision contract
+    interface.
+  cases:
+  - id: product-definition-starts-from-attributable-intent
+    description: Turn an explicit feature request into scoped, measurable, traceable product work.
+    trigger: Apply product-manager to a realistic product, research, experiment, business-value, or decision task and report
+      the contract-backed result.
+    must_contain:
+    - product_intent_or_feature_request
+    - acceptance_criteria_must_be_testable_not_vague
+    - tasks_must_trace_to_acceptance_criteria
+    must_not_contain:
+    - invent the product request
+    - create floating tasks without acceptance criteria
+    quality_gates_tested:
+    - acceptance_criteria_must_be_testable_not_vague
+    - tasks_must_trace_to_acceptance_criteria

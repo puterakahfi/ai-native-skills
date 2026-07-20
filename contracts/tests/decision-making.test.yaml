@@ -1,0 +1,25 @@
+skill_test:
+  skill: decision-making
+  version: 1.1.1
+  description: Verify decision-making exposes and applies its reviewed product, research, experiment, or decision contract
+    interface.
+  cases:
+  - id: decision-analysis-classifies-reversibility-first
+    description: Compare explicit options and handle an irreversible choice with premortem evidence.
+    trigger: Apply decision-making to a realistic product, research, experiment, business-value, or decision task and report
+      the contract-backed result.
+    must_contain:
+    - reversibility_classified_before_deciding
+    - reversibility_verdict
+    - premortem_risks
+    - recommended_option
+    - decision_gate_scores
+    - decision_context
+    - options_list
+    - premortem_run_for_irreversible_decisions
+    must_not_contain:
+    - choose before classifying reversibility
+    - omit the premortem for an irreversible decision
+    quality_gates_tested:
+    - reversibility_classified_before_deciding
+    - premortem_run_for_irreversible_decisions

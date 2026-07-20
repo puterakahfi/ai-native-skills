@@ -3,7 +3,7 @@ name: business-value-alignment
 description: Align requests, features, redesigns, and product ideas to user value, business value, measurable outcomes, assumptions, risks, and an explicit continue/narrow/experiment/stop verdict before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product/business-value-alignment.contract.yaml
@@ -12,6 +12,40 @@ metadata:
 ---
 
 # Business Value Alignment
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/product/business-value-alignment.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- request_or_opportunity
+allowed_outputs:
+- value_alignment_brief
+- user_value_statement
+- business_value_statement
+- success_metrics
+- guardrail_metrics
+- assumptions
+- risks
+- recommendation
+- stop_or_continue_verdict
+- experiment_recommendation
+quality_gates:
+- user_value_must_be_explicit_before_solution_recommendation
+- business_value_must_map_to_measurable_metric_or_learning_goal
+- recommendation_must_include_assumptions_and_risks
+- low_value_or_unclear_value_work_must_be_flagged_before_build
+- metrics_must_distinguish_leading_lagging_and_guardrail_signals
+- value_claims_must_be_evidence_labeled_as_known_assumed_or_unknown
+- stop_continue_or_experiment_verdict_must_be_explicit
+- experiment_first_verdict_must_name_riskiest_assumption
+```
+
+Begin with request_or_opportunity before recommending a solution. Produce a value_alignment_brief with explicit user and business value, leading/lagging/guardrail metrics, evidence-labeled assumptions, risks, and an explicit continue, narrow, experiment-first, or stop verdict. Low or unclear value is surfaced before PRD, design, or implementation begins.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace user evidence, product approval, experiment results, decision provenance, engineering review, or business outcome proof.
+
 
 ## Hard Rule
 

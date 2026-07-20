@@ -3,7 +3,7 @@ name: user-research
 description: User research methodology — interview techniques, usability testing, jobs-to-be-done framework, affinity mapping, and tracing insights to design decisions. For validating assumptions before building.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product/user-research.contract.yaml
@@ -12,6 +12,28 @@ metadata:
 ---
 
 # User Research
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/product/user-research.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- research_goal
+allowed_outputs:
+- jtbd_statements
+- insight_synthesis
+- persona_sketch
+- research_gate_scores
+quality_gates:
+- insights_grounded_in_evidence_not_assumption
+- jtbd_framed_as_job_not_feature
+```
+
+Start from research_goal and separate existing evidence from assumptions. Produce jtbd_statements, insight_synthesis, persona_sketch, and research_gate_scores grounded in observed data. JTBD describes the job, situation, motivation, and outcome rather than disguising a proposed feature as user need; thin evidence remains explicitly provisional.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace user evidence, product approval, experiment results, decision provenance, engineering review, or business outcome proof.
+
 
 ## Hard Rule
 
