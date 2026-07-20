@@ -1,9 +1,9 @@
 skill_pack:
   schema_version: "1.0"
   id: redesign
-  version: "1.1.0"
+  version: "1.2.0"
   repository: puterakahfi/ai-native-skills
-  description: Complete dependency bundle for delegated redesign with repository implementation-context preservation.
+  description: Complete dependency bundle for delegated redesign with component-family consistency and repository implementation-context preservation.
   entrypoints:
     - redesign-workflow
 
@@ -102,7 +102,7 @@ skill_pack:
     - name: design-layout
       classification: port
       concern: layout
-      reason: Route macrostructure, responsive layout, spacing, and component-selection concerns.
+      reason: Route macrostructure, component-family composition, responsive layout, spacing, and component-selection concerns.
     - name: macrostructures
       classification: adapter
       port: layout
@@ -115,11 +115,16 @@ skill_pack:
       classification: adapter
       port: layout
       when: A component must substitute or adapt across device and input contexts.
-      reason: Select component behavior by task, viewport, and interaction constraints.
+      reason: Select component behavior by task, viewport, and interaction constraints while preserving accepted family identity.
     - name: ui-components
       classification: adapter
       port: layout
-      reason: Select suitable component capabilities and hand them to repository implementation-context mapping.
+      reason: Select suitable component capabilities and classify their hierarchy before family and repository mapping.
+    - name: component-family-design
+      classification: adapter
+      port: layout
+      when: The redesign creates or changes a repeated organism, page shell, template, or equivalent product role across routes.
+      reason: Preserve invariant anatomy, configurable slots, bounded variants, adaptive family identity, and route-to-family mappings.
     - name: design-spacing
       classification: adapter
       port: layout
@@ -192,7 +197,7 @@ skill_pack:
     - name: design-review
       classification: required
       concern: acceptance
-      reason: Provide independent facade review and normalized design verdicts.
+      reason: Provide independent facade review and normalized design verdicts, including cross-route family consistency when applicable.
     - name: brand-identity-review
       classification: domain-reviewer
       domains:
@@ -230,7 +235,7 @@ skill_pack:
         - required
         - port
     complete:
-      description: Full documented Redesign Pack with all local contextual adapters, repository implementation-context capability, architecture review, and the available brand-identity reviewer.
+      description: Full documented Redesign Pack with all local contextual adapters, component-family consistency, repository implementation-context capability, architecture review, and the available brand-identity reviewer.
       include_classifications:
         - required
         - conditional

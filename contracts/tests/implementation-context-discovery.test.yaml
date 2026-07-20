@@ -1,6 +1,6 @@
 skill_test:
   skill: implementation-context-discovery
-  version: "1.1.0"
+  version: "1.2.0"
   description: Verify component coverage, variants, canonical registry options, typography roles, and semantic-native boundaries are resolved before implementation.
 
   cases:

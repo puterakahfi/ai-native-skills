@@ -12,7 +12,7 @@ Machine-readable pack manifests are being introduced incrementally. The Redesign
 
 ## Redesign Pack
 
-Delegated UI/UX and visual redesign loop — route, explicit design/implementation ownership, verified decision provenance, strategy, comparative visual direction, composition, hierarchy, optional depth, layout, adaptive components, interaction behavior, design system, repository implementation-context discovery, domain and architecture verification, facade review, bounded correction, and learning.
+Delegated UI/UX and visual redesign loop — route, explicit design/implementation ownership, verified decision provenance, strategy, comparative visual direction, composition, hierarchy, optional depth, layout, component-family and template consistency, adaptive components, interaction behavior, design system, repository implementation-context discovery, domain and architecture verification, facade review, bounded correction, and learning.
 
 The command below is the manifest's `complete` profile. CI validates the repository coordinate, skill membership, ordering, and final flags against the canonical manifest.
 
@@ -42,6 +42,7 @@ npx skills add puterakahfi/ai-native-skills \
   --skill responsiveness \
   --skill adaptive-component-design \
   --skill ui-components \
+  --skill component-family-design \
   --skill design-spacing \
   --skill design-strategy \
   --skill content-strategy \
@@ -75,7 +76,7 @@ python scripts/validate-skill-packs.py \
   --print-install-command
 ```
 
-The pack includes contextual visual-direction and anti-slop capabilities, `implementation-context-discovery` for preserving canonical repository adapters before code, `architecture-review` for independent post-implementation acceptance, `decision-provenance` for scope/lock/dependency/override authority, and the current `brand-identity-review` adapter. Other specialist domains still require their own reviewer when complete domain approval is requested.
+The pack includes `component-family-design` for preserving organism and template identity across route-specific variants, contextual visual-direction and anti-slop capabilities, `implementation-context-discovery` for preserving canonical repository adapters before code, `architecture-review` for independent post-implementation acceptance, `decision-provenance` for scope/lock/dependency/override authority, and the current `brand-identity-review` adapter. Other specialist domains still require their own reviewer when complete domain approval is requested.
 
 ---
 
@@ -258,56 +259,17 @@ The pack does not define provider commands or environment policy. Product adapte
 
 ## Engineering Quality Pack
 
-Code review, debugging, security, architecture, implementation-context evidence, risk authority, and merge authorization.
+Architecture and implementation quality loop — repository-context mapping, architecture review, security review, code review, testing, debugging, refactoring, and technical-debt governance.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
-  --skill code-review-workflow \
-  --skill bugfix-workflow \
-  --skill decision-provenance \
-  --skill master-engineer \
   --skill implementation-context-discovery \
-  --skill systematic-debugging \
   --skill architecture-review \
   --skill security-review \
-  --skill threat-modeling \
+  --skill code-review-workflow \
   --skill test-driven-development \
-  --skill resilience-engineering \
+  --skill systematic-debugging \
   --skill refactoring \
-  --skill skill-evolution \
-  --skill skill-eval \
-  --skill git-workflow \
+  --skill technical-debt-governance \
   -g -y
 ```
-
----
-
-## Full Suite
-
-```bash
-npx skills add puterakahfi/ai-native-skills -g -y
-```
-
----
-
-## Dependency Map
-
-| Workflow / Meta-skill / Pack | Requires |
-|---|---|
-| `redesign-workflow` | canonical manifest: `packs/redesign/pack.yaml`; role-switcher; explicit design/implementation/write owners; implementation-context-discovery for patch/prototype; decision-provenance; master-design direction comparison; foundation and design ports; architecture-review for code; conditional audit/review/refinement; value alignment; learning/eval; governing domain reviewer |
-| `design-visual` | resolved foundation and locks; accepted or compared direction; composition + visual-hierarchy for page-level change; concern-specific color/type/depth/iconography/motion/readability adapters |
-| `design-refinement` | design-audit; design-review and governing reviewer; master-design; implementation-context-discovery + master-engineer + architecture-review for repository patch; skill-evolution; skill-eval |
-| `delivery-work-breakdown` | verified scope/criteria; repository and release context; product-defined tracker, branch, PR, flag, merge, and release policy; git-workflow for execution |
-| `implementation-context-discovery` | repository evidence; engineering/architecture authority; product-defined framework, component, styling, icon, state/form/query/data, build/test conventions; implementation owner; architecture-review after code |
-| `brand-identity-review` | design-review, design-brand, composition, visual-hierarchy, design-typography, design-color |
-| `decision-provenance` | authoritative source references, decision-domain owner/policy, previous decision records when applicable |
-| `skill-evolution` | skill-eval, git-workflow |
-| `role-switcher` | engineering/design/product/platform/research owners, design-review, brand-identity-review, implementation-context discovery, debugging, architecture/security review, plan |
-| `workflow-router` | design audit/refinement/redesign/review, brand-identity-review, feature/bug/review/deploy/product workflows, platform/domain overlays, learning/eval/git, skill-doctor, spec-workflow |
-| `product-development-workflow` | product requirements/value/experiment/research; decision-provenance; conditional platform specialists; design/engineering owners; implementation-context-discovery through feature delivery; code review; deployment; observability |
-| `ChatGPT App Product Pack` | product-development-workflow or new-feature-workflow; chatgpt-app-development; implementation-context-discovery; product/architecture/design/security owners and reviewers; actual ChatGPT integration evidence; deployment and observability |
-| `bugfix-workflow` | systematic-debugging, master-engineer, security-review, test-driven-development |
-| `code-review-workflow` | architecture/design/logic/security reviewers; decision-provenance for risk and merge authority; implementation-context evidence when stack/convention compliance is material |
-| `new-feature-workflow` | engineering/design owners; implementation-context-discovery before code; decision-provenance for scope/decisions/dependencies/risks; spec; tests; architecture/design review; code review |
-| `deployment-workflow` | decision-provenance for candidate/environment/action authority; context-manager; security/code review; immutable candidate identity; observability; resilience; rollback and incident ownership |
-| `skill-doctor` | skill-eval |

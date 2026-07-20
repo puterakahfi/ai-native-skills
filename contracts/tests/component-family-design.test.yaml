@@ -1,0 +1,83 @@
+skill_test:
+  skill: component-family-design
+  version: 1.0.0
+  description: Verify component-family-design classifies interface hierarchy, reuses fit organism and template families, preserves adaptive family identity, and rejects route-local duplication without a proven role gap.
+  cases:
+  - id: component-family-reuses-shared-header-for-route-specific-navigation
+    description: A portfolio route and a product route need different menu items and actions but share the same global orientation, identity, navigation, utility, theme, and mobile-menu responsibilities.
+    trigger: Apply component-family-design to the PKahfi portfolio navbar and dedicated AI Skills navbar and return the family decision before implementation.
+    must_contain:
+    - interface_hierarchy_classification
+    - organism
+    - AppHeader
+    - invariant_anatomy
+    - configurable_slots
+    - reuse_existing_family_variant
+    - route_to_family_instance_map
+    - portfolio
+    - product
+    must_not_contain:
+    - different menu items require a separate navbar family
+    - copy the existing navbar and customize it locally
+    quality_gates_tested:
+    - every_major_shared_surface_has_a_hierarchy_classification
+    - equivalent_product_roles_are_checked_against_existing_families
+    - family_invariant_anatomy_and_configurable_slots_are_explicit
+    - route_differences_are_configuration_or_bounded_variants_when_fit
+    - route_to_family_instance_mapping_is_complete
+
+  - id: component-family-preserves-identity-across-inline-and-sheet-navigation
+    description: Desktop uses inline navigation while constrained width uses a Sheet, but both variants represent one header family with the same destinations, actions, semantics, and accessibility relationships.
+    trigger: Define the adaptive family contract for an AppHeader that uses inline desktop navigation and a shadcn Sheet on mobile.
+    must_contain:
+    - adaptive_family_contract
+    - shared_product_role
+    - shared_information_identity
+    - wide_variant
+    - constrained_variant
+    - preserved_destinations
+    - focus_and_keyboard_expectations
+    - analytics_identity
+    must_not_contain:
+    - mobile Sheet is an unrelated navbar organism
+    - state equivalence is optional
+    quality_gates_tested:
+    - adaptive_variants_preserve_family_identity_and_shared_semantics
+    - family_invariant_anatomy_and_configurable_slots_are_explicit
+    - cross_route_visual_interaction_and_accessibility_evidence_is_planned
+
+  - id: component-family-routes-page-shells-through-template-family
+    description: Homepage and AI Skills page both place a header, main content, and footer while supplying different page content and header variants.
+    trigger: Classify the page-level composition and decide whether both routes should use one AppShell template family.
+    must_contain:
+    - template
+    - AppShell
+    - template_family_contract
+    - regions
+    - allowed_organism_variants
+    - route_instances
+    - pages_supply_real_content_and_route_configuration
+    must_not_contain:
+    - navbar is the page template
+    - duplicate the skip link and footer composition in each route
+    quality_gates_tested:
+    - organism_and_template_ownership_are_not_conflated
+    - route_to_family_instance_mapping_is_complete
+    - equivalent_product_roles_are_checked_against_existing_families
+
+  - id: component-family-requires-proof-before-new-family
+    description: A team proposes a new route-local header because the product label, links, and primary action differ from the portfolio route.
+    trigger: Diagnose whether the differences justify a new component family or a bounded variant.
+    must_contain:
+    - product_role_comparison
+    - anatomy_comparison
+    - rejected_alternatives
+    - FAMILY_CAPABILITY_GAP
+    - create_new_family_after_proven_role_gap
+    must_not_contain:
+    - route-specific content automatically proves a new family
+    - visual difference alone proves a capability gap
+    quality_gates_tested:
+    - new_family_creation_has_a_proven_role_or_capability_gap
+    - equivalent_product_roles_are_checked_against_existing_families
+    - source_inspection_alone_is_not_accepted_as_rendered_family_consistency

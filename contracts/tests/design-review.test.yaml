@@ -1,6 +1,6 @@
 skill_test:
   skill: design-review
-  version: "3.3.0"
+  version: "3.4.0"
   description: Verify facade domain routing, evidence honesty, canonical gate identity, specialist coverage, component diagnosis, and product-grounded no-slop review.
 
   cases:
