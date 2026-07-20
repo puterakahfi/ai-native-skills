@@ -68,7 +68,7 @@ A product may avoid long-lived epic branches if its accepted policy provides equ
 - final release authorization;
 - rollback.
 
-The skill records the policy reference instead of imposing GitFlow.
+The skill records the policy reference instead of imposing GitFlow. An epic branch is the safe default for dependent, non-releasable slices—not a universal mandate when an approved trunk-based policy supplies equivalent controls.
 
 ## Synchronization
 
