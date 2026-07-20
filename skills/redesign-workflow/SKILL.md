@@ -3,7 +3,7 @@ name: redesign-workflow
 description: Delegated, domain-aware redesign workflow for existing visual surfaces — route → compose owners → verify decisions → inspect → direct → specify → produce under a write lease → verify provenance, scope, concurrency, and artifact → facade review → classify → fix → deliver.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.4.1
+  ai-native-skills.version: 3.4.2
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
@@ -17,6 +17,48 @@ metadata:
 ---
 
 # Redesign Workflow
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml` · compatible line: `^2.2.0`
+
+```yaml
+required_inputs:
+- target
+allowed_outputs:
+  []
+quality_gates:
+- lifecycle_route_resolved_before_production
+- exactly_one_design_owner_is_explicit
+- implementation_owner_is_explicit_when_patching
+- exactly_one_repository_write_owner_is_active
+- specialists_are_selected_from_declared_changed_layers
+- baseline_and_confirmed_scope_are_recorded_before_patch_production
+- preservation_locks_are_recorded_and_rechecked
+- production_follows_declared_delegation_plan
+- production_remains_inside_confirmed_scope
+- every_repository_write_uses_expected_head_lease
+- head_drift_is_inspected_before_retry
+- repeated_decision_reversal_stops_automatic_writes
+- parent_pointer_does_not_chase_unstable_child_head
+- verification_strategy_matches_primary_design_domain_and_artifact_state
+- final_effective_diff_must_match_confirmed_scope
+- every_changed_path_must_be_classified
+- scope_contamination_blocks_review_and_delivery
+- concurrency_block_is_not_reported_as_pass
+- review_uses_design_review_facade_and_loaded_domain_reviewer
+- gate_statuses_preserve_partial_not_verified_and_not_applicable
+- contextual_hard_gates_are_reviewer_owned
+- facade_scope_and_concurrency_control_delivery
+- defect_classification_precedes_fix
+- verified_reusable_fixes_run_learning_review_and_regression_eval
+- max_iteration_delivery_is_not_labeled_as_passed
+```
+
+A parent repository pointer may move only after the child repository has a stable reviewed commit. Do not make the parent chase an uncommitted worktree, transient child head, failed validation state, or head that may still be rewritten; preserve expected-head leases and re-inspect drift before retry.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 Redesign an existing visual surface through explicit ownership, verified decision provenance, bounded specialist delegation, clean final-diff scope, concurrency-safe writes, domain-appropriate evidence, independent facade review, and a verified correction loop.
 

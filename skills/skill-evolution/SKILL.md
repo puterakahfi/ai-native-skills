@@ -3,7 +3,7 @@ name: skill-evolution
 description: Converts verified lessons from real product work into minimal reusable skill, reference, workflow, eval, or core-contract improvements without copying product-specific implementation history into shared skills.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.1
+  ai-native-skills.version: 1.0.2
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.requires: "skill-eval git-workflow"
@@ -15,6 +15,50 @@ metadata:
 ---
 
 # Skill Evolution
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/quality/skill-evolution.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- source_case
+- observed_failure
+- verified_fix
+- before_after_evidence
+- candidate_skill_or_workflow
+allowed_outputs:
+- learning_candidate
+- root_reason
+- generalization_report
+- target_layer_decision
+- minimal_patch_plan
+- skill_or_reference_patch
+- regression_eval
+- promotion_verdict
+- promotion_commit
+- no_promotion_reason
+- provenance_record
+quality_gates:
+- learning_review_runs_after_every_verified_fix_even_when_no_promotion_occurs
+- source_case_has_before_after_evidence_and_successful_verification
+- local_product_detail_is_not_written_into_shared_skill_body
+- promoted_learning_explains_the_reusable_reason_not_only_the_case_solution
+- target_layer_is_selected_from_defect_class_and_knowledge_scope
+- target_skill_and_related_skills_are_checked_for_duplicate_coverage
+- transferable_rule_is_validated_against_multiple_contexts_and_counterexamples
+- skill_patch_is_the_smallest_change_that_closes_the_reasoning_gap
+- every_promoted_patch_has_a_regression_eval_derived_from_the_real_case
+- existing_evals_and_contract_conformance_are_rechecked
+- product_specific_case_provenance_is_stored_outside_shared_skill_instructions
+- repository_write_and_approval_policy_is_respected
+- completion_report_distinguishes_promoted_local_only_duplicate_and_deferred_candidates
+```
+
+From source_case, observed_failure, verified_fix, before_after_evidence, and candidate_skill_or_workflow, produce the complete learning and promotion record. A candidate transferable rule must be tested against multiple contexts and counterexamples before promotion; one successful anecdote is not reusable evidence.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 ## Core rule
 

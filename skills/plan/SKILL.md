@@ -3,7 +3,7 @@ name: plan
 description: 'Plan mode: write an actionable markdown plan with exact file paths and bite-sized steps before any execution starts.'
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/plan.contract.yaml
@@ -11,6 +11,32 @@ metadata:
 ---
 
 # Plan Mode
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/engineering/plan.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- goal_or_task
+allowed_outputs:
+- plan_document
+- task_list
+- file_path_references
+- approach_summary
+quality_gates:
+- plan_must_be_written_before_execution_starts
+- plan_must_have_bite_sized_steps_not_vague_phases
+- plan_must_reference_exact_file_paths
+- plan_must_not_contain_execution_only_planning
+- each_step_must_be_independently_verifiable
+- plan_must_be_saved_to_file_not_just_in_context
+```
+
+Begin with goal_or_task and produce a plan_document, task_list, file_path_references, and approach_summary before execution starts. Steps remain bite-sized, independently verifiable, and saved to a plan file; planning does not silently perform the implementation.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 Use this skill when the user wants a plan instead of execution.
 

@@ -3,7 +3,7 @@ name: rule-manager
 description: Rule authoring, validation, and enforcement skill — write AGENTS.md, .cursorrules, and per-product rules that constrain AI agents. Ensures rules are specific, traceable, and non-conflicting.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/governance/rule-manager.contract.yaml
@@ -11,6 +11,34 @@ metadata:
 ---
 
 # Rule Manager
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/governance/rule-manager.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- rule_target
+allowed_outputs:
+- rule_document
+- agents_md
+- cursorrules
+- rule_violation_report
+- rule_gap_analysis
+- rule_update_recommendation
+quality_gates:
+- rules_must_be_specific_not_aspirational
+- rules_must_state_what_agent_must_not_do
+- rules_must_not_duplicate_engineering_contract
+- rule_change_requires_review
+- rules_must_be_traceable_to_product_or_engineering_contract
+- no_conflicting_rules_in_same_scope
+```
+
+Resolve rule_target before authoring or validation. Return the appropriate rule_document, agents_md or cursorrules representation, rule_violation_report, rule_gap_analysis, and rule_update_recommendation while keeping rules specific, traceable, non-conflicting, and distinct from canonical engineering contracts.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 ## The Core Distinction
 

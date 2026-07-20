@@ -3,7 +3,7 @@ name: prompt-optimizer
 description: Transform vague intent into a precise, token-efficient prompt — explicit scope, constraints, output format, and stop condition. Eliminates agent guessing loops.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/context/prompt-optimizer.contract.yaml
@@ -11,6 +11,35 @@ metadata:
 ---
 
 # Prompt Optimizer
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/context/prompt-optimizer.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- raw_intent
+allowed_outputs:
+- optimized_prompt
+- scope_declaration
+- constraint_list
+- stop_condition
+- token_estimate
+quality_gates:
+- optimized_prompt_must_have_explicit_scope_in_and_out
+- optimized_prompt_must_have_explicit_output_format
+- optimized_prompt_must_have_stop_condition
+- no_ambiguous_verbs_like_improve_or_make_better
+- constraint_list_must_be_present
+- prompt_must_not_require_agent_to_guess_intent
+- optimized_prompt_must_be_shorter_or_more_precise_than_raw_intent
+- skills_to_load_must_be_declared_if_known
+```
+
+Treat raw_intent as the source input. Return an optimized_prompt plus explicit scope_declaration, constraint_list, stop_condition, and token_estimate. The optimized prompt removes guessing by naming in-scope and out-of-scope work, output format, constraints, and completion boundary.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 ## The Core Problem
 

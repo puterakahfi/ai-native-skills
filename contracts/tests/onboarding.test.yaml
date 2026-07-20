@@ -1,0 +1,24 @@
+skill_test:
+  skill: onboarding
+  version: 1.1.1
+  description: Verify onboarding exposes and applies its reviewed context, workflow, profile, or maintenance contract interface.
+  cases:
+  - id: onboarding-maps-codebase-before-guidance
+    description: Onboard into an existing repository and produce evidence-backed context artifacts.
+    trigger: Apply onboarding to a realistic context, routing, profile, planning, evaluation, or maintenance task and report
+      the contract-backed result.
+    must_contain:
+    - agents_md_draft
+    - codebase_map
+    - key_entry_points
+    - architecture_summary
+    - gotchas_and_pitfalls
+    - repository_or_codebase
+    - codebase_must_be_read_before_any_assumption
+    - agents_md_must_be_produced_as_output
+    must_not_contain:
+    - assume a framework without evidence
+    - skip repository inspection
+    quality_gates_tested:
+    - codebase_must_be_read_before_any_assumption
+    - agents_md_must_be_produced_as_output

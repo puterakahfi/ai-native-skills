@@ -3,7 +3,7 @@ name: context-engineering
 description: Institutional context authoring and curation — write AGENTS.md, .cursorrules, and context packs that encode architecture constraints, guardrails, and domain knowledge into the AI workspace.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/context/context-engineering.contract.yaml
@@ -11,6 +11,34 @@ metadata:
 ---
 
 # Context Engineering
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/context/context-engineering.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- product_or_repo_ref
+allowed_outputs:
+- agents_md
+- cursorrules
+- context_pack_template
+- guardrail_rules
+- context_gap_report
+quality_gates:
+- context_must_encode_architecture_constraints_not_just_preferences
+- rules_must_be_specific_and_enforceable
+- context_must_include_what_agent_must_not_do
+- context_must_reference_engineering_contract
+- no_duplicate_rules_across_context_files
+- context_must_be_versioned_and_reviewed
+- vague_context_like_follow_best_practices_is_forbidden
+```
+
+Start from product_or_repo_ref. Produce agents_md, cursorrules when applicable, a context_pack_template, guardrail_rules, and a context_gap_report. Context is a reviewed, versioned engineering artifact: it encodes enforceable architecture constraints and prohibitions, references the engineering contract, and avoids duplicate rules across context files.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 ## The Core Distinction
 

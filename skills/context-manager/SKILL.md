@@ -3,7 +3,7 @@ name: context-manager
 description: Context resolution and validation skill — build context packs for agents before task execution. Ensures agents never execute with missing, stale, or incomplete context.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/context/context-manager.contract.yaml
@@ -11,6 +11,33 @@ metadata:
 ---
 
 # Context Manager
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/context/context-manager.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- task_or_workflow_ref
+- product_ref
+allowed_outputs:
+- context_pack
+- missing_context_report
+- stale_context_flag
+- context_validation_verdict
+quality_gates:
+- context_must_be_resolved_before_agent_handoff
+- missing_context_must_be_flagged_not_assumed
+- stale_context_must_be_refreshed_before_use
+- context_pack_must_include_rules_and_skills
+- agent_must_not_execute_with_incomplete_context
+- context_source_must_be_traceable
+```
+
+Resolve task_or_workflow_ref together with product_ref before handoff. Return a context_pack, missing_context_report, stale_context_flag, and context_validation_verdict. Every included rule, skill, contract, and product fact must retain a traceable source; missing or stale context is reported rather than assumed.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 ## The Core Rule
 

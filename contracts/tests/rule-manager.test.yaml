@@ -1,0 +1,19 @@
+skill_test:
+  skill: rule-manager
+  version: 1.0.1
+  description: Verify rule-manager exposes and applies its reviewed context, workflow, profile, or maintenance contract interface.
+  cases:
+  - id: rule-authoring-starts-from-explicit-target
+    description: Author and validate rules for a named target without duplicating canonical contracts.
+    trigger: Apply rule-manager to a realistic context, routing, profile, planning, evaluation, or maintenance task and report
+      the contract-backed result.
+    must_contain:
+    - rule_target
+    - rules_must_be_traceable_to_product_or_engineering_contract
+    - no_conflicting_rules_in_same_scope
+    must_not_contain:
+    - author rules without a target
+    - duplicate the engineering contract
+    quality_gates_tested:
+    - rules_must_be_traceable_to_product_or_engineering_contract
+    - no_conflicting_rules_in_same_scope

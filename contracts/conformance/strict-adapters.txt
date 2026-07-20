@@ -7,6 +7,8 @@ ai-system-design
 api-contract
 architecture-review
 content-strategy
+context-engineering
+context-manager
 dark-light-theming
 data-modeling
 design-brand
@@ -26,6 +28,7 @@ domain-driven-design
 ethics-responsible-ai
 event-driven-design
 git-workflow
+hermes-profile-bootstrap
 incident-response
 information-architecture
 language-standards
@@ -39,15 +42,22 @@ native-ai-engineer
 native-ai-runtime-agent
 native-ai-runtime-ops
 observability-design
+onboarding
+plan
 ports-and-adapters
+prompt-optimizer
 readability
+redesign-workflow
 refactoring
 resilience-engineering
 response-contract
 responsiveness
 role-switcher
+rule-manager
 security-review
 service-design
+skill-eval
+skill-evolution
 spike
 systematic-debugging
 systems-thinking
@@ -58,3 +68,4 @@ ui-components
 ux-psychology
 ux-ui-patterns
 web-performance
+workflow-router
