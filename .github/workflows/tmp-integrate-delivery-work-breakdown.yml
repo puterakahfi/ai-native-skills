@@ -5,9 +5,9 @@ on:
     branches:
       - 53-delivery-work-breakdown
     paths:
+      - .github/workflows/tmp-integrate-delivery-work-breakdown.yml
       - skills/delivery-work-breakdown/**
       - contracts/tests/delivery-work-breakdown.test.yaml
-      - .github/workflows/tmp-integrate-delivery-work-breakdown.yml
 
 permissions:
   contents: write
@@ -22,550 +22,252 @@ jobs:
           ref: 53-delivery-work-breakdown
           fetch-depth: 0
 
-      - name: Patch workflow composition and documentation
-        shell: bash
+      - name: Integrate capability
         run: |
-          python - <<'PY'
+          cat > /tmp/integrate.py <<'PY'
           from pathlib import Path
 
-          def read(path: str) -> str:
+          def load(path):
               return Path(path).read_text(encoding="utf-8")
 
-          def write(path: str, text: str) -> None:
+          def save(path, text):
               Path(path).write_text(text, encoding="utf-8")
 
-          def replace_once(path: str, old: str, new: str) -> None:
-              text = read(path)
+          def replace(path, old, new):
+              text = load(path)
               count = text.count(old)
               if count != 1:
-                  raise SystemExit(f"{path}: expected exactly one source match, found {count}: {old[:120]!r}")
-              write(path, text.replace(old, new, 1))
+                  raise SystemExit(f"{path}: expected 1 match, got {count}: {old[:100]!r}")
+              save(path, text.replace(old, new, 1))
 
-          def insert_before_once(path: str, marker: str, addition: str) -> None:
-              text = read(path)
+          def insert_before(path, marker, addition):
+              text = load(path)
               count = text.count(marker)
               if count != 1:
-                  raise SystemExit(f"{path}: expected exactly one marker, found {count}: {marker[:120]!r}")
-              write(path, text.replace(marker, addition + marker, 1))
+                  raise SystemExit(f"{path}: expected 1 marker, got {count}: {marker!r}")
+              save(path, text.replace(marker, addition + marker, 1))
 
-          def append_case(path: str, case_id: str, yaml_text: str) -> None:
-              text = read(path)
-              if f"id: {case_id}" in text:
-                  return
-              if not text.endswith("\n"):
-                  text += "\n"
-              write(path, text + "\n" + yaml_text.rstrip() + "\n")
+          def append_case(path, case_id, block):
+              text = load(path)
+              if f"id: {case_id}" not in text:
+                  save(path, text.rstrip() + "\n\n" + block.rstrip() + "\n")
 
-          # workflow-router
-          path = "skills/workflow-router/SKILL.md"
-          replace_once(path, "ai-native-skills.version: 1.4.1", "ai-native-skills.version: 1.5.0")
-          replace_once(
-              path,
-              'ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow"',
-              'ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow"',
-          )
-          replace_once(
-              path,
-              'ai-native-skills.related_skills: \'["role-switcher","product-development-workflow","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow"]\'',
-              'ai-native-skills.related_skills: \'["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow"]\'',
-          )
-          replace_once(
-              path,
-              "| Add a capability to an existing product | `new-feature-workflow` | spec, product/design/engineering owners |",
-              "| Add a capability to an existing product | `new-feature-workflow` | spec, product/design/engineering owners; `delivery-work-breakdown` when multi-slice or branch topology is unresolved |",
-          )
-          insert_before_once(
-              path,
-              "## Platform Specialist Overlays\n",
-              """## Delivery Topology Overlay
+          # Router: lifecycle stays primary; delivery topology is an overlay.
+          p = "skills/workflow-router/SKILL.md"
+          replace(p, "ai-native-skills.version: 1.4.1", "ai-native-skills.version: 1.5.0")
+          replace(p, "product-development-workflow chatgpt-app-development", "product-development-workflow delivery-work-breakdown chatgpt-app-development")
+          replace(p, '"product-development-workflow","chatgpt-app-development"', '"product-development-workflow","delivery-work-breakdown","chatgpt-app-development"')
+          insert_before(p, "## Platform Specialist Overlays\n", """## Delivery Topology Overlay
 
-Lifecycle selection and delivery topology are separate decisions.
+Lifecycle selection does not choose repository topology.
 
 ```text
-product-development-workflow | new-feature-workflow
-  one independently releasable slice
-    → delivery-work-breakdown may classify feature/standalone
-    → product-defined release or integration target
+one independently releasable slice
+  → delivery-work-breakdown may classify feature or standalone change
 
-  multiple dependent slices / one end-to-end outcome
-    → delivery-work-breakdown
-    → release_unit: epic
-    → child PRs target the epic/integration branch
-    → final epic PR targets the release branch after integrated acceptance
+multiple dependent slices forming one outcome
+  → delivery-work-breakdown
+  → release_unit: epic
+  → child PRs target the epic/integration branch
+  → final epic PR targets the release branch after integrated acceptance
 ```
 
-Load `delivery-work-breakdown` before repository execution when the request includes a new app, broad capability, several dependent slices, epic/feature/task decomposition, feature-flag exception, branch-base choice, or PR-target choice.
+Load `delivery-work-breakdown` before Git execution for new apps, broad multi-slice capabilities, epic/feature/task decomposition, feature-flag exceptions, or unresolved base/PR targets. Repository defaults, green CI, and mergeability cannot choose the PR target.
 
-The repository default branch, green CI, or mergeability must not choose the PR target.
+""")
+          replace(p, "New capability? → new-feature-workflow\n", "New capability? → new-feature-workflow\n  multi-slice or target unresolved? → delivery-work-breakdown\n")
+          replace(p, "| ChatGPT App target creates a competing primary workflow | Preserve lifecycle and add `chatgpt-app-development` as overlay |", "| ChatGPT App target creates a competing primary workflow | Preserve lifecycle and add `chatgpt-app-development` as overlay |\n| Child work targets the default branch automatically | Run `delivery-work-breakdown` and preserve the governing release unit |")
 
-""",
-          )
-          replace_once(
-              path,
-              "| “add ChatGPT App integration to this product” | `new-feature-workflow` + `chatgpt-app-development` |",
-              "| “add ChatGPT App integration to this product” | `new-feature-workflow` + `chatgpt-app-development`; add `delivery-work-breakdown` for dependent P0 slices |",
-          )
-          replace_once(
-              path,
-              "New capability? → new-feature-workflow\n",
-              "New capability? → new-feature-workflow\n  multi-slice / branch target unresolved? → delivery-work-breakdown\n",
-          )
-          replace_once(
-              path,
-              "| ChatGPT App target creates a competing primary workflow | Preserve lifecycle and add `chatgpt-app-development` as overlay |",
-              "| ChatGPT App target creates a competing primary workflow | Preserve lifecycle and add `chatgpt-app-development` as overlay |\n| Child feature automatically targets the default branch | Run `delivery-work-breakdown`; preserve the governing release unit and approved integration target |",
-          )
+          # New feature workflow: topology gate before design/context/code.
+          p = "skills/new-feature-workflow/SKILL.md"
+          replace(p, "ai-native-skills.version: 2.2.0", "ai-native-skills.version: 2.3.0")
+          replace(p, "master-engineer master-design implementation-context-discovery", "master-engineer master-design delivery-work-breakdown implementation-context-discovery")
+          replace(p, '"phase":"plan","load":["master-engineer","decision-provenance"]},', '"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"delivery-topology","load":["delivery-work-breakdown","decision-provenance"]},')
+          replace(p, '"required":["master-engineer","implementation-context-discovery"', '"required":["master-engineer","delivery-work-breakdown","implementation-context-discovery"')
+          replace(p, "verified scope\n→ approved architecture/design decisions", "verified scope\n→ approved delivery topology\n→ approved architecture/design decisions")
+          replace(p, "  issue_ref: <issue or task>\n\n  decision_sources:", """  issue_ref: <issue or task>
 
-          # new-feature-workflow
-          path = "skills/new-feature-workflow/SKILL.md"
-          replace_once(path, "ai-native-skills.version: 2.2.0", "ai-native-skills.version: 2.3.0")
-          replace_once(
-              path,
-              'ai-native-skills.requires: "master-engineer master-design implementation-context-discovery decision-provenance spec-workflow test-driven-development architecture-review code-review-workflow design-review"',
-              'ai-native-skills.requires: "master-engineer master-design delivery-work-breakdown implementation-context-discovery decision-provenance spec-workflow test-driven-development architecture-review code-review-workflow design-review"',
-          )
-          replace_once(
-              path,
-              'ai-native-skills.skill_load_order: \'[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["master-engineer","test-driven-development"]},{"phase":"verify","load":["architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]\'',
-              'ai-native-skills.skill_load_order: \'[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"delivery-topology","load":["delivery-work-breakdown","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["master-engineer","test-driven-development"]},{"phase":"verify","load":["architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]\'',
-          )
-          replace_once(
-              path,
-              'ai-native-skills.skills: \'{"required":["master-engineer","implementation-context-discovery","decision-provenance","test-driven-development","architecture-review","code-review-workflow"],"optional":["diagram-architect","master-design","design-review"]}\'',
-              'ai-native-skills.skills: \'{"required":["master-engineer","delivery-work-breakdown","implementation-context-discovery","decision-provenance","test-driven-development","architecture-review","code-review-workflow"],"optional":["diagram-architect","master-design","design-review"]}\'',
-          )
-          replace_once(
-              path,
-              "verified scope\n→ approved architecture/design decisions\n→ repository implementation-context mapping",
-              "verified scope\n→ release-unit and delivery-topology decision\n→ approved architecture/design decisions\n→ repository implementation-context mapping",
-          )
-          replace_once(
-              path,
-              "Decision authority before material scope, dependency, exception, or lock changes.\nDesign decision before implementation when affected.",
-              "Decision authority before material scope, dependency, exception, or lock changes.\nRelease unit, parent hierarchy, base branch, and PR target before repository execution.\nDesign decision before implementation when affected.",
-          )
-          replace_once(
-              path,
-              "  issue_ref: <issue or task>\n\n  decision_sources:",
-              "  issue_ref: <issue or task>\n\n  delivery_topology:\n    release_unit: <standalone_change | feature | epic | product_release>\n    parent_ref: <epic/product ref or null>\n    acceptance_criteria_refs: []\n    dependency_refs: []\n    independently_releasable: <true | false | unknown>\n    feature_flag_policy_ref: <record | null | unknown>\n    release_branch: <product-defined>\n    integration_branch: <branch | not_applicable | unknown>\n    base_branch: <explicit>\n    pr_target: <explicit>\n    topology_record_ref: <delivery-work-breakdown output>\n\n  decision_sources:",
-          )
-          insert_before_once(
-              path,
-              "## Phase 2 — Architecture and design decision\n",
-              """## Phase 2 — Delivery topology
+  delivery_topology:
+    release_unit: <standalone_change | feature | epic | product_release>
+    parent_ref: <epic/product ref or null>
+    acceptance_criteria_refs: []
+    dependency_refs: []
+    independently_releasable: <true | false | unknown>
+    feature_flag_policy_ref: <record | null | unknown>
+    release_branch: <product-defined>
+    integration_branch: <branch | not_applicable | unknown>
+    base_branch: <explicit>
+    pr_target: <explicit>
+    topology_record_ref: <delivery-work-breakdown output>
 
-**Gate:** release unit, work-item parent, acceptance traceability, dependency graph, base branch, and PR target are explicit before branch creation or PR submission.
+  decision_sources:""")
+          insert_before(p, "## Phase 2 — Architecture and design decision\n", """## Phase 1B — Delivery topology
 
-Load `delivery-work-breakdown` when this feature is part of a broader release, has dependent slices, or lacks an approved repository topology.
+**Gate:** release unit, parent, acceptance traceability, dependency graph, base branch, and PR target are explicit before branch creation or PR submission.
+
+Load `delivery-work-breakdown`. A dependent child of an epic branches from and targets the approved epic/integration branch. Direct-to-release requires independent releasability or an approved default-safe feature flag with no unflagged incomplete path.
+
+Block orphan tasks, dependency cycles, unknown targets, and any target justified only by the repository default branch.
+
+**Done when:** the topology verdict is PASS and recorded in workflow context.
+
+""")
+          replace(p, "implementation_context_profile and convention locks\n", "delivery topology record, release unit, parent, base branch, and PR target\nimplementation_context_profile and convention locks\n")
+          replace(p, "provenance blocker, implementation-context blocker", "provenance blocker, delivery-topology mismatch, implementation-context blocker")
+          replace(p, "| Architecture/design | Decision authority |", "| Delivery topology | Release unit + hierarchy + PR target | Parent, dependencies, base branch, target, and exception evidence explicit |\n| Architecture/design | Decision authority |")
+          replace(p, "| Agent-generated issue means scope approved | Verify attributable authority |", "| Agent-generated issue means scope approved | Verify attributable authority |\n| Default branch becomes the PR target | Consume the approved delivery topology |\n| Green child CI means the epic is complete | Run integrated epic acceptance |")
+
+          # Product development: classify MVP release unit before feature branches.
+          p = "skills/product-development-workflow/SKILL.md"
+          replace(p, "ai-native-skills.version: 2.2.0", "ai-native-skills.version: 2.3.0")
+          replace(p, "user-research product-manager decision-provenance", "user-research product-manager delivery-work-breakdown decision-provenance")
+          replace(p, '"product-manager","decision-making","spike"', '"product-manager","delivery-work-breakdown","decision-making","spike"')
+          replace(p, '"spec-workflow","native-ai-engineer"', '"spec-workflow","delivery-work-breakdown","native-ai-engineer"')
+          replace(p, "6. Implementation runs through new-feature-workflow boundaries.", "6. Classify the release unit and approve hierarchy, base branches, and PR targets before implementation branches.\n7. Implementation runs through new-feature-workflow boundaries.")
+          replace(p, "| 3 | MVP Slice | prioritization + provenance | Smallest valuable slice explicitly approved |", "| 3 | MVP Slice + Delivery Topology | prioritization + `delivery-work-breakdown` + provenance | Release unit, hierarchy, integration branch, and PR targets explicitly approved |")
+          insert_before(p, "## Conditional platform specialists\n", """## Delivery decomposition boundary
+
+Before implementation, load `delivery-work-breakdown`.
 
 ```text
-independently releasable feature
-  → product-defined release/integration target may be valid
-
-dependent child of an epic
-  → branch from approved epic/integration branch
-  → PR targets that epic/integration branch
-
-approved safe feature-flag exception
-  → prove default-safe state and no unflagged incomplete path
-  → then follow product-defined trunk policy
-```
-
-Block when the task is orphaned, the release unit is unknown, dependencies cycle, or the repository default branch is the only target rationale.
-
-**Done when:** `delivery-work-breakdown` returns PASS and the workflow context records the authoritative topology.
-
-""",
-          )
-          for old, new in [
-              ("## Phase 2 — Architecture and design decision", "## Phase 3 — Architecture and design decision"),
-              ("## Phase 3 — Implementation-context discovery", "## Phase 4 — Implementation-context discovery"),
-              ("## Phase 4 — Implement", "## Phase 5 — Implement"),
-              ("## Phase 5 — Verify", "## Phase 6 — Verify"),
-              ("## Phase 6 — Submit", "## Phase 7 — Submit"),
-              ("## Phase 7 — Review", "## Phase 8 — Review"),
-          ]:
-              replace_once(path, old, new)
-          replace_once(
-              path,
-              "implementation_context_profile and convention locks\n",
-              "delivery topology record, release unit, parent, base branch, and PR target\nimplementation_context_profile and convention locks\n",
-          )
-          replace_once(
-              path,
-              "Feature-level `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, `NOT_VERIFIED`, provenance blocker, implementation-context blocker, or architecture failure cannot be downgraded to a non-blocking merge flag.",
-              "Feature-level `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, `NOT_VERIFIED`, provenance blocker, delivery-topology mismatch, implementation-context blocker, or architecture failure cannot be downgraded to a non-blocking merge flag. Technical approval cannot authorize a child PR whose target bypasses its governing epic or release topology.",
-          )
-          replace_once(
-              path,
-              "| Architecture/design | Decision authority | Boundaries, contexts, states, locks, criteria explicit |",
-              "| Delivery topology | Release unit + hierarchy + PR target | Parent, dependencies, base branch, target, and exception evidence explicit |\n| Architecture/design | Decision authority | Boundaries, contexts, states, locks, criteria explicit |",
-          )
-          replace_once(
-              path,
-              "| Agent-generated issue means scope approved | Verify attributable authority |",
-              "| Agent-generated issue means scope approved | Verify attributable authority |\n| Repository default branch becomes the PR target | Consume the approved `delivery-work-breakdown` topology |\n| Green child CI means the epic is complete | Run integrated epic acceptance against parent criteria |",
-          )
-
-          # product-development-workflow
-          path = "skills/product-development-workflow/SKILL.md"
-          replace_once(path, "ai-native-skills.version: 2.2.0", "ai-native-skills.version: 2.3.0")
-          replace_once(
-              path,
-              'ai-native-skills.requires: "product-requirements business-value-alignment experiment-design user-research product-manager decision-provenance master-design master-engineer native-ai-engineer chatgpt-app-development spec-workflow new-feature-workflow code-review-workflow design-review deployment-workflow observability-design"',
-              'ai-native-skills.requires: "product-requirements business-value-alignment experiment-design user-research product-manager delivery-work-breakdown decision-provenance master-design master-engineer native-ai-engineer chatgpt-app-development spec-workflow new-feature-workflow code-review-workflow design-review deployment-workflow observability-design"',
-          )
-          replace_once(
-              path,
-              '"phase":"mvp_slice","load":["business-value-alignment","experiment-design","product-manager","decision-making","spike","decision-provenance"]',
-              '"phase":"mvp_slice","load":["business-value-alignment","experiment-design","product-manager","delivery-work-breakdown","decision-making","spike","decision-provenance"]',
-          )
-          replace_once(
-              path,
-              '"phase":"technical_spec","load":["spec-workflow","native-ai-engineer","master-engineer","api-contract","data-modeling","decision-provenance"]',
-              '"phase":"technical_spec","load":["spec-workflow","delivery-work-breakdown","native-ai-engineer","master-engineer","api-contract","data-modeling","decision-provenance"]',
-          )
-          replace_once(
-              path,
-              "6. Implementation runs through new-feature-workflow boundaries.\n7. Feature verification does not automatically prove product-level acceptance.",
-              "6. Classify the release unit and approve the work hierarchy, branch base, and PR target before implementation branches are created.\n7. Implementation runs through new-feature-workflow boundaries.\n8. Feature verification does not automatically prove product-level acceptance.",
-          )
-          replace_once(
-              path,
-              "| 3 | MVP Slice | prioritization + provenance | Smallest valuable slice explicitly approved |\n| 4 | Technical Spec | spec workflow and engineering owners | Tasks trace to verified PRD/MVP criteria |",
-              "| 3 | MVP Slice + Delivery Topology | prioritization + `delivery-work-breakdown` + provenance | Smallest valuable release unit, hierarchy, integration branch, and PR targets explicitly approved |\n| 4 | Technical Spec | spec workflow, delivery topology, and engineering owners | Tasks trace to verified PRD/MVP criteria and an approved repository topology |",
-          )
-          insert_before_once(
-              path,
-              "## Conditional platform specialists\n",
-              """## Delivery decomposition boundary
-
-Before Phase 5 creates implementation branches, load `delivery-work-breakdown` to classify the release unit and map the approved MVP into product, epic, feature, task, spike, and bug items.
-
-```text
-single independently releasable MVP slice
+single independently releasable slice
   → feature or standalone release unit may be valid
 
 multiple dependent slices forming one MVP outcome
   → epic release unit
   → child PRs target the epic/integration branch
-  → final epic PR targets the release branch only after product acceptance
+  → final epic PR targets the release branch after product acceptance
 ```
 
-A product may use trunk-based incremental integration instead of an epic branch only when an attributable policy provides equivalent default-safe activation, traceability, integrated acceptance, rollback, and release authorization. Green child CI does not prove product or epic acceptance.
+Equivalent trunk-based delivery is valid only with attributable default-safe activation, traceability, integrated acceptance, rollback, and release authorization. Child CI does not prove epic or product acceptance.
 
-""",
-          )
-          replace_once(
-              path,
-              "Implementation\n   execute through new-feature-workflow while keeping MCP/widget code as adapters",
-              "MVP / Technical Spec\n   classify multi-slice ChatGPT App delivery with delivery-work-breakdown; default to an epic when slices are dependent\n\nImplementation\n   execute child slices through new-feature-workflow while keeping MCP/widget code as adapters and targeting the approved integration branch",
-          )
-          replace_once(
-              path,
-              "Phase 5 may produce several technically approved feature submissions. Phase 6 still asks:",
-              "Phase 5 may produce several technically approved feature submissions on an epic/integration branch. Phase 6 still asks:",
-          )
+""")
+          replace(p, "Phase 5 may produce several technically approved feature submissions.", "Phase 5 may produce several technically approved feature submissions on an epic/integration branch.")
 
-          # git-workflow
-          path = "skills/git-workflow/SKILL.md"
-          replace_once(path, "ai-native-skills.version: 1.0.1", "ai-native-skills.version: 1.1.0")
-          replace_once(
-              path,
-              "  ai-native-skills.author: puterakahfi\n  ai-native-skills.type: skill",
-              "  ai-native-skills.author: puterakahfi\n  ai-native-skills.requires: \"delivery-work-breakdown decision-provenance\"\n  ai-native-skills.type: skill\n  ai-native-skills.related_skills: '[\"delivery-work-breakdown\",\"new-feature-workflow\",\"product-development-workflow\",\"decision-provenance\"]'",
-          )
-          replace_once(
-              path,
-              "Never push directly to a protected branch.\nAlways branch from the correct base.\nEvery PR must reference an issue before submit.",
-              "Never push directly to a protected branch.\nAlways branch from the correct approved base.\nNever infer base branch or PR target from the repository default.\nFor product/feature work, consume the `delivery-work-breakdown` topology.\nEvery PR must reference an issue before submit.",
-          )
-          replace_once(
-              path,
-              "- What is the base branch? (product_defined)\n- What is the branch naming convention?",
-              "- What is the governing release unit and parent work item?\n- What approved topology record defines this operation?\n- What is the explicit base branch? (product_defined)\n- What is the explicit PR target? (product_defined)\n- What is the branch naming convention?",
-          )
-          replace_once(
-              path,
-              "Always create from the correct base branch — never from stale local state.",
-              "Always create from the correct approved base branch — never from stale local state or a guessed default. When an epic is required, child branches start from its integration branch.",
-          )
-          replace_once(
-              path,
-              "Checklist before submit:\n- [ ] Branch is up to date with base",
-              "Checklist before submit:\n- [ ] Release unit and parent traceability are explicit\n- [ ] Base branch and PR target match the approved delivery topology\n- [ ] An epic child does not bypass its epic/integration branch\n- [ ] Branch is up to date with base",
-          )
-          replace_once(
-              path,
-              "| Create branch | From correct base, pulled fresh |",
-              "| Create branch | From explicit approved base, pulled fresh; never guessed from default |\n| Choose PR target | Matches `delivery-work-breakdown` topology and governing release unit |",
-          )
+          # Git executes approved topology; it never invents one.
+          p = "skills/git-workflow/SKILL.md"
+          replace(p, "ai-native-skills.version: 1.0.1", "ai-native-skills.version: 1.1.0")
+          replace(p, "  ai-native-skills.author: puterakahfi\n  ai-native-skills.type: skill", "  ai-native-skills.author: puterakahfi\n  ai-native-skills.requires: \"delivery-work-breakdown decision-provenance\"\n  ai-native-skills.type: skill\n  ai-native-skills.related_skills: '[\"delivery-work-breakdown\",\"new-feature-workflow\",\"product-development-workflow\"]'")
+          replace(p, "Always branch from the correct base.\nEvery PR", "Always branch from the correct approved base.\nNever infer base or PR target from the repository default.\nConsume `delivery-work-breakdown` for product/feature work.\nEvery PR")
+          replace(p, "- What is the base branch? (product_defined)", "- What is the governing release unit and parent work item?\n- What topology record approved this operation?\n- What is the explicit base branch? (product_defined)\n- What is the explicit PR target? (product_defined)")
+          replace(p, "Always create from the correct base branch — never from stale local state.", "Always create from the correct approved base branch — never from stale local state or a guessed default. Epic children start from the approved integration branch.")
+          replace(p, "Checklist before submit:\n- [ ] Branch is up to date with base", "Checklist before submit:\n- [ ] Release unit and parent traceability are explicit\n- [ ] Base branch and PR target match the approved topology\n- [ ] Epic children do not bypass the integration branch\n- [ ] Branch is up to date with base")
+          replace(p, "| Create branch | From correct base, pulled fresh |", "| Create branch | From explicit approved base, pulled fresh |\n| Choose PR target | Matches the approved release unit and topology |")
 
-          # product-manager
-          path = "skills/product-manager/SKILL.md"
-          replace_once(path, "ai-native-skills.version: 1.0.1", "ai-native-skills.version: 1.1.0")
-          replace_once(
-              path,
-              "  ai-native-skills.contract-version: \"~0.1\"",
-              "  ai-native-skills.contract-version: \"~0.1\"\n  ai-native-skills.related_skills: '[\"delivery-work-breakdown\",\"product-development-workflow\",\"new-feature-workflow\"]'",
-          )
-          replace_once(
-              path,
-              "Start from an attributable product_intent_or_feature_request. Produce the appropriate product intent, PRD or feature spec, testable acceptance criteria, task breakdown, explicit priority list, and out-of-scope list. Every task traces to acceptance criteria; implementation detail requires engineering review rather than being smuggled into product definition.",
-              "Start from an attributable product_intent_or_feature_request. Produce the appropriate product intent, PRD or feature spec, testable acceptance criteria, task breakdown, explicit priority list, and out-of-scope list. Every task traces to acceptance criteria; implementation detail requires engineering review rather than being smuggled into product definition. When work spans multiple dependent slices or repository targets are unresolved, hand the verified scope and criteria to `delivery-work-breakdown`; task breakdown alone does not decide epic topology or a PR target.",
-          )
-          replace_once(
-              path,
-              "  title: \"\"\n  traces_to: [AC-1, AC-2]",
-              "  title: \"\"\n  work_item_type: task | spike | bug\n  parent_ref: \"\"\n  traces_to: [AC-1, AC-2]",
-          )
-          insert_before_once(
-              path,
-              "## 4. Prioritization\n",
-              """## 4. Delivery topology handoff
+          # Product manager owns scope/ACs; delivery skill owns release topology.
+          p = "skills/product-manager/SKILL.md"
+          replace(p, "ai-native-skills.version: 1.0.1", "ai-native-skills.version: 1.1.0")
+          replace(p, "  ai-native-skills.contract-version: \"~0.1\"", "  ai-native-skills.contract-version: \"~0.1\"\n  ai-native-skills.related_skills: '[\"delivery-work-breakdown\",\"product-development-workflow\",\"new-feature-workflow\"]'")
+          replace(p, "Every task traces to acceptance criteria; implementation detail", "Every task traces to acceptance criteria. Multi-slice work and unresolved repository targets hand off to `delivery-work-breakdown`; task breakdown alone does not choose an epic or PR target. Implementation detail")
+          replace(p, "  title: \"\"\n  traces_to:", "  title: \"\"\n  work_item_type: task | spike | bug\n  parent_ref: \"\"\n  traces_to:")
+          insert_before(p, "## 4. Prioritization\n", """## Delivery topology handoff
 
-`product-manager` defines value, scope, acceptance criteria, priority, and task intent. It does not infer whether the governing release unit is a feature, epic, or product release and does not choose `main` merely because it is the default branch.
+`product-manager` owns intent, scope, acceptance criteria, priority, and task intent. When dependent slices or branch targets are unresolved, pass the verified scope and criteria to `delivery-work-breakdown`. It returns release unit, parent hierarchy, dependency graph, base branches, PR targets, integration plan, and epic acceptance plan. `git-workflow` then executes that approved topology.
 
-When delivery has dependent slices or repository topology is unresolved, hand off:
+""")
+          replace(p, "| Tasks with no AC reference | No traceability — fails gate |", "| Tasks with no AC reference | No traceability — fails gate |\n| Task list silently targets the default branch | Route repository topology to `delivery-work-breakdown` |")
 
-```yaml
-delivery_work_breakdown_input:
-  delivery_intent_or_scope: <feature spec / MVP scope>
-  acceptance_criteria: []
-  repository_and_release_context: <known policy refs and unknowns>
-  proposed_work_items: []
-```
+          # Pin CI to stacked core contract head.
+          replace(".github/workflows/skill-eval.yml", "ref: f94b6ad86583c714b68eb5ea9f92890557b462c5", "ref: fdd743c7e08acc9fc70ca02509a83317c42f2df9")
 
-`delivery-work-breakdown` returns parent hierarchy, dependency graph, base branches, PR targets, integration plan, and epic acceptance plan. Then `git-workflow` executes the approved topology.
-
-""",
-          )
-          replace_once(path, "## 4. Prioritization", "## 5. Prioritization")
-          replace_once(path, "## 5. Scope Review", "## 6. Scope Review")
-          replace_once(
-              path,
-              "| Tasks with no AC reference | No traceability — fails gate |",
-              "| Tasks with no AC reference | No traceability — fails gate |\n| Task list silently chooses `main` as PR target | Product scope is not repository topology; route to `delivery-work-breakdown` |",
-          )
-
-          # CI core pin
-          replace_once(
-              ".github/workflows/skill-eval.yml",
-              "ref: f94b6ad86583c714b68eb5ea9f92890557b462c5",
-              "ref: fdd743c7e08acc9fc70ca02509a83317c42f2df9",
-          )
-
-          # Strict adapter registry
-          registry = Path("contracts/conformance/strict-adapters.txt")
-          lines = registry.read_text(encoding="utf-8").splitlines()
-          if "delivery-work-breakdown" not in lines:
-              comments = [line for line in lines if not line.strip() or line.lstrip().startswith("#")]
-              entries = sorted(line.strip() for line in lines if line.strip() and not line.lstrip().startswith("#"))
-              entries.append("delivery-work-breakdown")
-              entries = sorted(set(entries))
-              header = []
-              for line in lines:
-                  if line.strip() and not line.lstrip().startswith("#"):
-                      break
+          # Strict adapter registry.
+          p = Path("contracts/conformance/strict-adapters.txt")
+          lines = p.read_text(encoding="utf-8").splitlines()
+          header = []
+          entries = []
+          seen_entry = False
+          for line in lines:
+              if not seen_entry and (not line.strip() or line.lstrip().startswith("#")):
                   header.append(line)
-              registry.write_text("\n".join(header + entries) + "\n", encoding="utf-8")
+              else:
+                  seen_entry = True
+                  if line.strip() and not line.lstrip().startswith("#"):
+                      entries.append(line.strip())
+          entries.append("delivery-work-breakdown")
+          p.write_text("\n".join(header + sorted(set(entries))) + "\n", encoding="utf-8")
 
-          # README
-          path = "README.md"
-          replace_once(path, "**84 skills · 9 workflows · 6 meta-skills**", "**85 skills · 9 workflows · 6 meta-skills**")
-          replace_once(
-              path,
-              "| Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code | `implementation-context-discovery` |",
-              "| Classify feature vs epic, build issue hierarchy, and choose branch bases / PR targets | `delivery-work-breakdown` |\n| Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code | `implementation-context-discovery` |",
-          )
-          replace_once(
-              path,
-              "npx skills add puterakahfi/ai-native-skills@implementation-context-discovery -g -y",
-              "npx skills add puterakahfi/ai-native-skills@delivery-work-breakdown -g -y\nnpx skills add puterakahfi/ai-native-skills@implementation-context-discovery -g -y",
-          )
-          replace_once(
-              path,
-              "| `skill` | One reusable capability or expert lens | `implementation-context-discovery`,",
-              "| `skill` | One reusable capability or expert lens | `delivery-work-breakdown`, `implementation-context-discovery`,",
-          )
-          replace_once(
-              path,
-              "| Map an accepted feature/design into an existing repository stack before implementation | `implementation-context-discovery` |",
-              "| Decompose a broad release into epic/feature/task work and define branch/PR topology | `delivery-work-breakdown` |\n| Map an accepted feature/design into an existing repository stack before implementation | `implementation-context-discovery` |",
-          )
-          replace_once(
-              path,
-              "Product delivery\n  product-development-workflow → spec-workflow → new-feature-workflow\n  → implementation-context-discovery",
-              "Product delivery\n  product-development-workflow → spec-workflow → delivery-work-breakdown\n  → new-feature-workflow → implementation-context-discovery",
-          )
-          replace_once(
-              path,
-              "ChatGPT App product delivery\n  product-development-workflow | new-feature-workflow\n  → chatgpt-app-development + native-ai-engineer\n  → implementation-context-discovery",
-              "ChatGPT App product delivery\n  product-development-workflow | new-feature-workflow\n  → delivery-work-breakdown for P0/epic slices\n  → chatgpt-app-development + native-ai-engineer\n  → implementation-context-discovery",
-          )
+          # Inventory and discovery docs.
+          replace("README.md", "**84 skills · 9 workflows · 6 meta-skills**", "**85 skills · 9 workflows · 6 meta-skills**")
+          replace("README.md", "| Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code |", "| Classify feature vs epic and define issue/branch/PR topology | `delivery-work-breakdown` |\n| Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code |")
+          replace("README.md", "@workflow-router -g -y\n", "@workflow-router -g -y\nnpx skills add puterakahfi/ai-native-skills@delivery-work-breakdown -g -y\n")
+          replace("README.md", "| `skill` | One reusable capability or expert lens | `implementation-context-discovery`,", "| `skill` | One reusable capability or expert lens | `delivery-work-breakdown`, `implementation-context-discovery`,")
+          replace("README.md", "| Map an accepted feature/design into an existing repository stack before implementation |", "| Decompose a release into epic/feature/task work and define branch/PR topology | `delivery-work-breakdown` |\n| Map an accepted feature/design into an existing repository stack before implementation |")
+          replace("README.md", "product-development-workflow → spec-workflow → new-feature-workflow", "product-development-workflow → spec-workflow → delivery-work-breakdown\n  → new-feature-workflow")
+          replace("README.md", "→ chatgpt-app-development + native-ai-engineer\n  → implementation-context-discovery", "→ delivery-work-breakdown for dependent P0 slices\n  → chatgpt-app-development + native-ai-engineer\n  → implementation-context-discovery")
 
-          # docs/skills.md
-          path = "docs/skills.md"
-          replace_once(path, "- `skill`: 84", "- `skill`: 85")
-          replace_once(path, "- Total executable skills: 99", "- Total executable skills: 100")
-          replace_once(
-              path,
-              "| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `implementation-context-discovery`,",
-              "| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `delivery-work-breakdown`, `implementation-context-discovery`,",
-          )
-          replace_once(
-              path,
-              "### Examples\n\n- `implementation-context-discovery`",
-              "### Examples\n\n- `delivery-work-breakdown` — classify release units, build product/epic/feature/task hierarchy, trace parent acceptance, and define branch bases, PR targets, and final epic acceptance before Git execution.\n- `implementation-context-discovery`",
-          )
-          replace_once(
-              path,
-              "| `new-feature-workflow` | plan → architecture/design decision → implementation-context discovery → implement → verify → submit → review |",
-              "| `new-feature-workflow` | plan → delivery topology → architecture/design decision → implementation-context discovery → implement → verify → submit → review |",
-          )
-          replace_once(
-              path,
-              "| `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |",
-              "| `product-development-workflow` | discovery → PRD → MVP/release-unit decomposition → spec → implementation → verification → release → deploy → launch → learn |",
-          )
-          replace_once(
-              path,
-              "Examples:\n\n- `implementation-context-discovery`;",
-              "Examples:\n\n- `delivery-work-breakdown`;\n- `implementation-context-discovery`;",
-          )
-          replace_once(
-              path,
-              "Repository-backed redesign or feature\n  lifecycle remains redesign/new-feature/refinement\n  pre-code specialist: implementation-context-discovery",
-              "Multi-slice product or feature delivery\n  lifecycle remains product-development/new-feature\n  delivery specialist: delivery-work-breakdown\n  output: release unit, hierarchy, base branches, PR targets, epic acceptance\n\nRepository-backed redesign or feature\n  lifecycle remains redesign/new-feature/refinement\n  pre-code specialist: implementation-context-discovery",
-          )
+          replace("docs/skills.md", "- `skill`: 84", "- `skill`: 85")
+          replace("docs/skills.md", "- Total executable skills: 99", "- Total executable skills: 100")
+          replace("docs/skills.md", "| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `implementation-context-discovery`,", "| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `delivery-work-breakdown`, `implementation-context-discovery`,")
+          replace("docs/skills.md", "### Examples\n\n- `implementation-context-discovery`", "### Examples\n\n- `delivery-work-breakdown` — classify release units, work hierarchy, branch bases, PR targets, and epic acceptance before Git execution.\n- `implementation-context-discovery`")
+          replace("docs/skills.md", "plan → architecture/design decision → implementation-context discovery", "plan → delivery topology → architecture/design decision → implementation-context discovery")
+          replace("docs/skills.md", "discovery → PRD → MVP → spec → implementation", "discovery → PRD → MVP/release-unit decomposition → spec → implementation")
+          replace("docs/skills.md", "Examples:\n\n- `implementation-context-discovery`;", "Examples:\n\n- `delivery-work-breakdown`;\n- `implementation-context-discovery`;")
 
-          # docs/skill-packs.md
-          path = "docs/skill-packs.md"
-          replace_once(
-              path,
-              "Full product lifecycle — discovery, verified PRD/MVP decisions, implementation-context mapping, implementation, product acceptance, release approval, authorized deployment, launch, and learning.",
-              "Full product lifecycle — discovery, verified PRD/MVP decisions, release-unit and epic/feature/task decomposition, branch/PR topology, implementation-context mapping, implementation, product acceptance, release approval, authorized deployment, launch, and learning.",
-          )
-          replace_once(
-              path,
-              "  --skill decision-provenance \\\n  --skill master-design \\",
-              "  --skill decision-provenance \\\n  --skill delivery-work-breakdown \\\n  --skill master-design \\",
-          )
-          replace_once(
-              path,
-              "End-to-end ChatGPT App product delivery using the existing product lifecycle plus the Apps SDK/MCP platform specialist.",
-              "End-to-end ChatGPT App product delivery using the existing product lifecycle, release-unit/epic decomposition, and the Apps SDK/MCP platform specialist.",
-          )
-          # Add to ChatGPT pack after product-manager; the first occurrence after heading is handled by split.
-          text = read(path)
-          heading = "## ChatGPT App Product Pack"
-          before, after = text.split(heading, 1)
-          old = "  --skill product-manager \\\n  --skill decision-provenance \\" 
-          new = "  --skill product-manager \\\n  --skill delivery-work-breakdown \\\n  --skill decision-provenance \\"
-          if after.count(old) != 1:
-              raise SystemExit(f"{path}: ChatGPT pack insertion source count={after.count(old)}")
-          write(path, before + heading + after.replace(old, new, 1))
-          insert_before_once(
-              path,
-              "| `implementation-context-discovery` | repository evidence;",
-              "| `delivery-work-breakdown` | verified scope and acceptance criteria; repository/release context; product-defined issue, branch, PR, feature-flag, merge, and release policy; git-workflow for execution |\n",
-          )
+          # Skill packs: line-based insertion avoids fragile trailing backslashes.
+          p = Path("docs/skill-packs.md")
+          text = p.read_text(encoding="utf-8")
+          text = text.replace("Full product lifecycle — discovery, verified PRD/MVP decisions, implementation-context mapping", "Full product lifecycle — discovery, verified PRD/MVP decisions, release-unit and epic/feature/task decomposition, branch/PR topology, implementation-context mapping", 1)
+          text = text.replace("End-to-end ChatGPT App product delivery using the existing product lifecycle plus", "End-to-end ChatGPT App product delivery using the existing product lifecycle, release-unit/epic decomposition, plus", 1)
+          lines = text.splitlines()
+          slash = chr(92)
+          for heading in ("## Product Development Pack", "## ChatGPT App Product Pack"):
+              start = lines.index(heading)
+              end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("## ")), len(lines))
+              if any("--skill delivery-work-breakdown" in line for line in lines[start:end]):
+                  continue
+              marker = next(i for i in range(start, end) if "--skill decision-provenance" in lines[i])
+              lines.insert(marker, "  --skill delivery-work-breakdown " + slash)
+          dep_marker = next(i for i, line in enumerate(lines) if line.startswith("| `implementation-context-discovery` |"))
+          lines.insert(dep_marker, "| `delivery-work-breakdown` | verified scope/criteria; repository and release context; product-defined tracker, branch, PR, flag, merge, and release policy; git-workflow for execution |")
+          p.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-          # Test version bumps and regression cases
-          replace_once("contracts/tests/workflow-router.test.yaml", "version: 1.4.1", "version: 1.5.0")
+          # Eval versions and focused regression cases.
+          replace("contracts/tests/workflow-router.test.yaml", "version: 1.4.1", "version: 1.5.0")
           append_case("contracts/tests/workflow-router.test.yaml", "multi-slice-product-loads-delivery-topology", """  - id: multi-slice-product-loads-delivery-topology
-    description: A broad dependent capability keeps its lifecycle and loads delivery decomposition before Git execution.
-    trigger: Add a ChatGPT App P0 to an existing product through MCP, tools, widget, native handoff, and runtime verification. The slices are dependent and branch targets are not defined.
-    must_contain:
-    - new-feature-workflow
-    - chatgpt-app-development
-    - delivery-work-breakdown
-    - release unit
-    - epic/integration branch
-    must_not_contain:
-    - every child PR targets main
-    - default branch decides the target
-    quality_gates_tested:
-    - existing_product_feature_route_preserved
-    - platform_specialist_overlay
-    - release_unit_classified_before_repository_execution
+    description: A dependent broad capability keeps its lifecycle and loads delivery decomposition before Git execution.
+    trigger: Add a multi-slice ChatGPT App P0 to an existing product; slices are dependent and targets are undefined.
+    must_contain: [new-feature-workflow, chatgpt-app-development, delivery-work-breakdown, epic]
+    must_not_contain: [every child PR targets main, default branch decides target]
+    quality_gates_tested: [existing_product_feature_route_preserved, platform_specialist_overlay, release_unit_classified_before_repository_execution]
 """)
 
-          replace_once("contracts/tests/new-feature-workflow.test.yaml", 'version: "2.2.0"', 'version: "2.3.0"')
+          replace("contracts/tests/new-feature-workflow.test.yaml", 'version: "2.2.0"', 'version: "2.3.0"')
           append_case("contracts/tests/new-feature-workflow.test.yaml", "epic-child-targets-integration-branch", """    - id: epic-child-targets-integration-branch
-      description: A feature slice inside an epic cannot create a branch or target main before delivery topology passes.
-      trigger: Implement the MCP tools child slice for epic 37. Repository default is main, but no base branch or PR target has been recorded yet.
-      must_contain:
-        - delivery-work-breakdown
-        - release unit
-        - parent_ref
-        - base_branch
-        - pr_target
-        - BLOCKED
-      must_not_contain:
-        - target main by default
-        - create the branch immediately
-      quality_gates_tested:
-        - release_unit_classified_before_repository_execution
-        - epic_child_pr_target_matches_integration_branch
-        - no_orphan_feature_slice
+      description: An epic child cannot create a branch or target main before delivery topology passes.
+      trigger: Implement an MCP child slice for epic 37; default is main but no approved base or target exists.
+      must_contain: [delivery-work-breakdown, release unit, parent_ref, base_branch, pr_target, BLOCKED]
+      must_not_contain: [target main by default, create branch immediately]
+      quality_gates_tested: [release_unit_classified_before_repository_execution, epic_child_pr_target_matches_integration_branch, no_orphan_feature_slice]
 """)
 
-          replace_once("contracts/tests/git-workflow.test.yaml", "version: 1.0.1", "version: 1.1.0")
+          replace("contracts/tests/git-workflow.test.yaml", "version: 1.0.1", "version: 1.1.0")
           append_case("contracts/tests/git-workflow.test.yaml", "git-does-not-guess-epic-pr-target", """  - id: git-does-not-guess-epic-pr-target
-    description: Git operations consume the approved epic topology rather than the repository default.
-    trigger: Create a branch and PR for a child of epic 37. The topology record says base and target are epic/37-chatgpt-app-p0 while repository default is main.
-    must_contain:
-    - delivery-work-breakdown
-    - epic/37-chatgpt-app-p0
-    - base branch
-    - PR target
-    must_not_contain:
-    - default branch wins
-    - target main
-    quality_gates_tested:
-    - branch_must_be_created_from_correct_base
-    - pr_target_must_match_approved_delivery_topology
+    description: Git consumes approved epic topology rather than repository defaults.
+    trigger: Create a child branch and PR for epic 37; approved base and target are epic/37-chatgpt-app-p0 while default is main.
+    must_contain: [delivery-work-breakdown, epic/37-chatgpt-app-p0, base branch, PR target]
+    must_not_contain: [default branch wins, target main]
+    quality_gates_tested: [branch_must_be_created_from_correct_base, pr_target_must_match_approved_delivery_topology]
 """)
 
-          replace_once("contracts/tests/product-manager.test.yaml", "version: 1.0.1", "version: 1.1.0")
+          replace("contracts/tests/product-manager.test.yaml", "version: 1.0.1", "version: 1.1.0")
           append_case("contracts/tests/product-manager.test.yaml", "task-breakdown-hands-off-release-topology", """  - id: task-breakdown-hands-off-release-topology
-    description: Product task breakdown keeps scope traceability but delegates epic and branch topology decisions.
-    trigger: Break a multi-slice ChatGPT App MVP into tasks and decide where each PR should target.
-    must_contain:
-    - tasks_must_trace_to_acceptance_criteria
-    - parent_ref
-    - delivery-work-breakdown
-    - release unit
-    - branch topology
-    must_not_contain:
-    - product-manager chooses main from repository default
-    - floating task
-    quality_gates_tested:
-    - acceptance_criteria_must_be_testable_not_vague
-    - tasks_must_trace_to_acceptance_criteria
+    description: Product task breakdown delegates epic and repository topology decisions.
+    trigger: Break a multi-slice ChatGPT App MVP into traceable tasks and decide PR targets.
+    must_contain: [tasks_must_trace_to_acceptance_criteria, parent_ref, delivery-work-breakdown, release unit, branch topology]
+    must_not_contain: [product-manager chooses main from default, floating task]
+    quality_gates_tested: [acceptance_criteria_must_be_testable_not_vague, tasks_must_trace_to_acceptance_criteria]
 """)
 
-          replace_once("contracts/tests/product-development-workflow.test.yaml", 'version: "2.2.0"', 'version: "2.3.0"')
+          replace("contracts/tests/product-development-workflow.test.yaml", 'version: "2.2.0"', 'version: "2.3.0"')
           append_case("contracts/tests/product-development-workflow.test.yaml", "multi-slice-mvp-requires-epic-acceptance", """    - id: multi-slice-mvp-requires-epic-acceptance
-      description: Product development decomposes a dependent MVP into an epic before feature branches and verifies it as one release unit.
-      trigger: The approved MVP requires seven dependent implementation slices. Create branches and merge each slice directly to main as soon as its CI is green.
-      must_contain:
-        - delivery-work-breakdown
-        - release_unit: epic
-        - parent acceptance criteria
-        - integration branch
-        - end-to-end acceptance
-        - release authorization
-      must_not_contain:
-        - child CI proves product acceptance
-        - direct child PR to main
-      quality_gates_tested:
-        - mvp_release_unit_and_topology_defined_before_implementation
-        - child_evidence_reconciled_at_epic_acceptance
-        - release_ready_does_not_self_authorize_release
+      description: Product delivery creates an epic before dependent feature branches and verifies one integrated release unit.
+      trigger: Seven dependent MVP slices are approved; merge each directly to main when child CI passes.
+      must_contain: [delivery-work-breakdown, release_unit: epic, integration branch, end-to-end acceptance, release authorization]
+      must_not_contain: [child CI proves product acceptance, direct child PR to main]
+      quality_gates_tested: [mvp_release_unit_and_topology_defined_before_implementation, child_evidence_reconciled_at_epic_acceptance, release_ready_does_not_self_authorize_release]
 """)
           PY
+          python /tmp/integrate.py
 
       - name: Remove temporary workflow
         run: rm .github/workflows/tmp-integrate-delivery-work-breakdown.yml
@@ -575,9 +277,5 @@ delivery_work_breakdown_input:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          if git diff --cached --quiet; then
-            echo "No integration changes"
-            exit 0
-          fi
           git commit -m "feat(product): integrate delivery work breakdown"
           git push origin HEAD:53-delivery-work-breakdown
