@@ -137,7 +137,7 @@ python ai-native-core/scripts/run-eval.py \
   --output-dir eval-outputs
 ```
 
-Every pull request must also pass the repository's **Skill and Gate Contracts** workflow. The workflow currently checks:
+Changes to executable skills, contracts, compatibility records, or behavioral evals must pass the repository's **Skill and Gate Contracts** workflow. The workflow currently checks:
 
 - local validator and runner syntax;
 - the canonical design-gate registry;
@@ -146,7 +146,9 @@ Every pull request must also pass the repository's **Skill and Gate Contracts** 
 - wrapper integration;
 - per-case runner compatibility smoke.
 
-A green workflow is required, but it does not replace domain evidence. Visual, interaction, runtime, security, or architecture claims still require evidence appropriate to that domain.
+Documentation-only changes may not trigger every executable-contract check. For those changes, inspect rendered Markdown, local links, commands, terminology, and source-of-truth references directly.
+
+A green workflow is required when applicable, but it does not replace domain evidence. Visual, interaction, runtime, security, or architecture claims still require evidence appropriate to that domain.
 
 ## Documentation responsibilities
 
@@ -172,7 +174,8 @@ Before requesting review:
 - [ ] Required references are linked from the executable skill.
 - [ ] Behavioral regressions are covered when reusable behavior changed.
 - [ ] Local validation has been run where available.
-- [ ] The Skill and Gate Contracts workflow is green.
+- [ ] Applicable Skill and Gate Contracts checks are green.
+- [ ] Documentation-only changes were reviewed for rendered structure and link integrity.
 - [ ] Known gaps are reported as `PARTIAL`, `NOT_VERIFIED`, or `NOT_APPLICABLE` rather than hidden.
 - [ ] No secrets, credentials, private product context, or generated runtime state were committed.
 
