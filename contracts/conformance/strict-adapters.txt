@@ -29,6 +29,7 @@ ethics-responsible-ai
 event-driven-design
 git-workflow
 hermes-profile-bootstrap
+implementation-context-discovery
 incident-response
 information-architecture
 language-standards
