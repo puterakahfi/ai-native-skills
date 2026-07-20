@@ -12,7 +12,7 @@ metadata:
   ai-native-skills.boundary.delegates: '["net_new_product_definition","audit_only_work_after_route_handoff","known_narrow_refinement_after_route_handoff","non_visual_feature_development","unrelated_product_route_auth_data_or_infrastructure_changes","general_bugfix_workflow","deployment_or_publishing","legal_trademark_clearance","force_overwrite_of_uninspected_concurrent_work","destructive_repository_operations_without_approval"]'
   ai-native-skills.pack: packs/redesign/pack.yaml
   ai-native-skills.pack-version: "1.2.0"
-  ai-native-skills.requires: "role-switcher master-design master-engineer implementation-context-discovery business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout component-family-design design-strategy design-interaction design-system design-audit architecture-review design-review design-refinement skill-evolution skill-eval git-workflow"
+  ai-native-skills.requires: "role-switcher master-design master-engineer implementation-context-discovery business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit architecture-review design-review design-refinement skill-evolution skill-eval git-workflow"
   ai-native-skills.related_skills: '["workflow-router","architecture-review","component-family-design","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
 ---
 
@@ -24,24 +24,60 @@ Source: `ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
 
 ```yaml
 required_inputs:
-- target
-allowed_outputs: []
+- current_surface
+- confirmed_scope
+- baseline_evidence
+- artifact_type
+- output_mode
+- decision_sources
+- acceptance_criteria
+allowed_outputs:
+- redesign_state
+- route_decision
+- confirmed_scope
+- scope_provenance
+- decision_log
+- integrity_gate
+- implementation_context_gate
+- concurrency_gate
+- final_diff_manifest
+- role_composition
+- design_owner
+- implementation_owner
+- repository_write_owner
+- redesign_strategy
+- option_comparison
+- selected_direction
+- layered_change_plan
+- implementation_context_profile
+- convention_locks
+- reuse_extension_decisions
+- implementation_mapping
+- dependency_decisions
+- value_alignment
+- production_output
+- verification_evidence
+- review_report
+- correction_handoff
+- learning_review
+- delivery_decision
 quality_gates:
-- lifecycle_route_resolved_before_production
-- exactly_one_design_owner_is_explicit
-- implementation_owner_is_explicit_when_patching
-- exactly_one_repository_write_owner_is_active
-- specialists_are_selected_from_declared_changed_layers
-- baseline_and_confirmed_scope_are_recorded_before_patch_production
-- preservation_locks_are_recorded_and_rechecked
-- production_follows_declared_delegation_plan
-- production_remains_inside_confirmed_scope
-- every_repository_write_uses_expected_head_lease
-- head_drift_is_inspected_before_retry
-- repeated_decision_reversal_stops_automatic_writes
-- parent_pointer_does_not_chase_unstable_child_head
-- verification_strategy_matches_primary_design_domain_and_artifact_state
-- final_effective_diff_must_match_confirmed_scope
+- route_before_production
+- exactly_one_design_owner
+- implementation_owner_required_for_patch_or_executable_prototype
+- exactly_one_active_repository_write_owner_for_patch_mode
+- material_decisions_require_verified_provenance
+- unverified_approval_or_override_claims_block_progress
+- current_state_baseline_scope_and_locks_are_captured_before_production
+- implementation_context_is_required_before_repository_code_production
+- package_presence_does_not_prove_canonicality
+- implementation_mapping_precedes_code_production
+- new_dependency_requires_proven_capability_gap_consequences_and_authority
+- final_effective_diff_is_verified_not_only_patch_commits
+- concurrent_writes_are_detected_and_coordinated
+- expected_head_lease_guards_every_repository_write
+- parent_pointer_moves_only_after_child_stability
+- repeated_conflicting_updates_stop_without_force_overwrite
 - every_changed_path_must_be_classified
 - scope_contamination_blocks_review_and_delivery
 - concurrency_block_is_not_reported_as_pass
@@ -60,7 +96,7 @@ Keep this interface synchronized with the pinned core contract. Exact declaratio
 
 Redesign an existing visual surface through explicit ownership, verified decision provenance, bounded specialist delegation, repository-consistent implementation mapping, clean final-diff scope, concurrency-safe writes, domain-appropriate evidence, independent facade and architecture review, and a verified correction loop.
 
-The workflow owns lifecycle, state transitions, approvals, preservation, integrity gates, iteration, and handoffs. Specialist skills own narrow design decisions. `implementation-context-discovery` owns the pre-code repository implementation map. `master-engineer` owns implementation. `architecture-review`, `design-review`, and the governing domain reviewer own acceptance in their domains.
+The workflow owns lifecycle, state transitions, approvals, preservation, integrity gates, iteration, and handoffs. Specialist skills own narrow design decisions. `component-family-design` owns organism/template family consistency when repeated shared surfaces are affected. `implementation-context-discovery` owns the pre-code repository implementation map. `master-engineer` owns implementation. `architecture-review`, `design-review`, and the governing domain reviewer own acceptance in their domains.
 
 It routes net-new product definition, audit-only work, known narrow refinements, non-visual feature development, and general bug fixes to their owning workflows. It does not own unrelated product/route/auth/data/infrastructure changes, deployment or publishing, legal or trademark clearance, force-overwriting uninspected concurrent work, or destructive repository operations without approval.
 
@@ -151,33 +187,33 @@ Load `references/redesign-vs-refinement.md` before production.
 ## Required context
 
 ```yaml
-redesign_input:
-  target: <required>
-  goal: <outcome>
-  design_domain: <digital-interface | visual-communication | presentation | brand-identity | other>
-  surface_profile: <profile>
-  output_mode: <audit-only | spec-only | prototype | patch>
-  approval_mode: <autonomous | spec-gated | patch-gated | fully-gated>
-  max_iterations: 5
+redesign_context:
+  target:
+    repository: <owner/repository or null>
+    base_ref: <ref or null>
+    branch: <branch or null>
+    issue: <issue ref or null>
+    pull_request: <pr ref or null>
+    artifact_type: <artifact type>
+    output_mode: <design artifact | specification | patch | executable prototype>
+    expected_head: <commit or null>
+    repository_write_owner: <owner or null>
 
-  baseline_ref: <approved baseline>
-  repository_branch: <branch or null>
-  expected_head: <inspected head or null>
-
-  decision_sources: []
-  required_authorities: []
-  previous_decision_records: []
+  authority:
+    decision_sources: []
+    verified_owner_statements: []
+    inferred_constraints: []
+    unverified_claims: []
 
   confirmed_scope:
     products: []
-    routes_or_surfaces: []
-    allowed_paths: []
-    allowed_change_types: []
-    expected_generated_files: []
-    expected_deletions: []
-    preserved_paths: []
-    preserved_routes: []
-    out_of_scope: []
+    routes: []
+    paths: []
+    allowed_adjacent_changes: []
+    excluded_products: []
+    excluded_routes: []
+    excluded_paths: []
+    destructive_operations_allowed: false
 
   content_inventory: []
   required_assets: []
@@ -208,8 +244,9 @@ Infer missing context only when evidence is strong and record the assumption. Ne
 
 1  COMPOSE ROLES
    lifecycle owner, design owner, conditional implementation owner,
-   repository write owner, implementation-context specialist,
-   selected design specialists, reviewer facade, domain and architecture reviewers
+   repository write owner, component-family specialist when applicable,
+   implementation-context specialist, selected design specialists,
+   reviewer facade, domain and architecture reviewers
 
 2  INITIALIZE
    validate target, baseline, branch, decision sources, scope, locks,
@@ -217,15 +254,18 @@ Infer missing context only when evidence is strong and record the assumption. Ne
 
 3  PREFLIGHT
    inspect complete target, effective diff, equity, content, assets,
-   system/framework, shared components, organism and template families, route instances, tokens, icons, repository conventions,
+   system/framework, shared components, organism and template families,
+   route instances, tokens, icons, repository conventions,
    concurrent automation, constraints, and evidence gaps
+   → repeated organism/template: run component-family-design
    → patch/prototype: run implementation-context-discovery
 
 4  DIRECTION
    compare alternatives and select product/brand-appropriate direction
 
 5  LAYERED PLAN
-   strategy, foundation, structure, component capability, component-family and template composition, expression,
+   strategy, foundation, structure, component capability,
+   component-family and template composition, expression,
    interaction, content, implementation capability requirements
 
 6  VALUE ALIGNMENT
@@ -234,7 +274,9 @@ Infer missing context only when evidence is strong and record the assumption. Ne
 7  SPEC CONFIRMATION
    verify decisions; lock scope, paths, routes, exclusions, preservation,
    evidence, delegation, ownership, approvals, convention locks,
-   family reuse/variant decisions, route-instance mapping, component reuse/extension decisions, implementation mapping, and dependency authority
+   family reuse/variant decisions, route-instance mapping,
+   component reuse/extension decisions, implementation mapping,
+   and dependency authority
 
 8  PRODUCTION
    acquire expected-head lease and produce through selected ports/adapters
@@ -261,114 +303,145 @@ Infer missing context only when evidence is strong and record the assumption. Ne
    specialist handoff, or bounded gap report
 ```
 
-## Composition rules
+## Reusable Fix Promotion
+
+A correction becomes skill knowledge only after verification and reviewer acceptance.
 
 ```text
-patch or executable prototype
-  → implementation_context_owner: implementation-context-discovery
-  → implementation_owner: master-engineer or runtime equivalent
-  → post_implementation_reviewer: architecture-review
-  → exactly one repository_write_owner at a time
-
-spec-only or non-code visual artifact
-  → implementation-context-discovery: NOT_APPLICABLE unless mapping to an existing repository is requested
-
-digital-interface
-  → built-in interactive reviewer
-
-visual-communication
-  → built-in static reviewer
-
-presentation
-  → built-in presentation reviewer
-
-brand-identity
-  → brand-identity-review when available; otherwise LIMITED/handoff
-
-other
-  → declared domain reviewer; otherwise LIMITED/ROUTE_ELSEWHERE
+verified reusable correction
+→ skill-evolution
+→ regression eval
+→ clean validation
+→ skill publication or merge
 ```
 
-Specialists are selected by changed concern:
+Do not promote an unverified workaround, project-only exception, or failed patch.
+
+## Integrity gate
+
+Before production and delivery, report:
+
+```yaml
+integrity_gate:
+  expected_head: <commit>
+  actual_head: <commit>
+  head_matches_expected: <true | false | unknown>
+  active_write_owner: <owner>
+  concurrent_writers: []
+  reversal_count_by_path_or_decision: {}
+  final_diff_scope: []
+  scope_classification:
+    in_scope: []
+    allowed_adjacent: []
+    out_of_scope: []
+    unknown: []
+  provenance_status: <PASS | FAIL | PARTIAL | NOT_VERIFIED>
+  implementation_context_status: <PASS | FAIL | PARTIAL | NOT_VERIFIED | NOT_APPLICABLE>
+  concurrency_status: <PASS | FAIL | PARTIAL | NOT_VERIFIED | NOT_APPLICABLE>
+  delivery_blockers: []
+```
+
+## Implementation-context gate
+
+For patch or executable prototype output, report before production:
+
+```yaml
+implementation_context_gate:
+  repository_ref: <ref>
+  implementation_scope: []
+  framework_runtime_map: []
+  component_system_map: []
+  canonical_component_inventory: []
+  canonical_component_family_inventory: []
+  organism_inventory: []
+  template_inventory: []
+  route_to_family_instance_map: []
+  component_capability_coverage_map: []
+  component_variant_inventory: []
+  canonical_registry_component_decisions: []
+  typography_role_map: []
+  semantic_native_eligibility_map: []
+  styling_system_map: []
+  iconography_implementation_map: []
+  state_form_data_tooling_map: []
+  workspace_build_test_map: []
+  canonicality_decisions: []
+  convention_locks: []
+  family_reuse_variant_decisions: []
+  reuse_extension_decisions: []
+  dependency_decisions: []
+  implementation_mapping: []
+  prohibited_parallel_systems: []
+  evidence_gaps: []
+  status: <PASS | FAIL | PARTIAL | NOT_VERIFIED>
+```
+
+Stop before code when framework, component or family coverage, canonical registry, typography role, semantic-native boundary, style, icon, behavior, or dependency authority remains materially unknown.
+
+## Verification requirements
+
+Match evidence to the changed artifact and domain:
 
 ```text
-strategy/content/IA/copy/conversion
-  → design-strategy and narrow adapters
+repository patch
+  final effective diff
+  expected-head and concurrency evidence
+  implementation-context conformance
+  type/lint/test/build as applicable
+  architecture-review
+  rendered target surfaces
+  domain review through design-review
 
-visual direction/color/type/depth/iconography/composition/motion
-  → design-visual and narrow adapters
+static visual
+  exported artifact at target dimensions
+  readability and composition evidence
+  governing visual-domain review
 
-macrostructure/responsiveness/component substitution/spacing
-  → design-layout and narrow adapters
+responsive interface
+  target viewport captures
+  adaptation boundary evidence
+  touch/pointer/keyboard behavior as applicable
+  component-family consistency across relevant routes
+  governing interface review
 
-behavior/pattern/states/accessibility semantics
-  → design-interaction and narrow adapters
-
-tokens/theme/system governance
-  → design-system and applicable adapters
-
-repository framework/component/styling/icon/state/form/query/data/build conventions
-  → implementation-context-discovery before implementation
+brand or domain-specialized artifact
+  registered domain reviewer and canonical gate IDs
+  domain-specific evidence
+  legal/trademark limitations when applicable
 ```
 
-Load `references/delegation-and-verification.md` for the complete design matrix and `implementation-context-discovery/references/verification-and-workflow-handoff.md` for repository implementation handoff.
-
-## Reference map
-
-Load only when applicable:
-
-| Concern | Reference / skill |
-|---|---|
-| Dependency model and installation | `references/dependencies-and-installation.md` |
-| Lifecycle boundary | `references/redesign-vs-refinement.md` |
-| State, phase handoffs, approval, outputs | `references/orchestration-state-and-decisions.md` |
-| Decision authority and supersession | `decision-provenance` |
-| Direction and macrostructure | `references/phase-genre-macro.md` |
-| Delegation and domain evidence | `references/delegation-and-verification.md` |
-| Repository implementation context | `implementation-context-discovery` |
-| Production policy | `references/phase-produce.md` |
-| Final effective diff | `references/scope-diff-integrity.md` |
-| Branch write lease and contention | `references/concurrent-write-integrity.md` |
-| Fast visual iteration evidence | `references/visual-loop-verification.md` |
-| Architecture acceptance | `architecture-review` |
-| Facade design review | `references/phase-review-gates.md` |
-| Defect, fix, and learning | `references/phase-fix-loop.md` |
-| Delivery and anti-loop | `references/phase-deliver.md` |
-
-## Integrity before acceptance
-
-Patch or repository-backed delivery must produce:
+## Review and correction
 
 ```text
-decision_provenance_report
-scope_diff_report
-implementation_context_profile
-convention_lock_and_mapping_report
-implementation_context_verification
-concurrency_report
-architecture_review_result
-domain verification evidence
-preservation results
-implementation checks required by the delivery boundary
+verified output
+→ design-review facade
+→ governing domain reviewer
+→ architecture-review when code is delivered
+→ normalized findings
+→ root-cause classification
+→ correction owner
+→ design-refinement or specialist
+→ focused re-review
+→ learning review
 ```
+
+`design-review` owns facade routing, evidence normalization, scoring, gate identity, and reporting. It must review equivalent route instances together when component-family consistency is in scope. Domain reviewers own their domain definitions. `architecture-review` independently verifies repository implementation alignment. `implementation-context-discovery` cannot review its own mapping. `component-family-design` cannot self-certify rendered family consistency.
+
+## Delivery rule
+
+Deliver only when:
 
 ```text
-PROVENANCE_BLOCKED / ROUTE_FOR_APPROVAL
-  → preserve last verified decision boundary
-  → stop the affected mutation or approval claim
-
-IMPLEMENTATION_CONTEXT_BLOCKED
-  → stop code production for the affected capability
-  → resolve evidence, canonicality, mapping, or dependency authority
-
-SCOPE_BLOCKED
-  → restore, remove, preserve-and-split, or obtain verified bounded approval
-
-CONCURRENT_WRITE_BLOCKED
-  → stop writes; coordinate one owner and stable child head
-
-integrity PASS
-  → architecture and facade acceptance may proceed
+route is correct
+ownership is explicit
+material decisions have verified provenance
+scope and final effective diff are clean
+implementation context and family mapping are resolved when required
+expected-head and concurrency gates pass
+artifact evidence matches the changed domain
+facade and governing reviewer accept within their scope
+architecture review accepts delivered code
+remaining risks and authority boundaries are explicit
 ```
 
-Visual observations may be recorded while integrity is blocked, but cannot authorize passing delivery.
+Otherwise deliver a blocker, limited review, bounded partial result, or correction handoff without overstating completion.
