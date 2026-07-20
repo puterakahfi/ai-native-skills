@@ -188,21 +188,33 @@ jobs:
       - name: Validate migration
         shell: bash
         run: |
-          python scripts/validate-eval-contracts.py --write-smoke-outputs .tmp/eval-smoke-outputs
-          rm -rf .tmp/adapter-repo
-          mkdir -p .tmp/adapter-repo
-          cp -R skills .tmp/adapter-repo/skills
-          (
-            cd .tmp/adapter-repo
-            bash "$GITHUB_WORKSPACE/.deps/ai-native-core/scripts/validate-implements.sh" \
-              "$GITHUB_WORKSPACE/.deps/ai-native-core"
-          )
-          python .deps/ai-native-core/scripts/validate-conformance.py \
-            .deps/ai-native-core \
-            .tmp/adapter-repo | tee .tmp/architecture-engineering-migration/after.txt
-          grep -Eq '^Errors:[[:space:]]+0$' .tmp/architecture-engineering-migration/after.txt
-          grep -Eq '^Not checkable:[[:space:]]+0$' .tmp/architecture-engineering-migration/after.txt
-          python - <<'PY'
+          set +e
+          mkdir -p .tmp/architecture-engineering-migration
+          python scripts/validate-eval-contracts.py --write-smoke-outputs .tmp/eval-smoke-outputs \
+            > .tmp/architecture-engineering-migration/eval-validation.txt 2>&1
+          eval_status=$?
+
+          path_status=99
+          conformance_status=99
+          offender_status=99
+          if [ "$eval_status" -eq 0 ]; then
+            rm -rf .tmp/adapter-repo
+            mkdir -p .tmp/adapter-repo
+            cp -R skills .tmp/adapter-repo/skills
+            (
+              cd .tmp/adapter-repo
+              bash "$GITHUB_WORKSPACE/.deps/ai-native-core/scripts/validate-implements.sh" \
+                "$GITHUB_WORKSPACE/.deps/ai-native-core"
+            ) > .tmp/architecture-engineering-migration/path-validation.txt 2>&1
+            path_status=$?
+
+            if [ "$path_status" -eq 0 ]; then
+              python .deps/ai-native-core/scripts/validate-conformance.py \
+                .deps/ai-native-core \
+                .tmp/adapter-repo > .tmp/architecture-engineering-migration/after.txt 2>&1
+              conformance_status=$?
+
+              python - <<'PY' > .tmp/architecture-engineering-migration/offender-validation.txt 2>&1
           from pathlib import Path
           import json
           import re
@@ -216,8 +228,40 @@ jobs:
                   offenders.add(match.group(1))
           if offenders:
               raise SystemExit("migrated adapters still have findings: " + ", ".join(sorted(offenders)))
+          print("all migrated adapters are finding-free")
           PY
-          git diff --check
+              offender_status=$?
+            fi
+          fi
+
+          git diff --check > .tmp/architecture-engineering-migration/diff-check.txt 2>&1
+          diff_status=$?
+          printf 'eval_status=%s\npath_status=%s\nconformance_status=%s\noffender_status=%s\ndiff_status=%s\n' \
+            "$eval_status" "$path_status" "$conformance_status" "$offender_status" "$diff_status" \
+            > .tmp/architecture-engineering-migration/statuses.txt
+
+          cat .tmp/architecture-engineering-migration/statuses.txt
+          for file in eval-validation.txt path-validation.txt after.txt offender-validation.txt diff-check.txt; do
+            if [ -f ".tmp/architecture-engineering-migration/$file" ]; then
+              echo "::group::$file"
+              cat ".tmp/architecture-engineering-migration/$file"
+              echo "::endgroup::"
+            fi
+          done
+
+          if [ "$eval_status" -ne 0 ] || [ "$path_status" -ne 0 ] || \
+             [ "$conformance_status" -ne 0 ] || [ "$offender_status" -ne 0 ] || \
+             [ "$diff_status" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Upload migration diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: architecture-engineering-migration-diagnostics
+          path: .tmp/architecture-engineering-migration
+          retention-days: 7
 
       - name: Commit architecture and engineering migration
         env:
