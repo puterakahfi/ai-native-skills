@@ -1,5 +1,7 @@
 # Branch Topology and PR Targets
 
+Run this decision before `git-workflow`; Git executes the approved topology and does not invent it.
+
 ## Default topology for an epic
 
 ```text
