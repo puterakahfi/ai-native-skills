@@ -1,0 +1,27 @@
+skill_test:
+  skill: readability
+  version: "1.0.1"
+  description: Verify the adapter exposes and applies its reviewed core interface.
+
+  cases:
+    - id: readability-rejects-unframed-void-before-focus
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Audit a text-heavy page whose focal heading begins far below an empty first viewport.
+      must_contain:
+      - text_content_inventory
+      - rendered_layout_ref
+      - legibility_score
+      - line_length_audit
+      - dead_space_verdict
+      - readability_gate_scores
+      - body_prose_max_65ch
+      - hero_stance_max_44ch_not_px
+      - dead_space_above_hero_forbidden
+      - no_unframed_void_before_focal_point
+      must_not_contain:
+      - unframed void before the focal point is premium whitespace
+      quality_gates_tested:
+      - body_prose_max_65ch
+      - hero_stance_max_44ch_not_px
+      - dead_space_above_hero_forbidden
+      - no_unframed_void_before_focal_point

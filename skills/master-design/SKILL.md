@@ -3,7 +3,7 @@ name: master-design
 description: Active product-design authority for user experience, visual direction, information architecture, component strategy, interaction contracts, design-system alignment, critique, and engineering-ready handoff. Compares real alternatives, delegates specialist concerns, rejects generic design grammar, and preserves valid product and brand equity.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.0
+  ai-native-skills.version: 1.2.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/master-design.contract.yaml
@@ -12,6 +12,50 @@ metadata:
 ---
 
 # Master Design
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/master-design.contract.yaml` · compatible line: `~0.2`
+
+```yaml
+required_inputs:
+- product_intent
+- target_user
+- primary_user_tasks
+- target_surface
+allowed_outputs:
+- design_brief
+- user_flow
+- information_architecture
+- direction_candidates
+- selected_design_direction
+- visual_direction_contract
+- component_strategy
+- responsive_and_adaptive_strategy
+- interaction_contract
+- mockup_contract
+- engineering_handoff
+- verification_plan
+- design_decision_record
+quality_gates:
+- product_intent_and_primary_task_are_visible_in_the_design
+- requested_solution_is_evaluated_not_followed_blindly
+- selected_direction_is_compared_against_real_alternatives
+- selected_direction_is_observable_and_engineering_ready
+- hierarchy_grouping_flow_and_accessibility_are_resolved
+- visual_expression_matches_content_audience_context_and_brand_equity
+- component_strategy_matches_task_content_and_context
+- valid_product_brand_and_design_system_locks_are_preserved
+- generic_patterns_without_product_reason_are_removed
+- required_states_and_responsive_continuity_are_defined
+- specialist_findings_are_synthesized_into_one_coherent_decision
+- verification_plan_matches_rendered_or_implemented_claims
+- independent_design_review_is_required_for_acceptance
+```
+
+Separate the product requirement from the proposed solution. Evaluate the request against tasks, content, context, and alternatives before selecting or rejecting it.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 Operate as the active product-design owner, not a passive screen generator or style-recipe executor.
 

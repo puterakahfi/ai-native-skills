@@ -3,7 +3,7 @@ name: design-depth
 description: Optional visual depth and layering for structural separation, atmosphere, imagery integration, focus, overlays, and state. Selects flat, shallow, layered, or deep treatment from product meaning, assets, context, performance, and accessibility rather than using glow, blur, shadow, glass, or typography interleave as a generic premium recipe.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-depth.contract.yaml
@@ -14,6 +14,43 @@ metadata:
 ---
 
 # Design Depth
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/design-depth.contract.yaml` · compatible line: `^2.1.0`
+
+```yaml
+required_inputs:
+- selected_design_direction
+- depth_need_assessment
+- target_surface
+allowed_outputs:
+- depth_need_assessment
+- depth_mode
+- depth_role_map
+- layer_stack_declaration
+- atmosphere_spec
+- elevation_or_surface_spec
+- imagery_integration_spec
+- optional_interleave_spec
+- responsive_depth_fallback
+- performance_and_accessibility_constraints
+- depth_verification_plan
+quality_gates:
+- depth_mode_is_justified_by_message_task_assets_and_context
+- every_depth_technique_has_a_named_role
+- layer_stack_is_declared_when_overlap_or_layering_requires_it
+- flat_components_are_not_forced_to_declare_fake_depth_metadata
+- body_text_and_controls_remain_legible_and_operable
+- responsive_and_reduced_motion_fallbacks_preserve_hierarchy
+- performance_cost_matches_delivery_context
+- effects_do_not_replace_foundation_composition_or_content
+- depth_is_not_used_as_a_generic_premium_recipe
+```
+
+Name the depth roles, declare the layer stack only when needed, and separate atmosphere, elevation/surface, and imagery integration. Body text and controls must remain legible and operable in every depth mode.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 Depth is optional. Use it only when it improves separation, focus, imagery integration, spatial storytelling, interaction state, or emotional meaning.
 

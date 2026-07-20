@@ -1,0 +1,25 @@
+skill_test:
+  skill: design-brand
+  version: "1.0.1"
+  description: Verify the adapter exposes and applies its reviewed core interface.
+
+  cases:
+    - id: brand-identifier-resolves-locks-before-expression
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Apply a named brand identity to a new design direction without overriding locked equity.
+      must_contain:
+      - brand_identifier
+      - locked_tokens
+      - locked_typeface
+      - locked_palette
+      - flex_areas
+      - forbidden_overrides
+      - foundation_gates_still_apply
+      - brand_tokens_respected_not_overridden
+      - genre_fills_gaps_only
+      must_not_contain:
+      - genre may override locked brand tokens
+      quality_gates_tested:
+      - foundation_gates_still_apply
+      - brand_tokens_respected_not_overridden
+      - genre_fills_gaps_only

@@ -1,6 +1,6 @@
 skill_test:
   skill: master-design
-  version: "1.2.0"
+  version: "1.2.1"
   description: Verify design ownership compares real alternatives, preserves product context, rejects rigid style recipes, and diagnoses generic visual grammar without inventing proof.
 
   cases:
@@ -123,3 +123,54 @@ skill_test:
       quality_gates_tested:
         - invented_proof_is_forbidden
         - real_product_content_controls_visual_direction
+
+    - id: requested-solution-is-treated-as-proposal
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Design a product flow where the requester already prescribed a dashboard and cards.
+      must_contain:
+      - product_intent
+      - target_user
+      - primary_user_tasks
+      - target_surface
+      - design_brief
+      - user_flow
+      - information_architecture
+      - direction_candidates
+      - selected_design_direction
+      - visual_direction_contract
+      - component_strategy
+      - responsive_and_adaptive_strategy
+      - interaction_contract
+      - mockup_contract
+      - engineering_handoff
+      - verification_plan
+      - design_decision_record
+      - product_intent_and_primary_task_are_visible_in_the_design
+      - requested_solution_is_evaluated_not_followed_blindly
+      - selected_direction_is_compared_against_real_alternatives
+      - selected_direction_is_observable_and_engineering_ready
+      - hierarchy_grouping_flow_and_accessibility_are_resolved
+      - visual_expression_matches_content_audience_context_and_brand_equity
+      - component_strategy_matches_task_content_and_context
+      - valid_product_brand_and_design_system_locks_are_preserved
+      - generic_patterns_without_product_reason_are_removed
+      - required_states_and_responsive_continuity_are_defined
+      - specialist_findings_are_synthesized_into_one_coherent_decision
+      - verification_plan_matches_rendered_or_implemented_claims
+      - independent_design_review_is_required_for_acceptance
+      must_not_contain:
+      - follow the requested solution blindly
+      quality_gates_tested:
+      - product_intent_and_primary_task_are_visible_in_the_design
+      - requested_solution_is_evaluated_not_followed_blindly
+      - selected_direction_is_compared_against_real_alternatives
+      - selected_direction_is_observable_and_engineering_ready
+      - hierarchy_grouping_flow_and_accessibility_are_resolved
+      - visual_expression_matches_content_audience_context_and_brand_equity
+      - component_strategy_matches_task_content_and_context
+      - valid_product_brand_and_design_system_locks_are_preserved
+      - generic_patterns_without_product_reason_are_removed
+      - required_states_and_responsive_continuity_are_defined
+      - specialist_findings_are_synthesized_into_one_coherent_decision
+      - verification_plan_matches_rendered_or_implemented_claims
+      - independent_design_review_is_required_for_acceptance

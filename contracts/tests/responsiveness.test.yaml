@@ -1,0 +1,26 @@
+skill_test:
+  skill: responsiveness
+  version: "1.0.1"
+  description: Verify the adapter exposes and applies its reviewed core interface.
+
+  cases:
+    - id: responsive-audit-blocks-mobile-overflow
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Audit a layout artifact across mobile, tablet, and desktop contexts.
+      must_contain:
+      - layout_artifact
+      - breakpoint_audit
+      - touch_target_report
+      - type_scaling_audit
+      - responsiveness_gate_scores
+      - all_interactive_elements_min_44x44px
+      - no_horizontal_overflow_on_mobile
+      - clamp_used_for_fluid_type_scaling
+      - single_column_layout_on_mobile
+      must_not_contain:
+      - horizontal overflow on mobile is acceptable
+      quality_gates_tested:
+      - all_interactive_elements_min_44x44px
+      - no_horizontal_overflow_on_mobile
+      - clamp_used_for_fluid_type_scaling
+      - single_column_layout_on_mobile

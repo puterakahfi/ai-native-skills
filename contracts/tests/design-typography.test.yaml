@@ -1,0 +1,31 @@
+skill_test:
+  skill: design-typography
+  version: "1.0.1"
+  description: Verify the adapter exposes and applies its reviewed core interface.
+
+  cases:
+    - id: typography-contract-bounds-families-and-prefers-variable
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Select and specify typography for a known visual genre.
+      must_contain:
+      - genre_selection
+      - typeface_pair
+      - modular_scale
+      - hierarchy_mapping
+      - rhythm_spec
+      - rendering_spec
+      - genre_loaded_before_typeface_selection
+      - scale_derived_not_arbitrary
+      - h1_body_ratio_appropriate_for_weight
+      - max_two_typefaces_plus_mono
+      - variable_fonts_preferred
+      - font_variation_settings_explicit
+      must_not_contain:
+      - use more than two typefaces plus mono without exception
+      quality_gates_tested:
+      - genre_loaded_before_typeface_selection
+      - scale_derived_not_arbitrary
+      - h1_body_ratio_appropriate_for_weight
+      - max_two_typefaces_plus_mono
+      - variable_fonts_preferred
+      - font_variation_settings_explicit

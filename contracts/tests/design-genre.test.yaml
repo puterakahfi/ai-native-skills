@@ -1,6 +1,6 @@
 skill_test:
   skill: design-genre
-  version: "1.3.0"
+  version: "1.3.1"
   description: Verify genre selection follows resolved foundation, product context, candidate comparison, bounded influence, and honest uncertainty rather than category shortcuts or effect presets.
 
   cases:
@@ -103,3 +103,43 @@ skill_test:
       quality_gates_tested:
         - references_are_influences_not_templates
         - genre_expression_matches_task_and_content
+
+    - id: genre-selection-records-candidates-and-tradeoffs
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Choose a visual expression family for a product whose direction is still open.
+      must_contain:
+      - foundation_handoff
+      - product_intent
+      - audience_and_viewing_context
+      - content_characteristics
+      - genre_candidates
+      - selected_expression_family
+      - primary_genre
+      - secondary_influence
+      - signal_justification
+      - expression_constraints
+      - genre_reference_selection
+      - rejected_candidates
+      - anti_slop_constraints
+      - unresolved_direction_questions
+      - foundation_and_locks_are_resolved_before_genre_production
+      - selected_expression_family_matches_product_audience_content_and_context
+      - selection_is_compared_against_real_alternatives
+      - genre_is_expressed_as_observable_constraints
+      - secondary_influence_is_bounded
+      - rejected_candidates_and_tradeoffs_are_recorded
+      - foundation_failure_is_not_relabelled_as_genre
+      - no_generic_genre_slop_patterns_are_accepted
+      - unresolved_direction_is_reported_honestly
+      must_not_contain:
+      - select a genre without recording rejected alternatives
+      quality_gates_tested:
+      - foundation_and_locks_are_resolved_before_genre_production
+      - selected_expression_family_matches_product_audience_content_and_context
+      - selection_is_compared_against_real_alternatives
+      - genre_is_expressed_as_observable_constraints
+      - secondary_influence_is_bounded
+      - rejected_candidates_and_tradeoffs_are_recorded
+      - foundation_failure_is_not_relabelled_as_genre
+      - no_generic_genre_slop_patterns_are_accepted
+      - unresolved_direction_is_reported_honestly

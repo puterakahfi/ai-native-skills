@@ -3,7 +3,7 @@ name: readability
 description: Text readability scoring and optimization — line length, contrast ratio, type size, line height, density, and cognitive ease. Produces a readability score 0–10 per dimension. Minimum score 8 required before design passes.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/readability.contract.yaml
@@ -12,6 +12,30 @@ metadata:
 ---
 
 # Readability Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/readability.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- text_content_inventory
+- rendered_layout_ref
+allowed_outputs:
+- legibility_score
+- line_length_audit
+- dead_space_verdict
+- readability_gate_scores
+quality_gates:
+- body_prose_max_65ch
+- hero_stance_max_44ch_not_px
+- dead_space_above_hero_forbidden
+- no_unframed_void_before_focal_point
+```
+
+Use the text inventory and rendered layout. Report legibility, line length, dead space, and gate scores. An unframed void before the focal point is a readability failure, not a premium treatment.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 <!-- ═══════════════════ HARD RULES — enforce before anything else ═══════════════════ -->
 

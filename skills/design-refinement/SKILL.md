@@ -3,7 +3,7 @@ name: design-refinement
 description: Bounded design correction workflow — consume an evidence-backed design-review result, lock accepted direction and passing regions, diagnose the owning defect, patch within an explicit change budget, verify target and preservation evidence, then run focused facade re-review and learning promotion.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.1.0
+  ai-native-skills.version: 2.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.requires: "design-audit design-review master-design skill-evolution skill-eval"
@@ -13,6 +13,59 @@ metadata:
 ---
 
 # Design Refinement
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/quality/design-refinement.contract.yaml` · compatible line: `^1.2.0`
+
+```yaml
+required_inputs:
+- target_url_or_artifact
+- prior_facade_review
+- target_findings
+- accepted_direction
+- preservation_contract
+allowed_outputs:
+- refinement_route_decision
+- refinement_lock
+- component_fitness_or_defect_diagnosis
+- change_budget
+- targeted_patch_plan
+- refined_artifact
+- before_after_change_manifest
+- gate_status_delta_report
+- preservation_evidence_report
+- adjacent_regression_report
+- focused_review_result
+- learning_candidate_report
+- learning_promotion_report
+- skill_patch_log
+- regression_eval_result
+- promotion_commit
+- residual_gap_report
+quality_gates:
+- accepted_direction_must_be_explicit_and_still_valid
+- target_findings_must_be_verified_FAIL_or_PARTIAL
+- primary_domain_coverage_and_governing_reviewers_must_be_sufficient
+- refinement_lock_and_change_budget_must_precede_patch
+- passing_gates_regions_component_contracts_and_assets_are_preserved_by_default
+- no_drive_by_redesign_retheme_or_opportunistic_cleanup
+- diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
+- component_substitution_requires_verified_component_fitness_reasoning
+- every_change_maps_to_target_finding_or_required_dependency
+- before_after_manifest_and_preservation_evidence_are_required
+- target_adjacent_preserved_and_affected_hard_gates_are_rechecked
+- contextual_hard_gates_are_reviewer_owned_not_global
+- focused_facade_verdict_controls_completion
+- candidate_fix_must_be_verified_before_shared_learning_promotion
+- every_verified_reusable_fix_has_a_skill_evolution_verdict
+- every_promoted_shared_patch_has_regression_eval
+- max_iterations_exit_includes_honest_gap_and_preservation_report
+```
+
+Expose the route decision, component-fitness or defect diagnosis, targeted patch plan, refined artifact, and gate-status delta explicitly. These outputs remain bounded by the refinement lock and preservation contract.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 Correct verified design failures without reopening the whole design.
 

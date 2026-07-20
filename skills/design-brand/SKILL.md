@@ -3,7 +3,7 @@ name: design-brand
 description: Locked external design systems — captures brand tokens, constraints, and rules that override genre picks. Load at Phase 0 pre-flight. If brand file exists, respect it fully; genre adapts within brand constraints, never replaces them.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-brand.contract.yaml
@@ -12,6 +12,29 @@ metadata:
 ---
 
 # Design Brand Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/design-brand.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- brand_identifier
+allowed_outputs:
+- locked_tokens
+- locked_typeface
+- locked_palette
+- flex_areas
+- forbidden_overrides
+quality_gates:
+- foundation_gates_still_apply
+- brand_tokens_respected_not_overridden
+- genre_fills_gaps_only
+```
+
+Resolve the brand_identifier first. Locked brand tokens, typeface, and palette remain authoritative; genre may fill only declared flex areas and must record forbidden overrides.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 > **HARD RULES:**
 > 1. Brand file = locked. Do not override brand tokens with genre picks.

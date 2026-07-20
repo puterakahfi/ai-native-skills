@@ -3,7 +3,7 @@ name: accessibility
 description: WCAG 2.1 AA compliance and inclusive design — semantic HTML, ARIA roles, color contrast, keyboard navigation, focus management, screen reader compatibility, cognitive accessibility.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/accessibility.contract.yaml
@@ -12,6 +12,34 @@ metadata:
 ---
 
 # Accessibility (A11y)
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/accessibility.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- ui_component_or_page
+allowed_outputs:
+- accessibility_audit_report
+- wcag_violation_list
+- remediation_plan
+- aria_recommendations
+- keyboard_navigation_map
+quality_gates:
+- wcag_21_aa_is_minimum_baseline
+- all_images_must_have_meaningful_alt_text
+- color_contrast_must_meet_ratio_requirements
+- all_interactive_elements_must_be_keyboard_accessible
+- focus_management_must_be_explicit_on_dynamic_content
+- aria_roles_must_be_correct_not_cosmetic
+- form_errors_must_be_announced_to_screen_readers
+- cognitive_accessibility_must_be_considered
+```
+
+Treat the supplied ui_component_or_page as evidence. Every meaningful image needs meaningful alternative text; decorative images must be explicitly hidden. Return the audit, violations, remediation, ARIA guidance, and keyboard map as separate evidence-bearing outputs.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 ## ⛔ HARD RULES — Read First
 

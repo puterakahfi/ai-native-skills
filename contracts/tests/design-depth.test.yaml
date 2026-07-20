@@ -1,6 +1,6 @@
 skill_test:
   skill: design-depth
-  version: "1.1.0"
+  version: "1.1.1"
   description: Verify depth is optional, role-driven, asset-aware, readable, performant, and not treated as a generic premium effect recipe.
 
   cases:
@@ -63,3 +63,43 @@ skill_test:
       quality_gates_tested:
         - body_text_and_controls_remain_legible_and_operable
         - atmosphere_does_not_override_task_completion
+
+    - id: depth-spec-preserves-legibility-and-operation
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Define a justified layered depth treatment for a product surface with imagery and controls.
+      must_contain:
+      - selected_design_direction
+      - depth_need_assessment
+      - target_surface
+      - depth_need_assessment
+      - depth_mode
+      - depth_role_map
+      - layer_stack_declaration
+      - atmosphere_spec
+      - elevation_or_surface_spec
+      - imagery_integration_spec
+      - optional_interleave_spec
+      - responsive_depth_fallback
+      - performance_and_accessibility_constraints
+      - depth_verification_plan
+      - depth_mode_is_justified_by_message_task_assets_and_context
+      - every_depth_technique_has_a_named_role
+      - layer_stack_is_declared_when_overlap_or_layering_requires_it
+      - flat_components_are_not_forced_to_declare_fake_depth_metadata
+      - body_text_and_controls_remain_legible_and_operable
+      - responsive_and_reduced_motion_fallbacks_preserve_hierarchy
+      - performance_cost_matches_delivery_context
+      - effects_do_not_replace_foundation_composition_or_content
+      - depth_is_not_used_as_a_generic_premium_recipe
+      must_not_contain:
+      - effects may reduce text or control clarity
+      quality_gates_tested:
+      - depth_mode_is_justified_by_message_task_assets_and_context
+      - every_depth_technique_has_a_named_role
+      - layer_stack_is_declared_when_overlap_or_layering_requires_it
+      - flat_components_are_not_forced_to_declare_fake_depth_metadata
+      - body_text_and_controls_remain_legible_and_operable
+      - responsive_and_reduced_motion_fallbacks_preserve_hierarchy
+      - performance_cost_matches_delivery_context
+      - effects_do_not_replace_foundation_composition_or_content
+      - depth_is_not_used_as_a_generic_premium_recipe

@@ -3,7 +3,7 @@ name: design-system
 description: Design token decisions and system construction — when to use which spacing scale, type scale, color role, elevation level, and motion token. Produces a declaration table before any pixel is designed. The design system is the single source of truth; all design decisions trace back to it.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-system.contract.yaml
@@ -12,6 +12,29 @@ metadata:
 ---
 
 # Design System Port
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/design-system.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- color_palette
+- type_scale_intent
+allowed_outputs:
+- token_map
+- semantic_role_assignments
+- token_violation_list
+- design_system_gate_scores
+quality_gates:
+- one_token_one_semantic_role
+- no_token_collapse
+- spacing_multiples_of_base_unit
+```
+
+Return the token map, semantic assignments, violations, and gate scores. Spacing tokens must be multiples of the declared base unit rather than arbitrary values.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 > This skill doubles as **Port 5: Design System & Accessibility** — the systematic cross-cutting layer.
 > Load this for tokens, theming, and accessibility concerns.

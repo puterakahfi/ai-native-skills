@@ -1,6 +1,6 @@
 skill_test:
   skill: design-visual
-  version: "1.1.0"
+  version: "1.1.1"
   description: Verify the visual port resolves foundation and locks first, inherits accepted direction when available, and loads only specialist adapters required by active visual concerns.
 
   cases:
@@ -61,3 +61,50 @@ skill_test:
       quality_gates_tested:
         - specialist_outputs_are_synthesized
         - final_visual_direction_is_coherent
+
+    - id: visual-direction-is-distinctive-and-system-coherent
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Resolve a broad visual direction from product intent, content, foundation, and target surface.
+      must_contain:
+      - foundation_handoff
+      - product_intent
+      - content_inventory
+      - target_surface
+      - visual_direction_candidates
+      - visual_direction_contract
+      - adapter_loading_plan
+      - composition_strategy
+      - hierarchy_role_map
+      - typography_role_strategy
+      - color_role_strategy
+      - depth_and_imagery_strategy
+      - iconography_strategy
+      - motion_stance
+      - readability_and_actual_context_plan
+      - anti_slop_diagnosis
+      - visual_verification_plan
+      - foundation_is_resolved_before_expression
+      - brand_product_and_system_locks_are_applied
+      - visual_direction_is_context_derived_and_observable
+      - only_active_visual_adapters_are_loaded
+      - hierarchy_and_composition_are_relational_not_numeric_recipes
+      - depth_motion_and_effects_have_named_roles
+      - visual_language_is_distinctive_without_becoming_inconsistent
+      - generic_patterns_without_product_reason_are_rejected
+      - actual_content_and_viewing_context_are_used
+      - verification_plan_matches_the_visual_claim
+      - canonical_review_gate_identity_remains_owned_by_design_review
+      must_not_contain:
+      - distinctiveness through random per-section inconsistency
+      quality_gates_tested:
+      - foundation_is_resolved_before_expression
+      - brand_product_and_system_locks_are_applied
+      - visual_direction_is_context_derived_and_observable
+      - only_active_visual_adapters_are_loaded
+      - hierarchy_and_composition_are_relational_not_numeric_recipes
+      - depth_motion_and_effects_have_named_roles
+      - visual_language_is_distinctive_without_becoming_inconsistent
+      - generic_patterns_without_product_reason_are_rejected
+      - actual_content_and_viewing_context_are_used
+      - verification_plan_matches_the_visual_claim
+      - canonical_review_gate_identity_remains_owned_by_design_review

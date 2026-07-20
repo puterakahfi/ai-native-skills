@@ -3,7 +3,7 @@ name: design-typography
 description: Typography as design structure — typeface selection, type scale, pairing, hierarchy, rhythm, and personality. Layer 2 of visual design (after canvas). Covers expressive and structural typography decisions, not legibility metrics (see readability skill for those).
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/typography.contract.yaml
@@ -14,6 +14,32 @@ metadata:
 ---
 
 # Design Typography Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/typography.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- genre_selection
+allowed_outputs:
+- typeface_pair
+- modular_scale
+- hierarchy_mapping
+- rhythm_spec
+- rendering_spec
+quality_gates:
+- genre_loaded_before_typeface_selection
+- scale_derived_not_arbitrary
+- h1_body_ratio_appropriate_for_weight
+- max_two_typefaces_plus_mono
+- variable_fonts_preferred
+- font_variation_settings_explicit
+```
+
+Start from genre_selection and return the pair, hierarchy, rhythm, and rendering specification. Use at most two typefaces plus mono, and prefer variable fonts when they satisfy the required language, weight, and rendering needs.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 > **HARD RULES:**
 > 1. Typography is Layer 2 — after canvas (bg, color), before everything else.

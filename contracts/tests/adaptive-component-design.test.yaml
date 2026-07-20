@@ -1,6 +1,6 @@
 skill_test:
   skill: adaptive-component-design
-  version: "1.2.2"
+  version: "1.2.3"
   description: Verify adaptive component selection is driven by task, evidence provenance, actual available width, realistic content pressure, state equivalence, and observed adaptation boundaries rather than fixed device labels or uploaded image dimensions.
 
   cases:
@@ -139,3 +139,69 @@ skill_test:
       quality_gates_tested:
         - realistic_content_and_text_expansion_are_verified
         - visual_verification_uses_realistic_content
+
+    - id: requested-component-is-evaluated-across-contexts
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Evaluate a requested tabs component for mobile, tablet, and desktop using real tasks and content.
+      must_contain:
+      - product_intent
+      - user_tasks
+      - content_inventory
+      - component_inventory
+      - target_contexts
+      - component_fitness_record
+      - viewport_strategy
+      - component_substitution_matrix
+      - adaptation_boundary_map
+      - component_selection_rationale
+      - rejected_component_alternatives
+      - navigation_pattern_selection
+      - content_density_strategy
+      - interaction_mode_mapping
+      - shared_state_and_semantics_contract
+      - affordance_state_contract
+      - responsive_behavior_contract
+      - boundary_acceptance_criteria
+      - realistic_content_stress_evidence
+      - rendered_interaction_evidence
+      - each_major_component_has_an_explicit_context_strategy
+      - component_pattern_selected_from_user_task_content_and_context
+      - requested_component_is_treated_as_a_proposed_solution_not_an_immutable_requirement
+      - diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
+      - adaptation_mode_is_declared_for_each_relevant_context
+      - substitution_boundaries_are_derived_from_real_content_and_available_width
+      - primary_choices_are_not_hidden_without_product_rationale
+      - navigation_pattern_matches_information_architecture_and_context
+      - dense_data_has_explicit_small_width_transformation
+      - tabs_and_horizontal_collections_expose_truthful_overflow_affordance
+      - directional_controls_reflect_actual_scroll_availability
+      - touch_pointer_and_keyboard_interactions_are_defined_when_applicable
+      - interactive_targets_do_not_overlap_or_clip
+      - component_variants_preserve_shared_value_state_event_semantics_analytics_and_accessible_relationships
+      - hidden_content_is_non_critical_justified_and_still_reachable_when_required
+      - component_choice_includes_rejected_alternatives_and_tradeoffs
+      - acceptance_criteria_cover_actual_targets_and_adaptation_boundaries
+      - realistic_content_and_text_expansion_are_verified
+      - code_inspection_alone_is_not_accepted_as_visual_verification
+      must_not_contain:
+      - the requested component is immutable
+      quality_gates_tested:
+      - each_major_component_has_an_explicit_context_strategy
+      - component_pattern_selected_from_user_task_content_and_context
+      - requested_component_is_treated_as_a_proposed_solution_not_an_immutable_requirement
+      - diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
+      - adaptation_mode_is_declared_for_each_relevant_context
+      - substitution_boundaries_are_derived_from_real_content_and_available_width
+      - primary_choices_are_not_hidden_without_product_rationale
+      - navigation_pattern_matches_information_architecture_and_context
+      - dense_data_has_explicit_small_width_transformation
+      - tabs_and_horizontal_collections_expose_truthful_overflow_affordance
+      - directional_controls_reflect_actual_scroll_availability
+      - touch_pointer_and_keyboard_interactions_are_defined_when_applicable
+      - interactive_targets_do_not_overlap_or_clip
+      - component_variants_preserve_shared_value_state_event_semantics_analytics_and_accessible_relationships
+      - hidden_content_is_non_critical_justified_and_still_reachable_when_required
+      - component_choice_includes_rejected_alternatives_and_tradeoffs
+      - acceptance_criteria_cover_actual_targets_and_adaptation_boundaries
+      - realistic_content_and_text_expansion_are_verified
+      - code_inspection_alone_is_not_accepted_as_visual_verification

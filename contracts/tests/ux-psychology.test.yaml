@@ -1,0 +1,31 @@
+skill_test:
+  skill: ux-psychology
+  version: "1.0.1"
+  description: Verify the adapter exposes and applies its reviewed core interface.
+
+  cases:
+    - id: ux-findings-name-principles-and-actionable-friction
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Analyze a core product flow for cognitive and behavioral friction.
+      must_contain:
+      - ui_or_flow_to_analyze
+      - cognitive_load_report
+      - habit_loop_analysis
+      - heuristic_violation_list
+      - behavioral_friction_map
+      - improvement_recommendations
+      - findings_must_cite_specific_principle_not_just_opinion
+      - every_violation_must_have_actionable_recommendation
+      - cognitive_load_must_be_assessed_per_screen
+      - habit_loop_analysis_required_for_core_user_flows
+      - recommendations_must_be_prioritized_by_user_impact
+      - no_vague_feedback_like_confusing_or_overwhelming
+      must_not_contain:
+      - the interface is confusing and overwhelming
+      quality_gates_tested:
+      - findings_must_cite_specific_principle_not_just_opinion
+      - every_violation_must_have_actionable_recommendation
+      - cognitive_load_must_be_assessed_per_screen
+      - habit_loop_analysis_required_for_core_user_flows
+      - recommendations_must_be_prioritized_by_user_impact
+      - no_vague_feedback_like_confusing_or_overwhelming

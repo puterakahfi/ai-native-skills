@@ -3,7 +3,7 @@ name: design-genre
 description: Selects a contextual visual expression family for density, containment, voice, texture, color, imagery, and motion after foundation and brand/product constraints are resolved. Compares candidates, supports one bounded secondary influence, and blocks genre shortcuts such as generic SaaS minimal, random editorial asymmetry, fake atmospheric glow, or excessive zen whitespace.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.3.0
+  ai-native-skills.version: 1.3.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-genre.contract.yaml
@@ -12,6 +12,43 @@ metadata:
 ---
 
 # Design Genre
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/design-genre.contract.yaml` · compatible line: `^1.1.0`
+
+```yaml
+required_inputs:
+- foundation_handoff
+- product_intent
+- audience_and_viewing_context
+- content_characteristics
+allowed_outputs:
+- genre_candidates
+- selected_expression_family
+- primary_genre
+- secondary_influence
+- signal_justification
+- expression_constraints
+- genre_reference_selection
+- rejected_candidates
+- anti_slop_constraints
+- unresolved_direction_questions
+quality_gates:
+- foundation_and_locks_are_resolved_before_genre_production
+- selected_expression_family_matches_product_audience_content_and_context
+- selection_is_compared_against_real_alternatives
+- genre_is_expressed_as_observable_constraints
+- secondary_influence_is_bounded
+- rejected_candidates_and_tradeoffs_are_recorded
+- foundation_failure_is_not_relabelled_as_genre
+- no_generic_genre_slop_patterns_are_accepted
+- unresolved_direction_is_reported_honestly
+```
+
+Return candidate genres, the selected expression family, signal justification, observable constraints, and selected references. Rejected candidates and trade-offs are part of the decision evidence.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 Genre is an expression family, not a product-category shortcut, palette preset, or substitute for design foundation.
 

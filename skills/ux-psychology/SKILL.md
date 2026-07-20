@@ -3,7 +3,7 @@ name: ux-psychology
 description: Behavioral and psychological UX analysis — cognitive load, habit loops, heuristics, Fitts's Law, Hick's Law, gestalt principles, and friction mapping. Finds why users struggle, not just what looks wrong.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/ux-psychology.contract.yaml
@@ -11,6 +11,32 @@ metadata:
 ---
 
 # UX Psychology
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/ux-psychology.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- ui_or_flow_to_analyze
+allowed_outputs:
+- cognitive_load_report
+- habit_loop_analysis
+- heuristic_violation_list
+- behavioral_friction_map
+- improvement_recommendations
+quality_gates:
+- findings_must_cite_specific_principle_not_just_opinion
+- every_violation_must_have_actionable_recommendation
+- cognitive_load_must_be_assessed_per_screen
+- habit_loop_analysis_required_for_core_user_flows
+- recommendations_must_be_prioritized_by_user_impact
+- no_vague_feedback_like_confusing_or_overwhelming
+```
+
+Analyze the supplied UI or flow and return cognitive load, habit loop, heuristic violations, friction map, and prioritized improvements. Vague labels such as confusing or overwhelming are rejected unless tied to a specific principle and observable evidence.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 ## Hard Rule
 

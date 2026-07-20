@@ -1,0 +1,32 @@
+# Adapters that must produce no conformance finding.
+# Add entries only after audited migration and regression coverage.
+accessibility
+adaptive-component-design
+api-contract
+content-strategy
+dark-light-theming
+data-modeling
+design-brand
+design-color
+design-depth
+design-foundation
+design-genre
+design-iconography
+design-patterns
+design-refinement
+design-spacing
+design-system
+design-typography
+design-visual
+ethics-responsible-ai
+information-architecture
+macrostructures
+master-design
+motion-design
+readability
+responsiveness
+role-switcher
+ui-components
+ux-psychology
+ux-ui-patterns
+web-performance
