@@ -3,12 +3,14 @@ name: redesign-workflow
 description: Delegated, domain-aware redesign workflow for existing visual surfaces — route → compose owners → verify decisions → inspect → direct → specify → produce under a write lease → verify provenance, scope, concurrency, visual continuity, and artifact → facade review → classify → fix → deliver.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.4.0
+  ai-native-skills.version: 3.5.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
   ai-native-skills.contract-version: "^2.2.0"
-  ai-native-skills.requires: "role-switcher master-design master-engineer decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement business-value-alignment skill-evolution skill-eval git-workflow"
+  ai-native-skills.pack: packs/redesign/pack.yaml
+  ai-native-skills.pack-version: "1.0.0"
+  ai-native-skills.requires: "role-switcher master-design master-engineer business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement skill-evolution skill-eval git-workflow"
   ai-native-skills.related_skills: '["workflow-router","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
 ---
 
@@ -17,6 +19,29 @@ metadata:
 Redesign an existing visual surface through explicit ownership, verified decision provenance, bounded specialist delegation, clean final-diff scope, concurrency-safe writes, domain-appropriate evidence, visual-personality preservation, independent facade review, and a verified correction loop.
 
 The workflow owns lifecycle, state transitions, approvals, preservation, integrity gates, iteration, and handoffs. Specialist skills own narrow design decisions. `master-engineer` owns repository implementation when required. `design-review` and the governing domain reviewer own acceptance.
+
+## Dependency and installation model
+
+Runtime composition and package installation are separate concerns.
+
+```text
+ai-native-skills.requires
+  → backward-compatible runtime capability hint
+  → does not prove that dependencies are installed
+
+ai-native-skills.pack + ai-native-skills.pack-version
+  → bind this workflow version to one canonical manifest contract
+
+packs/redesign/pack.yaml
+  → canonical ordered dependency inventory
+  → classifies required, conditional, port, adapter, domain-reviewer, and optional skills
+  → defines minimum and complete installation profiles
+  → governs the documented Redesign Pack command
+```
+
+Installing `redesign-workflow` alone installs only the entrypoint because the upstream `skills` CLI does not currently resolve transitive dependencies from `SKILL.md`. Before execution, verify required capability availability, resolve conditional capabilities from the run context, and select adapters only from changed concerns and acceptance criteria.
+
+Load `references/dependencies-and-installation.md` for the complete dependency contract, installation profiles, runtime preflight, and validation commands.
 
 ## Hard rules
 
@@ -51,6 +76,7 @@ The workflow owns lifecycle, state transitions, approvals, preservation, integri
 28. Maximum design iterations default to 5; after two failed patches in one region, re-read and replan.
 29. Verified reusable fixes require skill-evolution and a regression eval.
 30. Blocked or bounded attempts are never labeled PASS.
+31. Never claim a complete redesign environment from the workflow entrypoint alone.
 ```
 
 ## Route
@@ -264,6 +290,7 @@ Load only when applicable:
 
 | Concern | Reference / skill |
 |---|---|
+| Dependency model and installation | `references/dependencies-and-installation.md` |
 | Lifecycle boundary | `references/redesign-vs-refinement.md` |
 | State, phase handoffs, approval, outputs | `references/orchestration-state-and-decisions.md` |
 | Decision authority and supersession | `decision-provenance` |
@@ -388,6 +415,8 @@ Always require explicit verified authority for destructive/irreversible work, pr
 
 ```text
 □ Correct lifecycle was selected before production.
+□ Dependency availability and pack/profile selection were verified before execution.
+□ The workflow entrypoint was not treated as a complete installed environment.
 □ Design, implementation, repository-write, and review ownership are explicit.
 □ Material decisions have attributable sources and verified authority.
 □ Agent summaries, PR bodies, commits, and recency were not treated as approval.
