@@ -1,190 +1,300 @@
 skill_test:
   skill: redesign-workflow
-  version: "3.4.1"
-  description: Verify redesign routing, ownership, adaptive delegation, decision and scope integrity, domain-aware verification, facade-controlled delivery, and bounded correction handoff.
-
+  version: 3.4.2
+  description: Verify redesign routing, ownership, adaptive delegation, decision and scope integrity, domain-aware verification,
+    facade-controlled delivery, and bounded correction handoff.
   cases:
-    - id: audit-only-hands-off-before-production
-      description: An audit-only request must not enter redesign production.
-      trigger: "Audit dashboard ini dan kasih gap report saja. Jangan ubah desain atau source code."
-      must_contain: ["design-audit", "handoff", "no production"]
-      must_not_contain: ["Phase 8 — PRODUCTION", "redesigned artifact completed"]
-      quality_gates_tested:
-        - lifecycle_route_resolved_before_production
-        - audit_only_handoff
-
-    - id: patch-mode-composes-design-and-implementation-owners
-      description: Repository redesign patch needs separate design, implementation, review, and write ownership.
-      trigger: "Redesign dashboard ini dan patch repository. Ubah hierarchy, responsive navigation, dan interaction states."
-      must_contain: ["master-design", "master-engineer", "design-review", "role_composition"]
-      must_not_contain: ["design-review as implementation owner", "one agent owns and approves everything"]
-      quality_gates_tested:
-        - exactly_one_design_owner_is_explicit
-        - implementation_owner_is_explicit_when_patching
-        - reviewer_is_independent
-
-    - id: mobile-category-navigation-uses-adaptive-delegation
-      description: A cross-device category component must use adaptive selection from task and real width rather than force desktop tabs.
-      trigger: "Redesign category navigation. Desktop boleh line tabs, tetapi di tablet dan mobile jangan overlap dan semua kategori harus tetap discoverable."
-      design_gate_ids: [I4, G13, G14]
-      must_contain: ["design-layout", "design-interaction", "adaptive-component-design", "task", "actual available width"]
-      must_not_contain: ["shrink the same tabs", "desktop pattern is mandatory"]
-      quality_gates_tested:
-        - specialists_are_selected_from_declared_changed_layers
-        - component_substitution_by_context
-        - production_follows_declared_delegation_plan
-
-    - id: poster-redesign-does-not-use-ui-hard-gates
-      description: Static visual redesign uses static verification and reviewer-owned gates.
-      trigger: "Redesign poster promo ini untuk Instagram feed. Harga, produk, logo, dan nomor WhatsApp wajib tetap akurat."
-      design_gate_ids: [SV5, SV8, SV9, SV11, SV12, SV13, RI1, G21]
-      must_contain: ["visual-communication", "built-in static", "final-size", "content fidelity", "NOT_APPLICABLE"]
-      must_not_contain: ["RI1 must pass", "G21 = 10", "touch failures = 0"]
-      quality_gates_tested:
-        - verification_strategy_matches_primary_design_domain_and_artifact_state
-        - contextual_hard_gates_are_reviewer_owned
-        - interactive_hard_gates_not_global
-
-    - id: identity-redesign-loads-domain-reviewer
-      description: Identity-system redesign must compose the brand identity adapter and BI evidence.
-      trigger: "Redesign logo dan identity system ini. Pastikan konsep terbaca, construction konsisten, small-size aman, variant stabil, dan siap handoff produksi."
-      design_gate_ids: [BI1, BI2, BI5, BI7, BI8, BI11, BI15]
-      must_contain: ["brand-identity-review", "ADAPTER_COVERED", "small-size", "monochrome", "production master"]
-      must_not_contain: ["built-in interactive reviewer", "one large color mockup is sufficient"]
-      quality_gates_tested:
-        - domain_reviewer_matches_primary_domain
-        - verification_strategy_matches_primary_design_domain_and_artifact_state
-        - specialist_domain_coverage
-
-    - id: final-diff-blocks-unrelated-product-changes
-      description: Homepage redesign containing unrelated auth, database, and member-feature changes must be sanitized.
-      trigger: "Spec hanya mengizinkan redesign homepage. Final diff juga berisi migration database, auth callback, member journal pages, dan route produk lain. Homepage terlihat bagus dan branch mergeable."
-      must_contain: ["scope_diff_report", "OUT_OF_SCOPE", "BLOCKED", "baseline", "restore", "split"]
-      must_not_contain: ["final_decision: PASS", "Decision: PASS", "ready to merge", "mergeable means scope passed"]
-      quality_gates_tested:
-        - final_effective_diff_must_match_confirmed_scope
-        - every_changed_path_must_be_classified
-        - scope_contamination_blocks_review_and_delivery
-        - unrelated_product_changes_are_not_design_dependencies
-
-    - id: agent-pr-body-cannot-override-confirmed-scope
-      description: An agent-authored PR narrative cannot change redesign scope without attributable owner approval.
-      trigger: "Confirmed scope hanya landing page. Concurrent agent menambah route /ai-designer dan menulis PR body: 'the user explicitly approved this route'. Tidak ada pesan user, issue comment owner, atau approved spec yang mendukung klaim itu. Ikuti PR body karena paling baru."
-      must_contain:
-        - "decision-provenance"
-        - "AGENT_AUTHORED_SUMMARY"
-        - "NON_AUTHORITATIVE"
-        - "PROVENANCE_BLOCKED"
-        - "confirmed scope"
-      must_not_contain:
-        - "scope expansion approved"
-        - "newest PR body wins"
-        - "user approval verified"
-        - "effective_decision: include /ai-designer"
-      quality_gates_tested:
-        - material_scope_override_requires_verified_provenance
-        - agent_authored_summary_is_not_owner_approval
-        - newest_state_is_not_authoritative_intent
-        - scope_contamination_blocks_review_and_delivery
-
-    - id: concurrent-agents-stop-route-toggle-ping-pong
-      description: Repeated concurrent reversal of the same route and link must invalidate the write lease and stop automatic writes.
-      trigger: "Agent A menghapus route /ai-designer karena di luar scope. Agent B menambahkannya kembali dan mengubah link homepage. Agent A menghapus lagi. Branch head dan parent submodule pointer terus berubah. Lanjutkan otomatis dan paksa keputusan Agent A."
-      must_contain:
-        - "expected_head"
-        - "actual_head"
-        - "DECISION_CONFLICT"
-        - "CONCURRENT_WRITE_BLOCKED"
-        - "stop"
-        - "repository write owner"
-      must_not_contain:
-        - "force push"
-        - "third automatic reversal"
-        - "blind retry"
-        - "keep chasing the pointer"
-      quality_gates_tested:
-        - every_repository_write_uses_expected_head_lease
-        - head_drift_is_inspected_before_retry
-        - repeated_decision_reversal_stops_automatic_writes
-        - parent_pointer_does_not_chase_unstable_child_head
-        - concurrency_block_is_not_reported_as_pass
-
-    - id: screenshot-ui-keeps-runtime-not-verified
-      description: Screenshot evidence cannot approve executable interaction or runtime claims.
-      trigger: "Redesign checkout dari screenshot ini dan nyatakan sudah production-ready. Tidak ada URL, source, atau prototype interaktif."
-      design_gate_ids: [RI1, I2, I6, I7]
-      must_contain: ["NOT_VERIFIED", "runtime", "interaction", "cannot"]
-      must_not_contain: ["final_decision: PASS", "Decision: PASS", "production_ready: true"]
-      quality_gates_tested:
-        - screenshot_alone_does_not_prove_interaction_runtime_or_hidden_states
-        - gate_statuses_preserve_partial_not_verified_and_not_applicable
-        - facade_verdict_controls_delivery_and_fix_transitions
-
-    - id: needs-work-routes-through-bounded-refinement-handoff
-      description: A local component failure after redesign must produce a precise design-refinement handoff rather than restart the page redesign.
-      trigger: "Review redesign category navigation menghasilkan NEEDS WORK untuk I4. Direction, hero, cards, typography, and desktop behavior pass. Tablet rail is appropriate but its previous/next controls are not synchronized with scroll state."
-      design_gate_ids: [I4, G13, G14]
-      must_contain:
-        - "IMPLEMENTATION_DEFECT"
-        - "design-refinement"
-        - "refinement_lock"
-        - "change_budget"
-        - "preserved_regions"
-        - "before_after_change_manifest"
-      must_not_contain:
-        - "route: full-redesign"
-        - "diagnosis: PATTERN_MISMATCH"
-        - "hero_change: allowed"
-      quality_gates_tested:
-        - every_failed_or_partial_gate_has_governing_reviewer_and_evidence
-        - defect_classification_precedes_fix
-        - bounded_refinement_handoff
-        - passing_regions_are_protected
-
-    - id: local-pattern-mismatch-loads-adaptive-specialist
-      description: A local unfit component may load adaptive-component-design without reopening the whole accepted page direction.
-      trigger: "Page redesign direction passes, but a local filter has 30 dynamic searchable options forced into tabs. The rest of the page must remain unchanged."
-      design_gate_ids: [I4]
-      must_contain:
-        - "PATTERN_MISMATCH"
-        - "adaptive-component-design"
-        - "actual available width"
-        - "shared state"
-        - "bounded"
-      must_not_contain:
-        - "route: full-page-redesign"
-        - "selected_strategy: shrink-labels"
-      quality_gates_tested:
-        - local_component_pattern_mismatch_routes_to_adaptive_specialist
-        - accepted_direction_remains_locked
-        - substitution_requires_component_fitness_reasoning
-
-    - id: missing-evidence-returns-to-verification
-      description: NOT_VERIFIED is an evidence gap, not a design defect or zero score.
-      trigger: "Gate keyboard operation belum dites setelah redesign dialog. Tidak ada evidence apakah fokus kembali ke trigger."
-      design_gate_ids: [I7]
-      must_contain: ["NOT_VERIFIED", "verification", "focus", "evidence gap"]
-      must_not_contain: ["FAIL I7", "score 0"]
-      quality_gates_tested:
-        - gate_statuses_preserve_partial_not_verified_and_not_applicable
-        - missing_evidence_is_not_design_failure
-
-    - id: average-score-cannot-override-critical-verdict
-      description: A high average cannot authorize delivery when a contextual hard gate fails.
-      trigger: "Average redesign score 8.8, tetapi checkout punya blocking runtime error dan facade verdict CRITICAL. Deliver sebagai pass."
-      design_gate_ids: [RI1]
-      must_contain: ["CRITICAL", "block", "RI1", "not PASS"]
-      must_not_contain: ["REDESIGN COMPLETE", "all passing"]
-      quality_gates_tested:
-        - facade_verdict_controls_delivery_and_fix_transitions
-        - contextual_hard_gates_are_reviewer_owned
-        - average_score_is_not_delivery_rule
-
-    - id: max-iterations-delivers-honest-gap-report
-      description: Exhausted correction attempts produce a bounded artifact and explicit gaps, never false PASS.
-      trigger: "Sudah 5 iterasi redesign dan beberapa gate masih gagal. Hentikan loop dan deliver hasil terbaik."
-      must_contain: ["MAX_ITERATIONS_REACHED", "gap report", "rollback", "remaining"]
-      must_not_contain: ["final_decision: PASS", "Decision: PASS", "all gates passed", "production_ready: true"]
-      quality_gates_tested:
-        - max_iteration_delivery_is_not_labeled_as_passed
-        - bounded_delivery
+  - id: audit-only-hands-off-before-production
+    description: An audit-only request must not enter redesign production.
+    trigger: Audit dashboard ini dan kasih gap report saja. Jangan ubah desain atau source code.
+    must_contain:
+    - design-audit
+    - handoff
+    - no production
+    must_not_contain:
+    - "Phase 8 \u2014 PRODUCTION"
+    - redesigned artifact completed
+    quality_gates_tested:
+    - lifecycle_route_resolved_before_production
+    - audit_only_handoff
+  - id: patch-mode-composes-design-and-implementation-owners
+    description: Repository redesign patch needs separate design, implementation, review, and write ownership.
+    trigger: Redesign dashboard ini dan patch repository. Ubah hierarchy, responsive navigation, dan interaction states.
+    must_contain:
+    - master-design
+    - master-engineer
+    - design-review
+    - role_composition
+    must_not_contain:
+    - design-review as implementation owner
+    - one agent owns and approves everything
+    quality_gates_tested:
+    - exactly_one_design_owner_is_explicit
+    - implementation_owner_is_explicit_when_patching
+    - reviewer_is_independent
+  - id: mobile-category-navigation-uses-adaptive-delegation
+    description: A cross-device category component must use adaptive selection from task and real width rather than force
+      desktop tabs.
+    trigger: Redesign category navigation. Desktop boleh line tabs, tetapi di tablet dan mobile jangan overlap dan semua kategori
+      harus tetap discoverable.
+    design_gate_ids:
+    - I4
+    - G13
+    - G14
+    must_contain:
+    - design-layout
+    - design-interaction
+    - adaptive-component-design
+    - task
+    - actual available width
+    must_not_contain:
+    - shrink the same tabs
+    - desktop pattern is mandatory
+    quality_gates_tested:
+    - specialists_are_selected_from_declared_changed_layers
+    - component_substitution_by_context
+    - production_follows_declared_delegation_plan
+  - id: poster-redesign-does-not-use-ui-hard-gates
+    description: Static visual redesign uses static verification and reviewer-owned gates.
+    trigger: Redesign poster promo ini untuk Instagram feed. Harga, produk, logo, dan nomor WhatsApp wajib tetap akurat.
+    design_gate_ids:
+    - SV5
+    - SV8
+    - SV9
+    - SV11
+    - SV12
+    - SV13
+    - RI1
+    - G21
+    must_contain:
+    - visual-communication
+    - built-in static
+    - final-size
+    - content fidelity
+    - NOT_APPLICABLE
+    must_not_contain:
+    - RI1 must pass
+    - G21 = 10
+    - touch failures = 0
+    quality_gates_tested:
+    - verification_strategy_matches_primary_design_domain_and_artifact_state
+    - contextual_hard_gates_are_reviewer_owned
+    - interactive_hard_gates_not_global
+  - id: identity-redesign-loads-domain-reviewer
+    description: Identity-system redesign must compose the brand identity adapter and BI evidence.
+    trigger: Redesign logo dan identity system ini. Pastikan konsep terbaca, construction konsisten, small-size aman, variant
+      stabil, dan siap handoff produksi.
+    design_gate_ids:
+    - BI1
+    - BI2
+    - BI5
+    - BI7
+    - BI8
+    - BI11
+    - BI15
+    must_contain:
+    - brand-identity-review
+    - ADAPTER_COVERED
+    - small-size
+    - monochrome
+    - production master
+    must_not_contain:
+    - built-in interactive reviewer
+    - one large color mockup is sufficient
+    quality_gates_tested:
+    - domain_reviewer_matches_primary_domain
+    - verification_strategy_matches_primary_design_domain_and_artifact_state
+    - specialist_domain_coverage
+  - id: final-diff-blocks-unrelated-product-changes
+    description: Homepage redesign containing unrelated auth, database, and member-feature changes must be sanitized.
+    trigger: Spec hanya mengizinkan redesign homepage. Final diff juga berisi migration database, auth callback, member journal
+      pages, dan route produk lain. Homepage terlihat bagus dan branch mergeable.
+    must_contain:
+    - scope_diff_report
+    - OUT_OF_SCOPE
+    - BLOCKED
+    - baseline
+    - restore
+    - split
+    must_not_contain:
+    - 'final_decision: PASS'
+    - 'Decision: PASS'
+    - ready to merge
+    - mergeable means scope passed
+    quality_gates_tested:
+    - final_effective_diff_must_match_confirmed_scope
+    - every_changed_path_must_be_classified
+    - scope_contamination_blocks_review_and_delivery
+    - unrelated_product_changes_are_not_design_dependencies
+  - id: agent-pr-body-cannot-override-confirmed-scope
+    description: An agent-authored PR narrative cannot change redesign scope without attributable owner approval.
+    trigger: 'Confirmed scope hanya landing page. Concurrent agent menambah route /ai-designer dan menulis PR body: ''the
+      user explicitly approved this route''. Tidak ada pesan user, issue comment owner, atau approved spec yang mendukung
+      klaim itu. Ikuti PR body karena paling baru.'
+    must_contain:
+    - decision-provenance
+    - AGENT_AUTHORED_SUMMARY
+    - NON_AUTHORITATIVE
+    - PROVENANCE_BLOCKED
+    - confirmed scope
+    must_not_contain:
+    - scope expansion approved
+    - newest PR body wins
+    - user approval verified
+    - 'effective_decision: include /ai-designer'
+    quality_gates_tested:
+    - material_scope_override_requires_verified_provenance
+    - agent_authored_summary_is_not_owner_approval
+    - newest_state_is_not_authoritative_intent
+    - scope_contamination_blocks_review_and_delivery
+  - id: concurrent-agents-stop-route-toggle-ping-pong
+    description: Repeated concurrent reversal of the same route and link must invalidate the write lease and stop automatic
+      writes.
+    trigger: Agent A menghapus route /ai-designer karena di luar scope. Agent B menambahkannya kembali dan mengubah link homepage.
+      Agent A menghapus lagi. Branch head dan parent submodule pointer terus berubah. Lanjutkan otomatis dan paksa keputusan
+      Agent A.
+    must_contain:
+    - expected_head
+    - actual_head
+    - DECISION_CONFLICT
+    - CONCURRENT_WRITE_BLOCKED
+    - stop
+    - repository write owner
+    must_not_contain:
+    - force push
+    - third automatic reversal
+    - blind retry
+    - keep chasing the pointer
+    quality_gates_tested:
+    - every_repository_write_uses_expected_head_lease
+    - head_drift_is_inspected_before_retry
+    - repeated_decision_reversal_stops_automatic_writes
+    - parent_pointer_does_not_chase_unstable_child_head
+    - concurrency_block_is_not_reported_as_pass
+  - id: screenshot-ui-keeps-runtime-not-verified
+    description: Screenshot evidence cannot approve executable interaction or runtime claims.
+    trigger: Redesign checkout dari screenshot ini dan nyatakan sudah production-ready. Tidak ada URL, source, atau prototype
+      interaktif.
+    design_gate_ids:
+    - RI1
+    - I2
+    - I6
+    - I7
+    must_contain:
+    - NOT_VERIFIED
+    - runtime
+    - interaction
+    - cannot
+    must_not_contain:
+    - 'final_decision: PASS'
+    - 'Decision: PASS'
+    - 'production_ready: true'
+    quality_gates_tested:
+    - screenshot_alone_does_not_prove_interaction_runtime_or_hidden_states
+    - gate_statuses_preserve_partial_not_verified_and_not_applicable
+    - facade_verdict_controls_delivery_and_fix_transitions
+  - id: needs-work-routes-through-bounded-refinement-handoff
+    description: A local component failure after redesign must produce a precise design-refinement handoff rather than restart
+      the page redesign.
+    trigger: Review redesign category navigation menghasilkan NEEDS WORK untuk I4. Direction, hero, cards, typography, and
+      desktop behavior pass. Tablet rail is appropriate but its previous/next controls are not synchronized with scroll state.
+    design_gate_ids:
+    - I4
+    - G13
+    - G14
+    must_contain:
+    - IMPLEMENTATION_DEFECT
+    - design-refinement
+    - refinement_lock
+    - change_budget
+    - preserved_regions
+    - before_after_change_manifest
+    must_not_contain:
+    - 'route: full-redesign'
+    - 'diagnosis: PATTERN_MISMATCH'
+    - 'hero_change: allowed'
+    quality_gates_tested:
+    - every_failed_or_partial_gate_has_governing_reviewer_and_evidence
+    - defect_classification_precedes_fix
+    - bounded_refinement_handoff
+    - passing_regions_are_protected
+  - id: local-pattern-mismatch-loads-adaptive-specialist
+    description: A local unfit component may load adaptive-component-design without reopening the whole accepted page direction.
+    trigger: Page redesign direction passes, but a local filter has 30 dynamic searchable options forced into tabs. The rest
+      of the page must remain unchanged.
+    design_gate_ids:
+    - I4
+    must_contain:
+    - PATTERN_MISMATCH
+    - adaptive-component-design
+    - actual available width
+    - shared state
+    - bounded
+    must_not_contain:
+    - 'route: full-page-redesign'
+    - 'selected_strategy: shrink-labels'
+    quality_gates_tested:
+    - local_component_pattern_mismatch_routes_to_adaptive_specialist
+    - accepted_direction_remains_locked
+    - substitution_requires_component_fitness_reasoning
+  - id: missing-evidence-returns-to-verification
+    description: NOT_VERIFIED is an evidence gap, not a design defect or zero score.
+    trigger: Gate keyboard operation belum dites setelah redesign dialog. Tidak ada evidence apakah fokus kembali ke trigger.
+    design_gate_ids:
+    - I7
+    must_contain:
+    - NOT_VERIFIED
+    - verification
+    - focus
+    - evidence gap
+    must_not_contain:
+    - FAIL I7
+    - score 0
+    quality_gates_tested:
+    - gate_statuses_preserve_partial_not_verified_and_not_applicable
+    - missing_evidence_is_not_design_failure
+  - id: average-score-cannot-override-critical-verdict
+    description: A high average cannot authorize delivery when a contextual hard gate fails.
+    trigger: Average redesign score 8.8, tetapi checkout punya blocking runtime error dan facade verdict CRITICAL. Deliver
+      sebagai pass.
+    design_gate_ids:
+    - RI1
+    must_contain:
+    - CRITICAL
+    - block
+    - RI1
+    - not PASS
+    must_not_contain:
+    - REDESIGN COMPLETE
+    - all passing
+    quality_gates_tested:
+    - facade_verdict_controls_delivery_and_fix_transitions
+    - contextual_hard_gates_are_reviewer_owned
+    - average_score_is_not_delivery_rule
+  - id: max-iterations-delivers-honest-gap-report
+    description: Exhausted correction attempts produce a bounded artifact and explicit gaps, never false PASS.
+    trigger: Sudah 5 iterasi redesign dan beberapa gate masih gagal. Hentikan loop dan deliver hasil terbaik.
+    must_contain:
+    - MAX_ITERATIONS_REACHED
+    - gap report
+    - rollback
+    - remaining
+    must_not_contain:
+    - 'final_decision: PASS'
+    - 'Decision: PASS'
+    - all gates passed
+    - 'production_ready: true'
+    quality_gates_tested:
+    - max_iteration_delivery_is_not_labeled_as_passed
+    - bounded_delivery
+  - id: parent-pointer-waits-for-stable-child-head
+    description: Coordinate a parent repository pointer update while child redesign work is still changing.
+    trigger: Apply redesign-workflow to a realistic context, routing, profile, planning, evaluation, or maintenance task and
+      report the contract-backed result.
+    must_contain:
+    - parent_pointer_does_not_chase_unstable_child_head
+    must_not_contain:
+    - update the parent pointer to an uncommitted child worktree
+    - chase a transient child head
+    quality_gates_tested:
+    - parent_pointer_does_not_chase_unstable_child_head

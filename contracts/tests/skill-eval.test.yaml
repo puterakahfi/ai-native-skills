@@ -1,0 +1,22 @@
+skill_test:
+  skill: skill-eval
+  version: 1.1.1
+  description: Verify skill-eval exposes and applies its reviewed context, workflow, profile, or maintenance contract interface.
+  cases:
+  - id: skill-eval-detects-generic-responses
+    description: Evaluate whether a skill was actually applied instead of merely producing output.
+    trigger: Apply skill-eval to a realistic context, routing, profile, planning, evaluation, or maintenance task and report
+      the contract-backed result.
+    must_contain:
+    - generic_response_detection_is_mandatory
+    - eval_verdict
+    - gate_compliance_report
+    - applied_vs_ignored_classification
+    - regression_test_result
+    - eval_must_test_behavior_not_just_presence_of_output
+    must_not_contain:
+    - pass a generic response
+    - treat output presence as application proof
+    quality_gates_tested:
+    - generic_response_detection_is_mandatory
+    - eval_must_test_behavior_not_just_presence_of_output

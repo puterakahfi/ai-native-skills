@@ -1,109 +1,131 @@
 skill_test:
   skill: workflow-router
-  version: "1.4.0"
-  description: Verify lifecycle selection remains primary while design-domain and platform-specialist overlays load the correct capabilities.
-
+  version: 1.4.1
+  description: Verify lifecycle selection remains primary while design-domain and platform-specialist overlays load the correct
+    capabilities.
   cases:
-    - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
-      description: A ChatGPT App product from zero uses the existing product lifecycle plus the platform specialist.
-      trigger: "Build a ChatGPT App from zero using OpenAI Apps SDK and MCP. Belum ada PRD atau technical spec."
-      must_contain:
-        - "product-development-workflow"
-        - "chatgpt-app-development"
-        - "platform specialist"
-        - "discovery"
-      must_not_contain:
-        - "chatgpt-app-workflow"
-        - "new-feature-workflow as primary"
-        - "start implementation immediately"
-      quality_gates_tested:
-        - product_from_zero_lifecycle_preserved
-        - platform_specialist_overlay
-        - no_duplicate_platform_workflow
-
-    - id: existing-product-chatgpt-integration-routes-feature-plus-specialist
-      description: Adding ChatGPT integration to an existing product remains a feature lifecycle.
-      trigger: "Produk dan PRD sudah ada. Tambahkan Apps SDK/MCP integration supaya capability existing bisa dipakai di ChatGPT."
-      must_contain:
-        - "new-feature-workflow"
-        - "chatgpt-app-development"
-        - "platform specialist"
-      must_not_contain:
-        - "product-development-workflow as primary"
-        - "chatgpt-app-workflow"
-      quality_gates_tested:
-        - existing_product_feature_route_preserved
-        - platform_specialist_overlay
-
-    - id: audit-only-routes-to-design-audit
-      description: Audit-only intent must not start redesign production.
-      trigger: "Audit dashboard ini dan jelaskan apa yang salah. Jangan ubah desain atau source code."
-      must_contain:
-        - "DESIGN AUDIT"
-        - "design-audit"
-        - "report only"
-      must_not_contain:
-        - "Starting redesign-workflow"
-        - "PRODUCTION"
-      quality_gates_tested:
-        - audit_is_not_redesign
-        - route_before_execution
-
-    - id: known-tabs-failure-routes-to-refinement
-      description: A known narrow failure with preservation constraints belongs to design refinement.
-      trigger: "Perbaiki hanya tabs category yang overlap di tablet. Pertahankan direction, layout, dan komponen lain yang sudah benar."
-      design_gate_ids: [I4]
-      must_contain:
-        - "design-refinement"
-        - "targeted"
-        - "preserve"
-      must_not_contain:
-        - "redesign-workflow"
-        - "replace visual direction"
-      quality_gates_tested:
-        - known_failure_routes_to_refinement
-        - preserve_scope
-
-    - id: broad-direction-change-routes-to-redesign
-      description: Broad structural and visual-direction replacement belongs to redesign workflow.
-      trigger: "Redesign landing page ini. Direction, hierarchy, macrostructure, dan visual language sekarang salah dan perlu diganti."
-      must_contain:
-        - "redesign-workflow"
-        - "broad"
-        - "direction"
-      must_not_contain:
-        - "design-refinement"
-      quality_gates_tested:
-        - broad_direction_routes_to_redesign
-
-    - id: logo-audit-routes-to-brand-identity-review
-      description: Identity audit uses the installed specialist adapter and BI namespace.
-      trigger: "Audit logo identity system ini untuk production readiness. brand-identity-review tersedia."
-      design_gate_ids: [BI1, BI2, BI5, BI7, BI11, BI16]
-      must_contain:
-        - "design-audit"
-        - "design-review"
-        - "brand-identity-review"
-        - "ADAPTER_COVERED"
-        - "BI"
-      must_not_contain:
-        - "built-in interactive"
-        - "LIMITED REVIEW"
-      quality_gates_tested:
-        - design_domain_resolution
-        - installed_domain_adapter_selected
-        - unsupported_domain_not_forced_through_ui_review
-
-    - id: logo-audit-without-adapter-is-limited
-      description: Missing identity adapter limits the review rather than falling back to UI gates.
-      trigger: "Audit logo identity system ini, tetapi brand-identity-review tidak tersedia."
-      must_contain:
-        - "design-audit"
-        - "brand-identity-review"
-        - "LIMITED REVIEW"
-      must_not_contain:
-        - "built-in interactive"
-        - "ADAPTER_COVERED"
-      quality_gates_tested:
-        - missing_domain_adapter_limits_verdict
-        - no_ui_fallback_for_identity_domain
+  - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
+    description: A ChatGPT App product from zero uses the existing product lifecycle plus the platform specialist.
+    trigger: Build a ChatGPT App from zero using OpenAI Apps SDK and MCP. Belum ada PRD atau technical spec.
+    must_contain:
+    - product-development-workflow
+    - chatgpt-app-development
+    - platform specialist
+    - discovery
+    must_not_contain:
+    - chatgpt-app-workflow
+    - new-feature-workflow as primary
+    - start implementation immediately
+    quality_gates_tested:
+    - product_from_zero_lifecycle_preserved
+    - platform_specialist_overlay
+    - no_duplicate_platform_workflow
+  - id: existing-product-chatgpt-integration-routes-feature-plus-specialist
+    description: Adding ChatGPT integration to an existing product remains a feature lifecycle.
+    trigger: Produk dan PRD sudah ada. Tambahkan Apps SDK/MCP integration supaya capability existing bisa dipakai di ChatGPT.
+    must_contain:
+    - new-feature-workflow
+    - chatgpt-app-development
+    - platform specialist
+    must_not_contain:
+    - product-development-workflow as primary
+    - chatgpt-app-workflow
+    quality_gates_tested:
+    - existing_product_feature_route_preserved
+    - platform_specialist_overlay
+  - id: audit-only-routes-to-design-audit
+    description: Audit-only intent must not start redesign production.
+    trigger: Audit dashboard ini dan jelaskan apa yang salah. Jangan ubah desain atau source code.
+    must_contain:
+    - DESIGN AUDIT
+    - design-audit
+    - report only
+    must_not_contain:
+    - Starting redesign-workflow
+    - PRODUCTION
+    quality_gates_tested:
+    - audit_is_not_redesign
+    - route_before_execution
+  - id: known-tabs-failure-routes-to-refinement
+    description: A known narrow failure with preservation constraints belongs to design refinement.
+    trigger: Perbaiki hanya tabs category yang overlap di tablet. Pertahankan direction, layout, dan komponen lain yang sudah
+      benar.
+    design_gate_ids:
+    - I4
+    must_contain:
+    - design-refinement
+    - targeted
+    - preserve
+    must_not_contain:
+    - redesign-workflow
+    - replace visual direction
+    quality_gates_tested:
+    - known_failure_routes_to_refinement
+    - preserve_scope
+  - id: broad-direction-change-routes-to-redesign
+    description: Broad structural and visual-direction replacement belongs to redesign workflow.
+    trigger: Redesign landing page ini. Direction, hierarchy, macrostructure, dan visual language sekarang salah dan perlu
+      diganti.
+    must_contain:
+    - redesign-workflow
+    - broad
+    - direction
+    must_not_contain:
+    - design-refinement
+    quality_gates_tested:
+    - broad_direction_routes_to_redesign
+  - id: logo-audit-routes-to-brand-identity-review
+    description: Identity audit uses the installed specialist adapter and BI namespace.
+    trigger: Audit logo identity system ini untuk production readiness. brand-identity-review tersedia.
+    design_gate_ids:
+    - BI1
+    - BI2
+    - BI5
+    - BI7
+    - BI11
+    - BI16
+    must_contain:
+    - design-audit
+    - design-review
+    - brand-identity-review
+    - ADAPTER_COVERED
+    - BI
+    must_not_contain:
+    - built-in interactive
+    - LIMITED REVIEW
+    quality_gates_tested:
+    - design_domain_resolution
+    - installed_domain_adapter_selected
+    - unsupported_domain_not_forced_through_ui_review
+  - id: logo-audit-without-adapter-is-limited
+    description: Missing identity adapter limits the review rather than falling back to UI gates.
+    trigger: Audit logo identity system ini, tetapi brand-identity-review tidak tersedia.
+    must_contain:
+    - design-audit
+    - brand-identity-review
+    - LIMITED REVIEW
+    must_not_contain:
+    - built-in interactive
+    - ADAPTER_COVERED
+    quality_gates_tested:
+    - missing_domain_adapter_limits_verdict
+    - no_ui_fallback_for_identity_domain
+  - id: router-clarifies-ambiguity-and-preserves-approval-policy
+    description: Route an ambiguous request that may trigger post-fix learning and repository writes.
+    trigger: Apply workflow-router to a realistic context, routing, profile, planning, evaluation, or maintenance task and
+      report the contract-backed result.
+    must_contain:
+    - ambiguous_requests_must_be_clarified_not_assumed
+    - post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
+    - workflow_selection
+    - skill_load_order
+    - routing_rationale
+    - ambiguity_resolution
+    - post_fix_learning_route
+    - user_request
+    must_not_contain:
+    - guess the ambiguous lifecycle
+    - bypass repository approval
+    quality_gates_tested:
+    - ambiguous_requests_must_be_clarified_not_assumed
+    - post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy

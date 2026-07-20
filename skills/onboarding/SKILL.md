@@ -3,7 +3,7 @@ name: onboarding
 description: Bootstrap agent and engineer context for an existing codebase — harvest architecture, entry points, conventions, test commands, and gotchas. Produces AGENTS.md as primary output.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/onboarding.contract.yaml
@@ -12,6 +12,36 @@ metadata:
 ---
 
 # Onboarding
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/runtime/onboarding.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- repository_or_codebase
+allowed_outputs:
+- agents_md_draft
+- codebase_map
+- key_entry_points
+- architecture_summary
+- gotchas_and_pitfalls
+- first_task_recommendations
+quality_gates:
+- codebase_must_be_read_before_any_assumption
+- architecture_style_must_be_identified
+- entry_points_must_be_documented
+- test_command_must_be_verified
+- key_conventions_must_be_extracted_from_code_not_guessed
+- gotchas_must_be_discovered_from_existing_issues_or_code
+- agents_md_must_be_produced_as_output
+- onboarding_must_not_assume_any_framework_without_evidence
+```
+
+Begin with repository_or_codebase and inspect it before assumptions. Return agents_md_draft, codebase_map, key_entry_points, architecture_summary, gotchas_and_pitfalls, and first_task_recommendations based on code, commands, issues, and repository evidence rather than framework guesses.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 ## The Core Rule
 

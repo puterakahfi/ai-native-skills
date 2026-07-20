@@ -1,0 +1,27 @@
+skill_test:
+  skill: hermes-profile-bootstrap
+  version: 1.0.1
+  description: Verify hermes-profile-bootstrap exposes and applies its reviewed context, workflow, profile, or maintenance
+    contract interface.
+  cases:
+  - id: profile-bootstrap-emits-complete-safe-handoff
+    description: Bootstrap a Hermes runtime profile from an explicit target, catalog source, preset, and safety constraints.
+    trigger: Apply hermes-profile-bootstrap to a realistic context, routing, profile, planning, evaluation, or maintenance
+      task and report the contract-backed result.
+    must_contain:
+    - profile_skeleton_spec
+    - skill_preset_manifest
+    - profile_distribution_manifest
+    - runtime_adapter_requirements
+    - install_plan
+    - runtime_target
+    - skill_catalog_source
+    - safety_constraints
+    - profile_bootstrap_handoff_is_complete
+    - safety_constraints_are_preserved
+    must_not_contain:
+    - embed secrets
+    - treat the profile as a product repository
+    quality_gates_tested:
+    - profile_bootstrap_handoff_is_complete
+    - safety_constraints_are_preserved

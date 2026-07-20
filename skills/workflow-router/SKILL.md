@@ -3,7 +3,7 @@ name: workflow-router
 description: Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, or verified-case skill evolution. Route before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.4.0
+  ai-native-skills.version: 1.4.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow"
   ai-native-skills.type: meta-skill
@@ -13,6 +13,39 @@ metadata:
 ---
 
 # Workflow Router
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/meta/workflow-router.contract.yaml` · compatible line: `~0.2`
+
+```yaml
+required_inputs:
+- user_request
+allowed_outputs:
+- workflow_selection
+- skill_load_order
+- routing_rationale
+- ambiguity_resolution
+- post_fix_learning_route
+quality_gates:
+- task_type_must_be_classified_before_workflow_selection
+- routing_decision_must_be_stated_explicitly
+- ambiguous_requests_must_be_clarified_not_assumed
+- selected_workflow_must_be_loaded_before_execution
+- no_execution_before_routing_confirmed
+- fallback_must_be_defined_when_no_workflow_matches
+- product_from_zero_requests_must_not_route_directly_to_implementation
+- existing_ui_refinement_requests_must_route_to_redesign_workflow_not_new_surface_workflows
+- targeted_design_gate_fixes_must_route_to_design_refinement
+- explicit_verified_case_learning_requests_must_route_to_skill_evolution
+- parent_workflows_with_verified_fixes_must_route_to_skill_evolution_before_final_delivery
+- post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
+```
+
+Start from user_request and return workflow_selection, skill_load_order, routing_rationale, ambiguity_resolution, and post_fix_learning_route. Ambiguity is clarified rather than guessed, and any post-fix learning route remains subject to repository write ownership, expected-head, review, and approval policy.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 ## Core Rule
 

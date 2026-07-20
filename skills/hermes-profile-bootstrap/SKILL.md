@@ -3,7 +3,7 @@ name: hermes-profile-bootstrap
 description: Bootstrap the Hermes adapter for the Native AI profile-bootstrap contract. Use when creating, generating, templating, or auditing a Hermes profile that should start with AI-native meta-skills, workflows, foundation skills, runtime skills, and verification policy.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/runtime/profile-bootstrap.contract.yaml
@@ -11,6 +11,35 @@ metadata:
 ---
 
 # Hermes Profile Bootstrap
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/runtime/profile-bootstrap.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- runtime_target
+- profile_name
+- preset
+- skill_catalog_source
+- safety_constraints
+allowed_outputs:
+- profile_skeleton_spec
+- skill_preset_manifest
+- profile_distribution_manifest
+- runtime_adapter_requirements
+- install_plan
+- verification_plan
+- safety_exclusion_policy
+- generation_handoff
+quality_gates:
+  []
+```
+
+Resolve runtime_target, profile_name, preset, skill_catalog_source, and safety_constraints before generation. Produce profile_skeleton_spec, skill_preset_manifest, profile_distribution_manifest, runtime_adapter_requirements, install_plan, verification_plan, safety_exclusion_policy, and generation_handoff. A generated profile remains a runtime adapter skeleton, not a product repository or a container for secrets.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 > **HARD RULES:** Run phases in order. Verify each step before proceeding. This workflow is idempotent — safe to re-run.
 

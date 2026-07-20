@@ -3,7 +3,7 @@ name: skill-eval
 description: Skill application verifier — evaluates per-case agent outputs against regression contracts and classifies behavior as APPLIED, PARTIAL, GHOST, or INCOMPLETE. Separates contract validation from real behavioral evaluation.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/skill-eval.contract.yaml
@@ -11,6 +11,34 @@ metadata:
 ---
 
 # Skill Eval
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/quality/skill-eval.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- skill_name
+- test_case
+allowed_outputs:
+- eval_verdict
+- gate_compliance_report
+- applied_vs_ignored_classification
+- regression_test_result
+quality_gates:
+- eval_must_test_behavior_not_just_presence_of_output
+- every_gate_in_contract_must_have_at_least_one_test_case
+- test_case_must_have_canonical_trigger_input
+- test_case_must_define_must_contain_and_must_not_contain
+- pass_requires_all_must_contain_criteria_met
+- fail_on_any_must_not_contain_pattern_found
+- generic_response_detection_is_mandatory
+```
+
+Evaluate skill_name against test_case and produce eval_verdict, gate_compliance_report, applied_vs_ignored_classification, and regression_test_result. Generic or templated responses must be detected explicitly; output presence alone is not evidence that the skill behavior was applied.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
+
 
 `skill loaded` does not mean `skill applied`.
 
