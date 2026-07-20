@@ -1,6 +1,6 @@
 skill_test:
   skill: product-manager
-  version: 1.0.1
+  version: 1.1.0
   description: Verify product-manager exposes and applies its reviewed product, research, experiment, or decision contract
     interface.
   cases:
@@ -18,3 +18,10 @@ skill_test:
     quality_gates_tested:
     - acceptance_criteria_must_be_testable_not_vague
     - tasks_must_trace_to_acceptance_criteria
+
+  - id: task-breakdown-hands-off-release-topology
+    description: Product task breakdown delegates epic and repository topology decisions.
+    trigger: Break a multi-slice ChatGPT App MVP into traceable tasks and decide PR targets.
+    must_contain: [tasks_must_trace_to_acceptance_criteria, parent_ref, delivery-work-breakdown, release unit, branch topology]
+    must_not_contain: [product-manager chooses main from default, floating task]
+    quality_gates_tested: [acceptance_criteria_must_be_testable_not_vague, tasks_must_trace_to_acceptance_criteria]

@@ -1,6 +1,6 @@
 skill_test:
   skill: workflow-router
-  version: 1.4.1
+  version: 1.5.0
   description: Verify lifecycle selection remains primary while design-domain and platform-specialist overlays load the correct
     capabilities.
   cases:
@@ -129,3 +129,10 @@ skill_test:
     quality_gates_tested:
     - ambiguous_requests_must_be_clarified_not_assumed
     - post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
+
+  - id: multi-slice-product-loads-delivery-topology
+    description: A dependent broad capability keeps its lifecycle and loads delivery decomposition before Git execution.
+    trigger: Add a multi-slice ChatGPT App P0 to an existing product; slices are dependent and targets are undefined.
+    must_contain: [new-feature-workflow, chatgpt-app-development, delivery-work-breakdown, epic]
+    must_not_contain: [every child PR targets main, default branch decides target]
+    quality_gates_tested: [existing_product_feature_route_preserved, platform_specialist_overlay, release_unit_classified_before_repository_execution]

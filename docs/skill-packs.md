@@ -153,7 +153,7 @@ npx skills add puterakahfi/ai-native-skills \
 
 ## Product Development Pack
 
-Full product lifecycle — discovery, verified PRD/MVP decisions, implementation-context mapping, implementation, product acceptance, release approval, authorized deployment, launch, and learning.
+Full product lifecycle — discovery, verified PRD/MVP decisions, release-unit and epic/feature/task decomposition, branch/PR topology, implementation-context mapping, implementation, product acceptance, release approval, authorized deployment, launch, and learning.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -162,6 +162,7 @@ npx skills add puterakahfi/ai-native-skills \
   --skill business-value-alignment \
   --skill experiment-design \
   --skill user-research \
+  --skill delivery-work-breakdown \
   --skill decision-provenance \
   --skill master-design \
   --skill master-engineer \
@@ -185,7 +186,7 @@ npx skills add puterakahfi/ai-native-skills \
 
 ## ChatGPT App Product Pack
 
-End-to-end ChatGPT App product delivery using the existing product lifecycle plus the Apps SDK/MCP platform specialist. The pack covers product discovery, economic and quota ownership, tool/resource contracts, widget UX and state, native ChatGPT capability handoff, auth/security, repository implementation-context mapping, implementation, actual ChatGPT integration evidence, deployment, and publication readiness.
+End-to-end ChatGPT App product delivery using the existing product lifecycle, release-unit/epic decomposition, plus the Apps SDK/MCP platform specialist. The pack covers product discovery, economic and quota ownership, tool/resource contracts, widget UX and state, native ChatGPT capability handoff, auth/security, repository implementation-context mapping, implementation, actual ChatGPT integration evidence, deployment, and publication readiness.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -198,6 +199,7 @@ npx skills add puterakahfi/ai-native-skills \
   --skill experiment-design \
   --skill user-research \
   --skill product-manager \
+  --skill delivery-work-breakdown \
   --skill decision-provenance \
   --skill native-ai-engineer \
   --skill ai-system-design \
@@ -295,6 +297,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 | `redesign-workflow` | canonical manifest: `packs/redesign/pack.yaml`; role-switcher; explicit design/implementation/write owners; implementation-context-discovery for patch/prototype; decision-provenance; master-design direction comparison; foundation and design ports; architecture-review for code; conditional audit/review/refinement; value alignment; learning/eval; governing domain reviewer |
 | `design-visual` | resolved foundation and locks; accepted or compared direction; composition + visual-hierarchy for page-level change; concern-specific color/type/depth/iconography/motion/readability adapters |
 | `design-refinement` | design-audit; design-review and governing reviewer; master-design; implementation-context-discovery + master-engineer + architecture-review for repository patch; skill-evolution; skill-eval |
+| `delivery-work-breakdown` | verified scope/criteria; repository and release context; product-defined tracker, branch, PR, flag, merge, and release policy; git-workflow for execution |
 | `implementation-context-discovery` | repository evidence; engineering/architecture authority; product-defined framework, component, styling, icon, state/form/query/data, build/test conventions; implementation owner; architecture-review after code |
 | `brand-identity-review` | design-review, design-brand, composition, visual-hierarchy, design-typography, design-color |
 | `decision-provenance` | authoritative source references, decision-domain owner/policy, previous decision records when applicable |
