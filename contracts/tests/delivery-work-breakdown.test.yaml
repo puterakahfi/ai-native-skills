@@ -1,0 +1,96 @@
+skill_test:
+  skill: delivery-work-breakdown
+  version: 1.0.0
+  description: Verify delivery decomposition classifies release units and produces traceable hierarchy and repository topology before execution.
+  cases:
+  - id: visualmate-chatgpt-app-p0-uses-epic-integration
+    description: Dependent ChatGPT App slices form one epic and must not independently target main.
+    trigger: VisualMate existing product will add ChatGPT App P0 through Prompt Builder package, MCP transport, tools, production context, widget, native handoff, security proof, and real runtime acceptance. Each slice is incomplete alone. Produce the delivery plan and branch topology.
+    must_contain:
+    - release_unit_must_be_classified_before_branch_creation
+    - epic_required_for_dependent_non_independently_releasable_slices
+    - 'release_unit: epic'
+    - epic/integration branch
+    - parent acceptance criteria
+    - pr_target_matrix
+    - final_epic_pr_requires_integrated_end_to_end_acceptance
+    must_not_contain:
+    - every child PR targets main
+    - green CI means epic accepted
+    - default branch determines the target
+    quality_gates_tested:
+    - release_unit_must_be_classified_before_branch_creation
+    - epic_required_for_dependent_non_independently_releasable_slices
+    - every_child_work_item_must_trace_to_parent_acceptance_criteria
+    - epic_child_prs_must_target_the_epic_or_integration_branch
+    - final_epic_pr_requires_integrated_end_to_end_acceptance
+
+  - id: autonomous-feature-can-target-release-branch
+    description: A small backward-compatible feature remains a feature when it is safe and useful alone.
+    trigger: Add one backward-compatible read-only endpoint with its own acceptance criteria, no sibling dependencies, no incomplete activation path, and independent rollback. Classify the release unit and target.
+    must_contain:
+    - 'release_unit: feature'
+    - independently releasable
+    - direct_to_release_branch_requires_independent_releasability_or_approved_safe_feature_flag
+    - product-defined release branch
+    must_not_contain:
+    - epic is always mandatory
+    - file count defines release unit
+    quality_gates_tested:
+    - release_unit_must_be_classified_before_branch_creation
+    - direct_to_release_branch_requires_independent_releasability_or_approved_safe_feature_flag
+    - product_defined_repository_and_approval_policy_must_be_preserved
+
+  - id: feature-flag-exception-requires-runtime-safety
+    description: A flag permits direct integration only with approved disabled state and complete path coverage.
+    trigger: A child slice wants to merge to the release branch. Trunk-based policy is approved, the feature flag is default off, every incomplete route is behind it, bypass audit is complete, and disabled-state tests pass. Evaluate the exception.
+    must_contain:
+    - approved feature flag
+    - disabled by default
+    - no unflagged path
+    - feature_flag_exception_requires_disabled_or_equivalent_safe_default_and_no_unflagged_path
+    - verification
+    must_not_contain:
+    - flag name alone is enough
+    - incomplete behavior may be enabled by default
+    quality_gates_tested:
+    - direct_to_release_branch_requires_independent_releasability_or_approved_safe_feature_flag
+    - feature_flag_exception_requires_disabled_or_equivalent_safe_default_and_no_unflagged_path
+    - green_ci_or_mergeability_does_not_override_release_topology
+
+  - id: orphan-task-blocks-branch-creation
+    description: A floating task without parent and acceptance references cannot create a branch.
+    trigger: Create task implement MCP endpoint and immediately open a branch. There is no parent epic or feature, acceptance criterion reference, dependency graph, release-unit classification, base branch, or PR target.
+    must_contain:
+    - BLOCKED
+    - no_orphan_feature_task_spike_or_bug_items
+    - parent_ref
+    - acceptance_criteria_refs
+    - base_branch
+    - pr_target
+    must_not_contain:
+    - create the branch now
+    - task title is enough
+    quality_gates_tested:
+    - every_child_work_item_must_trace_to_parent_acceptance_criteria
+    - no_orphan_feature_task_spike_or_bug_items
+    - dependency_graph_must_be_explicit_and_cycle_checked
+    - base_branch_and_pr_target_must_be_explicit_per_work_item
+
+  - id: git-executes-approved-topology
+    description: Git workflow receives explicit topology instead of using repository defaults.
+    trigger: Repository default is main. This work item is a child of epic 37 with integration branch epic/37-chatgpt-app-p0. Determine branch base and PR target, then hand off to git-workflow.
+    must_contain:
+    - epic/37-chatgpt-app-p0
+    - approved integration branch
+    - base_branch
+    - pr_target
+    - git-workflow executes the topology
+    must_not_contain:
+    - default branch wins
+    - target main
+    - guess the target
+    quality_gates_tested:
+    - base_branch_and_pr_target_must_be_explicit_per_work_item
+    - epic_child_prs_must_target_the_epic_or_integration_branch
+    - product_defined_repository_and_approval_policy_must_be_preserved
