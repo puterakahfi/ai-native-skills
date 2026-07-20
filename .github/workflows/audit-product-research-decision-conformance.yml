@@ -1,0 +1,122 @@
+name: Audit Product Research Decision Conformance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/audit-product-research-decision-conformance.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ai-native-skills
+        uses: actions/checkout@v6
+
+      - name: Checkout pinned ai-native-core
+        uses: actions/checkout@v6
+        with:
+          repository: puterakahfi/ai-native-core
+          ref: 53765c155376ad28abf71c2fbdb73e6714942299
+          path: .deps/ai-native-core
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Build audit pack
+        shell: bash
+        run: |
+          mkdir -p .tmp/product-research-decision-audit .tmp/adapter-repo
+          cp -R skills .tmp/adapter-repo/skills
+          set +e
+          python .deps/ai-native-core/scripts/validate-conformance.py \
+            .deps/ai-native-core \
+            .tmp/adapter-repo > .tmp/product-research-decision-audit/full-report.txt
+          set -e
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import yaml
+
+          root = Path.cwd()
+          names = [
+              "business-value-alignment",
+              "decision-making",
+              "experiment-design",
+              "product-manager",
+              "user-research",
+          ]
+
+          report = (root / ".tmp/product-research-decision-audit/full-report.txt").read_text(encoding="utf-8")
+          parsed = {}
+          current = None
+          current_finding = None
+          for line in report.splitlines():
+              match = re.match(r"^[⚠✗✓]\s+skills/([^/]+)/SKILL\.md", line)
+              if match:
+                  current = match.group(1)
+                  current_finding = None
+                  continue
+              match = re.match(r"^\s{2}([a-z_]+) \[(WARN|ERROR|NOT_CHECKABLE)\]: (.*)$", line)
+              if match and current:
+                  category, severity, message = match.groups()
+                  current_finding = {
+                      "category": category,
+                      "severity": severity,
+                      "message": message,
+                      "items": [],
+                  }
+                  parsed.setdefault(current, []).append(current_finding)
+                  continue
+              match = re.match(r"^\s{4}-\s+(.+)$", line)
+              if match and current_finding:
+                  current_finding["items"].append(match.group(1))
+
+          pack = []
+          for name in names:
+              skill_path = root / "skills" / name / "SKILL.md"
+              text = skill_path.read_text(encoding="utf-8")
+              parts = text.split("---", 2)
+              frontmatter = yaml.safe_load(parts[1])
+              metadata = frontmatter.get("metadata", {})
+              contract_rel = metadata.get("ai-native-skills.implements")
+              normalized = contract_rel.removeprefix("ai-native-core/")
+              contract_path = root / ".deps/ai-native-core" / normalized
+              contract_doc = yaml.safe_load(contract_path.read_text(encoding="utf-8"))
+              contract = contract_doc.get("skill_contract") or contract_doc.get("workflow_contract") or contract_doc.get("runtime_contract")
+              eval_path = root / "contracts/tests" / f"{name}.test.yaml"
+              pack.append({
+                  "skill": name,
+                  "skill_version": str(metadata.get("ai-native-skills.version")),
+                  "contract_path": contract_rel,
+                  "contract_version_pin": str(metadata.get("ai-native-skills.contract-version")),
+                  "boundary_covers": metadata.get("ai-native-skills.boundary.covers"),
+                  "boundary_delegates": metadata.get("ai-native-skills.boundary.delegates"),
+                  "contract": contract,
+                  "findings": parsed.get(name, []),
+                  "has_eval": eval_path.is_file(),
+                  "eval_text": eval_path.read_text(encoding="utf-8") if eval_path.is_file() else None,
+                  "skill_text": text,
+              })
+
+          output = root / ".tmp/product-research-decision-audit/product-research-decision-audit.json"
+          output.write_text(json.dumps(pack, indent=2, ensure_ascii=False), encoding="utf-8")
+          print(f"wrote {output} with {len(pack)} adapters")
+          PY
+
+      - name: Upload audit pack
+        uses: actions/upload-artifact@v7
+        with:
+          name: product-research-decision-conformance-audit
+          path: .tmp/product-research-decision-audit
+          retention-days: 7
