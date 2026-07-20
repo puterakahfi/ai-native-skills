@@ -69,9 +69,8 @@ jobs:
               },
               "design-foundation": {
                   "id": "foundation-f5-rejects-dead-space-shortcuts",
-                  "items": ["F5_no_dead_space_no_min_height_100vh"],
-                  "gates": ["F5_no_dead_space_no_min_height_100vh"],
-                  "design_gate_ids": ["F5"],
+                  "items": ["dead space", "min-height:100vh", "intentional whitespace"],
+                  "gates": ["no_dead_space_no_min_height_100vh"],
               },
               "design-genre": {
                   "id": "genre-selection-records-candidates-and-tradeoffs",
@@ -145,10 +144,7 @@ jobs:
               case = matches[0]
               case["must_contain"] = config["items"]
               case["quality_gates_tested"] = config["gates"]
-              if config.get("design_gate_ids"):
-                  case["design_gate_ids"] = config["design_gate_ids"]
-              elif "design_gate_ids" in case:
-                  del case["design_gate_ids"]
+              case.pop("design_gate_ids", None)
               path.write_text(yaml.safe_dump(doc, sort_keys=False, width=120), encoding="utf-8")
           PY
 
