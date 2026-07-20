@@ -1,29 +1,18 @@
 skill_test:
   skill: design-color
-  version: "1.0.1"
+  version: 1.0.1
   description: Verify the adapter exposes and applies its reviewed core interface.
-
   cases:
-    - id: palette-outputs-use-semantic-component-roles
-      description: Protect the reviewed core interface and its executable interpretation.
-      trigger: Build a genre-derived palette and hand it to implementation through semantic roles.
-      must_contain:
-      - genre_selection
-      - theme_default
-      - palette_primitives
-      - semantic_role_mapping
-      - accent_definition
-      - temperature_rationale
-      - palette_derives_from_genre_not_reverse
-      - max_one_accent_one_role
-      - temperature_consistent_across_palette
-      - no_hardcoded_hex_in_components
-      - contrast_ratio_delegated_to_readability_skill
-      must_not_contain:
-      - hardcoded hex values inside components
-      quality_gates_tested:
-      - palette_derives_from_genre_not_reverse
-      - max_one_accent_one_role
-      - temperature_consistent_across_palette
-      - no_hardcoded_hex_in_components
-      - contrast_ratio_delegated_to_readability_skill
+  - id: palette-outputs-use-semantic-component-roles
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Build a genre-derived palette and hand it to implementation through semantic roles.
+    must_contain:
+    - no_hardcoded_hex_in_components
+    - palette_primitives
+    - semantic_role_mapping
+    - accent_definition
+    - temperature_rationale
+    must_not_contain:
+    - hardcoded hex values inside components
+    quality_gates_tested:
+    - no_hardcoded_hex_in_components

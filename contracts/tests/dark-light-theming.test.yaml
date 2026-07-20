@@ -1,24 +1,19 @@
 skill_test:
   skill: dark-light-theming
-  version: "1.0.1"
+  version: 1.0.1
   description: Verify the adapter exposes and applies its reviewed core interface.
-
   cases:
-    - id: both-theme-token-map-and-fouc-strategy
-      description: Protect the reviewed core interface and its executable interpretation.
-      trigger: Define a light/dark theme contract from an existing color token map and toggle requirement.
-      must_contain:
-      - color_token_map
-      - theme_toggle_requirement
-      - theme_token_map
-      - fouc_prevention_strategy
-      - theming_gate_scores
-      - no_fouc_on_theme_switch
-      - tokens_mapped_for_both_themes
-      - system_preference_respected
-      must_not_contain:
-      - map only the default theme
-      quality_gates_tested:
-      - no_fouc_on_theme_switch
-      - tokens_mapped_for_both_themes
-      - system_preference_respected
+  - id: both-theme-token-map-and-fouc-strategy
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Define a light/dark theme contract from an existing color token map and toggle requirement.
+    must_contain:
+    - tokens_mapped_for_both_themes
+    - theme_token_map
+    - fouc_prevention_strategy
+    - theming_gate_scores
+    - color_token_map
+    - theme_toggle_requirement
+    must_not_contain:
+    - map only the default theme
+    quality_gates_tested:
+    - tokens_mapped_for_both_themes

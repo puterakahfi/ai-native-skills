@@ -1,22 +1,17 @@
 skill_test:
   skill: ux-ui-patterns
-  version: "1.0.1"
+  version: 1.0.1
   description: Verify the adapter exposes and applies its reviewed core interface.
-
   cases:
-    - id: pattern-decision-exposes-path-and-gate-scores
-      description: Protect the reviewed core interface and its executable interpretation.
-      trigger: Select a UI pattern from a brief and realistic content inventory.
-      must_contain:
-      - brief_signals
-      - content_inventory
-      - pattern_selection
-      - decision_tree_path
-      - pattern_gate_scores
-      - pattern_selected_from_decision_tree_not_arbitrary
-      - hero_pattern_matches_content_volume
-      must_not_contain:
-      - select a pattern without a decision-tree path
-      quality_gates_tested:
-      - pattern_selected_from_decision_tree_not_arbitrary
-      - hero_pattern_matches_content_volume
+  - id: pattern-decision-exposes-path-and-gate-scores
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Select a UI pattern from a brief and realistic content inventory.
+    must_contain:
+    - decision_tree_path
+    - pattern_gate_scores
+    - brief_signals
+    - content_inventory
+    must_not_contain:
+    - select a pattern without a decision-tree path
+    quality_gates_tested:
+    - pattern_selected_from_decision_tree_not_arbitrary

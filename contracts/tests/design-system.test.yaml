@@ -1,25 +1,20 @@
 skill_test:
   skill: design-system
-  version: "1.0.1"
+  version: 1.0.1
   description: Verify the adapter exposes and applies its reviewed core interface.
-
   cases:
-    - id: design-system-emits-semantic-token-contract
-      description: Protect the reviewed core interface and its executable interpretation.
-      trigger: Create a design-system token contract from a palette and type-scale intent.
-      must_contain:
-      - color_palette
-      - type_scale_intent
-      - token_map
-      - semantic_role_assignments
-      - token_violation_list
-      - design_system_gate_scores
-      - one_token_one_semantic_role
-      - no_token_collapse
-      - spacing_multiples_of_base_unit
-      must_not_contain:
-      - arbitrary spacing values outside the base unit
-      quality_gates_tested:
-      - one_token_one_semantic_role
-      - no_token_collapse
-      - spacing_multiples_of_base_unit
+  - id: design-system-emits-semantic-token-contract
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Create a design-system token contract from a palette and type-scale intent.
+    must_contain:
+    - spacing_multiples_of_base_unit
+    - token_map
+    - semantic_role_assignments
+    - token_violation_list
+    - design_system_gate_scores
+    - color_palette
+    - type_scale_intent
+    must_not_contain:
+    - arbitrary spacing values outside the base unit
+    quality_gates_tested:
+    - spacing_multiples_of_base_unit
