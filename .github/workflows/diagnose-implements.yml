@@ -1,0 +1,52 @@
+name: Diagnose Contract Implements
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/diagnose-implements.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-core
+          ref: b60eb2da7d3a31ce0d539f38da58e8a70806c353
+          path: .deps/ai-native-core
+
+      - name: Capture compatibility report
+        shell: bash
+        run: |
+          mkdir -p audit
+          set +e
+          bash .deps/ai-native-core/scripts/validate-implements.sh .deps/ai-native-core \
+            > audit/implements-report.txt 2>&1
+          status=$?
+          set -e
+          {
+            echo "exit_status=$status"
+            cat audit/implements-report.txt
+          } > audit/implements-report.with-status.txt
+          mv audit/implements-report.with-status.txt audit/implements-report.txt
+          cat audit/implements-report.txt
+
+      - name: Commit report
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/implements-report.txt
+          git commit -m "chore(audit): capture contract compatibility report [skip ci]"
+          git push origin HEAD:${HEAD_BRANCH}
