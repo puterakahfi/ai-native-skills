@@ -1,4 +1,5 @@
 skill_pack:
+  schema_version: "1.0"
   id: redesign
   version: "1.0.0"
   repository: puterakahfi/ai-native-skills
@@ -9,6 +10,7 @@ skill_pack:
   compatibility:
     workflow: redesign-workflow
     manifest_metadata_key: ai-native-skills.pack
+    version_metadata_key: ai-native-skills.pack-version
     requires_classifications:
       - required
       - conditional
@@ -41,8 +43,9 @@ skill_pack:
       concern: foundation
       reason: Supply the universal composition and usability contract.
     - name: design-brand
-      classification: required
+      classification: conditional
       concern: brand
+      when: Brand identity, brand assets, product identity, or explicit preservation locks are in scope.
       reason: Preserve brand locks, identity rules, assets, and product constraints.
 
     - name: design-visual
@@ -172,8 +175,9 @@ skill_pack:
       reason: Govern semantic theme token mapping and safe theme switching.
 
     - name: design-audit
-      classification: required
+      classification: conditional
       concern: evidence
+      when: Baseline findings, audit normalization, or audit-to-redesign evidence is required.
       reason: Capture and normalize baseline design findings when audit coverage is needed.
     - name: design-review
       classification: required
@@ -186,20 +190,23 @@ skill_pack:
       when: Brand identity is the primary design domain or complete identity approval is requested.
       reason: Apply canonical brand-identity acceptance gates.
     - name: design-refinement
-      classification: required
+      classification: conditional
       concern: correction
+      when: Review returns bounded findings that preserve the accepted direction.
       reason: Apply focused corrections while preserving accepted direction.
     - name: skill-evolution
-      classification: required
+      classification: conditional
       concern: learning
+      when: A verified reusable fix should be promoted into shared capability knowledge.
       reason: Promote verified reusable fixes into shared capability knowledge.
     - name: skill-eval
       classification: required
       concern: validation
       reason: Verify that required skills are applied rather than merely loaded.
     - name: git-workflow
-      classification: required
+      classification: conditional
       concern: repository
+      when: Work is repository-backed or requires branch, commit, review, or merge operations.
       reason: Govern safe branch, commit, review, and delivery operations.
     - name: workflow-router
       classification: optional
@@ -208,7 +215,7 @@ skill_pack:
 
   profiles:
     minimum:
-      description: Workflow entrypoint, required lifecycle capabilities, and design ports; contextual adapters must already be available or installed separately.
+      description: Workflow entrypoint, universal lifecycle capabilities, and design ports; contextual capabilities must already be available or installed separately.
       include_classifications:
         - required
         - port
