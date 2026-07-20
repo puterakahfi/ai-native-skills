@@ -1,4 +1,4 @@
-name: Fix component family conformance declarations
+name: Fix redesign preservation gate declaration
 
 on:
   push:
@@ -20,82 +20,30 @@ jobs:
           ref: 59-component-family-design
           fetch-depth: 0
 
-      - name: Apply exact contract declarations
+      - name: Add exact preservation quality gate
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
 
-          family = Path('skills/component-family-design/SKILL.md')
-          text = family.read_text()
-          old_delegate = 'ai-native-skills.boundary.delegates: \'["design_token_definition","visual_style_or_brand_direction","component_pattern_selection","context_specific_substitution","repository_mapping","implementation","final_acceptance"]\''
-          new_delegate = 'ai-native-skills.boundary.delegates: \'["design_token_definition","visual_style_or_brand_direction","task_level_component_pattern_selection","generic_breakpoint_mechanics","repository_framework_or_import_mapping","product_specific_component_implementation","final_rendered_accessibility_or_architecture_acceptance"]\''
-          if old_delegate not in text:
-              raise SystemExit('component-family boundary delegate anchor missing')
-          text = text.replace(old_delegate, new_delegate, 1)
-
-          interface = '''## Core contract interface
-
-```yaml
-required_inputs:
-  - product_intent
-  - target_surfaces
-  - component_inventory
-  - route_inventory
-  - existing_design_system
-allowed_outputs:
-  - interface_hierarchy_classification
-  - canonical_component_family_inventory
-  - organism_family_contracts
-  - template_family_contracts
-  - invariant_anatomy_map
-  - configurable_slot_map
-  - bounded_variant_matrix
-  - route_to_family_instance_map
-  - adaptive_family_contract
-  - family_reuse_extension_or_creation_decisions
-  - family_drift_findings
-  - family_migration_plan
-  - cross_route_acceptance_criteria
-  - rendered_family_evidence
-quality_gates:
-  - every_major_shared_surface_has_a_hierarchy_classification
-  - equivalent_product_roles_are_checked_against_existing_families
-  - family_invariant_anatomy_and_configurable_slots_are_explicit
-  - route_differences_are_configuration_or_bounded_variants_when_fit
-  - organism_and_template_ownership_are_not_conflated
-  - adaptive_variants_preserve_family_identity_and_shared_semantics
-  - new_family_creation_has_a_proven_role_or_capability_gap
-  - route_to_family_instance_mapping_is_complete
-  - cross_route_visual_interaction_and_accessibility_evidence_is_planned
-  - source_inspection_alone_is_not_accepted_as_rendered_family_consistency
-```
-
-'''
-          anchor = '## Load when\n'
+          path = Path('skills/redesign-workflow/SKILL.md')
+          text = path.read_text()
+          anchor = '- current_state_baseline_scope_and_locks_are_captured_before_production\n'
+          gate = '- preservation_locks_are_recorded_and_rechecked\n'
           if anchor not in text:
-              raise SystemExit('component-family interface insertion anchor missing')
-          text = text.replace(anchor, interface + anchor, 1)
-          family.write_text(text)
-
-          redesign = Path('skills/redesign-workflow/SKILL.md')
-          text = redesign.read_text()
-          gate_anchor = '- current_state_baseline_scope_and_locks_are_captured_before_production\n'
-          gate_line = '- preservation_locks_are_recorded_and_rechecked\n'
-          if gate_anchor not in text:
               raise SystemExit('redesign quality gate anchor missing')
-          if gate_line not in text:
-              text = text.replace(gate_anchor, gate_anchor + gate_line, 1)
-          redesign.write_text(text)
+          if gate not in text:
+              text = text.replace(anchor, anchor + gate, 1)
+              path.write_text(text)
           PY
 
-      - name: Commit conformance declarations
+      - name: Commit quality gate declaration
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add skills/component-family-design/SKILL.md skills/redesign-workflow/SKILL.md
-          git commit -m 'fix(design): satisfy component-family conformance'
+          git add skills/redesign-workflow/SKILL.md
+          git commit -m 'fix(redesign): declare preservation lock gate'
           git push origin HEAD:59-component-family-design
