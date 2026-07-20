@@ -10,7 +10,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
+  issues: write
 
 jobs:
   inspect:
@@ -26,23 +26,16 @@ jobs:
       - name: Install validator dependency
         run: python -m pip install "PyYAML>=6,<7"
 
-      - name: Publish exact validator output
+      - name: Update exact validator output comment
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set +e
           output=$(python scripts/validate-eval-contracts.py --write-smoke-outputs .tmp/eval-smoke-outputs 2>&1)
           status=$?
-          {
-            echo '## Temporary component-family eval validator output'
-            echo
-            echo '```text'
-            printf '%s\n' "$output"
-            echo '```'
-            echo
-            echo "Exit status: $status"
-          } > /tmp/eval-validator-report.md
-          gh pr comment "$PR_NUMBER" --body-file /tmp/eval-validator-report.md
+          body=$(printf '## Component-family eval validator output\n\n```text\n%s\n```\n\nExit status: %s' "$output" "$status")
+          gh api --method PATCH \
+            repos/${{ github.repository }}/issues/comments/5024544067 \
+            -f body="$body"
           exit 0
