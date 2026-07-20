@@ -9,10 +9,20 @@ workflow_pin_block = '''replace_once(
     "ref: fdd743c7e08acc9fc70ca02509a83317c42f2df9",
 )
 '''
-if workflow_pin_block not in source:
-    raise SystemExit("Expected workflow pin block was not found in staged body")
-source = source.replace(workflow_pin_block, "", 1)
-exec(compile(source, str(body_path), "exec"), globals(), globals())
+
+error = None
+try:
+    if workflow_pin_block not in source:
+        raise RuntimeError("Expected workflow pin block was not found in staged body")
+    source = source.replace(workflow_pin_block, "", 1)
+    exec(compile(source, str(body_path), "exec"), globals(), globals())
+except BaseException as exc:
+    error = f"{type(exc).__name__}: {exc}"
+    subprocess.run(["git", "reset", "--hard", "HEAD"], check=True)
+    Path("contracts/tests/.delivery-integration-error").write_text(
+        error + "\n",
+        encoding="utf-8",
+    )
 
 for staging_path in (
     ".github/workflows/skill-eval.yml",
@@ -23,3 +33,6 @@ for staging_path in (
         ["git", "update-index", "--skip-worktree", staging_path],
         check=True,
     )
+
+if error is not None:
+    print(error)
