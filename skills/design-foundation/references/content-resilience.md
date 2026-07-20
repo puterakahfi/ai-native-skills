@@ -25,7 +25,7 @@ F8 SYSTEM CONSISTENCY
 
 F10 RESPONSIVE CONTINUITY
   owns relationship survival when content variation combines with viewport, format,
-  orientation, localization, or text-scaling changes
+  orientation, localization, text-scaling, or priority changes
 ```
 
 Canonical findings remain reported through registered gates such as `G7`, `G9`, `G11`, `G12`, `CP2`, and applicable surface gates. Detailed loading/error behavior, runtime integrity, focus, input, and state announcements remain owned by the relevant surface reviewer.
@@ -57,7 +57,8 @@ output range
 
 variation strategy
   wrap | clamp | truncate | scroll | paginate | collapse | summarize |
-  prioritize | substitute component | expose detail on demand
+  prioritize | substitute component | expose detail on demand |
+  omit or defer non-essential decoration
 ```
 
 A declared limit may be strict. The failure is pretending the limit does not exist or allowing content beyond it to break relationships silently.
@@ -169,6 +170,24 @@ empty collection + persistent controls
 
 A design may pass each condition separately and still fail when they combine.
 
+### 7. Responsive prioritization distinguishes essential from optional
+
+Responsive continuity does not require every desktop element to remain visible at every viewport. It requires the meaning, task, and evidence to survive.
+
+```text
+□ primary message, required information, status, evidence, and next valid action are identified
+□ decorative or redundant elements may be omitted when they add no unique meaning
+□ an element is not hidden merely because implementation is difficult or space is tight
+□ informative diagrams, data, instructions, and sole distinguishing cues are preserved,
+  summarized, disclosed, or substituted rather than silently removed
+□ omitted elements leave no unexplained gap, broken alignment, detached label, or false affordance
+□ mobile composition prioritizes comprehension and action before decorative parity
+□ desktop-only detail is hidden before it becomes illegible noise or pushes the main path away
+□ the decision is consistent across repeated components and supported viewports
+```
+
+A decorative hero illustration can be hidden on a small viewport when the headline and copy already carry the complete meaning and the visual would become low-value noise. A diagram that contains unique architecture relationships cannot be treated the same way without an equivalent text, summary, or disclosure path.
+
 ---
 
 ## Strategy Selection
@@ -185,6 +204,7 @@ Choose the smallest strategy that preserves meaning and task priority:
 | Summarize/prioritize | detail exceeds current task need | removed detail changes meaning or conceals required evidence |
 | Collapse/disclose | secondary detail can be deferred | user must open every item to compare basic information |
 | Substitute component | original pattern no longer fits quantity/length/input constraints | same component is forced until overlap or clipping occurs |
+| Omit/defer | element is decorative or redundant and contributes no unique meaning at the constrained viewport | required information, evidence, status, orientation, or distinguishing context disappears |
 
 No one strategy is universally preferred. Evaluate the real task, medium, frequency, expertise, and content importance.
 
@@ -194,7 +214,8 @@ No one strategy is universally preferred. Evaluate the real task, medium, freque
 
 ```text
 rendered representative variants
-  → verify hierarchy, grouping, density, legibility, media fallback, and composition
+  → verify hierarchy, grouping, density, legibility, media fallback, prioritization,
+     omission, substitution, and composition
 
 rendered interactive variants
   → additionally verify overflow discoverability, selection/context continuity,
@@ -202,7 +223,8 @@ rendered interactive variants
 
 source/system evidence
   → inspect declared limits, component variants, content schema, fallback policy,
-     localization support, overflow rules, and repeated implementation consistency
+     localization support, overflow rules, priority rules, visibility rules,
+     and repeated implementation consistency
 
 single ideal screenshot only
   → content resilience is NOT_VERIFIED for variable-content surfaces
@@ -225,6 +247,7 @@ Test realistic values. Repeating “Lorem ipsum,” `Item 1`, and equal-length p
 | missing/varied media | F2, F5, F7 | G4, G7 + domain gates | fallback variants, aspect-ratio/crop set |
 | repeated component policy | F8 | G1, G7 | source/tokens/component variants |
 | overflow/pagination/substitution | F6, F10 | G6, G13, I4 + applicable gates | rendered interaction and source evidence |
+| responsive omission/prioritization | F1, F6, F10 | G7, G12 + applicable gates | desktop/mobile comparison, source visibility rules |
 | empty/error/loading distinction | F6, F9 | I1, I2, I3 where applicable | rendered flow and state semantics |
 
 ---
@@ -235,7 +258,10 @@ Test realistic values. Repeating “Lorem ipsum,” `Item 1`, and equal-length p
 content variation breaks relationships across genres or surfaces
   → design-foundation content-resilience defect
 
-one component family uses the wrong overflow/fallback policy everywhere
+responsive omission removes unique meaning, evidence, status, or action
+  → design-foundation responsive-continuity defect
+
+one component family uses the wrong overflow/fallback/visibility policy everywhere
   → component-system defect
 
 correct resilience rule exists but one implementation ignores it
@@ -248,4 +274,4 @@ loading/error/runtime/security/validation/fidelity/export-specific failure
   → applicable interactive/static/domain/engineering reviewer
 ```
 
-Do not “fix” resilience by shrinking everything, hiding content indiscriminately, or forcing every state into one generic card/grid. Preserve meaning first, then choose the appropriate adaptation strategy.
+Do not “fix” resilience by shrinking everything, hiding content indiscriminately, preserving decorative parity at the expense of the main path, or forcing every state into one generic card/grid. Preserve meaning first, then choose the appropriate adaptation strategy.
