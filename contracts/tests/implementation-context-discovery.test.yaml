@@ -1,0 +1,136 @@
+skill_test:
+  skill: implementation-context-discovery
+  version: "1.0.0"
+  description: Verify repository stack and convention discovery precedes implementation and preserves canonical adapters without banning valid native elements.
+
+  cases:
+    - id: next-shadcn-tailwind-lucide-reuse
+      description: A Next.js repository using source-copied shadcn components, Tailwind tokens, and Lucide must reuse the canonical systems.
+      trigger: "Repository ini memakai Next.js dan React. `components.json`, `components/ui`, Radix imports, CVA variants, dan utility `cn` menunjukkan shadcn/ui; styling memakai Tailwind + semantic CSS variables; icon imports konsisten dari lucide-react. Redesign butuh Button, Select, Dialog, dan icons. Agent mengusulkan membuat dropdown/modal dengan div + CSS lokal dan install Heroicons. Putuskan implementation context dan mapping."
+      must_contain:
+        - "Next.js"
+        - "React"
+        - "shadcn"
+        - "components.json"
+        - "Tailwind"
+        - "Lucide"
+        - "reuse"
+        - "CONVENTION_DRIFT"
+        - "DEPENDENCY_DRIFT"
+        - "implementation mapping"
+        - "architecture-review"
+      must_not_contain:
+        - "Install Heroicons"
+        - "raw div dropdown is equivalent"
+        - "shadcn package must exist"
+        - "replace Tailwind with custom CSS"
+      sequence_required:
+        - pattern: "repository evidence|components.json|implementation context"
+          must_come_before: "reuse|implementation mapping"
+      quality_gates_tested:
+        - repository_context_is_inspected_before_implementation
+        - existing_fit_components_and_utilities_are_reused_before_local_duplication
+        - icon_component_styling_state_and_data_systems_are_not_mixed_without_approved_reason
+        - implementation_mapping_precedes_code_production
+
+    - id: source-copied-component-system-detection
+      description: Canonical component-system detection must use repository evidence rather than require a package with the system name.
+      trigger: "`package.json` tidak punya dependency bernama shadcn. Tetapi repo punya `components.json`, shared UI source, Radix primitives, `class-variance-authority`, `cn`, semantic tokens, dan import shared components di banyak production routes. Nyatakan apakah component system ada."
+      must_contain:
+        - "source-copied"
+        - "components.json"
+        - "Radix"
+        - "CVA"
+        - "cn"
+        - "actual usage"
+        - "canonical"
+      must_not_contain:
+        - "no shadcn dependency means no component system"
+        - "package presence is the only evidence"
+        - "unknown because the marketing package is absent"
+      quality_gates_tested:
+        - package_presence_alone_does_not_establish_canonical_status
+        - canonicality_uses_declared_dependency_actual_usage_repetition_repository_convention_and_current_decisions
+
+    - id: semantic-html-is-not-automatically-drift
+      description: Native semantic structure remains valid when no canonical abstraction or richer product contract is needed.
+      trigger: "Halaman dokumentasi hanya membutuhkan `<section>`, headings, `<ul>`, links, dan disclosure sederhana. Tidak ada shared abstraction yang relevan dan requirement tidak memiliki state produk tambahan. Reviewer meminta semua dibungkus komponen shadcn agar konsisten."
+      must_contain:
+        - "semantic native"
+        - "valid"
+        - "no canonical abstraction"
+        - "accessibility"
+        - "repository precedent"
+      must_not_contain:
+        - "raw HTML is always forbidden"
+        - "every element must be shadcn"
+        - "CONVENTION_DRIFT because it is native HTML"
+      quality_gates_tested:
+        - semantic_native_elements_remain_valid_when_no_canonical_abstraction_is_needed
+        - extension_or_composition_is_preferred_before_parallel_system_introduction
+
+    - id: installed-legacy-library-is-not-canonical
+      description: A dependency that is installed but deprecated or used only by legacy code must not guide new implementation.
+      trigger: "Repo memiliki dua icon libraries. Lucide dipakai shared wrapper dan semua route aktif. Library lama masih tercatat karena satu legacy screen dan issue migration menyatakan jangan dipakai untuk code baru. Pilih canonical status."
+      must_contain:
+        - "Lucide"
+        - "canonical"
+        - "legacy"
+        - "deprecated"
+        - "migration"
+        - "actual usage"
+        - "decision authority"
+      must_not_contain:
+        - "both libraries are canonical"
+        - "installed means approved"
+        - "use either one freely"
+      quality_gates_tested:
+        - package_presence_alone_does_not_establish_canonical_status
+        - unknown_or_conflicting_context_is_reported_not_invented
+        - convention_locks_and_scoped_exceptions_are_traceable_to_repository_evidence
+
+    - id: product-component-composes-canonical-primitives
+      description: A domain-specific component may be built by composing canonical primitives without creating a parallel system.
+      trigger: "Produk memerlukan BrandAssetPicker yang belum tersedia. Repo sudah punya canonical Input, Popover, Command, Button, form conventions, tokens, dan Lucide icons. Picker punya policy domain khusus dan durable state di product module. Tentukan implementation decision."
+      must_contain:
+        - "compose"
+        - "product-specific component"
+        - "canonical primitives"
+        - "product module"
+        - "form conventions"
+        - "preserve"
+        - "verification"
+      must_not_contain:
+        - "install a second component library"
+        - "put domain policy in shared Button"
+        - "all custom components are drift"
+      quality_gates_tested:
+        - extension_or_composition_is_preferred_before_parallel_system_introduction
+        - convention_locks_and_scoped_exceptions_are_traceable_to_repository_evidence
+        - implementation_mapping_precedes_code_production
+
+    - id: justified-virtualization-dependency
+      description: A new library may be proposed only after a measured capability gap and consequence review.
+      trigger: "Data grid memiliki measured DOM dan interaction pressure. Existing shadcn Table dan current table utilities tidak menyediakan accessible virtualization yang dibutuhkan, dan bounded extension/composition sudah dievaluasi. Buat dependency decision, jangan langsung install."
+      must_contain:
+        - "CAPABILITY_GAP"
+        - "measured"
+        - "existing options reviewed"
+        - "proven capability gap"
+        - "alternatives"
+        - "bundle"
+        - "accessibility"
+        - "maintenance"
+        - "approval authority"
+        - "ROUTE_FOR_APPROVAL"
+      must_not_contain:
+        - "npm install immediately"
+        - "popular library is automatically approved"
+        - "no ADR or authority needed"
+      sequence_required:
+        - pattern: "existing options|capability gap"
+          must_come_before: "dependency|candidate"
+      quality_gates_tested:
+        - new_dependencies_require_proven_capability_gap_alternatives_consequences_and_authority
+        - source_only_evidence_does_not_claim_runtime_visual_or_accessibility_conformance
+        - independent_architecture_review_remains_required_after_implementation
