@@ -170,13 +170,19 @@ skill_test:
         - missing_evidence_is_not_design_failure
 
     - id: structural-redesign-preserves-surface-family-personality
-      description: An IA-led redesign must detect expression drift and preserve the established surface-family personality.
-      trigger: "Redesign /ai-skills menjadi intent-routed workflow directory. Site pkahfi sudah punya karakter zen, spacious, dan low-containment. Implementasi awal menambah border di tiap section, divider di tiap row, serta box pada tiap disclosure. IA dan interaction baru sudah benar, tetapi pixel screenshot belum tersedia."
+      description: An IA-led redesign must detect expression drift, route the canonical genre contract, and preserve justified line exceptions.
+      trigger: "Redesign /ai-skills menjadi intent-routed workflow directory. Site pkahfi sudah punya karakter zen, spacious, dan low-containment. Implementasi awal menambah border di tiap section, divider di tiap row, serta box pada tiap disclosure. IA dan interaction baru sudah benar, tetapi pixel screenshot belum tersedia. Jangan menghapus line yang memang diperlukan untuk control, orientation, data, atau diagram."
       must_contain:
         - "surface_family_baseline"
-        - "visual_personality_locks"
+        - "visual_personality_handoff"
         - "design-brand"
+        - "design-genre"
+        - "design-genre/references/zen.md"
         - "design-visual"
+        - "Kanso"
+        - "Seijaku"
+        - "Ma"
+        - "functional exception"
         - "repeated_treatment_audit"
         - "visual_continuity_report"
         - "NOT_VERIFIED"
@@ -184,14 +190,18 @@ skill_test:
       must_not_contain:
         - "layout-only"
         - "border every section"
+        - "all lines forbidden"
+        - "remove every line"
         - "restart the whole redesign"
         - "Decision: PASS"
         - "visual continuity verified from source"
       quality_gates_tested:
         - canonical_surface_family_is_inspected_when_applicable
-        - personality_labels_are_translated_to_observable_rules
+        - personality_labels_route_through_canonical_genre_contract
+        - zen_separator_principles_are_inherited_not_reinvented
         - structural_expression_changes_route_visual_specialists
         - repeated_treatments_require_named_roles
+        - functional_line_exceptions_require_explicit_reason
         - accepted_ia_is_preserved_during_expression_correction
         - rendered_evidence_controls_visual_continuity_pass
 
