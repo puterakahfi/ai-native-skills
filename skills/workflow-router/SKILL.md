@@ -3,13 +3,13 @@ name: workflow-router
 description: Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, or verified-case skill evolution. Route before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.3.0
+  ai-native-skills.version: 1.4.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow skill-evolution skill-eval git-workflow skill-doctor spec-workflow"
+  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/workflow-router.contract.yaml
   ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow"]'
+  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow"]'
 ---
 
 # Workflow Router
@@ -19,12 +19,13 @@ metadata:
 ```text
 classify requested outcome
 → select one primary lifecycle or capability
+→ resolve platform/domain overlays
 → resolve design domain when design is involved
 → load only required skills/reviewers
 → execute
 ```
 
-No execution before routing. The artifact noun does not determine the lifecycle: a dashboard or logo may be audited, refined, redesigned, implemented, or reviewed for release.
+No execution before routing. The artifact noun does not determine the lifecycle: a dashboard, logo, or ChatGPT App may be audited, refined, redesigned, implemented, or reviewed for release.
 
 ## Route Classes
 
@@ -41,6 +42,22 @@ No execution before routing. The artifact noun does not determine the lifecycle:
 | Plan or specify | `spec-workflow` | product-manager, plan, relevant owners |
 | Explore a reversible idea | `spike` | plan, experiment skills |
 | Promote a verified lesson | `skill-evolution` | skill-eval, git-workflow |
+
+## Platform Specialist Overlays
+
+A platform specialist does not replace the primary lifecycle.
+
+```text
+ChatGPT App, Apps SDK, MCP app, or ChatGPT widget
+  product from zero       → product-development-workflow + chatgpt-app-development
+  existing capability     → new-feature-workflow + chatgpt-app-development
+  architecture review     → architecture-review + chatgpt-app-development
+  deployment/publication  → deployment-workflow + chatgpt-app-development
+```
+
+Load `native-ai-engineer` with `chatgpt-app-development` when the request includes contract ownership, MCP/application boundaries, runtime binding, or product-versus-platform placement.
+
+Do not create a separate ChatGPT App lifecycle merely because the target platform is specialized.
 
 ## Design Routing
 
@@ -137,6 +154,8 @@ Never represent universal visual gates as complete specialist-domain coverage.
 | “review PR/code before merge” | `code-review-workflow` |
 | “deploy/release” | `deployment-workflow` |
 | “build product from zero” | `product-development-workflow` |
+| “build a ChatGPT App from zero with Apps SDK/MCP” | `product-development-workflow` + `chatgpt-app-development` |
+| “add ChatGPT App integration to this product” | `new-feature-workflow` + `chatgpt-app-development` |
 | “plan/write spec” | `spec-workflow` |
 
 Functional symptom words take precedence over visual-polish words when the requested outcome is a functional fix.
@@ -166,9 +185,25 @@ Code/PR acceptance? → code-review-workflow
 Deploy/release? → deployment-workflow
   ↓
 Plan/spec? → spec-workflow
+  ↓
+Apply platform specialist overlay when target platform requires it
 ```
 
 ## Routing Output
+
+### ChatGPT App product from zero
+
+```text
+Workflow Router
+────────────────────────────────────
+Request: "Build a ChatGPT App from zero using Apps SDK and MCP"
+Classification: PRODUCT FROM ZERO + PLATFORM SPECIALIST
+
+Primary route: product-development-workflow
+Platform specialist: chatgpt-app-development
+Architecture specialist: native-ai-engineer when boundary design is in scope
+Execution boundary: discovery and PRD precede implementation
+```
 
 ### Identity adapter available
 
@@ -200,7 +235,7 @@ Handoff: install/load adapter or route to identity specialist
 
 ## Composition with Role Switcher
 
-`workflow-router` chooses lifecycle. `role-switcher` assigns owner, specialists, facade, and domain reviewer.
+`workflow-router` chooses lifecycle and platform/domain overlays. `role-switcher` assigns owner, specialists, facade, and domain reviewer.
 
 ```text
 identity audit
@@ -208,6 +243,12 @@ identity audit
   owner: declared brand/identity owner
   facade: design-review
   domain reviewer: brand-identity-review
+
+ChatGPT App product
+  lifecycle: product-development-workflow | new-feature-workflow
+  owner: product-manager | master-engineer according to lifecycle
+  platform specialist: chatgpt-app-development
+  architecture specialist: native-ai-engineer when relevant
 ```
 
 The final result is one synthesized lifecycle output, not disconnected reports.
@@ -229,5 +270,6 @@ skill-evolution → skill-eval → git-workflow when promotable and writable
 | Average score chooses lifecycle | Use intent, direction, root cause, coverage, hard gates |
 | Logo audit uses UI/static gates only | Load `brand-identity-review` or return LIMITED REVIEW |
 | Identity adapter exists but router ignores it | Route to `brand-identity-review` with BI namespace |
+| ChatGPT App target creates a competing primary workflow | Preserve lifecycle and add `chatgpt-app-development` as overlay |
 | One request executes competing primary workflows | Select one lifecycle and explicit handoffs |
 | Reviewer selected before domain classification | Resolve lifecycle and domain first |

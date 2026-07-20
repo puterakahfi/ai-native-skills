@@ -123,7 +123,7 @@ Use for identity audits and acceptance. The pack does not provide legal trademar
 
 ## Role Switcher Pack
 
-Auto-compose expert personas from intent — design, identity, engineering, product, and research.
+Auto-compose expert personas from intent — design, identity, engineering, product, platform, and research.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
@@ -134,6 +134,7 @@ npx skills add puterakahfi/ai-native-skills \
   --skill ux-psychology \
   --skill user-research \
   --skill native-ai-engineer \
+  --skill chatgpt-app-development \
   --skill diagram-architect \
   --skill design-review \
   --skill brand-identity-review \
@@ -174,6 +175,53 @@ npx skills add puterakahfi/ai-native-skills \
   --skill incident-response \
   -g -y
 ```
+
+---
+
+## ChatGPT App Product Pack
+
+End-to-end ChatGPT App product delivery using the existing product lifecycle plus the Apps SDK/MCP platform specialist. The pack covers product discovery, economic and quota ownership, tool/resource contracts, widget UX and state, native ChatGPT capability handoff, auth/security, implementation, actual ChatGPT integration evidence, deployment, and publication readiness.
+
+```bash
+npx skills add puterakahfi/ai-native-skills \
+  --skill workflow-router \
+  --skill role-switcher \
+  --skill product-development-workflow \
+  --skill chatgpt-app-development \
+  --skill product-requirements \
+  --skill business-value-alignment \
+  --skill experiment-design \
+  --skill user-research \
+  --skill product-manager \
+  --skill decision-provenance \
+  --skill native-ai-engineer \
+  --skill ai-system-design \
+  --skill api-contract \
+  --skill master-design \
+  --skill adaptive-component-design \
+  --skill accessibility \
+  --skill master-engineer \
+  --skill spec-workflow \
+  --skill new-feature-workflow \
+  --skill test-driven-development \
+  --skill design-review \
+  --skill threat-modeling \
+  --skill security-review \
+  --skill architecture-review \
+  --skill code-review-workflow \
+  --skill deployment-workflow \
+  --skill context-manager \
+  --skill observability-design \
+  --skill resilience-engineering \
+  --skill incident-response \
+  -g -y
+```
+
+Use this pack when the target product surface is a ChatGPT App, Apps SDK integration, MCP-backed ChatGPT tool, or interactive ChatGPT widget.
+
+The pack does not add a new ChatGPT-specific lifecycle. `workflow-router` selects `product-development-workflow` for a product from zero or `new-feature-workflow` for an existing-product integration, then applies `chatgpt-app-development` as the platform specialist.
+
+The pack also does not guarantee native ChatGPT capability availability for every user. The product must verify current platform documentation, target plan/workspace behavior, and the actual execution path. A product promising user-owned native generation must directly prove that the handoff path does not call a developer-owned model or image API.
 
 ---
 
@@ -235,7 +283,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 ## Dependency Map
 
-| Workflow / Meta-skill | Requires |
+| Workflow / Meta-skill / Pack | Requires |
 |---|---|
 | `redesign-workflow` | canonical manifest: `packs/redesign/pack.yaml`; role-switcher; explicit design, implementation, and repository write owners; decision-provenance; master-design visual-direction comparison; design-foundation; design-visual with composition, visual-hierarchy, and active adapters; layout/interaction/system ports; conditional audit/review/refinement; value alignment; learning/eval; governing domain reviewer |
 | `design-visual` | resolved foundation and locks; accepted or compared direction; composition + visual-hierarchy for page-level change; concern-specific color/type/depth/iconography/motion/readability adapters |
@@ -243,9 +291,10 @@ npx skills add puterakahfi/ai-native-skills -g -y
 | `brand-identity-review` | design-review, design-brand, composition, visual-hierarchy, design-typography, design-color |
 | `decision-provenance` | authoritative source references, decision-domain owner/policy, previous decision records when applicable |
 | `skill-evolution` | skill-eval, git-workflow |
-| `role-switcher` | engineering/design/product/research owners, design-review, brand-identity-review, debugging, architecture/security review, plan |
-| `workflow-router` | design audit/refinement/redesign/review, brand-identity-review, feature/bug/review/deploy/product workflows, learning/eval/git, skill-doctor, spec-workflow |
-| `product-development-workflow` | product requirements/value/experiment/research; decision-provenance for PRD/MVP/risk/release decisions; design/engineering owners; feature workflow; code review; deployment; observability |
+| `role-switcher` | engineering/design/product/platform/research owners, design-review, brand-identity-review, debugging, architecture/security review, plan |
+| `workflow-router` | design audit/refinement/redesign/review, brand-identity-review, feature/bug/review/deploy/product workflows, platform specialist overlays, learning/eval/git, skill-doctor, spec-workflow |
+| `product-development-workflow` | product requirements/value/experiment/research; decision-provenance for PRD/MVP/risk/release decisions; conditional platform specialists; design/engineering owners; feature workflow; code review; deployment; observability |
+| `ChatGPT App Product Pack` | product-development-workflow or new-feature-workflow; chatgpt-app-development; product/architecture/design/security owners and reviewers; actual ChatGPT integration evidence; deployment and observability |
 | `bugfix-workflow` | systematic-debugging, master-engineer, security-review, test-driven-development |
 | `code-review-workflow` | architecture/design/logic/security reviewers; decision-provenance for risk and merge authority |
 | `new-feature-workflow` | engineering/design owners; decision-provenance for feature scope/decisions/risks; spec, tests, design review, code review |

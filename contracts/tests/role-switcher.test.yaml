@@ -1,9 +1,46 @@
 skill_test:
   skill: role-switcher
-  version: "1.3.1"
-  description: Verify design role composition separates owner, specialists, reviewer facade, and domain reviewer.
+  version: "1.4.0"
+  description: Verify role composition separates lifecycle owner, platform specialist, architecture/design specialists, reviewer facade, and domain reviewer.
 
   cases:
+    - id: chatgpt-app-product-from-zero-composition
+      description: A ChatGPT App product from zero keeps product ownership while loading the platform and architecture specialists.
+      trigger: "Compose roles untuk membangun produk ChatGPT App dari nol dengan Apps SDK, MCP tools, widget, auth, dan native image generation milik user."
+      must_contain:
+        - "product-manager"
+        - "chatgpt-app-development"
+        - "native-ai-engineer"
+        - "master-design"
+        - "master-engineer"
+        - "security-review"
+      must_not_contain:
+        - "chatgpt-app-development as owner"
+        - "all skills"
+        - "prompt-engineer as product owner"
+      quality_gates_tested:
+        - one_lifecycle_owner
+        - platform_specialist_boundary
+        - architecture_and_design_coverage
+        - reviewer_coverage
+
+    - id: existing-product-chatgpt-adapter-composition
+      description: Existing-product integration uses engineering ownership plus product authority and the ChatGPT platform specialist.
+      trigger: "Produk sudah ada. Tambahkan MCP/Apps SDK adapter dan widget ChatGPT tanpa mengubah domain core. Compose role yang benar."
+      must_contain:
+        - "master-engineer"
+        - "product-manager"
+        - "chatgpt-app-development"
+        - "native-ai-engineer"
+        - "architecture-review"
+      must_not_contain:
+        - "chatgpt-app-development as owner"
+        - "new product lifecycle"
+      quality_gates_tested:
+        - existing_feature_owner_preserved
+        - product_authority_separated
+        - platform_specialist_boundary
+
     - id: mobile-tabs-composition
       description: Cross-device component acceptance needs a design owner, adaptive specialist, and facade reviewer.
       trigger: "Tentukan apakah tabs category ini cocok untuk mobile, tablet, dan desktop lalu review implementasinya."
