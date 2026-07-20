@@ -1,0 +1,160 @@
+name: Audit Design Conformance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/audit-design-conformance.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ai-native-skills
+        uses: actions/checkout@v6
+
+      - name: Checkout pinned ai-native-core
+        uses: actions/checkout@v6
+        with:
+          repository: puterakahfi/ai-native-core
+          ref: 97db5370efe0e4af8ed326819400c2b068910525
+          path: .deps/ai-native-core
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Build design audit pack
+        shell: bash
+        run: |
+          mkdir -p .tmp/design-audit .tmp/adapter-repo
+          cp -R skills .tmp/adapter-repo/skills
+          set +e
+          python .deps/ai-native-core/scripts/validate-conformance.py \
+            .deps/ai-native-core \
+            .tmp/adapter-repo > .tmp/design-audit/full-report.txt
+          set -e
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import traceback
+          import yaml
+
+          root = Path.cwd()
+          names = [
+              "accessibility",
+              "adaptive-component-design",
+              "dark-light-theming",
+              "design-brand",
+              "design-color",
+              "design-depth",
+              "design-foundation",
+              "design-genre",
+              "design-iconography",
+              "design-patterns",
+              "design-refinement",
+              "design-system",
+              "design-typography",
+              "design-visual",
+              "master-design",
+              "readability",
+              "responsiveness",
+              "ux-psychology",
+              "ux-ui-patterns",
+          ]
+
+          report = (root / ".tmp/design-audit/full-report.txt").read_text(encoding="utf-8")
+          parsed = {}
+          current = None
+          current_finding = None
+          for line in report.splitlines():
+              match = re.match(r"^[⚠✗✓]\s+skills/([^/]+)/SKILL\.md", line)
+              if match:
+                  current = match.group(1)
+                  current_finding = None
+                  continue
+              match = re.match(r"^\s{2}([a-z_]+) \[(WARN|ERROR|NOT_CHECKABLE)\]: (.*)$", line)
+              if match and current:
+                  category, severity, message = match.groups()
+                  current_finding = {
+                      "category": category,
+                      "severity": severity,
+                      "message": message,
+                      "items": [],
+                  }
+                  parsed.setdefault(current, []).append(current_finding)
+                  continue
+              match = re.match(r"^\s{4}-\s+(.+)$", line)
+              if match and current_finding:
+                  current_finding["items"].append(match.group(1))
+
+          pack = []
+          errors = []
+          for name in names:
+              try:
+                  skill_path = root / "skills" / name / "SKILL.md"
+                  text = skill_path.read_text(encoding="utf-8")
+                  parts = text.split("---", 2)
+                  frontmatter = yaml.safe_load(parts[1])
+                  metadata = frontmatter.get("metadata", {})
+                  contract_rel = metadata.get("ai-native-skills.implements")
+                  if not contract_rel:
+                      raise ValueError("missing ai-native-skills.implements")
+                  normalized_rel = str(contract_rel)
+                  if normalized_rel.startswith("ai-native-core/"):
+                      normalized_rel = normalized_rel[len("ai-native-core/"):]
+                  contract_path = root / ".deps/ai-native-core" / normalized_rel
+                  contract_text = contract_path.read_text(encoding="utf-8")
+                  contract_doc = yaml.safe_load(contract_text)
+                  contract = next(
+                      (
+                          value
+                          for key, value in contract_doc.items()
+                          if key.endswith("_contract") and isinstance(value, dict)
+                      ),
+                      contract_doc,
+                  )
+                  eval_path = root / "contracts" / "tests" / f"{name}.test.yaml"
+                  pack.append({
+                      "skill": name,
+                      "skill_path": str(skill_path.relative_to(root)),
+                      "skill_version": str(metadata.get("ai-native-skills.version")),
+                      "contract_path": contract_rel,
+                      "contract_version_pin": str(metadata.get("ai-native-skills.contract-version")),
+                      "contract": contract,
+                      "findings": parsed.get(name, []),
+                      "has_eval": eval_path.is_file(),
+                      "eval_text": eval_path.read_text(encoding="utf-8") if eval_path.is_file() else None,
+                      "skill_text": text,
+                  })
+              except Exception as exc:
+                  errors.append({
+                      "skill": name,
+                      "error": f"{type(exc).__name__}: {exc}",
+                      "traceback": traceback.format_exc(),
+                  })
+
+          output = root / ".tmp/design-audit/design-audit.json"
+          output.write_text(json.dumps(pack, indent=2, ensure_ascii=False), encoding="utf-8")
+          error_output = root / ".tmp/design-audit/errors.json"
+          error_output.write_text(json.dumps(errors, indent=2, ensure_ascii=False), encoding="utf-8")
+          print(f"wrote {output} with {len(pack)} adapters; errors={len(errors)}")
+          PY
+
+      - name: Upload design audit pack
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: design-conformance-audit
+          path: .tmp/design-audit
+          if-no-files-found: warn
+          retention-days: 7
