@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import subprocess
 
 body_path = Path("scripts/tmp-integrate-delivery-body.py")
@@ -24,15 +25,26 @@ except BaseException as exc:
         encoding="utf-8",
     )
 
-for staging_path in (
+staging_paths = (
     ".github/workflows/skill-eval.yml",
     ".github/workflows/tmp-integrate-delivery-work-breakdown.yml",
     "scripts/tmp-integrate-delivery.py",
-):
+)
+for staging_path in staging_paths:
     subprocess.run(
         ["git", "update-index", "--skip-worktree", staging_path],
         check=True,
     )
+
+hook = Path(".git/hooks/pre-commit")
+hook.write_text(
+    "#!/bin/sh\n"
+    "git restore --staged -- "
+    + " ".join(staging_paths)
+    + " 2>/dev/null || true\n",
+    encoding="utf-8",
+)
+os.chmod(hook, 0o755)
 
 if error is not None:
     print(error)
