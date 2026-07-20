@@ -2,30 +2,30 @@
 
 This document defines the official skill categories used in `ai-native-skills` while staying compatible with the [Agent Skills specification](https://agentskills.io/specification).
 
-The goal is to keep skill authoring decisions consistent: when to create an atomic skill, when to create a workflow, and when to create a meta-skill that routes or composes other skills.
+The goal is to keep authoring decisions consistent: when to create an atomic skill, when to create a workflow, and when to create a meta-skill that routes or composes other capabilities.
 
 Current repository inventory:
 
-- `skill`: 83
+- `skill`: 84
 - `workflow`: 9
 - `meta-skill`: 6
-- Total executable skills: 98
+- Total executable skills: 99
 
 ---
 
 ## Official Types
 
-Agent Skills standard frontmatter only allows `name`, `description`, `license`, `compatibility`, `allowed-tools`, and `metadata`. Repository-specific classification therefore lives in namespaced metadata keys such as `ai-native-skills.type` rather than a top-level `type:` field.
+Agent Skills frontmatter allows standard fields such as `name`, `description`, `license`, `compatibility`, `allowed-tools`, and `metadata`. Repository-specific classification therefore lives in namespaced metadata such as `metadata["ai-native-skills.type"]`.
 
-`ai-native-skills` currently uses three official category values:
+`ai-native-skills` uses three official category values:
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
-| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `accessibility`, `business-value-alignment`, `chatgpt-app-development`, `master-design` |
-| `workflow` | Run a sequenced task lifecycle | “What phases must this task follow?” | `bugfix-workflow`, `deployment-workflow`, `redesign-workflow` |
-| `meta-skill` | Route or compose other skills/workflows | “Which skills/workflows should be loaded?” | `workflow-router`, `role-switcher` |
+| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `accessibility`, `chatgpt-app-development` |
+| `workflow` | Run a sequenced lifecycle | “What phases and gates must this task follow?” | `bugfix-workflow`, `new-feature-workflow`, `redesign-workflow` |
+| `meta-skill` | Route or compose capabilities | “Which workflow and specialists should be loaded?” | `workflow-router`, `role-switcher`, `design-layout` |
 
-Do not introduce a new category value unless the README, this document, and existing tooling are updated together.
+Do not introduce another category value unless README, this document, validation, examples, and downstream consumers are updated together.
 
 ---
 
@@ -33,45 +33,64 @@ Do not introduce a new category value unless the README, this document, and exis
 
 A `skill` is an atomic, reusable capability or expert lens.
 
-Use `metadata["ai-native-skills.type"]: skill` when the artifact teaches the agent how to perform one coherent capability with quality gates, examples, pitfalls, and verification criteria.
+Use `metadata["ai-native-skills.type"]: skill` when the artifact teaches the agent how to perform one coherent capability with scope, procedure, quality gates, failure boundaries, and verification.
 
 ### Use when
 
-- The behavior is reusable across multiple workflows.
-- The domain is specific enough to have its own principles, checks, and failure modes.
-- The skill can be loaded directly by a user or composed by a workflow.
-- The output is a decision, review, artifact, implementation guidance, or quality gate result.
+- behavior is reusable across workflows;
+- the domain is specific enough to have principles and evidence rules;
+- it can be loaded directly or composed by a workflow;
+- output is a decision, review, artifact, implementation guidance, or gate result.
 
 ### Do not use when
 
-- The artifact primarily defines a multi-phase lifecycle. Use `workflow`.
-- The artifact primarily chooses which other skills to load. Use `meta-skill`.
-- The artifact is product-specific configuration. Put it in the product/app adapter layer.
-- The artifact is only a temporary project note. Keep it out of `skills/`.
+- the main value is a multi-phase lifecycle → use `workflow`;
+- the artifact primarily chooses other capabilities → use `meta-skill`;
+- the content is product-specific configuration → product/app adapter layer;
+- it is a temporary project note → keep it out of `skills/`.
 
 ### Required behavior
 
-A good `skill` should define:
+A good skill defines:
 
-1. **Trigger.** When the agent should load it.
-2. **Scope.** What it does and does not own.
-3. **Procedure.** Steps, heuristics, or decision rules.
-4. **Quality gates.** How the agent knows the skill was applied correctly.
-5. **Pitfalls.** The common ways agents misuse the capability.
-6. **Verification.** Checkable evidence before claiming completion.
+1. trigger;
+2. owned and delegated scope;
+3. procedure and decision rules;
+4. allowed outputs;
+5. quality gates;
+6. failure signals and evidence boundaries;
+7. verification and workflow handoff.
 
 ### Examples
 
+- `implementation-context-discovery` — inspect an existing repository before code, classify canonical framework/component/styling/icon/tooling systems, lock conventions, decide reuse/extension/composition/native/dependency, and hand off to implementation plus independent architecture review.
+- `collection-discovery-design` — diagnose retrieval and discovery strategy before pagination, tabs, filtering, traversal, or disclosure adapters are selected.
 - `systematic-debugging` — root-cause investigation discipline.
-- `collection-discovery-design` — collection diagnosis and discovery strategy before pagination, tabs, filtering, traversal, or disclosure adapters are selected.
-- `decision-provenance` — verify authority, source, scope, supersession, and conflict behind material decision claims.
+- `decision-provenance` — verify authority, source, scope, supersession, and conflict behind material decisions.
 - `accessibility` — WCAG-oriented UI quality gate.
-- `master-design` — senior product design lens.
-- `business-value-alignment` — value framing and metric alignment before execution.
-- `experiment-design` — minimum viable experiment design before PRD/MVP/build.
+- `master-design` — senior product-design ownership.
+- `business-value-alignment` — value and metric alignment before execution.
+- `experiment-design` — minimum viable experiment before PRD/MVP/build.
 - `copywriting` — product messaging capability.
-- `native-ai-engineer` — Native AI layer-boundary and contract reasoning.
-- `chatgpt-app-development` — ChatGPT Apps SDK/MCP product boundary, cost ownership, tool/widget/auth/security, and release discipline.
+- `native-ai-engineer` — Native AI layer and contract reasoning.
+- `chatgpt-app-development` — Apps SDK/MCP product boundary, cost ownership, tool/widget/auth/security, and release discipline.
+
+### Stable domain versus adapters
+
+A skill should own a stable decision domain, not one replaceable implementation name.
+
+```text
+implementation-context-discovery
+  stable domain:
+    repository evidence, canonicality, convention locks,
+    reuse/extension/dependency decisions
+
+  discovered product adapters:
+    Next.js, React, shadcn/ui, Tailwind CSS, Lucide,
+    or any other actual repository choices
+```
+
+Do not create a universal `shadcn-skill`, `lucide-skill`, or framework-specific redesign workflow merely to preserve product conventions. Product libraries are evidence inside implementation-context discovery unless platform-specific knowledge itself is the stable reusable capability.
 
 ---
 
@@ -79,46 +98,42 @@ A good `skill` should define:
 
 A `workflow` is a sequenced execution process for a task class.
 
-Use `metadata["ai-native-skills.type"]: workflow` when the main value is the ordering of phases, gates, and handoffs. A workflow may compose many skills, but the workflow itself owns the lifecycle.
+Use `metadata["ai-native-skills.type"]: workflow` when the main value is the ordering of phases, gates, evidence, and handoffs. A workflow may compose many skills, but owns the lifecycle.
 
 ### Use when
 
-- The task has a required order of operations.
-- Skipping or reordering phases creates quality risk.
-- The workflow has explicit phase gates before moving forward.
-- The output is a completed lifecycle: fix, feature, review, deployment, redesign, or spec.
-
-### Do not use when
-
-- The artifact is just one capability or expert lens. Use `skill`.
-- The artifact only routes to other workflows. Use `meta-skill`.
-- The phases are optional notes rather than enforced gates.
-- The process is product-specific and not reusable.
+- order matters and skipping phases creates risk;
+- phase gates control progress;
+- evidence and exit conditions are explicit;
+- output is a completed lifecycle: feature, fix, review, deployment, redesign, refinement, product delivery, or spec.
 
 ### Required behavior
 
-A good `workflow` should define:
+A good workflow defines:
 
-1. **Entry condition.** When this workflow applies.
-2. **Phases.** Ordered steps with completion criteria.
-3. **Composed skills.** Which skills are loaded or consulted in each phase.
-4. **Gates.** What blocks progress to the next phase.
-5. **Evidence.** Tool output, files, tests, screenshots, or review artifacts required before completion.
-6. **Exit condition.** What “done” means for the whole lifecycle.
+1. entry condition and routing boundary;
+2. ordered phases;
+3. loaded capabilities per phase;
+4. blocking gates;
+5. evidence and authority requirements;
+6. state transitions and correction routes;
+7. exit and delivery conditions.
 
 ### Current workflows
 
 | Workflow | Lifecycle |
 |---|---|
 | `spec-workflow` | constitution → specify → plan → tasks → implement |
-| `new-feature-workflow` | plan → design → implement → verify → submit → review |
+| `new-feature-workflow` | plan → architecture/design decision → implementation-context discovery → implement → verify → submit → review |
 | `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review |
-| `code-review-workflow` | load-context → architecture-check → design-check → logic-check → verdict |
+| `code-review-workflow` | load context → architecture → design → logic → security → verdict/authorization |
 | `deployment-workflow` | pre-deploy → context-load → deploy → health-verify → confirm/rollback |
-| `redesign-workflow` | route → compose owners → inspect → verify decision provenance → specify → produce under write lease → verify final diff/domain evidence → facade review → classify → fix → deliver |
+| `redesign-workflow` | route → owners → inspect → direction → layered plan → implementation-context mapping → produce → verify → architecture/design review → fix → deliver |
 | `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |
-| `design-refinement` | failing-gate triage → patch → re-gate → deliver (targeted, no full redesign) |
-| `skill-doctor` | audit → triage → fix monoliths/stubs → verify length + gates |
+| `design-refinement` | verified finding → lock/budget → implementation-context mapping → smallest patch → verify → focused review → deliver |
+| `skill-doctor` | audit → triage → repair → verify |
+
+A workflow should load `implementation-context-discovery` only when existing-repository code production or material implementation mapping is in scope. Pure static visual artifacts may mark it `NOT_APPLICABLE`.
 
 ---
 
@@ -126,128 +141,110 @@ A good `workflow` should define:
 
 A `meta-skill` routes, selects, or composes other skills and workflows.
 
-Use `metadata["ai-native-skills.type"]: meta-skill` when the artifact’s job is not to perform the domain work directly, but to decide which capabilities should be loaded and in what combination.
-
-### Use when
-
-- The input is a broad user request and the correct workflow is not yet known.
-- The agent must classify intent before execution.
-- The artifact composes multiple role lenses or workflows.
-- The output is a routing decision, loading plan, or execution path.
-
-### Do not use when
-
-- The artifact performs the actual task lifecycle. Use `workflow`.
-- The artifact teaches one domain capability. Use `skill`.
-- The routing logic is product-specific configuration rather than reusable repo logic.
+Use `metadata["ai-native-skills.type"]: meta-skill` when the artifact’s job is to decide which capabilities should be loaded and how they combine, rather than perform the domain work directly.
 
 ### Required behavior
 
-A good `meta-skill` should define:
+A good meta-skill defines:
 
-1. **Detection rules.** How to classify the user request.
-2. **Routing map.** Which workflow or skills correspond to each intent.
-3. **Composition rules.** Which skills can be combined safely.
-4. **Conflict handling.** What to do when multiple routes match.
-5. **Handoff.** What the selected workflow/skills should receive as context.
-6. **Non-execution boundary.** Where routing ends and task execution begins.
+1. intent and domain detection;
+2. routing map;
+3. composition and ownership rules;
+4. conflict handling;
+5. handoff contract;
+6. non-execution boundary.
 
 ### Current meta-skills
 
 | Meta-skill | Responsibility |
 |---|---|
-| `workflow-router` | Detect task type and preserve one primary lifecycle while applying platform/domain specialist overlays. |
-| `role-switcher` | Detect user intent and compose one owner with narrow expert role lenses, such as design, product, engineering, and platform specialists. |
-| `design-layout` | Route layout decisions — macrostructures, responsiveness, ui-components, spatial structure. |
-| `design-visual` | Route visual design — genre selection, motion, composition, readability. |
-| `design-strategy` | Route UX strategy — ux-psychology, information-architecture, collection-discovery-design, CRO, copywriting, content-strategy. |
-| `design-interaction` | Route interaction patterns — ux-ui-patterns, ux-patterns-for-developers, behavior. |
+| `workflow-router` | Select one primary lifecycle and applicable platform/domain overlays. |
+| `role-switcher` | Assign one owner, narrow specialists, independent reviewers, and domain reviewers. |
+| `design-layout` | Route macrostructure, component strategy, responsiveness, and spacing. |
+| `design-visual` | Route visual direction, composition, hierarchy, type, color, depth, iconography, motion, and readability. |
+| `design-strategy` | Route psychology, information architecture, collection discovery, CRO, copy, and content. |
+| `design-interaction` | Route interaction patterns, states, behavior, and accessibility semantics. |
 
-### Platform specialist overlay example
-
-A specialized target platform normally adds a skill to an existing lifecycle rather than introducing a new workflow.
+A platform or repository specialist normally overlays an existing lifecycle rather than replacing it.
 
 ```text
 ChatGPT App product from zero
   primary lifecycle: product-development-workflow
   platform specialist: chatgpt-app-development
 
-Existing product adds ChatGPT App integration
+Existing product adds ChatGPT integration
   primary lifecycle: new-feature-workflow
   platform specialist: chatgpt-app-development
-```
 
-The router chooses the lifecycle and overlay. The specialist executes its domain behavior without becoming the lifecycle owner.
+Repository-backed redesign or feature
+  lifecycle remains redesign/new-feature/refinement
+  pre-code specialist: implementation-context-discovery
+```
 
 ---
 
 ## Adapter Pattern
 
-`skill-adapter` is currently a pattern, not an official category value in this repository.
+`skill-adapter` is a pattern, not an official type value.
 
-The README previously described `skill-adapter` as a taxonomy item, but no current `SKILL.md` uses `metadata["ai-native-skills.type"]: skill-adapter`. Adapter behavior is represented through:
+Adapter behavior is represented through:
 
-- `metadata["ai-native-skills.implements"]`, linking a skill to a Native AI Core contract.
-- `compat/*.compat.yaml`, describing compatibility between runtime skill implementations and core contracts when required.
-- Product or runtime bindings that install or load the skill in a specific execution context.
+- `metadata["ai-native-skills.implements"]`, linking to a Native AI Core contract;
+- `metadata["ai-native-skills.contract-version"]`;
+- reviewed boundary declarations when the contract boundary is non-empty;
+- `compat/*.compat.yaml` when explicit compatibility evidence is required;
+- product/runtime bindings that install or compose the skill.
 
-### Definition
+Contract-backed adapters remain an ordinary `skill`, `workflow`, or `meta-skill`.
 
-A skill adapter is a skill that implements, extends, or binds an external/core contract for a specific runtime, product, or execution context.
+Examples:
 
-In practice, it remains executable as a normal `skill` unless the repo formally introduces `type: skill-adapter` later.
+- `implementation-context-discovery`;
+- `collection-discovery-design`;
+- `native-ai-engineer`;
+- `native-ai-runtime-agent`;
+- `native-ai-runtime-ops`;
+- `decision-provenance`.
 
-### Examples
+A platform-specific reusable capability such as `chatgpt-app-development` may remain a normal skill without `implements` metadata when no stable runtime-agnostic contract exists. Do not invent a core contract only for classification.
 
-These are adapter-like skills because they implement Native AI Core contracts while remaining `metadata["ai-native-skills.type"]: skill`:
+### Adapter boundary example
 
-- `collection-discovery-design`
-- `native-ai-engineer`
-- `native-ai-runtime-agent`
-- `native-ai-runtime-ops`
-- `decision-provenance`
+```text
+implementation-context-discovery
+  owns:
+    repository ecosystem discovery
+    canonicality and convention locks
+    reuse/extension/dependency decisions
+    implementation mapping
 
-A platform-specific reusable capability such as `chatgpt-app-development` may remain an ordinary skill without `implements` metadata when no stable runtime-agnostic core contract has been established. Do not invent a core contract only to classify the skill.
-
-### When to use the adapter pattern
-
-Use `metadata["ai-native-skills.type"]: skill` plus adapter metadata when:
-
-- The skill implements a Native AI Core contract.
-- A runtime binding needs to reference the executable skill.
-- Contract conformance must be validated; add `compat/*.compat.yaml` when the binding requires explicit compatibility evidence.
-- The behavior is still a concrete capability, not a router or lifecycle workflow.
+  delegates:
+    component fitness → adaptive-component-design
+    product code → master-engineer/product adapter
+    architecture acceptance → architecture-review
+    visual acceptance → design-review
+```
 
 ---
 
 ## Decision Guide
 
-| If you are creating... | Use |
+| Creating... | Use |
 |---|---|
-| One reusable capability or expert lens | `metadata["ai-native-skills.type"]: skill` |
-| A multi-phase lifecycle with gates | `metadata["ai-native-skills.type"]: workflow` |
-| An intent router or skill composer | `metadata["ai-native-skills.type"]: meta-skill` |
-| A runtime/product implementation of a core contract | `metadata["ai-native-skills.type"]: skill` + adapter pattern |
-| Reusable platform-specific specialist knowledge without a stable core contract | `metadata["ai-native-skills.type"]: skill` without invented `implements` metadata |
-| A product-specific override | Product/app adapter layer, not this repo by default |
-| A temporary idea or scratch note | Do not put it in `skills/` |
+| One reusable capability or expert lens | `skill` |
+| A required multi-phase lifecycle | `workflow` |
+| An intent router or capability composer | `meta-skill` |
+| A runtime/product implementation of a core contract | official type + adapter metadata |
+| Reusable platform specialist knowledge without stable core contract | `skill` without invented `implements` |
+| Product-specific framework/library convention | product context consumed by `implementation-context-discovery`, not a universal skill by default |
+| Product-specific override | product/app adapter layer |
+| Temporary idea or scratch note | do not put it in `skills/` |
 
 ---
 
 ## Frontmatter Contract
 
-Every `SKILL.md` must be valid Agent Skills frontmatter. Keep standard fields at the top level and put repo-specific fields under namespaced `metadata` keys.
-
-Top-level fields allowed by the Agent Skills spec:
-
-- `name` — required, max 64 chars, lowercase/hyphenated, must match the skill directory name.
-- `description` — required, max 1024 chars, explains what the skill does and when to use it.
-- `license` — optional.
-- `compatibility` — optional, max 500 chars, for environment requirements.
-- `allowed-tools` — optional experimental field.
-- `metadata` — optional extension map.
-
-Basic skill example:
+Every `SKILL.md` must be valid Agent Skills frontmatter. Keep standard fields at the top level and repo-specific fields under namespaced `metadata` keys.
 
 ```yaml
 ---
@@ -261,23 +258,23 @@ metadata:
 ---
 ```
 
-For Native AI contract-backed skills, include `metadata["ai-native-skills.implements"]`:
+For a Native AI contract-backed skill:
 
 ```yaml
 ---
-name: collection-discovery-design
-description: Diagnose collection discovery before selecting replaceable adapters.
+name: implementation-context-discovery
+description: Discover and preserve repository implementation conventions before code.
 license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/design/collection-discovery-design.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/engineering/implementation-context-discovery.contract.yaml
   ai-native-skills.contract-version: ^1.0.0
 ---
 ```
 
-Validate compatibility with the Agent Skills reference validator:
+Validate with:
 
 ```bash
 skills-ref validate skills/<skill-name>
@@ -287,13 +284,16 @@ skills-ref validate skills/<skill-name>
 
 ## Anti-patterns
 
-1. **Calling everything a skill.** If phase order matters, create a workflow.
+1. **Calling everything a skill.** If phase order is the main value, create a workflow.
 2. **Calling a router a workflow.** If it only selects another process, create a meta-skill.
-3. **Creating product-specific base skills.** Product-specific behavior belongs in product/app adapters unless it is broadly reusable.
-4. **Creating a platform workflow when an overlay is enough.** Preserve the product/feature lifecycle and load a platform specialist skill.
-5. **Inventing a new category casually.** A new category value affects README, docs, validation, examples, and downstream consumers.
-6. **Using adapter as a type before tooling supports it.** Keep adapter semantics in `metadata["ai-native-skills.implements"]` and `compat/` until the repo formally adopts `skill-adapter`.
-7. **Inventing a core contract for platform-specific knowledge.** Wait until a stable runtime-agnostic boundary is proven.
-8. **Writing no-op skills.** If the document does not change agent behavior or quality gates, it should not be a skill.
-9. **Mixing routing and execution.** Meta-skills decide the route; workflows and skills perform the work.
-10. **Naming an adapter as the domain.** Pagination, tabs, infinite scroll, load-more, facets, and filters are possible implementations of a collection discovery strategy, not standalone domain ownership.
+3. **Creating product-specific base skills.** Product facts and stack choices belong in product/app context unless generalized.
+4. **Creating a platform workflow when an overlay is enough.** Preserve the product or feature lifecycle.
+5. **Inventing a new type casually.** It affects docs, validation, examples, and consumers.
+6. **Using adapter as a type before tooling supports it.** Keep adapter semantics in namespaced metadata.
+7. **Inventing a core contract for unstable platform trivia.** Generalize only a proven stable boundary.
+8. **Writing no-op skills.** A skill must change agent decisions, procedure, gates, or evidence.
+9. **Mixing routing and execution.** Meta-skills route; workflows and skills execute.
+10. **Naming an implementation adapter as the domain.** Pagination, tabs, shadcn, Tailwind, Lucide, and similar choices are adapters inside broader domains.
+11. **Treating installed as canonical.** Package presence alone does not establish repository authority.
+12. **Making native HTML universally invalid.** Evaluate semantic sufficiency and repository contracts.
+13. **Letting pre-code discovery self-approve.** Architecture review remains independent after implementation.
