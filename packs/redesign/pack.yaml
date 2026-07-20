@@ -1,0 +1,227 @@
+skill_pack:
+  id: redesign
+  version: "1.0.0"
+  repository: puterakahfi/ai-native-skills
+  description: Complete dependency bundle for the delegated redesign workflow.
+  entrypoints:
+    - redesign-workflow
+
+  compatibility:
+    workflow: redesign-workflow
+    manifest_metadata_key: ai-native-skills.pack
+    requires_classifications:
+      - required
+      - conditional
+      - port
+
+  dependencies:
+    - name: role-switcher
+      classification: required
+      concern: orchestration
+      reason: Compose one design owner, conditional implementation ownership, specialists, and reviewers.
+    - name: master-design
+      classification: required
+      concern: design-ownership
+      reason: Own comparative direction and final design decisions.
+    - name: master-engineer
+      classification: conditional
+      concern: implementation
+      when: Output mode is patch or an executable prototype requires repository implementation.
+      reason: Own implementation without overriding approved design direction.
+    - name: business-value-alignment
+      classification: required
+      concern: value
+      reason: Connect redesign decisions to user, business, and delivery value.
+    - name: decision-provenance
+      classification: required
+      concern: authority
+      reason: Verify scope, locks, approvals, overrides, ownership, and delivery authority.
+    - name: design-foundation
+      classification: required
+      concern: foundation
+      reason: Supply the universal composition and usability contract.
+    - name: design-brand
+      classification: required
+      concern: brand
+      reason: Preserve brand locks, identity rules, assets, and product constraints.
+
+    - name: design-visual
+      classification: port
+      concern: visual
+      reason: Route visual-direction concerns to the applicable specialist adapters.
+    - name: design-genre
+      classification: adapter
+      port: visual
+      reason: Resolve genre-specific density, voice, containment, color, and motion expression.
+    - name: design-depth
+      classification: adapter
+      port: visual
+      when: The direction uses layering, overlap, elevation, or atmosphere.
+      reason: Govern semantic depth and layered composition.
+    - name: design-color
+      classification: adapter
+      port: visual
+      when: Palette, color hierarchy, contrast, or color semantics change.
+      reason: Govern color as visual structure.
+    - name: design-typography
+      classification: adapter
+      port: visual
+      when: Type selection, scale, hierarchy, or rhythm changes.
+      reason: Govern typography as visual structure.
+    - name: design-iconography
+      classification: adapter
+      port: visual
+      when: Icons or symbolic visual language are introduced or changed.
+      reason: Govern icon style, sizing, optical alignment, and usage.
+    - name: composition
+      classification: adapter
+      port: visual
+      reason: Resolve focal point, visual weight, whitespace, and eye flow.
+    - name: visual-hierarchy
+      classification: adapter
+      port: visual
+      reason: Resolve dominant, supporting, and accent relationships.
+    - name: readability
+      classification: adapter
+      port: visual
+      reason: Verify legibility and reading comfort in the actual viewing context.
+    - name: motion-design
+      classification: adapter
+      port: visual
+      when: Motion, transition, or animated emphasis is in scope.
+      reason: Govern motion priority, timing, easing, and reduced-motion behavior.
+
+    - name: design-layout
+      classification: port
+      concern: layout
+      reason: Route macrostructure, responsive layout, spacing, and component-selection concerns.
+    - name: macrostructures
+      classification: adapter
+      port: layout
+      reason: Select and implement appropriate page-level layout archetypes.
+    - name: responsiveness
+      classification: adapter
+      port: layout
+      reason: Preserve relationships across required viewport and format changes.
+    - name: adaptive-component-design
+      classification: adapter
+      port: layout
+      when: A component must substitute or adapt across device and input contexts.
+      reason: Select component behavior by task, viewport, and interaction constraints.
+    - name: ui-components
+      classification: adapter
+      port: layout
+      reason: Select and specify suitable reusable interface components.
+    - name: design-spacing
+      classification: adapter
+      port: layout
+      reason: Govern spacing hierarchy and spatial rhythm.
+
+    - name: design-strategy
+      classification: port
+      concern: strategy
+      reason: Route content, information architecture, psychology, and conversion concerns.
+    - name: content-strategy
+      classification: adapter
+      port: strategy
+      reason: Govern content hierarchy, microcopy, and communication structure.
+    - name: information-architecture
+      classification: adapter
+      port: strategy
+      reason: Govern navigation, grouping, labeling, and information structure.
+    - name: copywriting
+      classification: adapter
+      port: strategy
+      when: Structural copy, messaging, or calls to action change.
+      reason: Govern messaging hierarchy and specificity.
+    - name: ux-psychology
+      classification: adapter
+      port: strategy
+      reason: Evaluate cognitive load, expectation, motivation, and interaction psychology.
+    - name: cro
+      classification: adapter
+      port: strategy
+      when: Conversion or persuasion is an explicit redesign objective.
+      reason: Govern attention, trust, proof, and conversion sequence.
+
+    - name: design-interaction
+      classification: port
+      concern: interaction
+      reason: Route interaction patterns, states, behavior, and accessibility semantics.
+    - name: ux-ui-patterns
+      classification: adapter
+      port: interaction
+      reason: Select interface patterns that fit the task and content model.
+    - name: ux-patterns-for-developers
+      classification: adapter
+      port: interaction
+      reason: Apply implementation-ready interaction and accessibility patterns.
+
+    - name: design-system
+      classification: port
+      concern: system
+      reason: Govern tokens, variants, state consistency, and design-language reuse.
+    - name: accessibility
+      classification: adapter
+      port: system
+      reason: Verify perceivability, operability, semantics, and inclusive interaction.
+    - name: dark-light-theming
+      classification: adapter
+      port: system
+      when: Multiple themes or color-scheme adaptation are required.
+      reason: Govern semantic theme token mapping and safe theme switching.
+
+    - name: design-audit
+      classification: required
+      concern: evidence
+      reason: Capture and normalize baseline design findings when audit coverage is needed.
+    - name: design-review
+      classification: required
+      concern: acceptance
+      reason: Provide independent facade review and normalized verdicts.
+    - name: brand-identity-review
+      classification: domain-reviewer
+      domains:
+        - brand-identity
+      when: Brand identity is the primary design domain or complete identity approval is requested.
+      reason: Apply canonical brand-identity acceptance gates.
+    - name: design-refinement
+      classification: required
+      concern: correction
+      reason: Apply focused corrections while preserving accepted direction.
+    - name: skill-evolution
+      classification: required
+      concern: learning
+      reason: Promote verified reusable fixes into shared capability knowledge.
+    - name: skill-eval
+      classification: required
+      concern: validation
+      reason: Verify that required skills are applied rather than merely loaded.
+    - name: git-workflow
+      classification: required
+      concern: repository
+      reason: Govern safe branch, commit, review, and delivery operations.
+    - name: workflow-router
+      classification: optional
+      concern: routing
+      reason: Route broad user intent before invoking the redesign entrypoint.
+
+  profiles:
+    minimum:
+      description: Workflow entrypoint, required lifecycle capabilities, and design ports; contextual adapters must already be available or installed separately.
+      include_classifications:
+        - required
+        - port
+    complete:
+      description: Full documented Redesign Pack with all local contextual adapters and the available brand-identity reviewer.
+      include_classifications:
+        - required
+        - conditional
+        - port
+        - adapter
+        - domain-reviewer
+
+  documentation:
+    file: docs/skill-packs.md
+    heading: "## Redesign Pack"
+    profile: complete
