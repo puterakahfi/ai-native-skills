@@ -1,9 +1,44 @@
 skill_test:
   skill: product-development-workflow
-  version: "2.1.0"
-  description: Verify product-level acceptance reconciles every criterion, reviewer, decision source, accepted risk, and release approval before delivery actions.
+  version: "2.2.0"
+  description: Verify product-level acceptance reconciles every criterion, reviewer, decision source, platform specialist gate, accepted risk, and release approval before delivery actions.
 
   cases:
+    - id: chatgpt-app-native-generation-cost-boundary-unverified
+      description: A low-price ChatGPT App cannot release while its user-quota promise lacks direct execution evidence.
+      trigger: "MVP ChatGPT App dijual Rp35.000 dan marketing bilang image generation memakai quota user. MCP dan widget selesai, tetapi belum ada test yang membuktikan native handoff tidak memanggil OpenAI API client milik developer. Lanjut release."
+      must_contain:
+        - "chatgpt-app-development"
+        - "cost owner"
+        - "NOT_VERIFIED"
+        - "developer API"
+        - "NOT_READY"
+      must_not_contain:
+        - "release_eligibility: RELEASE_READY"
+        - "user quota claim is sufficient"
+        - "release_action: EXECUTE"
+      quality_gates_tested:
+        - platform_specialist_acceptance_required
+        - native_handoff_cost_boundary_requires_direct_evidence
+        - pricing_claim_does_not_replace_runtime_test
+
+    - id: chatgpt-app-current-platform-evidence-required
+      description: Stale platform assumptions and localhost-only evidence block ChatGPT App release readiness.
+      trigger: "ChatGPT App punya unit test dan localhost widget screenshot. Apps SDK docs yang dipakai berumur satu tahun dan belum pernah dites dari ChatGPT development connection. Semua feature PR merged. Nyatakan RELEASE_READY."
+      must_contain:
+        - "chatgpt-app-development"
+        - "current official"
+        - "actual ChatGPT"
+        - "NOT_VERIFIED"
+        - "NOT_READY"
+      must_not_contain:
+        - "release_eligibility: RELEASE_READY"
+        - "localhost screenshot proves integration"
+      quality_gates_tested:
+        - volatile_platform_requirements_reverified
+        - actual_platform_integration_evidence_required
+        - merged_features_do_not_prove_platform_acceptance
+
     - id: audit-only-does-not-enter-product-development
       description: Audit-only intent must route to design-audit rather than product development or redesign production.
       trigger: "Audit dashboard existing ini dan beri gap report saja. Jangan ubah desain, jangan implementasi, dan jangan mulai product development."

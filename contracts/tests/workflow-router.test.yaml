@@ -1,9 +1,40 @@
 skill_test:
   skill: workflow-router
-  version: "1.3.0"
-  description: Verify audit, refinement, redesign, and specialist-domain requests select different primary routes and reviewers.
+  version: "1.4.0"
+  description: Verify lifecycle selection remains primary while design-domain and platform-specialist overlays load the correct capabilities.
 
   cases:
+    - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
+      description: A ChatGPT App product from zero uses the existing product lifecycle plus the platform specialist.
+      trigger: "Build a ChatGPT App from zero using OpenAI Apps SDK and MCP. Belum ada PRD atau technical spec."
+      must_contain:
+        - "product-development-workflow"
+        - "chatgpt-app-development"
+        - "platform specialist"
+        - "discovery"
+      must_not_contain:
+        - "chatgpt-app-workflow"
+        - "new-feature-workflow as primary"
+        - "start implementation immediately"
+      quality_gates_tested:
+        - product_from_zero_lifecycle_preserved
+        - platform_specialist_overlay
+        - no_duplicate_platform_workflow
+
+    - id: existing-product-chatgpt-integration-routes-feature-plus-specialist
+      description: Adding ChatGPT integration to an existing product remains a feature lifecycle.
+      trigger: "Produk dan PRD sudah ada. Tambahkan Apps SDK/MCP integration supaya capability existing bisa dipakai di ChatGPT."
+      must_contain:
+        - "new-feature-workflow"
+        - "chatgpt-app-development"
+        - "platform specialist"
+      must_not_contain:
+        - "product-development-workflow as primary"
+        - "chatgpt-app-workflow"
+      quality_gates_tested:
+        - existing_product_feature_route_preserved
+        - platform_specialist_overlay
+
     - id: audit-only-routes-to-design-audit
       description: Audit-only intent must not start redesign production.
       trigger: "Audit dashboard ini dan jelaskan apa yang salah. Jangan ubah desain atau source code."

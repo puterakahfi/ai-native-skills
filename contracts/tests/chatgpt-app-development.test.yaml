@@ -1,0 +1,111 @@
+skill_test:
+  skill: chatgpt-app-development
+  version: "1.0.0"
+  description: Verify ChatGPT App architecture keeps cost ownership, MCP boundaries, native capability handoff, widget UX, auth, and release evidence explicit.
+
+  cases:
+    - id: native-image-generation-uses-user-chatgpt-boundary
+      description: A low-price product that intends native ChatGPT image generation must not proxy generation through the developer API.
+      trigger: "Buat ChatGPT App untuk produk desain Rp35.000. User memilih banner lalu gambar dibuat oleh ChatGPT milik user. Pastikan biaya generate tidak dibebankan ke developer lewat API."
+      must_contain:
+        - "chatgpt-native"
+        - "end user"
+        - "native"
+        - "MCP"
+        - "do not call"
+        - "developer API"
+      must_not_contain:
+        - "OPENAI_API_KEY untuk generate image"
+        - "openai.images.generate"
+        - "ChatGPT Plus includes API usage"
+      quality_gates_tested:
+        - generation_surface_explicit
+        - cost_owner_explicit
+        - native_handoff_does_not_proxy_developer_api
+        - chatgpt_and_api_billing_separated
+
+    - id: backend-generation-declares-developer-cost
+      description: Explicit server-side generation must be classified as developer-paid and require economic controls.
+      trigger: "MCP tool generate_banner harus memanggil OpenAI Images API dari backend kami agar hasil tersimpan otomatis. Siapa yang bayar dan apa yang wajib disiapkan?"
+      must_contain:
+        - "developer"
+        - "API"
+        - "billing"
+        - "budget"
+        - "metering"
+        - "rate limit"
+      must_not_contain:
+        - "quota user ChatGPT"
+        - "free because MCP"
+      quality_gates_tested:
+        - developer_api_cost_not_hidden
+        - mixed_cost_boundary
+        - paid_generation_has_budget_controls
+
+    - id: mcp-tool-inventory-separates-effects
+      description: A proposed god tool must be split into explicit read, write, render, and generation boundaries.
+      trigger: "Buat satu tool VisualMate bernama manage_everything yang membaca brand, membuat prompt, generate image, menyimpan workflow, dan publish iklan sekaligus."
+      must_contain:
+        - "one job per tool"
+        - "read"
+        - "write"
+        - "render"
+        - "separate"
+      must_not_contain:
+        - "manage_everything is acceptable"
+        - "single tool is simpler and safe"
+      quality_gates_tested:
+        - one_job_per_tool
+        - read_write_render_generation_separation
+        - annotation_accuracy
+
+    - id: widget-does-not-copy-full-dashboard
+      description: A ChatGPT widget should use focused conversational UI rather than reproducing the complete SaaS dashboard.
+      trigger: "Masukkan seluruh dashboard produk ke inline ChatGPT widget: sidebar, 12 tabs, asset manager, billing, editor, analytics, dan chat input sendiri."
+      must_contain:
+        - "conversational"
+        - "inline"
+        - "fullscreen"
+        - "progressive"
+        - "do not"
+      must_not_contain:
+        - "copy the entire dashboard"
+        - "nested scrolling is fine"
+      quality_gates_tested:
+        - conversational_first_ui
+        - ui_mode_matches_task_depth
+        - no_dashboard_compression
+
+    - id: private-brand-data-requires-auth-and-object-authorization
+      description: User-specific brand and asset data cannot be exposed through anonymous tools or trusted user-supplied IDs.
+      trigger: "Buat tool anonymous get_brand_profile dengan input user_id dan brand_id supaya ChatGPT bisa membaca brand identity siapa pun tanpa login."
+      must_contain:
+        - "authenticated"
+        - "authorization"
+        - "resource"
+        - "least privilege"
+        - "do not trust"
+      must_not_contain:
+        - "anonymous is safe"
+        - "user_id input proves ownership"
+      quality_gates_tested:
+        - private_data_requires_auth
+        - object_authorization_after_authentication
+        - tenant_isolation
+
+    - id: release-needs-current-docs-and-actual-chatgpt-evidence
+      description: Local code and standalone screenshots cannot prove current ChatGPT integration or publication readiness.
+      trigger: "MCP server unit test hijau dan widget terlihat bagus di localhost. Dokumentasi OpenAI yang dipakai dari tahun lalu. Nyatakan app siap publish sekarang."
+      must_contain:
+        - "NOT_READY"
+        - "current official"
+        - "ChatGPT"
+        - "integration"
+        - "publication"
+      must_not_contain:
+        - "release_verdict: READY"
+        - "localhost screenshot proves publication readiness"
+      quality_gates_tested:
+        - volatile_platform_facts_reverified
+        - actual_chatgpt_runtime_evidence_required
+        - publication_is_separate_gate
