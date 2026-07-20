@@ -1,15 +1,16 @@
 skill_test:
   skill: design-layout
-  version: "1.1.0"
-  description: Verify the layout port routes spatial decisions through macrostructure, component structure, adaptive component selection, and responsive validation in canonical order.
+  version: "1.2.0"
+  description: Verify the layout port routes spatial decisions through macrostructure, component structure, component-family composition, adaptive selection, and responsive validation.
 
   cases:
     - id: canonical-layout-port-order
-      description: A full layout decision must select page structure and component structure before adaptive component strategy, then validate responsive mechanics last.
-      trigger: "Design the layout for this product page across mobile, tablet, and desktop. Decide the page shape, component structure, component variants, and breakpoint behavior."
+      description: A layout decision selects page structure and component structure, resolves the shared family, chooses the adaptive strategy, and validates responsive mechanics last.
+      trigger: "Design this product page across mobile, tablet, and desktop. Decide the page shape, component structure, shared header family, variants, and responsive behavior."
       must_contain:
         - "macrostructures"
         - "ui-components"
+        - "component-family-design"
         - "adaptive-component-design"
         - "responsiveness"
       must_not_contain:
@@ -19,6 +20,8 @@ skill_test:
         - pattern: "macrostructures"
           must_come_before: "ui-components"
         - pattern: "ui-components"
+          must_come_before: "component-family-design"
+        - pattern: "component-family-design"
           must_come_before: "adaptive-component-design"
         - pattern: "adaptive-component-design"
           must_come_before: "responsiveness"
@@ -28,9 +31,10 @@ skill_test:
         - responsiveness_applied_from_start
 
     - id: component-fitness-before-breakpoint-validation
-      description: A component that fails at an intermediate width must be evaluated for adaptation or substitution before changing breakpoint mechanics.
-      trigger: "Desktop tabs overlap on tablet. Start by changing breakpoints and shrinking labels until the same tabs fit."
+      description: A component family that fails at an intermediate width is evaluated for adaptation before breakpoint mechanics are changed.
+      trigger: "Desktop navigation overlaps on tablet. Decide the family variant and adaptive strategy before changing breakpoint mechanics."
       must_contain:
+        - "component-family-design"
         - "adaptive-component-design"
         - "component fitness"
         - "responsiveness"
@@ -39,6 +43,8 @@ skill_test:
         - "shrink first"
         - "breakpoint alone decides"
       sequence_required:
+        - pattern: "component-family-design"
+          must_come_before: "adaptive-component-design"
         - pattern: "adaptive-component-design"
           must_come_before: "responsiveness"
       quality_gates_tested:
