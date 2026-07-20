@@ -1,0 +1,60 @@
+name: Skill Pack Contracts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packs/**"
+      - "docs/skill-packs.md"
+      - "skills/**/SKILL.md"
+      - "skills/**/references/dependencies-and-installation.md"
+      - "scripts/validate-skill-packs.py"
+      - "tests/test_validate_skill_packs.py"
+      - ".github/workflows/skill-packs.yml"
+  pull_request:
+    paths:
+      - "packs/**"
+      - "docs/skill-packs.md"
+      - "skills/**/SKILL.md"
+      - "skills/**/references/dependencies-and-installation.md"
+      - "scripts/validate-skill-packs.py"
+      - "tests/test_validate_skill_packs.py"
+      - ".github/workflows/skill-packs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skill-pack-contracts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate skill pack contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout ai-native-skills
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install validator dependency
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Check validator syntax
+        run: python -m py_compile scripts/validate-skill-packs.py tests/test_validate_skill_packs.py
+
+      - name: Run focused validator tests
+        run: python -m unittest tests/test_validate_skill_packs.py
+
+      - name: Validate pack manifests, workflow bindings, and documentation
+        run: python scripts/validate-skill-packs.py
+
+      - name: Show reproducible Redesign Pack command
+        run: python scripts/validate-skill-packs.py --pack redesign --profile complete --print-install-command

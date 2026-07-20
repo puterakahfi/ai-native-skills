@@ -1,6 +1,6 @@
 github_profile_result:
   fixture: puterakahfi
-  generated_with: github-profile@1.2.0
+  generated_with: github-profile@1.3.0
   workflow: redesign-workflow@3.3.0
   profile_goal: personal-brand
   primary_audience:
@@ -11,23 +11,30 @@ github_profile_result:
   narrative: >-
     Putera Kahfi connects software architecture, product design, and agent-driven
     development to build practical AI-native engineering systems.
+  content_archetype: editorial-personal-brand with technical-authority proof
   baseline:
     repository: puterakahfi/puterakahfi
     initial_commit: c1a3f65b6138093e8a817019425aca23c681f0c7
     latest_reviewed_failed_commit: 4319b26c20b51e1a23e350a65bf29ec01788c775
     foundation_corrected_commit: 8b09299ad169221ec2daf1a3b05110d2af229c53
-    final_refined_commit: a8d09f5a622b58e219a0c5620ab7a277c29f68c2
+    final_zen_commit: a8d09f5a622b58e219a0c5620ab7a277c29f68c2
+    modern_initial_commit: c64aa8dab45e8c6e70739246e8a16ac0664a1f19
+    modern_refined_commit: fac5b937aa79bcd76e1129175f3e2dd6655ce951
+    modern_final_commit: a402084de2ca5bff45664409036ff78d776afdc0
+    creative_initial_commit: e891b409d51b0f68eabe4ccbaac16ab307d82e5d
+    creative_refined_commit: 65cd122e2dabf8ce17df38d4a68d376ed0dc8a86
+    active_final_commit: 573d1428405be574373cd0a561327dbf909a82ac
   brand_alignment:
     source:
       - user-authoritative statement about pkahfi.com visual direction
       - rendered GitHub profile screenshots
     grammar:
       mood: zen and calm editorial
-      density: sparse but information-bearing
+      density: balanced but information-bearing
       spacing: generous only when structurally earned
       separators: none decorative
-      alignment: centered identity opening, left-aligned detailed reading
-      typography_behavior: quiet hierarchy with clear role scale
+      alignment: left for the active professional variant
+      typography_behavior: quiet hierarchy with one dominant emphasis tier per module
     prohibited_treatments:
       - horizontal dividers
       - blockquote project cards
@@ -35,53 +42,108 @@ github_profile_result:
       - decorative borders
       - repeated oversized blank intervals
       - tiny labels carrying primary section identity
+      - repeated bold labels that flatten hierarchy
+      - form-like proof schemas masquerading as editorial expression
   preservation_locks:
     - Putera Kahfi name
     - puterakahfi GitHub identity
     - Native AI Engineering positioning
     - public project links
+    - one verified project and proof set across variants
     - zen personal-brand grammar
     - no lines or cardification
+  variant_set:
+    locked_fact_set:
+      projects:
+        - AI Native Skills
+        - Native AI Core
+        - VisualMate
+      capabilities:
+        - Software architecture
+        - Product engineering
+        - Native AI systems
+        - Design systems
+      current_focus_date: July 2026
+      contact_destinations:
+        - GitHub
+        - pkahfi.com
+        - ai.pkahfi.com
+        - VisualMate
+    selected_for_publication: modern-professional
+    variants:
+      - name: zen-minimalist
+        publication_status: aligned-alternative
+        density: sparse
+        alignment: centered opening then left reading
+        expression: restrained
+        proof_treatment: proximity-led narrative projects
+        differentiation_device: quiet authored thesis and relational rhythm
+        brand_fit: strong aligned alternative
+      - name: modern-professional
+        publication_status: active-selected
+        density: balanced
+        alignment: left
+        expression: contemporary
+        proof_treatment: purpose, one italic evidence line, and contribution prose
+        differentiation_device: memorable proposition plus crisp professional hierarchy
+        brand_fit: strongest active fit after direct GitHub render refinement
+      - name: creative-editorial
+        publication_status: accepted-option
+        density: balanced
+        alignment: mixed editorial
+        expression: expressive but controlled
+        proof_treatment: italic premise, natural contribution prose, and subordinate evidence
+        differentiation_device: numbered systems plus authored section language and cadence
+        brand_fit: verified through language and rhythm rather than decoration
   direction_candidates:
     - name: centered-zen-manifesto
       fit: >-
-        A bounded centered identity opening creates a personal focal anchor, while
-        left-aligned proof and detail restore reading efficiency and visual balance.
+        A bounded centered identity opening creates a calm personal focal anchor while
+        left-aligned proof and detail restore reading efficiency.
       risks:
         - centered opening becomes generic when the thesis is weak
-    - name: zen-technical-index
+    - name: modern-professional-left-index
       fit: >-
-        Fully left-aligned and compact; strong for scanning but less continuous with
-        the personal-brand opening used by pkahfi.com.
+        A stable left edge, selective emphasis, and repeated proof anatomy support fast
+        professional comprehension without introducing cards or dashboard grammar.
       risks:
-        - feels utilitarian rather than authored
+        - repeated labels or excessive bold can flatten hierarchy
+    - name: creative-editorial-systems
+      fit: >-
+        Numbered systems, authored tension, and semantic project prose create a memorable
+        editorial voice while preserving verifiable technical proof.
+      risks:
+        - repeated vocabulary can feel like a form rather than authored prose
   selected_direction:
-    name: centered-zen-manifesto
+    name: modern-professional-left-index
+    profile_variant: modern-professional
     reason: >-
-      It preserves the calm personal identity while satisfying foundation hierarchy,
-      grouping, alignment, rhythm, balance, flow, and legibility.
+      The final direct GitHub desktop render offers the strongest balance of professional
+      scanning, project proof, memorable positioning, brand continuity, and maintainable
+      GitHub-native composition. Creative Editorial remains an accepted expressive option.
   differentiation_device:
-    primary: authored Native AI Engineering thesis
-    supporting: relational editorial rhythm across identity, proof, principles, and action
-    prohibited_substitute: containment added only to create contrast
+    primary: explicit AI-native engineering proposition
+    supporting: concise evidence metadata and balanced left-aligned rhythm
+    prohibited_substitute: cards, dividers, gradients, stats widgets, or repeated bold labels
   hierarchy_roles:
-    page_anchor: centered H3 name
+    page_anchor: left-aligned H3 name
     positioning: plain supporting role
-    statement: centered H4 engineering proposition
+    statement: one dominant bold engineering proposition
     section_parent: left-aligned H3
     project_item: linked H4
-    metadata: italic supporting line
-    body: concise explanatory prose
+    project_purpose: plain concise sentence
+    metadata: one italic evidence line
+    body: concise contribution prose
     action: bounded link group
   spacing_contract:
     relation: element_gap < item_gap < section_gap
     rules:
       - keep each project title, purpose, metadata, and contribution attached
-      - use stronger separation between projects than within a project
-      - use the strongest pause between different section roles
+      - use one stronger bounded pause between sibling projects
+      - use the strongest pause between selected systems and operating model
+      - avoid increasing all gaps uniformly
       - reduce space when content mass becomes stranded
-      - treat Ma as purposeful pause, never maximum emptiness
-  density: concise
+  density: balanced
   dynamic_widgets: none
   verified_facts:
     - claim: Public GitHub identity is Putera Kahfi / puterakahfi.
@@ -102,26 +164,31 @@ github_profile_result:
     - No verified employer or client list included.
     - No unverified revenue, user-count, conversion, or contribution metrics included.
     - Private repositories are not used as public proof links.
-    - Current-focus statements should be reviewed when the fixture is published.
+    - Current-focus statements should be reviewed when their date becomes stale.
   section_order:
-    - centered_identity_and_thesis
-    - selected_work
-    - engineering_thesis
-    - capability_groups
-    - current_focus
+    - identity_positioning_and_proposition
+    - selected_systems
+    - operating_model
+    - working_across_with_dated_current_focus
     - connect
   external_dependencies: []
   render_evidence:
     - user-provided desktop screenshot of version 1.0.0
     - user-provided desktop screenshot of line-free foundation-failed version
-    - local GFM-equivalent desktop render of final refined source at 1200 x 1900
-    - local GFM-equivalent narrow render of final refined source at 390 x 3600
+    - local GFM-equivalent desktop and narrow renders of the zen-minimalist source
+    - local GFM-equivalent desktop and narrow comparative renders for all three variants
+    - three direct GitHub desktop screenshots of modern-professional refinement
+    - direct GitHub desktop screenshot of initial creative-editorial publication
+    - direct GitHub desktop screenshot after creative-editorial focused refinement
+    - explicit user selection restoring modern-professional as the live profile
   design_review_result: LIMITED_REVIEW
-  verified_universal_score: 8.5
-  evidence_coverage: approximately 92 percent
-  review_note: >-
-    The final source passes the selected universal hierarchy, grouping, alignment,
-    spatial rhythm, balance, flow, legibility, consistency, restraint, content, and
-    narrow-continuity checks in GFM-equivalent renders. Direct GitHub desktop, narrow,
-    and dark-theme parity remain NOT_VERIFIED, and no dedicated developer-profile
-    domain reviewer exists.
+  verified_universal_score: 8.8
+  evidence_coverage: approximately 95 percent for the active modern-professional desktop fixture
+  variant_review_note: >-
+    All three variants preserve the locked fact set and are materially distinct in density,
+    alignment, hierarchy, proof treatment, rhythm, and editorial voice. Modern Professional is
+    active after direct GitHub desktop review and explicit user selection. Creative Editorial
+    remains an accepted expressive option and Zen Minimalist remains a strong alternative.
+    Desktop hierarchy, grouping, alignment, rhythm, balance, flow, legibility, consistency, and
+    brand fit pass within verified universal scope. Direct GitHub narrow and dark-theme evidence
+    plus a dedicated developer-profile reviewer remain unavailable.
