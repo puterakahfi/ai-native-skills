@@ -65,7 +65,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: puterakahfi/ai-native-core
-          ref: f94b6ad86583c714b68eb5ea9f92890557b462c5
+          ref: 87f3ab96942b7ab5b2c1e7550f70b6dcdd7e0183
           path: .deps/ai-native-core
 
       - name: Stage production skill adapters
