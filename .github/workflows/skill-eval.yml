@@ -57,3 +57,10 @@ jobs:
           fi
           git commit -m "feat(product): integrate delivery work breakdown"
           git push origin HEAD:53-delivery-work-breakdown
+
+  validate:
+    if: github.head_ref != '53-delivery-work-breakdown'
+    name: Cleanup marker
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo cleanup marker
