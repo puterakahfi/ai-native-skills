@@ -1,36 +1,45 @@
-# Reuse, Extension, and Dependency Decisions
+# Reuse, Extension, Registry, and Dependency Decisions
 
-Load this reference after repository evidence and canonicality decisions are available.
+Load this reference after repository evidence, canonicality, component coverage, and typography roles are available.
 
-The implementation question is not “which library would I choose from scratch?” It is “what is the smallest repository-consistent implementation that satisfies the accepted requirement?”
+The question is not “which library would I choose from scratch?” It is “what is the smallest repository-consistent implementation that satisfies the accepted requirement?”
 
-## Decision sequence
+## Decision model
+
+Structural and content-semantic needs receive a semantic-native precheck.
+
+Interactive or component-system-owned capabilities follow:
 
 ```text
 requirement
-→ existing canonical options
-→ capability fit
-→ reuse or variant
-→ bounded extension
-→ primitive composition
-→ product-specific component
-→ semantic native platform element
+→ existing component
+→ existing variant
+→ bounded variant
+→ canonical primitive composition
+→ canonical registry component
+→ product-specific component using canonical primitives
 → proven capability gap
 → dependency candidate and authority
 ```
 
-Do not reverse the sequence because a new library has an attractive API or familiar examples.
+Do not reverse the sequence because another library has a familiar API.
 
-## Option 1 — Reuse existing component or utility
+## Semantic-native precheck
 
-Use when the canonical abstraction already satisfies:
+Use a native semantic element when:
 
-- task and content requirements;
-- interaction and state requirements;
-- accessibility contract;
-- visual/token contract;
-- target contexts;
-- ownership and import boundary.
+- the need is structural or content-semantic;
+- the platform supplies the required semantics and behavior;
+- no fit shared abstraction adds required state, accessibility, analytics, variants, or product policy;
+- repository tokens and accessibility conventions can be preserved.
+
+Common examples include landmarks, headings, paragraphs, lists, description lists, links, and suitable `details`/`summary` disclosures.
+
+Native structure does not authorize rebuilding a fit canonical interaction contract. A page can correctly use `<section>` while still drifting by implementing a div-based Dialog or Select.
+
+## Option 1 — Reuse an existing component or utility
+
+Use when the canonical abstraction satisfies task, interaction, accessibility, token, responsive, ownership, and import requirements.
 
 ```yaml
 reuse_decision:
@@ -42,146 +51,133 @@ reuse_decision:
   verification: []
 ```
 
-Do not rebuild the same abstraction locally merely to match a mockup more quickly.
+Do not rebuild the same abstraction locally to match a mockup faster.
 
 ## Option 2 — Reuse an existing variant
 
-Use when the base component is fit and an accepted variant already expresses the required density, state, intent, size, or layout.
+Inspect actual variant definitions, stories/examples, and production usage. Use a fit accepted variant before route-local restyling.
 
-Verify that the variant is actually canonical, not a one-off class string from an unrelated screen.
+An arbitrary class string from another page is not automatically a canonical variant.
 
 ## Option 3 — Add a bounded variant
 
-Use when:
-
-- the canonical abstraction is still correct;
-- one missing variant is broadly or repeatedly useful;
-- the variant belongs to the component's owned responsibility;
-- existing behavior and API can remain compatible;
-- tokens and states remain coherent;
-- the change has focused tests and examples.
-
-Reject when the “variant” introduces an unrelated product workflow or turns a primitive into a god component.
+Use when the canonical component remains the right owner, the missing variation is named and reusable, API compatibility is preserved, and tokens/states remain coherent.
 
 ```yaml
-extension_decision:
-  canonical_abstraction: <component/utility>
-  missing_capability: <capability>
-  extension_type: variant
-  existing_contract_preserved: []
-  new_contract_fields: []
-  consumers_affected: []
+bounded_variant_decision:
+  canonical_component: <component>
+  requested_capability: <capability>
+  existing_variants_reviewed: []
+  new_variant: <name>
+  owned_responsibility: <responsibility>
   compatibility: <compatible | migration-required>
+  affected_consumers: []
   verification: []
 ```
 
+Reject a “variant” that embeds unrelated product workflow or turns a primitive into a god component.
+
 ## Option 4 — Compose canonical primitives
 
-Use when no single canonical component fits, but accepted primitives can satisfy the requirement without duplicating their responsibilities.
+Use when no single component fits but accepted primitives can satisfy the requirement without duplicating their responsibilities.
 
 Examples:
 
 ```text
-input + popover + command list
-→ domain-specific resource picker
+Input + Popover + Command
+→ product resource picker
 
-button + dialog + form primitives
-→ bounded product workflow dialog
+Button + Dialog + form primitives
+→ product workflow dialog
 
-table primitives + existing query state
-→ product-specific comparison surface
+Table primitives + accepted query state
+→ comparison surface
 ```
 
-Composition must preserve:
+Preserve primitive APIs, state semantics, focus and keyboard behavior, semantic tokens, error/loading/disabled behavior, analytics identity, and repository form/query/state conventions.
 
-- primitive APIs and state semantics;
-- focus and keyboard behavior;
-- semantic tokens and variants;
-- error/loading/disabled behavior;
-- analytics identity where applicable;
-- shared query/form/state conventions.
+## Option 5 — Add a component from the canonical registry
 
-## Option 5 — Product-specific component
+Use when:
 
-A product-specific component is valid when it owns product meaning that generic primitives should not own.
+- the repository accepts a source-component registry;
+- the component is absent locally;
+- the configured canonical registry supplies a fit implementation;
+- the generated source and dependencies fit repository configuration;
+- local customizations will not be overwritten without review.
+
+```yaml
+canonical_registry_component_decision:
+  requested_capability: <capability>
+  canonical_registry: <registry>
+  component: <component>
+  local_absence_evidence: []
+  repository_configuration_compatibility: []
+  generated_or_copied_source_destination: <path>
+  generated_dependencies_and_primitives: []
+  tokens_variants_and_local_customizations: []
+  ownership_and_update_model: <model>
+  rejected_alternatives: []
+  verification_plan: []
+```
+
+Generated or copied source becomes repository-owned. Review it like any other implementation.
+
+A canonical registry addition is not permission to use an unrelated registry or install a second component system.
+
+## Option 6 — Product-specific component
+
+A product-specific component is valid when it owns product meaning, policy, durable state, or workflow that generic primitives should not own.
 
 It should:
 
 - live in the owning product/module boundary;
-- compose or wrap canonical primitives where applicable;
+- compose or wrap canonical primitives when they fit;
 - keep domain policy out of generic shared primitives;
 - expose a bounded API;
-- avoid creating a parallel component or styling system;
-- include tests at the product behavior boundary.
+- avoid a parallel component or styling system;
+- include product-behavior tests.
 
-A custom component is not automatically drift. A custom reimplementation of an already-fit canonical abstraction is drift.
+A custom component is not automatically drift. A custom reimplementation of a fit canonical abstraction is drift.
 
-## Option 6 — Semantic native platform element
-
-Use native semantic elements when they satisfy the requirement without a repository abstraction.
-
-Examples may include:
-
-- headings, paragraphs, sections, lists, tables, links;
-- native form controls when the repository accepts them and the required contract is simple;
-- `details`/`summary` for suitable disclosures;
-- semantic landmarks and document structure.
-
-Evaluate:
-
-```text
-semantic meaning
-interaction requirement
-browser/platform behavior
-accessibility behavior
-styling and token needs
-shared analytics or state requirements
-repository precedent
-```
-
-Do not create a shared wrapper that adds no stable behavior or policy. Do not use native controls to bypass a fit canonical product abstraction with required variants, focus behavior, validation, or state semantics.
-
-## Option 7 — New dependency candidate
+## Option 7 — Dependency candidate
 
 A dependency is eligible only after a proven capability gap.
 
-### Capability gap definition
-
 ```text
 accepted requirement
-+ existing canonical systems reviewed
-+ bounded extension and composition reviewed
-+ semantic-native option reviewed when applicable
++ existing components reviewed
++ existing variants reviewed
++ bounded extension reviewed
++ composition reviewed
++ canonical registry reviewed
++ semantic-native eligibility reviewed
++ product-specific composition reviewed
 + requirement remains unsatisfied
 = capability gap candidate
 ```
 
 Preference, novelty, convenience, code brevity, or trend status is not a capability gap.
 
-## New dependency record
-
 ```yaml
 new_dependency_decision:
   requested_capability: <capability>
-
   proven_capability_gap:
     requirement: <requirement>
     evidence: []
     existing_options_reviewed: []
     why_reuse_failed: []
+    why_variant_failed: []
     why_extension_failed: []
     why_composition_failed: []
+    why_registry_failed: []
     why_semantic_native_failed: []
-
+    why_product_specific_failed: []
   candidate:
     name: <dependency>
     owned_role: <one bounded role>
     version_or_selection_policy: <policy>
-
-  alternatives_rejected:
-    - candidate: <alternative>
-      reason: <reason>
-
+  alternatives_rejected: []
   consequences:
     bundle_or_runtime: []
     security_and_supply_chain: []
@@ -190,81 +186,68 @@ new_dependency_decision:
     licensing_or_procurement: []
     interoperability_with_current_systems: []
     test_and_observability: []
-
   integration:
     owning_module: <owner>
     adapter_or_wrapper_boundary: <boundary>
     tokens_and_styling: <mapping>
     state_and_data: <mapping>
     migration_or_exit_strategy: <strategy>
-
   authority:
     policy_or_owner: <authority>
     decision_ref: <reference or ROUTE_FOR_APPROVAL>
-
   verification_plan: []
   verdict: <APPROVED | REJECTED | ROUTE_FOR_APPROVAL | NOT_VERIFIED>
 ```
 
-## Consequence checklist
+## Common classifications
 
-Before approval, inspect:
-
-- duplicate capability with current dependencies;
-- bundle, runtime, memory, or build cost;
-- server/client boundary impact;
-- security history and supply-chain risk;
-- accessibility behavior and customization limits;
-- styling/token interoperability;
-- state, form, query, routing, or data ownership conflicts;
-- SSR, hydration, rendering, platform, or environment constraints;
-- test strategy and mocking cost;
-- upgrade cadence and maintenance ownership;
-- licensing, procurement, or legal authority where applicable;
-- migration and removal strategy.
-
-## Common drift cases
-
-### Component library project, local raw dropdown
+### Existing Button/Input/Select rebuilt locally
 
 ```text
-canonical Select/Combobox exists and fits
-+ local div-based dropdown duplicates focus, keyboard, disabled, and token behavior
-→ CONVENTION_DRIFT + possible IMPLEMENTATION_DEFECT
+fit canonical component or variant exists
++ route creates a parallel visual and interaction contract
+→ CONVENTION_DRIFT
+```
+
+### Dialog absent locally but available from canonical registry
+
+```text
+canonical source-component registry is accepted
++ Dialog is absent locally
++ registry Dialog satisfies the requirement
+→ add_canonical_registry_component
+```
+
+### Existing typography roles ignored
+
+```text
+page-title, section-title, body, label, metadata, and code roles exist
++ route invents an unrelated local scale
+→ CONVENTION_DRIFT
 ```
 
 ### Canonical icon family, new icon package
 
 ```text
 existing icon family covers required symbols
-+ another package is installed for convenience
++ another package is added for convenience
 → DEPENDENCY_DRIFT
 ```
 
-### Tailwind/token system, new local stylesheet
-
-```text
-one-off CSS is used to recreate existing tokens/variants or a parallel theming grammar
-→ CONVENTION_DRIFT
-```
-
-This does not mean every CSS file is forbidden. Product assets, print/export styles, complex keyframes, third-party overrides, or bounded specialized rendering may justify CSS when repository conventions permit it.
-
-### Shared primitives, domain component composition
+### Valid product composition
 
 ```text
 canonical primitives remain authoritative
-+ domain-specific component owns unique product behavior
++ product component owns unique policy or workflow
 → valid product-specific composition
 ```
 
-### Measured virtualization requirement
+### Measured virtualization gap
 
 ```text
-existing table/list system cannot satisfy measured scale and accessibility requirement
-+ alternatives and consequences are reviewed
-+ authority approves one bounded rendering adapter
-→ CAPABILITY_GAP with eligible dependency
+existing components, variants, composition, registry, and product adapters cannot satisfy measured scale and accessibility
++ consequences and authority are reviewed
+→ CAPABILITY_GAP with eligible dependency candidate
 ```
 
 ## Decision output
@@ -273,7 +256,7 @@ existing table/list system cannot satisfy measured scale and accessibility requi
 reuse_extension_decision:
   requested_capability: <capability>
   existing_options_reviewed: []
-  selected_option: <reuse | reuse_variant | extend | compose | product_specific_component | semantic_native | dependency_candidate | unresolved>
+  selected_option: <semantic_native | reuse | reuse_variant | extend | compose | add_canonical_registry_component | product_specific_component | dependency_candidate | unresolved>
   evidence: []
   rationale: <reason>
   affected_convention_locks: []
@@ -283,13 +266,4 @@ reuse_extension_decision:
 
 ## Stop conditions
 
-Do not proceed when:
-
-- canonicality is unknown for a material system;
-- a fit shared abstraction is bypassed without evidence;
-- a migration target is being mixed without approved migration scope;
-- extension would break existing consumers without an explicit migration decision;
-- composition duplicates primitive behavior or loses accessibility contracts;
-- a dependency has no bounded role;
-- consequences or approval authority are missing;
-- implementation mapping has not been produced.
+Do not proceed when canonicality or component coverage is unknown, a fit abstraction is bypassed, a canonical registry option is skipped without evidence, a migration target is mixed without scope, an extension breaks consumers without migration authority, composition duplicates primitive behavior, a dependency has no bounded role, consequences or approval are missing, or implementation mapping has not been produced.
