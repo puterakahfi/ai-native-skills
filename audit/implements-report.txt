@@ -24,7 +24,7 @@ BROKEN: ./.deps/ai-native-core/tests/fixtures/conformance-boundaries/skills/vali
 
 VERSION MISMATCH: ./skills/design-layout/SKILL.md
   → ai-native-core/contracts/skills/design/design-layout.contract.yaml
-  pinned: ^1.0.0, actual: 2.0.0
+  pinned: ^2.0.1, actual: 2.0.0
 
 ────────────────────────────────────
 Checked: 92 adapter skills
