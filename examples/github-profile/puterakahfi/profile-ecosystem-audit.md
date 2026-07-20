@@ -31,15 +31,49 @@ readme:
   direct_narrow_render: NOT_VERIFIED
 
 pinned_items:
-  current_state: NOT_VERIFIED
-  reason: connected profile and repository APIs did not expose current pin selection or order
+  current_state: OBSERVED
+  evidence: user-provided direct GitHub profile screenshot
+  items:
+    - order: 1
+      repository: puterakahfi/ai-native-core
+      visibility: public
+      displayed_description: native ai engineering abstractions
+      displayed_language: Python
+    - order: 2
+      repository: puterakahfi/ai-native-skills
+      visibility: public
+      displayed_description: native ai skills adapter
+      displayed_language: Python
 ```
 
-The README presents AI Native Skills, Native AI Core, and VisualMate as the main narrative. Only public repositories may serve as inspectable source proof.
+The README presents AI Native Skills, Native AI Core, and VisualMate as the main narrative. The two public Native AI repositories are already pinned and provide inspectable proof. Platform language labels describe repository composition; they are not accepted as expertise proof.
+
+## Current vs Recommended Pins
+
+```yaml
+pin_comparison:
+  current_order:
+    - puterakahfi/ai-native-core
+    - puterakahfi/ai-native-skills
+  recommended_order:
+    - puterakahfi/ai-native-skills
+    - puterakahfi/ai-native-core
+  membership_match: PASS
+  order_match: PARTIAL
+  recommendation: >-
+    Keep both repositories pinned. Reorder ai-native-skills first so the visitor
+    encounters executable capabilities before the canonical contract layer.
+  mutation_status: RECOMMENDED_NOT_APPLIED
+```
+
+The current set is strategically correct. The only pin-level refinement is order:
+
+```text
+ai-native-skills  → what can agents execute?
+ai-native-core    → what contracts and boundaries govern it?
+```
 
 ## Recommended Pin Set
-
-This is a recommendation, not an observed pin state.
 
 ```yaml
 repository_curation:
@@ -70,7 +104,7 @@ repository_curation:
     No additional public repository was verified as equally strong, current, complementary proof.
     Do not fill all available pin slots with legacy or weakly aligned repositories.
 
-  current_pin_comparison: NOT_VERIFIED
+  current_pin_comparison: PARTIAL
   archive_candidates: NOT_VERIFIED
 ```
 
@@ -87,7 +121,14 @@ readiness:
   root_readme: OBSERVED
   license: OBSERVED_MIT
   contributing_file: ABSENT
-  description: NOT_VERIFIED
+  displayed_description:
+    state: OBSERVED
+    value: native ai skills adapter
+    verdict: PARTIAL
+  displayed_language:
+    state: OBSERVED
+    value: Python
+    interpretation: repository-language context only; not expertise proof
   topics: NOT_VERIFIED
   verdict: PARTIAL
   follow_up_issue: https://github.com/puterakahfi/ai-native-skills/issues/20
@@ -106,11 +147,12 @@ readiness:
 - The README becomes inventory-heavy after the strong opening.
 - The visitor journey does not yet offer a concise architecture/repository map before the long catalog.
 - There is no dedicated contribution entry point explaining how to add or refine skills, workflows, references, or eval cases.
-- Repository description and topics were not exposed by connected evidence.
+- The displayed description `native ai skills adapter` is too generic, lower-case, and narrower than the actual flagship-system role.
+- Topics remain unverified.
 
 **Pin decision**
 
-`RECOMMENDED` as the first pin. Its core proof is already strong; the follow-up improves public readiness and contribution clarity rather than justifying the repository’s existence.
+`KEEP_PINNED_AND_REORDER_FIRST`. Its core proof is already strong; the follow-up improves public readiness, contribution clarity, and repository metadata.
 
 ### `puterakahfi/ai-native-core` — `public-contract`
 
@@ -121,7 +163,14 @@ readiness:
   root_readme: OBSERVED
   license: OBSERVED_MIT
   contributing_file: ABSENT
-  description: NOT_VERIFIED
+  displayed_description:
+    state: OBSERVED
+    value: native ai engineering abstractions
+    verdict: PARTIAL
+  displayed_language:
+    state: OBSERVED
+    value: Python
+    interpretation: repository-language context only; not expertise proof
   topics: NOT_VERIFIED
   verdict: PARTIAL
   follow_up_issue: https://github.com/puterakahfi/ai-native-core/issues/2
@@ -140,27 +189,29 @@ readiness:
 - Detailed contract and documentation inventories dominate much of the reading experience after the strong opening.
 - There is no dedicated contribution guide covering change placement, versioning, manifest regeneration, and required validation.
 - A concise architecture map and audience-specific start paths would improve first-pass comprehension.
-- Repository description and topics were not exposed by connected evidence.
+- The displayed description `native ai engineering abstractions` is generic and does not communicate the stronger runtime-agnostic contract-layer role.
+- Topics remain unverified.
 
 **Pin decision**
 
-`RECOMMENDED` as the second pin. It answers a complementary visitor question and proves the canonical contract model behind the flagship implementation.
+`KEEP_PINNED_AND_REORDER_SECOND`. It answers a complementary visitor question and proves the canonical contract model behind the flagship implementation.
 
 ## Cross-Surface Consistency
 
 ```yaml
 cross_surface:
   profile_positioning_to_readme: PASS
-  readme_to_recommended_pins: PASS
+  readme_to_current_pins: PASS
   public_proof_accessibility: PASS
   private_product_labeling: PASS
   complementary_proof_roles: PASS
-  current_pins_match_recommendation: NOT_VERIFIED
-  repository_metadata_quality: NOT_VERIFIED
+  current_pin_membership: PASS
+  current_pin_order: PARTIAL
+  repository_metadata_quality: PARTIAL
   repository_contribution_readiness: PARTIAL
 ```
 
-The pair forms a coherent proof sequence:
+The pair is correct, but the recommended visitor journey is clearer in this order:
 
 ```text
 ai-native-skills  → executable capability system
@@ -212,20 +263,19 @@ cta:
 ## Mutation Status
 
 ```text
-NOT_APPLIED  pin or reorder repositories
-NOT_APPLIED  unpin repositories
-NOT_APPLIED  archive repositories
-NOT_APPLIED  edit profile metadata
-NOT_APPLIED  edit repository descriptions or topics
+RECOMMENDED_NOT_APPLIED  reorder ai-native-skills before ai-native-core
+NOT_APPLIED              unpin repositories
+NOT_APPLIED              archive repositories
+NOT_APPLIED              edit profile metadata
+NOT_APPLIED              edit repository descriptions or topics
 ```
 
-No pin, archive, privacy, description, topic, or profile-metadata mutation is approved by this audit.
+No pin, archive, privacy, description, topic, or profile-metadata mutation was applied by this audit.
 
 ## Remaining Evidence
 
 ```text
-NOT_VERIFIED  actual pinned repositories and order
-NOT_VERIFIED  repository descriptions and topics
+NOT_VERIFIED  repository topics
 NOT_VERIFIED  direct narrow GitHub render
 NOT_VERIFIED  dark-theme parity if future assets become theme-sensitive
 ```
