@@ -13,7 +13,8 @@ primary_domain_gap: no dedicated developer-profile or document-portfolio reviewe
 viewing_contexts:
   - local GFM-equivalent desktop at 1200 px viewport
   - local GFM-equivalent narrow at 390 px viewport
-  - direct GitHub desktop screenshot of modern-professional before focused refinement
+  - direct GitHub desktop screenshot of initial modern-professional publication
+  - direct GitHub desktop screenshot after the main focused refinement
 comparison_control:
   - same verified identity
   - same selected projects and links
@@ -22,7 +23,7 @@ comparison_control:
   - same brand lock
 ```
 
-The comparative images were captured in the execution session and are not committed to the repository. Direct GitHub desktop evidence exists for the first published Modern Professional attempt. Direct GitHub narrow, dark-theme, and post-refinement desktop parity remain `NOT_VERIFIED`.
+The comparative images were captured in the execution session and are not committed to the repository. Direct GitHub desktop evidence exists for the initial and focused-refinement Modern Professional attempts. Direct GitHub narrow, dark-theme, and final post-polish desktop parity remain `NOT_VERIFIED`.
 
 ## Invariant Fact Check
 
@@ -43,11 +44,11 @@ The variants differ materially without changing evidence completeness.
 
 | Variant | Verified universal score | Evidence coverage | Coverage verdict | Publication status |
 |---|---:|---:|---|---|
-| Zen Minimalist | 8.6 / 10 | ~90% | LIMITED REVIEW | selected / aligned |
-| Modern Professional | 8.5 / 10 local preflight | ~90% | LIMITED REVIEW | live focused refinement pending re-render |
+| Zen Minimalist | 8.6 / 10 | ~90% | LIMITED REVIEW | aligned alternative |
+| Modern Professional | 8.7 / 10 direct refined render | ~93% | LIMITED REVIEW | active; final polish pending re-render |
 | Creative Editorial | 8.2 / 10 | ~90% | LIMITED REVIEW | exploratory |
 
-Scores describe verified universal visual scope only. They do not provide complete developer-profile domain approval. The direct GitHub screenshot is used to identify real-platform defects; it does not silently replace the comparable-render score.
+Scores describe verified universal visual scope only. They do not provide complete developer-profile domain approval. Direct GitHub screenshots are used to identify real-platform defects; they do not silently replace the controlled comparative-render evidence.
 
 ## Zen Minimalist
 
@@ -72,14 +73,14 @@ The profile depends strongly on precise copy and rhythm. Weak or generic thesis 
 - Brand adaptation — modern expression remained free of cards, gradients, dividers, and stats widgets.
 - Fact invariance — publication did not change projects, ownership, links, capabilities, or evidence strength.
 
-**Direct GitHub findings**
+**Initial direct GitHub findings**
 
 - `R7`, `H3` PARTIAL — project purpose, every metadata label, contribution, operating principles, and capability labels competed in bold; individually clear roles flattened into one repeated emphasis tier.
 - `G5`, `R3` PARTIAL — project internals were readable, but sibling-project gaps were not sufficiently stronger than internal gaps.
 - `G8`, `CP1` PARTIAL — the opening was professional but the proposition was less memorable than the project proof below it.
 - `H2`, `CP2` PARTIAL — Core capabilities and Current focus read like separate appendix sections after the stronger Operating model.
 
-**Focused correction applied**
+**Main focused correction**
 
 ```text
 role line                plain supporting text
@@ -91,7 +92,16 @@ project sibling gap      one bounded stronger pause
 capability + focus       merged into Working across
 ```
 
-This preserves the Modern Professional direction while correcting the smallest causal layers. Post-refinement direct GitHub render remains `NOT_VERIFIED`.
+The second direct GitHub screenshot verified that this correction restored first-view hierarchy, reduced emphasis overload, improved project grouping, and made the lower page feel continuous rather than appended.
+
+**Final polish applied after the second screenshot**
+
+```text
+VisualMate → Operating model   section gap strengthened
+Working across                 Current focus · July 2026 restored as metadata
+```
+
+These are local corrections inside the accepted Modern Professional direction. Final post-polish direct GitHub render remains `NOT_VERIFIED`.
 
 ## Creative Editorial
 
@@ -110,10 +120,10 @@ It is the longest variant and creates the strongest editorial voice. Publication
 ## Foundation Summary
 
 ```text
-F1 hierarchy               PASS for zen/creative; modern corrected after direct render
+F1 hierarchy               PASS in direct refined modern render and equivalent variant renders
 F2 grouping                PASS across all variants
 F3 alignment               PASS across all variants
-F4 space + rhythm          PASS local preflight; modern direct render required correction
+F4 space + rhythm          PASS after focused correction; final section-gap polish pending re-render
 F5 balance                 PASS across all variants
 F6 flow                    PASS across all variants
 F7 legibility              PASS across all variants
@@ -140,9 +150,9 @@ This passes the variant requirement: the differences are visible in hierarchy, d
 ## Recommendation
 
 ```text
-publish now      zen-minimalist
-live test        modern-professional after focused refinement
+active profile   modern-professional after final polish
+aligned option   zen-minimalist
 explore/approve  creative-editorial
 ```
 
-Remain `LIMITED REVIEW` until post-refinement direct GitHub parity and a suitable primary-domain reviewer are available.
+Remain `LIMITED REVIEW` until final post-polish direct GitHub parity, narrow-width GitHub evidence, and a suitable primary-domain reviewer are available.
