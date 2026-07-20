@@ -13,6 +13,7 @@ primary_domain_gap: no dedicated developer-profile or document-portfolio reviewe
 viewing_contexts:
   - local GFM-equivalent desktop at 1200 px viewport
   - local GFM-equivalent narrow at 390 px viewport
+  - direct GitHub desktop screenshot of modern-professional before focused refinement
 comparison_control:
   - same verified identity
   - same selected projects and links
@@ -21,7 +22,7 @@ comparison_control:
   - same brand lock
 ```
 
-The render images were captured in the execution session and are not committed to the repository. Direct GitHub desktop, narrow, and dark-theme parity remain `NOT_VERIFIED`.
+The comparative images were captured in the execution session and are not committed to the repository. Direct GitHub desktop evidence exists for the first published Modern Professional attempt. Direct GitHub narrow, dark-theme, and post-refinement desktop parity remain `NOT_VERIFIED`.
 
 ## Invariant Fact Check
 
@@ -36,14 +37,6 @@ PASS  GitHub, pkahfi.com, ai.pkahfi.com, and VisualMate links exist in all varia
 PASS  no employer, client, user-count, revenue, or impact metric was added
 ```
 
-Source density:
-
-```text
-zen-minimalist       355 words · 10 headings
-modern-professional  319 words ·  9 headings
-creative-editorial   387 words · 11 headings
-```
-
 The variants differ materially without changing evidence completeness.
 
 ## Comparative Verdict
@@ -51,10 +44,10 @@ The variants differ materially without changing evidence completeness.
 | Variant | Verified universal score | Evidence coverage | Coverage verdict | Publication status |
 |---|---:|---:|---|---|
 | Zen Minimalist | 8.6 / 10 | ~90% | LIMITED REVIEW | selected / aligned |
-| Modern Professional | 8.5 / 10 | ~90% | LIMITED REVIEW | aligned alternative |
+| Modern Professional | 8.5 / 10 local preflight | ~90% | LIMITED REVIEW | live focused refinement pending re-render |
 | Creative Editorial | 8.2 / 10 | ~90% | LIMITED REVIEW | exploratory |
 
-Scores describe verified universal visual scope only. They do not provide complete developer-profile domain approval.
+Scores describe verified universal visual scope only. They do not provide complete developer-profile domain approval. The direct GitHub screenshot is used to identify real-platform defects; it does not silently replace the comparable-render score.
 
 ## Zen Minimalist
 
@@ -72,17 +65,33 @@ The profile depends strongly on precise copy and rhythm. Weak or generic thesis 
 
 ## Modern Professional
 
-**What works**
+**What worked in the first live render**
 
-- `G8`, `R7`, `H3` — role, selected systems, project ownership, state, and contribution are immediately scannable.
-- `G7`, `C3` — a strong left edge and repeated project anatomy create professional order.
-- `CP1`, `CP2` — content is the shortest of the three variants while preserving complete proof.
-- Brand adaptation — modern expression is achieved without cards, gradients, dividers, or stats widgets.
-- Narrow width — explicit labels stack predictably and retain ownership meaning.
+- `G8`, `R7`, `H3` — identity, selected systems, ownership, state, and contribution were immediately scannable.
+- `G7`, `C3` — a strong left edge and repeated project anatomy created professional order.
+- Brand adaptation — modern expression remained free of cards, gradients, dividers, and stats widgets.
+- Fact invariance — publication did not change projects, ownership, links, capabilities, or evidence strength.
 
-**Trade-off**
+**Direct GitHub findings**
 
-The stronger label system feels more utilitarian and less meditative than the selected Zen Minimalist variant.
+- `R7`, `H3` PARTIAL — project purpose, every metadata label, contribution, operating principles, and capability labels competed in bold; individually clear roles flattened into one repeated emphasis tier.
+- `G5`, `R3` PARTIAL — project internals were readable, but sibling-project gaps were not sufficiently stronger than internal gaps.
+- `G8`, `CP1` PARTIAL — the opening was professional but the proposition was less memorable than the project proof below it.
+- `H2`, `CP2` PARTIAL — Core capabilities and Current focus read like separate appendix sections after the stronger Operating model.
+
+**Focused correction applied**
+
+```text
+role line                plain supporting text
+proposition              one dominant bold statement
+project purpose          plain
+project metadata         one italic evidence line
+project contribution     plain supporting prose
+project sibling gap      one bounded stronger pause
+capability + focus       merged into Working across
+```
+
+This preserves the Modern Professional direction while correcting the smallest causal layers. Post-refinement direct GitHub render remains `NOT_VERIFIED`.
 
 ## Creative Editorial
 
@@ -101,15 +110,15 @@ It is the longest variant and creates the strongest editorial voice. Publication
 ## Foundation Summary
 
 ```text
-F1 hierarchy               PASS across all variants
+F1 hierarchy               PASS for zen/creative; modern corrected after direct render
 F2 grouping                PASS across all variants
 F3 alignment               PASS across all variants
-F4 space + rhythm          PASS across all variants
+F4 space + rhythm          PASS local preflight; modern direct render required correction
 F5 balance                 PASS across all variants
 F6 flow                    PASS across all variants
 F7 legibility              PASS across all variants
 F8 system consistency      PASS within each variant
-F9 accessibility           PARTIAL; semantic source passes, direct GitHub/theme evidence missing
+F9 accessibility           PARTIAL; semantic source passes, full direct GitHub/theme evidence missing
 F10 responsive continuity  PASS in local equivalent narrow renders
 ```
 
@@ -120,7 +129,7 @@ zen-minimalist
   centered thesis + proximity-led projects + sparse cadence
 
 modern-professional
-  left anchor + explicit proof labels + balanced compact density
+  left anchor + concise evidence metadata + balanced compact density
 
 creative-editorial
   numbered systems + authored section vocabulary + premise/work/evidence rhythm
@@ -132,8 +141,8 @@ This passes the variant requirement: the differences are visible in hierarchy, d
 
 ```text
 publish now      zen-minimalist
-aligned option   modern-professional
+live test        modern-professional after focused refinement
 explore/approve  creative-editorial
 ```
 
-Remain `LIMITED REVIEW` until direct GitHub parity and a suitable primary-domain reviewer are available.
+Remain `LIMITED REVIEW` until post-refinement direct GitHub parity and a suitable primary-domain reviewer are available.
