@@ -1,0 +1,25 @@
+skill_test:
+  skill: ai-system-design
+  version: 1.0.1
+  description: Verify ai-system-design exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: production-ai-design-requires-evals-and-fallback
+    description: Design a production RAG feature with measurable retrieval, evaluation, and degradation behavior.
+    trigger: Apply ai-system-design to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - eval_framework_must_exist_before_production_deploy
+    - rag_retrieval_quality_must_be_measurable
+    - ai_feature_must_degrade_gracefully_not_fail_silently
+    - ai_system_architecture
+    - rag_design
+    - agent_memory_design
+    - fallback_strategy
+    - human_in_the_loop_design
+    - ai_feature_description
+    must_not_contain:
+    - deploy first and add evaluation later
+    - fail silently
+    quality_gates_tested:
+    - eval_framework_must_exist_before_production_deploy
+    - rag_retrieval_quality_must_be_measurable
+    - ai_feature_must_degrade_gracefully_not_fail_silently

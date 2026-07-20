@@ -1,0 +1,17 @@
+skill_test:
+  skill: adr
+  version: 1.0.1
+  description: Verify adr exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: superseding-adr-preserves-history
+    description: Supersede an accepted ADR while preserving immutable decision history.
+    trigger: Apply adr to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - superseding_adr_must_reference_original
+    - adr_document
+    - decision_log_entry
+    - superseded_adr_reference
+    must_not_contain:
+    - replace the old ADR in place
+    quality_gates_tested:
+    - superseding_adr_must_reference_original

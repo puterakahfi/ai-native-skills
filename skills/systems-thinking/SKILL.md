@@ -3,7 +3,7 @@ name: systems-thinking
 description: Analyze systems as wholes — feedback loops, emergence, second-order effects, Conway's Law, Goodhart's Law, unintended consequences, and leverage points. The "whether" question before the "how" question.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/architecture/systems-thinking.contract.yaml
@@ -12,6 +12,36 @@ metadata:
 ---
 
 # Systems Thinking
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/architecture/systems-thinking.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- system_or_decision_description
+allowed_outputs:
+- feedback_loop_map
+- emergence_analysis
+- second_order_effects
+- conways_law_analysis
+- unintended_consequences_report
+- leverage_points
+quality_gates:
+- feedback_loops_must_be_identified_reinforcing_and_balancing
+- second_order_effects_must_be_analyzed_not_just_first
+- conways_law_must_be_applied_to_team_and_architecture_alignment
+- unintended_consequences_must_be_explicitly_considered
+- goodharts_law_risk_must_be_assessed_for_any_new_metric
+- leverage_points_must_be_identified_before_intervention
+- emergence_must_be_considered_for_complex_systems
+- whether_question_must_precede_how_question
+```
+
+Analyze reinforcing and balancing loops, second-order effects, Conway alignment, Goodhart risk for new metrics, emergence, leverage points, and unintended consequences before recommending intervention.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 > **HARD RULES**
 > - **Identify feedback loops before proposing solutions** — every intervention creates or modifies a loop

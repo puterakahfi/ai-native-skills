@@ -1,0 +1,23 @@
+skill_test:
+  skill: spike
+  version: 1.0.1
+  description: Verify spike exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: spike-is-timeboxed-throwaway-and-verdict-led
+    description: Run a time-boxed technical spike and return a verdict without shipping prototype code.
+    trigger: Apply spike to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - time_box_must_be_respected
+    - do_not_ship_spike_code_directly
+    - spike_result
+    - feasibility_verdict
+    - approach_recommendation
+    - throwaway_prototype
+    - learnings_summary
+    - question_or_uncertainty
+    must_not_contain:
+    - ship the spike directly
+    - ignore the time box
+    quality_gates_tested:
+    - time_box_must_be_respected
+    - do_not_ship_spike_code_directly

@@ -3,7 +3,7 @@ name: architecture-review
 description: Engineering contract compliance reviewer — checks code, PRs, and system design against the product engineering contract. Catches stack violations, layer boundary breaks, unauthorized dependencies, and architecture drift before merge.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/architecture-review.contract.yaml
@@ -11,6 +11,38 @@ metadata:
 ---
 
 # Architecture Review
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/quality/architecture-review.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- code_or_pr_diff
+- engineering_contract_ref
+allowed_outputs:
+- compliance_verdict
+- violation_list
+- adr_required_flag
+- new_dependency_flag
+- architecture_smell_list
+- recommendation_list
+quality_gates:
+- must_load_engineering_contract_before_review
+- must_check_stack_compliance
+- must_check_layer_boundary_violations
+- must_check_unauthorized_dependencies
+- must_check_architecture_style_compliance
+- must_check_test_strategy_compliance
+- must_flag_adr_requirement_when_contract_change_detected
+- must_not_approve_generated_code_that_violates_contract
+- treats_compiled_as_approved_is_forbidden
+```
+
+Compilation and test success are evidence, not architecture approval. Review the code_or_pr_diff against the engineering_contract_ref and emit a compliance_verdict with violations, ADR and dependency flags, smells, and recommendations.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## The Core Rule
 

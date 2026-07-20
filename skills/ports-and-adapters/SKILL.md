@@ -3,7 +3,7 @@ name: ports-and-adapters
 description: Design hexagonal architecture with explicit ports and adapters — domain isolation, dependency inversion, testable domain without infrastructure. Foundation pattern for DDD, microservices, and clean architecture.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/architecture/ports-and-adapters.contract.yaml
@@ -11,6 +11,34 @@ metadata:
 ---
 
 # Ports and Adapters (Hexagonal Architecture)
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/architecture/ports-and-adapters.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- component_or_feature
+allowed_outputs:
+- port_definitions
+- adapter_implementations
+- dependency_graph
+- architecture_decision_record
+quality_gates:
+- domain_must_not_depend_on_infrastructure
+- ports_must_be_defined_as_interfaces_in_domain_layer
+- adapters_must_implement_ports_not_the_other_way
+- all_external_dependencies_must_cross_via_port
+- domain_logic_must_be_testable_without_infrastructure
+- no_framework_imports_in_domain_layer
+- primary_ports_drive_the_domain_secondary_ports_are_driven_by_domain
+- dependency_inversion_principle_enforced_at_every_boundary
+```
+
+Every external dependency crosses a named port, adapters implement ports, and dependency inversion is enforced at every boundary. Framework and infrastructure imports do not enter the domain.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 > **HARD RULES**
 > - Ports = input boundaries only — defined in Domain layer, never in Infrastructure

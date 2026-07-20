@@ -1,0 +1,20 @@
+skill_test:
+  skill: response-contract
+  version: 1.0.1
+  description: Verify response-contract exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: response-review-emits-compliant-output-or-violations
+    description: Evaluate an agent response for filler, precision, proportional length, and exact commands.
+    trigger: Apply response-contract to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - compliant_response
+    - violation_report
+    - token_savings_estimate
+    - agent_response
+    - lead_with_answer_not_preamble
+    - response_length_proportional_to_task_complexity
+    must_not_contain:
+    - approve filler without reporting it
+    quality_gates_tested:
+    - lead_with_answer_not_preamble
+    - response_length_proportional_to_task_complexity

@@ -1,0 +1,19 @@
+skill_test:
+  skill: technical-debt-governance
+  version: 1.0.1
+  description: Verify technical-debt-governance exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: new-debt-is-logged-before-merge
+    description: Classify newly introduced debt, assign impact and paydown ownership, and gate merge.
+    trigger: Apply technical-debt-governance to a realistic architecture or engineering decision and report the contract-backed
+      result.
+    must_contain:
+    - new_debt_logged_before_merging
+    - classification_report
+    - paydown_priority_list
+    - debt_gate_scores
+    - codebase_ref
+    must_not_contain:
+    - merge first and log debt later
+    quality_gates_tested:
+    - new_debt_logged_before_merging

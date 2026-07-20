@@ -3,7 +3,7 @@ name: response-contract
 description: Persistent output verbosity standard — eliminates filler, enforces answer-first, keeps code exact. Set once in AGENTS.md, applies to every response forever. Works on both sides of the token equation with prompt-optimizer.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/context/response-contract.contract.yaml
@@ -11,6 +11,33 @@ metadata:
 ---
 
 # Response Contract
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/context/response-contract.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- agent_response
+allowed_outputs:
+- compliant_response
+- violation_report
+- token_savings_estimate
+quality_gates:
+- no_filler_openers
+- no_conclusion_fluff
+- no_unnecessary_hedges
+- code_and_commands_always_exact
+- response_length_proportional_to_task_complexity
+- no_unsolicited_alternatives
+- lead_with_answer_not_preamble
+- verbosity_level_must_be_declared_in_agents_md
+```
+
+Evaluate the supplied agent_response against the declared response rules. Return either a compliant_response or a violation_report, and estimate token savings only from removals that preserve task completeness.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## The Core Rule
 

@@ -1,0 +1,23 @@
+skill_test:
+  skill: model-selection
+  version: 1.0.1
+  description: Verify model-selection exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: model-choice-records-routing-fallback-and-verification
+    description: Select and route a model for a risky task with capability, privacy, cost, fallback, and verification constraints.
+    trigger: Apply model-selection to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - model_selection_decision
+    - model_routing_plan
+    - fallback_model_plan
+    - cost_latency_quality_tradeoff
+    - verification_plan
+    - task_intent_must_be_classified_before_model_choice
+    - fallback_must_be_defined_for_unavailable_or_failing_model
+    - verification_plan_must_match_task_risk
+    must_not_contain:
+    - choose the model before classifying the task
+    quality_gates_tested:
+    - task_intent_must_be_classified_before_model_choice
+    - fallback_must_be_defined_for_unavailable_or_failing_model
+    - verification_plan_must_match_task_risk

@@ -1,0 +1,19 @@
+skill_test:
+  skill: language-standards
+  version: 1.1.1
+  description: Verify language-standards exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: language-review-emits-verdict-and-correction
+    description: Review a mixed-language artifact against its declared language and return violations plus a corrected form.
+    trigger: Apply language-standards to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - language_compliance_verdict
+    - violation_list
+    - corrected_artifact
+    - artifact_language_must_be_explicitly_declared
+    - no_mixed_language_within_same_artifact_type
+    must_not_contain:
+    - silently accept mixed language
+    quality_gates_tested:
+    - artifact_language_must_be_explicitly_declared
+    - no_mixed_language_within_same_artifact_type

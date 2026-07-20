@@ -3,7 +3,7 @@ name: technical-debt-governance
 description: Technical debt governance — debt inventory, classification, interest calculation, paydown strategy, coupling metrics, and Boy Scout Rule enforcement. For teams that want to track and reduce debt systematically, not just complain about it.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/technical-debt-governance.contract.yaml
@@ -12,6 +12,29 @@ metadata:
 ---
 
 # Technical Debt Governance Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/engineering/technical-debt-governance.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- codebase_ref
+allowed_outputs:
+- debt_inventory
+- classification_report
+- paydown_priority_list
+- debt_gate_scores
+quality_gates:
+- debt_classified_by_type_and_impact
+- high_impact_debt_has_paydown_plan
+- new_debt_logged_before_merging
+```
+
+New debt must be classified and logged before merge. High-impact debt needs an owned paydown plan, priority, and gate status rather than an informal TODO.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 > **HARD RULES — apply always, top and bottom of every engagement:**
 > 1. **Classify debt before paying it** — deliberate vs reckless vs inadvertent. Unclassified debt is unmanaged debt.

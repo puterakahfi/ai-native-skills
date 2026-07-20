@@ -3,7 +3,7 @@ name: event-driven-design
 description: Design event schema, producer/consumer contracts, saga patterns, and idempotency strategy for event-driven and async systems. Covers at-least-once delivery, dead letter queues, schema evolution, and CQRS flow.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/architecture/event-driven-design.contract.yaml
@@ -12,6 +12,36 @@ metadata:
 ---
 
 # Event-Driven Design
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/architecture/event-driven-design.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- business_flow_or_domain_event
+allowed_outputs:
+- event_schema
+- event_catalog_entry
+- producer_consumer_contract
+- saga_design
+- dead_letter_queue_strategy
+- idempotency_strategy
+quality_gates:
+- event_names_must_be_past_tense_and_domain_meaningful
+- event_schema_must_be_versioned
+- consumers_must_be_idempotent
+- delivery_guarantee_must_be_explicit
+- saga_must_define_compensating_transactions
+- no_direct_db_sharing_between_producer_and_consumer
+- dead_letter_queue_strategy_must_be_defined
+- schema_evolution_must_be_backward_compatible
+```
+
+A saga is incomplete without compensating transactions. Producer and consumer may share a contract but must not share a database; delivery, idempotency, DLQ behavior, and schema evolution remain explicit.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 > **HARD RULES**
 > - Events are immutable facts — always named in **past tense**

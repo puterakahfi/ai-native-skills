@@ -1,0 +1,22 @@
+skill_test:
+  skill: architecture-review
+  version: 1.0.1
+  description: Verify architecture-review exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: compiled-code-is-not-architecture-approval
+    description: Review a compiling PR against its engineering contract and report violations and flags.
+    trigger: Apply architecture-review to a realistic architecture or engineering decision and report the contract-backed
+      result.
+    must_contain:
+    - treats_compiled_as_approved_is_forbidden
+    - compliance_verdict
+    - violation_list
+    - adr_required_flag
+    - new_dependency_flag
+    - architecture_smell_list
+    - code_or_pr_diff
+    - engineering_contract_ref
+    must_not_contain:
+    - compiled means approved
+    quality_gates_tested:
+    - treats_compiled_as_approved_is_forbidden

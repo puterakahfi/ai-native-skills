@@ -1,0 +1,19 @@
+skill_test:
+  skill: diagram-architect
+  version: 1.0.1
+  description: Verify diagram-architect exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: diagram-starts-from-subject-purpose-and-source
+    description: Specify an architecture diagram from named subject, purpose, audience, and source context.
+    trigger: Apply diagram-architect to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - diagram_subject
+    - diagram_purpose
+    - source_context
+    - preserve_architecture_truth_over_visual_novelty
+    - name_source_of_truth_for_nodes_edges_and_boundaries
+    must_not_contain:
+    - invent missing architecture
+    quality_gates_tested:
+    - preserve_architecture_truth_over_visual_novelty
+    - name_source_of_truth_for_nodes_edges_and_boundaries

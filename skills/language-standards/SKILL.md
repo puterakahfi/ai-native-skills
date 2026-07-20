@@ -3,7 +3,7 @@ name: language-standards
 description: Enforces consistent language usage across engineering artifacts — code, commits, PRs, issues, comments, skills, and test cases. The artifact language is product-defined; this skill enforces that the choice is explicit, consistent, and documented.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/governance/language-standards.contract.yaml
@@ -11,6 +11,35 @@ metadata:
 ---
 
 # Language Standards
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/governance/language-standards.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- artifact_type
+- content
+- declared_language
+allowed_outputs:
+- language_compliance_verdict
+- violation_list
+- corrected_artifact
+quality_gates:
+- artifact_language_must_be_explicitly_declared
+- code_identifiers_must_match_declared_language
+- commit_messages_must_match_declared_language
+- pr_titles_and_descriptions_must_match_declared_language
+- code_comments_must_match_declared_language
+- no_mixed_language_within_same_artifact_type
+- skill_and_test_content_must_match_declared_language
+- commit_type_prefix_always_follows_conventional_commits_spec
+```
+
+Evaluate the declared language for the supplied artifact, return a language_compliance_verdict and violation_list, and provide a corrected_artifact only when correction is requested or required by the task.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## The Core Rule
 

@@ -1,0 +1,22 @@
+skill_test:
+  skill: git-workflow
+  version: 1.0.1
+  description: Verify git-workflow exposes and applies its reviewed architecture or engineering contract interface.
+  cases:
+  - id: git-result-reports-only-executed-actions
+    description: Execute a branch, commit, PR, and merge workflow from explicit intent and report conflicts honestly.
+    trigger: Apply git-workflow to a realistic architecture or engineering decision and report the contract-backed result.
+    must_contain:
+    - branch_created
+    - commits_authored
+    - pr_or_mr_opened
+    - merge_executed
+    - conflict_report
+    - intent
+    - branch_must_be_created_from_correct_base
+    - pr_must_reference_issue_before_submit
+    must_not_contain:
+    - claim merge without executing it
+    quality_gates_tested:
+    - branch_must_be_created_from_correct_base
+    - pr_must_reference_issue_before_submit

@@ -3,7 +3,7 @@ name: refactoring
 description: Structured code refactoring without behavior change — name the smell, green tests first, small independent steps, one refactoring type per commit. Covers extract method/class, move, rename, decompose conditional, replace pattern.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/refactoring.contract.yaml
@@ -11,6 +11,35 @@ metadata:
 ---
 
 # Refactoring
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/engineering/refactoring.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- code_or_module
+- refactoring_goal
+allowed_outputs:
+- refactored_code
+- refactoring_plan
+- test_suite_update
+- complexity_delta
+quality_gates:
+- tests_must_be_green_before_refactoring_starts
+- behavior_must_be_identical_before_and_after
+- refactoring_steps_must_be_small_and_independently_verifiable
+- no_feature_added_during_refactoring
+- no_bug_fixed_during_refactoring
+- test_coverage_must_not_decrease
+- one_refactoring_type_per_commit
+- code_smell_must_be_named_before_fix
+```
+
+Refactoring preserves behavior. Do not add a feature or fix a bug inside the refactoring change, keep tests green, prevent coverage regression, and report the plan, updated tests, and complexity delta.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 > **HARD RULES**
 > - Tests must pass before AND after refactoring — never refactor a red suite

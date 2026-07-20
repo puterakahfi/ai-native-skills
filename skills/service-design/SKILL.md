@@ -3,7 +3,7 @@ name: service-design
 description: Design service boundaries and inter-service communication — decompose by bounded context, justify sync vs async, own your data, avoid distributed monolith. Forces-first decomposition.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/architecture/service-design.contract.yaml
@@ -12,6 +12,35 @@ metadata:
 ---
 
 # Service Design
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/architecture/service-design.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- domain_context
+allowed_outputs:
+- service_boundary_map
+- communication_pattern_decision
+- api_contract_outline
+- data_ownership_map
+- decomposition_rationale
+quality_gates:
+- service_boundary_must_align_with_bounded_context
+- each_service_must_own_its_data
+- no_shared_database_across_services
+- synchronous_vs_asynchronous_must_be_justified
+- circular_dependencies_between_services_are_forbidden
+- decomposition_must_be_justified_by_forces_not_preference
+- failure_modes_must_be_considered_per_communication_pattern
+- strangler_fig_preferred_over_big_bang_rewrite
+```
+
+Derive service boundaries from the domain context, give each service its own data, justify synchronous versus asynchronous communication, and return boundaries, communication decisions, API outline, ownership map, and decomposition rationale.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 ## The Core Rule
 

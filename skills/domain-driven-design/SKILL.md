@@ -3,7 +3,7 @@ name: domain-driven-design
 description: Model complex domains using DDD building blocks — bounded contexts, aggregates, value objects, domain events, ubiquitous language, and repository pattern. Strategic and tactical design.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/architecture/domain-driven-design.contract.yaml
@@ -11,6 +11,36 @@ metadata:
 ---
 
 # Domain-Driven Design
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/architecture/domain-driven-design.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- domain_description
+allowed_outputs:
+- bounded_context_map
+- aggregate_design
+- ubiquitous_language_glossary
+- domain_event_catalog
+- context_map_relationships
+- repository_interface_definitions
+quality_gates:
+- every_aggregate_must_have_a_single_root
+- value_objects_must_be_immutable
+- domain_events_must_be_named_in_past_tense
+- ubiquitous_language_must_be_consistent_across_bounded_context
+- repositories_must_only_return_aggregates_not_raw_entities
+- no_domain_logic_in_application_or_infrastructure_layer
+- bounded_context_boundaries_must_be_explicit
+- context_map_must_define_upstream_downstream_relationships
+```
+
+Each aggregate has one root, value objects are immutable, domain events use past-tense domain language, and every context map names upstream and downstream relationships. Keep domain logic inside the domain boundary.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, architecture, test, or product evidence.
+
 
 > **HARD RULES**
 > - **Ubiquitous language first** — model reflects domain vocabulary, not technical vocabulary
