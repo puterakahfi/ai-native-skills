@@ -3,13 +3,13 @@ name: product-development-workflow
 description: End-to-end digital product workflow from zero to launch — discovery, provenance-backed PRD and MVP decisions, technical specification, feature implementation, product acceptance, release readiness, delivery approval, launch, and learning.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.2.0
+  ai-native-skills.version: 2.3.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "product-requirements business-value-alignment experiment-design user-research product-manager decision-provenance master-design master-engineer native-ai-engineer chatgpt-app-development spec-workflow new-feature-workflow code-review-workflow design-review deployment-workflow observability-design"
+  ai-native-skills.requires: "product-requirements business-value-alignment experiment-design user-research product-manager delivery-work-breakdown decision-provenance master-design master-engineer native-ai-engineer chatgpt-app-development spec-workflow new-feature-workflow code-review-workflow design-review deployment-workflow observability-design"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/product-development.contract.yaml
   ai-native-skills.contract-version: "~0.3"
-  ai-native-skills.skill_load_order: '[{"phase":"discovery","load":["model-selection","user-research","business-value-alignment","experiment-design","product-manager","decision-making"]},{"phase":"requirements","load":["product-requirements","business-value-alignment","product-manager","decision-provenance"]},{"phase":"mvp_slice","load":["business-value-alignment","experiment-design","product-manager","decision-making","spike","decision-provenance"]},{"phase":"technical_spec","load":["spec-workflow","native-ai-engineer","master-engineer","api-contract","data-modeling","decision-provenance"]},{"phase":"implementation","load":["new-feature-workflow","test-driven-development","master-engineer","systematic-debugging"]},{"phase":"acceptance_verification","load":["skill-eval","code-review-workflow","decision-provenance"]},{"phase":"acceptance_domain_review","load":["design-review","security-review","threat-modeling","web-performance","accessibility"]},{"phase":"release","load":["git-workflow","deployment-workflow","decision-provenance"]},{"phase":"deploy","load":["deployment-workflow","observability-design","resilience-engineering","decision-provenance"]},{"phase":"launch","load":["business-value-alignment","product-manager","content-strategy","copywriting","cro","observability-design","decision-provenance"]},{"phase":"learn","load":["business-value-alignment","product-manager","observability-design","user-research","decision-making","decision-provenance"]}]'
+  ai-native-skills.skill_load_order: '[{"phase":"discovery","load":["model-selection","user-research","business-value-alignment","experiment-design","product-manager","decision-making"]},{"phase":"requirements","load":["product-requirements","business-value-alignment","product-manager","decision-provenance"]},{"phase":"mvp_slice","load":["business-value-alignment","experiment-design","product-manager","delivery-work-breakdown","decision-making","spike","decision-provenance"]},{"phase":"technical_spec","load":["spec-workflow","delivery-work-breakdown","native-ai-engineer","master-engineer","api-contract","data-modeling","decision-provenance"]},{"phase":"implementation","load":["new-feature-workflow","test-driven-development","master-engineer","systematic-debugging"]},{"phase":"acceptance_verification","load":["skill-eval","code-review-workflow","decision-provenance"]},{"phase":"acceptance_domain_review","load":["design-review","security-review","threat-modeling","web-performance","accessibility"]},{"phase":"release","load":["git-workflow","deployment-workflow","decision-provenance"]},{"phase":"deploy","load":["deployment-workflow","observability-design","resilience-engineering","decision-provenance"]},{"phase":"launch","load":["business-value-alignment","product-manager","content-strategy","copywriting","cro","observability-design","decision-provenance"]},{"phase":"learn","load":["business-value-alignment","product-manager","observability-design","user-research","decision-making","decision-provenance"]}]'
 ---
 
 # Product Development Workflow
@@ -24,7 +24,8 @@ Discovery → verified PRD → authorized MVP slice → technical spec → featu
 3. PRD and MVP scope precede technical specification and implementation.
 4. PRD readiness, MVP scope, scope removal, and accepted-risk claims require decision provenance.
 5. Agent-authored PRD, issue, or status text is not owner approval by itself.
-6. Implementation runs through new-feature-workflow boundaries.
+6. Classify the release unit and approve hierarchy, base branches, and PR targets before implementation branches.
+7. Implementation runs through new-feature-workflow boundaries.
 7. Feature verification does not automatically prove product-level acceptance.
 8. Every in-scope PRD criterion needs direct evidence and a matrix status.
 9. User-facing changes require facade-backed design acceptance.
@@ -90,7 +91,7 @@ Load `decision-provenance` whenever a PRD/MVP scope, scope removal, accepted ris
 |---:|---|---|---|
 | 1 | Discovery | research, value, experiment | Opportunity, value, assumptions, decision owners explicit |
 | 2 | Requirements / PRD | product requirements + provenance | PRD readiness and scope authority pass |
-| 3 | MVP Slice | prioritization + provenance | Smallest valuable slice explicitly approved |
+| 3 | MVP Slice + Delivery Topology | prioritization + `delivery-work-breakdown` + provenance | Release unit, hierarchy, integration branch, and PR targets explicitly approved |
 | 4 | Technical Spec | spec workflow and engineering owners | Tasks trace to verified PRD/MVP criteria |
 | 5 | Implementation | `new-feature-workflow` | Feature slices verified and inside scope |
 | 6 | Product Acceptance | matrix + reviewers + provenance | Every in-scope criterion and risk reconciled |
@@ -98,6 +99,22 @@ Load `decision-provenance` whenever a PRD/MVP scope, scope removal, accepted ris
 | 8 | Deploy | deployment and observability | Delivery approval and health verified |
 | 9 | Launch | product, content, analytics, support | Launch approval and feedback loop live |
 | 10 | Learn | metrics, research, decision making | Owned next action updates PRD/backlog |
+
+## Delivery decomposition boundary
+
+Before implementation, load `delivery-work-breakdown`.
+
+```text
+single independently releasable slice
+  → feature or standalone release unit may be valid
+
+multiple dependent slices forming one MVP outcome
+  → epic release unit
+  → child PRs target the epic/integration branch
+  → final epic PR targets the release branch after product acceptance
+```
+
+Equivalent trunk-based delivery is valid only with attributable default-safe activation, traceability, integrated acceptance, rollback, and release authorization. Child CI does not prove epic or product acceptance.
 
 ## Conditional platform specialists
 
@@ -166,7 +183,7 @@ Required policy approvals remain enforceable.
 
 ## Product acceptance boundary
 
-Phase 5 may produce several technically approved feature submissions. Phase 6 still asks:
+Phase 5 may produce several technically approved feature submissions on an epic/integration branch. Phase 6 still asks:
 
 ```text
 Does the complete verified MVP satisfy every in-scope PRD criterion

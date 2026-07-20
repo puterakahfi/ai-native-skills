@@ -1,6 +1,6 @@
 skill_test:
   skill: new-feature-workflow
-  version: "2.2.0"
+  version: "2.3.0"
   description: Verify feature scope and decision authority, design and implementation-context preconditions, evidence gates, architecture review, and final merge authorization.
 
   cases:
@@ -116,7 +116,7 @@ skill_test:
         - package popularity decides
       sequence_required:
         - pattern: "implementation-context-discovery|implementation context"
-          must_come_before: "Phase 4 — Implement"
+          must_come_before: "code production|implement one approved slice"
       quality_gates_tested:
         - provenance_before_implementation
         - no_unapproved_changes_bundled
@@ -154,3 +154,10 @@ skill_test:
       quality_gates_tested:
         - verification_before_submission
         - complete_feature_requires_scope_evidence_review_and_authority
+
+    - id: epic-child-targets-integration-branch
+      description: An epic child cannot create a branch or target main before delivery topology passes.
+      trigger: Implement an MCP child slice for epic 37; default is main but no approved base or target exists.
+      must_contain: [delivery-work-breakdown, release unit, parent_ref, base_branch, pr_target, BLOCKED]
+      must_not_contain: [target main by default, create branch immediately]
+      quality_gates_tested: [release_unit_classified_before_repository_execution, epic_child_pr_target_matches_integration_branch, no_orphan_feature_slice]

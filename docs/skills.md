@@ -6,10 +6,10 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 
 Current repository inventory:
 
-- `skill`: 84
+- `skill`: 85
 - `workflow`: 9
 - `meta-skill`: 6
-- Total executable skills: 99
+- Total executable skills: 100
 
 ---
 
@@ -21,7 +21,7 @@ Agent Skills frontmatter allows standard fields such as `name`, `description`, `
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
-| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `accessibility`, `chatgpt-app-development` |
+| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `delivery-work-breakdown`, `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `accessibility`, `chatgpt-app-development` |
 | `workflow` | Run a sequenced lifecycle | “What phases and gates must this task follow?” | `bugfix-workflow`, `new-feature-workflow`, `redesign-workflow` |
 | `meta-skill` | Route or compose capabilities | “Which workflow and specialists should be loaded?” | `workflow-router`, `role-switcher`, `design-layout` |
 
@@ -63,6 +63,7 @@ A good skill defines:
 
 ### Examples
 
+- `delivery-work-breakdown` — classify release units, work hierarchy, branch bases, PR targets, and epic acceptance before Git execution.
 - `implementation-context-discovery` — inspect an existing repository before code, classify canonical framework/component/styling/icon/tooling systems, lock conventions, decide reuse/extension/composition/native/dependency, and hand off to implementation plus independent architecture review.
 - `collection-discovery-design` — diagnose retrieval and discovery strategy before pagination, tabs, filtering, traversal, or disclosure adapters are selected.
 - `systematic-debugging` — root-cause investigation discipline.
@@ -124,12 +125,12 @@ A good workflow defines:
 | Workflow | Lifecycle |
 |---|---|
 | `spec-workflow` | constitution → specify → plan → tasks → implement |
-| `new-feature-workflow` | plan → architecture/design decision → implementation-context discovery → implement → verify → submit → review |
+| `new-feature-workflow` | plan → delivery topology → architecture/design decision → implementation-context discovery → implement → verify → submit → review |
 | `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review |
 | `code-review-workflow` | load context → architecture → design → logic → security → verdict/authorization |
 | `deployment-workflow` | pre-deploy → context-load → deploy → health-verify → confirm/rollback |
 | `redesign-workflow` | route → owners → inspect → direction → layered plan → implementation-context mapping → produce → verify → architecture/design review → fix → deliver |
-| `product-development-workflow` | discovery → PRD → MVP → spec → implementation → verification → release → deploy → launch → learn |
+| `product-development-workflow` | discovery → PRD → MVP/release-unit decomposition → spec → implementation → verification → release → deploy → launch → learn |
 | `design-refinement` | verified finding → lock/budget → implementation-context mapping → smallest patch → verify → focused review → deliver |
 | `skill-doctor` | audit → triage → repair → verify |
 
@@ -199,6 +200,7 @@ Contract-backed adapters remain an ordinary `skill`, `workflow`, or `meta-skill`
 
 Examples:
 
+- `delivery-work-breakdown`;
 - `implementation-context-discovery`;
 - `collection-discovery-design`;
 - `native-ai-engineer`;

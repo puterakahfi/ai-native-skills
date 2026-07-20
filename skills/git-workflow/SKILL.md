@@ -3,9 +3,11 @@ name: git-workflow
 description: Source control operations — branching, committing, PR/MR submission, and merge. Branch strategy, naming convention, commit format, and protected branch policy are product-defined.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.1
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "delivery-work-breakdown decision-provenance"
   ai-native-skills.type: skill
+  ai-native-skills.related_skills: '["delivery-work-breakdown","new-feature-workflow","product-development-workflow"]'
   ai-native-skills.implements: ai-native-core/contracts/skills/engineering/git-workflow.contract.yaml
   ai-native-skills.contract-version: "~0.1"
 ---
@@ -43,14 +45,19 @@ Keep this interface synchronized with the pinned core contract. Exact declaratio
 
 ```
 Never push directly to a protected branch.
-Always branch from the correct base.
+Always branch from the correct approved base.
+Never infer base or PR target from the repository default.
+Consume `delivery-work-breakdown` for product/feature work.
 Every PR must reference an issue before submit.
 ```
 
 ## Prerequisites
 
 Know these before starting:
-- What is the base branch? (product_defined)
+- What is the governing release unit and parent work item?
+- What topology record approved this operation?
+- What is the explicit base branch? (product_defined)
+- What is the explicit PR target? (product_defined)
 - What is the branch naming convention? (product_defined)
 - What is the commit message convention? (product_defined)
 - What issue/ticket does this work reference?
@@ -61,7 +68,7 @@ Know these before starting:
 
 ### 1. Create Branch
 
-Always create from the correct base branch — never from stale local state.
+Always create from the correct approved base branch — never from stale local state or a guessed default. Epic children start from the approved integration branch.
 
 ```bash
 git checkout <base-branch>
@@ -118,6 +125,9 @@ Resolve conflicts before proceeding. Never submit a PR with unresolved conflicts
 Mechanism is product_defined (GitHub PR, GitLab MR, Gerrit patch, etc).
 
 Checklist before submit:
+- [ ] Release unit and parent traceability are explicit
+- [ ] Base branch and PR target match the approved topology
+- [ ] Epic children do not bypass the integration branch
 - [ ] Branch is up to date with base
 - [ ] All commits follow convention
 - [ ] References issue/ticket
@@ -147,7 +157,8 @@ git push origin <base-branch>
 
 | Operation | Gate |
 |---|---|
-| Create branch | From correct base, pulled fresh |
+| Create branch | From explicit approved base, pulled fresh |
+| Choose PR target | Matches the approved release unit and topology |
 | Commit | Convention followed, no secrets |
 | Sync | Rebase/merge before submit |
 | Submit | Issue referenced, CI green |
