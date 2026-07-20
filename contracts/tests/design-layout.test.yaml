@@ -1,0 +1,46 @@
+skill_test:
+  skill: design-layout
+  version: "1.1.0"
+  description: Verify the layout port routes spatial decisions through macrostructure, component structure, adaptive component selection, and responsive validation in canonical order.
+
+  cases:
+    - id: canonical-layout-port-order
+      description: A full layout decision must select page structure and component structure before adaptive component strategy, then validate responsive mechanics last.
+      trigger: "Design the layout for this product page across mobile, tablet, and desktop. Decide the page shape, component structure, component variants, and breakpoint behavior."
+      must_contain:
+        - "macrostructures"
+        - "ui-components"
+        - "adaptive-component-design"
+        - "responsiveness"
+      must_not_contain:
+        - "responsiveness before adaptive-component-design"
+        - "breakpoints decide the component"
+      sequence_required:
+        - pattern: "macrostructures"
+          must_come_before: "ui-components"
+        - pattern: "ui-components"
+          must_come_before: "adaptive-component-design"
+        - pattern: "adaptive-component-design"
+          must_come_before: "responsiveness"
+      quality_gates_tested:
+        - macrostructure_picked_before_component_layout
+        - component_adaptation_selected_before_responsive_validation
+        - responsiveness_applied_from_start
+
+    - id: component-fitness-before-breakpoint-validation
+      description: A component that fails at an intermediate width must be evaluated for adaptation or substitution before changing breakpoint mechanics.
+      trigger: "Desktop tabs overlap on tablet. Start by changing breakpoints and shrinking labels until the same tabs fit."
+      must_contain:
+        - "adaptive-component-design"
+        - "component fitness"
+        - "responsiveness"
+        - "after component selection"
+      must_not_contain:
+        - "shrink first"
+        - "breakpoint alone decides"
+      sequence_required:
+        - pattern: "adaptive-component-design"
+          must_come_before: "responsiveness"
+      quality_gates_tested:
+        - component_adaptation_selected_before_responsive_validation
+        - mobile_tablet_desktop_behavior_defined_for_major_components
