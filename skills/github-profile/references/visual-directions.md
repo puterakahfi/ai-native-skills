@@ -1,6 +1,20 @@
 # GitHub Profile Visual Directions
 
-Load after audience, narrative, content roles, brand references, and preservation locks are known. Direction expresses the profile strategy; it must not replace it or contradict an established personal identity.
+Load after audience, narrative, content roles, brand references, preservation locks, and variant selection are known. Direction is the lower-level visual stance used to implement a variant. It must not replace strategy, act as a content template, or contradict an established personal identity.
+
+```text
+content archetype  → what information roles exist
+profile variant    → expression contract across several design axes
+visual direction   → lower-level GitHub-native composition stance
+```
+
+Examples:
+
+```text
+zen-minimalist       → zen-editorial + text-first support
+modern-professional  → text-first or editorial + restrained structural support
+creative-editorial   → editorial or branded + one expressive device
+```
 
 ## Text-First
 
@@ -37,7 +51,7 @@ Best when the existing brand uses calm rhythm, generous whitespace, low visual n
 
 ```text
 space creates grouping
-short labels instead of heavy section chrome
+clear semantic section headings
 few heading levels
 no decorative horizontal rules
 no card simulation by default
@@ -50,15 +64,14 @@ one quiet thesis as the recognition device
 GitHub-native controls:
 
 ```text
-blank lines and bounded <br> spacing
-<sub> labels or restrained bold labels
+bounded blank lines and <br> spacing
+restrained semantic headings
 short paragraphs
-plain links with ample separation
+plain links with deliberate separation
 left-aligned reading body after a calm centered opening
-semantic anchors when line-free labels replace H2 headings
 ```
 
-Strength: aligned, calm, durable, and highly compatible with personal brands based on Ma, restraint, or editorial minimalism.  
+Strength: aligned, calm, durable, and compatible with personal brands based on Ma, restraint, or editorial minimalism.  
 Risk: becoming empty or weak when whitespace is not supported by precise writing and clear content roles.
 
 Whitespace is not decoration. Every large gap must separate a meaningful role: identity, proof, thesis, capability, focus, or action.
@@ -95,6 +108,27 @@ Risk: over-branding reducing technical readability and theme compatibility.
 
 `branded` does not automatically mean more visual elements. A mature brand may require fewer elements, no lines, no cards, and more whitespace.
 
+## Variant-to-Direction Mapping
+
+```text
+zen-minimalist
+  primary direction: zen-editorial
+  supporting stance: text-first
+  differentiation: authored thesis + relational rhythm
+
+modern-professional
+  primary direction: text-first or editorial
+  supporting stance: restrained structural grouping
+  differentiation: crisp proof hierarchy + action clarity
+
+creative-editorial
+  primary direction: editorial or branded
+  supporting stance: text-first semantic fallback
+  differentiation: one authored expressive device
+```
+
+A mapping is a starting point, not permission to ignore the resolved variant axes or brand overrides.
+
 ## Selection Matrix
 
 ```text
@@ -120,7 +154,7 @@ brand_grammar:
   prohibited_treatments: []
 ```
 
-Compare at least two plausible directions when `visual_direction: auto` and the choice materially affects hierarchy or asset production. Reject any otherwise-plausible direction that conflicts with the brand grammar.
+Compare at least two plausible directions when `visual_direction: auto` and the choice materially affects hierarchy or asset production. Reject any otherwise-plausible direction that conflicts with the brand grammar or selected variant contract.
 
 ## Direction Lock
 
@@ -129,14 +163,16 @@ Record:
 ```yaml
 visual_direction_decision:
   selected: text-first | editorial | zen-editorial | showcase | branded
+  variant:
   audience_fit: <reason>
   proof_fit: <reason>
   content_fit: <reason>
   brand_fit: <reason>
+  variant_fit: <reason>
   asset_requirements: []
   rejected_alternatives: []
   preservation_locks: []
   prohibited_treatments: []
 ```
 
-Do not silently change direction during refinement. A failed widget, link, or project module usually requires a local correction, not a new visual concept. A rendered treatment that violates the established brand grammar is not a local success; revert the conflicting treatment and refine within the locked direction.
+Do not silently change direction during refinement. A failed widget, link, or project module usually requires a local correction, not a new visual concept. A rendered treatment that violates the established brand grammar or declared variant is not a local success; revert the conflicting treatment and refine within the locked decision.
