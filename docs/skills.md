@@ -6,10 +6,10 @@ The goal is to keep skill authoring decisions consistent: when to create an atom
 
 Current repository inventory:
 
-- `skill`: 82
+- `skill`: 83
 - `workflow`: 9
 - `meta-skill`: 6
-- Total executable skills: 97
+- Total executable skills: 98
 
 ---
 
@@ -21,7 +21,7 @@ Agent Skills standard frontmatter only allows `name`, `description`, `license`, 
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
-| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `decision-provenance`, `accessibility`, `business-value-alignment`, `chatgpt-app-development`, `master-design` |
+| `skill` | Provide a reusable capability | “What capability or expert lens is needed?” | `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `accessibility`, `business-value-alignment`, `chatgpt-app-development`, `master-design` |
 | `workflow` | Run a sequenced task lifecycle | “What phases must this task follow?” | `bugfix-workflow`, `deployment-workflow`, `redesign-workflow` |
 | `meta-skill` | Route or compose other skills/workflows | “Which skills/workflows should be loaded?” | `workflow-router`, `role-switcher` |
 
@@ -63,6 +63,7 @@ A good `skill` should define:
 ### Examples
 
 - `systematic-debugging` — root-cause investigation discipline.
+- `collection-discovery-design` — collection diagnosis and discovery strategy before pagination, tabs, filtering, traversal, or disclosure adapters are selected.
 - `decision-provenance` — verify authority, source, scope, supersession, and conflict behind material decision claims.
 - `accessibility` — WCAG-oriented UI quality gate.
 - `master-design` — senior product design lens.
@@ -159,7 +160,7 @@ A good `meta-skill` should define:
 | `role-switcher` | Detect user intent and compose one owner with narrow expert role lenses, such as design, product, engineering, and platform specialists. |
 | `design-layout` | Route layout decisions — macrostructures, responsiveness, ui-components, spatial structure. |
 | `design-visual` | Route visual design — genre selection, motion, composition, readability. |
-| `design-strategy` | Route UX strategy — ux-psychology, information-architecture, cro, copywriting, content-strategy. |
+| `design-strategy` | Route UX strategy — ux-psychology, information-architecture, collection-discovery-design, CRO, copywriting, content-strategy. |
 | `design-interaction` | Route interaction patterns — ux-ui-patterns, ux-patterns-for-developers, behavior. |
 
 ### Platform specialist overlay example
@@ -187,7 +188,7 @@ The router chooses the lifecycle and overlay. The specialist executes its domain
 The README previously described `skill-adapter` as a taxonomy item, but no current `SKILL.md` uses `metadata["ai-native-skills.type"]: skill-adapter`. Adapter behavior is represented through:
 
 - `metadata["ai-native-skills.implements"]`, linking a skill to a Native AI Core contract.
-- `compat/*.compat.yaml`, describing compatibility between runtime skill implementations and core contracts.
+- `compat/*.compat.yaml`, describing compatibility between runtime skill implementations and core contracts when required.
 - Product or runtime bindings that install or load the skill in a specific execution context.
 
 ### Definition
@@ -200,6 +201,7 @@ In practice, it remains executable as a normal `skill` unless the repo formally 
 
 These are adapter-like skills because they implement Native AI Core contracts while remaining `metadata["ai-native-skills.type"]: skill`:
 
+- `collection-discovery-design`
 - `native-ai-engineer`
 - `native-ai-runtime-agent`
 - `native-ai-runtime-ops`
@@ -213,7 +215,7 @@ Use `metadata["ai-native-skills.type"]: skill` plus adapter metadata when:
 
 - The skill implements a Native AI Core contract.
 - A runtime binding needs to reference the executable skill.
-- Compatibility needs to be validated through `compat/*.compat.yaml`.
+- Contract conformance must be validated; add `compat/*.compat.yaml` when the binding requires explicit compatibility evidence.
 - The behavior is still a concrete capability, not a router or lifecycle workflow.
 
 ---
@@ -263,14 +265,15 @@ For Native AI contract-backed skills, include `metadata["ai-native-skills.implem
 
 ```yaml
 ---
-name: native-ai-runtime-agent
-description: Runtime agent skill for ai-native-fw product adapters.
+name: collection-discovery-design
+description: Diagnose collection discovery before selecting replaceable adapters.
 license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/runtime/native-ai-runtime-agent.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/skills/design/collection-discovery-design.contract.yaml
+  ai-native-skills.contract-version: ^1.0.0
 ---
 ```
 
@@ -293,3 +296,4 @@ skills-ref validate skills/<skill-name>
 7. **Inventing a core contract for platform-specific knowledge.** Wait until a stable runtime-agnostic boundary is proven.
 8. **Writing no-op skills.** If the document does not change agent behavior or quality gates, it should not be a skill.
 9. **Mixing routing and execution.** Meta-skills decide the route; workflows and skills perform the work.
+10. **Naming an adapter as the domain.** Pagination, tabs, infinite scroll, load-more, facets, and filters are possible implementations of a collection discovery strategy, not standalone domain ownership.
