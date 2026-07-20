@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - .github/workflows/inspect-eval-contracts.yml
+      - contracts/tests/component-family-design.test.yaml
 
 permissions:
   contents: read
@@ -18,33 +19,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Publish eval inventory and representative contracts
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install validator dependency
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Publish exact validator output
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          set -euo pipefail
-          report=/tmp/eval-contract-report.md
+          set +e
+          output=$(python scripts/validate-eval-contracts.py --write-smoke-outputs .tmp/eval-smoke-outputs 2>&1)
+          status=$?
           {
-            echo '## Temporary eval contract inspection'
+            echo '## Temporary component-family eval validator output'
             echo
-            echo '### Inventory'
             echo '```text'
-            find . -type f \( -iname '*eval*.yaml' -o -iname '*eval*.yml' -o -iname '*eval*.json' -o -iname '*eval*.jsonl' -o -path '*/evals/*' \) | sort | head -80
+            printf '%s\n' "$output"
             echo '```'
             echo
-            echo '### Representative files'
-            count=0
-            while IFS= read -r file; do
-              [ -z "$file" ] && continue
-              echo
-              echo "#### \`$file\`"
-              echo '```yaml'
-              sed -n '1,260p' "$file"
-              echo '```'
-              count=$((count + 1))
-              [ "$count" -ge 3 ] && break
-            done < <(find . -type f \( -iname '*eval*.yaml' -o -iname '*eval*.yml' -o -iname '*eval*.json' -o -iname '*eval*.jsonl' -o -path '*/evals/*' \) | sort)
-          } > "$report"
-          gh pr comment "$PR_NUMBER" --body-file "$report"
+            echo "Exit status: $status"
+          } > /tmp/eval-validator-report.md
+          gh pr comment "$PR_NUMBER" --body-file /tmp/eval-validator-report.md
+          exit 0
