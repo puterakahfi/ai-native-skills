@@ -3,9 +3,9 @@ name: role-switcher
 description: Intent and domain detection with explicit role composition — selects one owner, narrow specialists, an independent reviewer facade, and a domain reviewer when specialized acceptance is required.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.3.0
+  ai-native-skills.version: 1.4.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "master-engineer master-design adaptive-component-design product-manager ux-psychology user-research native-ai-engineer diagram-architect design-review brand-identity-review systematic-debugging architecture-review security-review plan"
+  ai-native-skills.requires: "master-engineer master-design adaptive-component-design product-manager ux-psychology user-research native-ai-engineer chatgpt-app-development diagram-architect design-review brand-identity-review systematic-debugging architecture-review security-review plan"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/role-switcher.contract.yaml
   ai-native-skills.contract-version: "~0.1"
@@ -16,7 +16,7 @@ metadata:
 ## Core Rule
 
 ```text
-detect intent and domain
+detect intent, lifecycle, platform, and domain
 → assign one owner
 → load only narrow specialists
 → add a reviewer facade when acceptance is required
@@ -33,7 +33,7 @@ Reviewer facade  common review entry point, evidence, score, verdict, report
 Domain reviewer  specialist-domain gates, evidence, and hard-gate policy
 ```
 
-A specialist or reviewer never silently replaces the owner.
+A platform specialist, domain specialist, or reviewer never silently replaces the owner.
 
 ## Design Review Composition
 
@@ -122,6 +122,7 @@ A narrow advisory question may use a specialist without a reviewer when no artif
 | Security, vulnerability, secrets | `master-engineer` | security skills | `security-review` |
 | System design or structural refactor | `master-engineer` | `native-ai-engineer` when relevant | `architecture-review` |
 | Native AI runtime, adapter, contract | `native-ai-engineer` | `master-engineer`, runtime skills | `architecture-review` |
+| Existing-product ChatGPT App integration | `master-engineer` | `chatgpt-app-development`, `native-ai-engineer`, product/design specialists as needed | `architecture-review`, `security-review`, `design-review` when UI ships |
 
 ### Product and Research
 
@@ -131,6 +132,7 @@ A narrow advisory question may use a specialist without a reviewer when no artif
 | Requirements and acceptance criteria | `product-manager` | technical/design owners | relevant review workflow |
 | Interviews, JTBD, assumption validation | `user-research` | `product-manager` | research evidence review |
 | Survey or usability test | `user-research` | `ux-psychology` | product owner synthesizes implications |
+| ChatGPT App product from zero | `product-manager` | `chatgpt-app-development`, `native-ai-engineer`, `master-design`, `master-engineer` | product acceptance plus architecture, security, and design reviewers |
 
 ### Creative and AI Tools
 
@@ -139,6 +141,29 @@ A narrow advisory question may use a specialist without a reviewer when no artif
 | Generate/refine image prompt | `prompt-engineer` | brand/product/design specialists | rendered-output review when accepted |
 | Diagnose generated identity output | `prompt-engineer` or identity owner | `brand-identity-review` as reviewer, not generator | `design-review` + `brand-identity-review` |
 | AI image product or generation feature | `product-manager` | prompt + design + engineering owners | applicable product/design/engineering reviewers |
+| ChatGPT App tool, widget, native-capability handoff, or publication boundary | lifecycle owner | `chatgpt-app-development`; add `native-ai-engineer` for contract/runtime boundaries | applicable architecture, security, accessibility, and design reviewers |
+
+## ChatGPT App Composition Rules
+
+`chatgpt-app-development` is a platform specialist, not a product owner and not a replacement workflow.
+
+```text
+product from zero
+  lifecycle owner: product-manager
+  platform specialist: chatgpt-app-development
+  architecture specialist: native-ai-engineer
+  UI owner: master-design when user-facing widget/UI is in scope
+  implementation owner: master-engineer during delivery
+  reviewers: architecture-review + security-review + design-review/accessibility as applicable
+
+existing product integration
+  lifecycle owner: master-engineer for implementation synthesis
+  product authority: product-manager for scope/value decisions
+  platform specialist: chatgpt-app-development
+  architecture specialist: native-ai-engineer when boundaries change
+```
+
+The specialist owns Apps SDK/MCP product-boundary expertise, including cost ownership, tool contracts, widget behavior, native ChatGPT handoff, auth, state, security, testing, and publication requirements. Product-specific rules remain with the owning product modules.
 
 ## Application Steps
 
@@ -149,6 +174,7 @@ domain
 action: audit | advise | build | fix | redesign | accept
 depth: narrow | specification | production | release
 evidence state: idea | source | rendered | production behavior
+platform: generic | chatgpt-app | other-specialized-surface
 ```
 
 For design tasks also classify:
@@ -160,19 +186,31 @@ reviewer availability
 built-in or adapter coverage
 ```
 
+For ChatGPT App work also classify:
+
+```text
+generation_surface
+cost_owner
+data_scope
+ui_mode
+distribution
+```
+
 ### 2. Assign composition slots
 
 ```yaml
 roles:
-  owner: brand-identity-owner
+  owner: product-manager
   specialists:
-    - design-typography
-    - design-color
-  reviewer_facade: design-review
-  domain_reviewers:
-    - brand-identity-review
-  gate_namespace: BI
-  coverage_mode: ADAPTER_COVERED
+    - chatgpt-app-development
+    - native-ai-engineer
+    - master-design
+    - master-engineer
+  reviewers:
+    - architecture-review
+    - security-review
+    - design-review
+  platform: chatgpt-app
 ```
 
 ### 3. Enforce composition gates
@@ -180,11 +218,13 @@ roles:
 ```text
 □ exactly one owner is explicit
 □ every specialist has a narrow reason
+□ platform specialist does not replace lifecycle owner
 □ reviewer is independent when practical
-□ design domain and coverage are explicit
+□ design domain and coverage are explicit when design is reviewed
 □ specialized acceptance has the correct domain reviewer
 □ missing reviewer limits the verdict
 □ rendered/implemented deliverables have evidence-backed review
+□ ChatGPT App cost owner and generation surface are explicit
 ```
 
 ### 4. Synthesize one result
@@ -194,6 +234,28 @@ The owner returns one decision with rationale, specialist evidence, trade-offs, 
 Do not return disconnected role reports.
 
 ## Examples
+
+### ChatGPT App product from zero
+
+```text
+Owner: product-manager
+Platform specialist: chatgpt-app-development
+Architecture specialist: native-ai-engineer
+Design owner: master-design for widget UX
+Implementation owner: master-engineer during feature delivery
+Reviewers: architecture-review, security-review, design-review, accessibility
+Primary lifecycle: product-development-workflow
+```
+
+### Existing product adds ChatGPT App adapter
+
+```text
+Owner: master-engineer for implementation synthesis
+Product authority: product-manager for scope decisions
+Platform specialist: chatgpt-app-development
+Architecture specialist: native-ai-engineer
+Primary lifecycle: new-feature-workflow
+```
 
 ### Cross-device category navigation
 
@@ -223,6 +285,7 @@ If `brand-identity-review` is not installed, the same request falls back to `LIM
 |---|---|
 | Flat list of roles | Ownership and boundaries disappear |
 | Specialist replaces owner | Narrow expertise controls unrelated decisions |
+| ChatGPT App specialist becomes a new lifecycle owner | Platform knowledge overrides product/feature lifecycle |
 | `design-review` treated as expert in every discipline | Facade coverage is overstated |
 | Identity review uses universal/static gates only | Domain construction and system quality remain uncovered |
 | Missing domain reviewer still receives PASS | Missing knowledge is hidden |
