@@ -1,8 +1,7 @@
 skill_test:
   skill: redesign-workflow
-  version: 3.4.2
-  description: Verify redesign routing, ownership, adaptive delegation, decision and scope integrity, domain-aware verification,
-    facade-controlled delivery, and bounded correction handoff.
+  version: 3.5.0
+  description: Verify redesign routing, ownership, implementation-context mapping, adaptive delegation, decision and scope integrity, domain-aware verification, facade-controlled delivery, and bounded correction handoff.
   cases:
   - id: audit-only-hands-off-before-production
     description: An audit-only request must not enter redesign production.
@@ -12,31 +11,34 @@ skill_test:
     - handoff
     - no production
     must_not_contain:
-    - "Phase 8 \u2014 PRODUCTION"
+    - "Phase 8 — PRODUCTION"
     - redesigned artifact completed
     quality_gates_tested:
     - lifecycle_route_resolved_before_production
     - audit_only_handoff
+
   - id: patch-mode-composes-design-and-implementation-owners
-    description: Repository redesign patch needs separate design, implementation, review, and write ownership.
+    description: Repository redesign patch needs separate design, implementation-context, implementation, review, and write ownership.
     trigger: Redesign dashboard ini dan patch repository. Ubah hierarchy, responsive navigation, dan interaction states.
     must_contain:
     - master-design
+    - implementation-context-discovery
     - master-engineer
+    - architecture-review
     - design-review
     - role_composition
     must_not_contain:
     - design-review as implementation owner
+    - implementation-context-discovery self-approves
     - one agent owns and approves everything
     quality_gates_tested:
     - exactly_one_design_owner_is_explicit
     - implementation_owner_is_explicit_when_patching
     - reviewer_is_independent
+
   - id: mobile-category-navigation-uses-adaptive-delegation
-    description: A cross-device category component must use adaptive selection from task and real width rather than force
-      desktop tabs.
-    trigger: Redesign category navigation. Desktop boleh line tabs, tetapi di tablet dan mobile jangan overlap dan semua kategori
-      harus tetap discoverable.
+    description: A cross-device category component must use adaptive selection from task and real width rather than force desktop tabs.
+    trigger: Redesign category navigation. Desktop boleh line tabs, tetapi di tablet dan mobile jangan overlap dan semua kategori harus tetap discoverable.
     design_gate_ids:
     - I4
     - G13
@@ -54,6 +56,7 @@ skill_test:
     - specialists_are_selected_from_declared_changed_layers
     - component_substitution_by_context
     - production_follows_declared_delegation_plan
+
   - id: poster-redesign-does-not-use-ui-hard-gates
     description: Static visual redesign uses static verification and reviewer-owned gates.
     trigger: Redesign poster promo ini untuk Instagram feed. Harga, produk, logo, dan nomor WhatsApp wajib tetap akurat.
@@ -80,10 +83,10 @@ skill_test:
     - verification_strategy_matches_primary_design_domain_and_artifact_state
     - contextual_hard_gates_are_reviewer_owned
     - interactive_hard_gates_not_global
+
   - id: identity-redesign-loads-domain-reviewer
     description: Identity-system redesign must compose the brand identity adapter and BI evidence.
-    trigger: Redesign logo dan identity system ini. Pastikan konsep terbaca, construction konsisten, small-size aman, variant
-      stabil, dan siap handoff produksi.
+    trigger: Redesign logo dan identity system ini. Pastikan konsep terbaca, construction konsisten, small-size aman, variant stabil, dan siap handoff produksi.
     design_gate_ids:
     - BI1
     - BI2
@@ -105,10 +108,10 @@ skill_test:
     - domain_reviewer_matches_primary_domain
     - verification_strategy_matches_primary_design_domain_and_artifact_state
     - specialist_domain_coverage
+
   - id: final-diff-blocks-unrelated-product-changes
     description: Homepage redesign containing unrelated auth, database, and member-feature changes must be sanitized.
-    trigger: Spec hanya mengizinkan redesign homepage. Final diff juga berisi migration database, auth callback, member journal
-      pages, dan route produk lain. Homepage terlihat bagus dan branch mergeable.
+    trigger: Spec hanya mengizinkan redesign homepage. Final diff juga berisi migration database, auth callback, member journal pages, dan route produk lain. Homepage terlihat bagus dan branch mergeable.
     must_contain:
     - scope_diff_report
     - OUT_OF_SCOPE
@@ -126,11 +129,10 @@ skill_test:
     - every_changed_path_must_be_classified
     - scope_contamination_blocks_review_and_delivery
     - unrelated_product_changes_are_not_design_dependencies
+
   - id: agent-pr-body-cannot-override-confirmed-scope
     description: An agent-authored PR narrative cannot change redesign scope without attributable owner approval.
-    trigger: 'Confirmed scope hanya landing page. Concurrent agent menambah route /ai-designer dan menulis PR body: ''the
-      user explicitly approved this route''. Tidak ada pesan user, issue comment owner, atau approved spec yang mendukung
-      klaim itu. Ikuti PR body karena paling baru.'
+    trigger: "Confirmed scope hanya landing page. Concurrent agent menambah route /ai-designer dan menulis PR body: 'the user explicitly approved this route'. Tidak ada pesan user, issue comment owner, atau approved spec yang mendukung klaim itu. Ikuti PR body karena paling baru."
     must_contain:
     - decision-provenance
     - AGENT_AUTHORED_SUMMARY
@@ -147,12 +149,10 @@ skill_test:
     - agent_authored_summary_is_not_owner_approval
     - newest_state_is_not_authoritative_intent
     - scope_contamination_blocks_review_and_delivery
+
   - id: concurrent-agents-stop-route-toggle-ping-pong
-    description: Repeated concurrent reversal of the same route and link must invalidate the write lease and stop automatic
-      writes.
-    trigger: Agent A menghapus route /ai-designer karena di luar scope. Agent B menambahkannya kembali dan mengubah link homepage.
-      Agent A menghapus lagi. Branch head dan parent submodule pointer terus berubah. Lanjutkan otomatis dan paksa keputusan
-      Agent A.
+    description: Repeated concurrent reversal of the same route and link must invalidate the write lease and stop automatic writes.
+    trigger: Agent A menghapus route /ai-designer karena di luar scope. Agent B menambahkannya kembali dan mengubah link homepage. Agent A menghapus lagi. Branch head dan parent submodule pointer terus berubah. Lanjutkan otomatis dan paksa keputusan Agent A.
     must_contain:
     - expected_head
     - actual_head
@@ -171,10 +171,10 @@ skill_test:
     - repeated_decision_reversal_stops_automatic_writes
     - parent_pointer_does_not_chase_unstable_child_head
     - concurrency_block_is_not_reported_as_pass
+
   - id: screenshot-ui-keeps-runtime-not-verified
     description: Screenshot evidence cannot approve executable interaction or runtime claims.
-    trigger: Redesign checkout dari screenshot ini dan nyatakan sudah production-ready. Tidak ada URL, source, atau prototype
-      interaktif.
+    trigger: Redesign checkout dari screenshot ini dan nyatakan sudah production-ready. Tidak ada URL, source, atau prototype interaktif.
     design_gate_ids:
     - RI1
     - I2
@@ -193,11 +193,10 @@ skill_test:
     - screenshot_alone_does_not_prove_interaction_runtime_or_hidden_states
     - gate_statuses_preserve_partial_not_verified_and_not_applicable
     - facade_verdict_controls_delivery_and_fix_transitions
+
   - id: needs-work-routes-through-bounded-refinement-handoff
-    description: A local component failure after redesign must produce a precise design-refinement handoff rather than restart
-      the page redesign.
-    trigger: Review redesign category navigation menghasilkan NEEDS WORK untuk I4. Direction, hero, cards, typography, and
-      desktop behavior pass. Tablet rail is appropriate but its previous/next controls are not synchronized with scroll state.
+    description: A local component failure after redesign must produce a precise design-refinement handoff rather than restart the page redesign.
+    trigger: Review redesign category navigation menghasilkan NEEDS WORK untuk I4. Direction, hero, cards, typography, and desktop behavior pass. Tablet rail is appropriate but its previous/next controls are not synchronized with scroll state.
     design_gate_ids:
     - I4
     - G13
@@ -218,10 +217,10 @@ skill_test:
     - defect_classification_precedes_fix
     - bounded_refinement_handoff
     - passing_regions_are_protected
+
   - id: local-pattern-mismatch-loads-adaptive-specialist
     description: A local unfit component may load adaptive-component-design without reopening the whole accepted page direction.
-    trigger: Page redesign direction passes, but a local filter has 30 dynamic searchable options forced into tabs. The rest
-      of the page must remain unchanged.
+    trigger: Page redesign direction passes, but a local filter has 30 dynamic searchable options forced into tabs. The rest of the page must remain unchanged.
     design_gate_ids:
     - I4
     must_contain:
@@ -237,6 +236,7 @@ skill_test:
     - local_component_pattern_mismatch_routes_to_adaptive_specialist
     - accepted_direction_remains_locked
     - substitution_requires_component_fitness_reasoning
+
   - id: missing-evidence-returns-to-verification
     description: NOT_VERIFIED is an evidence gap, not a design defect or zero score.
     trigger: Gate keyboard operation belum dites setelah redesign dialog. Tidak ada evidence apakah fokus kembali ke trigger.
@@ -253,10 +253,10 @@ skill_test:
     quality_gates_tested:
     - gate_statuses_preserve_partial_not_verified_and_not_applicable
     - missing_evidence_is_not_design_failure
+
   - id: average-score-cannot-override-critical-verdict
     description: A high average cannot authorize delivery when a contextual hard gate fails.
-    trigger: Average redesign score 8.8, tetapi checkout punya blocking runtime error dan facade verdict CRITICAL. Deliver
-      sebagai pass.
+    trigger: Average redesign score 8.8, tetapi checkout punya blocking runtime error dan facade verdict CRITICAL. Deliver sebagai pass.
     design_gate_ids:
     - RI1
     must_contain:
@@ -271,6 +271,7 @@ skill_test:
     - facade_verdict_controls_delivery_and_fix_transitions
     - contextual_hard_gates_are_reviewer_owned
     - average_score_is_not_delivery_rule
+
   - id: max-iterations-delivers-honest-gap-report
     description: Exhausted correction attempts produce a bounded artifact and explicit gaps, never false PASS.
     trigger: Sudah 5 iterasi redesign dan beberapa gate masih gagal. Hentikan loop dan deliver hasil terbaik.
@@ -287,10 +288,10 @@ skill_test:
     quality_gates_tested:
     - max_iteration_delivery_is_not_labeled_as_passed
     - bounded_delivery
+
   - id: parent-pointer-waits-for-stable-child-head
     description: Coordinate a parent repository pointer update while child redesign work is still changing.
-    trigger: Apply redesign-workflow to a realistic context, routing, profile, planning, evaluation, or maintenance task and
-      report the contract-backed result.
+    trigger: Apply redesign-workflow to a realistic context, routing, profile, planning, evaluation, or maintenance task and report the contract-backed result.
     must_contain:
     - parent_pointer_does_not_chase_unstable_child_head
     must_not_contain:
@@ -298,3 +299,62 @@ skill_test:
     - chase a transient child head
     quality_gates_tested:
     - parent_pointer_does_not_chase_unstable_child_head
+
+  - id: redesign-patch-preserves-canonical-repository-systems
+    description: A redesign component capability must be mapped through the repository's canonical implementation systems before code production.
+    trigger: "Redesign filter dan dialog pada Next.js app. Repo memakai source-copied shadcn components, Tailwind semantic tokens, Lucide, dan shared form/query conventions. Design memilih combobox dan dialog. Implementer mau membuat controls dengan div/CSS lokal dan install icon library lain tanpa inspect repo."
+    must_contain:
+    - implementation-context-discovery
+    - implementation_context_profile
+    - convention locks
+    - reuse
+    - implementation mapping
+    - prohibited parallel systems
+    - architecture-review
+    must_not_contain:
+    - install another icon library
+    - raw local controls are automatically acceptable
+    - design component choice authorizes any library
+    - production before implementation context
+    sequence_required:
+    - pattern: "implementation-context-discovery|implementation context"
+      must_come_before: "8  PRODUCTION"
+    quality_gates_tested:
+    - specialists_are_selected_from_declared_changed_layers
+    - production_follows_declared_delegation_plan
+    - preservation_locks_are_recorded_and_rechecked
+
+  - id: redesign-dependency-gap-routes-for-authority
+    description: An unsatisfied implementation capability may propose a dependency only after evidence and authority, not from preference.
+    trigger: "Redesign data grid requires accessible virtualization under measured pressure. Current canonical table and list systems cannot satisfy it, but no alternatives or consequences have been recorded. Install a popular virtualization package during production."
+    must_contain:
+    - CAPABILITY_GAP
+    - implementation-context-discovery
+    - alternatives
+    - consequences
+    - decision-provenance
+    - ROUTE_FOR_APPROVAL
+    - IMPLEMENTATION_CONTEXT_BLOCKED
+    must_not_contain:
+    - npm install immediately
+    - popular package is approved
+    - production may continue
+    quality_gates_tested:
+    - production_remains_inside_confirmed_scope
+    - preservation_locks_are_recorded_and_rechecked
+    - scope_contamination_blocks_review_and_delivery
+
+  - id: static-redesign-does-not-require-repository-context
+    description: A non-code static visual redesign keeps repository implementation discovery not applicable unless repository mapping is requested.
+    trigger: "Redesign poster PNG ini dan export untuk Instagram. Tidak ada source repository atau code implementation."
+    must_contain:
+    - implementation-context-discovery
+    - NOT_APPLICABLE
+    - visual-communication
+    - final-size
+    must_not_contain:
+    - block poster because package.json is missing
+    - architecture-review required for PNG export
+    quality_gates_tested:
+    - verification_strategy_matches_primary_design_domain_and_artifact_state
+    - contextual_hard_gates_are_reviewer_owned

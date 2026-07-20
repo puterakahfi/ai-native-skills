@@ -1,12 +1,11 @@
 skill_test:
   skill: architecture-review
-  version: 1.0.1
-  description: Verify architecture-review exposes and applies its reviewed architecture or engineering contract interface.
+  version: 1.1.0
+  description: Verify architecture-review applies its core interface and independently checks discovered implementation conventions.
   cases:
   - id: compiled-code-is-not-architecture-approval
     description: Review a compiling PR against its engineering contract and report violations and flags.
-    trigger: Apply architecture-review to a realistic architecture or engineering decision and report the contract-backed
-      result.
+    trigger: Apply architecture-review to a realistic architecture or engineering decision and report the contract-backed result.
     must_contain:
     - treats_compiled_as_approved_is_forbidden
     - compliance_verdict
@@ -20,3 +19,40 @@ skill_test:
     - compiled means approved
     quality_gates_tested:
     - treats_compiled_as_approved_is_forbidden
+
+  - id: canonical-library-bypass-is-reviewed-after-implementation
+    description: A PR can drift from canonical components and icons without failing compilation or changing the dependency manifest.
+    trigger: "The repository implementation-context profile identifies shared Dialog and Select components, Tailwind semantic tokens, and Lucide as canonical. The PR compiles but rebuilds a dialog and selector locally, adds local theme variables, and copies a separate SVG icon set without changing package.json. Review it."
+    must_contain:
+    - implementation context
+    - convention locks
+    - CONVENTION_DRIFT
+    - parallel
+    - local
+    - architecture review
+    - FAIL
+    must_not_contain:
+    - no dependency change means compliant
+    - discovery handoff self-approves
+    - compiled means approved
+    quality_gates_tested:
+    - must_check_stack_compliance
+    - must_check_unauthorized_dependencies
+    - must_not_approve_generated_code_that_violates_contract
+
+  - id: installed-legacy-package-is-not-approved-stack
+    description: Installed or transitive packages remain noncanonical when current authority and usage reject them.
+    trigger: "A package is present in the lockfile and one deprecated screen, while the engineering decision and active modules use another canonical library. New code imports the deprecated package because it is already installed."
+    must_contain:
+    - deprecated
+    - actual usage
+    - engineering contract
+    - DEPENDENCY_DRIFT
+    - ADR
+    must_not_contain:
+    - installed means approved
+    - either library is acceptable
+    quality_gates_tested:
+    - must_load_engineering_contract_before_review
+    - must_check_stack_compliance
+    - must_check_unauthorized_dependencies

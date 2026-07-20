@@ -1,9 +1,9 @@
 skill_pack:
   schema_version: "1.0"
   id: redesign
-  version: "1.0.0"
+  version: "1.1.0"
   repository: puterakahfi/ai-native-skills
-  description: Complete dependency bundle for the delegated redesign workflow.
+  description: Complete dependency bundle for delegated redesign with repository implementation-context preservation.
   entrypoints:
     - redesign-workflow
 
@@ -30,6 +30,11 @@ skill_pack:
       concern: implementation
       when: Output mode is patch or an executable prototype requires repository implementation.
       reason: Own implementation without overriding approved design direction.
+    - name: implementation-context-discovery
+      classification: conditional
+      concern: implementation-context
+      when: Output mode is patch or an executable prototype maps design decisions into an existing repository.
+      reason: Discover canonical frameworks, components, styling, icons, tooling, convention locks, reuse decisions, and dependency authority before code production.
     - name: business-value-alignment
       classification: required
       concern: value
@@ -37,7 +42,7 @@ skill_pack:
     - name: decision-provenance
       classification: required
       concern: authority
-      reason: Verify scope, locks, approvals, overrides, ownership, and delivery authority.
+      reason: Verify scope, locks, approvals, overrides, ownership, dependencies, and delivery authority.
     - name: design-foundation
       classification: required
       concern: foundation
@@ -51,7 +56,7 @@ skill_pack:
     - name: design-visual
       classification: port
       concern: visual
-      reason: Route visual-direction concerns to the applicable specialist adapters.
+      reason: Route visual-direction concerns to applicable specialist adapters.
     - name: design-genre
       classification: adapter
       port: visual
@@ -114,7 +119,7 @@ skill_pack:
     - name: ui-components
       classification: adapter
       port: layout
-      reason: Select and specify suitable reusable interface components.
+      reason: Select suitable component capabilities and hand them to repository implementation-context mapping.
     - name: design-spacing
       classification: adapter
       port: layout
@@ -179,10 +184,15 @@ skill_pack:
       concern: evidence
       when: Baseline findings, audit normalization, or audit-to-redesign evidence is required.
       reason: Capture and normalize baseline design findings when audit coverage is needed.
+    - name: architecture-review
+      classification: conditional
+      concern: architecture-acceptance
+      when: Output mode is patch or an executable prototype produces repository code.
+      reason: Independently verify stack, convention, dependency, layer, and architecture compliance after implementation.
     - name: design-review
       classification: required
       concern: acceptance
-      reason: Provide independent facade review and normalized verdicts.
+      reason: Provide independent facade review and normalized design verdicts.
     - name: brand-identity-review
       classification: domain-reviewer
       domains:
@@ -202,7 +212,7 @@ skill_pack:
     - name: skill-eval
       classification: required
       concern: validation
-      reason: Verify that required skills are applied rather than merely loaded.
+      reason: Verify required skills are applied rather than merely loaded.
     - name: git-workflow
       classification: conditional
       concern: repository
@@ -220,7 +230,7 @@ skill_pack:
         - required
         - port
     complete:
-      description: Full documented Redesign Pack with all local contextual adapters and the available brand-identity reviewer.
+      description: Full documented Redesign Pack with all local contextual adapters, repository implementation-context capability, architecture review, and the available brand-identity reviewer.
       include_classifications:
         - required
         - conditional

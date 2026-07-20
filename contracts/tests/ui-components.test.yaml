@@ -1,12 +1,12 @@
 skill_test:
   skill: ui-components
-  version: "1.1.0"
-  description: Verify ui-components selects a fitting pattern from brief and content evidence before copying a template.
+  version: "1.2.0"
+  description: Verify ui-components selects a fitting capability before mapping it to the repository's canonical implementation systems.
 
   cases:
     - id: pattern-selection-precedes-template-copy
-      description: Component selection must use the decision tree and content volume before a template is copied.
-      trigger: "Choose a hero component for a page with a short headline, long supporting proof, and several actions, then select the implementation template."
+      description: Component selection must use the decision tree and content volume before an implementation reference is used.
+      trigger: "Choose a hero component for a page with a short headline, long supporting proof, and several actions, then select the implementation approach."
       must_contain:
         - "brief_signals"
         - "content_inventory"
@@ -16,7 +16,44 @@ skill_test:
         - "copy the first template before selecting a pattern"
       sequence_required:
         - pattern: "pattern_selected_from_decision_tree_not_arbitrary"
-          must_come_before: "copy the chosen template verbatim"
+          must_come_before: "implementation-context-discovery|implementation context"
       quality_gates_tested:
         - pattern_selected_from_decision_tree_not_arbitrary
         - hero_pattern_matches_content_volume
+
+    - id: selected-component-capability-does-not-authorize-new-library
+      description: A selected UI pattern must be mapped through existing repository components and conventions before code.
+      trigger: "The design decision selects a searchable selector. The repository already has canonical Input, Popover, Command, form conventions, Tailwind tokens, and Lucide. Use a generic template and install another component/icon library instead."
+      must_contain:
+        - "implementation-context-discovery"
+        - "canonical"
+        - "compose"
+        - "repository"
+        - "rejected alternatives"
+        - "architecture-review"
+      must_not_contain:
+        - "install another component library"
+        - "template overrides repository conventions"
+        - "new icon family"
+      sequence_required:
+        - pattern: "pattern|capability"
+          must_come_before: "implementation-context-discovery|implementation context"
+        - pattern: "implementation-context-discovery|implementation context"
+          must_come_before: "architecture and design verification"
+      quality_gates_tested:
+        - pattern_selected_from_decision_tree_not_arbitrary
+        - hero_pattern_matches_content_volume
+
+    - id: semantic-native-structure-remains-eligible
+      description: A component library does not require wrappers for semantic structures with no additional product contract.
+      trigger: "A documentation section needs headings, a list, links, and a simple native disclosure. No shared abstraction or product state is required. Reject it because every element must use the component library."
+      must_contain:
+        - "semantic native"
+        - "valid"
+        - "no shared abstraction"
+        - "accessibility"
+      must_not_contain:
+        - "every element must use the component library"
+        - "native HTML is always drift"
+      quality_gates_tested:
+        - pattern_selected_from_decision_tree_not_arbitrary

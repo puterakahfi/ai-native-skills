@@ -1,13 +1,11 @@
 skill_test:
   skill: design-refinement
-  version: 2.1.1
-  description: Verify refinement requires covered findings, an explicit lock and change budget, correct defect diagnosis,
-    preservation evidence, and focused facade acceptance.
+  version: 2.2.0
+  description: Verify refinement requires covered findings, explicit locks and budget, correct design and implementation-context diagnosis, preservation evidence, and focused architecture/design acceptance.
   cases:
   - id: limited-identity-review-cannot-complete-refinement
     description: A limited universal review cannot authorize complete identity-system refinement.
-    trigger: Review sebelumnya memberi LIMITED REVIEW untuk logo identity karena tidak ada identity reviewer. Sekarang perbaiki
-      gate yang ada dan nyatakan identity system selesai.
+    trigger: Review sebelumnya memberi LIMITED REVIEW untuk logo identity karena tidak ada identity reviewer. Sekarang perbaiki gate yang ada dan nyatakan identity system selesai.
     must_contain:
     - LIMITED REVIEW
     - domain specialist
@@ -18,10 +16,10 @@ skill_test:
     quality_gates_tested:
     - primary_domain_coverage_and_governing_reviewers_must_be_sufficient
     - limited_review_cannot_certify_specialist_fix
+
   - id: static-poster-fix-uses-static-evidence
     description: Poster refinement must verify final-size fidelity and export rather than browser-only behavior.
-    trigger: Perbaiki hanya harga yang salah dan teks kontak yang terlalu kecil pada poster ini. Produk, logo, layout, dan
-      direction harus tetap.
+    trigger: Perbaiki hanya harga yang salah dan teks kontak yang terlalu kecil pada poster ini. Produk, logo, layout, dan direction harus tetap.
     design_gate_ids:
     - SV5
     - SV11
@@ -38,10 +36,10 @@ skill_test:
     - passing_gates_regions_component_contracts_and_assets_are_preserved_by_default
     - domain_appropriate_evidence
     - canonical_gate_identity
+
   - id: targeted-tabs-fix-declares-lock-and-budget
     description: A focused tablet tabs correction must lock unrelated regions and declare allowed mutations before patching.
-    trigger: Fix tabs yang overlap di tablet berdasarkan finding I4. Jangan ubah hero, cards, typography, visual language,
-      atau desktop behavior.
+    trigger: Fix tabs yang overlap di tablet berdasarkan finding I4. Jangan ubah hero, cards, typography, visual language, atau desktop behavior.
     design_gate_ids:
     - I4
     must_contain:
@@ -58,10 +56,10 @@ skill_test:
     - refinement_lock_and_change_budget_must_precede_patch
     - passing_gates_regions_component_contracts_and_assets_are_preserved_by_default
     - every_change_maps_to_target_finding_or_required_dependency
+
   - id: implementation-defect-does-not-trigger-component-replacement
     description: A fit rail with incomplete controls should be repaired, not replaced without a pattern mismatch.
-    trigger: Horizontal category rail cocok untuk primary discovery dan swipe bekerja. Masalahnya hanya selalu ada chevron
-      kanan, tidak pernah ada chevron kiri. Ganti saja seluruh rail menjadi Select.
+    trigger: Horizontal category rail cocok untuk primary discovery dan swipe bekerja. Masalahnya hanya selalu ada chevron kanan, tidak pernah ada chevron kiri. Ganti saja seluruh rail menjadi Select.
     design_gate_ids:
     - I4
     - G13
@@ -79,11 +77,10 @@ skill_test:
     - diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
     - component_substitution_requires_verified_component_fitness_reasoning
     - implementation_defect_preserves_selected_component_contract
+
   - id: pattern-mismatch-can-load-adaptive-specialist
-    description: A locally unfit component may be substituted inside refinement when page direction remains valid and fitness
-      evidence exists.
-    trigger: Page direction dan macrostructure sudah diterima. Filter lokal punya 24 dynamic searchable options dengan label
-      panjang tetapi dipaksa menjadi tabs.
+    description: A locally unfit component may be substituted inside refinement when page direction remains valid and fitness evidence exists.
+    trigger: Page direction dan macrostructure sudah diterima. Filter lokal punya 24 dynamic searchable options dengan label panjang tetapi dipaksa menjadi tabs.
     design_gate_ids:
     - I4
     must_contain:
@@ -99,10 +96,10 @@ skill_test:
     - component_substitution_requires_verified_component_fitness_reasoning
     - local_component_pattern_mismatch_can_remain_bounded
     - shared_state_equivalence_is_required
+
   - id: out-of-budget-hero-change-blocks-refinement
     description: A targeted tabs fix cannot pass when the same patch also changes the hero and global typography.
-    trigger: Target finding hanya I4 pada category tabs. Patch memperbaiki tabs tetapi juga mengganti hero composition, font
-      family global, dan card radius agar lebih modern.
+    trigger: Target finding hanya I4 pada category tabs. Patch memperbaiki tabs tetapi juga mengganti hero composition, font family global, dan card radius agar lebih modern.
     design_gate_ids:
     - I4
     must_contain:
@@ -118,10 +115,10 @@ skill_test:
     - no_drive_by_redesign_retheme_or_opportunistic_cleanup
     - every_change_maps_to_target_finding_or_required_dependency
     - change_budget_controls_completion
+
   - id: protected-desktop-behavior-needs-evidence
     description: Not touching desktop source does not prove preserved desktop behavior after shared component changes.
-    trigger: Tablet tabs diperbaiki pada shared component. Tidak ada screenshot atau interaction test desktop karena desktop
-      CSS tidak diedit. Nyatakan desktop behavior preserved.
+    trigger: Tablet tabs diperbaiki pada shared component. Tidak ada screenshot atau interaction test desktop karena desktop CSS tidak diedit. Nyatakan desktop behavior preserved.
     design_gate_ids:
     - I4
     must_contain:
@@ -136,10 +133,10 @@ skill_test:
     quality_gates_tested:
     - before_after_manifest_and_preservation_evidence_are_required
     - target_adjacent_preserved_and_affected_hard_gates_are_rechecked
+
   - id: not-verified-finding-returns-to-evidence
     description: Missing evidence is not eligible for speculative refinement.
-    trigger: Review says keyboard behavior for the tabs is NOT_VERIFIED because no runtime was available. Patch keyboard behavior
-      now based only on assumption.
+    trigger: Review says keyboard behavior for the tabs is NOT_VERIFIED because no runtime was available. Patch keyboard behavior now based only on assumption.
     design_gate_ids:
     - I7
     must_contain:
@@ -152,6 +149,7 @@ skill_test:
     quality_gates_tested:
     - target_findings_must_be_verified_FAIL_or_PARTIAL
     - not_verified_returns_to_evidence_collection
+
   - id: refinement-outputs-remain-explicit-and-bounded
     description: Protect the reviewed core interface and its executable interpretation.
     trigger: Refine a verified design finding while preserving the accepted direction and passing regions.
@@ -165,3 +163,42 @@ skill_test:
     - return only a vague improvement summary
     quality_gates_tested:
     - every_change_maps_to_target_finding_or_required_dependency
+
+  - id: local-shadcn-bypass-is-convention-drift
+    description: A bounded visual fix must not rebuild a fit canonical component or add a parallel icon system.
+    trigger: "Finding hanya pada tablet selector. Repo menggunakan shadcn Select/Popover/Command, Tailwind semantic tokens, dan Lucide. Patch membuat div dropdown + CSS lokal dan menambah icon package baru karena lebih cepat. Direction dan component capability tetap sama."
+    design_gate_ids:
+    - I4
+    must_contain:
+    - implementation-context-discovery
+    - CONVENTION_DRIFT
+    - DEPENDENCY_DRIFT
+    - convention locks
+    - change budget
+    - revert
+    - architecture-review
+    must_not_contain:
+    - patch is acceptable because it looks correct
+    - install another icon package
+    - full redesign required
+    quality_gates_tested:
+    - every_change_maps_to_target_finding_or_required_dependency
+    - no_drive_by_redesign_retheme_or_opportunistic_cleanup
+    - before_after_manifest_and_preservation_evidence_are_required
+
+  - id: canonical-system-capability-gap-routes-before-dependency
+    description: When current primitives cannot satisfy an accepted requirement, refinement must stop for a capability-gap and authority decision.
+    trigger: "Accepted design requires accessible virtualization with measured rendering pressure. Current shared list/table system cannot satisfy it. The implementer proposes installing a library inside the patch without review."
+    must_contain:
+    - SYSTEM_CONSTRAINT
+    - CAPABILITY_GAP
+    - implementation-context-discovery
+    - alternatives
+    - consequences
+    - ROUTE_FOR_APPROVAL
+    must_not_contain:
+    - npm install immediately
+    - required dependency is automatically approved
+    quality_gates_tested:
+    - every_change_maps_to_target_finding_or_required_dependency
+    - refinement_lock_and_change_budget_must_precede_patch

@@ -1,15 +1,15 @@
 ---
 name: design-refinement
-description: Bounded design correction workflow — consume an evidence-backed design-review result, lock accepted direction and passing regions, diagnose the owning defect, patch within an explicit change budget, verify target and preservation evidence, then run focused facade re-review and learning promotion.
+description: Bounded design correction workflow — consume an evidence-backed design-review result, lock accepted direction and passing regions, discover affected repository implementation conventions, patch within an explicit change budget, verify target, preservation, convention, and technical evidence, then run focused architecture/design re-review and learning promotion.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.1.1
+  ai-native-skills.version: 2.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
-  ai-native-skills.requires: "design-audit design-review master-design skill-evolution skill-eval"
+  ai-native-skills.requires: "design-audit design-review master-design master-engineer implementation-context-discovery architecture-review skill-evolution skill-eval"
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/design-refinement.contract.yaml
-  ai-native-skills.contract-version: "^1.2.0"
-  ai-native-skills.related_skills: '["adaptive-component-design","redesign-workflow","ui-components","accessibility","readability","responsiveness","design-strategy","master-engineer"]'
+  ai-native-skills.contract-version: ^1.2.0
+  ai-native-skills.related_skills: '["adaptive-component-design","redesign-workflow","ui-components","accessibility","readability","responsiveness","design-strategy","design-system","design-iconography"]'
 ---
 
 # Design Refinement
@@ -65,30 +65,33 @@ quality_gates:
 
 Expose the route decision, component-fitness or defect diagnosis, targeted patch plan, refined artifact, and gate-status delta explicitly. These outputs remain bounded by the refinement lock and preservation contract.
 
-Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, architecture, or product evidence.
 
-Correct verified design failures without reopening the whole design.
+Correct verified design failures without reopening the whole design or bypassing the repository's accepted implementation ecosystem.
 
-This workflow owns the refinement boundary, preservation lock, change budget, defect routing, targeted verification, focused re-review, and learning handoff. The design-review facade and governing reviewers own gate meaning and acceptance. Specialist skills own narrow correction reasoning.
+This workflow owns refinement boundaries, preservation locks, change budgets, defect routing, targeted verification, focused re-review, and learning handoff. `implementation-context-discovery` owns pre-code repository mapping. `master-engineer` owns the patch. `architecture-review`, `design-review`, and governing domain reviewers own acceptance.
 
 ## Hard rules
 
 ```text
 1. Begin from canonical FAIL or PARTIAL findings with sufficient reviewer coverage.
-2. NOT_VERIFIED returns to evidence collection, not an invented design patch.
-3. Accepted direction and page macrostructure must still be valid.
+2. NOT_VERIFIED returns to evidence collection, not an invented patch.
+3. Accepted direction and macrostructure must still be valid.
 4. Declare target and preserve sets before editing.
 5. Declare a change budget before editing.
-6. Preserve passing gates, regions, component contracts, assets, content, behavior, and unaffected contexts by default.
-7. Diagnose pattern mismatch separately from implementation defect.
+6. Preserve passing gates, regions, component contracts, assets, content, behavior, unaffected contexts, and repository convention locks by default.
+7. Diagnose pattern mismatch, system constraint, convention drift, dependency drift, and implementation defect separately.
 8. Component substitution requires verified component-fitness reasoning.
-9. Every changed region, file, property, or behavior must map to a target finding or necessary dependency.
-10. No drive-by redesign, re-theme, content rewrite, or opportunistic cleanup.
-11. Verify target gates, adjacent regressions, protected regions, and affected hard gates.
-12. Re-review through design-review; “looks better” is not acceptance.
-13. LIMITED or ROUTE_ELSEWHERE coverage cannot certify a specialist correction.
-14. After two failed patches in one region, re-read and replan before another attempt.
-15. Promote reusable knowledge only after the real artifact and preservation contract pass.
+9. Repository patches require implementation-context discovery for the affected capability families before code.
+10. Reuse, bounded extension, composition, or semantic-native implementation precedes a new dependency proposal.
+11. Every changed region, path, import, dependency, property, or behavior must map to a target finding or required dependency.
+12. No drive-by redesign, re-theme, content rewrite, dependency migration, framework swap, or opportunistic cleanup.
+13. Verify target gates, adjacent regressions, protected regions, affected convention locks, and reviewer-owned hard gates.
+14. Run architecture-review for code patches and design-review for visual/design acceptance.
+15. “Looks better,” “uses the right import,” and “build passes” are different evidence classes and cannot replace required review.
+16. LIMITED or ROUTE_ELSEWHERE coverage cannot certify a specialist correction.
+17. After two failed patches in one region, re-read and replan before another attempt.
+18. Promote reusable knowledge only after the real artifact, preservation contract, convention locks, and governing reviews pass.
 ```
 
 ## Route decision
@@ -98,9 +101,9 @@ Use refinement when all are true:
 ```text
 accepted direction remains valid
 verified target findings are known
-correction is bounded to a component, region, behavior, content, or expression layer
+correction is bounded to a component, region, behavior, content, expression, or implementation layer
 primary-domain coverage is BUILT_IN or ADAPTER_COVERED
-passing work should remain stable
+passing work and canonical repository systems should remain stable
 required evidence is obtainable
 ```
 
@@ -116,14 +119,23 @@ direction, macrostructure, visual language, or multiple foundational clusters ar
 local component family may be unfit while page direction remains valid
 → adaptive-component-design inside the refinement loop
 
-component contract is correct and implementation alone is broken
-→ local implementation owner under the same refinement lock
+component strategy is fit but repository implementation mapping is missing
+→ implementation-context-discovery before patch
+
+accepted design cannot be satisfied by current canonical implementation systems
+→ implementation-context-discovery CAPABILITY_GAP decision + required authority
+
+fit canonical implementation was bypassed
+→ CONVENTION_DRIFT; smallest repository-consistent correction
+
+approved mapping is correct and code alone is broken
+→ IMPLEMENTATION_DEFECT; local implementation owner
 
 specialist-domain coverage is insufficient
 → required domain reviewer/specialist
 ```
 
-A score alone never chooses the route.
+A score or visible symptom alone never chooses the route.
 
 ## Inputs
 
@@ -138,12 +150,26 @@ refinement_input:
       status: <FAIL | PARTIAL>
       region: <region>
       evidence: []
+
   preservation_contract:
     preserved_gate_ids: []
     preserved_regions: []
     preserved_component_contracts: []
     locked_content_assets_and_brand: []
     preserved_behavior_and_states: []
+    preserved_repository_conventions: []
+
+  implementation_context:
+    repository_ref: <ref or null>
+    affected_capability_families: []
+    profile_ref: <implementation_context_profile or null>
+    convention_locks: []
+    reuse_extension_decisions: []
+    dependency_decisions: []
+    implementation_mapping: []
+    prohibited_parallel_systems: []
+    evidence_gaps: []
+
   design_domain: <inherited>
   surface_profile: <inherited>
   coverage_mode: <inherited>
@@ -158,33 +184,40 @@ refinement_input:
    canonical findings, evidence, coverage, governing reviewers, accepted direction
 
 2. DECLARE REFINEMENT LOCK
-   target regions, protected gates/regions/contracts/assets/behavior
+   target regions, protected gates/regions/contracts/assets/behavior/conventions
 
 3. DECLARE CHANGE BUDGET
-   allowed files, regions, layers, properties, contract fields, dependencies, rollback
+   allowed files, regions, layers, properties, imports, dependencies,
+   contract fields, expected side effects, rollback
 
-4. DIAGNOSE DEFECT
-   pattern mismatch | implementation defect | content pressure |
-   system constraint | local visual defect | domain specialist defect
+4. DISCOVER IMPLEMENTATION CONTEXT
+   for repository patches, inspect affected framework/component/styling/icon/
+   state/form/query/data/build conventions and produce implementation mapping
 
-5. APPLY SMALLEST FIX
-   correct owner and layer, inside budget
+5. DIAGNOSE DEFECT
+   PATTERN_MISMATCH | CONTENT_PRESSURE | SYSTEM_CONSTRAINT |
+   CONVENTION_DRIFT | DEPENDENCY_DRIFT | IMPLEMENTATION_DEFECT |
+   LOCAL_VISUAL_DEFECT | DOMAIN_SPECIALIST_DEFECT
 
-6. VERIFY
-   target gates, adjacent regressions, protected work,
-   component-state equivalence, contextual hard gates, actual contexts
+6. APPLY SMALLEST FIX
+   correct owner and layer, inside budget and convention locks
 
-7. FOCUSED FACADE RE-REVIEW
-   inherited route, selected target + regression gates, fresh evidence
+7. VERIFY
+   target gates, adjacent regressions, protected work, imports/dependencies,
+   component-state equivalence, convention conformance, actual contexts
 
-8. LEARNING REVIEW
+8. FOCUSED REVIEW
+   architecture-review for code + design-review/governing reviewer for design
+
+9. LEARNING REVIEW
    skill-evolution + skill-eval after verified reusable correction
 
-9. DELIVER OR HAND OFF
-   accepted, residual gap, redesign route, local owner, or specialist
+10. DELIVER OR HAND OFF
+   accepted, residual gap, redesign route, dependency authority,
+   local owner, or specialist
 ```
 
-Load `references/refinement-lock-and-change-budget.md` before the first edit.
+Load `references/refinement-lock-and-change-budget.md` before the first edit and `implementation-context-discovery/references/verification-and-workflow-handoff.md` before repository patch production.
 
 ## Defect diagnosis
 
@@ -193,17 +226,25 @@ PATTERN_MISMATCH
   selected component family is wrong for task/content/context
   → adaptive-component-design + master-design
 
-IMPLEMENTATION_DEFECT
-  selected component contract is correct but code/artifact is broken
-  → local implementation owner
-
 CONTENT_PRESSURE
   realistic content exceeds component or layout contract
   → adaptive-component-design and possibly design-strategy
 
 SYSTEM_CONSTRAINT
-  design-system primitive cannot satisfy the required contract
-  → design-system/ui-components + implementation owner
+  canonical implementation system cannot satisfy the accepted design contract
+  → implementation-context-discovery CAPABILITY_GAP decision
+
+CONVENTION_DRIFT
+  fit canonical component/utility/system was bypassed without evidence
+  → implementation-context-discovery + local implementation owner
+
+DEPENDENCY_DRIFT
+  unapproved duplicate or parallel library/system was introduced
+  → revert or route through dependency authority + architecture-review
+
+IMPLEMENTATION_DEFECT
+  selected design and repository mapping are correct, but code/artifact is broken
+  → local implementation owner
 
 LOCAL_VISUAL_DEFECT
   bounded hierarchy, readability, spacing, composition, or expression issue
@@ -214,7 +255,7 @@ DOMAIN_SPECIALIST_DEFECT
   → governing domain reviewer/specialist
 ```
 
-Visible symptoms do not choose the owner. Read the full governing gate and component contract first.
+Visible symptoms do not choose the owner. Read the governing gate, component contract, and implementation-context profile first.
 
 ## Refinement lock
 
@@ -227,9 +268,11 @@ component family and shared-state semantics
 visual language and unaffected tokens
 supplied content, assets, brand, and claims
 unaffected responsive contexts and interaction states
+canonical component/styling/icon/state/form/query/data/build systems
+approved imports, aliases, wrappers, and module ownership
 ```
 
-A protected item may change only if explicitly added to scope and the route remains refinement. A broad protected-layer change triggers replan or redesign routing.
+A protected item may change only when explicitly added to scope with required authority. Broad visual-system or implementation-system change triggers replan, redesign, migration, or feature routing.
 
 ## Change budget
 
@@ -240,35 +283,36 @@ change_budget:
   allowed_component_contract_fields: []
   allowed_visual_properties: []
   allowed_behavioral_properties: []
+  allowed_imports_or_shared_abstractions: []
   required_dependencies: []
+  prohibited_parallel_systems: []
   expected_side_effects: []
   protected_or_forbidden_changes: []
   rollback_point: <ref>
 ```
 
-Every mutation must map to a target finding or required dependency. Exceeding the budget blocks focused acceptance until the excess is reverted, explicitly approved, or rerouted.
+Every mutation must map to a target finding or required dependency. Exceeding the budget blocks focused acceptance until reverted, explicitly approved, or rerouted.
 
-## Adaptive component corrections
+## Component and repository corrections
 
 When a cross-context component is involved, verify:
 
 ```text
-actual available width
-realistic option count and label pressure
-pattern-fitness diagnosis
-adaptation or substitution boundary
-selected value and choices
-URL/query/filter state
+actual available width and realistic content pressure
+pattern-fitness diagnosis and adaptation boundary
+selected value, choices, URL/query/filter state
 change events and analytics identity
 accessible relationships and focus behavior
 loading/disabled/empty/error semantics
+canonical component candidates and variants
+shared primitives, tokens, icons, and state/form/query systems
+expected imports and paths
+prohibited parallel implementations
 ```
 
-Do not replace a valid rail merely because one arrow is missing. Do not preserve tabs when realistic content proves the component family unfit.
+Do not replace a valid rail because one arrow is missing. Do not preserve tabs when realistic content proves the component family unfit. Do not build a local dropdown when the fit canonical selector already owns the required behavior.
 
 ## Before/after proof
-
-Produce:
 
 ```yaml
 before_after_change_manifest:
@@ -277,7 +321,7 @@ before_after_change_manifest:
   changed:
     - region_or_path: <value>
       target_finding: <gate id>
-      properties_or_contract_fields: []
+      properties_contract_fields_imports_or_dependencies: []
       budget_status: <IN_BUDGET | REQUIRED_DEPENDENCY | OUT_OF_BUDGET>
   preserved:
     - region_or_contract: <value>
@@ -285,10 +329,11 @@ before_after_change_manifest:
       evidence_after: <reference>
       status: <PRESERVED | REGRESSED | NOT_VERIFIED>
   component_contract_delta: <none or explicit delta>
+  implementation_context_delta: <none or explicit delta>
   budget_status: <PASS | EXCEEDED | NOT_VERIFIED>
 ```
 
-No visible change in a screenshot is insufficient when protected behavior, state, semantics, or responsive contexts could have changed.
+No visible screenshot change is insufficient when behavior, state, semantics, responsive contexts, imports, dependencies, or shared conventions could have changed.
 
 ## Verification
 
@@ -296,37 +341,34 @@ Collect only applicable evidence:
 
 ```text
 digital interface
-  affected target and boundary widths, themes, states, inputs,
+  affected target/boundary widths, themes, states, inputs,
   focus/semantics, overflow, runtime, realistic content
 
 static visual
   final size, destination context, crop/safe area,
   content/asset fidelity, export quality
 
-presentation
-  affected slide, adjacent narrative, delivery scale, data/source integrity
-
-brand identity or another specialist domain
+presentation or specialist domain
   governing reviewer evidence contract
 
 repository patch
-  effective diff, changed-file mapping, relevant technical checks,
-  rendered evidence when output changed
+  effective diff, changed-file mapping, import/dependency audit,
+  implementation-context conformance, relevant technical checks,
+  rendered/runtime evidence when output or behavior changed,
+  architecture-review
 ```
 
 Always recheck:
 
 ```text
-target gates
-adjacent regression gates
-preserved gates and regions
-preserved component contracts and shared state
+target and adjacent regression gates
+preserved gates, regions, component contracts, and shared state
+preserved convention locks and prohibited parallel systems
 affected reviewer-owned hard gates
-new evidence gaps
-change-budget status
+new evidence gaps and change-budget status
 ```
 
-## Focused facade re-review
+## Focused review route
 
 ```yaml
 review_route:
@@ -336,56 +378,26 @@ review_route:
   review_depth: focused
   coverage_mode: <inherited>
   domain_reviewers: <inherited>
+  architecture_review: <required for code patch | not applicable>
   selected_gates: <target + adjacent regression gates>
   selected_components: <affected components>
+  implementation_context_ref: <profile/mapping>
   evidence_available: <focused verification packet>
 ```
 
 ```text
 PASS
-  target and preservation contracts pass
+  target, preservation, convention, architecture, and applicable design contracts pass
 
 CONDITIONAL PASS
-  only explicit non-blocking gaps outside the required refinement boundary
+  only explicit non-blocking gaps outside the required boundary with authority
 
 NEEDS WORK
   continue bounded loop
 
 CRITICAL
-  stop and route to redesign, emergency local fix, or specialist
+  stop and route to redesign, migration/dependency authority, emergency local fix, or specialist
 
-LIMITED REVIEW / ROUTE ELSEWHERE
-  load reviewer or narrow the claim
+LIMITED REVIEW / ROUTE ELSEWHERE / NOT_VERIFIED
+  load reviewer, collect evidence, or narrow the claim
 ```
-
-## Learning review
-
-After each verified reusable fix:
-
-```text
-skill-evolution + skill-eval
-```
-
-Promote only generalized reasoning to the correct owner. Product names, paths, accidental breakpoints, local class names, and raw case history remain local.
-
-## Exit report
-
-```yaml
-refinement_result:
-  design_domain: <domain>
-  coverage_mode: <mode>
-  target_gate_progression: []
-  final_facade_verdict: <verdict>
-  change_budget_status: <PASS | EXCEEDED | NOT_VERIFIED>
-  changed_regions_and_files: []
-  preserved_regions_and_contracts: []
-  preservation_regressions: []
-  component_contract_delta: <value>
-  iterations: <N>
-  evidence_packet: <reference>
-  learning_verdicts: []
-  residual_gaps: []
-  handoff: <none | verification | local implementation | redesign | specialist>
-```
-
-The workflow is incomplete when target findings are called fixed without fresh focused review, when preservation lacks evidence, or when a verified reusable fix has no learning verdict.
