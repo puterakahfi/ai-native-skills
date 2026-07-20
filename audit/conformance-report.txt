@@ -1,0 +1,948 @@
+exit_status=1
+Core:   .deps/ai-native-core
+Skills: .tmp/adapter-repo
+
+⚠ skills/accessibility/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 7/8 (88%)
+    - all_images_must_have_meaningful_alt_text
+
+⚠ skills/accessibility/SKILL.md
+  outputs [WARN]: outputs coverage: 0/5 (0%)
+    - accessibility_audit_report
+    - wcag_violation_list
+    - remediation_plan
+    - aria_recommendations
+    - keyboard_navigation_map
+
+⚠ skills/accessibility/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - ui_component_or_page
+
+⚠ skills/adaptive-component-design/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 15/19 (79%)
+    - requested_component_is_treated_as_a_proposed_solution_not_an_immutable_requirement
+    - tabs_and_horizontal_collections_expose_truthful_overflow_affordance
+    - touch_pointer_and_keyboard_interactions_are_defined_when_applicable
+    - interactive_targets_do_not_overlap_or_clip
+
+⚠ skills/adaptive-component-design/SKILL.md
+  outputs [WARN]: outputs coverage: 3/15 (20%)
+    - viewport_strategy
+    - component_substitution_matrix
+    - adaptation_boundary_map
+    - component_selection_rationale
+    - rejected_component_alternatives
+
+⚠ skills/adaptive-component-design/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/5 (0%)
+    - product_intent
+    - user_tasks
+    - content_inventory
+    - component_inventory
+    - target_contexts
+
+⚠ skills/adr/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 7/8 (88%)
+    - superseding_adr_must_reference_original
+
+⚠ skills/adr/SKILL.md
+  outputs [WARN]: outputs coverage: 0/3 (0%)
+    - adr_document
+    - decision_log_entry
+    - superseded_adr_reference
+
+⚠ skills/ai-system-design/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/8 (62%)
+    - eval_framework_must_exist_before_production_deploy
+    - rag_retrieval_quality_must_be_measurable
+    - ai_feature_must_degrade_gracefully_not_fail_silently
+
+⚠ skills/ai-system-design/SKILL.md
+  outputs [WARN]: outputs coverage: 2/7 (29%)
+    - ai_system_architecture
+    - rag_design
+    - agent_memory_design
+    - fallback_strategy
+    - human_in_the_loop_design
+
+⚠ skills/ai-system-design/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - ai_feature_description
+
+✗ skills/api-contract/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 3/8 (38%)
+    - api_must_have_explicit_versioning_strategy
+    - breaking_changes_must_be_detected_before_deploy
+    - no_undocumented_endpoints_in_production
+    - backward_compatibility_must_be_preserved_within_major_version
+    - deprecation_must_be_announced_before_removal
+
+⚠ skills/api-contract/SKILL.md
+  outputs [WARN]: outputs coverage: 1/5 (20%)
+    - contract_test_suite
+    - versioning_decision
+    - breaking_change_report
+    - consumer_impact_analysis
+
+⚠ skills/api-contract/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - api_description_or_spec
+
+⚠ skills/architecture-review/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 8/9 (89%)
+    - treats_compiled_as_approved_is_forbidden
+
+⚠ skills/architecture-review/SKILL.md
+  outputs [WARN]: outputs coverage: 0/6 (0%)
+    - compliance_verdict
+    - violation_list
+    - adr_required_flag
+    - new_dependency_flag
+    - architecture_smell_list
+
+⚠ skills/architecture-review/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - code_or_pr_diff
+    - engineering_contract_ref
+
+⚠ skills/business-value-alignment/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - request_or_opportunity
+
+✗ skills/content-strategy/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 0/2 (0%)
+    - information_sequenced_by_user_mental_model
+    - tone_consistent_across_sections
+
+⚠ skills/content-strategy/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - content_structure
+    - tone_guidelines
+    - microcopy_variants
+    - content_gate_scores
+
+⚠ skills/content-strategy/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - content_inventory
+    - audience_profile
+
+⚠ skills/context-engineering/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 6/7 (86%)
+    - context_must_be_versioned_and_reviewed
+
+⚠ skills/context-engineering/SKILL.md
+  outputs [WARN]: outputs coverage: 2/5 (40%)
+    - agents_md
+    - context_pack_template
+    - guardrail_rules
+
+⚠ skills/context-engineering/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - product_or_repo_ref
+
+⚠ skills/context-manager/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/6 (83%)
+    - context_source_must_be_traceable
+
+⚠ skills/context-manager/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - task_or_workflow_ref
+    - product_ref
+
+⚠ skills/dark-light-theming/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 2/3 (67%)
+    - tokens_mapped_for_both_themes
+
+⚠ skills/dark-light-theming/SKILL.md
+  outputs [WARN]: outputs coverage: 0/3 (0%)
+    - theme_token_map
+    - fouc_prevention_strategy
+    - theming_gate_scores
+
+⚠ skills/dark-light-theming/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - color_token_map
+    - theme_toggle_requirement
+
+✗ skills/data-modeling/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 1/3 (33%)
+    - migrations_are_reversible_or_documented
+    - no_implicit_coupling_across_bounded_contexts
+
+⚠ skills/data-modeling/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - schema_definition
+    - migration_plan
+    - model_alignment_verdict
+    - data_modeling_gate_scores
+
+⚠ skills/data-modeling/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - domain_context
+    - entity_inventory
+
+⚠ skills/decision-making/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 1/2 (50%)
+    - reversibility_classified_before_deciding
+
+⚠ skills/decision-making/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - reversibility_verdict
+    - premortem_risks
+    - recommended_option
+    - decision_gate_scores
+
+⚠ skills/decision-making/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - decision_context
+    - options_list
+
+⚠ skills/design-brand/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 2/3 (67%)
+    - brand_tokens_respected_not_overridden
+
+⚠ skills/design-brand/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - brand_identifier
+
+⚠ skills/design-color/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 4/5 (80%)
+    - no_hardcoded_hex_in_components
+
+⚠ skills/design-color/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - palette_primitives
+    - semantic_role_mapping
+    - accent_definition
+    - temperature_rationale
+
+⚠ skills/design-depth/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 8/9 (89%)
+    - body_text_and_controls_remain_legible_and_operable
+
+⚠ skills/design-depth/SKILL.md
+  outputs [WARN]: outputs coverage: 3/11 (27%)
+    - depth_role_map
+    - layer_stack_declaration
+    - atmosphere_spec
+    - elevation_or_surface_spec
+    - imagery_integration_spec
+
+⚠ skills/design-foundation/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 6/7 (86%)
+    - F5_no_dead_space_no_min_height_100vh
+
+⚠ skills/design-genre/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 8/9 (89%)
+    - rejected_candidates_and_tradeoffs_are_recorded
+
+⚠ skills/design-genre/SKILL.md
+  outputs [WARN]: outputs coverage: 3/10 (30%)
+    - genre_candidates
+    - selected_expression_family
+    - signal_justification
+    - expression_constraints
+    - genre_reference_selection
+
+⚠ skills/design-iconography/SKILL.md
+  outputs [WARN]: outputs coverage: 1/4 (25%)
+    - sizing_spec
+    - stroke_weight_spec
+    - a11y_pattern
+
+⚠ skills/design-iconography/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - genre_selection
+
+⚠ skills/design-patterns/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 4/7 (57%)
+    - alternative_patterns_must_be_considered
+    - no_pattern_applied_speculatively
+    - implementation_must_preserve_open_closed_principle
+
+⚠ skills/design-patterns/SKILL.md
+  outputs [WARN]: outputs coverage: 0/5 (0%)
+    - pattern_recommendation
+    - pattern_justification
+    - implementation_sketch
+    - trade_off_analysis
+    - anti_pattern_warnings
+
+⚠ skills/design-patterns/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - problem_description
+
+⚠ skills/design-refinement/SKILL.md
+  outputs [WARN]: outputs coverage: 3/17 (18%)
+    - refinement_route_decision
+    - component_fitness_or_defect_diagnosis
+    - targeted_patch_plan
+    - refined_artifact
+    - gate_status_delta_report
+
+✗ skills/design-spacing/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 1/5 (20%)
+    - rhythm_consistent_across_sections
+    - ma_intentional_not_accidental
+    - more_space_above_headings_than_below
+    - no_min_height_100vh
+
+⚠ skills/design-spacing/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - section_spacing_spec
+    - component_spacing_spec
+    - ma_rationale
+    - hierarchy_spacing_map
+
+⚠ skills/design-system/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 2/3 (67%)
+    - spacing_multiples_of_base_unit
+
+⚠ skills/design-system/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - token_map
+    - semantic_role_assignments
+    - token_violation_list
+    - design_system_gate_scores
+
+⚠ skills/design-system/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - color_palette
+    - type_scale_intent
+
+⚠ skills/design-typography/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 4/6 (67%)
+    - max_two_typefaces_plus_mono
+    - variable_fonts_preferred
+
+⚠ skills/design-typography/SKILL.md
+  outputs [WARN]: outputs coverage: 1/5 (20%)
+    - typeface_pair
+    - hierarchy_mapping
+    - rhythm_spec
+    - rendering_spec
+
+⚠ skills/design-typography/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - genre_selection
+
+⚠ skills/design-visual/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 10/11 (91%)
+    - visual_language_is_distinctive_without_becoming_inconsistent
+
+⚠ skills/design-visual/SKILL.md
+  outputs [WARN]: outputs coverage: 2/13 (15%)
+    - visual_direction_candidates
+    - adapter_loading_plan
+    - composition_strategy
+    - hierarchy_role_map
+    - typography_role_strategy
+
+⚠ skills/diagram-architect/SKILL.md
+  inputs [WARN]: required inputs coverage: 1/4 (25%)
+    - diagram_subject
+    - diagram_purpose
+    - source_context
+
+⚠ skills/domain-driven-design/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 4/8 (50%)
+    - every_aggregate_must_have_a_single_root
+    - value_objects_must_be_immutable
+    - domain_events_must_be_named_in_past_tense
+    - context_map_must_define_upstream_downstream_relationships
+
+⚠ skills/domain-driven-design/SKILL.md
+  outputs [WARN]: outputs coverage: 0/6 (0%)
+    - bounded_context_map
+    - aggregate_design
+    - ubiquitous_language_glossary
+    - domain_event_catalog
+    - context_map_relationships
+
+⚠ skills/domain-driven-design/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - domain_description
+
+✗ skills/ethics-responsible-ai/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 2/8 (25%)
+    - affected_groups_must_be_identified_before_launch
+    - training_data_bias_must_be_audited
+    - ai_involvement_must_be_disclosed_to_users
+    - accountability_must_be_assigned_for_ai_errors
+    - harm_must_be_assessed_not_assumed_negligible
+
+⚠ skills/ethics-responsible-ai/SKILL.md
+  outputs [WARN]: outputs coverage: 2/6 (33%)
+    - ethics_audit_report
+    - fairness_analysis
+    - transparency_recommendations
+    - consent_and_governance_gaps
+
+⚠ skills/ethics-responsible-ai/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - ai_feature_or_system
+
+⚠ skills/event-driven-design/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 6/8 (75%)
+    - saga_must_define_compensating_transactions
+    - no_direct_db_sharing_between_producer_and_consumer
+
+⚠ skills/event-driven-design/SKILL.md
+  outputs [WARN]: outputs coverage: 2/6 (33%)
+    - event_catalog_entry
+    - producer_consumer_contract
+    - saga_design
+    - dead_letter_queue_strategy
+
+⚠ skills/event-driven-design/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - business_flow_or_domain_event
+
+⚠ skills/experiment-design/SKILL.md
+  inputs [WARN]: required inputs coverage: 1/3 (33%)
+    - hypothesis_or_opportunity
+    - target_users
+
+⚠ skills/git-workflow/SKILL.md
+  outputs [WARN]: outputs coverage: 0/5 (0%)
+    - branch_created
+    - commits_authored
+    - pr_or_mr_opened
+    - merge_executed
+    - conflict_report
+
+⚠ skills/git-workflow/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - intent
+
+⚠ skills/hermes-profile-bootstrap/SKILL.md
+  outputs [WARN]: outputs coverage: 0/8 (0%)
+    - profile_skeleton_spec
+    - skill_preset_manifest
+    - profile_distribution_manifest
+    - runtime_adapter_requirements
+    - install_plan
+
+⚠ skills/hermes-profile-bootstrap/SKILL.md
+  inputs [WARN]: required inputs coverage: 2/5 (40%)
+    - runtime_target
+    - skill_catalog_source
+    - safety_constraints
+
+⚠ skills/incident-response/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 6/8 (75%)
+    - five_whys_must_reach_systemic_cause_not_human_error
+    - postmortem_must_include_what_went_well
+
+⚠ skills/incident-response/SKILL.md
+  outputs [WARN]: outputs coverage: 1/6 (17%)
+    - incident_timeline
+    - triage_decision
+    - mitigation_steps
+    - postmortem_document
+    - prevention_recommendations
+
+⚠ skills/incident-response/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - incident_description
+
+✗ skills/information-architecture/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 1/3 (33%)
+    - nav_items_reflect_page_sections
+    - max_2_nav_levels
+
+⚠ skills/language-standards/SKILL.md
+  outputs [WARN]: outputs coverage: 0/3 (0%)
+    - language_compliance_verdict
+    - violation_list
+    - corrected_artifact
+
+✗ skills/macrostructures/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 1/4 (25%)
+    - new_pick_must_differ_from_prior_on_2_or_more_axes
+    - no_dead_space_in_split_panels
+    - cards_must_fill_height_in_split_layout
+
+⚠ skills/macrostructures/SKILL.md
+  outputs [WARN]: outputs coverage: 0/5 (0%)
+    - macrostructure_selection
+    - justification_from_signals
+    - diversification_verdict
+    - css_pattern_ref
+    - macrostructure_gate_scores
+
+⚠ skills/master-design/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 12/13 (92%)
+    - requested_solution_is_evaluated_not_followed_blindly
+
+⚠ skills/master-engineer/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/6 (83%)
+    - tradeoffs_documented
+
+⚠ skills/micro-frontend/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/8 (62%)
+    - each_mfe_must_be_independently_deployable
+    - css_must_be_isolated_per_mfe
+    - design_token_sharing_strategy_must_be_defined
+
+⚠ skills/micro-frontend/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - application_description
+
+⚠ skills/model-selection/SKILL.md
+  outputs [WARN]: outputs coverage: 0/6 (0%)
+    - model_selection_decision
+    - model_routing_plan
+    - fallback_model_plan
+    - cost_latency_quality_tradeoff
+    - verification_plan
+
+✗ skills/motion-design/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 1/4 (25%)
+    - every_animation_has_user_signal_purpose
+    - hover_transitions_200ms_or_less
+    - prefers_reduced_motion_media_query_present
+
+⚠ skills/motion-design/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - animation_verdict
+    - gpu_compliance_report
+    - reduced_motion_audit
+    - motion_gate_scores
+
+⚠ skills/motion-design/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - animation_inventory
+
+⚠ skills/native-ai-engineer/SKILL.md
+  outputs [WARN]: outputs coverage: 2/8 (25%)
+    - domain_contract_update
+    - adapter_boundary_review
+    - skill_contract_design
+    - workflow_contract_design
+    - learning_capture_decision
+
+⚠ skills/native-ai-engineer/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/4 (0%)
+    - architecture_question
+    - existing_context
+    - target_layer_decision
+    - constraints
+
+⚠ skills/native-ai-runtime-agent/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - execution_plan
+    - verification_result
+    - workflow_output
+    - adapter_state
+
+⚠ skills/native-ai-runtime-ops/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/7 (71%)
+    - define_backup_restore_before_treating_remote_as_canonical
+    - record_commands_and_actual_outputs
+
+⚠ skills/native-ai-runtime-ops/SKILL.md
+  outputs [WARN]: outputs coverage: 0/9 (0%)
+    - runtime_access_plan
+    - ssh_connection_handoff
+    - canonical_runtime_bootstrap_plan
+    - profile_installation_plan
+    - project_checkout_plan
+
+⚠ skills/native-ai-runtime-ops/SKILL.md
+  inputs [WARN]: required inputs coverage: 1/5 (20%)
+    - access_method
+    - profile_name
+    - operational_goal
+    - safety_constraints
+
+⚠ skills/observability-design/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - system_description
+
+⚠ skills/onboarding/SKILL.md
+  outputs [WARN]: outputs coverage: 0/6 (0%)
+    - agents_md_draft
+    - codebase_map
+    - key_entry_points
+    - architecture_summary
+    - gotchas_and_pitfalls
+
+⚠ skills/onboarding/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - repository_or_codebase
+
+⚠ skills/plan/SKILL.md
+  outputs [WARN]: outputs coverage: 1/4 (25%)
+    - task_list
+    - file_path_references
+    - approach_summary
+
+⚠ skills/plan/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - goal_or_task
+
+⚠ skills/ports-and-adapters/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 6/8 (75%)
+    - all_external_dependencies_must_cross_via_port
+    - dependency_inversion_principle_enforced_at_every_boundary
+
+⚠ skills/ports-and-adapters/SKILL.md
+  outputs [WARN]: outputs coverage: 1/4 (25%)
+    - adapter_implementations
+    - dependency_graph
+    - architecture_decision_record
+
+⚠ skills/ports-and-adapters/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - component_or_feature
+
+⚠ skills/product-manager/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - product_intent_or_feature_request
+
+⚠ skills/prompt-optimizer/SKILL.md
+  outputs [WARN]: outputs coverage: 2/5 (40%)
+    - scope_declaration
+    - constraint_list
+    - token_estimate
+
+⚠ skills/prompt-optimizer/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - raw_intent
+
+⚠ skills/readability/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 3/4 (75%)
+    - no_unframed_void_before_focal_point
+
+⚠ skills/readability/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - legibility_score
+    - line_length_audit
+    - dead_space_verdict
+    - readability_gate_scores
+
+⚠ skills/readability/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - text_content_inventory
+    - rendered_layout_ref
+
+⚠ skills/redesign-workflow/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 24/25 (96%)
+    - parent_pointer_does_not_chase_unstable_child_head
+
+⚠ skills/refactoring/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/8 (62%)
+    - no_feature_added_during_refactoring
+    - no_bug_fixed_during_refactoring
+    - test_coverage_must_not_decrease
+
+⚠ skills/refactoring/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - refactored_code
+    - refactoring_plan
+    - test_suite_update
+    - complexity_delta
+
+⚠ skills/refactoring/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - code_or_module
+    - refactoring_goal
+
+⚠ skills/resilience-engineering/SKILL.md
+  outputs [WARN]: outputs coverage: 1/6 (17%)
+    - chaos_experiment_plan
+    - circuit_breaker_design
+    - graceful_degradation_strategy
+    - blast_radius_map
+    - rto_rpo_design
+
+⚠ skills/resilience-engineering/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - system_or_service_description
+
+⚠ skills/response-contract/SKILL.md
+  outputs [WARN]: outputs coverage: 0/3 (0%)
+    - compliant_response
+    - violation_report
+    - token_savings_estimate
+
+⚠ skills/response-contract/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - agent_response
+
+⚠ skills/responsiveness/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 3/4 (75%)
+    - no_horizontal_overflow_on_mobile
+
+⚠ skills/responsiveness/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - breakpoint_audit
+    - touch_target_report
+    - type_scaling_audit
+    - responsiveness_gate_scores
+
+⚠ skills/responsiveness/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - layout_artifact
+
+✗ skills/role-switcher/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 2/6 (33%)
+    - intent_must_be_detected_before_role_selection
+    - each_role_must_contribute_a_distinct_lens
+    - multi_role_output_must_be_structured_by_lens
+    - agent_must_state_which_roles_were_activated
+
+⚠ skills/role-switcher/SKILL.md
+  outputs [WARN]: outputs coverage: 1/4 (25%)
+    - detected_intent
+    - skills_to_load
+    - analysis_with_multi_lens
+
+⚠ skills/role-switcher/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - user_request
+
+⚠ skills/rule-manager/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - rule_target
+
+⚠ skills/security-review/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 7/8 (88%)
+    - output_encoding_verified
+
+⚠ skills/security-review/SKILL.md
+  outputs [WARN]: outputs coverage: 1/6 (17%)
+    - security_verdict
+    - secret_detection_report
+    - vulnerability_list
+    - dependency_risk_report
+    - recommendations
+
+⚠ skills/security-review/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - code_or_diff
+    - security_baseline_ref
+
+⚠ skills/service-design/SKILL.md
+  outputs [WARN]: outputs coverage: 0/5 (0%)
+    - service_boundary_map
+    - communication_pattern_decision
+    - api_contract_outline
+    - data_ownership_map
+    - decomposition_rationale
+
+⚠ skills/service-design/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - domain_context
+
+⚠ skills/skill-eval/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 6/7 (86%)
+    - generic_response_detection_is_mandatory
+
+⚠ skills/skill-eval/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - eval_verdict
+    - gate_compliance_report
+    - applied_vs_ignored_classification
+    - regression_test_result
+
+⚠ skills/skill-evolution/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 12/13 (92%)
+    - transferable_rule_is_validated_against_multiple_contexts_and_counterexamples
+
+⚠ skills/skill-evolution/SKILL.md
+  outputs [WARN]: outputs coverage: 5/11 (45%)
+    - generalization_report
+    - target_layer_decision
+    - minimal_patch_plan
+    - promotion_verdict
+    - promotion_commit
+
+⚠ skills/spike/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 4/6 (67%)
+    - time_box_must_be_respected
+    - do_not_ship_spike_code_directly
+
+⚠ skills/spike/SKILL.md
+  outputs [WARN]: outputs coverage: 0/5 (0%)
+    - spike_result
+    - feasibility_verdict
+    - approach_recommendation
+    - throwaway_prototype
+    - learnings_summary
+
+⚠ skills/spike/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - question_or_uncertainty
+
+⚠ skills/systematic-debugging/SKILL.md
+  outputs [WARN]: outputs coverage: 2/6 (33%)
+    - root_cause_statement
+    - hypothesis_list
+    - fix_implementation
+    - verification_result
+
+⚠ skills/systematic-debugging/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - bug_description
+    - reproduction_context
+
+⚠ skills/systems-thinking/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/8 (62%)
+    - second_order_effects_must_be_analyzed_not_just_first
+    - conways_law_must_be_applied_to_team_and_architecture_alignment
+    - goodharts_law_risk_must_be_assessed_for_any_new_metric
+
+⚠ skills/systems-thinking/SKILL.md
+  outputs [WARN]: outputs coverage: 1/6 (17%)
+    - feedback_loop_map
+    - emergence_analysis
+    - second_order_effects
+    - conways_law_analysis
+    - unintended_consequences_report
+
+⚠ skills/systems-thinking/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - system_or_decision_description
+
+⚠ skills/technical-debt-governance/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 2/3 (67%)
+    - new_debt_logged_before_merging
+
+⚠ skills/technical-debt-governance/SKILL.md
+  outputs [WARN]: outputs coverage: 1/4 (25%)
+    - classification_report
+    - paydown_priority_list
+    - debt_gate_scores
+
+⚠ skills/technical-debt-governance/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - codebase_ref
+
+⚠ skills/test-driven-development/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 4/6 (67%)
+    - refactor_must_not_break_tests
+    - no_skipped_tests_in_final_output
+
+⚠ skills/test-driven-development/SKILL.md
+  outputs [WARN]: outputs coverage: 1/4 (25%)
+    - passing_implementation
+    - refactored_code
+    - test_suite
+
+⚠ skills/test-driven-development/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - feature_or_behavior_to_implement
+
+⚠ skills/threat-modeling/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/8 (62%)
+    - data_flows_must_be_mapped_including_external_dependencies
+    - privilege_escalation_paths_must_be_identified
+    - threat_model_must_be_updated_when_architecture_changes
+
+⚠ skills/threat-modeling/SKILL.md
+  outputs [WARN]: outputs coverage: 2/5 (40%)
+    - threat_model_document
+    - trust_boundary_map
+    - risk_rating_per_threat
+
+⚠ skills/threat-modeling/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - feature_or_system_description
+
+✗ skills/ui-components/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 0/2 (0%)
+    - pattern_selected_from_decision_tree_not_arbitrary
+    - hero_pattern_matches_content_volume
+
+⚠ skills/ui-components/SKILL.md
+  outputs [WARN]: outputs coverage: 0/3 (0%)
+    - pattern_selection
+    - decision_tree_path
+    - pattern_gate_scores
+
+⚠ skills/ui-components/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - brief_signals
+    - content_inventory
+
+⚠ skills/user-research/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - jtbd_statements
+    - insight_synthesis
+    - persona_sketch
+    - research_gate_scores
+
+⚠ skills/user-research/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - research_goal
+
+⚠ skills/ux-psychology/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 5/6 (83%)
+    - no_vague_feedback_like_confusing_or_overwhelming
+
+⚠ skills/ux-psychology/SKILL.md
+  outputs [WARN]: outputs coverage: 0/5 (0%)
+    - cognitive_load_report
+    - habit_loop_analysis
+    - heuristic_violation_list
+    - behavioral_friction_map
+    - improvement_recommendations
+
+⚠ skills/ux-psychology/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - ui_or_flow_to_analyze
+
+⚠ skills/ux-ui-patterns/SKILL.md
+  outputs [WARN]: outputs coverage: 1/3 (33%)
+    - decision_tree_path
+    - pattern_gate_scores
+
+⚠ skills/ux-ui-patterns/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/2 (0%)
+    - brief_signals
+    - content_inventory
+
+✗ skills/web-performance/SKILL.md
+  quality_gates [ERROR]: quality_gates coverage: 0/3 (0%)
+    - lcp_under_2500ms
+    - cls_under_0_1
+    - no_render_blocking_resources
+
+⚠ skills/web-performance/SKILL.md
+  outputs [WARN]: outputs coverage: 0/4 (0%)
+    - lcp_audit
+    - cls_audit
+    - inp_audit
+    - performance_gate_scores
+
+⚠ skills/web-performance/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - page_artifact
+
+⚠ skills/workflow-router/SKILL.md
+  quality_gates [WARN]: quality_gates coverage: 10/12 (83%)
+    - ambiguous_requests_must_be_clarified_not_assumed
+    - post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
+
+⚠ skills/workflow-router/SKILL.md
+  outputs [WARN]: outputs coverage: 0/5 (0%)
+    - workflow_selection
+    - skill_load_order
+    - routing_rationale
+    - ambiguity_resolution
+    - post_fix_learning_route
+
+⚠ skills/workflow-router/SKILL.md
+  inputs [WARN]: required inputs coverage: 0/1 (0%)
+    - user_request
+
+────────────────────────────────────
+Checked:       87 adapter skills
+Conformant:    13
+Warnings:      156
+Not checkable: 0
+Errors:        11
+
+FAIL — 11 conformance error(s).
