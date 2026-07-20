@@ -20,7 +20,7 @@ jobs:
           ref: 59-component-family-design
           fetch-depth: 0
 
-      - name: Sync eval and core pin versions
+      - name: Sync eval versions
         shell: bash
         run: |
           set -euo pipefail
@@ -32,7 +32,6 @@ jobs:
               'contracts/tests/implementation-context-discovery.test.yaml': [('version: "1.1.0"', 'version: "1.2.0"')],
               'contracts/tests/design-review.test.yaml': [('version: "3.3.0"', 'version: "3.4.0"')],
               'contracts/tests/redesign-workflow.test.yaml': [('version: 3.5.0', 'version: 3.6.0')],
-              '.github/workflows/skill-eval.yml': [('ref: c0793dee9598ebb207a8fcca65e5a1d43f7ac48a', 'ref: 2aa6c6f12772397ed6e27def0cb0605b96924bad')],
           }
 
           for path, pairs in replacements.items():
@@ -54,7 +53,6 @@ jobs:
           git add contracts/tests/adaptive-component-design.test.yaml \
             contracts/tests/implementation-context-discovery.test.yaml \
             contracts/tests/design-review.test.yaml \
-            contracts/tests/redesign-workflow.test.yaml \
-            .github/workflows/skill-eval.yml
-          git commit -m 'test(design): sync component-family contract versions'
+            contracts/tests/redesign-workflow.test.yaml
+          git commit -m 'test(design): sync component-family eval versions'
           git push origin HEAD:59-component-family-design
