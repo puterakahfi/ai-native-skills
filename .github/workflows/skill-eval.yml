@@ -63,8 +63,43 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: puterakahfi/ai-native-core
-          ref: 5c4c6f21859636a4a143a511030879c9923b2ef1
+          ref: 97db5370efe0e4af8ed326819400c2b068910525
           path: .deps/ai-native-core
+
+      - name: Stage production skill adapters
+        run: |
+          rm -rf .tmp/adapter-repo
+          mkdir -p .tmp/adapter-repo
+          cp -R skills .tmp/adapter-repo/skills
+
+      - name: Validate adapter paths and pinned versions
+        shell: bash
+        run: |
+          cd .tmp/adapter-repo
+          bash "$GITHUB_WORKSPACE/.deps/ai-native-core/scripts/validate-implements.sh" \
+            "$GITHUB_WORKSPACE/.deps/ai-native-core"
+
+      - name: Validate adapter interface and boundary conformance
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p .tmp/conformance
+          set +e
+          python .deps/ai-native-core/scripts/validate-conformance.py \
+            .deps/ai-native-core \
+            .tmp/adapter-repo | tee .tmp/conformance/report.txt
+          validator_status=${PIPESTATUS[0]}
+          set -e
+
+          if grep -Eq 'boundary \[(ERROR|WARN|NOT_CHECKABLE)\]' .tmp/conformance/report.txt; then
+            echo 'Boundary conformance findings must be resolved before merge.'
+            exit 1
+          fi
+          grep -Eq '^Not checkable:[[:space:]]+0$' .tmp/conformance/report.txt
+
+          if [ "$validator_status" -ne 0 ]; then
+            echo '::warning::Legacy gate/input/output conformance debt remains tracked in issue #29; boundary conformance is clean.'
+          fi
 
       - name: Validate contracts with canonical core runner
         env:
@@ -89,6 +124,15 @@ jobs:
             --all \
             --output-dir .tmp/eval-smoke-outputs \
             --report-json .tmp/eval-reports/contract-smoke.json
+
+      - name: Upload adapter conformance report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: adapter-conformance
+          path: .tmp/conformance/report.txt
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Upload compatibility report
         if: always()

@@ -8,6 +8,8 @@ metadata:
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-depth.contract.yaml
   ai-native-skills.contract-version: "^2.1.0"
+  ai-native-skills.boundary.covers: '["depth_need_assessment","surface_and_elevation_relationships","atmosphere_and_imagery_integration","overlap_and_layer_architecture","optional_typography_interleave","responsive_depth_fallback","depth_effect_restraint"]'
+  ai-native-skills.boundary.delegates: '["illustration_creation","product_specific_elevation_token_values","motion_timing_and_reduced_motion_implementation","page_macrostructure","independent_design_acceptance"]'
   ai-native-skills.related_skills: '["design-visual","master-design","design-foundation","composition","design-genre","motion-design","readability","design-review"]'
 ---
 

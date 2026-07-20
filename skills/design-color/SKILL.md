@@ -8,6 +8,8 @@ metadata:
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/color-theory.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
+  ai-native-skills.boundary.covers: '["hue_saturation_value_decisions","palette_construction","color_harmony_rules","color_psychology_validation","genre_to_palette_mapping"]'
+  ai-native-skills.boundary.delegates: '["contrast_ratio_wcag","semantic_token_naming","dark_light_switching","component_level_color"]'
   ai-native-skills.related_skills: '["design-visual","design-genre","design-system","dark-light-theming","design-typography"]'
 ---
 

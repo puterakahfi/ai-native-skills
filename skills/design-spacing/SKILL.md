@@ -8,6 +8,8 @@ metadata:
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/spacing.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
+  ai-native-skills.boundary.covers: '["visual_rhythm_decisions","ma_intentional_space","spatial_hierarchy_logic","breathing_room_vs_dead_space"]'
+  ai-native-skills.boundary.delegates: '["token_values","8px_grid_rules","css_var_declarations"]'
   ai-native-skills.related_skills: '["design-visual","design-layout","design-system","composition"]'
 ---
 

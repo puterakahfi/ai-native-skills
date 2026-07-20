@@ -8,6 +8,8 @@ metadata:
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/typography.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
+  ai-native-skills.boundary.covers: '["typeface_personality_and_selection","display_body_pairing","modular_scale_selection","hierarchy_h1_to_caption","leading_tracking_rhythm","font_rendering_antialiasing","genre_to_typeface_mapping"]'
+  ai-native-skills.boundary.delegates: '["contrast_ratio_wcag","characters_per_line","minimum_font_size_px"]'
   ai-native-skills.related_skills: '["design-visual","design-system","readability","design-genre","composition"]'
 ---
 
