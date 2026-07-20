@@ -63,8 +63,22 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: puterakahfi/ai-native-core
-          ref: 5c4c6f21859636a4a143a511030879c9923b2ef1
+          ref: b60eb2da7d3a31ce0d539f38da58e8a70806c353
           path: .deps/ai-native-core
+
+      - name: Validate adapter paths and pinned versions
+        run: bash .deps/ai-native-core/scripts/validate-implements.sh .deps/ai-native-core
+
+      - name: Validate adapter interface and boundary conformance
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p .tmp/conformance
+          python .deps/ai-native-core/scripts/validate-conformance.py \
+            .deps/ai-native-core \
+            . | tee .tmp/conformance/report.txt
+          grep -Eq '^Not checkable:[[:space:]]+0$' .tmp/conformance/report.txt
+          grep -Eq '^Errors:[[:space:]]+0$' .tmp/conformance/report.txt
 
       - name: Validate contracts with canonical core runner
         env:
@@ -89,6 +103,15 @@ jobs:
             --all \
             --output-dir .tmp/eval-smoke-outputs \
             --report-json .tmp/eval-reports/contract-smoke.json
+
+      - name: Upload adapter conformance report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: adapter-conformance
+          path: .tmp/conformance/report.txt
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Upload compatibility report
         if: always()
