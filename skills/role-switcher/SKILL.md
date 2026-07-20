@@ -13,6 +13,27 @@ metadata:
 
 # Role Switcher
 
+## Core contract interface
+
+```yaml
+required_inputs:
+  - user_request
+allowed_outputs:
+  - detected_intent
+  - role_composition
+  - skills_to_load
+  - analysis_with_multi_lens
+quality_gates:
+  - intent_must_be_detected_before_role_selection
+  - role_composition_must_be_explicit_not_implicit
+  - each_role_must_contribute_a_distinct_lens
+  - no_role_loaded_without_clear_relevance_to_intent
+  - multi_role_output_must_be_structured_by_lens
+  - agent_must_state_which_roles_were_activated
+```
+
+State the detected intent and activated roles explicitly. Each role must contribute a distinct lens, and multi-role evidence must remain structured by lens before the owner synthesizes one decision. Never load a role without clear relevance to the user request.
+
 ## Core Rule
 
 ```text
