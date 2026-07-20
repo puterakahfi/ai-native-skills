@@ -3,12 +3,14 @@ name: skill-evolution
 description: Converts verified lessons from real product work into minimal reusable skill, reference, workflow, eval, or core-contract improvements without copying product-specific implementation history into shared skills.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.requires: "skill-eval git-workflow"
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/skill-evolution.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
+  ai-native-skills.boundary.covers: '["post_fix_learning_review","reusable_reason_extraction","local_vs_shared_knowledge_classification","target_layer_selection","minimal_skill_or_reference_patch","regression_eval_creation","skill_version_and_promotion_decision","provenance_logging_outside_skill_body"]'
+  ai-native-skills.boundary.delegates: '["solving_the_original_product_issue","copying_product_implementation_into_shared_skills","storing_product_specific_breakpoints_routes_or_component_names_in_shared_skills","promoting_unverified_anecdotes","bypassing_repository_write_or_approval_policy","replacing_product_design_locks_or_architecture_decisions"]'
   ai-native-skills.related_skills: '["skill-eval","skill-doctor","git-workflow","redesign-workflow","design-refinement","systematic-debugging"]'
 ---
 
@@ -30,6 +32,10 @@ Verified real case
 A resolved product issue is always reviewed for learning, but it is **not always promoted**.
 
 Do not copy the implementation story into `SKILL.md`. Shared skills store reusable decision logic. Product repositories store product-specific decisions and implementation details. Tests store concrete regression cases.
+
+## Boundary
+
+This workflow owns post-fix learning review, reusable-reason extraction, local-versus-shared classification, target-layer selection, minimal shared patches, regression evidence, version/promotion decisions, and provenance kept outside the reusable skill body. It does not solve the original product issue, copy product implementation into shared skills, store product-specific routes/breakpoints/component names as universal guidance, promote unverified anecdotes, bypass repository approval policy, or replace product design locks and architecture decisions.
 
 ## Automatic invocation
 

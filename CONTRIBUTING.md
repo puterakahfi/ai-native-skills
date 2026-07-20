@@ -89,7 +89,11 @@ metadata:
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/<category>/<contract>.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
+  ai-native-skills.boundary.covers: '["<reviewed-contract-cover-item>"]'
+  ai-native-skills.boundary.delegates: '["<reviewed-contract-does-not-cover-item>"]'
 ```
+
+When the implemented contract declares non-empty `boundary.covers` or `boundary.does_not_cover`, review the executable skill and its handoffs, then add exact structured declarations. Do not bulk-copy contract values without verifying actual ownership. Missing declarations are `NOT_CHECKABLE`; explicit delegated-responsibility overclaims are `ERROR`. See the canonical [`adapter-conformance` guide](https://github.com/puterakahfi/ai-native-core/blob/main/docs/adapter-conformance.md).
 
 When the universal capability contract, terminology, boundary, or quality standard changes, update `ai-native-core` first. Update this repository when executable agent behavior changes.
 
@@ -137,12 +141,22 @@ python ai-native-core/scripts/run-eval.py \
   --output-dir eval-outputs
 ```
 
+Validate adapter paths, pinned versions, interface coverage, and structured boundaries with a checked-out core at `ai-native-core/`:
+
+```bash
+bash ai-native-core/scripts/validate-implements.sh ai-native-core
+python ai-native-core/scripts/validate-conformance.py ai-native-core .
+```
+
+A zero process exit means no critical declaration error. It does not replace behavioral, runtime, visual, security, or product evidence. `NOT_CHECKABLE` must be eliminated for adapters whose contracts define string boundary items.
+
 Changes to executable skills, contracts, compatibility records, or behavioral evals must pass the repository's **Skill and Gate Contracts** workflow. The workflow currently checks:
 
 - local validator and runner syntax;
 - the canonical design-gate registry;
 - repository evaluation contracts;
 - validation through the pinned `ai-native-core` runner;
+- adapter path/version and structured boundary conformance;
 - wrapper integration;
 - per-case runner compatibility smoke.
 
@@ -171,6 +185,7 @@ Before requesting review:
 - [ ] The change is in the correct repository and layer.
 - [ ] Existing useful behavior is preserved unless the issue explicitly replaces it.
 - [ ] Frontmatter, paths, links, and declared dependencies are valid.
+- [ ] Contract-backed adapters declare reviewed `covers` and `delegates` metadata when the core contract has a boundary.
 - [ ] Required references are linked from the executable skill.
 - [ ] Behavioral regressions are covered when reusable behavior changed.
 - [ ] Local validation has been run where available.

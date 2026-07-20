@@ -8,6 +8,8 @@ metadata:
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/iconography.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
+  ai-native-skills.boundary.covers: '["icon_family_selection","style_consistency_rules","sizing_optical_alignment","genre_to_icon_mapping","a11y_attribute_rules"]'
+  ai-native-skills.boundary.delegates: '["svg_component_implementation","icon_animation","token_sizing_values"]'
   ai-native-skills.related_skills: '["design-visual","design-typography","design-color","design-system"]'
 ---
 

@@ -3,11 +3,13 @@ name: redesign-workflow
 description: Delegated, domain-aware redesign workflow for existing visual surfaces — route → compose owners → verify decisions → inspect → direct → specify → produce under a write lease → verify provenance, scope, concurrency, and artifact → facade review → classify → fix → deliver.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.4.0
+  ai-native-skills.version: 3.4.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
   ai-native-skills.contract-version: "^2.2.0"
+  ai-native-skills.boundary.covers: '["existing_visual_surface_redesign","redesign_vs_refinement_vs_audit_routing","explicit_design_implementation_and_repository_write_ownership","confirmed_scope_and_baseline_capture","final_effective_diff_integrity","concurrent_branch_write_detection_and_coordination","brand_content_asset_behavior_route_and_path_preservation","direction_macrostructure_and_layered_change_planning","user_and_business_value_alignment","delegated_design_and_implementation_work","prototype_or_repository_patch_production","domain_appropriate_verification","design_review_facade_acceptance","bounded_fix_iterations_and_learning_promotion","passing_delivery_or_honest_blocker_reporting"]'
+  ai-native-skills.boundary.delegates: '["net_new_product_definition","audit_only_work_after_route_handoff","known_narrow_refinement_after_route_handoff","non_visual_feature_development","unrelated_product_route_auth_data_or_infrastructure_changes","general_bugfix_workflow","deployment_or_publishing","legal_trademark_clearance","force_overwrite_of_uninspected_concurrent_work","destructive_repository_operations_without_approval"]'
   ai-native-skills.pack: packs/redesign/pack.yaml
   ai-native-skills.pack-version: "1.0.0"
   ai-native-skills.requires: "role-switcher master-design master-engineer business-value-alignment decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement skill-evolution skill-eval git-workflow"
@@ -19,6 +21,8 @@ metadata:
 Redesign an existing visual surface through explicit ownership, verified decision provenance, bounded specialist delegation, clean final-diff scope, concurrency-safe writes, domain-appropriate evidence, independent facade review, and a verified correction loop.
 
 The workflow owns lifecycle, state transitions, approvals, preservation, integrity gates, iteration, and handoffs. Specialist skills own narrow design decisions. `master-engineer` owns repository implementation when required. `design-review` and the governing domain reviewer own acceptance.
+
+It routes net-new product definition, audit-only work, known narrow refinements, non-visual feature development, and general bug fixes to their owning workflows. It does not own unrelated product/route/auth/data/infrastructure changes, deployment or publishing, legal or trademark clearance, force-overwriting uninspected concurrent work, or destructive repository operations without approval.
 
 ## Dependency and installation model
 

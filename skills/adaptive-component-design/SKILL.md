@@ -3,11 +3,13 @@ name: adaptive-component-design
 description: Selects, preserves, or substitutes UI component patterns across available widths and input contexts from the user task, real container width, realistic content pressure, discoverability, accessibility, and interaction cost. Use when a component fits one context but overlaps, clips, hides choices, or becomes awkward in another.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.1
+  ai-native-skills.version: 1.2.2
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/adaptive-component-design.contract.yaml
   ai-native-skills.contract-version: "~1.1"
+  ai-native-skills.boundary.covers: '["component_fitness_diagnosis","context_specific_component_selection","cross_context_component_substitution","responsive_pattern_transformation","navigation_component_adaptation","content_density_adaptation","interaction_mode_adaptation","shared_state_and_semantics_across_variants","overflow_and_disclosure_affordance_behavior","adaptation_boundary_verification"]'
+  ai-native-skills.boundary.delegates: '["visual_style_and_brand_expression","page_level_macrostructure_selection","design_token_definition","generic_breakpoint_and_fluid_grid_mechanics","implementation_framework_specific_code","product_specific_component_library_mapping"]'
   ai-native-skills.related_skills: '["master-design","design-review","design-refinement","responsiveness","design-strategy","ux-ui-patterns","ux-patterns-for-developers","accessibility","ui-components"]'
 ---
 
@@ -30,7 +32,9 @@ broad design or redesign
 → acceptance: design-review
 ```
 
-This skill owns component fitness, adaptation/substitution, shared state semantics, overflow/disclosure affordances, and boundary evidence. It does not own page macrostructure, visual language, product strategy, generic breakpoint mechanics, or final acceptance.
+This skill owns component fitness, context-specific selection, cross-context substitution, responsive pattern transformation, navigation and content-density adaptation, interaction-mode adaptation, shared state semantics, overflow/disclosure affordances, and adaptation-boundary evidence.
+
+It delegates visual style and brand expression, page-level macrostructure, design-token definition, generic breakpoint and fluid-grid mechanics, framework-specific implementation code, and product-specific component-library mapping to the corresponding specialist or implementation owner. `master-engineer` owns repository implementation when required; `design-review` owns final acceptance.
 
 ## Hard rules
 

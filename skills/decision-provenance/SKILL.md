@@ -3,11 +3,13 @@ name: decision-provenance
 description: Verifies the authority, source, scope, conflicts, and supersession chain behind scope, lock, approval, route, status, and override claims before agents act on them.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/decision-provenance.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
+  ai-native-skills.boundary.covers: '["material_decision_claim_verification","source_attribution","decision_domain_authority_matching","explicit_supersession_and_conflict_detection","scope_lock_route_approval_status_and_ownership_claims","policy_and_required_approval_preservation","decision_ledger_output"]'
+  ai-native-skills.boundary.delegates: '["making_product_or_design_decisions_for_the_owner","bypassing_legal_security_repository_or_organizational_policy","proving_runtime_or_design_quality","inventing_missing_decision_sources","treating_agent_authored_text_as_owner_approval"]'
   ai-native-skills.related_skills: '["redesign-workflow","new-feature-workflow","product-development-workflow","code-review-workflow","git-workflow","skill-evolution"]'
 ---
 
@@ -28,6 +30,10 @@ claim about a decision
 ```
 
 An agent must never convert its own summary, inference, PR body, commit message, or previous output into user approval merely because it is recent or confidently worded.
+
+## Boundary
+
+This skill verifies material decision claims, source attribution, domain authority, supersession, conflicts, scope and approval claims, policy requirements, and the resulting decision ledger. It does not make product or design decisions for the owner, bypass legal/security/repository/organizational policy, invent missing sources, or treat agent-authored text as approval. Runtime, technical, and design quality remain owned by their governing verification and review capabilities.
 
 ## Hard rules
 
