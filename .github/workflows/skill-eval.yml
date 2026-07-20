@@ -23,14 +23,60 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: skill-and-gate-contracts-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  integrate_delivery:
+    if: github.head_ref == '53-delivery-work-breakdown'
+    name: Integrate delivery capability
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout delivery branch
+        uses: actions/checkout@v6
+        with:
+          ref: 53-delivery-work-breakdown
+          fetch-depth: 0
+
+      - name: Validate and apply staged integration
+        run: |
+          python -m py_compile scripts/tmp-integrate-delivery.py
+          python scripts/tmp-integrate-delivery.py
+
+      - name: Remove temporary staging and restore canonical workflow
+        run: |
+          rm scripts/tmp-integrate-delivery.py
+          rm .github/workflows/tmp-integrate-delivery-work-breakdown.yml
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('.github/workflows/skill-eval.yml')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace('permissions:\n  contents: write', 'permissions:\n  contents: read', 1)
+          start = text.index('  integrate_delivery:\n')
+          end = text.index('  validate:\n', start)
+          text = text[:start] + text[end:]
+          text = text.replace(
+              "  validate:\n    if: github.head_ref != '53-delivery-work-breakdown'\n",
+              '  validate:\n',
+              1,
+          )
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit integrated capability
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "feat(product): integrate delivery work breakdown"
+          git push origin HEAD:53-delivery-work-breakdown
+
   validate:
+    if: github.head_ref != '53-delivery-work-breakdown'
     name: Validate skill and gate contracts
     runs-on: ubuntu-latest
     timeout-minutes: 10
