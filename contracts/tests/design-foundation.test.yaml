@@ -1,0 +1,16 @@
+skill_test:
+  skill: design-foundation
+  version: 1.5.1
+  description: Verify the adapter exposes and applies its reviewed core interface.
+  cases:
+  - id: foundation-f5-rejects-dead-space-shortcuts
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Review a sparse hero that uses viewport-height spacing before its focal content.
+    must_contain:
+    - dead space
+    - min-height:100vh
+    - intentional whitespace
+    must_not_contain:
+    - min-height:100vh is accepted as intentional whitespace
+    quality_gates_tested:
+    - no_dead_space_no_min_height_100vh

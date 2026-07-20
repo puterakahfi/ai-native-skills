@@ -3,7 +3,7 @@ name: ux-ui-patterns
 description: UI/UX pattern library for making layout decisions — which hero pattern fits the goal, which card pattern fits the content, which nav pattern fits the context. Decision tree for pattern selection, not just a list of patterns.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/ux-ui-patterns.contract.yaml
@@ -12,6 +12,27 @@ metadata:
 ---
 
 # UX/UI Patterns Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/ux-ui-patterns.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- brief_signals
+- content_inventory
+allowed_outputs:
+- pattern_selection
+- decision_tree_path
+- pattern_gate_scores
+quality_gates:
+- pattern_selected_from_decision_tree_not_arbitrary
+- hero_pattern_matches_content_volume
+```
+
+Use brief_signals and content_inventory before choosing a pattern. Return the pattern selection, decision-tree path, and gate scores so the decision can be reviewed instead of treated as arbitrary taste.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 > ⚠️ **HARD RULE — Pattern Selection**
 > Use the decision tree in the relevant reference file FIRST.

@@ -3,7 +3,7 @@ name: design-visual
 description: Visual-design port for context-derived direction, composition, hierarchy, typography, color, optional depth, imagery, iconography, motion, readability, and anti-slop diagnosis. Load this port for broad visual work; it selects only the specialist adapters required by the active direction.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-visual.contract.yaml
@@ -12,6 +12,48 @@ metadata:
 ---
 
 # Design Visual Port
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/design-visual.contract.yaml` · compatible line: `^1.1.0`
+
+```yaml
+required_inputs:
+- foundation_handoff
+- product_intent
+- content_inventory
+- target_surface
+allowed_outputs:
+- visual_direction_candidates
+- visual_direction_contract
+- adapter_loading_plan
+- composition_strategy
+- hierarchy_role_map
+- typography_role_strategy
+- color_role_strategy
+- depth_and_imagery_strategy
+- iconography_strategy
+- motion_stance
+- readability_and_actual_context_plan
+- anti_slop_diagnosis
+- visual_verification_plan
+quality_gates:
+- foundation_is_resolved_before_expression
+- brand_product_and_system_locks_are_applied
+- visual_direction_is_context_derived_and_observable
+- only_active_visual_adapters_are_loaded
+- hierarchy_and_composition_are_relational_not_numeric_recipes
+- depth_motion_and_effects_have_named_roles
+- visual_language_is_distinctive_without_becoming_inconsistent
+- generic_patterns_without_product_reason_are_rejected
+- actual_content_and_viewing_context_are_used
+- verification_plan_matches_the_visual_claim
+- canonical_review_gate_identity_remains_owned_by_design_review
+```
+
+Return compared direction candidates, the adapter loading plan, composition strategy, hierarchy role map, and typography role strategy. Distinctiveness must come from a coherent visual grammar, not inconsistent section styling.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 Resolve visual expression from product context and the selected design direction. Do not begin from a fixed genre recipe or load every aesthetic skill by default.
 

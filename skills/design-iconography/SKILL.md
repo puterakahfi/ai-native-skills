@@ -3,7 +3,7 @@ name: design-iconography
 description: Iconography as design structure — icon style selection, sizing, optical alignment, usage rules, and genre-to-icon mapping. Covers expressive icon decisions, not icon component implementation (see ui-components).
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/iconography.contract.yaml
@@ -14,6 +14,30 @@ metadata:
 ---
 
 # Design Iconography Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/iconography.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- genre_selection
+allowed_outputs:
+- icon_family_selection
+- sizing_spec
+- stroke_weight_spec
+- a11y_pattern
+quality_gates:
+- one_icon_family_per_product
+- stroke_weight_matches_typography_weight
+- all_icons_have_aria_label_or_hidden
+- touch_target_minimum_44px
+- no_icon_only_without_universally_understood_exception
+```
+
+Start from genre_selection and return the selected family with sizing, stroke-weight, and accessibility patterns. Icon treatment must remain one coherent product system.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 > **HARD RULES:**
 > 1. Icons support text — they do not replace it (exception: universally understood icons only).

@@ -3,7 +3,7 @@ name: design-color
 description: Color as design structure — palette construction, color psychology, harmony rules, and genre-to-palette mapping. Covers expressive color decisions. NOT token system (see dark-light-theming) and NOT semantic roles (see design-system).
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/color-theory.contract.yaml
@@ -14,6 +14,31 @@ metadata:
 ---
 
 # Design Color Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/color-theory.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- genre_selection
+- theme_default
+allowed_outputs:
+- palette_primitives
+- semantic_role_mapping
+- accent_definition
+- temperature_rationale
+quality_gates:
+- palette_derives_from_genre_not_reverse
+- max_one_accent_one_role
+- temperature_consistent_across_palette
+- no_hardcoded_hex_in_components
+- contrast_ratio_delegated_to_readability_skill
+```
+
+Return palette primitives, semantic role mapping, one bounded accent definition, and temperature rationale. Components consume semantic roles; hardcoded hex values inside components are rejected.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 > **HARD RULES:**
 > 1. Genre first — color palette derives from genre, not the reverse.

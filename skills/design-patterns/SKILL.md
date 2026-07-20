@@ -3,7 +3,7 @@ name: design-patterns
 description: Identify and apply appropriate design patterns — GoF creational, structural, behavioral, and modern architectural patterns (CQRS, Saga, Outbox). Pattern selection justified by forces, not preference.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/architecture/design-patterns.contract.yaml
@@ -11,6 +11,33 @@ metadata:
 ---
 
 # Design Patterns
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/architecture/design-patterns.contract.yaml` · compatible line: `~0.1`
+
+```yaml
+required_inputs:
+- problem_description
+allowed_outputs:
+- pattern_recommendation
+- pattern_justification
+- implementation_sketch
+- trade_off_analysis
+- anti_pattern_warnings
+quality_gates:
+- pattern_must_be_justified_by_forces_not_preference
+- over_engineering_must_be_called_out
+- alternative_patterns_must_be_considered
+- pattern_name_must_match_implementation
+- no_pattern_applied_speculatively
+- implementation_must_preserve_open_closed_principle
+- trade_offs_must_be_explicit
+```
+
+Begin from problem_description. Compare real alternatives, reject speculative pattern use, preserve the open-closed principle, and return recommendation, justification, sketch, trade-offs, and anti-pattern warnings.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 > **Patterns solve communication problems, not just code problems. Name the pattern explicitly so teammates share the vocabulary. Don't force a pattern where no forces exist.**
 

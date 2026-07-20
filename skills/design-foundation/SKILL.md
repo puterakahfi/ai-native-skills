@@ -3,7 +3,7 @@ name: design-foundation
 description: Universal design foundation — the non-negotiable composition contract every design genre, brand, surface, and workflow must satisfy. Covers 13 core graphic design principles, hierarchy, grouping, figure-ground, semantic layering, content resilience, semantic status encoding, alignment, spacing rhythm, balance, flow, legibility, consistency, accessibility, and responsive continuity.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.5.0
+  ai-native-skills.version: 1.5.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-foundation.contract.yaml
@@ -12,6 +12,27 @@ metadata:
 ---
 
 # Design Foundation Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/design-foundation.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs: []
+allowed_outputs: []
+quality_gates:
+- F1_hierarchy_h1_body_ratio_min_2_5x
+- F2_contrast_primary_min_4_5_1
+- F3_touch_target_min_44px
+- F4_no_hardcoded_values_in_components
+- F5_no_dead_space_no_min_height_100vh
+- F6_no_decoration_without_function
+- F7_aria_keyboard_accessible
+```
+
+F5 explicitly rejects dead space and min-height:100vh as a composition shortcut. Empty space must communicate grouping, pacing, emphasis, or balance rather than delaying the focal point.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 > **THIS IS THE BASE. Every genre and brand expresses it differently; none may remove it.**
 

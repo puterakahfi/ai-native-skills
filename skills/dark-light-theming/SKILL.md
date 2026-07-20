@@ -3,7 +3,7 @@ name: dark-light-theming
 description: Dual-theme system design — semantic token mapping, system preference detection, flash-of-wrong-theme prevention, color inversion pitfalls, and mid-session toggle. One token table, two primitive maps.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/dark-light-theming.contract.yaml
@@ -12,6 +12,28 @@ metadata:
 ---
 
 # Dark/Light Theming Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/dark-light-theming.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- color_token_map
+- theme_toggle_requirement
+allowed_outputs:
+- theme_token_map
+- fouc_prevention_strategy
+- theming_gate_scores
+quality_gates:
+- no_fouc_on_theme_switch
+- tokens_mapped_for_both_themes
+- system_preference_respected
+```
+
+Map every semantic token for both themes, respect system preference when required, and produce a FOUC-prevention strategy before claiming the theme switch is complete.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 ## ⛔ HARD RULES (read before starting)
 

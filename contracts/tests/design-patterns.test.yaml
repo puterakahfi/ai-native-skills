@@ -1,0 +1,24 @@
+skill_test:
+  skill: design-patterns
+  version: 1.0.1
+  description: Verify the adapter exposes and applies its reviewed core interface.
+  cases:
+  - id: pattern-choice-compares-alternatives-and-forces
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Recommend a software design pattern for a concrete problem and provide an implementation sketch.
+    must_contain:
+    - alternative_patterns_must_be_considered
+    - no_pattern_applied_speculatively
+    - implementation_must_preserve_open_closed_principle
+    - pattern_recommendation
+    - pattern_justification
+    - implementation_sketch
+    - trade_off_analysis
+    - anti_pattern_warnings
+    - problem_description
+    must_not_contain:
+    - apply a pattern speculatively without forces
+    quality_gates_tested:
+    - alternative_patterns_must_be_considered
+    - no_pattern_applied_speculatively
+    - implementation_must_preserve_open_closed_principle

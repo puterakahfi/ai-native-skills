@@ -3,7 +3,7 @@ name: adaptive-component-design
 description: Selects, preserves, or substitutes UI component patterns across available widths and input contexts from the user task, real container width, realistic content pressure, discoverability, accessibility, and interaction cost. Use when a component fits one context but overlaps, clips, hides choices, or becomes awkward in another.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.2
+  ai-native-skills.version: 1.2.3
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/adaptive-component-design.contract.yaml
@@ -14,6 +14,59 @@ metadata:
 ---
 
 # Adaptive Component Design
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/adaptive-component-design.contract.yaml` · compatible line: `~1.1`
+
+```yaml
+required_inputs:
+- product_intent
+- user_tasks
+- content_inventory
+- component_inventory
+- target_contexts
+allowed_outputs:
+- component_fitness_record
+- viewport_strategy
+- component_substitution_matrix
+- adaptation_boundary_map
+- component_selection_rationale
+- rejected_component_alternatives
+- navigation_pattern_selection
+- content_density_strategy
+- interaction_mode_mapping
+- shared_state_and_semantics_contract
+- affordance_state_contract
+- responsive_behavior_contract
+- boundary_acceptance_criteria
+- realistic_content_stress_evidence
+- rendered_interaction_evidence
+quality_gates:
+- each_major_component_has_an_explicit_context_strategy
+- component_pattern_selected_from_user_task_content_and_context
+- requested_component_is_treated_as_a_proposed_solution_not_an_immutable_requirement
+- diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
+- adaptation_mode_is_declared_for_each_relevant_context
+- substitution_boundaries_are_derived_from_real_content_and_available_width
+- primary_choices_are_not_hidden_without_product_rationale
+- navigation_pattern_matches_information_architecture_and_context
+- dense_data_has_explicit_small_width_transformation
+- tabs_and_horizontal_collections_expose_truthful_overflow_affordance
+- directional_controls_reflect_actual_scroll_availability
+- touch_pointer_and_keyboard_interactions_are_defined_when_applicable
+- interactive_targets_do_not_overlap_or_clip
+- component_variants_preserve_shared_value_state_event_semantics_analytics_and_accessible_relationships
+- hidden_content_is_non_critical_justified_and_still_reachable_when_required
+- component_choice_includes_rejected_alternatives_and_tradeoffs
+- acceptance_criteria_cover_actual_targets_and_adaptation_boundaries
+- realistic_content_and_text_expansion_are_verified
+- code_inspection_alone_is_not_accepted_as_visual_verification
+```
+
+Treat a requested component as a proposed solution. Use product intent, tasks, content, current components, and target contexts to compare alternatives. Horizontal collections need truthful overflow affordances; touch, pointer, and keyboard behavior must be defined, and targets may not overlap or clip.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 Select the component pattern that preserves the user task, product meaning, state, semantics, and information priority at the **actual available width**.
 

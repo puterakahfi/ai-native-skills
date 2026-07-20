@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - "contracts/conformance/**"
       - "contracts/tests/**"
       - "skills/**"
       - "scripts/run-eval.sh"
@@ -12,6 +13,7 @@ on:
       - ".github/workflows/skill-eval.yml"
   pull_request:
     paths:
+      - "contracts/conformance/**"
       - "contracts/tests/**"
       - "skills/**"
       - "scripts/run-eval.sh"
@@ -93,6 +95,47 @@ jobs:
             echo 'Boundary conformance findings must be resolved before merge.'
             exit 1
           fi
+
+      - name: Validate migrated adapters remain warning-free
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          registry_path = Path("contracts/conformance/strict-adapters.txt")
+          report_path = Path(".tmp/conformance/report.txt")
+          if not registry_path.is_file():
+              raise SystemExit(f"Missing strict adapter registry: {registry_path}")
+
+          entries = []
+          for raw in registry_path.read_text(encoding="utf-8").splitlines():
+              value = raw.strip()
+              if not value or value.startswith("#"):
+                  continue
+              entries.append(value)
+
+          duplicates = sorted({item for item in entries if entries.count(item) > 1})
+          if duplicates:
+              raise SystemExit(f"Duplicate strict adapter entries: {duplicates}")
+
+          missing = sorted(
+              item for item in entries
+              if not (Path("skills") / item / "SKILL.md").is_file()
+          )
+          if missing:
+              raise SystemExit(f"Strict adapter entries without SKILL.md: {missing}")
+
+          report = report_path.read_text(encoding="utf-8")
+          reported = set(re.findall(r"skills/([^/]+)/SKILL\.md", report))
+          findings = sorted(set(entries) & reported)
+          if findings:
+              raise SystemExit(
+                  "Migrated adapters produced conformance findings: "
+                  + ", ".join(findings)
+              )
+
+          print(f"strict adapters warning-free: {len(entries)}")
+          PY
 
       - name: Validate contracts with canonical core runner
         env:

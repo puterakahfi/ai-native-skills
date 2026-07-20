@@ -3,7 +3,7 @@ name: responsiveness
 description: Responsive design strategy — breakpoint system, fluid grid, fluid typography, touch targets, viewport adaptation, and performance. Scores responsiveness 0–10 per dimension. Minimum score 8 required to pass.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/responsiveness.contract.yaml
@@ -12,6 +12,29 @@ metadata:
 ---
 
 # Responsiveness Skill
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/design/responsiveness.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- layout_artifact
+allowed_outputs:
+- breakpoint_audit
+- touch_target_report
+- type_scaling_audit
+- responsiveness_gate_scores
+quality_gates:
+- all_interactive_elements_min_44x44px
+- no_horizontal_overflow_on_mobile
+- clamp_used_for_fluid_type_scaling
+- single_column_layout_on_mobile
+```
+
+Inspect the supplied layout_artifact and return breakpoint, touch-target, type-scaling, and gate evidence. Horizontal overflow on mobile is a blocking failure unless it belongs to an explicitly designed, affordance-backed scroll region.
+
+Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace rendered, runtime, accessibility, or product evidence.
 
 ## HARD RULES (always enforced)
 

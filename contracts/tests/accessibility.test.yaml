@@ -1,0 +1,20 @@
+skill_test:
+  skill: accessibility
+  version: 1.1.1
+  description: Verify the adapter exposes and applies its reviewed core interface.
+  cases:
+  - id: explicit-accessibility-interface-and-alt-text
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Audit a real UI page for accessibility and return a concrete remediation contract.
+    must_contain:
+    - all_images_must_have_meaningful_alt_text
+    - accessibility_audit_report
+    - wcag_violation_list
+    - remediation_plan
+    - aria_recommendations
+    - keyboard_navigation_map
+    - ui_component_or_page
+    must_not_contain:
+    - images may omit alt text when the layout looks clear
+    quality_gates_tested:
+    - all_images_must_have_meaningful_alt_text

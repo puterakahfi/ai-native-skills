@@ -1,141 +1,178 @@
 skill_test:
   skill: adaptive-component-design
-  version: "1.2.2"
-  description: Verify adaptive component selection is driven by task, evidence provenance, actual available width, realistic content pressure, state equivalence, and observed adaptation boundaries rather than fixed device labels or uploaded image dimensions.
-
+  version: 1.2.3
+  description: Verify adaptive component selection is driven by task, evidence provenance, actual available width, realistic
+    content pressure, state equivalence, and observed adaptation boundaries rather than fixed device labels or uploaded image
+    dimensions.
   cases:
-    - id: tablet-tabs-overlap-needs-diagnosis-before-fix
-      description: Overlapping tablet tabs must be diagnosed as pattern mismatch or implementation defect before choosing a patch.
-      trigger: "Desktop line tabs works. At tablet width the labels overlap and clicks are blocked. Decide whether to shrink typography, add a rail, or substitute the component."
-      design_gate_ids: [I4, G13, G14]
-      must_contain:
-        - "actual available width"
-        - "diagnosis"
-        - "PATTERN_MISMATCH"
-        - "IMPLEMENTATION_DEFECT"
-        - "boundary"
-      must_not_contain:
-        - "always shrink"
-        - "tablet is just desktop"
-        - "fixed breakpoint decides"
-      quality_gates_tested:
-        - diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
-        - substitution_boundaries_are_derived_from_real_content_and_available_width
-        - tablet_and_intermediate_contexts_are_explicit
-
-    - id: rail-controls-reflect-both-directions
-      description: A horizontal category rail must expose truthful previous and next controls from real scroll state.
-      trigger: "Category rail currently always shows only a right chevron. After the user scrolls to the middle, there is still no left control. At the end the right control remains visible."
-      design_gate_ids: [I4, G13, G14]
-      must_contain:
-        - "IMPLEMENTATION_DEFECT"
-        - "left control"
-        - "right control"
-        - "actual scroll position"
-        - "resize"
-      must_not_contain:
-        - "right-only is sufficient"
-        - "static chevron"
-      quality_gates_tested:
-        - directional_controls_reflect_actual_scroll_availability
-        - overflow_affordance_is_truthful
-        - implementation_defect_does_not_force_component_replacement
-
-    - id: small-primary-category-set-remains-visible
-      description: A small stable high-value category set should not be hidden in Select solely to avoid layout work.
-      trigger: "There are four short primary discovery categories. On mobile, hide all of them in a Select because the desktop uses tabs."
-      must_contain:
-        - "primary discovery"
-        - "visible"
-        - "task"
-        - "rejected"
-      must_not_contain:
-        - "Select is mandatory"
-        - "hide by default"
-      quality_gates_tested:
-        - primary_choices_are_not_hidden_without_product_rationale
-        - component_pattern_selected_from_user_task_content_and_context
-
-    - id: dynamic-searchable-options-do-not-force-tabs
-      description: Numerous dynamic searchable options should trigger pattern evaluation rather than compressed tabs.
-      trigger: "The filter can grow from 12 to 40 searchable options with long labels. Keep all of them as one-line tabs on every width."
-      must_contain:
-        - "PATTERN_MISMATCH"
-        - "dynamic"
-        - "searchable"
-        - "combobox"
-        - "content contract"
-      must_not_contain:
-        - "one-line tabs on every width"
-        - "reduce font until it fits"
-      quality_gates_tested:
-        - component_pattern_selected_from_user_task_content_and_context
-        - content_pressure_is_explicit
-        - requested_component_is_not_immutable
-
-    - id: fixed-viewport-list-is-not-universal-proof
-      description: Completion evidence must use product contexts and actual boundaries rather than only common device screenshots.
-      trigger: "We have screenshots at 390, 768, 1280, and 1440. The layout breaks at 900 because the real sidebar reduces content width. Mark adaptive behavior complete."
-      must_contain:
-        - "actual container width"
-        - "900"
-        - "NOT_VERIFIED"
-        - "before and after"
-        - "boundary"
-      must_not_contain:
-        - "four screenshots prove completion"
-        - "final_decision: PASS"
-        - "verdict: PASS"
-      quality_gates_tested:
-        - common_viewports_are_samples_not_canonical_breakpoints
-        - acceptance_criteria_cover_actual_targets_and_adaptation_boundaries
-
-    - id: downscaled-screenshot-does-not-prove-mobile-state
-      description: Uploaded artifact dimensions must not be treated as proof of the CSS viewport or available component width.
-      trigger: "This uploaded screenshot file is 358 pixels wide, so treat it as a mobile render and change the two-column cards to one column. The screenshot itself shows a sidebar and desktop line tabs."
-      design_gate_ids: [I4, G13, G14]
-      must_contain:
-        - "artifact dimensions"
-        - "CSS viewport"
-        - "actual available width"
-        - "NOT_VERIFIED"
-        - "line tabs"
-      must_not_contain:
-        - "358 proves mobile"
-        - "change the cards immediately"
-        - "mobile confirmed"
-      quality_gates_tested:
-        - screenshot_artifact_dimensions_are_not_treated_as_runtime_viewport_evidence
-        - responsive_state_requires_capture_metadata_or_browser_measurement
-        - active_component_variants_are_hypotheses_not_measurements
-
-    - id: variants-preserve-state-and-semantics
-      description: Different component families across widths must preserve one product state and semantic contract.
-      trigger: "Desktop uses tabs and mobile uses a Select, but changing mobile selection does not update the URL, analytics event, or desktop selected value after resize."
-      must_contain:
-        - "state equivalence"
-        - "URL"
-        - "analytics"
-        - "selected value"
-        - "FAIL"
-      must_not_contain:
-        - "visual similarity is enough"
-        - "independent mobile state"
-      quality_gates_tested:
-        - component_variants_preserve_shared_value_state_event_semantics_analytics_and_accessible_relationships
-        - shared_state_equivalence_is_verified
-
-    - id: realistic-label-expansion-must-be-tested
-      description: Short placeholder labels cannot prove the selected component survives realistic localized content.
-      trigger: "The category control passes with labels A, B, C. Real Indonesian and German labels are much longer, but do not test them before approval."
-      must_contain:
-        - "realistic labels"
-        - "text expansion"
-        - "NOT_VERIFIED"
-        - "content pressure"
-      must_not_contain:
-        - "placeholder labels are sufficient"
-        - "approval complete"
-      quality_gates_tested:
-        - realistic_content_and_text_expansion_are_verified
-        - visual_verification_uses_realistic_content
+  - id: tablet-tabs-overlap-needs-diagnosis-before-fix
+    description: Overlapping tablet tabs must be diagnosed as pattern mismatch or implementation defect before choosing a
+      patch.
+    trigger: Desktop line tabs works. At tablet width the labels overlap and clicks are blocked. Decide whether to shrink
+      typography, add a rail, or substitute the component.
+    design_gate_ids:
+    - I4
+    - G13
+    - G14
+    must_contain:
+    - actual available width
+    - diagnosis
+    - PATTERN_MISMATCH
+    - IMPLEMENTATION_DEFECT
+    - boundary
+    must_not_contain:
+    - always shrink
+    - tablet is just desktop
+    - fixed breakpoint decides
+    quality_gates_tested:
+    - diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
+    - substitution_boundaries_are_derived_from_real_content_and_available_width
+    - tablet_and_intermediate_contexts_are_explicit
+  - id: rail-controls-reflect-both-directions
+    description: A horizontal category rail must expose truthful previous and next controls from real scroll state.
+    trigger: Category rail currently always shows only a right chevron. After the user scrolls to the middle, there is still
+      no left control. At the end the right control remains visible.
+    design_gate_ids:
+    - I4
+    - G13
+    - G14
+    must_contain:
+    - IMPLEMENTATION_DEFECT
+    - left control
+    - right control
+    - actual scroll position
+    - resize
+    must_not_contain:
+    - right-only is sufficient
+    - static chevron
+    quality_gates_tested:
+    - directional_controls_reflect_actual_scroll_availability
+    - overflow_affordance_is_truthful
+    - implementation_defect_does_not_force_component_replacement
+  - id: small-primary-category-set-remains-visible
+    description: A small stable high-value category set should not be hidden in Select solely to avoid layout work.
+    trigger: There are four short primary discovery categories. On mobile, hide all of them in a Select because the desktop
+      uses tabs.
+    must_contain:
+    - primary discovery
+    - visible
+    - task
+    - rejected
+    must_not_contain:
+    - Select is mandatory
+    - hide by default
+    quality_gates_tested:
+    - primary_choices_are_not_hidden_without_product_rationale
+    - component_pattern_selected_from_user_task_content_and_context
+  - id: dynamic-searchable-options-do-not-force-tabs
+    description: Numerous dynamic searchable options should trigger pattern evaluation rather than compressed tabs.
+    trigger: The filter can grow from 12 to 40 searchable options with long labels. Keep all of them as one-line tabs on every
+      width.
+    must_contain:
+    - PATTERN_MISMATCH
+    - dynamic
+    - searchable
+    - combobox
+    - content contract
+    must_not_contain:
+    - one-line tabs on every width
+    - reduce font until it fits
+    quality_gates_tested:
+    - component_pattern_selected_from_user_task_content_and_context
+    - content_pressure_is_explicit
+    - requested_component_is_not_immutable
+  - id: fixed-viewport-list-is-not-universal-proof
+    description: Completion evidence must use product contexts and actual boundaries rather than only common device screenshots.
+    trigger: We have screenshots at 390, 768, 1280, and 1440. The layout breaks at 900 because the real sidebar reduces content
+      width. Mark adaptive behavior complete.
+    must_contain:
+    - actual container width
+    - '900'
+    - NOT_VERIFIED
+    - before and after
+    - boundary
+    must_not_contain:
+    - four screenshots prove completion
+    - 'final_decision: PASS'
+    - 'verdict: PASS'
+    quality_gates_tested:
+    - common_viewports_are_samples_not_canonical_breakpoints
+    - acceptance_criteria_cover_actual_targets_and_adaptation_boundaries
+  - id: downscaled-screenshot-does-not-prove-mobile-state
+    description: Uploaded artifact dimensions must not be treated as proof of the CSS viewport or available component width.
+    trigger: This uploaded screenshot file is 358 pixels wide, so treat it as a mobile render and change the two-column cards
+      to one column. The screenshot itself shows a sidebar and desktop line tabs.
+    design_gate_ids:
+    - I4
+    - G13
+    - G14
+    must_contain:
+    - artifact dimensions
+    - CSS viewport
+    - actual available width
+    - NOT_VERIFIED
+    - line tabs
+    must_not_contain:
+    - 358 proves mobile
+    - change the cards immediately
+    - mobile confirmed
+    quality_gates_tested:
+    - screenshot_artifact_dimensions_are_not_treated_as_runtime_viewport_evidence
+    - responsive_state_requires_capture_metadata_or_browser_measurement
+    - active_component_variants_are_hypotheses_not_measurements
+  - id: variants-preserve-state-and-semantics
+    description: Different component families across widths must preserve one product state and semantic contract.
+    trigger: Desktop uses tabs and mobile uses a Select, but changing mobile selection does not update the URL, analytics
+      event, or desktop selected value after resize.
+    must_contain:
+    - state equivalence
+    - URL
+    - analytics
+    - selected value
+    - FAIL
+    must_not_contain:
+    - visual similarity is enough
+    - independent mobile state
+    quality_gates_tested:
+    - component_variants_preserve_shared_value_state_event_semantics_analytics_and_accessible_relationships
+    - shared_state_equivalence_is_verified
+  - id: realistic-label-expansion-must-be-tested
+    description: Short placeholder labels cannot prove the selected component survives realistic localized content.
+    trigger: The category control passes with labels A, B, C. Real Indonesian and German labels are much longer, but do not
+      test them before approval.
+    must_contain:
+    - realistic labels
+    - text expansion
+    - NOT_VERIFIED
+    - content pressure
+    must_not_contain:
+    - placeholder labels are sufficient
+    - approval complete
+    quality_gates_tested:
+    - realistic_content_and_text_expansion_are_verified
+    - visual_verification_uses_realistic_content
+  - id: requested-component-is-evaluated-across-contexts
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Evaluate a requested tabs component for mobile, tablet, and desktop using real tasks and content.
+    must_contain:
+    - requested_component_is_treated_as_a_proposed_solution_not_an_immutable_requirement
+    - tabs_and_horizontal_collections_expose_truthful_overflow_affordance
+    - touch_pointer_and_keyboard_interactions_are_defined_when_applicable
+    - interactive_targets_do_not_overlap_or_clip
+    - viewport_strategy
+    - component_substitution_matrix
+    - adaptation_boundary_map
+    - component_selection_rationale
+    - rejected_component_alternatives
+    - product_intent
+    - user_tasks
+    - content_inventory
+    - component_inventory
+    - target_contexts
+    must_not_contain:
+    - the requested component is immutable
+    quality_gates_tested:
+    - requested_component_is_treated_as_a_proposed_solution_not_an_immutable_requirement
+    - tabs_and_horizontal_collections_expose_truthful_overflow_affordance
+    - touch_pointer_and_keyboard_interactions_are_defined_when_applicable
+    - interactive_targets_do_not_overlap_or_clip

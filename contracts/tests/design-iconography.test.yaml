@@ -1,0 +1,17 @@
+skill_test:
+  skill: design-iconography
+  version: 1.0.1
+  description: Verify the adapter exposes and applies its reviewed core interface.
+  cases:
+  - id: iconography-starts-from-genre-and-returns-spec
+    description: Protect the reviewed core interface and its executable interpretation.
+    trigger: Define an icon system that matches an already selected visual genre.
+    must_contain:
+    - sizing_spec
+    - stroke_weight_spec
+    - a11y_pattern
+    - genre_selection
+    must_not_contain:
+    - mix unrelated icon families
+    quality_gates_tested:
+    - one_icon_family_per_product
