@@ -1,7 +1,7 @@
 skill_test:
   skill: master-engineer
-  version: 1.0.1
-  description: Verify master-engineer exposes and applies its reviewed architecture or engineering contract interface.
+  version: 1.1.0
+  description: Verify master-engineer documents trade-offs and maps existing-repository implementation through discovered conventions.
   cases:
   - id: engineering-decision-documents-tradeoffs
     description: Choose a durable architecture direction and document alternatives, consequences, and verification.
@@ -12,3 +12,25 @@ skill_test:
     - tradeoffs are unnecessary
     quality_gates_tested:
     - tradeoffs_documented
+
+  - id: existing-repository-implementation-loads-context-discovery
+    description: An implementation owner must not approach an existing repository as a greenfield stack choice.
+    trigger: "Implement a redesigned filter in an existing repository. The repo has accepted shared components, styling tokens, icon wrappers, and form/query conventions, but the proposed plan starts from a favorite new UI library."
+    must_contain:
+    - implementation-context-discovery
+    - existing context
+    - convention locks
+    - reuse
+    - capability gap
+    - implementation handoff
+    - architecture-review
+    must_not_contain:
+    - choose the favorite library first
+    - package popularity decides
+    - implementation owner self-approves
+    quality_gates_tested:
+    - purpose_before_pattern
+    - boundaries_explicit
+    - tradeoffs_documented
+    - smallest_durable_design
+    - verification_criteria_defined
