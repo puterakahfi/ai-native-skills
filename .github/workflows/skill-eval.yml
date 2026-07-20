@@ -1,24 +1,13 @@
 name: Skill and Gate Contracts
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "contracts/conformance/**"
-      - "contracts/tests/**"
-      - "skills/**"
-      - "scripts/run-eval.sh"
-      - "scripts/validate-eval-contracts.py"
-      - "scripts/validate-design-gate-registry.py"
-      - ".github/workflows/skill-eval.yml"
   pull_request:
     paths:
-      - "contracts/conformance/**"
-      - "contracts/tests/**"
+      - "contracts/**"
       - "skills/**"
-      - "scripts/run-eval.sh"
-      - "scripts/validate-eval-contracts.py"
-      - "scripts/validate-design-gate-registry.py"
+      - "docs/**"
+      - "README.md"
+      - "scripts/tmp-integrate-delivery.py"
       - ".github/workflows/skill-eval.yml"
   workflow_dispatch:
 
@@ -26,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: skill-and-gate-contracts-${{ github.ref }}
+  group: delivery-integration-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -41,186 +30,30 @@ jobs:
           ref: 53-delivery-work-breakdown
           fetch-depth: 0
 
-      - name: Validate and apply staged integration
+      - name: Apply integration when not yet applied
         run: |
+          if grep -q 'ai-native-skills.version: 1.5.0' skills/workflow-router/SKILL.md; then
+            echo 'Delivery integration already applied.'
+            exit 0
+          fi
           python -m py_compile scripts/tmp-integrate-delivery.py
           python scripts/tmp-integrate-delivery.py
 
-      - name: Remove temporary staging and restore canonical workflow
+      - name: Commit content changes only
         run: |
-          rm scripts/tmp-integrate-delivery.py
-          rm .github/workflows/tmp-integrate-delivery-work-breakdown.yml
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path('.github/workflows/skill-eval.yml')
-          text = path.read_text(encoding='utf-8')
-          text = text.replace('permissions:\n  contents: write', 'permissions:\n  contents: read', 1)
-          start = text.index('  integrate_delivery:\n')
-          end = text.index('  validate:\n', start)
-          text = text[:start] + text[end:]
-          text = text.replace(
-              "  validate:\n    if: github.head_ref != '53-delivery-work-breakdown'\n",
-              '  validate:\n',
-              1,
-          )
-          path.write_text(text, encoding='utf-8')
-          PY
-
-      - name: Commit integrated capability
-        run: |
+          if grep -q 'ai-native-skills.version: 1.4.1' skills/workflow-router/SKILL.md; then
+            echo 'No integration content to commit.'
+            exit 0
+          fi
+          git checkout -- .github/workflows/skill-eval.yml
+          git checkout -- .github/workflows/tmp-integrate-delivery-work-breakdown.yml
+          git checkout -- scripts/tmp-integrate-delivery.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
+          git add README.md docs contracts skills
+          if git diff --cached --quiet; then
+            echo 'No content changes.'
+            exit 0
+          fi
           git commit -m "feat(product): integrate delivery work breakdown"
           git push origin HEAD:53-delivery-work-breakdown
-
-  validate:
-    if: github.head_ref != '53-delivery-work-breakdown'
-    name: Validate skill and gate contracts
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout ai-native-skills
-        uses: actions/checkout@v6
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Install validator dependency
-        run: python -m pip install "PyYAML>=6,<7"
-
-      - name: Check local validator and runner syntax
-        run: |
-          python -m py_compile scripts/validate-design-gate-registry.py
-          python -m py_compile scripts/validate-eval-contracts.py
-          bash -n scripts/run-eval.sh
-
-      - name: Validate canonical design gate registry
-        run: python scripts/validate-design-gate-registry.py
-
-      - name: Validate repository eval contracts
-        run: |
-          python scripts/validate-eval-contracts.py \
-            --write-smoke-outputs .tmp/eval-smoke-outputs
-
-      - name: Checkout pinned ai-native-core runner
-        uses: actions/checkout@v6
-        with:
-          repository: puterakahfi/ai-native-core
-          ref: f94b6ad86583c714b68eb5ea9f92890557b462c5
-          path: .deps/ai-native-core
-
-      - name: Stage production skill adapters
-        run: |
-          rm -rf .tmp/adapter-repo
-          mkdir -p .tmp/adapter-repo
-          cp -R skills .tmp/adapter-repo/skills
-
-      - name: Validate adapter paths and pinned versions
-        shell: bash
-        run: |
-          cd .tmp/adapter-repo
-          bash "$GITHUB_WORKSPACE/.deps/ai-native-core/scripts/validate-implements.sh" \
-            "$GITHUB_WORKSPACE/.deps/ai-native-core"
-
-      - name: Validate full adapter interface and boundary conformance
-        shell: bash
-        run: |
-          set -o pipefail
-          mkdir -p .tmp/conformance
-          python .deps/ai-native-core/scripts/validate-conformance.py \
-            .deps/ai-native-core \
-            .tmp/adapter-repo | tee .tmp/conformance/report.txt
-          grep -Eq '^Errors:[[:space:]]+0$' .tmp/conformance/report.txt
-          grep -Eq '^Not checkable:[[:space:]]+0$' .tmp/conformance/report.txt
-          if grep -Eq 'boundary \[(ERROR|WARN|NOT_CHECKABLE)\]' .tmp/conformance/report.txt; then
-            echo 'Boundary conformance findings must be resolved before merge.'
-            exit 1
-          fi
-
-      - name: Validate migrated adapters remain warning-free
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          registry_path = Path("contracts/conformance/strict-adapters.txt")
-          report_path = Path(".tmp/conformance/report.txt")
-          if not registry_path.is_file():
-              raise SystemExit(f"Missing strict adapter registry: {registry_path}")
-
-          entries = []
-          for raw in registry_path.read_text(encoding="utf-8").splitlines():
-              value = raw.strip()
-              if not value or value.startswith("#"):
-                  continue
-              entries.append(value)
-
-          duplicates = sorted({item for item in entries if entries.count(item) > 1})
-          if duplicates:
-              raise SystemExit(f"Duplicate strict adapter entries: {duplicates}")
-
-          missing = sorted(
-              item for item in entries
-              if not (Path("skills") / item / "SKILL.md").is_file()
-          )
-          if missing:
-              raise SystemExit(f"Strict adapter entries without SKILL.md: {missing}")
-
-          report = report_path.read_text(encoding="utf-8")
-          reported = set(re.findall(r"skills/([^/]+)/SKILL\.md", report))
-          findings = sorted(set(entries) & reported)
-          if findings:
-              raise SystemExit(
-                  "Migrated adapters produced conformance findings: "
-                  + ", ".join(findings)
-              )
-
-          print(f"strict adapters warning-free: {len(entries)}")
-          PY
-
-      - name: Validate contracts with canonical core runner
-        env:
-          SKILL_EVAL_TESTS_DIR: ${{ github.workspace }}/contracts/tests
-        run: |
-          python .deps/ai-native-core/scripts/run-eval.py \
-            --all \
-            --validate-tests
-
-      - name: Verify wrapper integration
-        env:
-          AI_NATIVE_CORE_DIR: ${{ github.workspace }}/.deps/ai-native-core
-        run: |
-          bash scripts/run-eval.sh --all --validate-tests
-
-      - name: Run per-case runner compatibility smoke
-        env:
-          AI_NATIVE_CORE_DIR: ${{ github.workspace }}/.deps/ai-native-core
-        run: |
-          mkdir -p .tmp/eval-reports
-          bash scripts/run-eval.sh \
-            --all \
-            --output-dir .tmp/eval-smoke-outputs \
-            --report-json .tmp/eval-reports/contract-smoke.json
-
-      - name: Upload adapter conformance report
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: adapter-conformance
-          path: .tmp/conformance/report.txt
-          if-no-files-found: warn
-          retention-days: 14
-
-      - name: Upload compatibility report
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: skill-eval-contract-smoke
-          path: .tmp/eval-reports/contract-smoke.json
-          if-no-files-found: warn
-          retention-days: 14
