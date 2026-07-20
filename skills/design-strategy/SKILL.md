@@ -1,72 +1,126 @@
 ---
 name: design-strategy
-description: UX strategy & content port — routes to ux-psychology, information-architecture, cro, copywriting, content-strategy. User-centered thinking. Load this for strategy/content concerns.
+description: UX strategy, content, information architecture, and collection discovery port. Routes user-centered concerns to ux-psychology, information-architecture, collection-discovery-design, CRO, copywriting, and content-strategy before layout, visual expression, or interaction adapters are locked.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/design-strategy.contract.yaml
-  ai-native-skills.contract-version: "^1.0.0"
-  ai-native-skills.related_skills: '["ux-psychology","information-architecture","cro","copywriting","content-strategy"]'
+  ai-native-skills.contract-version: ^1.1.0
+  ai-native-skills.related_skills: '["ux-psychology","information-architecture","collection-discovery-design","cro","copywriting","content-strategy"]'
 ---
 
 # Design Strategy Port
 
 > **HARD RULES:**
 > 1. Strategy before aesthetics — understand user needs before visual decisions.
-> 2. CRO only when business goal is conversion — do not add CTAs to identity/portfolio pages.
-> 3. Copy is design — run copywriting adapter before locking layout.
+> 2. Taxonomy meaning must be established before collection presentation strategy.
+> 3. Collection strategy must be established before selecting pagination, tabs, filters, infinite scroll, or another interaction adapter.
+> 4. CRO only when business goal is conversion — do not add CTAs to identity or portfolio pages by convention.
+> 5. Copy is design — run copywriting before locking layout.
 
----
+## What this port covers
 
-## What This Port Covers
+User-centered thinking — why information, content, and discovery work the way they do.
 
-User-centered thinking — WHY things exist as they do.
-Answers: What do users need? What is the IA? What copy tone? Is this converting?
+Answers:
 
-**Does NOT cover:**
-- Visual style (→ `design-visual` port)
-- Spatial layout (→ `design-layout` port)
-- Component behavior (→ `design-interaction` port)
+- What do users need?
+- What content and taxonomy exist?
+- How do users find, browse, narrow, compare, and return within a collection?
+- What copy and content structure support the task?
+- Is conversion an explicit goal?
 
----
+Does not cover:
 
-## Adapter Skills — Load Per Concern
+- visual style → `design-visual`;
+- spatial layout → `design-layout`;
+- interaction behavior → `design-interaction`;
+- context-specific component fitness → `adaptive-component-design`;
+- implementation → engineering or product adapter.
+
+## Adapter skills — load per concern
 
 | Concern | Adapter | When to load |
 |---|---|---|
-| User cognition + behavior | `ux-psychology` | Phase 4 produce, persuasion/trust concerns |
-| Navigation + content taxonomy | `information-architecture` | Phase 0.5, IA-heavy redesigns |
-| Conversion optimization | `cro` | Phase 4, only when conversion is the goal |
-| UI copy + microcopy | `copywriting` | Phase 4, any copy decision |
-| Content planning | `content-strategy` | Phase 0, content-heavy pages |
+| User cognition and behavior | `ux-psychology` | Persuasion, trust, decision, cognitive-load concerns |
+| Navigation and taxonomy meaning | `information-architecture` | Content inventory, classification, navigation, hierarchy, search-vs-browse meaning |
+| Collection retrieval and discovery strategy | `collection-discovery-design` | Catalog, registry, directory, feed, gallery, table, library, or search-results surface needs grouping, search, facets, sorting, traversal, disclosure, or state strategy |
+| Conversion optimization | `cro` | Only when conversion is an explicit goal |
+| UI copy and microcopy | `copywriting` | Any material copy decision |
+| Content planning | `content-strategy` | Content-heavy surfaces, inventory, lifecycle, editorial planning |
 
-### How to load
+### Routing distinction
+
+```text
+What do the categories mean?
+→ information-architecture
+
+How should users retrieve and traverse the collection?
+→ collection-discovery-design
+
+How should the selected adapter behave and remain accessible?
+→ design-interaction
+
+Does the selected component fit each actual context?
+→ adaptive-component-design
 ```
+
+Do not route a collection-wide strategy failure directly to a pagination, tabs, filter-panel, or component implementation skill.
+
+## How to load
+
+```text
 skill_view(name='ux-psychology')
 skill_view(name='information-architecture')
+skill_view(name='collection-discovery-design')
 skill_view(name='cro')
 skill_view(name='copywriting')
 skill_view(name='content-strategy')
 ```
 
----
+## Load sequence for redesign
 
-## Load Sequence for Redesign
+```text
+PRE-FLIGHT / INSPECT
+  1. content-strategy
+     → content inventory when the surface is content-heavy
 
+  2. information-architecture
+     → taxonomy, hierarchy, navigation, and search-vs-browse meaning
+
+  3. collection-discovery-design
+     → only when the surface contains a material collection
+     → diagnosis and strategy before adapters
+
+DIRECTION / SPECIFY
+  4. cro
+     → only when conversion is explicit
+
+  5. copywriting
+     → copy before layout lock
+
+  6. ux-psychology
+     → cognition, trust, decision, and comprehension concerns
+
+PRODUCE
+  collection-discovery-design handoff
+  → design-interaction selects behavior adapters
+  → adaptive-component-design selects fit component variants by context
 ```
-Phase 0 PRE-FLIGHT (strategy concerns):
-  1. skill_view(name='content-strategy')         ← content inventory
 
-Phase 2 VALUE ALIGNMENT:
-  2. skill_view(name='cro')                      ← only if conversion goal
+## Collection-heavy trigger
 
-Phase 4 PRODUCE (content/copy):
-  3. skill_view(name='copywriting')              ← UI copy
-  4. skill_view(name='ux-psychology')            ← persuasion + cognitive load
-```
+Load `collection-discovery-design` when one or more are true:
 
----
+- users must find a known item inside a collection;
+- groups or default lists are long or growing;
+- categories, filters, facets, sorting, or traversal need justification;
+- position, URL, selected view, query, filter, or return context must persist;
+- desktop and mobile may need different disclosure or component adapters;
+- an audit finding spans the collection model rather than one broken component.
 
-> **REMINDER:** Strategy before aesthetics. Copy is design — decide copy before layout.
+Do not load it merely because a page has three cards or one short list.
+
+> **REMINDER:** Strategy before aesthetics. Taxonomy before collection presentation. Collection strategy before adapter selection. Copy before layout.
