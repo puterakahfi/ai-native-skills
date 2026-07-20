@@ -3,11 +3,12 @@ name: redesign-workflow
 description: Delegated, domain-aware redesign workflow for existing visual surfaces — route → compose owners → verify decisions → inspect → direct → specify → produce under a write lease → verify provenance, scope, concurrency, and artifact → facade review → classify → fix → deliver.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.3.0
+  ai-native-skills.version: 3.4.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
   ai-native-skills.contract-version: "^2.2.0"
+  ai-native-skills.pack: packs/redesign/pack.yaml
   ai-native-skills.requires: "role-switcher master-design master-engineer decision-provenance design-foundation design-brand design-visual design-layout design-strategy design-interaction design-system design-audit design-review design-refinement business-value-alignment skill-evolution skill-eval git-workflow"
   ai-native-skills.related_skills: '["workflow-router","adaptive-component-design","macrostructures","ui-components","responsiveness","accessibility","dark-light-theming","brand-identity-review"]'
 ---
@@ -17,6 +18,26 @@ metadata:
 Redesign an existing visual surface through explicit ownership, verified decision provenance, bounded specialist delegation, clean final-diff scope, concurrency-safe writes, domain-appropriate evidence, independent facade review, and a verified correction loop.
 
 The workflow owns lifecycle, state transitions, approvals, preservation, integrity gates, iteration, and handoffs. Specialist skills own narrow design decisions. `master-engineer` owns repository implementation when required. `design-review` and the governing domain reviewer own acceptance.
+
+## Dependency and installation model
+
+Runtime composition and package installation are separate concerns.
+
+```text
+ai-native-skills.requires
+  → backward-compatible runtime capability hint
+  → does not prove that dependencies are installed
+
+packs/redesign/pack.yaml
+  → canonical ordered dependency inventory
+  → classifies required, conditional, port, adapter, domain-reviewer, and optional skills
+  → defines minimum and complete installation profiles
+  → governs the documented Redesign Pack command
+```
+
+Installing `redesign-workflow` alone installs only the entrypoint because the upstream `skills` CLI does not currently resolve transitive dependencies from `SKILL.md`. Before execution, verify required capability availability, resolve conditional capabilities from the run context, and select adapters only from changed concerns and acceptance criteria.
+
+Load `references/dependencies-and-installation.md` for the complete dependency contract, installation profiles, runtime preflight, and validation commands.
 
 ## Hard rules
 
@@ -46,6 +67,7 @@ The workflow owns lifecycle, state transitions, approvals, preservation, integri
 23. Maximum design iterations default to 5; after two failed patches in one region, re-read and replan.
 24. Verified reusable fixes require skill-evolution and a regression eval.
 25. Blocked or bounded attempts are never labeled PASS.
+26. Never claim a complete redesign environment from the workflow entrypoint alone.
 ```
 
 ## Route
@@ -216,6 +238,7 @@ Load only when applicable:
 
 | Concern | Reference / skill |
 |---|---|
+| Dependency model and installation | `references/dependencies-and-installation.md` |
 | Lifecycle boundary | `references/redesign-vs-refinement.md` |
 | State, phase handoffs, approval, outputs | `references/orchestration-state-and-decisions.md` |
 | Decision authority and supersession | `decision-provenance` |
@@ -258,85 +281,3 @@ integrity PASS
 ```
 
 Visual observations may be recorded while integrity is blocked, but cannot authorize passing delivery.
-
-## Correction loop
-
-```text
-design FAIL/PARTIAL
-  → canonical gate + governing reviewer + correction owner
-
-NOT_VERIFIED
-  → collect evidence or narrow the claim; do not invent a design fix
-
-scope/provenance/concurrency blocker
-  → resolve through the owning integrity contract, not a design score
-
-verified reusable correction
-  → skill-evolution + skill-eval
-```
-
-Apply the smallest valid correction and preserve accepted direction, passing regions, locks, and rollback path.
-
-## Delivery
-
-```text
-PASS
-  requires provenance, scope, concurrency, acceptance, evidence,
-  coverage, reviewer-owned hard gates, and preservation to pass
-
-CONDITIONAL PASS
-  allows only explicit non-blocking risk inside verified authority;
-  missing approval, contamination, or write contention cannot be accepted as risk
-
-NEEDS WORK / CRITICAL
-  fix while bounded attempts remain
-
-LIMITED REVIEW / ROUTE ELSEWHERE
-  load reviewer, narrow claim, or hand off
-
-MAX ITERATIONS REACHED
-  deliver best preserved attempt with explicit gaps; never label PASS
-```
-
-Average score and mergeability never override provenance, scope, concurrency, verdict, coverage, evidence gaps, hard gates, locks, or acceptance criteria.
-
-## Approval boundary
-
-```text
-autonomous
-  no routine pause, but never inferred consent
-
-spec-gated
-  pause when scope or direction materially differs from verified request/spec
-
-patch-gated
-  pause before repository patch or full-file rewrite
-
-fully-gated
-  pause before production, every patch, and full-file rewrite
-```
-
-Always require explicit verified authority for destructive/irreversible work, production-environment changes, user-content deletion, material scope expansion, lock removal, approval bypass, or unresolved owner conflict.
-
-## Final guard
-
-```text
-□ Correct lifecycle was selected before production.
-□ Design, implementation, repository-write, and review ownership are explicit.
-□ Material decisions have attributable sources and verified authority.
-□ Agent summaries, PR bodies, commits, and recency were not treated as approval.
-□ Baseline, confirmed scope, exclusions, and preservation locks are captured.
-□ Specialists match changed layers and acceptance criteria.
-□ Production followed delegation and verified decision boundaries.
-□ Every write used the inspected expected head; drift was inspected before retry.
-□ Two reversals stopped automatic writes.
-□ Every effective changed path was classified.
-□ OUT_OF_SCOPE, UNKNOWN, and provenance-blocked entries are empty for PASS.
-□ Verification matches domain, artifact state, and actual stable head.
-□ Review used the facade and governing domain reviewer.
-□ PARTIAL, NOT_VERIFIED, and NOT_APPLICABLE were preserved.
-□ Integrity reports and facade verdict all control delivery.
-□ Every correction followed root-cause ownership classification.
-□ Verified reusable fixes received learning review and regression eval.
-□ Blocked or bounded attempts are labeled honestly.
-```
