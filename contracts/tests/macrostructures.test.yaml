@@ -1,0 +1,19 @@
+skill_test:
+  skill: macrostructures
+  version: "1.0.1"
+  description: Verify macrostructures exposes and applies its core contract interface.
+
+  cases:
+    - id: split-layout-has-no-voids
+      description: A known conformance gap must be handled through explicit inputs, outputs, and blocking gates.
+      trigger: "Apply macrostructures to a realistic change and report the contract-backed decision."
+      must_contain:
+        - "new_pick_must_differ_from_prior_on_2_or_more_axes"
+        - "no_dead_space_in_split_panels"
+        - "cards_must_fill_height_in_split_layout"
+      must_not_contain:
+        - "diversification alone overrides the brief"
+      quality_gates_tested:
+        - new_pick_must_differ_from_prior_on_2_or_more_axes
+        - no_dead_space_in_split_panels
+        - cards_must_fill_height_in_split_layout

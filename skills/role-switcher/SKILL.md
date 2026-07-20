@@ -3,7 +3,7 @@ name: role-switcher
 description: Intent and domain detection with explicit role composition — selects one owner, narrow specialists, an independent reviewer facade, and a domain reviewer when specialized acceptance is required.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.3.0
+  ai-native-skills.version: 1.3.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "master-engineer master-design adaptive-component-design product-manager ux-psychology user-research native-ai-engineer diagram-architect design-review brand-identity-review systematic-debugging architecture-review security-review plan"
   ai-native-skills.type: meta-skill
@@ -12,6 +12,27 @@ metadata:
 ---
 
 # Role Switcher
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - user_request
+allowed_outputs:
+  - detected_intent
+  - role_composition
+  - skills_to_load
+  - analysis_with_multi_lens
+quality_gates:
+  - intent_must_be_detected_before_role_selection
+  - role_composition_must_be_explicit_not_implicit
+  - each_role_must_contribute_a_distinct_lens
+  - no_role_loaded_without_clear_relevance_to_intent
+  - multi_role_output_must_be_structured_by_lens
+  - agent_must_state_which_roles_were_activated
+```
+
+State the detected intent and activated roles explicitly. Each role must contribute a distinct lens, and multi-role evidence must remain structured by lens before the owner synthesizes one decision. Never load a role without clear relevance to the user request.
 
 ## Core Rule
 

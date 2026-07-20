@@ -1,0 +1,17 @@
+skill_test:
+  skill: content-strategy
+  version: "1.0.1"
+  description: Verify content-strategy exposes and applies its core contract interface.
+
+  cases:
+    - id: content-follows-user-mental-model
+      description: A known conformance gap must be handled through explicit inputs, outputs, and blocking gates.
+      trigger: "Apply content-strategy to a realistic change and report the contract-backed decision."
+      must_contain:
+        - "information_sequenced_by_user_mental_model"
+        - "tone_consistent_across_sections"
+      must_not_contain:
+        - "author's internal organization decides the sequence"
+      quality_gates_tested:
+        - information_sequenced_by_user_mental_model
+        - tone_consistent_across_sections

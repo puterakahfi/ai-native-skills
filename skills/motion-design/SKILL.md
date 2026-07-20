@@ -3,7 +3,7 @@ name: motion-design
 description: Motion design system — micro-interactions, state transitions, scroll-driven animation, staggered entrance, and cinematic narrative motion. Decision tree for choosing the right motion type. Scores motion quality 0–10. Minimum 8 to pass. Always respects prefers-reduced-motion.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/motion-design.contract.yaml
@@ -12,6 +12,25 @@ metadata:
 ---
 
 # Motion Design Skill
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - animation_inventory
+allowed_outputs:
+  - animation_verdict
+  - gpu_compliance_report
+  - reduced_motion_audit
+  - motion_gate_scores
+quality_gates:
+  - every_animation_has_user_signal_purpose
+  - hover_transitions_200ms_or_less
+  - gpu_only_transform_and_opacity
+  - prefers_reduced_motion_media_query_present
+```
+
+Every animation requires a user-signal purpose such as feedback, orientation, continuity, or hierarchy. Decorative motion with no user signal is rejected. Hover transitions must be 200 ms or less. GPU-safe motion uses only transform and opacity, and reduced-motion support must include a `prefers-reduced-motion` media query.
 
 > ⛔ **HARD RULES — non-negotiable, checked first**
 > 1. `prefers-reduced-motion` is a **HARD GATE** — Gate M7 score 0 = automatic full fail

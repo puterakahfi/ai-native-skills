@@ -1,0 +1,21 @@
+skill_test:
+  skill: ui-components
+  version: "1.1.0"
+  description: Verify ui-components exposes and applies its core contract interface.
+
+  cases:
+    - id: pattern-selection-precedes-template-copy
+      description: A known conformance gap must be handled through explicit inputs, outputs, and blocking gates.
+      trigger: "Apply ui-components to a realistic change and report the contract-backed decision."
+      must_contain:
+        - "brief_signals"
+        - "content_inventory"
+        - "pattern_selected_from_decision_tree_not_arbitrary"
+        - "hero_pattern_matches_content_volume"
+      must_not_contain:
+        - "copy the first template before selecting a pattern"
+      quality_gates_tested:
+        - brief_signals
+        - content_inventory
+        - pattern_selected_from_decision_tree_not_arbitrary
+        - hero_pattern_matches_content_volume

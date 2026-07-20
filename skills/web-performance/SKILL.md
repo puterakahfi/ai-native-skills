@@ -3,7 +3,7 @@ name: web-performance
 description: Web performance skill — Core Web Vitals scoring, LCP/CLS/INP optimization, font loading, critical CSS, image strategy, and JS bundle analysis. Design decisions that directly affect Lighthouse score and user experience.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/web-performance.contract.yaml
@@ -12,6 +12,24 @@ metadata:
 ---
 
 # Web Performance Skill
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - page_artifact
+allowed_outputs:
+  - lcp_audit
+  - cls_audit
+  - inp_audit
+  - performance_gate_scores
+quality_gates:
+  - lcp_under_2500ms
+  - cls_under_0_1
+  - no_render_blocking_resources
+```
+
+Measure the supplied `page_artifact`; missing runtime evidence is `NOT_VERIFIED`. LCP must remain under 2500 ms, CLS under 0.1, and render-blocking resources must be eliminated or explicitly proven unavoidable within the performance budget.
 
 > **HARD RULES**
 > - Measure before optimizing — no guessing, run Lighthouse first
