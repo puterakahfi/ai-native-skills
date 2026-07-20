@@ -1,0 +1,69 @@
+name: Commit Narrow Design Evals
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/commit-narrow-design-evals.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Extract corrected eval refinement
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path('.github/workflows/refine-design-conformance-evals.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = source.index(marker) + len(marker)
+          end = source.index("\n          PY\n", start)
+          block = source[start:end]
+          lines = [line[10:] if line.startswith('          ') else line for line in block.splitlines()]
+          script = '\n'.join(lines) + '\n'
+          old = '''"items": ["F5_no_dead_space_no_min_height_100vh"],
+        "gates": ["F5_no_dead_space_no_min_height_100vh"],
+        "design_gate_ids": ["F5"],'''
+          new = '''"items": ["dead space", "min-height:100vh", "intentional whitespace"],
+        "gates": ["no_dead_space_no_min_height_100vh"],'''
+          if old not in script:
+              raise SystemExit('design-foundation correction anchor not found')
+          script = script.replace(old, new, 1)
+          Path('/tmp/narrow_design_evals.py').write_text(script, encoding='utf-8')
+          PY
+
+      - name: Apply and validate corrected evals
+        run: |
+          python /tmp/narrow_design_evals.py
+          python scripts/validate-eval-contracts.py --write-smoke-outputs .tmp/eval-smoke-outputs
+          git diff --check
+
+      - name: Commit corrected evals
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add contracts/tests
+          git commit -m "test: narrow design conformance regression cases [skip ci]"
+          git push origin HEAD:${HEAD_BRANCH}
