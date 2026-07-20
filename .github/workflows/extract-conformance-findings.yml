@@ -1,0 +1,70 @@
+name: Extract Conformance Findings
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/extract-conformance-findings.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Extract boundary and error findings
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path('audit/conformance-report.txt').read_text(encoding='utf-8').splitlines()
+          blocks = []
+          current = []
+          for line in source:
+              if line.startswith(('⚠ skills/', '✗ skills/', '? skills/')):
+                  if current:
+                      blocks.append(current)
+                  current = [line]
+              elif current:
+                  current.append(line)
+                  if not line.strip():
+                      blocks.append(current)
+                      current = []
+          if current:
+              blocks.append(current)
+
+          boundary = [block for block in blocks if any('boundary [' in line for line in block)]
+          errors = [block for block in blocks if any('[ERROR]' in line for line in block)]
+
+          summary = [line for line in source if line.startswith(('Checked:', 'Conformant:', 'Warnings:', 'Not checkable:', 'Errors:', 'PASS', 'FAIL'))]
+          out = ['# Targeted Conformance Findings', '', '## Summary', ''] + [f'- `{line}`' for line in summary]
+          out += ['', f'## Boundary findings ({len(boundary)})', '']
+          if boundary:
+              for block in boundary:
+                  out += ['```text', *block, '```', '']
+          else:
+              out += ['_None._', '']
+          out += [f'## Error findings ({len(errors)})', '']
+          for block in errors:
+              out += ['```text', *block, '```', '']
+
+          Path('audit/conformance-targeted.md').write_text('\n'.join(out), encoding='utf-8')
+          print(f'boundary={len(boundary)} errors={len(errors)}')
+          PY
+
+      - name: Commit targeted report
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audit/conformance-targeted.md
+          git commit -m 'chore(audit): classify conformance findings [skip ci]'
+          git push origin HEAD:${HEAD_BRANCH}
