@@ -1,6 +1,6 @@
 skill_test:
   skill: role-switcher
-  version: "1.3.0"
+  version: "1.3.1"
   description: Verify design role composition separates owner, specialists, reviewer facade, and domain reviewer.
 
   cases:
@@ -71,3 +71,20 @@ skill_test:
         - static_domain_composition
         - interactive_reviewer_not_selected
         - canonical_gate_identity
+
+    - id: explicit-role-activation-and-lens-structure
+      description: Role composition must state activated roles and preserve distinct lenses before synthesis.
+      trigger: "Analyze a cross-domain request using multiple roles, but make ownership and each contribution explicit."
+      must_contain:
+        - "detected_intent"
+        - "role_composition"
+        - "analysis_with_multi_lens"
+        - "agent_must_state_which_roles_were_activated"
+      must_not_contain:
+        - "silent role activation"
+        - "flat undifferentiated report"
+      quality_gates_tested:
+        - intent_must_be_detected_before_role_selection
+        - each_role_must_contribute_a_distinct_lens
+        - multi_role_output_must_be_structured_by_lens
+        - agent_must_state_which_roles_were_activated

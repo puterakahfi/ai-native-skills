@@ -3,7 +3,7 @@ name: information-architecture
 description: Information architecture for digital products — site map design, navigation hierarchy, content grouping, URL structure, and search vs browse decisions. Foundation skill that runs before design starts.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.1.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/information-architecture.contract.yaml
@@ -12,6 +12,25 @@ metadata:
 ---
 
 # Information Architecture Skill
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - content_inventory
+  - user_goals
+allowed_outputs:
+  - sitemap
+  - nav_hierarchy
+  - content_grouping_verdict
+  - ia_gate_scores
+quality_gates:
+  - nav_items_reflect_page_sections
+  - content_grouped_by_user_mental_model
+  - max_2_nav_levels
+```
+
+Navigation items must reflect real page sections and content must be grouped by the user's mental model. Keep navigation hierarchy to a maximum of two levels; deeper organization requires search, progressive disclosure, or a justified alternate structure.
 
 <!-- ROUTER — detailed phases and gates live in references/ -->
 

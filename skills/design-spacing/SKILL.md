@@ -3,7 +3,7 @@ name: design-spacing
 description: Spacing as design structure — visual rhythm, spatial hierarchy, Ma principle, breathing room vs dead space. Covers expressive spacing decisions. NOT token values (see design-system for 8px grid + CSS vars).
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/spacing.contract.yaml
@@ -14,6 +14,27 @@ metadata:
 ---
 
 # Design Spacing Skill
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - genre_selection
+  - macrostructure
+allowed_outputs:
+  - section_spacing_spec
+  - component_spacing_spec
+  - ma_rationale
+  - hierarchy_spacing_map
+quality_gates:
+  - rhythm_consistent_across_sections
+  - ma_intentional_not_accidental
+  - more_space_above_headings_than_below
+  - no_min_height_100vh
+  - breathing_room_earned_by_content_not_default_padding
+```
+
+Keep rhythm consistent across sections. Ma must be intentional, not accidental. Headings require more space above than below to preserve grouping. `min-height:100vh` is forbidden as a spacing shortcut, and breathing room must be earned by content rather than default padding.
 
 > **HARD RULES:**
 > 1. Spacing is not decoration — it IS the rhythm of the page.

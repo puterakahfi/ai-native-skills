@@ -1,0 +1,19 @@
+skill_test:
+  skill: information-architecture
+  version: "1.1.1"
+  description: Verify information-architecture exposes and applies its core contract interface.
+
+  cases:
+    - id: navigation-reflects-content-model
+      description: A known conformance gap must be handled through explicit inputs, outputs, and blocking gates.
+      trigger: "Apply information-architecture to a realistic change and report the contract-backed decision."
+      must_contain:
+        - "nav_items_reflect_page_sections"
+        - "content_grouped_by_user_mental_model"
+        - "max_2_nav_levels"
+      must_not_contain:
+        - "three navigation levels by default"
+      quality_gates_tested:
+        - nav_items_reflect_page_sections
+        - content_grouped_by_user_mental_model
+        - max_2_nav_levels

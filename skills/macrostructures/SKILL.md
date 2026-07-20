@@ -3,7 +3,7 @@ name: macrostructures
 description: 21 named page shapes — each bundles heading placement, body composition, divider language, button voice, image treatment, and reveal into a single named choice. Pick ONE before designing. Prevents structural sameness across consecutive outputs. Adapted from Hallmark (Nutlope) for ai-native-skills ecosystem.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/design/macrostructures.contract.yaml
@@ -12,6 +12,27 @@ metadata:
 ---
 
 # Macrostructures Skill
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - brief_signals
+  - prior_macrostructure_ref
+allowed_outputs:
+  - macrostructure_selection
+  - justification_from_signals
+  - diversification_verdict
+  - css_pattern_ref
+  - macrostructure_gate_scores
+quality_gates:
+  - selection_must_be_justified_from_brief_signals_not_diversification_only
+  - new_pick_must_differ_from_prior_on_2_or_more_axes
+  - no_dead_space_in_split_panels
+  - cards_must_fill_height_in_split_layout
+```
+
+When a prior macrostructure exists, a new pick must differ on at least two declared axes unless stronger brief evidence overrides diversification. Split panels must not create dead space, and cards in a split layout must fill the intended panel height rather than leaving accidental voids.
 
 ## HARD RULES (always enforced)
 
