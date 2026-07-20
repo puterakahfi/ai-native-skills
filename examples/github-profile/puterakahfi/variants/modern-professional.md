@@ -46,6 +46,8 @@ AI Creative Control System for structured, reviewable creative workflows.
 
 Connects product direction, workflow architecture, design systems, and AI-assisted creative production.
 
+<br>
+
 <a id="operating-model"></a>
 
 ### Operating model
@@ -59,6 +61,8 @@ Connects product direction, workflow architecture, design systems, and AI-assist
 - **Contextual implementation** — architecture and design principles travel; implementation rules adapt.
 
 ### Working across
+
+*Current focus · July 2026*
 
 Currently refining Native AI Engineering into a practical public framework while testing reusable design capabilities across UI, static visuals, identity systems, and constrained documents.
 
