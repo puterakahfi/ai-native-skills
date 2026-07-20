@@ -1,6 +1,6 @@
 skill_test:
   skill: decision-provenance
-  version: "1.0.0"
+  version: "1.0.1"
   description: Verify that material scope, lock, approval, ownership, status, and override claims use attributable authority, explicit supersession, and honest conflict handling.
 
   cases:

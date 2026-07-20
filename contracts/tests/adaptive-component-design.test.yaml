@@ -1,6 +1,6 @@
 skill_test:
   skill: adaptive-component-design
-  version: "1.2.1"
+  version: "1.2.2"
   description: Verify adaptive component selection is driven by task, evidence provenance, actual available width, realistic content pressure, state equivalence, and observed adaptation boundaries rather than fixed device labels or uploaded image dimensions.
 
   cases:
