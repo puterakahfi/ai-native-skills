@@ -9,7 +9,7 @@ metadata:
   ai-native-skills.implements: ai-native-core/contracts/skills/design/component-family-design.contract.yaml
   ai-native-skills.contract-version: ^1.0.0
   ai-native-skills.boundary.covers: '["atomic_design_hierarchy_classification","canonical_component_family_inventory","organism_family_definition","template_family_definition","invariant_anatomy_and_slot_definition","bounded_variant_governance","route_to_family_instance_mapping","cross_route_component_family_consistency","adaptive_family_identity_preservation","family_reuse_extension_creation_or_migration_decisions","component_family_drift_diagnosis","cross_route_family_acceptance_criteria"]'
-  ai-native-skills.boundary.delegates: '["design_token_definition","visual_style_or_brand_direction","component_pattern_selection","context_specific_substitution","repository_mapping","implementation","final_acceptance"]'
+  ai-native-skills.boundary.delegates: '["design_token_definition","visual_style_or_brand_direction","task_level_component_pattern_selection","generic_breakpoint_mechanics","repository_framework_or_import_mapping","product_specific_component_implementation","final_rendered_accessibility_or_architecture_acceptance"]'
   ai-native-skills.related_skills: '["ui-components","design-layout","adaptive-component-design","implementation-context-discovery","design-system","design-review","redesign-workflow","master-engineer"]'
 ---
 
@@ -27,6 +27,43 @@ component capability
 → repository mapping
 → implementation
 → cross-route verification
+```
+
+## Core contract interface
+
+```yaml
+required_inputs:
+  - product_intent
+  - target_surfaces
+  - component_inventory
+  - route_inventory
+  - existing_design_system
+allowed_outputs:
+  - interface_hierarchy_classification
+  - canonical_component_family_inventory
+  - organism_family_contracts
+  - template_family_contracts
+  - invariant_anatomy_map
+  - configurable_slot_map
+  - bounded_variant_matrix
+  - route_to_family_instance_map
+  - adaptive_family_contract
+  - family_reuse_extension_or_creation_decisions
+  - family_drift_findings
+  - family_migration_plan
+  - cross_route_acceptance_criteria
+  - rendered_family_evidence
+quality_gates:
+  - every_major_shared_surface_has_a_hierarchy_classification
+  - equivalent_product_roles_are_checked_against_existing_families
+  - family_invariant_anatomy_and_configurable_slots_are_explicit
+  - route_differences_are_configuration_or_bounded_variants_when_fit
+  - organism_and_template_ownership_are_not_conflated
+  - adaptive_variants_preserve_family_identity_and_shared_semantics
+  - new_family_creation_has_a_proven_role_or_capability_gap
+  - route_to_family_instance_mapping_is_complete
+  - cross_route_visual_interaction_and_accessibility_evidence_is_planned
+  - source_inspection_alone_is_not_accepted_as_rendered_family_consistency
 ```
 
 ## Load when
