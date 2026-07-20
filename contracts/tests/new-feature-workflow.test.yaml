@@ -1,7 +1,7 @@
 skill_test:
   skill: new-feature-workflow
-  version: "2.1.0"
-  description: Verify feature scope and decision authority, pre/post implementation design boundaries, evidence gates, and final merge authorization.
+  version: "2.2.0"
+  description: Verify feature scope and decision authority, design and implementation-context preconditions, evidence gates, architecture review, and final merge authorization.
 
   cases:
     - id: wireframe-approval-is-not-implemented-pass
@@ -99,3 +99,58 @@ skill_test:
       quality_gates_tested:
         - complete_feature_requires_scope_evidence_review_and_authority
         - verified_merge_authority_can_complete_feature_workflow
+
+    - id: implementation-context-precedes-ui-code
+      description: Feature implementation must discover and map the repository stack before choosing component, styling, icon, and state adapters.
+      trigger: "Tambahkan responsive workflow selector. Repo existing punya shadcn components, Tailwind tokens, Lucide, dan shared form/query conventions. Spec memilih capability combobox, lalu agent langsung install UI dan icon library lain sebelum inspect repository."
+      must_contain:
+        - implementation-context-discovery
+        - repository evidence
+        - convention locks
+        - reuse
+        - implementation mapping
+        - do not implement
+      must_not_contain:
+        - install the new libraries first
+        - design capability chooses the library
+        - package popularity decides
+      sequence_required:
+        - pattern: "implementation-context-discovery|implementation context"
+          must_come_before: "implement|code production"
+      quality_gates_tested:
+        - provenance_before_implementation
+        - no_unapproved_changes_bundled
+
+    - id: dependency-candidate-needs-capability-gap-and-authority
+      description: A proposed feature dependency cannot be listed as approved merely because the spec or agent recommends it.
+      trigger: "Feature membutuhkan virtualized table. Existing options belum diaudit. Agent menulis dependency baru di generated spec dan menganggapnya approved."
+      must_contain:
+        - implementation-context-discovery
+        - CAPABILITY_GAP
+        - existing options
+        - consequences
+        - decision-provenance
+        - ROUTE_FOR_APPROVAL
+      must_not_contain:
+        - approved dependency because it is in the spec
+        - npm install immediately
+      quality_gates_tested:
+        - initial_feature_scope_requires_attributable_authority
+        - material_scope_expansion_requires_reapproval
+        - no_unapproved_changes_bundled
+
+    - id: source-mapping-still-needs-architecture-review
+      description: Matching canonical imports and passing CI do not replace independent architecture acceptance.
+      trigger: "Feature memakai shared components dan tidak menambah dependency. Typecheck, tests, dan build hijau. Architecture-review belum dijalankan. Submit sebagai architecture PASS."
+      must_contain:
+        - architecture-review
+        - NOT_VERIFIED
+        - independent
+        - build
+        - does not prove
+      must_not_contain:
+        - architecture PASS
+        - discovery self-approves
+      quality_gates_tested:
+        - verification_before_submission
+        - complete_feature_requires_scope_evidence_review_and_authority
