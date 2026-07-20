@@ -13,9 +13,7 @@ from typing import Any, Iterable
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKS_DIR = ROOT / "packs"
-SKILLS_DIR = ROOT / "skills"
-
+SUPPORTED_SCHEMA_VERSIONS = {"1.0"}
 ALLOWED_CLASSIFICATIONS = {
     "required",
     "conditional",
@@ -25,7 +23,8 @@ ALLOWED_CLASSIFICATIONS = {
     "optional",
 }
 SEMVER_PATTERN = re.compile(r"^\d+\.\d+\.\d+$")
-SKILL_FLAG_PATTERN = re.compile(r"--skill\s+([a-z0-9][a-z0-9-]*)")
+IDENTIFIER_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+REPOSITORY_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 
 
 class PackError(ValueError):
@@ -42,14 +41,17 @@ class Dependency:
 
 @dataclass(frozen=True)
 class ValidatedPack:
+    schema_version: str
     pack_id: str
+    version: str
     path: Path
     repository: str
     entrypoints: tuple[str, ...]
     dependencies: tuple[Dependency, ...]
     profiles: dict[str, tuple[str, ...]]
     workflow: str
-    metadata_key: str
+    manifest_metadata_key: str
+    version_metadata_key: str
     compatibility_requires: tuple[str, ...]
     documentation_file: Path
     documentation_heading: str
@@ -63,10 +65,24 @@ def require_string(value: Any, label: str) -> str:
     return value.strip()
 
 
-def require_string_list(value: Any, label: str, *, allow_empty: bool = False) -> list[str]:
+def require_identifier(value: Any, label: str) -> str:
+    identifier = require_string(value, label)
+    if not IDENTIFIER_PATTERN.fullmatch(identifier):
+        raise PackError(f"{label} must match {IDENTIFIER_PATTERN.pattern}")
+    return identifier
+
+
+def require_string_list(
+    value: Any,
+    label: str,
+    *,
+    allow_empty: bool = False,
+    identifiers: bool = False,
+) -> list[str]:
     if not isinstance(value, list):
         raise PackError(f"{label} must be a list")
-    result = [require_string(item, f"{label}[{index}]") for index, item in enumerate(value)]
+    parser = require_identifier if identifiers else require_string
+    result = [parser(item, f"{label}[{index}]") for index, item in enumerate(value)]
     if not allow_empty and not result:
         raise PackError(f"{label} must not be empty")
     duplicates = sorted({item for item in result if result.count(item) > 1})
@@ -104,21 +120,103 @@ def resolve_profile(
     classifications: Iterable[str],
 ) -> tuple[str, ...]:
     included = set(classifications)
-    resolved: list[str] = list(entrypoints)
-    resolved.extend(
+    return tuple(entrypoints) + tuple(
         dependency.name
         for dependency in dependencies
         if dependency.classification in included
     )
-    return tuple(resolved)
 
 
-def validate_pack_document(path: Path, document: dict[str, Any], root: Path = ROOT) -> ValidatedPack:
+def validate_local_skill(name: str, root: Path) -> None:
+    skill_file = root / "skills" / name / "SKILL.md"
+    frontmatter = parse_skill_frontmatter(skill_file)
+    declared_name = require_identifier(frontmatter.get("name"), f"{skill_file}: name")
+    if declared_name != name:
+        raise PackError(
+            f"{skill_file}: frontmatter name '{declared_name}' does not match dependency '{name}'"
+        )
+
+
+def validate_dependency(
+    raw_dependency: Any,
+    *,
+    index: int,
+    path: Path,
+    root: Path,
+) -> Dependency:
+    label = f"{path}: skill_pack.dependencies[{index}]"
+    if not isinstance(raw_dependency, dict):
+        raise PackError(f"{label} must be a mapping")
+
+    name = require_identifier(raw_dependency.get("name"), f"{label}.name")
+    classification = require_string(
+        raw_dependency.get("classification"), f"{label}.classification"
+    )
+    if classification not in ALLOWED_CLASSIFICATIONS:
+        raise PackError(
+            f"{label}.classification '{classification}' is invalid; "
+            f"expected one of {sorted(ALLOWED_CLASSIFICATIONS)}"
+        )
+
+    raw_concern = raw_dependency.get("concern")
+    if raw_concern is None and classification in {"adapter", "domain-reviewer"}:
+        concern = name
+    else:
+        concern = require_identifier(raw_concern, f"{label}.concern")
+    require_string(raw_dependency.get("reason"), f"{label}.reason")
+
+    when = raw_dependency.get("when")
+    if classification in {"conditional", "domain-reviewer"}:
+        require_string(when, f"{label}.when")
+    elif when is not None:
+        require_string(when, f"{label}.when")
+
+    port = raw_dependency.get("port")
+    if port is not None:
+        port = require_identifier(port, f"{label}.port")
+    if classification == "adapter" and port is None:
+        raise PackError(f"{label}: adapter dependency must declare port")
+    if classification != "adapter" and port is not None:
+        raise PackError(f"{label}: only adapter dependencies may declare port")
+
+    if classification == "domain-reviewer":
+        require_string_list(
+            raw_dependency.get("domains"), f"{label}.domains", identifiers=True
+        )
+
+    source = require_string(raw_dependency.get("source", "local"), f"{label}.source")
+    if source == "local":
+        validate_local_skill(name, root)
+    elif source == "external":
+        repository = require_string(raw_dependency.get("repository"), f"{label}.repository")
+        if not REPOSITORY_PATTERN.fullmatch(repository):
+            raise PackError(f"{label}.repository must be owner/repository")
+        require_string(raw_dependency.get("ref"), f"{label}.ref")
+    else:
+        raise PackError(f"{label}.source must be local or external")
+
+    return Dependency(name, classification, concern, port)
+
+
+def validate_pack_document(
+    path: Path,
+    document: dict[str, Any],
+    root: Path = ROOT,
+) -> ValidatedPack:
     pack = document.get("skill_pack")
     if not isinstance(pack, dict):
         raise PackError(f"{path}: missing skill_pack mapping")
 
-    pack_id = require_string(pack.get("id"), f"{path}: skill_pack.id")
+    schema_version = require_string(
+        pack.get("schema_version"), f"{path}: skill_pack.schema_version"
+    )
+    if schema_version not in SUPPORTED_SCHEMA_VERSIONS:
+        raise PackError(
+            f"{path}: unsupported schema_version '{schema_version}'; "
+            f"supported={sorted(SUPPORTED_SCHEMA_VERSIONS)}"
+        )
+
+    pack_id = require_identifier(pack.get("id"), f"{path}: skill_pack.id")
     if pack_id != path.parent.name:
         raise PackError(
             f"{path}: pack id '{pack_id}' does not match directory '{path.parent.name}'"
@@ -129,7 +227,14 @@ def validate_pack_document(path: Path, document: dict[str, Any], root: Path = RO
         raise PackError(f"{path}: skill_pack.version must be semantic x.y.z")
 
     repository = require_string(pack.get("repository"), f"{path}: skill_pack.repository")
-    entrypoints = require_string_list(pack.get("entrypoints"), f"{path}: skill_pack.entrypoints")
+    if not REPOSITORY_PATTERN.fullmatch(repository):
+        raise PackError(f"{path}: skill_pack.repository must be owner/repository")
+
+    entrypoints = require_string_list(
+        pack.get("entrypoints"), f"{path}: skill_pack.entrypoints", identifiers=True
+    )
+    for entrypoint in entrypoints:
+        validate_local_skill(entrypoint, root)
 
     raw_dependencies = pack.get("dependencies")
     if not isinstance(raw_dependencies, list) or not raw_dependencies:
@@ -141,66 +246,20 @@ def validate_pack_document(path: Path, document: dict[str, Any], root: Path = RO
     pending_adapter_ports: list[tuple[str, str]] = []
 
     for index, raw_dependency in enumerate(raw_dependencies):
-        label = f"{path}: skill_pack.dependencies[{index}]"
-        if not isinstance(raw_dependency, dict):
-            raise PackError(f"{label} must be a mapping")
-
-        name = require_string(raw_dependency.get("name"), f"{label}.name")
-        if name in seen_names:
-            raise PackError(f"{path}: duplicate skill dependency '{name}'")
-        seen_names.add(name)
-
-        classification = require_string(
-            raw_dependency.get("classification"), f"{label}.classification"
+        dependency = validate_dependency(
+            raw_dependency, index=index, path=path, root=root
         )
-        if classification not in ALLOWED_CLASSIFICATIONS:
-            raise PackError(
-                f"{label}.classification '{classification}' is invalid; "
-                f"expected one of {sorted(ALLOWED_CLASSIFICATIONS)}"
-            )
-
-        raw_concern = raw_dependency.get("concern")
-        if raw_concern is None and classification in {"adapter", "domain-reviewer"}:
-            concern = name
-        else:
-            concern = require_string(raw_concern, f"{label}.concern")
-        require_string(raw_dependency.get("reason"), f"{label}.reason")
-
-        port = raw_dependency.get("port")
-        if port is not None:
-            port = require_string(port, f"{label}.port")
-
-        if classification == "conditional" and not raw_dependency.get("when"):
-            raise PackError(f"{label}: conditional dependency must declare when")
-        if classification == "adapter":
-            if port is None:
-                raise PackError(f"{label}: adapter dependency must declare port")
-            pending_adapter_ports.append((name, port))
-        elif port is not None:
-            raise PackError(f"{label}: only adapter dependencies may declare port")
-
-        if classification == "port":
-            if concern in port_concerns:
-                raise PackError(f"{path}: duplicate port concern '{concern}'")
-            port_concerns.add(concern)
-
-        if classification == "domain-reviewer":
-            require_string_list(raw_dependency.get("domains"), f"{label}.domains")
-
-        source = raw_dependency.get("source", "local")
-        source = require_string(source, f"{label}.source")
-        if source == "local":
-            skill_file = root / "skills" / name / "SKILL.md"
-            frontmatter = parse_skill_frontmatter(skill_file)
-            declared_name = require_string(frontmatter.get("name"), f"{skill_file}: name")
-            if declared_name != name:
-                raise PackError(
-                    f"{skill_file}: frontmatter name '{declared_name}' does not match dependency '{name}'"
-                )
-        elif source != "external":
-            raise PackError(f"{label}.source must be local or external")
-
-        dependencies.append(Dependency(name, classification, concern, port))
+        if dependency.name in seen_names:
+            raise PackError(f"{path}: duplicate skill dependency '{dependency.name}'")
+        seen_names.add(dependency.name)
+        if dependency.classification == "port":
+            if dependency.concern in port_concerns:
+                raise PackError(f"{path}: duplicate port concern '{dependency.concern}'")
+            port_concerns.add(dependency.concern)
+        if dependency.classification == "adapter":
+            assert dependency.port is not None
+            pending_adapter_ports.append((dependency.name, dependency.port))
+        dependencies.append(dependency)
 
     for adapter_name, port in pending_adapter_ports:
         if port not in port_concerns:
@@ -213,9 +272,9 @@ def validate_pack_document(path: Path, document: dict[str, Any], root: Path = RO
         raise PackError(f"{path}: skill_pack.profiles must be a non-empty mapping")
 
     profiles: dict[str, tuple[str, ...]] = {}
-    for profile_name, raw_profile in raw_profiles.items():
+    for raw_profile_name, raw_profile in raw_profiles.items():
+        profile_name = require_identifier(raw_profile_name, f"{path}: profile name")
         profile_label = f"{path}: skill_pack.profiles.{profile_name}"
-        require_string(profile_name, f"{path}: profile name")
         if not isinstance(raw_profile, dict):
             raise PackError(f"{profile_label} must be a mapping")
         require_string(raw_profile.get("description"), f"{profile_label}.description")
@@ -231,12 +290,18 @@ def validate_pack_document(path: Path, document: dict[str, Any], root: Path = RO
     compatibility = pack.get("compatibility")
     if not isinstance(compatibility, dict):
         raise PackError(f"{path}: skill_pack.compatibility must be a mapping")
-    workflow = require_string(compatibility.get("workflow"), f"{path}: compatibility.workflow")
+    workflow = require_identifier(
+        compatibility.get("workflow"), f"{path}: compatibility.workflow"
+    )
     if workflow not in entrypoints:
         raise PackError(f"{path}: compatibility.workflow must be an entrypoint")
-    metadata_key = require_string(
+    manifest_metadata_key = require_string(
         compatibility.get("manifest_metadata_key"),
         f"{path}: compatibility.manifest_metadata_key",
+    )
+    version_metadata_key = require_string(
+        compatibility.get("version_metadata_key"),
+        f"{path}: compatibility.version_metadata_key",
     )
     requires_classifications = require_string_list(
         compatibility.get("requires_classifications"),
@@ -247,10 +312,11 @@ def validate_pack_document(path: Path, document: dict[str, Any], root: Path = RO
         raise PackError(
             f"{path}: compatibility.requires_classifications contains invalid values: {invalid_requires}"
         )
+    included = set(requires_classifications)
     compatibility_requires = tuple(
         dependency.name
         for dependency in dependencies
-        if dependency.classification in set(requires_classifications)
+        if dependency.classification in included
     )
 
     documentation = pack.get("documentation")
@@ -262,7 +328,7 @@ def validate_pack_document(path: Path, document: dict[str, Any], root: Path = RO
     documentation_heading = require_string(
         documentation.get("heading"), f"{path}: documentation.heading"
     )
-    documentation_profile = require_string(
+    documentation_profile = require_identifier(
         documentation.get("profile"), f"{path}: documentation.profile"
     )
     if documentation_profile not in profiles:
@@ -275,18 +341,22 @@ def validate_pack_document(path: Path, document: dict[str, Any], root: Path = RO
             pack.get("pack_dependencies", []),
             f"{path}: skill_pack.pack_dependencies",
             allow_empty=True,
+            identifiers=True,
         )
     )
 
     return ValidatedPack(
+        schema_version=schema_version,
         pack_id=pack_id,
+        version=version,
         path=path,
         repository=repository,
         entrypoints=tuple(entrypoints),
         dependencies=tuple(dependencies),
         profiles=profiles,
         workflow=workflow,
-        metadata_key=metadata_key,
+        manifest_metadata_key=manifest_metadata_key,
+        version_metadata_key=version_metadata_key,
         compatibility_requires=compatibility_requires,
         documentation_file=documentation_file,
         documentation_heading=documentation_heading,
@@ -304,26 +374,46 @@ def validate_workflow_binding(pack: ValidatedPack, root: Path = ROOT) -> None:
 
     expected_manifest = pack.path.relative_to(root).as_posix()
     declared_manifest = require_string(
-        metadata.get(pack.metadata_key), f"{skill_file}: metadata.{pack.metadata_key}"
+        metadata.get(pack.manifest_metadata_key),
+        f"{skill_file}: metadata.{pack.manifest_metadata_key}",
     )
     if declared_manifest != expected_manifest:
         raise PackError(
-            f"{skill_file}: {pack.metadata_key} must be '{expected_manifest}', got '{declared_manifest}'"
+            f"{skill_file}: {pack.manifest_metadata_key} must be "
+            f"'{expected_manifest}', got '{declared_manifest}'"
         )
 
-    declared_requires = require_string(
-        metadata.get("ai-native-skills.requires"),
-        f"{skill_file}: metadata.ai-native-skills.requires",
-    ).split()
-    if set(declared_requires) != set(pack.compatibility_requires):
-        missing = sorted(set(pack.compatibility_requires) - set(declared_requires))
-        unexpected = sorted(set(declared_requires) - set(pack.compatibility_requires))
+    declared_version = require_string(
+        metadata.get(pack.version_metadata_key),
+        f"{skill_file}: metadata.{pack.version_metadata_key}",
+    )
+    if declared_version != pack.version:
         raise PackError(
-            f"{skill_file}: compatibility requires drift; missing={missing}, unexpected={unexpected}"
+            f"{skill_file}: pack version binding must be '{pack.version}', "
+            f"got '{declared_version}'"
+        )
+
+    declared_requires = tuple(
+        require_string(
+            metadata.get("ai-native-skills.requires"),
+            f"{skill_file}: metadata.ai-native-skills.requires",
+        ).split()
+    )
+    if declared_requires != pack.compatibility_requires:
+        missing = [item for item in pack.compatibility_requires if item not in declared_requires]
+        unexpected = [item for item in declared_requires if item not in pack.compatibility_requires]
+        duplicates = sorted(
+            {item for item in declared_requires if declared_requires.count(item) > 1}
+        )
+        order_mismatch = not missing and not unexpected and not duplicates
+        raise PackError(
+            f"{skill_file}: compatibility requires drift; missing={missing}, "
+            f"unexpected={unexpected}, duplicates={duplicates}, "
+            f"order_mismatch={order_mismatch}"
         )
 
 
-def extract_documented_skills(path: Path, heading: str) -> tuple[str, ...]:
+def extract_documented_command(path: Path, heading: str) -> str:
     if not path.is_file():
         raise PackError(f"Pack documentation does not exist: {path}")
     text = path.read_text(encoding="utf-8")
@@ -335,35 +425,28 @@ def extract_documented_skills(path: Path, heading: str) -> tuple[str, ...]:
     block_match = re.search(r"```bash\n(?P<body>.*?)\n```", section, flags=re.DOTALL)
     if block_match is None:
         raise PackError(f"{path}: heading '{heading}' has no bash install block")
-    skills = tuple(SKILL_FLAG_PATTERN.findall(block_match.group("body")))
-    if not skills:
-        raise PackError(f"{path}: heading '{heading}' install block contains no --skill entries")
-    return skills
+    return block_match.group("body").strip()
 
 
 def render_install_command(pack: ValidatedPack, profile: str) -> str:
     if profile not in pack.profiles:
         raise PackError(f"Pack '{pack.pack_id}' has no profile '{profile}'")
     lines = [f"npx skills add {pack.repository} \\"]
-    skills = pack.profiles[profile]
-    for skill in skills:
+    for skill in pack.profiles[profile]:
         lines.append(f"  --skill {skill} \\")
     lines.append("  -g -y")
     return "\n".join(lines)
 
 
 def validate_documentation(pack: ValidatedPack) -> None:
-    documented = extract_documented_skills(
+    documented = extract_documented_command(
         pack.documentation_file, pack.documentation_heading
     )
-    expected = pack.profiles[pack.documentation_profile]
+    expected = render_install_command(pack, pack.documentation_profile)
     if documented != expected:
-        missing = [skill for skill in expected if skill not in documented]
-        unexpected = [skill for skill in documented if skill not in expected]
-        order_mismatch = not missing and not unexpected and documented != expected
         raise PackError(
-            f"{pack.documentation_file}: documented {pack.pack_id} pack drift; "
-            f"missing={missing}, unexpected={unexpected}, order_mismatch={order_mismatch}"
+            f"{pack.documentation_file}: documented {pack.pack_id} command drift; "
+            f"expected:\n{expected}\nactual:\n{documented}"
         )
 
 
@@ -429,11 +512,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     packs = load_packs()
-    selected = packs
-    if args.pack:
-        if args.pack not in packs:
-            raise PackError(f"Unknown skill pack '{args.pack}'")
-        selected = {args.pack: packs[args.pack]}
+    if args.pack and args.pack not in packs:
+        raise PackError(f"Unknown skill pack '{args.pack}'")
+    selected = {args.pack: packs[args.pack]} if args.pack else packs
 
     for pack_id, pack in selected.items():
         validate_workflow_binding(pack)
