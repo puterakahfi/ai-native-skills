@@ -1,0 +1,264 @@
+name: Apply Runtime Operations Security Conformance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/apply-runtime-operations-security-conformance.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Checkout pinned ai-native-core
+        uses: actions/checkout@v6
+        with:
+          repository: puterakahfi/ai-native-core
+          ref: 53765c155376ad28abf71c2fbdb73e6714942299
+          path: .deps/ai-native-core
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Apply reviewed interface migration
+        shell: bash
+        run: |
+          mkdir -p .tmp/adapter-repo .tmp/runtime-operations-security-migration
+          cp -R skills .tmp/adapter-repo/skills
+          set +e
+          python .deps/ai-native-core/scripts/validate-conformance.py \
+            .deps/ai-native-core \
+            .tmp/adapter-repo > .tmp/runtime-operations-security-migration/before.txt
+          set -e
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import textwrap
+          import yaml
+
+          root = Path.cwd()
+          names = [
+              "incident-response",
+              "native-ai-runtime-agent",
+              "native-ai-runtime-ops",
+              "observability-design",
+              "resilience-engineering",
+              "security-review",
+              "threat-modeling",
+          ]
+          interpretations = {
+              "incident-response": "Start from incident_description, declare severity, triage before attempted repair, mitigate to restore service, then produce a timeline, triage decision, mitigation steps, blameless postmortem, owned action items, and class-level prevention. Five Whys must reach a systemic cause rather than human blame, and the postmortem must record what went well as well as failures.",
+              "native-ai-runtime-agent": "Load repo_context and product_bindings before execution. Return an execution_plan, workflow_output, verification_result, and adapter_state backed by source-of-truth evidence; never move product facts into core or claim completion without executed verification.",
+              "native-ai-runtime-ops": "Treat runtime_host, access_method, profile_name, operational_goal, and safety_constraints as required operating inputs. Produce the access, SSH, bootstrap, installation, checkout, backup/restore, single-writer, healthcheck, and runbook outputs. A remote runtime is not canonical until backup and restore are defined, and every operational claim must preserve the commands and actual outputs.",
+              "observability-design": "Begin with system_description and return a stack design, instrumentation guide, alert strategy, dashboard blueprint, and SLO definitions. The design must cover logs, metrics, and traces, actionable alerts, correlation propagation, privacy, cardinality control, and the four golden signals.",
+              "resilience-engineering": "Begin with system_or_service_description, identify failure modes before chaos work, then produce failure analysis, chaos plan, circuit-breaker design, graceful-degradation strategy, blast-radius map, and RTO/RPO design. Every chaos experiment needs a hypothesis and abort condition; resilience is verified in staging before production.",
+              "security-review": "Review code_or_diff against security_baseline_ref and emit a security_verdict, secret report, vulnerability list, dependency risk report, blocking violations, and recommendations. Verify output encoding alongside sanitization and authorization; deployment remains blocked until the verdict is explicit.",
+              "threat-modeling": "Start from feature_or_system_description before implementation. Produce the threat model, STRIDE analysis, trust-boundary map, mitigation plan, and consistent risk ratings. Map external dependencies in data flows, identify privilege-escalation paths, and update the model whenever architecture changes.",
+          }
+          eval_meta = {
+              "incident-response": (
+                  "incident-postmortem-reaches-systemic-cause",
+                  "Handle an incident from declared severity through prevention without human blame.",
+                  ["five_whys_must_reach_systemic_cause_not_human_error", "postmortem_must_include_what_went_well"],
+                  ["name a person as the root cause", "skip postmortem"],
+              ),
+              "native-ai-runtime-agent": (
+                  "runtime-agent-reports-evidence-backed-state",
+                  "Execute against repository and product bindings and report plan, output, verification, and adapter state.",
+                  ["verify_against_source_of_truth", "execution_evidence_required_before_claiming_done"],
+                  ["claim done without verification", "copy product facts into core"],
+              ),
+              "native-ai-runtime-ops": (
+                  "canonical-runtime-requires-backup-and-command-evidence",
+                  "Bootstrap a canonical remote runtime with restore planning and actual operational evidence.",
+                  ["define_backup_restore_before_treating_remote_as_canonical", "record_commands_and_actual_outputs"],
+                  ["treat remote as canonical without restore", "report commands without outputs"],
+              ),
+              "observability-design": (
+                  "observability-starts-from-system-description",
+                  "Design complete observability for a described distributed system.",
+                  ["three_pillars_must_all_be_addressed_logs_metrics_traces", "dashboards_must_answer_four_golden_signals"],
+                  ["design without a system description"],
+              ),
+              "resilience-engineering": (
+                  "resilience-plan-covers-failure-and-recovery",
+                  "Design resilience for a service with explicit degradation, blast radius, chaos, and recovery objectives.",
+                  ["failure_modes_must_be_identified_before_chaos_testing", "rto_and_rpo_must_be_explicitly_defined"],
+                  ["run chaos without an abort condition", "omit recovery objectives"],
+              ),
+              "security-review": (
+                  "security-verdict-verifies-output-encoding",
+                  "Review a code diff against a security baseline and produce a blocking verdict.",
+                  ["output_encoding_verified", "security_verdict_required_before_deploy"],
+                  ["approve deployment without a verdict", "ignore output encoding"],
+              ),
+              "threat-modeling": (
+                  "threat-model-tracks-flows-privilege-and-change",
+                  "Threat-model a feature before implementation and keep the model aligned with architecture changes.",
+                  ["data_flows_must_be_mapped_including_external_dependencies", "privilege_escalation_paths_must_be_identified", "threat_model_must_be_updated_when_architecture_changes"],
+                  ["ignore external dependencies", "leave the model stale after architecture changes"],
+              ),
+          }
+
+          report = (root / ".tmp/runtime-operations-security-migration/before.txt").read_text(encoding="utf-8")
+          parsed = {}
+          current = None
+          current_finding = None
+          for line in report.splitlines():
+              match = re.match(r"^[⚠✗✓]\s+skills/([^/]+)/SKILL\.md", line)
+              if match:
+                  current = match.group(1)
+                  current_finding = None
+                  continue
+              match = re.match(r"^\s{2}([a-z_]+) \[(WARN|ERROR|NOT_CHECKABLE)\]: (.*)$", line)
+              if match and current:
+                  category, severity, message = match.groups()
+                  current_finding = {"category": category, "severity": severity, "message": message, "items": []}
+                  parsed.setdefault(current, []).append(current_finding)
+                  continue
+              match = re.match(r"^\s{4}-\s+(.+)$", line)
+              if match and current_finding:
+                  current_finding["items"].append(match.group(1))
+
+          def bump_patch(version):
+              match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", str(version))
+              if not match:
+                  raise SystemExit(f"unsupported skill version: {version}")
+              major, minor, patch = map(int, match.groups())
+              return f"{major}.{minor}.{patch + 1}"
+
+          def yaml_list(values):
+              return "\n".join(f"- {value}" for value in values)
+
+          for name in names:
+              skill_path = root / "skills" / name / "SKILL.md"
+              text = skill_path.read_text(encoding="utf-8")
+              if "## Reviewed core contract interface" in text:
+                  raise SystemExit(f"{skill_path} already has reviewed interface")
+              parts = text.split("---", 2)
+              frontmatter = yaml.safe_load(parts[1])
+              metadata = frontmatter.get("metadata", {})
+              new_version = bump_patch(metadata.get("ai-native-skills.version"))
+              contract_rel = metadata.get("ai-native-skills.implements")
+              pin = str(metadata.get("ai-native-skills.contract-version"))
+              normalized = contract_rel.removeprefix("ai-native-core/")
+              contract_doc = yaml.safe_load((root / ".deps/ai-native-core" / normalized).read_text(encoding="utf-8"))
+              contract = contract_doc.get("skill_contract") or contract_doc.get("workflow_contract") or contract_doc.get("runtime_contract")
+              required = contract.get("inputs", {}).get("required", [])
+              allowed = contract.get("outputs", {}).get("allowed", [])
+              gates = contract.get("quality_gates", [])
+
+              text = re.sub(r"(ai-native-skills\.version:\s*)[^\n]+", lambda m: m.group(1) + new_version, text, count=1)
+              interface = f'''## Reviewed core contract interface
+
+          Source: `{contract_rel}` · compatible line: `{pin}`
+
+          ```yaml
+          required_inputs:
+          {yaml_list(required)}
+          allowed_outputs:
+          {yaml_list(allowed)}
+          quality_gates:
+          {yaml_list(gates)}
+          ```
+
+          {interpretations[name]}
+
+          Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace runtime, repository, security, incident, resilience, or product evidence.
+          '''
+              heading = re.search(r"^# .+$", text, flags=re.MULTILINE)
+              text = text[:heading.end()] + "\n\n" + textwrap.dedent(interface).strip() + "\n" + text[heading.end():]
+              skill_path.write_text(text, encoding="utf-8")
+
+              missing = []
+              for finding in parsed.get(name, []):
+                  missing.extend(finding["items"])
+              case_id, description, selected_gates, prohibited = eval_meta[name]
+              must_contain = []
+              for value in [*missing, *selected_gates]:
+                  if value not in must_contain:
+                      must_contain.append(value)
+              eval_doc = {
+                  "skill_test": {
+                      "skill": name,
+                      "version": new_version,
+                      "description": f"Verify {name} exposes and applies its reviewed runtime or security contract interface.",
+                      "cases": [{
+                          "id": case_id,
+                          "description": description,
+                          "trigger": f"Apply {name} to a realistic runtime, operations, resilience, incident, observability, or security task and report the contract-backed result.",
+                          "must_contain": must_contain,
+                          "must_not_contain": prohibited,
+                          "quality_gates_tested": selected_gates,
+                      }],
+                  }
+              }
+              eval_path = root / "contracts/tests" / f"{name}.test.yaml"
+              if eval_path.exists():
+                  raise SystemExit(f"unexpected existing eval contract: {eval_path}")
+              eval_path.write_text(yaml.safe_dump(eval_doc, sort_keys=False, width=120), encoding="utf-8")
+
+          registry = root / "contracts/conformance/strict-adapters.txt"
+          lines = registry.read_text(encoding="utf-8").splitlines()
+          comments = [line for line in lines if line.startswith("#")]
+          entries = [line.strip() for line in lines if line.strip() and not line.startswith("#")]
+          registry.write_text("\n".join([*comments, *sorted(set(entries) | set(names))]) + "\n", encoding="utf-8")
+          PY
+
+      - name: Validate migration
+        shell: bash
+        run: |
+          python scripts/validate-eval-contracts.py --write-smoke-outputs .tmp/eval-smoke-outputs
+          rm -rf .tmp/adapter-repo
+          mkdir -p .tmp/adapter-repo
+          cp -R skills .tmp/adapter-repo/skills
+          (
+            cd .tmp/adapter-repo
+            bash "$GITHUB_WORKSPACE/.deps/ai-native-core/scripts/validate-implements.sh" \
+              "$GITHUB_WORKSPACE/.deps/ai-native-core"
+          )
+          python .deps/ai-native-core/scripts/validate-conformance.py \
+            .deps/ai-native-core \
+            .tmp/adapter-repo | tee .tmp/runtime-operations-security-migration/after.txt
+          grep -Eq '^Errors:[[:space:]]+0$' .tmp/runtime-operations-security-migration/after.txt
+          grep -Eq '^Not checkable:[[:space:]]+0$' .tmp/runtime-operations-security-migration/after.txt
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          names = {"incident-response","native-ai-runtime-agent","native-ai-runtime-ops","observability-design","resilience-engineering","security-review","threat-modeling"}
+          report = Path(".tmp/runtime-operations-security-migration/after.txt").read_text(encoding="utf-8")
+          offenders = set()
+          for line in report.splitlines():
+              match = re.match(r"^[⚠✗]\s+skills/([^/]+)/SKILL\.md", line)
+              if match and match.group(1) in names:
+                  offenders.add(match.group(1))
+          if offenders:
+              raise SystemExit("migrated adapters still have findings: " + ", ".join(sorted(offenders)))
+          PY
+          git diff --check
+
+      - name: Commit migration
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills contracts/tests contracts/conformance/strict-adapters.txt
+          git commit -m "fix: resolve runtime operations security conformance warnings [skip ci]"
+          git push origin HEAD:${HEAD_BRANCH}
