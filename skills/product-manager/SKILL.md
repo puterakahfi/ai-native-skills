@@ -3,11 +3,12 @@ name: product-manager
 description: Product management skill — write PRDs, define acceptance criteria, break down tasks, set scope, and prioritize. Ensures every feature has testable criteria and explicit scope before implementation starts.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.1
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/product/product-manager.contract.yaml
   ai-native-skills.contract-version: "~0.1"
+  ai-native-skills.related_skills: '["delivery-work-breakdown","product-development-workflow","new-feature-workflow"]'
 ---
 
 # Product Manager
@@ -36,7 +37,7 @@ quality_gates:
 - prd_must_define_success_metric
 ```
 
-Start from an attributable product_intent_or_feature_request. Produce the appropriate product intent, PRD or feature spec, testable acceptance criteria, task breakdown, explicit priority list, and out-of-scope list. Every task traces to acceptance criteria; implementation detail requires engineering review rather than being smuggled into product definition.
+Start from an attributable product_intent_or_feature_request. Produce the appropriate product intent, PRD or feature spec, testable acceptance criteria, task breakdown, explicit priority list, and out-of-scope list. Every task traces to acceptance criteria. Multi-slice work and unresolved repository targets hand off to `delivery-work-breakdown`; task breakdown alone does not choose an epic or PR target. Implementation detail requires engineering review rather than being smuggled into product definition.
 
 Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace user evidence, product approval, experiment results, decision provenance, engineering review, or business outcome proof.
 
@@ -111,6 +112,8 @@ Each task must trace to an acceptance criterion:
 task:
   id: ""
   title: ""
+  work_item_type: task | spike | bug
+  parent_ref: ""
   traces_to: [AC-1, AC-2]   # must reference AC
   type: feat | fix | chore | spike
   estimate: ""              # product_defined unit (SP, hours, etc)
@@ -121,6 +124,10 @@ task:
 **Gate:** No task without AC reference. No floating tasks.
 
 ---
+
+## Delivery topology handoff
+
+`product-manager` owns intent, scope, acceptance criteria, priority, and task intent. When dependent slices or branch targets are unresolved, pass the verified scope and criteria to `delivery-work-breakdown`. It returns release unit, parent hierarchy, dependency graph, base branches, PR targets, integration plan, and epic acceptance plan. `git-workflow` then executes that approved topology.
 
 ## 4. Prioritization
 
@@ -192,6 +199,7 @@ Before finalizing spec, run scope check:
 | "Make it user-friendly" as AC | Not testable — fails gate |
 | Spec with no scope_out | Scope creep guaranteed |
 | Tasks with no AC reference | No traceability — fails gate |
+| Task list silently targets the default branch | Route repository topology to `delivery-work-breakdown` |
 | Success metric: "users are happy" | Not measurable |
 | Implementation detail in PRD without engineering review | Bypasses engineering contract |
 | Priority order implicit in list position | Must be explicit P1/P2/P3 |

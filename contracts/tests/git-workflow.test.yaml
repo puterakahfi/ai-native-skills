@@ -1,6 +1,6 @@
 skill_test:
   skill: git-workflow
-  version: 1.0.1
+  version: 1.1.0
   description: Verify git-workflow exposes and applies its reviewed architecture or engineering contract interface.
   cases:
   - id: git-result-reports-only-executed-actions
@@ -20,3 +20,10 @@ skill_test:
     quality_gates_tested:
     - branch_must_be_created_from_correct_base
     - pr_must_reference_issue_before_submit
+
+  - id: git-does-not-guess-epic-pr-target
+    description: Git consumes approved epic topology rather than repository defaults.
+    trigger: Create a child branch and PR for epic 37; approved base and target are epic/37-chatgpt-app-p0 while default is main.
+    must_contain: [delivery-work-breakdown, epic/37-chatgpt-app-p0, base branch, PR target]
+    must_not_contain: [default branch wins, target main]
+    quality_gates_tested: [branch_must_be_created_from_correct_base, pr_target_must_match_approved_delivery_topology]
