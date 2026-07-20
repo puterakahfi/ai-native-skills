@@ -1,0 +1,115 @@
+name: Retry Context Workflow Maintenance Conformance V2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/retry-context-workflow-maintenance-conformance-v2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Checkout pinned ai-native-core
+        uses: actions/checkout@v6
+        with:
+          repository: puterakahfi/ai-native-core
+          ref: 53765c155376ad28abf71c2fbdb73e6714942299
+          path: .deps/ai-native-core
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install "PyYAML>=6,<7"
+
+      - name: Apply corrected migration
+        shell: bash
+        run: |
+          mkdir -p .tmp/adapter-repo .tmp/context-workflow-maintenance-migration
+          cp -R skills .tmp/adapter-repo/skills
+          set +e
+          python .deps/ai-native-core/scripts/validate-conformance.py \
+            .deps/ai-native-core \
+            .tmp/adapter-repo > .tmp/context-workflow-maintenance-migration/before.txt
+          set -e
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import textwrap
+
+          workflow_path = Path('.github/workflows/apply-context-workflow-maintenance-conformance.yml')
+          workflow = workflow_path.read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY\n", start)
+          script = textwrap.dedent(workflow[start:end])
+          pattern = re.compile(
+              r'("hermes-profile-bootstrap": \(\n'
+              r'\s+"profile-bootstrap-emits-complete-safe-handoff",\n'
+              r'\s+"Bootstrap a Hermes runtime profile from an explicit target, catalog source, preset, and safety constraints\.\",\n)'
+              r'\s+\[\],'
+          )
+          script, count = pattern.subn(
+              r'\1        ["profile_bootstrap_handoff_is_complete", "safety_constraints_are_preserved"],',
+              script,
+              count=1,
+          )
+          if count != 1:
+              raise SystemExit(f'expected one profile-bootstrap eval replacement, got {count}')
+          exec(compile(script, str(workflow_path), 'exec'), {'__name__': '__main__'})
+          PY
+
+      - name: Validate corrected migration
+        shell: bash
+        run: |
+          python scripts/validate-eval-contracts.py --write-smoke-outputs .tmp/eval-smoke-outputs
+          rm -rf .tmp/adapter-repo
+          mkdir -p .tmp/adapter-repo
+          cp -R skills .tmp/adapter-repo/skills
+          (
+            cd .tmp/adapter-repo
+            bash "$GITHUB_WORKSPACE/.deps/ai-native-core/scripts/validate-implements.sh" \
+              "$GITHUB_WORKSPACE/.deps/ai-native-core"
+          )
+          python .deps/ai-native-core/scripts/validate-conformance.py \
+            .deps/ai-native-core \
+            .tmp/adapter-repo | tee .tmp/context-workflow-maintenance-migration/after.txt
+          grep -Eq '^Errors:[[:space:]]+0$' .tmp/context-workflow-maintenance-migration/after.txt
+          grep -Eq '^Not checkable:[[:space:]]+0$' .tmp/context-workflow-maintenance-migration/after.txt
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          names = {"context-engineering","context-manager","hermes-profile-bootstrap","onboarding","plan","prompt-optimizer","redesign-workflow","rule-manager","skill-eval","skill-evolution","workflow-router"}
+          report = Path('.tmp/context-workflow-maintenance-migration/after.txt').read_text(encoding='utf-8')
+          offenders = set()
+          for line in report.splitlines():
+              match = re.match(r'^[⚠✗]\s+skills/([^/]+)/SKILL\.md', line)
+              if match and match.group(1) in names:
+                  offenders.add(match.group(1))
+          if offenders:
+              raise SystemExit('migrated adapters still have findings: ' + ', '.join(sorted(offenders)))
+          PY
+          git diff --check
+
+      - name: Commit migration
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills contracts/tests contracts/conformance/strict-adapters.txt
+          git commit -m "fix: resolve context workflow maintenance conformance warnings [skip ci]"
+          git push origin HEAD:${HEAD_BRANCH}
