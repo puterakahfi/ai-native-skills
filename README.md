@@ -6,7 +6,7 @@ This repository turns engineering methods and Native AI contracts into reusable 
 
 Works with agents that support the [Agent Skills specification](https://agentskills.io/specification) or the [skills.sh](https://skills.sh) ecosystem, including Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and other compatible runtimes.
 
-**85 skills · 10 workflows · 6 meta-skills**
+**86 skills · 10 workflows · 6 meta-skills**
 
 ## Start here
 
