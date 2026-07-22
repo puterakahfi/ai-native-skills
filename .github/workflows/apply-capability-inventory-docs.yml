@@ -1,0 +1,74 @@
+name: Apply capability inventory documentation
+
+on:
+  push:
+    branches:
+      - 65-audit-capability-inventory
+    paths:
+      - .github/workflows/apply-capability-inventory-docs.yml
+      - scripts/verify-capability-inventory.py
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 65-audit-capability-inventory
+          fetch-depth: 0
+
+      - name: Reconcile public inventory documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          readme = Path("README.md")
+          readme_text = readme.read_text()
+          old_readme = "**85 skills · 9 workflows · 6 meta-skills**"
+          new_readme = "**85 skills · 10 workflows · 6 meta-skills**"
+          if old_readme not in readme_text:
+              raise SystemExit("README inventory summary anchor not found")
+          readme.write_text(readme_text.replace(old_readme, new_readme, 1))
+
+          taxonomy = Path("docs/skills.md")
+          taxonomy_text = taxonomy.read_text()
+          replacements = {
+              "- `workflow`: 9": "- `workflow`: 10",
+              "- Total executable skills: 100": "- Total executable skills: 101",
+          }
+          for old, new in replacements.items():
+              if old not in taxonomy_text:
+                  raise SystemExit(f"Taxonomy inventory anchor not found: {old}")
+              taxonomy_text = taxonomy_text.replace(old, new, 1)
+
+          workflow_anchor = "| `skill-doctor` | audit → triage → repair → verify |"
+          workflow_row = "| `skill-evolution` | observe verified product learning → diagnose reusable gap → apply minimal skill/workflow/eval/core patch → validate → promote |"
+          if workflow_row not in taxonomy_text:
+              if workflow_anchor not in taxonomy_text:
+                  raise SystemExit("Workflow table anchor not found")
+              taxonomy_text = taxonomy_text.replace(
+                  workflow_anchor,
+                  workflow_anchor + "\n" + workflow_row,
+                  1,
+              )
+          taxonomy.write_text(taxonomy_text)
+          PY
+
+          python3 scripts/verify-capability-inventory.py --write-snapshot
+          python3 scripts/verify-capability-inventory.py
+
+      - name: Commit reconciled inventory evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md docs/skills.md docs/capability-inventory.json
+          git commit -m 'docs(inventory): reconcile metadata-derived capability counts'
+          git push origin HEAD:65-audit-capability-inventory
