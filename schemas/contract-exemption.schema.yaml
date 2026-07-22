@@ -1,0 +1,93 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://native-ai.engineering/skills/schemas/contract-exemption.schema.yaml
+title: AI Native Skills Reviewed Contract Exemption
+type: object
+additionalProperties: false
+required:
+- contract_exemption
+properties:
+  contract_exemption:
+    type: object
+    additionalProperties: false
+    required:
+    - schema_version
+    - artifact
+    - classification
+    - owner
+    - reason
+    - evidence_refs
+    - revisit
+    - prohibited_claims
+    - status
+    properties:
+      schema_version:
+        const: 1.0.0
+      artifact:
+        type: object
+        additionalProperties: false
+        required: [id, path, type]
+        properties:
+          id:
+            type: string
+            pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          path:
+            type: string
+            pattern: ^skills/[a-z0-9]+(?:-[a-z0-9]+)*/SKILL\.md$
+          type:
+            enum: [skill, workflow, meta-skill]
+      classification:
+        enum: [core_gap, provider_specific, third_party_delegation]
+      owner:
+        type: string
+        minLength: 3
+      reason:
+        type: string
+        minLength: 20
+      evidence_refs:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          type: object
+          additionalProperties: false
+          required: [kind, ref]
+          properties:
+            kind:
+              enum: [github_issue, executable_source, provider_boundary, third_party_source]
+            ref:
+              type: string
+              minLength: 3
+      revisit:
+        type: object
+        additionalProperties: false
+        required: [triggers]
+        properties:
+          blocking_issue:
+            type: [string, 'null']
+            pattern: ^puterakahfi/ai-native-core#[0-9]+$
+          triggers:
+            type: array
+            minItems: 1
+            uniqueItems: true
+            items:
+              type: string
+              minLength: 5
+      prohibited_claims:
+        type: array
+        uniqueItems: true
+        minItems: 5
+        allOf:
+        - contains: {const: core_contract_conformance}
+        - contains: {const: behavioral_verification}
+        - contains: {const: runtime_acceptance}
+        - contains: {const: product_acceptance}
+        - contains: {const: approval_or_authorization}
+        items:
+          enum:
+          - core_contract_conformance
+          - behavioral_verification
+          - runtime_acceptance
+          - product_acceptance
+          - approval_or_authorization
+      status:
+        enum: [active, retired]
