@@ -1,0 +1,26 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: ux-patterns-for-developers
+    path: skills/ux-patterns-for-developers/SKILL.md
+    type: skill
+  classification: third_party_delegation
+  owner: ai-native-skills-maintainers
+  reason: This executable delegates to an external pattern catalog and installation surface rather than implementing a canonical Native AI Engineering capability contract.
+  evidence_refs:
+  - kind: third_party_source
+    ref: github.com/thedaviddias/ux-patterns-for-developers
+  - kind: executable_source
+    ref: skills/ux-patterns-for-developers/SKILL.md
+  revisit:
+    triggers:
+    - external catalog ownership or installation mechanism changes materially
+    - a canonical external pattern retrieval or delegation contract is accepted
+    - the wrapper begins owning reusable interaction semantics directly
+  prohibited_claims:
+  - core_contract_conformance
+  - behavioral_verification
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active
