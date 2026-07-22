@@ -3,7 +3,8 @@
 
 This script is intentionally allowlisted and self-deleted by its workflow. It
 refuses to create a declaration unless the existing reviewed interface and
-legacy boundary agree with the resolved core workflow contract.
+legacy boundary agree with either the canonical workflow contract or one
+explicitly reviewed legacy snapshot.
 """
 
 from __future__ import annotations
@@ -11,13 +12,85 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-MIGRATIONS = {
+REDESIGN_LEGACY_INTERFACE = {
+    "required_inputs": [
+        "current_surface",
+        "confirmed_scope",
+        "baseline_evidence",
+        "artifact_type",
+        "output_mode",
+        "decision_sources",
+        "acceptance_criteria",
+    ],
+    "required_outputs": [],
+    "allowed_outputs": [
+        "redesign_state",
+        "route_decision",
+        "confirmed_scope",
+        "scope_provenance",
+        "decision_log",
+        "integrity_gate",
+        "implementation_context_gate",
+        "concurrency_gate",
+        "final_diff_manifest",
+        "role_composition",
+        "design_owner",
+        "implementation_owner",
+        "repository_write_owner",
+        "redesign_strategy",
+        "option_comparison",
+        "selected_direction",
+        "layered_change_plan",
+        "implementation_context_profile",
+        "convention_locks",
+        "reuse_extension_decisions",
+        "implementation_mapping",
+        "dependency_decisions",
+        "value_alignment",
+        "production_output",
+        "verification_evidence",
+        "review_report",
+        "correction_handoff",
+        "learning_review",
+        "delivery_decision",
+    ],
+    "quality_gates": [
+        "route_before_production",
+        "exactly_one_design_owner",
+        "implementation_owner_required_for_patch_or_executable_prototype",
+        "exactly_one_active_repository_write_owner_for_patch_mode",
+        "material_decisions_require_verified_provenance",
+        "unverified_approval_or_override_claims_block_progress",
+        "current_state_baseline_scope_and_locks_are_captured_before_production",
+        "preservation_locks_are_recorded_and_rechecked",
+        "implementation_context_is_required_before_repository_code_production",
+        "package_presence_does_not_prove_canonicality",
+        "implementation_mapping_precedes_code_production",
+        "new_dependency_requires_proven_capability_gap_consequences_and_authority",
+        "final_effective_diff_is_verified_not_only_patch_commits",
+        "concurrent_writes_are_detected_and_coordinated",
+        "expected_head_lease_guards_every_repository_write",
+        "parent_pointer_moves_only_after_child_stability",
+        "repeated_conflicting_updates_stop_without_force_overwrite",
+        "every_changed_path_must_be_classified",
+        "scope_contamination_blocks_review_and_delivery",
+        "concurrency_block_is_not_reported_as_pass",
+        "review_uses_design_review_facade_and_loaded_domain_reviewer",
+        "gate_statuses_preserve_partial_not_verified_and_not_applicable",
+        "contextual_hard_gates_are_reviewer_owned",
+        "facade_scope_and_concurrency_control_delivery",
+        "defect_classification_precedes_fix",
+        "verified_reusable_fixes_run_learning_review_and_regression_eval",
+        "max_iteration_delivery_is_not_labeled_as_passed",
+    ],
+}
+
+MIGRATIONS: dict[str, dict[str, Any]] = {
     "design-refinement": {
         "old_contract": "contracts/skills/quality/design-refinement.contract.yaml",
         "contract": "contracts/workflows/design-refinement.contract.yaml",
@@ -31,6 +104,7 @@ MIGRATIONS = {
         "pin": "^2.2.0",
         "old_skill_version": "3.6.0",
         "new_skill_version": "3.6.1",
+        "legacy_interface": REDESIGN_LEGACY_INTERFACE,
     },
     "skill-evolution": {
         "old_contract": "contracts/skills/quality/skill-evolution.contract.yaml",
@@ -74,7 +148,7 @@ def parse_list(raw: Any) -> list[str]:
     raise ValueError(f"expected list-like metadata, got {raw!r}")
 
 
-def reviewed_interface(text: str) -> dict[str, list[str]]:
+def reviewed_interface_location(text: str) -> tuple[int, int, dict[str, list[str]]]:
     marker = "## Reviewed core contract interface"
     start = text.find(marker)
     if start < 0:
@@ -83,14 +157,29 @@ def reviewed_interface(text: str) -> dict[str, list[str]]:
     block_end = text.find("```", block_start + len("```yaml"))
     if block_start < 0 or block_end < 0:
         raise ValueError("reviewed interface YAML block is missing")
-    payload = yaml.safe_load(text[block_start + len("```yaml"):block_end]) or {}
+    yaml_start = block_start + len("```yaml")
+    payload = yaml.safe_load(text[yaml_start:block_end]) or {}
     if not isinstance(payload, dict):
         raise ValueError("reviewed interface block must be a mapping")
-    return {
+    interface = {
         "required_inputs": [str(value) for value in payload.get("required_inputs", [])],
+        "required_outputs": [str(value) for value in payload.get("required_outputs", [])],
         "allowed_outputs": [str(value) for value in payload.get("allowed_outputs", [])],
         "quality_gates": [str(value) for value in payload.get("quality_gates", [])],
     }
+    return yaml_start, block_end, interface
+
+
+def render_reviewed_interface(interface: dict[str, list[str]]) -> str:
+    payload: dict[str, list[str]] = {
+        "required_inputs": interface["required_inputs"],
+    }
+    if interface["required_outputs"]:
+        payload["required_outputs"] = interface["required_outputs"]
+    if interface["allowed_outputs"]:
+        payload["allowed_outputs"] = interface["allowed_outputs"]
+    payload["quality_gates"] = interface["quality_gates"]
+    return "\n" + yaml.safe_dump(payload, sort_keys=False).rstrip() + "\n"
 
 
 def assert_equal(name: str, actual: Any, expected: Any) -> None:
@@ -105,7 +194,7 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
     return text.replace(old, new, 1)
 
 
-def migrate(root: Path, core_root: Path, skill_id: str, config: dict[str, str]) -> None:
+def migrate(root: Path, core_root: Path, skill_id: str, config: dict[str, Any]) -> None:
     skill_path = root / "skills" / skill_id / "SKILL.md"
     text = skill_path.read_text(encoding="utf-8")
     fm = frontmatter(text)
@@ -130,15 +219,21 @@ def migrate(root: Path, core_root: Path, skill_id: str, config: dict[str, str]) 
     assert_equal(f"{skill_id}.contract_id", contract.get("id"), skill_id)
     assert_equal(f"{skill_id}.contract_type", contract.get("type"), "workflow")
 
-    interface = reviewed_interface(text)
     inputs = contract.get("inputs") or {}
     outputs = contract.get("outputs") or {}
-    expected_required_inputs = [str(value) for value in inputs.get("required", [])]
-    expected_allowed_outputs = [str(value) for value in outputs.get("allowed", [])]
-    expected_gates = [str(value) for value in contract.get("quality_gates", [])]
-    assert_equal(f"{skill_id}.reviewed_required_inputs", interface["required_inputs"], expected_required_inputs)
-    assert_equal(f"{skill_id}.reviewed_allowed_outputs", interface["allowed_outputs"], expected_allowed_outputs)
-    assert_equal(f"{skill_id}.reviewed_quality_gates", interface["quality_gates"], expected_gates)
+    canonical_interface = {
+        "required_inputs": [str(value) for value in inputs.get("required", [])],
+        "required_outputs": [str(value) for value in outputs.get("required", [])],
+        "allowed_outputs": [str(value) for value in outputs.get("allowed", [])],
+        "quality_gates": [str(value) for value in contract.get("quality_gates", [])],
+    }
+    yaml_start, block_end, current_interface = reviewed_interface_location(text)
+    if current_interface != canonical_interface:
+        legacy_interface = config.get("legacy_interface")
+        if legacy_interface is None:
+            assert_equal(f"{skill_id}.reviewed_interface", current_interface, canonical_interface)
+        assert_equal(f"{skill_id}.reviewed_legacy_interface", current_interface, legacy_interface)
+        text = text[:yaml_start] + render_reviewed_interface(canonical_interface) + text[block_end:]
 
     boundary = contract.get("boundary") or {}
     expected_covers = [str(value) for value in boundary.get("covers", [])]
@@ -156,6 +251,7 @@ def migrate(root: Path, core_root: Path, skill_id: str, config: dict[str, str]) 
     else:
         raise ValueError(f"{skill_id}: adapter_requirements has unsupported shape")
 
+    declaration_outputs = canonical_interface["required_outputs"] + canonical_interface["allowed_outputs"]
     declaration = {
         "contract_schema": {
             "kind": "adapter_conformance",
@@ -177,9 +273,9 @@ def migrate(root: Path, core_root: Path, skill_id: str, config: dict[str, str]) 
             },
             "capability": contract.get("capability"),
             "interface": {
-                "inputs": expected_required_inputs,
-                "outputs": expected_allowed_outputs,
-                "gates": expected_gates,
+                "inputs": canonical_interface["required_inputs"],
+                "outputs": declaration_outputs,
+                "gates": canonical_interface["quality_gates"],
             },
             "boundary": {
                 "covers": expected_covers,
