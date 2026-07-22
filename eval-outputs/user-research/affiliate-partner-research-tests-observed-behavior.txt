@@ -1,0 +1,38 @@
+## Research goal
+Identify which creator or service-provider segment is most likely to publish useful promotional content, what effort the work requires, and what evidence would justify an affiliate pilot.
+
+## Participant qualification
+Use explicit **qualification** criteria:
+- audience or clients overlap with the product's target users;
+- has created educational, review, design, AI, marketing, or affiliate content before;
+- can describe a real distribution channel they control;
+- is willing to test the product before recommending it;
+- does not rely primarily on spam or coupon scraping.
+
+Recruit across existing customers, micro-creators, freelancers, educators, community owners, and small agencies. Treat the segment model as **provisional** until repeated evidence appears.
+
+## Interview focus
+Ask about **past behavior**:
+- “Walk me through the last time you recommended a paid tool to your audience or clients.”
+- “What triggered you to create that content?”
+- “How long did research, production, editing, and publishing take?”
+- “What happened after publication, and how did you measure it?”
+- “Tell me about a recommendation you abandoned. Why?”
+
+Investigate **existing alternatives**:
+- current affiliate networks, sponsorships, reseller arrangements, client referral fees, or no monetization;
+- how links, coupons, attribution, content assets, and payout are handled today;
+- what they would do if this program did not exist.
+
+## Evidence to capture
+Record observable **evidence** such as prior content links, publishing frequency, audience relevance, actual workflow steps, previous conversion records when participants can share them, and concrete reasons for continuing or stopping a prior program. Statements without behavioral support remain provisional assumptions.
+
+## JTBD synthesis
+A provisional **JTBD** statement:
+
+> When I already create useful content for an audience that buys creative tools, I want a recommendation offer that is credible, simple to demonstrate, and worth the production effort, so I can help my audience and earn from attributable results.
+
+This JTBD describes the situation, motivation, and desired progress. It does not assume that a dashboard is the underlying need.
+
+## Synthesis gate
+After at least five qualified interviews, group repeated patterns by frequency and severity. Advance only when observed behavior supports a specific partner segment, effort range, existing alternative, and experiment hypothesis. Thin or conflicting evidence remains provisional and should narrow the pilot rather than be presented as validated demand.
