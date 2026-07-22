@@ -136,3 +136,26 @@ skill_test:
     must_contain: [new-feature-workflow, chatgpt-app-development, delivery-work-breakdown, epic]
     must_not_contain: [every child PR targets main, default branch decides target]
     quality_gates_tested: [existing_product_feature_route_preserved, platform_specialist_overlay, release_unit_classified_before_repository_execution]
+
+  - id: affiliate-opportunity-routes-product-discovery-before-build
+    description: An unverified affiliate opportunity uses product discovery and experiment overlays before implementation.
+    trigger: >
+      Saya ingin membuat affiliate program untuk produk creative SaaS sekali bayar.
+      Margin, demand partner, conversion, dan kualitas customer referral belum terbukti.
+      Tentukan workflow dan capability yang harus aktif sekarang.
+    must_contain:
+    - product-development-workflow
+    - discovery
+    - business-value-alignment
+    - experiment-design
+    - EXPERIMENT_FIRST
+    must_not_contain:
+    - new-feature-workflow as primary
+    - start implementation immediately
+    - delivery-work-breakdown before experiment
+    quality_gates_tested:
+    - task_type_must_be_classified_before_workflow_selection
+    - routing_decision_must_be_stated_explicitly
+    - selected_workflow_must_be_loaded_before_execution
+    - no_execution_before_routing_confirmed
+    - product_from_zero_requests_must_not_route_directly_to_implementation
