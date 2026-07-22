@@ -7,9 +7,12 @@ classification:
   overall: APPLIED
   evidence_strength: PROVISIONAL_BEHAVIORAL_EVIDENCE
   skills:
+    workflow-router: APPLIED
+    product-development-workflow: APPLIED
     business-value-alignment: APPLIED
     experiment-design: APPLIED
     user-research: APPLIED
+    decision-provenance: APPLIED
 promotion:
   verdict: EVAL_ONLY
   skill_body_patch: none
