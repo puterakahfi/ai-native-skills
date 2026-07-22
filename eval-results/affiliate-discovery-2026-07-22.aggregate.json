@@ -1,6 +1,13 @@
 {
   "overall": "APPLIED",
-  "evidence_strength": "PROVISIONAL_BEHAVIORAL_EVIDENCE",
+  "evidence_strength": "PINNED_CANONICAL_RUNNER_VERIFIED_WITH_CONTEXT_LIMITATION",
+  "canonical_runner": {
+    "workflow_run_id": 29928054775,
+    "artifact_id": 8532790125,
+    "artifact_digest": "sha256:59dc2364feb143c2a142802a422013d60b9e4800856ac2155b6506916a2c2b58",
+    "core_ref": "5c4c6f21859636a4a143a511030879c9923b2ef1",
+    "result": "APPLIED"
+  },
   "summary": {
     "applied": 6,
     "partial": 0,
@@ -50,5 +57,5 @@
   "skill_body_patch": "NONE",
   "workflow_patch": "NONE",
   "core_contract_patch": "NONE",
-  "remaining_gate": "Isolated fresh-runtime capture plus direct pinned canonical-runner execution"
+  "remaining_gate": "Isolated fresh-runtime capture only"
 }
