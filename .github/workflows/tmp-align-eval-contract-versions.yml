@@ -1,0 +1,138 @@
+name: Temporary align eval contract versions
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  align:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          path: ai-native-skills
+
+      - name: Checkout main baseline
+        uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-skills
+          ref: main
+          path: baseline-main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validator dependency
+        run: python -m pip install --disable-pip-version-check 'PyYAML>=6,<7'
+
+      - name: Restore complete contracts and align only versions
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          root = Path('ai-native-skills')
+          baseline = Path('baseline-main')
+          targets = {
+              'design-refinement': ('2.2.0', '2.2.1'),
+              'redesign-workflow': ('3.6.0', '3.6.1'),
+              'skill-evolution': ('1.0.2', '1.0.3'),
+          }
+
+          for skill, (old_version, new_version) in targets.items():
+              rel = Path('contracts/tests') / f'{skill}.test.yaml'
+              source = baseline / rel
+              destination = root / rel
+              text = source.read_text(encoding='utf-8')
+              document = yaml.safe_load(text)
+              actual_skill = document['skill_test']['skill']
+              actual_version = str(document['skill_test']['version'])
+              if actual_skill != skill:
+                  raise SystemExit(f'{rel}: baseline skill mismatch {actual_skill!r}')
+              if actual_version != old_version:
+                  raise SystemExit(
+                      f'{rel}: expected baseline version {old_version}, found {actual_version}'
+                  )
+              needle = f'  version: {old_version}'
+              if text.count(needle) != 1:
+                  raise SystemExit(f'{rel}: expected exactly one version field')
+              destination.write_text(
+                  text.replace(needle, f'  version: {new_version}', 1),
+                  encoding='utf-8',
+              )
+              print(f'{skill}: {old_version} -> {new_version}')
+          PY
+
+      - name: Validate repository eval contracts
+        working-directory: ai-native-skills
+        run: |
+          python scripts/validate-eval-contracts.py \
+            --write-smoke-outputs .tmp/eval-smoke-outputs
+
+      - name: Verify only version fields changed from main baseline
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import difflib
+
+          root = Path('ai-native-skills')
+          baseline = Path('baseline-main')
+          targets = {
+              'design-refinement': ('2.2.0', '2.2.1'),
+              'redesign-workflow': ('3.6.0', '3.6.1'),
+              'skill-evolution': ('1.0.2', '1.0.3'),
+          }
+          failures = []
+          for skill, (old_version, new_version) in targets.items():
+              rel = Path('contracts/tests') / f'{skill}.test.yaml'
+              before = (baseline / rel).read_text(encoding='utf-8')
+              expected = before.replace(
+                  f'  version: {old_version}',
+                  f'  version: {new_version}',
+                  1,
+              )
+              actual = (root / rel).read_text(encoding='utf-8')
+              if actual != expected:
+                  failures.append(
+                      ''.join(
+                          difflib.unified_diff(
+                              expected.splitlines(True),
+                              actual.splitlines(True),
+                              fromfile=f'expected/{rel}',
+                              tofile=f'actual/{rel}',
+                          )
+                      )
+                  )
+          if failures:
+              raise SystemExit('\n'.join(failures))
+          print('PASS — only the three eval version fields changed')
+          PY
+
+      - name: Commit aligned contracts and remove temporary workflows
+        working-directory: ai-native-skills
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            contracts/tests/design-refinement.test.yaml \
+            contracts/tests/redesign-workflow.test.yaml \
+            contracts/tests/skill-evolution.test.yaml
+          git rm \
+            .github/workflows/tmp-eval-contract-diagnostics.yml \
+            .github/workflows/tmp-align-eval-contract-versions.yml
+          git commit -m 'test(governance): align migrated workflow eval versions'
+          git push
