@@ -17,9 +17,12 @@
     "limitation": "The execution container could not resolve github.com, so the pinned repository could not be cloned and the canonical file was not executed directly. The relevant classification logic was reproduced exactly from the fetched pinned source."
   },
   "captured_cases": [
+    "workflow-router/affiliate-opportunity-routes-product-discovery-before-build",
+    "product-development-workflow/unverified-affiliate-opportunity-stops-after-experiment-design",
     "business-value-alignment/affiliate-program-unknown-demand-routes-experiment-first",
     "experiment-design/affiliate-program-starts-with-bounded-manual-pilot",
-    "user-research/affiliate-partner-research-tests-observed-behavior"
+    "user-research/affiliate-partner-research-tests-observed-behavior",
+    "decision-provenance/agent-proposed-affiliate-terms-are-not-permanent-policy"
   ],
   "evidence_strength": "PROVISIONAL_BEHAVIORAL_EVIDENCE",
   "remaining_gate": "Repeat in an isolated fresh runtime and execute the pinned canonical runner directly before final promotion or merge readiness."
