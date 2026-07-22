@@ -1,0 +1,21 @@
+source_case: VisualMate Partner Program
+source_issues:
+  - puterakahfi/visualmate#98
+  - puterakahfi/visualmate#99
+  - puterakahfi/ai-native-skills#70
+classification:
+  overall: APPLIED
+  evidence_strength: PROVISIONAL_BEHAVIORAL_EVIDENCE
+  skills:
+    business-value-alignment: APPLIED
+    experiment-design: APPLIED
+    user-research: APPLIED
+promotion:
+  verdict: EVAL_ONLY
+  skill_body_patch: none
+  workflow_patch: none
+  core_contract_patch: none
+remaining_gates:
+  - isolated fresh-runtime capture
+  - direct pinned canonical-runner execution
+  - provenance-preserving rerun after model or context changes
