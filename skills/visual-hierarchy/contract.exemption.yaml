@@ -1,0 +1,26 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: visual-hierarchy
+    path: skills/visual-hierarchy/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: The current core contract uses fixed H1/H2 ratios and permanent hero dominance that contradict the relational and state-aware executable methodology.
+  evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-core#44
+  - kind: executable_source
+    ref: skills/visual-hierarchy/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#44
+    triggers:
+    - revised visual hierarchy contract is accepted and published
+    - executable interface and boundary are reviewed against the revised contract
+  prohibited_claims:
+  - core_contract_conformance
+  - behavioral_verification
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active
