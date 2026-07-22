@@ -5,7 +5,7 @@ source_issues:
   - puterakahfi/ai-native-skills#70
 classification:
   overall: APPLIED
-  evidence_strength: PROVISIONAL_BEHAVIORAL_EVIDENCE
+  evidence_strength: PINNED_CANONICAL_RUNNER_VERIFIED_WITH_CONTEXT_LIMITATION
   skills:
     workflow-router: APPLIED
     product-development-workflow: APPLIED
@@ -13,6 +13,11 @@ classification:
     experiment-design: APPLIED
     user-research: APPLIED
     decision-provenance: APPLIED
+canonical_runner:
+  result: APPLIED
+  core_ref: 5c4c6f21859636a4a143a511030879c9923b2ef1
+  workflow_run_id: 29928054775
+  artifact_id: 8532790125
 promotion:
   verdict: EVAL_ONLY
   skill_body_patch: none
@@ -20,5 +25,4 @@ promotion:
   core_contract_patch: none
 remaining_gates:
   - isolated fresh-runtime capture
-  - direct pinned canonical-runner execution
   - provenance-preserving rerun after model or context changes
