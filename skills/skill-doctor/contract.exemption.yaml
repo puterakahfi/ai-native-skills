@@ -1,0 +1,26 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: skill-doctor
+    path: skills/skill-doctor/SKILL.md
+    type: workflow
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: Skill maintenance is reusable, but no canonical lifecycle contract currently separates transferable health invariants from repository-specific line and placement heuristics.
+  evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-core#45
+  - kind: executable_source
+    ref: skills/skill-doctor/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#45
+    triggers:
+    - reusable skill maintenance workflow contract is accepted
+    - repository-specific heuristics are kept outside the canonical contract
+  prohibited_claims:
+  - core_contract_conformance
+  - behavioral_verification
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active
