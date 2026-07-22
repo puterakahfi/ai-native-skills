@@ -1,5 +1,6 @@
 # Reviewed against the canonical workflow contract during ai-native-skills#26.
 # Acceptance evidence: docs/contract-coverage-acceptance-review.md
+# Final merge-candidate validation requires all repository governance workflows.
 contract_schema:
   kind: adapter_conformance
   version: 1.0.0
