@@ -82,36 +82,52 @@ jobs:
           --output-dir /tmp/conformance-reports
           --format json
 
-      - name: Assert representative workflow declarations are conformant
+      - name: Inspect representative workflow declarations
+        id: representative_conformance
+        continue-on-error: true
         shell: bash
         run: |
-          python - <<'PY'
+          python - <<'PY' > /tmp/workflow-conformance-findings.json
           import json
           from pathlib import Path
 
           targets = ["design-refinement", "redesign-workflow", "skill-evolution"]
-          failures = []
+          result = {}
+          failed = False
           for target in targets:
               path = Path("/tmp/conformance-reports") / f"{target}.json"
               report = json.loads(path.read_text())
-              status = report["structural_status"]
-              print(f"{target}: {status}")
-              if status != "CONFORMANT":
-                  failures.append((target, status, report.get("findings", [])))
-          if failures:
-              raise SystemExit(json.dumps(failures, indent=2))
+              result[target] = {
+                  "structural_status": report["structural_status"],
+                  "findings": report.get("findings", []),
+              }
+              if report["structural_status"] != "CONFORMANT":
+                  failed = True
+          print(json.dumps(result, indent=2))
+          if failed:
+              raise SystemExit(1)
           PY
+          status=$?
+          cat /tmp/workflow-conformance-findings.json
+          exit "$status"
 
       - name: Upload workflow migration evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: workflow-conformance-batch-${{ github.run_id }}
           path: |
             ai-native-skills/docs/contract-coverage-discovery.yaml
+            /tmp/workflow-conformance-findings.json
             /tmp/conformance-reports/design-refinement.json
             /tmp/conformance-reports/redesign-workflow.json
             /tmp/conformance-reports/skill-evolution.json
             /tmp/conformance-reports/repository-summary.json
+          if-no-files-found: warn
+
+      - name: Enforce representative conformance
+        if: steps.representative_conformance.outcome == 'failure'
+        run: exit 1
 
       - name: Commit reviewed migration and remove temporary tooling
         working-directory: ai-native-skills
