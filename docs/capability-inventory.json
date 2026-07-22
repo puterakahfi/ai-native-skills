@@ -1,0 +1,517 @@
+{
+  "schema_version": 1,
+  "source": "skills/*/SKILL.md frontmatter",
+  "counts": {
+    "skill": 85,
+    "workflow": 10,
+    "meta-skill": 6,
+    "total": 101
+  },
+  "items": [
+    {
+      "name": "design-interaction",
+      "type": "meta-skill",
+      "path": "skills/design-interaction/SKILL.md"
+    },
+    {
+      "name": "design-layout",
+      "type": "meta-skill",
+      "path": "skills/design-layout/SKILL.md"
+    },
+    {
+      "name": "design-strategy",
+      "type": "meta-skill",
+      "path": "skills/design-strategy/SKILL.md"
+    },
+    {
+      "name": "design-visual",
+      "type": "meta-skill",
+      "path": "skills/design-visual/SKILL.md"
+    },
+    {
+      "name": "role-switcher",
+      "type": "meta-skill",
+      "path": "skills/role-switcher/SKILL.md"
+    },
+    {
+      "name": "workflow-router",
+      "type": "meta-skill",
+      "path": "skills/workflow-router/SKILL.md"
+    },
+    {
+      "name": "accessibility",
+      "type": "skill",
+      "path": "skills/accessibility/SKILL.md"
+    },
+    {
+      "name": "adaptive-component-design",
+      "type": "skill",
+      "path": "skills/adaptive-component-design/SKILL.md"
+    },
+    {
+      "name": "adr",
+      "type": "skill",
+      "path": "skills/adr/SKILL.md"
+    },
+    {
+      "name": "ai-system-design",
+      "type": "skill",
+      "path": "skills/ai-system-design/SKILL.md"
+    },
+    {
+      "name": "api-contract",
+      "type": "skill",
+      "path": "skills/api-contract/SKILL.md"
+    },
+    {
+      "name": "architecture-review",
+      "type": "skill",
+      "path": "skills/architecture-review/SKILL.md"
+    },
+    {
+      "name": "brand-identity-review",
+      "type": "skill",
+      "path": "skills/brand-identity-review/SKILL.md"
+    },
+    {
+      "name": "business-value-alignment",
+      "type": "skill",
+      "path": "skills/business-value-alignment/SKILL.md"
+    },
+    {
+      "name": "chatgpt-app-development",
+      "type": "skill",
+      "path": "skills/chatgpt-app-development/SKILL.md"
+    },
+    {
+      "name": "collection-discovery-design",
+      "type": "skill",
+      "path": "skills/collection-discovery-design/SKILL.md"
+    },
+    {
+      "name": "component-family-design",
+      "type": "skill",
+      "path": "skills/component-family-design/SKILL.md"
+    },
+    {
+      "name": "composition",
+      "type": "skill",
+      "path": "skills/composition/SKILL.md"
+    },
+    {
+      "name": "content-strategy",
+      "type": "skill",
+      "path": "skills/content-strategy/SKILL.md"
+    },
+    {
+      "name": "context-engineering",
+      "type": "skill",
+      "path": "skills/context-engineering/SKILL.md"
+    },
+    {
+      "name": "context-manager",
+      "type": "skill",
+      "path": "skills/context-manager/SKILL.md"
+    },
+    {
+      "name": "copywriting",
+      "type": "skill",
+      "path": "skills/copywriting/SKILL.md"
+    },
+    {
+      "name": "cro",
+      "type": "skill",
+      "path": "skills/cro/SKILL.md"
+    },
+    {
+      "name": "dark-light-theming",
+      "type": "skill",
+      "path": "skills/dark-light-theming/SKILL.md"
+    },
+    {
+      "name": "data-modeling",
+      "type": "skill",
+      "path": "skills/data-modeling/SKILL.md"
+    },
+    {
+      "name": "decision-making",
+      "type": "skill",
+      "path": "skills/decision-making/SKILL.md"
+    },
+    {
+      "name": "decision-provenance",
+      "type": "skill",
+      "path": "skills/decision-provenance/SKILL.md"
+    },
+    {
+      "name": "delivery-work-breakdown",
+      "type": "skill",
+      "path": "skills/delivery-work-breakdown/SKILL.md"
+    },
+    {
+      "name": "design-audit",
+      "type": "skill",
+      "path": "skills/design-audit/SKILL.md"
+    },
+    {
+      "name": "design-brand",
+      "type": "skill",
+      "path": "skills/design-brand/SKILL.md"
+    },
+    {
+      "name": "design-color",
+      "type": "skill",
+      "path": "skills/design-color/SKILL.md"
+    },
+    {
+      "name": "design-depth",
+      "type": "skill",
+      "path": "skills/design-depth/SKILL.md"
+    },
+    {
+      "name": "design-foundation",
+      "type": "skill",
+      "path": "skills/design-foundation/SKILL.md"
+    },
+    {
+      "name": "design-genre",
+      "type": "skill",
+      "path": "skills/design-genre/SKILL.md"
+    },
+    {
+      "name": "design-iconography",
+      "type": "skill",
+      "path": "skills/design-iconography/SKILL.md"
+    },
+    {
+      "name": "design-patterns",
+      "type": "skill",
+      "path": "skills/design-patterns/SKILL.md"
+    },
+    {
+      "name": "design-review",
+      "type": "skill",
+      "path": "skills/design-review/SKILL.md"
+    },
+    {
+      "name": "design-spacing",
+      "type": "skill",
+      "path": "skills/design-spacing/SKILL.md"
+    },
+    {
+      "name": "design-system",
+      "type": "skill",
+      "path": "skills/design-system/SKILL.md"
+    },
+    {
+      "name": "design-typography",
+      "type": "skill",
+      "path": "skills/design-typography/SKILL.md"
+    },
+    {
+      "name": "diagram-architect",
+      "type": "skill",
+      "path": "skills/diagram-architect/SKILL.md"
+    },
+    {
+      "name": "domain-driven-design",
+      "type": "skill",
+      "path": "skills/domain-driven-design/SKILL.md"
+    },
+    {
+      "name": "ethics-responsible-ai",
+      "type": "skill",
+      "path": "skills/ethics-responsible-ai/SKILL.md"
+    },
+    {
+      "name": "event-driven-design",
+      "type": "skill",
+      "path": "skills/event-driven-design/SKILL.md"
+    },
+    {
+      "name": "experiment-design",
+      "type": "skill",
+      "path": "skills/experiment-design/SKILL.md"
+    },
+    {
+      "name": "git-workflow",
+      "type": "skill",
+      "path": "skills/git-workflow/SKILL.md"
+    },
+    {
+      "name": "github-profile",
+      "type": "skill",
+      "path": "skills/github-profile/SKILL.md"
+    },
+    {
+      "name": "hermes-profile-bootstrap",
+      "type": "skill",
+      "path": "skills/hermes-profile-bootstrap/SKILL.md"
+    },
+    {
+      "name": "implementation-context-discovery",
+      "type": "skill",
+      "path": "skills/implementation-context-discovery/SKILL.md"
+    },
+    {
+      "name": "incident-response",
+      "type": "skill",
+      "path": "skills/incident-response/SKILL.md"
+    },
+    {
+      "name": "information-architecture",
+      "type": "skill",
+      "path": "skills/information-architecture/SKILL.md"
+    },
+    {
+      "name": "language-standards",
+      "type": "skill",
+      "path": "skills/language-standards/SKILL.md"
+    },
+    {
+      "name": "macrostructures",
+      "type": "skill",
+      "path": "skills/macrostructures/SKILL.md"
+    },
+    {
+      "name": "master-design",
+      "type": "skill",
+      "path": "skills/master-design/SKILL.md"
+    },
+    {
+      "name": "master-engineer",
+      "type": "skill",
+      "path": "skills/master-engineer/SKILL.md"
+    },
+    {
+      "name": "micro-frontend",
+      "type": "skill",
+      "path": "skills/micro-frontend/SKILL.md"
+    },
+    {
+      "name": "model-selection",
+      "type": "skill",
+      "path": "skills/model-selection/SKILL.md"
+    },
+    {
+      "name": "motion-design",
+      "type": "skill",
+      "path": "skills/motion-design/SKILL.md"
+    },
+    {
+      "name": "native-ai-engineer",
+      "type": "skill",
+      "path": "skills/native-ai-engineer/SKILL.md"
+    },
+    {
+      "name": "native-ai-runtime-agent",
+      "type": "skill",
+      "path": "skills/native-ai-runtime-agent/SKILL.md"
+    },
+    {
+      "name": "native-ai-runtime-ops",
+      "type": "skill",
+      "path": "skills/native-ai-runtime-ops/SKILL.md"
+    },
+    {
+      "name": "observability-design",
+      "type": "skill",
+      "path": "skills/observability-design/SKILL.md"
+    },
+    {
+      "name": "onboarding",
+      "type": "skill",
+      "path": "skills/onboarding/SKILL.md"
+    },
+    {
+      "name": "plan",
+      "type": "skill",
+      "path": "skills/plan/SKILL.md"
+    },
+    {
+      "name": "ports-and-adapters",
+      "type": "skill",
+      "path": "skills/ports-and-adapters/SKILL.md"
+    },
+    {
+      "name": "product-manager",
+      "type": "skill",
+      "path": "skills/product-manager/SKILL.md"
+    },
+    {
+      "name": "product-requirements",
+      "type": "skill",
+      "path": "skills/product-requirements/SKILL.md"
+    },
+    {
+      "name": "prompt-engineer",
+      "type": "skill",
+      "path": "skills/prompt-engineer/SKILL.md"
+    },
+    {
+      "name": "prompt-optimizer",
+      "type": "skill",
+      "path": "skills/prompt-optimizer/SKILL.md"
+    },
+    {
+      "name": "readability",
+      "type": "skill",
+      "path": "skills/readability/SKILL.md"
+    },
+    {
+      "name": "refactoring",
+      "type": "skill",
+      "path": "skills/refactoring/SKILL.md"
+    },
+    {
+      "name": "resilience-engineering",
+      "type": "skill",
+      "path": "skills/resilience-engineering/SKILL.md"
+    },
+    {
+      "name": "response-contract",
+      "type": "skill",
+      "path": "skills/response-contract/SKILL.md"
+    },
+    {
+      "name": "responsiveness",
+      "type": "skill",
+      "path": "skills/responsiveness/SKILL.md"
+    },
+    {
+      "name": "rule-manager",
+      "type": "skill",
+      "path": "skills/rule-manager/SKILL.md"
+    },
+    {
+      "name": "security-review",
+      "type": "skill",
+      "path": "skills/security-review/SKILL.md"
+    },
+    {
+      "name": "service-design",
+      "type": "skill",
+      "path": "skills/service-design/SKILL.md"
+    },
+    {
+      "name": "skill-eval",
+      "type": "skill",
+      "path": "skills/skill-eval/SKILL.md"
+    },
+    {
+      "name": "spike",
+      "type": "skill",
+      "path": "skills/spike/SKILL.md"
+    },
+    {
+      "name": "systematic-debugging",
+      "type": "skill",
+      "path": "skills/systematic-debugging/SKILL.md"
+    },
+    {
+      "name": "systems-thinking",
+      "type": "skill",
+      "path": "skills/systems-thinking/SKILL.md"
+    },
+    {
+      "name": "technical-debt-governance",
+      "type": "skill",
+      "path": "skills/technical-debt-governance/SKILL.md"
+    },
+    {
+      "name": "test-driven-development",
+      "type": "skill",
+      "path": "skills/test-driven-development/SKILL.md"
+    },
+    {
+      "name": "threat-modeling",
+      "type": "skill",
+      "path": "skills/threat-modeling/SKILL.md"
+    },
+    {
+      "name": "ui-components",
+      "type": "skill",
+      "path": "skills/ui-components/SKILL.md"
+    },
+    {
+      "name": "user-research",
+      "type": "skill",
+      "path": "skills/user-research/SKILL.md"
+    },
+    {
+      "name": "ux-patterns-for-developers",
+      "type": "skill",
+      "path": "skills/ux-patterns-for-developers/SKILL.md"
+    },
+    {
+      "name": "ux-psychology",
+      "type": "skill",
+      "path": "skills/ux-psychology/SKILL.md"
+    },
+    {
+      "name": "ux-ui-patterns",
+      "type": "skill",
+      "path": "skills/ux-ui-patterns/SKILL.md"
+    },
+    {
+      "name": "visual-hierarchy",
+      "type": "skill",
+      "path": "skills/visual-hierarchy/SKILL.md"
+    },
+    {
+      "name": "web-performance",
+      "type": "skill",
+      "path": "skills/web-performance/SKILL.md"
+    },
+    {
+      "name": "bugfix-workflow",
+      "type": "workflow",
+      "path": "skills/bugfix-workflow/SKILL.md"
+    },
+    {
+      "name": "code-review-workflow",
+      "type": "workflow",
+      "path": "skills/code-review-workflow/SKILL.md"
+    },
+    {
+      "name": "deployment-workflow",
+      "type": "workflow",
+      "path": "skills/deployment-workflow/SKILL.md"
+    },
+    {
+      "name": "design-refinement",
+      "type": "workflow",
+      "path": "skills/design-refinement/SKILL.md"
+    },
+    {
+      "name": "new-feature-workflow",
+      "type": "workflow",
+      "path": "skills/new-feature-workflow/SKILL.md"
+    },
+    {
+      "name": "product-development-workflow",
+      "type": "workflow",
+      "path": "skills/product-development-workflow/SKILL.md"
+    },
+    {
+      "name": "redesign-workflow",
+      "type": "workflow",
+      "path": "skills/redesign-workflow/SKILL.md"
+    },
+    {
+      "name": "skill-doctor",
+      "type": "workflow",
+      "path": "skills/skill-doctor/SKILL.md"
+    },
+    {
+      "name": "skill-evolution",
+      "type": "workflow",
+      "path": "skills/skill-evolution/SKILL.md"
+    },
+    {
+      "name": "spec-workflow",
+      "type": "workflow",
+      "path": "skills/spec-workflow/SKILL.md"
+    }
+  ]
+}
