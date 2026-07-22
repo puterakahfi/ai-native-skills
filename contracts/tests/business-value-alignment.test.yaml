@@ -18,3 +18,30 @@ skill_test:
     quality_gates_tested:
     - user_value_must_be_explicit_before_solution_recommendation
     - stop_continue_or_experiment_verdict_must_be_explicit
+  - id: affiliate-program-unknown-demand-routes-experiment-first
+    description: A one-time SaaS affiliate opportunity with unknown economics and demand stays evidence-labeled and experiment-first.
+    trigger: >
+      Saya ingin membuat affiliate program untuk produk creative SaaS sekali bayar.
+      Tolong tentukan apakah ide ini layak, bagaimana sebaiknya dimulai, dan apa
+      yang perlu diuji sebelum membangun dashboard lengkap.
+    must_contain:
+    - EXPERIMENT_FIRST
+    - user value
+    - business value
+    - KNOWN
+    - ASSUMED
+    - UNKNOWN
+    - leading
+    - lagging
+    - guardrail
+    must_not_contain:
+    - affiliate demand is proven
+    - build the complete affiliate dashboard immediately
+    - permanent commission is approved
+    quality_gates_tested:
+    - user_value_must_be_explicit_before_solution_recommendation
+    - business_value_must_map_to_measurable_metric_or_learning_goal
+    - metrics_must_distinguish_leading_lagging_and_guardrail_signals
+    - value_claims_must_be_evidence_labeled_as_known_assumed_or_unknown
+    - stop_continue_or_experiment_verdict_must_be_explicit
+    - experiment_first_verdict_must_name_riskiest_assumption
