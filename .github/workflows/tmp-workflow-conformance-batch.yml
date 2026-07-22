@@ -41,10 +41,30 @@ jobs:
             ai-native-skills/scripts/inventory-contract-coverage.py
 
       - name: Apply allowlisted reviewed migration
-        run: >-
-          python ai-native-skills/scripts/tmp-migrate-workflow-conformance.py
-          --root ai-native-skills
-          --core-root ai-native-core
+        id: migrate_batch
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python ai-native-skills/scripts/tmp-migrate-workflow-conformance.py \
+            --root ai-native-skills \
+            --core-root ai-native-core \
+            > /tmp/workflow-migration.log 2>&1
+          status=$?
+          cat /tmp/workflow-migration.log
+          exit "$status"
+
+      - name: Upload migration diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workflow-conformance-diagnostics-${{ github.run_id }}
+          path: /tmp/workflow-migration.log
+          if-no-files-found: warn
+
+      - name: Enforce migration preconditions
+        if: steps.migrate_batch.outcome == 'failure'
+        run: exit 1
 
       - name: Regenerate deterministic coverage inventory
         run: >-
