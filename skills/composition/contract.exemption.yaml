@@ -1,0 +1,31 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: composition
+    path: skills/composition/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: The current core contract encodes optical-center, hero, and fixed 8px heuristics
+    that contradict the context-aware executable methodology.
+  scope:
+  - static_contract_ownership
+  - core_gap_tracking
+  review_date: '2026-10-22'
+  evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-core#44
+  - kind: executable_source
+    ref: skills/composition/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#44
+    triggers:
+    - revised composition contract is accepted and published
+    - executable interface and boundary are reviewed against the revised contract
+  prohibited_claims:
+  - core_contract_conformance
+  - behavioral_verification
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active

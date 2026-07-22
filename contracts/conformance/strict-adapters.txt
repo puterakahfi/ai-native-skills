@@ -1,5 +1,7 @@
-# Adapters that must produce no conformance finding.
-# Add entries only after audited migration and regression coverage.
+# Adapters with reviewed legacy boundary ownership during conformance v2 migration.
+# A v2 declaration must be CONFORMANT. A legacy entry may remain NOT_CHECKABLE
+# only because adapter.conformance.yaml is absent, with no ERROR/PARTIAL finding
+# and INFO-only migration diagnostics.
 accessibility
 adaptive-component-design
 adr

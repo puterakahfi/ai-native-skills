@@ -3,10 +3,10 @@ name: redesign-workflow
 description: Delegated, domain-aware redesign workflow for existing visual surfaces — route → compose owners → verify decisions → inspect → direct → specify → map repository implementation context → produce under a write lease → verify provenance, scope, conventions, concurrency, and artifact → facade review → classify → fix → deliver.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.6.0
+  ai-native-skills.version: 3.6.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
-  ai-native-skills.implements: ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/workflows/redesign-workflow.contract.yaml
   ai-native-skills.contract-version: ^2.2.0
   ai-native-skills.boundary.covers: '["existing_visual_surface_redesign","redesign_vs_refinement_vs_audit_routing","explicit_design_implementation_and_repository_write_ownership","confirmed_scope_and_baseline_capture","final_effective_diff_integrity","concurrent_branch_write_detection_and_coordination","brand_content_asset_behavior_route_and_path_preservation","direction_macrostructure_and_layered_change_planning","user_and_business_value_alignment","delegated_design_and_implementation_work","prototype_or_repository_patch_production","domain_appropriate_verification","design_review_facade_acceptance","bounded_fix_iterations_and_learning_promotion","passing_delivery_or_honest_blocker_reporting"]'
   ai-native-skills.boundary.delegates: '["net_new_product_definition","audit_only_work_after_route_handoff","known_narrow_refinement_after_route_handoff","non_visual_feature_development","unrelated_product_route_auth_data_or_infrastructure_changes","general_bugfix_workflow","deployment_or_publishing","legal_trademark_clearance","force_overwrite_of_uninspected_concurrent_work","destructive_repository_operations_without_approval"]'
@@ -20,65 +20,33 @@ metadata:
 
 ## Reviewed core contract interface
 
-Source: `ai-native-core/contracts/skills/quality/redesign-workflow.contract.yaml` · compatible line: `^2.2.0`
+Source: `ai-native-core/contracts/workflows/redesign-workflow.contract.yaml` · compatible line: `^2.2.0`
 
 ```yaml
 required_inputs:
-- current_surface
-- confirmed_scope
-- baseline_evidence
-- artifact_type
-- output_mode
-- decision_sources
-- acceptance_criteria
-allowed_outputs:
-- redesign_state
+- target
+required_outputs:
 - route_decision
-- confirmed_scope
-- scope_provenance
-- decision_log
-- integrity_gate
-- implementation_context_gate
-- concurrency_gate
-- final_diff_manifest
 - role_composition
-- design_owner
-- implementation_owner
-- repository_write_owner
-- redesign_strategy
-- option_comparison
-- selected_direction
-- layered_change_plan
-- implementation_context_profile
-- convention_locks
-- reuse_extension_decisions
-- implementation_mapping
-- dependency_decisions
-- value_alignment
-- production_output
-- verification_evidence
-- review_report
-- correction_handoff
-- learning_review
-- delivery_decision
+- delegation_plan
+- loop_summary
+- delivery_manifest
 quality_gates:
-- route_before_production
-- exactly_one_design_owner
-- implementation_owner_required_for_patch_or_executable_prototype
-- exactly_one_active_repository_write_owner_for_patch_mode
-- material_decisions_require_verified_provenance
-- unverified_approval_or_override_claims_block_progress
-- current_state_baseline_scope_and_locks_are_captured_before_production
+- lifecycle_route_resolved_before_production
+- exactly_one_design_owner_is_explicit
+- implementation_owner_is_explicit_when_patching
+- exactly_one_repository_write_owner_is_active
+- specialists_are_selected_from_declared_changed_layers
+- baseline_and_confirmed_scope_are_recorded_before_patch_production
 - preservation_locks_are_recorded_and_rechecked
-- implementation_context_is_required_before_repository_code_production
-- package_presence_does_not_prove_canonicality
-- implementation_mapping_precedes_code_production
-- new_dependency_requires_proven_capability_gap_consequences_and_authority
-- final_effective_diff_is_verified_not_only_patch_commits
-- concurrent_writes_are_detected_and_coordinated
-- expected_head_lease_guards_every_repository_write
-- parent_pointer_moves_only_after_child_stability
-- repeated_conflicting_updates_stop_without_force_overwrite
+- production_follows_declared_delegation_plan
+- production_remains_inside_confirmed_scope
+- every_repository_write_uses_expected_head_lease
+- head_drift_is_inspected_before_retry
+- repeated_decision_reversal_stops_automatic_writes
+- parent_pointer_does_not_chase_unstable_child_head
+- verification_strategy_matches_primary_design_domain_and_artifact_state
+- final_effective_diff_must_match_confirmed_scope
 - every_changed_path_must_be_classified
 - scope_contamination_blocks_review_and_delivery
 - concurrency_block_is_not_reported_as_pass

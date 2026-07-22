@@ -1,0 +1,47 @@
+compatibility_registry_migration:
+  schema_version: 1.0.0
+  repository: puterakahfi/ai-native-skills
+  issue: 26
+  decision: RETIRE_STALE_RUNTIME_BINDINGS
+  rationale:
+  - the declared adapters/hermes implementation paths do not exist
+  - most records reference the retired repository coordinate puterakahfi/native-ai-core
+  - native-ai-runtime-agent contains a circular implementation-as-runtime-protocol reference
+  - rewriting adapter_path to skills/<id>/SKILL.md would collapse reusable methodology into runtime binding
+  - no active repository consumer reference was found during discovery
+  retired_records:
+  - path: compat/diagram-architect.compat.yaml
+    adapter_id: diagram-architect
+    runtime: hermes
+    missing_path: adapters/hermes/diagram-architect/SKILL.md
+  - path: compat/master-design.compat.yaml
+    adapter_id: master-design
+    runtime: hermes
+    missing_path: adapters/hermes/master-design/SKILL.md
+  - path: compat/master-engineer.compat.yaml
+    adapter_id: master-engineer
+    runtime: hermes
+    missing_path: adapters/hermes/master-engineer/SKILL.md
+  - path: compat/native-ai-engineer.compat.yaml
+    adapter_id: native-ai-engineer
+    runtime: hermes
+    missing_path: adapters/hermes/native-ai-engineer/SKILL.md
+  - path: compat/native-ai-runtime-agent.compat.yaml
+    adapter_id: native-ai-runtime-agent
+    runtime: hermes
+    missing_path: adapters/hermes/native-ai-runtime-agent/SKILL.md
+    additional_defect: circular_implementation_as_runtime_protocol
+  - path: compat/native-ai-runtime-ops.compat.yaml
+    adapter_id: native-ai-runtime-ops
+    runtime: hermes
+    missing_path: adapters/hermes/native-ai-runtime-ops/SKILL.md
+  future_binding_requirements:
+  - create a real runtime adapter implementation outside the reusable skill methodology
+  - reference an accepted core port or contract by stable ID path and version
+  - declare runtime and provider binding in native-ai-fw or an owning product registry
+  - provide structural conformance and separate runtime evidence
+  - never reuse this retirement record as proof that a future binding exists
+  evidence_boundary:
+  - retired compatibility metadata does not retire the executable skills
+  - executable skill presence does not prove runtime installation
+  - future runtime binding requires new reviewed evidence

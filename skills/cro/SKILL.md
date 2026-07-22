@@ -1,10 +1,14 @@
 ---
 name: cro
-description: 'Conversion Rate Optimization — attention flow, trust signals, friction audit, above-fold optimization, and persuasion architecture for landing pages.'
+description: "Conversion Rate Optimization \u2014 attention flow, trust signals, friction\
+  \ audit, above-fold optimization, and persuasion architecture for landing pages."
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.type: skill
-  ai-native-skills.tags: '[''cro'', ''conversion'', ''persuasion'', ''trust'', ''attention'', ''landing-page'']'
+  ai-native-skills.tags: '[''cro'', ''conversion'', ''persuasion'', ''trust'', ''attention'',
+    ''landing-page'']'
+  ai-native-skills.implements: ai-native-core/contracts/skills/content/cro.contract.yaml
+  ai-native-skills.contract-version: ^1.0.0
 ---
 
 ## HARD RULES
@@ -13,6 +17,29 @@ metadata:
 - Never add Layer 4 (social proof) without Layer 1–3 in place
 
 # CRO — Conversion Rate Optimization
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/content/cro.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- page_artifact
+- conversion_goal
+allowed_outputs:
+- five_second_test_result
+- trust_signal_audit
+- friction_report
+- persuasion_sequence_verdict
+- cro_gate_scores
+quality_gates:
+- name_readable_within_3_seconds_above_fold
+- role_or_value_prop_visible_without_scroll
+- contact_reachable_in_one_click
+- persuasion_sequence_identity_role_worldview_evidence_depth_access
+```
+
+Keep this interface synchronized with the pinned core contract. Static conformance does not replace behavioral, runtime, product, review, or approval evidence.
+
 
 ## When to Load
 - Any page has a goal (contact, hire, read, click)

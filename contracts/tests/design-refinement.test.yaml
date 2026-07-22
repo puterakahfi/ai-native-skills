@@ -1,6 +1,6 @@
 skill_test:
   skill: design-refinement
-  version: 2.2.0
+  version: 2.2.1
   description: Verify refinement requires covered findings, explicit locks and budget, correct design and implementation-context diagnosis, preservation evidence, and focused architecture/design acceptance.
   cases:
   - id: limited-identity-review-cannot-complete-refinement

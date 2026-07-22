@@ -1,0 +1,80 @@
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: skill-evolution
+    kind: workflow
+    patterns:
+    - skill-adapter
+    entrypoint: skills/skill-evolution/SKILL.md
+  implements:
+    contract_id: skill-evolution
+    contract_kind: workflow_contract
+    contract_path: contracts/workflows/skill-evolution.contract.yaml
+    contract_version: ^1.0.0
+  capability: verified_experience_to_generalized_skill_improvement
+  interface:
+    inputs:
+    - source_case
+    - observed_failure
+    - verified_fix
+    - before_after_evidence
+    - candidate_skill_or_workflow
+    outputs:
+    - learning_candidate
+    - root_reason
+    - generalization_report
+    - target_layer_decision
+    - minimal_patch_plan
+    - skill_or_reference_patch
+    - regression_eval
+    - promotion_verdict
+    - promotion_commit
+    - no_promotion_reason
+    - provenance_record
+    gates:
+    - learning_review_runs_after_every_verified_fix_even_when_no_promotion_occurs
+    - source_case_has_before_after_evidence_and_successful_verification
+    - local_product_detail_is_not_written_into_shared_skill_body
+    - promoted_learning_explains_the_reusable_reason_not_only_the_case_solution
+    - target_layer_is_selected_from_defect_class_and_knowledge_scope
+    - target_skill_and_related_skills_are_checked_for_duplicate_coverage
+    - transferable_rule_is_validated_against_multiple_contexts_and_counterexamples
+    - skill_patch_is_the_smallest_change_that_closes_the_reasoning_gap
+    - every_promoted_patch_has_a_regression_eval_derived_from_the_real_case
+    - existing_evals_and_contract_conformance_are_rechecked
+    - product_specific_case_provenance_is_stored_outside_shared_skill_instructions
+    - repository_write_and_approval_policy_is_respected
+    - completion_report_distinguishes_promoted_local_only_duplicate_and_deferred_candidates
+  boundary:
+    covers:
+    - post_fix_learning_review
+    - reusable_reason_extraction
+    - local_vs_shared_knowledge_classification
+    - target_layer_selection
+    - minimal_skill_or_reference_patch
+    - regression_eval_creation
+    - skill_version_and_promotion_decision
+    - provenance_logging_outside_skill_body
+    delegates:
+    - solving_the_original_product_issue
+    - copying_product_implementation_into_shared_skills
+    - storing_product_specific_breakpoints_routes_or_component_names_in_shared_skills
+    - promoting_unverified_anecdotes
+    - bypassing_repository_write_or_approval_policy
+    - replacing_product_design_locks_or_architecture_decisions
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+  - case_observation_method
+  - source_repository_access
+  - patch_method
+  - eval_runner
+  - versioning_policy
+  - branch_and_commit_policy
+  - provenance_storage
+  - automatic_learning_review_is_required
+  evidence_refs: []

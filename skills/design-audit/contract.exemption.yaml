@@ -1,0 +1,31 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: design-audit
+    path: skills/design-audit/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: The reusable audit lifecycle has no canonical contract distinct from design-review
+    facade authority and must not inherit review semantics implicitly.
+  scope:
+  - static_contract_ownership
+  - core_gap_tracking
+  review_date: '2026-10-22'
+  evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-core#45
+  - kind: executable_source
+    ref: skills/design-audit/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#45
+    triggers:
+    - canonical design audit contract is accepted and published
+    - audit ownership and design-review handoff are reviewed against the new contract
+  prohibited_claims:
+  - core_contract_conformance
+  - behavioral_verification
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active

@@ -1,0 +1,41 @@
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: copywriting
+    kind: skill
+    patterns:
+    - skill-adapter
+    entrypoint: skills/copywriting/SKILL.md
+  implements:
+    contract_id: copywriting
+    contract_kind: skill_contract
+    contract_path: contracts/skills/content/copywriting.contract.yaml
+    contract_version: ^1.0.0
+  capability: messaging_hierarchy_headline_formulas_and_tone_calibration
+  interface:
+    inputs:
+    - content_inventory
+    - audience_profile
+    outputs:
+    - revised_copy
+    - headline_variants
+    - tone_audit
+    - value_proposition_statement
+    - copywriting_gate_scores
+    gates:
+    - value_prop_not_generic_1000_person_test
+    - stance_45_words_or_less
+    - no_hedging_verbs
+    - no_buzzwords_passionate_innovative_etc
+    - at_least_one_concrete_detail_per_section
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements: []
+  evidence_refs: []

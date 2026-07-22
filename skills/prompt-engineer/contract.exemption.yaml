@@ -1,0 +1,31 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: prompt-engineer
+    path: skills/prompt-engineer/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: Image prompt engineering is reusable, but no provider-neutral core contract
+    currently separates stable prompt reasoning from volatile model dialect guidance.
+  scope:
+  - static_contract_ownership
+  - core_gap_tracking
+  review_date: '2026-10-22'
+  evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-core#45
+  - kind: executable_source
+    ref: skills/prompt-engineer/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#45
+    triggers:
+    - provider-neutral image prompt engineering contract is accepted
+    - volatile provider syntax remains adapter-owned during conformance review
+  prohibited_claims:
+  - core_contract_conformance
+  - behavioral_verification
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active

@@ -1,6 +1,6 @@
 skill_test:
   skill: skill-evolution
-  version: 1.0.2
+  version: 1.0.3
   description: Verify skill-evolution exposes and applies its reviewed context, workflow, profile, or maintenance contract
     interface.
   cases:

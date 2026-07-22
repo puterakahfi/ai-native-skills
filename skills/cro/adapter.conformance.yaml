@@ -1,0 +1,40 @@
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: cro
+    kind: skill
+    patterns:
+    - skill-adapter
+    entrypoint: skills/cro/SKILL.md
+  implements:
+    contract_id: cro
+    contract_kind: skill_contract
+    contract_path: contracts/skills/content/cro.contract.yaml
+    contract_version: ^1.0.0
+  capability: conversion_optimization_trust_signals_and_friction_audit
+  interface:
+    inputs:
+    - page_artifact
+    - conversion_goal
+    outputs:
+    - five_second_test_result
+    - trust_signal_audit
+    - friction_report
+    - persuasion_sequence_verdict
+    - cro_gate_scores
+    gates:
+    - name_readable_within_3_seconds_above_fold
+    - role_or_value_prop_visible_without_scroll
+    - contact_reachable_in_one_click
+    - persuasion_sequence_identity_role_worldview_evidence_depth_access
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements: []
+  evidence_refs: []

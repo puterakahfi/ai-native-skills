@@ -3,11 +3,11 @@ name: skill-evolution
 description: Converts verified lessons from real product work into minimal reusable skill, reference, workflow, eval, or core-contract improvements without copying product-specific implementation history into shared skills.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.2
+  ai-native-skills.version: 1.0.3
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.requires: "skill-eval git-workflow"
-  ai-native-skills.implements: ai-native-core/contracts/skills/quality/skill-evolution.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/workflows/skill-evolution.contract.yaml
   ai-native-skills.contract-version: "^1.0.0"
   ai-native-skills.boundary.covers: '["post_fix_learning_review","reusable_reason_extraction","local_vs_shared_knowledge_classification","target_layer_selection","minimal_skill_or_reference_patch","regression_eval_creation","skill_version_and_promotion_decision","provenance_logging_outside_skill_body"]'
   ai-native-skills.boundary.delegates: '["solving_the_original_product_issue","copying_product_implementation_into_shared_skills","storing_product_specific_breakpoints_routes_or_component_names_in_shared_skills","promoting_unverified_anecdotes","bypassing_repository_write_or_approval_policy","replacing_product_design_locks_or_architecture_decisions"]'
@@ -18,7 +18,7 @@ metadata:
 
 ## Reviewed core contract interface
 
-Source: `ai-native-core/contracts/skills/quality/skill-evolution.contract.yaml` · compatible line: `^1.0.0`
+Source: `ai-native-core/contracts/workflows/skill-evolution.contract.yaml` · compatible line: `^1.0.0`
 
 ```yaml
 required_inputs:

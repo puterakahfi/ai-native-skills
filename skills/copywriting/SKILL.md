@@ -1,10 +1,14 @@
 ---
 name: copywriting
-description: 'Copywriting fundamentals — messaging hierarchy, headline formulas, value proposition, microcopy, tone calibration, and content audit gates.'
+description: "Copywriting fundamentals \u2014 messaging hierarchy, headline formulas,\
+  \ value proposition, microcopy, tone calibration, and content audit gates."
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.type: skill
-  ai-native-skills.tags: '[''content'', ''copywriting'', ''messaging'', ''ux-writing'', ''tone-of-voice'']'
+  ai-native-skills.tags: '[''content'', ''copywriting'', ''messaging'', ''ux-writing'',
+    ''tone-of-voice'']'
+  ai-native-skills.implements: ai-native-core/contracts/skills/content/copywriting.contract.yaml
+  ai-native-skills.contract-version: ^1.0.0
 ---
 
 ## HARD RULES
@@ -13,6 +17,30 @@ metadata:
 - Score Gates CP1–CP4 before delivering any copy
 
 # Copywriting
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/skills/content/copywriting.contract.yaml` · compatible line: `^1.0.0`
+
+```yaml
+required_inputs:
+- content_inventory
+- audience_profile
+allowed_outputs:
+- revised_copy
+- headline_variants
+- tone_audit
+- value_proposition_statement
+- copywriting_gate_scores
+quality_gates:
+- value_prop_not_generic_1000_person_test
+- stance_45_words_or_less
+- no_hedging_verbs
+- no_buzzwords_passionate_innovative_etc
+- at_least_one_concrete_detail_per_section
+```
+
+Keep this interface synchronized with the pinned core contract. Static conformance does not replace behavioral, runtime, product, review, or approval evidence.
+
 
 ## When to Load
 - Writing or auditing any hero headline, stance, bio, or section heading
