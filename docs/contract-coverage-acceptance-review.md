@@ -1,34 +1,25 @@
 # Contract Coverage And Compatibility Registry — Acceptance Review
 
-Status: candidate acceptance evidence for `ai-native-skills#26`
+Status: implementation accepted for owner review under `ai-native-skills#26`
 
 Pull request: `#64`
 
-Canonical policies:
+Canonical policy and generated evidence:
 
 ```text
 docs/contract-coverage.md
 compat/README.md
-```
-
-Generated evidence:
-
-```text
 docs/contract-coverage-discovery.yaml
 docs/unowned-contract-candidates.yaml
 docs/compatibility-registry-migration.yaml
 ```
 
-## Objective review
-
-Issue `#26` requires every executable artifact to have an authoritative contract reference or an explicit reviewed exemption, while compatibility metadata must describe real implementations rather than stale or circular claims.
-
-Candidate result:
+## Objective result
 
 ```text
 deterministic executable inventory: IMPLEMENTED
 contract path and version validation: IMPLEMENTED
-structured v2 declarations: IMPLEMENTED REPRESENTATIVE BATCH
+structured v2 declaration batch: IMPLEMENTED
 reviewed exemptions: IMPLEMENTED
 exemption expiry enforcement: IMPLEMENTED
 compatibility registry repair: IMPLEMENTED BY RETIREMENT
@@ -38,9 +29,7 @@ invalid executable artifacts: 0
 explicit v2 conformance errors: 0
 ```
 
-## Repository inventory
-
-Current deterministic coverage:
+## Final repository inventory
 
 ```text
 executable artifacts: 101
@@ -66,9 +55,9 @@ meta-skill: 6
 
 A legacy contract-backed artifact has a resolvable canonical path and compatible version pin. It remains incomplete under conformance v2 until a reviewed adjacent declaration is added.
 
-## Reviewed v2 declaration batch
+## Reviewed v2 declarations
 
-The following adapters have reviewed `adapter.conformance.yaml` declarations and produce `CONFORMANT` structural results:
+The following adapters have adjacent `adapter.conformance.yaml` declarations and produce `CONFORMANT` structural results:
 
 ```text
 design-refinement
@@ -78,9 +67,7 @@ copywriting
 cro
 ```
 
-### Workflow path repair
-
-Three stale workflow references were migrated from legacy skill paths to canonical workflow paths:
+Three workflow references were moved from retired skill-contract paths to canonical workflow paths:
 
 ```text
 design-refinement
@@ -93,9 +80,9 @@ skill-evolution
 → contracts/workflows/skill-evolution.contract.yaml
 ```
 
-`redesign-workflow` contained one known stale reviewed interface snapshot. The executable method already followed the current lifecycle model; only the reviewed interface block was replaced after an exact legacy-snapshot precondition matched.
+`redesign-workflow` contained one known stale reviewed-interface snapshot. The migration replaced it only after the complete legacy snapshot matched an explicit precondition. The executable methodology was not bulk-rewritten.
 
-Eval contract versions were aligned with the executable patch versions while preserving all cases and assertions:
+Eval contract versions were aligned with executable patch versions while preserving every case and assertion:
 
 ```text
 design-refinement: 2.2.1
@@ -123,19 +110,7 @@ third_party_delegation:
 - ux-patterns-for-developers
 ```
 
-Every exemption contains:
-
-```text
-artifact identity and type
-owner
-specific rationale
-bounded scope
-review date: 2026-10-22
-evidence references
-revisit triggers
-blocking issue for core_gap
-prohibited evidence and authority claims
-```
+Every exemption includes artifact identity, owner, rationale, bounded scope, source evidence, revisit triggers, prohibited claims, and review date `2026-10-22`.
 
 An exemption cannot coexist with `adapter.conformance.yaml` or `ai-native-skills.implements`. An overdue review date fails CI.
 
@@ -149,11 +124,11 @@ puterakahfi/ai-native-core#45
 → design audit, image prompt engineering, and skill maintenance contracts
 ```
 
-An exemption means ownership and migration state are explicit. It does not prove core conformance, behavioral correctness, runtime acceptance, product acceptance, review, approval, or authorization.
+An exemption records ownership and migration state. It does not prove core conformance, behavioral correctness, runtime acceptance, product acceptance, review, approval, or authorization.
 
 ## Compatibility registry decision
 
-Six Hermes compatibility records were retired:
+Six stale Hermes records were retired:
 
 ```text
 diagram-architect
@@ -164,9 +139,9 @@ native-ai-runtime-agent
 native-ai-runtime-ops
 ```
 
-The records claimed nonexistent paths under `adapters/hermes/`, most referenced a retired repository coordinate, and `native-ai-runtime-agent` contained a circular implementation-as-runtime-protocol reference.
+They referenced nonexistent `adapters/hermes/` implementation paths. Most also referenced a retired repository coordinate; `native-ai-runtime-agent` contained a circular implementation-as-runtime-protocol reference.
 
-They were not rewritten to point at `skills/<id>/SKILL.md` because:
+They were not redirected to `skills/<id>/SKILL.md` because:
 
 ```text
 reusable skill methodology
@@ -174,7 +149,7 @@ reusable skill methodology
 ≠ installed runtime binding
 ```
 
-The executable skills remain active. A future binding requires a real adapter implementation, an accepted core port or contract reference, framework/product ownership, structural evidence, and separate runtime/product evidence.
+The executable skills remain active. A future runtime binding requires a real adapter implementation, accepted core port or contract reference, framework/product ownership, structural evidence, and separate runtime/product evidence.
 
 The empty active compatibility registry is therefore an intentional valid state.
 
@@ -182,72 +157,44 @@ The empty active compatibility registry is therefore an intentional valid state.
 
 ### Contract Coverage
 
-The permanent workflow validates:
-
-```text
-all executable classifications
-core contract paths and version pins
-inventory freshness
-exemption schema and artifact identity
-classification, scope, blocking issue, and review date
-no declaration/exemption collision
-retired compatibility records remain absent
-no invalid or duplicate compatibility records
-no temporary source tooling or tracked bytecode
-core v2 migration-mode reports have zero explicit errors
-```
+Validates executable classification, core paths and pins, generated inventory freshness, exemption identity/scope/review dates, collisions, retired records, compatibility duplicates, tracked artifacts, and core v2 migration-mode errors.
 
 ### Skill And Gate Contracts
 
-The existing workflow was migrated to core conformance v2 and validates:
+Migrated to core conformance v2 and validates eval contracts, gate registry, canonical paths and pins, v2 `CONFORMANT` results, contradiction-free legacy migration, canonical eval runner, wrapper integration, and per-case behavioral smoke.
 
-```text
-repository eval contracts
-canonical design gate registry
-current core path and version resolution
-all v2 declarations are CONFORMANT
-strict legacy adapters are contradiction-free
-legacy NOT_CHECKABLE is allowed only for a missing declaration
-migration diagnostics remain INFO-only
-canonical core eval runner
-wrapper integration
-per-case behavioral smoke
-```
-
-### Other repository gates
+### Other required gates
 
 ```text
 Skill Pack Contracts
 Validate capability inventory
 ```
 
-Both remain required and passed on the synchronized candidate implementation head.
+## Validated implementation evidence
 
-## Candidate validation evidence
-
-Synchronized implementation head:
+Implementation head containing the complete acceptance artifact:
 
 ```text
-236763310a3756ea85363a8c467edbc435b8d0d6
+02c214621d0b8c6cb634062a9e9564b279bfec7c
 ```
 
-Permanent workflow results:
+Permanent workflows:
 
 ```text
 Contract Coverage
-run 29911023450 — PASS
+run 29911216611 — PASS
 
 Skill And Gate Contracts
-run 29911023447 — PASS
+run 29911216862 — PASS
 
 Skill Pack Contracts
-run 29911023477 — PASS
+run 29911216593 — PASS
 
 Validate capability inventory
-run 29911023565 — PASS
+run 29911216890 — PASS
 ```
 
-Exact final review-head evidence is recorded in PR `#64` after this acceptance artifact is included and all four permanent workflows pass again.
+Every substantive step completed successfully. Exact final PR-head checks remain the authoritative merge-time evidence.
 
 ## Evidence boundary
 
@@ -279,7 +226,7 @@ This change does not claim runtime installation, provider availability, product 
 | No invalid or unowned executable remains | PASS |
 | Exemptions have owner, rationale, scope, review date, evidence, and revisit path | PASS |
 | Core gaps are tracked upstream | PASS |
-| Compatibility paths point only to real active implementations | PASS — stale records retired; no active placeholders |
+| Compatibility registry contains no stale active binding | PASS |
 | Circular compatibility references are absent | PASS |
 | Duplicate compatibility IDs are absent | PASS |
 | V2 declarations are structurally conformant | PASS |
@@ -289,7 +236,7 @@ This change does not claim runtime installation, provider availability, product 
 | Temporary migration tooling is absent | PASS |
 | Runtime and product evidence remain separate | PASS |
 
-## Candidate verdict
+## Verdict
 
 ```text
 contract coverage objective: PASS
@@ -297,6 +244,6 @@ compatibility registry objective: PASS
 migration safety: PASS
 behavioral/eval regression: PASS
 repository governance: PASS
-ready for owner review: PENDING FINAL-HEAD CI
+ready for owner review: YES
 ready for merge: NO — owner approval required
 ```
