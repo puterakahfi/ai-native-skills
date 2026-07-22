@@ -1,0 +1,37 @@
+## Value alignment
+
+**Verdict: EXPERIMENT_FIRST**
+
+### User value
+Potential partners gain a measurable way to monetize useful tutorials, reviews, and workflow demonstrations. Referred customers gain contextual education and proof of use before purchasing.
+
+### Business value
+The opportunity could create performance-based acquisition, qualified revenue, product education, and learning about the most convertible customer segments. These benefits are plausible, but not yet established by product evidence.
+
+### Evidence labels
+
+**KNOWN**
+- The product is sold once rather than through a recurring subscription.
+- An affiliate channel would require attribution, commission rules, and partner operations.
+
+**ASSUMED**
+- Relevant creators will publish useful content when offered a commission.
+- Referred customers will be sufficiently qualified to reach first value.
+- A small content kit will reduce partner activation friction.
+
+**UNKNOWN**
+- Sustainable commission range after payment fees, tax, support, refunds, and fraud.
+- Which partner segment converts best.
+- Click-to-purchase conversion and referred-customer activation quality.
+- Operational cost and dispute rate.
+
+### Metrics
+- **Leading:** qualified partner interviews, approved pilot partners, percentage publishing within seven days, time to first content, and referral clicks.
+- **Lagging:** valid paid transactions, net contribution after commission, percentage of productive partners, and referred-customer activation.
+- **Guardrail:** refund and chargeback rate, misleading claims, spam complaints, support cost, attribution disputes, and customer-data exposure.
+
+### Riskiest assumption
+Qualified partners will invest the effort to create and publish useful content when the expected commission per transaction may be modest.
+
+### Recommended first step
+Run a bounded manual pilot with a small curated cohort. Pre-register success and failure thresholds, verify unit economics, and measure customer activation—not only clicks or stated interest. Do not authorize a full self-service platform until the evidence supports it.
