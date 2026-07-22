@@ -21,3 +21,23 @@ skill_test:
     quality_gates_tested:
     - insights_grounded_in_evidence_not_assumption
     - jtbd_framed_as_job_not_feature
+  - id: affiliate-partner-research-tests-observed-behavior
+    description: Affiliate discovery studies real partner behavior, effort, and alternatives instead of hypothetical enthusiasm.
+    trigger: >
+      Kami ingin merekrut creator untuk affiliate program produk desain AI.
+      Susun riset awal untuk mengetahui siapa partner yang tepat dan apakah
+      mereka benar-benar akan membuat konten promosi.
+    must_contain:
+    - past behavior
+    - existing alternatives
+    - qualification
+    - provisional
+    - JTBD
+    - evidence
+    must_not_contain:
+    - would you join
+    - stated interest proves demand
+    - affiliate dashboard is the user need
+    quality_gates_tested:
+    - insights_grounded_in_evidence_not_assumption
+    - jtbd_framed_as_job_not_feature
