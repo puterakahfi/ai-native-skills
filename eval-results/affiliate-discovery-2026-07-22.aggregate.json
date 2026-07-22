@@ -2,13 +2,25 @@
   "overall": "APPLIED",
   "evidence_strength": "PROVISIONAL_BEHAVIORAL_EVIDENCE",
   "summary": {
-    "applied": 3,
+    "applied": 6,
     "partial": 0,
     "ghost": 0,
     "incomplete": 0,
-    "total": 3
+    "total": 6
   },
   "skills": [
+    {
+      "skill": "workflow-router",
+      "case": "affiliate-opportunity-routes-product-discovery-before-build",
+      "classification": "APPLIED",
+      "failed_assertions": []
+    },
+    {
+      "skill": "product-development-workflow",
+      "case": "unverified-affiliate-opportunity-stops-after-experiment-design",
+      "classification": "APPLIED",
+      "failed_assertions": []
+    },
     {
       "skill": "business-value-alignment",
       "case": "affiliate-program-unknown-demand-routes-experiment-first",
@@ -24,6 +36,12 @@
     {
       "skill": "user-research",
       "case": "affiliate-partner-research-tests-observed-behavior",
+      "classification": "APPLIED",
+      "failed_assertions": []
+    },
+    {
+      "skill": "decision-provenance",
+      "case": "agent-proposed-affiliate-terms-are-not-permanent-policy",
       "classification": "APPLIED",
       "failed_assertions": []
     }
