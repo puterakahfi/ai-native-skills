@@ -12,9 +12,12 @@
   "context_note": "The runtime had access to VisualMate project context and the governing ai-native-skills documents. This was not an isolated fresh-session run.",
   "runner": {
     "core_commit": "5c4c6f21859636a4a143a511030879c9923b2ef1",
-    "source": "ai-native-core/scripts/run-eval.py fetched through the GitHub connector",
-    "execution_mode": "canonical casefold-substring classification logic materialized locally",
-    "limitation": "The execution container could not resolve github.com, so the pinned repository could not be cloned and the canonical file was not executed directly. The relevant classification logic was reproduced exactly from the fetched pinned source."
+    "source": "ai-native-core/scripts/run-eval.py",
+    "execution_mode": "direct pinned canonical runner execution in GitHub Actions",
+    "workflow_run_id": 29928054775,
+    "artifact_id": 8532790125,
+    "artifact_digest": "sha256:59dc2364feb143c2a142802a422013d60b9e4800856ac2155b6506916a2c2b58",
+    "result": "APPLIED"
   },
   "captured_cases": [
     "workflow-router/affiliate-opportunity-routes-product-discovery-before-build",
@@ -24,6 +27,6 @@
     "user-research/affiliate-partner-research-tests-observed-behavior",
     "decision-provenance/agent-proposed-affiliate-terms-are-not-permanent-policy"
   ],
-  "evidence_strength": "PROVISIONAL_BEHAVIORAL_EVIDENCE",
-  "remaining_gate": "Repeat in an isolated fresh runtime and execute the pinned canonical runner directly before final promotion or merge readiness."
+  "evidence_strength": "PINNED_CANONICAL_RUNNER_VERIFIED_WITH_CONTEXT_LIMITATION",
+  "remaining_gate": "Repeat generation in an isolated fresh runtime while preserving model, runtime, and context provenance."
 }
