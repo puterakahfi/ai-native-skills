@@ -230,6 +230,42 @@ jobs:
             --output-dir .tmp/eval-smoke-outputs \
             --report-json .tmp/eval-reports/contract-smoke.json
 
+      - name: Run tracked affiliate behavioral evidence
+        env:
+          AI_NATIVE_CORE_DIR: ${{ github.workspace }}/.deps/ai-native-core
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp/affiliate-eval-results
+
+          bash scripts/run-eval.sh --skill business-value-alignment --case affiliate-program-unknown-demand-routes-experiment-first --output-file eval-outputs/business-value-alignment/affiliate-program-unknown-demand-routes-experiment-first.txt --report-json .tmp/affiliate-eval-results/business-value-alignment.json
+          bash scripts/run-eval.sh --skill experiment-design --case affiliate-program-starts-with-bounded-manual-pilot --output-file eval-outputs/experiment-design/affiliate-program-starts-with-bounded-manual-pilot.txt --report-json .tmp/affiliate-eval-results/experiment-design.json
+          bash scripts/run-eval.sh --skill user-research --case affiliate-partner-research-tests-observed-behavior --output-file eval-outputs/user-research/affiliate-partner-research-tests-observed-behavior.txt --report-json .tmp/affiliate-eval-results/user-research.json
+          bash scripts/run-eval.sh --skill workflow-router --case affiliate-opportunity-routes-product-discovery-before-build --output-file eval-outputs/workflow-router/affiliate-opportunity-routes-product-discovery-before-build.txt --report-json .tmp/affiliate-eval-results/workflow-router.json
+          bash scripts/run-eval.sh --skill product-development-workflow --case unverified-affiliate-opportunity-stops-after-experiment-design --output-file eval-outputs/product-development-workflow/unverified-affiliate-opportunity-stops-after-experiment-design.txt --report-json .tmp/affiliate-eval-results/product-development-workflow.json
+          bash scripts/run-eval.sh --skill decision-provenance --case agent-proposed-affiliate-terms-are-not-permanent-policy --output-file eval-outputs/decision-provenance/agent-proposed-affiliate-terms-are-not-permanent-policy.txt --report-json .tmp/affiliate-eval-results/decision-provenance.json
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('.tmp/affiliate-eval-results')
+          reports = [json.loads(path.read_text(encoding='utf-8')) for path in sorted(root.glob('*.json'))]
+          failed = [report for report in reports if report.get('overall') != 'APPLIED']
+          aggregate = {
+              'runner': 'ai-native-core/scripts/run-eval.py',
+              'core_ref': '9f372b58508ed7ddbf4c535c839ab0c84d88004f',
+              'overall': 'APPLIED' if not failed else 'FAILED',
+              'skills': [
+                  {'skill': report['skill'], 'overall': report['overall'], 'cases': report['cases']}
+                  for report in reports
+              ],
+          }
+          (root / 'aggregate.json').write_text(json.dumps(aggregate, indent=2), encoding='utf-8')
+          print(json.dumps(aggregate, indent=2))
+          if failed:
+              raise SystemExit('Tracked behavioral evidence is not fully APPLIED')
+          PY
+
       - name: Upload adapter conformance reports
         if: always()
         uses: actions/upload-artifact@v7
@@ -250,3 +286,12 @@ jobs:
           path: .tmp/eval-reports/contract-smoke.json
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Upload direct behavioral reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: affiliate-discovery-direct-behavioral-eval
+          path: .tmp/affiliate-eval-results/*.json
+          if-no-files-found: error
+          retention-days: 30
