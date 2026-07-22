@@ -10,13 +10,33 @@ Source cases:
 
 ```text
 overall: APPLIED
+workflow-router: APPLIED
+product-development-workflow: APPLIED
 business-value-alignment: APPLIED
 experiment-design: APPLIED
 user-research: APPLIED
+decision-provenance: APPLIED
 promotion_verdict: EVAL_ONLY
 ```
 
-All required patterns were present and no forbidden pattern was found for the three natural-trigger cases.
+All required patterns were present and no forbidden pattern was found for the six natural-trigger cases.
+
+The composition behavior also remained correct:
+
+```text
+unverified opportunity
+→ product-development-workflow
+→ discovery
+→ business-value-alignment
+→ experiment-design
+→ after_experiment_design stop point
+→ no implementation authority
+
+agent-authored commission proposal
+→ NON_AUTHORITATIVE
+→ PROVENANCE_BLOCKED
+→ ROUTE_FOR_APPROVAL
+```
 
 ## Evidence boundary
 
@@ -28,4 +48,4 @@ The execution container could not resolve `github.com`, so the pinned canonical 
 2. direct execution of the pinned canonical runner;
 3. preservation of model/runtime/context provenance.
 
-No skill body, workflow, or core contract patch is justified by this run.
+No skill body, workflow methodology, or core contract patch is justified by this run. The verified reusable change remains regression coverage only.
