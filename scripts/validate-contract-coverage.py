@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import importlib.util
-import sys
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -133,6 +133,23 @@ def validate_retirement(root: Path) -> list[str]:
     return errors
 
 
+def tracked_generated_artifacts(root: Path) -> list[str]:
+    """Return tracked bytecode/cache artifacts; ignore runner-created untracked caches."""
+    result = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "-z"],
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr.decode("utf-8", errors="replace").strip())
+    tracked = [value.decode("utf-8") for value in result.stdout.split(b"\0") if value]
+    return sorted(
+        path
+        for path in tracked
+        if "/__pycache__/" in f"/{path}" or path.endswith((".pyc", ".pyo"))
+    )
+
+
 def validate(root: Path, core_root: Path) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
     inventory_module = load_inventory_module(root)
@@ -173,14 +190,14 @@ def validate(root: Path, core_root: Path) -> tuple[list[str], dict[str, Any]]:
 
     errors.extend(validate_retirement(root))
 
-    temporary = [
+    temporary_source = [
         *root.glob(".github/workflows/tmp-*.yml"),
         *root.glob("scripts/tmp-*.py"),
-        *root.rglob("__pycache__"),
-        *root.rglob("*.pyc"),
     ]
-    for path in temporary:
-        errors.append(f"temporary_or_generated_artifact:{rel(path, root)}")
+    for path in temporary_source:
+        errors.append(f"temporary_source_artifact:{rel(path, root)}")
+    for path in tracked_generated_artifacts(root):
+        errors.append(f"tracked_generated_artifact:{path}")
 
     return sorted(set(errors)), summary
 
