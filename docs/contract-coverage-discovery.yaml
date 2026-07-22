@@ -15,9 +15,9 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 5
       legacy_contract_backed: 88
-      unowned: 8
-    compatibility_manifests: 6
-    compatibility_manifests_with_errors: 6
+      reviewed_exemption: 8
+    compatibility_manifests: 0
+    compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
   artifacts:
   - id: accessibility
@@ -184,8 +184,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/chatgpt-app-development/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: code-review-workflow
     path: skills/code-review-workflow/SKILL.md
@@ -286,8 +286,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/composition/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: content-strategy
     path: skills/content-strategy/SKILL.md
@@ -496,8 +496,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/design-audit/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: design-brand
     path: skills/design-brand/SKILL.md
@@ -888,8 +888,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/github-profile/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: hermes-profile-bootstrap
     path: skills/hermes-profile-bootstrap/SKILL.md
@@ -1256,8 +1256,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/prompt-engineer/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: prompt-optimizer
     path: skills/prompt-optimizer/SKILL.md
@@ -1461,8 +1461,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/skill-doctor/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: skill-eval
     path: skills/skill-eval/SKILL.md
@@ -1655,8 +1655,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/ux-patterns-for-developers/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: ux-psychology
     path: skills/ux-psychology/SKILL.md
@@ -1700,8 +1700,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/visual-hierarchy/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: web-performance
     path: skills/web-performance/SKILL.md
@@ -1733,91 +1733,7 @@ contract_coverage_inventory:
     exemption_path: null
     classification: legacy_contract_backed
     errors: []
-  compatibility_manifests:
-  - path: compat/diagram-architect.compat.yaml
-    root_keys:
-    - skill_adapter
-    ids:
-    - diagram-architect
-    repository_coordinates: []
-    implementation_paths:
-    - field: skill_adapter.adapter_path
-      value: adapters/hermes/diagram-architect/SKILL.md
-      exists: false
-    contract_paths: []
-    version_pins: []
-    errors:
-    - missing_implementation_path:skill_adapter.adapter_path
-  - path: compat/master-design.compat.yaml
-    root_keys:
-    - skill_adapter
-    ids:
-    - master-design
-    repository_coordinates: []
-    implementation_paths:
-    - field: skill_adapter.adapter_path
-      value: adapters/hermes/master-design/SKILL.md
-      exists: false
-    contract_paths: []
-    version_pins: []
-    errors:
-    - missing_implementation_path:skill_adapter.adapter_path
-  - path: compat/master-engineer.compat.yaml
-    root_keys:
-    - skill_adapter
-    ids:
-    - master-engineer
-    repository_coordinates: []
-    implementation_paths:
-    - field: skill_adapter.adapter_path
-      value: adapters/hermes/master-engineer/SKILL.md
-      exists: false
-    contract_paths: []
-    version_pins: []
-    errors:
-    - missing_implementation_path:skill_adapter.adapter_path
-  - path: compat/native-ai-engineer.compat.yaml
-    root_keys:
-    - skill_adapter
-    ids:
-    - native-ai-engineer
-    repository_coordinates: []
-    implementation_paths:
-    - field: skill_adapter.adapter_path
-      value: adapters/hermes/native-ai-engineer/SKILL.md
-      exists: false
-    contract_paths: []
-    version_pins: []
-    errors:
-    - missing_implementation_path:skill_adapter.adapter_path
-  - path: compat/native-ai-runtime-agent.compat.yaml
-    root_keys:
-    - skill_adapter
-    ids:
-    - native-ai-runtime-agent
-    repository_coordinates: []
-    implementation_paths:
-    - field: skill_adapter.adapter_path
-      value: adapters/hermes/native-ai-runtime-agent/SKILL.md
-      exists: false
-    contract_paths: []
-    version_pins: []
-    errors:
-    - missing_implementation_path:skill_adapter.adapter_path
-  - path: compat/native-ai-runtime-ops.compat.yaml
-    root_keys:
-    - skill_adapter
-    ids:
-    - native-ai-runtime-ops
-    repository_coordinates: []
-    implementation_paths:
-    - field: skill_adapter.adapter_path
-      value: adapters/hermes/native-ai-runtime-ops/SKILL.md
-      exists: false
-    contract_paths: []
-    version_pins: []
-    errors:
-    - missing_implementation_path:skill_adapter.adapter_path
+  compatibility_manifests: []
   duplicate_compatibility_ids: {}
   interpretation:
   - legacy_contract_backed means path and version metadata exist but no reviewed v2

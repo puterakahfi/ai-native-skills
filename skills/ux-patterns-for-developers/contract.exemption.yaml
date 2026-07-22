@@ -6,7 +6,13 @@ contract_exemption:
     type: skill
   classification: third_party_delegation
   owner: ai-native-skills-maintainers
-  reason: This executable delegates to an external pattern catalog and installation surface rather than implementing a canonical Native AI Engineering capability contract.
+  reason: This executable delegates to an external pattern catalog and installation
+    surface rather than implementing a canonical Native AI Engineering capability
+    contract.
+  scope:
+  - static_contract_ownership
+  - third_party_delegation
+  review_date: '2026-10-22'
   evidence_refs:
   - kind: third_party_source
     ref: github.com/thedaviddias/ux-patterns-for-developers

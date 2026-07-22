@@ -6,7 +6,12 @@ contract_exemption:
     type: skill
   classification: provider_specific
   owner: ai-native-skills-maintainers
-  reason: This executable owns GitHub-specific profile surfaces, pinned repositories, Markdown rendering, repository evidence, and account mutation boundaries.
+  reason: This executable owns GitHub-specific profile surfaces, pinned repositories,
+    Markdown rendering, repository evidence, and account mutation boundaries.
+  scope:
+  - static_contract_ownership
+  - provider_specific_execution
+  review_date: '2026-10-22'
   evidence_refs:
   - kind: provider_boundary
     ref: GitHub profile and repository presentation surface

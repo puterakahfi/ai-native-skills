@@ -6,7 +6,12 @@ contract_exemption:
     type: skill
   classification: core_gap
   owner: ai-native-skills-maintainers
-  reason: Image prompt engineering is reusable, but no provider-neutral core contract currently separates stable prompt reasoning from volatile model dialect guidance.
+  reason: Image prompt engineering is reusable, but no provider-neutral core contract
+    currently separates stable prompt reasoning from volatile model dialect guidance.
+  scope:
+  - static_contract_ownership
+  - core_gap_tracking
+  review_date: '2026-10-22'
   evidence_refs:
   - kind: github_issue
     ref: puterakahfi/ai-native-core#45

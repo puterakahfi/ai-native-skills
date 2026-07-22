@@ -6,7 +6,12 @@ contract_exemption:
     type: skill
   classification: provider_specific
   owner: ai-native-skills-maintainers
-  reason: This executable is intentionally specific to ChatGPT, the OpenAI Apps SDK, MCP app surfaces, and volatile provider publication and billing behavior.
+  reason: This executable is intentionally specific to ChatGPT, the OpenAI Apps SDK,
+    MCP app surfaces, and volatile provider publication and billing behavior.
+  scope:
+  - static_contract_ownership
+  - provider_specific_execution
+  review_date: '2026-10-22'
   evidence_refs:
   - kind: provider_boundary
     ref: OpenAI ChatGPT Apps SDK and MCP application surface
@@ -15,7 +20,8 @@ contract_exemption:
   revisit:
     triggers:
     - a provider-neutral conversational app adapter contract is accepted in core
-    - the skill is generalized beyond ChatGPT-specific execution and distribution semantics
+    - the skill is generalized beyond ChatGPT-specific execution and distribution
+      semantics
   prohibited_claims:
   - core_contract_conformance
   - behavioral_verification

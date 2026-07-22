@@ -6,7 +6,13 @@ contract_exemption:
     type: workflow
   classification: core_gap
   owner: ai-native-skills-maintainers
-  reason: Skill maintenance is reusable, but no canonical lifecycle contract currently separates transferable health invariants from repository-specific line and placement heuristics.
+  reason: Skill maintenance is reusable, but no canonical lifecycle contract currently
+    separates transferable health invariants from repository-specific line and placement
+    heuristics.
+  scope:
+  - static_contract_ownership
+  - core_gap_tracking
+  review_date: '2026-10-22'
   evidence_refs:
   - kind: github_issue
     ref: puterakahfi/ai-native-core#45
