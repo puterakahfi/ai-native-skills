@@ -19,3 +19,32 @@ skill_test:
     quality_gates_tested:
     - riskiest_assumption_must_be_named_before_test_design
     - smallest_test_must_be_smaller_than_building_the_full_solution
+  - id: affiliate-program-starts-with-bounded-manual-pilot
+    description: An unverified affiliate opportunity uses a falsifiable manual pilot instead of a full platform build.
+    trigger: >
+      Sebuah produk SaaS sekali bayar ingin menambah affiliate program. Margin,
+      minat partner, conversion, dan kualitas customer referral belum terbukti.
+      Rancang langkah validasi pertama sebelum membuat dashboard dan payout otomatis.
+    must_contain:
+    - riskiest assumption
+    - falsifiable
+    - manual pilot
+    - what will not be built
+    - PASS
+    - PARTIAL
+    - FAIL
+    - guardrail
+    - evidence
+    must_not_contain:
+    - build the full affiliate platform as the experiment
+    - interview interest proves demand
+    - change thresholds after seeing results
+    quality_gates_tested:
+    - hypothesis_must_be_falsifiable
+    - riskiest_assumption_must_be_named_before_test_design
+    - smallest_test_must_be_smaller_than_building_the_full_solution
+    - success_criteria_must_be_measurable_before_running_experiment
+    - guardrail_criteria_must_prevent_harm_or_misleading_learning
+    - decision_rule_must_define_pass_partial_fail_actions
+    - experiment_must_state_what_will_not_be_built_yet
+    - learning_must_feed_prd_mvp_slice_or_stop_decision
