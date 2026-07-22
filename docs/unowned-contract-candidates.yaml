@@ -1,0 +1,135 @@
+unowned_contract_candidate_inventory:
+  schema_version: 0.1.0
+  repository: puterakahfi/ai-native-skills
+  core_repository: puterakahfi/ai-native-core
+  summary:
+    unowned_artifacts: 10
+    with_exact_candidate: 4
+    without_exact_candidate: 6
+  candidates:
+  - artifact_id: chatgpt-app-development
+    artifact_path: skills/chatgpt-app-development/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates: []
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: composition
+    artifact_path: skills/composition/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates:
+    - id: composition
+      kind: skill_contract
+      path: contracts/skills/design/composition.contract.yaml
+      version: 1.0.0
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: copywriting
+    artifact_path: skills/copywriting/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates:
+    - id: copywriting
+      kind: skill_contract
+      path: contracts/skills/content/copywriting.contract.yaml
+      version: 1.0.0
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: cro
+    artifact_path: skills/cro/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates:
+    - id: cro
+      kind: skill_contract
+      path: contracts/skills/content/cro.contract.yaml
+      version: 1.0.0
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: design-audit
+    artifact_path: skills/design-audit/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates: []
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: github-profile
+    artifact_path: skills/github-profile/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates: []
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: prompt-engineer
+    artifact_path: skills/prompt-engineer/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates: []
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: skill-doctor
+    artifact_path: skills/skill-doctor/SKILL.md
+    type: workflow
+    patterns: []
+    exact_contract_candidates: []
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: ux-patterns-for-developers
+    artifact_path: skills/ux-patterns-for-developers/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates: []
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
+  - artifact_id: visual-hierarchy
+    artifact_path: skills/visual-hierarchy/SKILL.md
+    type: skill
+    patterns: []
+    exact_contract_candidates:
+    - id: visual-hierarchy
+      kind: skill_contract
+      path: contracts/skills/design/visual-hierarchy.contract.yaml
+      version: 1.0.0
+    normalized_contract_candidates: []
+    decision: REVIEW_REQUIRED
+    evidence_boundary:
+    - matching identity does not prove executable implementation
+    - no candidate may be assigned without interface and boundary review
+    - absence of a candidate requires reviewed exemption or core gap decision
