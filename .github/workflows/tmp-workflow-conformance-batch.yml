@@ -96,7 +96,11 @@ jobs:
           failed = False
           for target in targets:
               path = Path("/tmp/conformance-reports") / f"{target}.json"
-              report = json.loads(path.read_text())
+              document = json.loads(path.read_text())
+              records = document["conformance_report"]["results"]
+              if len(records) != 1:
+                  raise SystemExit(f"{target}: expected one report record, found {len(records)}")
+              report = records[0]
               result[target] = {
                   "structural_status": report["structural_status"],
                   "findings": report.get("findings", []),
