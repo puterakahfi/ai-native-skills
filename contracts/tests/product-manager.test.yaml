@@ -1,27 +1,151 @@
 skill_test:
   skill: product-manager
-  version: 1.1.0
-  description: Verify product-manager exposes and applies its reviewed product, research, experiment, or decision contract
-    interface.
+  version: 1.2.0
+  description: >
+    Verify product-manager exposes and applies its reviewed product definition,
+    task breakdown, and evidence-based prioritization interface without claiming
+    product authority or delivery execution.
   cases:
-  - id: product-definition-starts-from-attributable-intent
-    description: Turn an explicit feature request into scoped, measurable, traceable product work.
-    trigger: Apply product-manager to a realistic product, research, experiment, business-value, or decision task and report
-      the contract-backed result.
-    must_contain:
-    - product_intent_or_feature_request
-    - acceptance_criteria_must_be_testable_not_vague
-    - tasks_must_trace_to_acceptance_criteria
-    must_not_contain:
-    - invent the product request
-    - create floating tasks without acceptance criteria
-    quality_gates_tested:
-    - acceptance_criteria_must_be_testable_not_vague
-    - tasks_must_trace_to_acceptance_criteria
+    - id: product-definition-starts-from-attributable-intent
+      description: Turn an explicit feature request into scoped, measurable, traceable product work.
+      trigger: >
+        Apply product-manager to a realistic product request and report the
+        contract-backed result.
+      must_contain:
+        - product_intent_or_feature_request
+        - acceptance_criteria_must_be_testable_not_vague
+        - tasks_must_trace_to_acceptance_criteria
+      must_not_contain:
+        - invent the product request
+        - create floating tasks without acceptance criteria
+      quality_gates_tested:
+        - acceptance_criteria_must_be_testable_not_vague
+        - tasks_must_trace_to_acceptance_criteria
 
-  - id: task-breakdown-hands-off-release-topology
-    description: Product task breakdown delegates epic and repository topology decisions.
-    trigger: Break a multi-slice ChatGPT App MVP into traceable tasks and decide PR targets.
-    must_contain: [tasks_must_trace_to_acceptance_criteria, parent_ref, delivery-work-breakdown, release unit, branch topology]
-    must_not_contain: [product-manager chooses main from default, floating task]
-    quality_gates_tested: [acceptance_criteria_must_be_testable_not_vague, tasks_must_trace_to_acceptance_criteria]
+    - id: task-breakdown-hands-off-release-topology
+      description: Product task breakdown delegates epic and repository topology decisions.
+      trigger: Break a multi-slice ChatGPT App MVP into traceable tasks and decide PR targets.
+      must_contain:
+        - tasks_must_trace_to_acceptance_criteria
+        - parent_ref
+        - delivery-work-breakdown
+        - release unit
+        - branch topology
+      must_not_contain:
+        - product-manager chooses main from default
+        - floating task
+      quality_gates_tested:
+        - acceptance_criteria_must_be_testable_not_vague
+        - tasks_must_trace_to_acceptance_criteria
+
+    - id: verified-security-gate-precedes-conversion-scoring
+      description: >
+        A verified authentication and trust exposure is treated as a mandatory
+        sequencing gate before ordinary conversion-value scoring.
+      trigger: >
+        Compare VisualMate member-management and authentication hardening against
+        landing-page refinement. Evidence shows active shared credentials and a
+        shared master password, while landing-page conversion uplift is only a
+        hypothesis without baseline data.
+      must_contain:
+        - mandatory gate
+        - security
+        - trust exposure
+        - evidence
+        - landing-page conversion
+        - product authority
+        - consequences of deferral
+      must_not_contain:
+        - average the security blocker into a weighted score
+        - claim a fabricated conversion lift
+        - final approval is automatic
+      quality_gates_tested:
+        - priority_must_be_explicit_not_implicit
+
+    - id: high-value-claim-with-missing-evidence
+      description: A potentially valuable initiative remains evidence-limited rather than receiving fabricated confidence.
+      trigger: >
+        Prioritize an AI campaign feature described as high revenue potential,
+        but no analytics, customer research, estimate, deadline, or accepted
+        strategy evidence is available.
+      must_contain:
+        - NEEDS_EVIDENCE
+        - assumptions
+        - unknowns
+        - confidence
+        - evidence_next_step
+      must_not_contain:
+        - guaranteed revenue
+        - high confidence
+        - invented analytics
+      quality_gates_tested:
+        - priority_must_be_explicit_not_implicit
+
+    - id: prerequisite-beats-low-effort-cosmetic-work
+      description: Dependency and cost-of-delay reasoning remains explicit when a cosmetic task is easier.
+      trigger: >
+        Compare a one-day cosmetic button refinement against a larger identity-lock
+        infrastructure change that blocks three already-accepted product features.
+      must_contain:
+        - dependencies
+        - prerequisite
+        - blocks
+        - opportunity cost
+        - consequences of deferral
+      must_not_contain:
+        - lowest effort automatically wins
+        - choose the cosmetic task because it is quick
+      quality_gates_tested:
+        - priority_must_be_explicit_not_implicit
+
+    - id: product-defined-weights-can-reverse-recommendation
+      description: Product policy and sensitivity are preserved instead of claiming a universal ranking.
+      trigger: >
+        Compare two independently valid initiatives. Under risk-reduction weights A
+        ranks first, but under an accepted short-term acquisition policy B ranks first.
+      must_contain:
+        - product_defined
+        - weights
+        - sensitivity
+        - reversal conditions
+        - decision authority
+      must_not_contain:
+        - universal scoring formula
+        - one objectively correct ranking
+      quality_gates_tested:
+        - priority_must_be_explicit_not_implicit
+
+    - id: undecidable-comparison-routes-smallest-evidence-step
+      description: A close comparison with material unknowns routes to a reversible evidence-gathering action.
+      trigger: >
+        Compare two initiatives with similar estimated value, no mandatory gate,
+        low-confidence effort estimates, and no decisive user evidence.
+      must_contain:
+        - NEEDS_EVIDENCE
+        - low confidence
+        - reversible
+        - smallest
+        - evidence_next_step
+      must_not_contain:
+        - arbitrary winner
+        - fabricate certainty
+      quality_gates_tested:
+        - priority_must_be_explicit_not_implicit
+
+    - id: recommendation-remains-distinct-from-approval-and-topology
+      description: Prioritization recommends but does not approve, branch, or implement work.
+      trigger: >
+        Produce a comparative priority recommendation and then explain the next
+        handoff for a multi-slice accepted initiative.
+      must_contain:
+        - recommendation
+        - product approval
+        - decision-provenance
+        - delivery-work-breakdown
+        - branch topology
+      must_not_contain:
+        - recommendation equals approval
+        - product-manager creates the branch
+        - product-manager deploys
+      quality_gates_tested:
+        - priority_must_be_explicit_not_implicit
