@@ -1,0 +1,26 @@
+{
+  "source_case": "VisualMate Partner Program",
+  "source_issues": [
+    "puterakahfi/visualmate#98",
+    "puterakahfi/visualmate#99",
+    "puterakahfi/ai-native-skills#70"
+  ],
+  "model": "GPT-5.6 Thinking",
+  "runtime": "ChatGPT project conversation",
+  "capture_type": "in-conversation natural-trigger response",
+  "trigger_policy": "Exact natural trigger from each eval case; no skill name included in the trigger",
+  "context_note": "The runtime had access to VisualMate project context and the governing ai-native-skills documents. This was not an isolated fresh-session run.",
+  "runner": {
+    "core_commit": "5c4c6f21859636a4a143a511030879c9923b2ef1",
+    "source": "ai-native-core/scripts/run-eval.py fetched through the GitHub connector",
+    "execution_mode": "canonical casefold-substring classification logic materialized locally",
+    "limitation": "The execution container could not resolve github.com, so the pinned repository could not be cloned and the canonical file was not executed directly. The relevant classification logic was reproduced exactly from the fetched pinned source."
+  },
+  "captured_cases": [
+    "business-value-alignment/affiliate-program-unknown-demand-routes-experiment-first",
+    "experiment-design/affiliate-program-starts-with-bounded-manual-pilot",
+    "user-research/affiliate-partner-research-tests-observed-behavior"
+  ],
+  "evidence_strength": "PROVISIONAL_BEHAVIORAL_EVIDENCE",
+  "remaining_gate": "Repeat in an isolated fresh runtime and execute the pinned canonical runner directly before final promotion or merge readiness."
+}
