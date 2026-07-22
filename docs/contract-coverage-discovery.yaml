@@ -13,9 +13,9 @@ contract_coverage_inventory:
       domain-reviewer: 1
       facade: 1
     coverage:
-      contract_backed_v2: 3
+      contract_backed_v2: 5
       legacy_contract_backed: 88
-      unowned: 10
+      unowned: 8
     compatibility_manifests: 6
     compatibility_manifests_with_errors: 6
     duplicate_compatibility_ids: 0
@@ -338,31 +338,31 @@ contract_coverage_inventory:
     path: skills/copywriting/SKILL.md
     type: skill
     patterns: []
-    version: 1.0.0
-    implements: null
-    contract_version: null
-    contract_path_exists: null
+    version: 1.0.1
+    implements: contracts/skills/content/copywriting.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/copywriting/adapter.conformance.yaml
     exemption_path: null
-    classification: unowned
+    classification: contract_backed_v2
     errors: []
   - id: cro
     path: skills/cro/SKILL.md
     type: skill
     patterns: []
-    version: 1.0.0
-    implements: null
-    contract_version: null
-    contract_path_exists: null
+    version: 1.0.1
+    implements: contracts/skills/content/cro.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/cro/adapter.conformance.yaml
     exemption_path: null
-    classification: unowned
+    classification: contract_backed_v2
     errors: []
   - id: dark-light-theming
     path: skills/dark-light-theming/SKILL.md
