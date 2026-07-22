@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 85,
+    "skill": 86,
     "workflow": 10,
     "meta-skill": 6,
-    "total": 101
+    "total": 102
   },
   "items": [
     {
@@ -382,6 +382,11 @@
       "name": "rule-manager",
       "type": "skill",
       "path": "skills/rule-manager/SKILL.md"
+    },
+    {
+      "name": "security-engineer",
+      "type": "skill",
+      "path": "skills/security-engineer/SKILL.md"
     },
     {
       "name": "security-review",
