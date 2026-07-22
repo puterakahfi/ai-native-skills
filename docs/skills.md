@@ -7,9 +7,9 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 Current repository inventory:
 
 - `skill`: 85
-- `workflow`: 9
+- `workflow`: 10
 - `meta-skill`: 6
-- Total executable skills: 100
+- Total executable skills: 101
 
 ---
 
@@ -133,6 +133,7 @@ A good workflow defines:
 | `product-development-workflow` | discovery → PRD → MVP/release-unit decomposition → spec → implementation → verification → release → deploy → launch → learn |
 | `design-refinement` | verified finding → lock/budget → implementation-context mapping → smallest patch → verify → focused review → deliver |
 | `skill-doctor` | audit → triage → repair → verify |
+| `skill-evolution` | observe verified product learning → diagnose reusable gap → apply minimal skill/workflow/eval/core patch → validate → promote |
 
 A workflow should load `implementation-context-discovery` only when existing-repository code production or material implementation mapping is in scope. Pure static visual artifacts may mark it `NOT_APPLICABLE`.
 
