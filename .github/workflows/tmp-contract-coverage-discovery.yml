@@ -47,6 +47,8 @@ jobs:
           --output docs/contract-coverage-discovery.yaml
 
       - name: Generate core conformance migration reports
+        id: core_conformance
+        continue-on-error: true
         shell: bash
         run: |
           set -o pipefail
@@ -56,16 +58,30 @@ jobs:
             --mode migration \
             --output-dir /tmp/conformance-reports \
             --format json \
-            | tee /tmp/conformance-inventory.log
+            > /tmp/conformance-inventory.log 2>&1
+          status=$?
+          tail -n 240 /tmp/conformance-inventory.log
+          exit "$status"
+
+      - name: Record conformance outcome
+        if: always()
+        shell: bash
+        run: |
+          cat > /tmp/conformance-outcome.yaml <<EOF
+          core_conformance_outcome: ${{ steps.core_conformance.outcome }}
+          EOF
 
       - name: Upload discovery evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: contract-coverage-discovery-${{ github.run_id }}
           path: |
             docs/contract-coverage-discovery.yaml
+            /tmp/conformance-outcome.yaml
             /tmp/conformance-inventory.log
             /tmp/conformance-reports
+          if-no-files-found: warn
 
       - name: Commit discovery report and remove temporary workflow
         shell: bash
