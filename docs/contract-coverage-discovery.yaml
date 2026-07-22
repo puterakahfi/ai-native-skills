@@ -1,0 +1,1830 @@
+contract_coverage_inventory:
+  schema_version: 0.1.0
+  repository: puterakahfi/ai-native-skills
+  issue: 26
+  core_repository: puterakahfi/ai-native-core
+  summary:
+    executable_artifacts: 101
+    official_types:
+      meta-skill: 6
+      skill: 85
+      workflow: 10
+    patterns:
+      domain-reviewer: 1
+      facade: 1
+    coverage:
+      invalid: 3
+      legacy_contract_backed: 88
+      unowned: 10
+    compatibility_manifests: 6
+    compatibility_manifests_with_errors: 6
+    duplicate_compatibility_ids: 0
+  artifacts:
+  - id: accessibility
+    path: skills/accessibility/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/design/accessibility.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: adaptive-component-design
+    path: skills/adaptive-component-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.2.4
+    implements: contracts/skills/design/adaptive-component-design.contract.yaml
+    contract_version: ~1.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - component_fitness_diagnosis
+      - context_specific_component_selection
+      - cross_context_component_substitution
+      - responsive_pattern_transformation
+      - navigation_component_adaptation
+      - content_density_adaptation
+      - interaction_mode_adaptation
+      - shared_state_and_semantics_across_variants
+      - overflow_and_disclosure_affordance_behavior
+      - adaptation_boundary_verification
+      delegates:
+      - visual_style_and_brand_expression
+      - page_level_macrostructure_selection
+      - design_token_definition
+      - generic_breakpoint_and_fluid_grid_mechanics
+      - implementation_framework_specific_code
+      - product_specific_component_library_mapping
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: adr
+    path: skills/adr/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/adr.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: ai-system-design
+    path: skills/ai-system-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/ai-system-design.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: api-contract
+    path: skills/api-contract/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/api-contract.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: architecture-review
+    path: skills/architecture-review/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.0
+    implements: contracts/skills/quality/architecture-review.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: brand-identity-review
+    path: skills/brand-identity-review/SKILL.md
+    type: skill
+    patterns:
+    - domain-reviewer
+    version: 1.0.0
+    implements: contracts/skills/quality/brand-identity-review.contract.yaml
+    contract_version: ^0.1.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: bugfix-workflow
+    path: skills/bugfix-workflow/SKILL.md
+    type: workflow
+    patterns: []
+    version: 1.1.0
+    implements: contracts/workflows/bugfix.contract.yaml
+    contract_version: ~0.3
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: business-value-alignment
+    path: skills/business-value-alignment/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/product/business-value-alignment.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: chatgpt-app-development
+    path: skills/chatgpt-app-development/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: code-review-workflow
+    path: skills/code-review-workflow/SKILL.md
+    type: workflow
+    patterns: []
+    version: 2.1.0
+    implements: contracts/workflows/code-review.contract.yaml
+    contract_version: ~0.3
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: collection-discovery-design
+    path: skills/collection-discovery-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: contracts/skills/design/collection-discovery-design.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - collection_shape_and_discovery_pressure_diagnosis
+      - retrieval_mode_analysis_and_prioritization
+      - browse_search_and_narrowing_strategy
+      - collection_organization_presentation_strategy
+      - filtering_faceting_and_sorting_strategy
+      - traversal_strategy
+      - progressive_disclosure_strategy
+      - collection_state_and_context_preservation
+      - adapter_capability_selection
+      - adapter_selection_rationale_and_tradeoffs
+      - collection_specific_context_adaptation_requirements
+      - realistic_collection_stress_planning
+      - discovery_strategy_verification
+      delegates:
+      - taxonomy_definition_and_content_meaning
+      - user_research_execution
+      - visual_style_and_brand_expression
+      - interaction_adapter_behavior_and_accessibility_implementation
+      - cross_context_component_fitness_and_substitution_details
+      - generic_breakpoint_grid_and_fluid_layout_mechanics
+      - framework_or_component_library_specific_implementation
+      - backend_search_index_query_and_storage_implementation
+      - product_specific_ranking_or_business_policy
+      - final_design_acceptance
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: component-family-design
+    path: skills/component-family-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: contracts/skills/design/component-family-design.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - atomic_design_hierarchy_classification
+      - canonical_component_family_inventory
+      - organism_family_definition
+      - template_family_definition
+      - invariant_anatomy_and_slot_definition
+      - bounded_variant_governance
+      - route_to_family_instance_mapping
+      - cross_route_component_family_consistency
+      - adaptive_family_identity_preservation
+      - family_reuse_extension_creation_or_migration_decisions
+      - component_family_drift_diagnosis
+      - cross_route_family_acceptance_criteria
+      delegates:
+      - design_token_definition
+      - visual_style_or_brand_direction
+      - task_level_component_pattern_selection
+      - generic_breakpoint_mechanics
+      - repository_framework_or_import_mapping
+      - product_specific_component_implementation
+      - final_rendered_accessibility_or_architecture_acceptance
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: composition
+    path: skills/composition/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: content-strategy
+    path: skills/content-strategy/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/content/content-strategy.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: context-engineering
+    path: skills/context-engineering/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/context/context-engineering.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: context-manager
+    path: skills/context-manager/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/context/context-manager.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: copywriting
+    path: skills/copywriting/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: cro
+    path: skills/cro/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: dark-light-theming
+    path: skills/dark-light-theming/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/dark-light-theming.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: data-modeling
+    path: skills/data-modeling/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/engineering/data-modeling.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: decision-making
+    path: skills/decision-making/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/product/decision-making.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: decision-provenance
+    path: skills/decision-provenance/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/quality/decision-provenance.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - material_decision_claim_verification
+      - source_attribution
+      - decision_domain_authority_matching
+      - explicit_supersession_and_conflict_detection
+      - scope_lock_route_approval_status_and_ownership_claims
+      - policy_and_required_approval_preservation
+      - decision_ledger_output
+      delegates:
+      - making_product_or_design_decisions_for_the_owner
+      - bypassing_legal_security_repository_or_organizational_policy
+      - proving_runtime_or_design_quality
+      - inventing_missing_decision_sources
+      - treating_agent_authored_text_as_owner_approval
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: delivery-work-breakdown
+    path: skills/delivery-work-breakdown/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: contracts/skills/product/delivery-work-breakdown.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - release_unit_classification
+      - product_epic_feature_task_spike_and_bug_hierarchy
+      - parent_child_acceptance_traceability
+      - delivery_dependency_graph
+      - issue_plan_structure
+      - integration_and_release_branch_topology
+      - work_item_base_branch_and_pr_target_decisions
+      - epic_acceptance_and_final_release_gate_planning
+      - direct_to_release_branch_exception_reasoning
+      delegates:
+      - product_value_or_prd_authoring
+      - acceptance_criterion_definition
+      - issue_tracker_api_execution
+      - repository_branch_commit_or_pr_execution
+      - feature_flag_implementation
+      - code_implementation
+      - technical_code_review
+      - product_release_authorization
+      - deployment_execution
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: deployment-workflow
+    path: skills/deployment-workflow/SKILL.md
+    type: workflow
+    patterns: []
+    version: 2.0.0
+    implements: contracts/workflows/deployment.contract.yaml
+    contract_version: ~0.2
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-audit
+    path: skills/design-audit/SKILL.md
+    type: skill
+    patterns: []
+    version: 2.2.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: design-brand
+    path: skills/design-brand/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/design-brand.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-color
+    path: skills/design-color/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/color-theory.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - hue_saturation_value_decisions
+      - palette_construction
+      - color_harmony_rules
+      - color_psychology_validation
+      - genre_to_palette_mapping
+      delegates:
+      - contrast_ratio_wcag
+      - semantic_token_naming
+      - dark_light_switching
+      - component_level_color
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-depth
+    path: skills/design-depth/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/design/design-depth.contract.yaml
+    contract_version: ^2.1.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - depth_need_assessment
+      - surface_and_elevation_relationships
+      - atmosphere_and_imagery_integration
+      - overlap_and_layer_architecture
+      - optional_typography_interleave
+      - responsive_depth_fallback
+      - depth_effect_restraint
+      delegates:
+      - illustration_creation
+      - product_specific_elevation_token_values
+      - motion_timing_and_reduced_motion_implementation
+      - page_macrostructure
+      - independent_design_acceptance
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-foundation
+    path: skills/design-foundation/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.5.1
+    implements: contracts/skills/design/design-foundation.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-genre
+    path: skills/design-genre/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.3.1
+    implements: contracts/skills/design/design-genre.contract.yaml
+    contract_version: ^1.1.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-iconography
+    path: skills/design-iconography/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/iconography.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - icon_family_selection
+      - style_consistency_rules
+      - sizing_optical_alignment
+      - genre_to_icon_mapping
+      - a11y_attribute_rules
+      delegates:
+      - svg_component_implementation
+      - icon_animation
+      - token_sizing_values
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-interaction
+    path: skills/design-interaction/SKILL.md
+    type: meta-skill
+    patterns: []
+    version: 1.0.0
+    implements: contracts/skills/design/design-interaction.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-layout
+    path: skills/design-layout/SKILL.md
+    type: meta-skill
+    patterns: []
+    version: 1.2.0
+    implements: contracts/skills/design/design-layout.contract.yaml
+    contract_version: ^2.0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-patterns
+    path: skills/design-patterns/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/design-patterns.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-refinement
+    path: skills/design-refinement/SKILL.md
+    type: workflow
+    patterns: []
+    version: 2.2.0
+    implements: contracts/skills/quality/design-refinement.contract.yaml
+    contract_version: ^1.2.0
+    contract_path_exists: false
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: invalid
+    errors:
+    - contract_path_missing
+  - id: design-review
+    path: skills/design-review/SKILL.md
+    type: skill
+    patterns:
+    - facade
+    version: 3.4.0
+    implements: contracts/skills/quality/design-review.contract.yaml
+    contract_version: ~0.2
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-spacing
+    path: skills/design-spacing/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/spacing.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - visual_rhythm_decisions
+      - ma_intentional_space
+      - spatial_hierarchy_logic
+      - breathing_room_vs_dead_space
+      delegates:
+      - token_values
+      - 8px_grid_rules
+      - css_var_declarations
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-strategy
+    path: skills/design-strategy/SKILL.md
+    type: meta-skill
+    patterns: []
+    version: 1.1.0
+    implements: contracts/skills/design/design-strategy.contract.yaml
+    contract_version: ^1.1.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-system
+    path: skills/design-system/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/design-system.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-typography
+    path: skills/design-typography/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/typography.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - typeface_personality_and_selection
+      - display_body_pairing
+      - modular_scale_selection
+      - hierarchy_h1_to_caption
+      - leading_tracking_rhythm
+      - font_rendering_antialiasing
+      - genre_to_typeface_mapping
+      delegates:
+      - contrast_ratio_wcag
+      - characters_per_line
+      - minimum_font_size_px
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: design-visual
+    path: skills/design-visual/SKILL.md
+    type: meta-skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/design/design-visual.contract.yaml
+    contract_version: ^1.1.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: diagram-architect
+    path: skills/diagram-architect/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/visual-thinking/diagram-architect.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: domain-driven-design
+    path: skills/domain-driven-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/domain-driven-design.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: ethics-responsible-ai
+    path: skills/ethics-responsible-ai/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/quality/ethics-responsible-ai.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: event-driven-design
+    path: skills/event-driven-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/event-driven-design.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: experiment-design
+    path: skills/experiment-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/product/experiment-design.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: git-workflow
+    path: skills/git-workflow/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.0
+    implements: contracts/skills/engineering/git-workflow.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: github-profile
+    path: skills/github-profile/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.4.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: hermes-profile-bootstrap
+    path: skills/hermes-profile-bootstrap/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/runtime/profile-bootstrap.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: implementation-context-discovery
+    path: skills/implementation-context-discovery/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.2.0
+    implements: contracts/skills/engineering/implementation-context-discovery.contract.yaml
+    contract_version: ^1.1.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - repository_implementation_ecosystem_discovery
+      - canonical_framework_runtime_and_tooling_classification
+      - component_system_shared_utility_variant_and_registry_inventory
+      - component_capability_coverage_mapping
+      - typography_role_and_token_mapping
+      - semantic_native_eligibility_mapping
+      - styling_token_and_iconography_implementation_mapping
+      - state_form_query_data_and_build_test_tooling_mapping
+      - repository_convention_lock_definition
+      - reuse_extension_composition_registry_native_or_dependency_decision
+      - capability_gap_and_parallel_system_diagnosis
+      - new_dependency_evidence_and_consequence_record
+      - implementation_mapping_before_code_production
+      - implementation_context_verification_planning
+      delegates:
+      - product_specific_component_implementation
+      - design_pattern_or_component_fitness_selection
+      - visual_style_brand_or_design_system_definition
+      - runtime_behavior_visual_quality_or_accessibility_acceptance
+      - architecture_compliance_acceptance_after_implementation
+      - dependency_purchase_legal_or_licensing_approval
+      - product_specific_migration_execution
+      - backend_domain_or_business_policy
+      - repository_write_or_merge_execution
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: incident-response
+    path: skills/incident-response/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/runtime/incident-response.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: information-architecture
+    path: skills/information-architecture/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/design/information-architecture.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: language-standards
+    path: skills/language-standards/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/governance/language-standards.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: macrostructures
+    path: skills/macrostructures/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/macrostructures.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: master-design
+    path: skills/master-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.2.1
+    implements: contracts/skills/design/master-design.contract.yaml
+    contract_version: ~0.2
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: master-engineer
+    path: skills/master-engineer/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.0
+    implements: contracts/skills/engineering/master-engineer.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: micro-frontend
+    path: skills/micro-frontend/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/micro-frontend.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: model-selection
+    path: skills/model-selection/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/runtime/model-selection.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: motion-design
+    path: skills/motion-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/motion-design.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: native-ai-engineer
+    path: skills/native-ai-engineer/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/runtime/native-ai-engineer.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: native-ai-runtime-agent
+    path: skills/native-ai-runtime-agent/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/runtime/native-ai-runtime-agent.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: native-ai-runtime-ops
+    path: skills/native-ai-runtime-ops/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/runtime/native-ai-runtime-ops.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: new-feature-workflow
+    path: skills/new-feature-workflow/SKILL.md
+    type: workflow
+    patterns: []
+    version: 2.3.0
+    implements: contracts/workflows/new-feature.contract.yaml
+    contract_version: ~0.4
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: observability-design
+    path: skills/observability-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/runtime/observability-design.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: onboarding
+    path: skills/onboarding/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/runtime/onboarding.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: plan
+    path: skills/plan/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/engineering/plan.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: ports-and-adapters
+    path: skills/ports-and-adapters/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/ports-and-adapters.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: product-development-workflow
+    path: skills/product-development-workflow/SKILL.md
+    type: workflow
+    patterns: []
+    version: 2.3.0
+    implements: contracts/workflows/product-development.contract.yaml
+    contract_version: ~0.3
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: product-manager
+    path: skills/product-manager/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.2.0
+    implements: contracts/skills/product/product-manager.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: product-requirements
+    path: skills/product-requirements/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: contracts/skills/product/product-requirements.contract.yaml
+    contract_version: ~0.2
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: prompt-engineer
+    path: skills/prompt-engineer/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: prompt-optimizer
+    path: skills/prompt-optimizer/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/context/prompt-optimizer.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: readability
+    path: skills/readability/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/readability.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: redesign-workflow
+    path: skills/redesign-workflow/SKILL.md
+    type: workflow
+    patterns: []
+    version: 3.6.0
+    implements: contracts/skills/quality/redesign-workflow.contract.yaml
+    contract_version: ^2.2.0
+    contract_path_exists: false
+    legacy_boundary:
+      covers:
+      - existing_visual_surface_redesign
+      - redesign_vs_refinement_vs_audit_routing
+      - explicit_design_implementation_and_repository_write_ownership
+      - confirmed_scope_and_baseline_capture
+      - final_effective_diff_integrity
+      - concurrent_branch_write_detection_and_coordination
+      - brand_content_asset_behavior_route_and_path_preservation
+      - direction_macrostructure_and_layered_change_planning
+      - user_and_business_value_alignment
+      - delegated_design_and_implementation_work
+      - prototype_or_repository_patch_production
+      - domain_appropriate_verification
+      - design_review_facade_acceptance
+      - bounded_fix_iterations_and_learning_promotion
+      - passing_delivery_or_honest_blocker_reporting
+      delegates:
+      - net_new_product_definition
+      - audit_only_work_after_route_handoff
+      - known_narrow_refinement_after_route_handoff
+      - non_visual_feature_development
+      - unrelated_product_route_auth_data_or_infrastructure_changes
+      - general_bugfix_workflow
+      - deployment_or_publishing
+      - legal_trademark_clearance
+      - force_overwrite_of_uninspected_concurrent_work
+      - destructive_repository_operations_without_approval
+    conformance_path: null
+    exemption_path: null
+    classification: invalid
+    errors:
+    - contract_path_missing
+  - id: refactoring
+    path: skills/refactoring/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/engineering/refactoring.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: resilience-engineering
+    path: skills/resilience-engineering/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/quality/resilience-engineering.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: response-contract
+    path: skills/response-contract/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/context/response-contract.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: responsiveness
+    path: skills/responsiveness/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/responsiveness.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: role-switcher
+    path: skills/role-switcher/SKILL.md
+    type: meta-skill
+    patterns: []
+    version: 1.4.0
+    implements: contracts/skills/meta/role-switcher.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: rule-manager
+    path: skills/rule-manager/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/governance/rule-manager.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: security-review
+    path: skills/security-review/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/security/security-review.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: service-design
+    path: skills/service-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/service-design.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: skill-doctor
+    path: skills/skill-doctor/SKILL.md
+    type: workflow
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: skill-eval
+    path: skills/skill-eval/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/quality/skill-eval.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: skill-evolution
+    path: skills/skill-evolution/SKILL.md
+    type: workflow
+    patterns: []
+    version: 1.0.2
+    implements: contracts/skills/quality/skill-evolution.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: false
+    legacy_boundary:
+      covers:
+      - post_fix_learning_review
+      - reusable_reason_extraction
+      - local_vs_shared_knowledge_classification
+      - target_layer_selection
+      - minimal_skill_or_reference_patch
+      - regression_eval_creation
+      - skill_version_and_promotion_decision
+      - provenance_logging_outside_skill_body
+      delegates:
+      - solving_the_original_product_issue
+      - copying_product_implementation_into_shared_skills
+      - storing_product_specific_breakpoints_routes_or_component_names_in_shared_skills
+      - promoting_unverified_anecdotes
+      - bypassing_repository_write_or_approval_policy
+      - replacing_product_design_locks_or_architecture_decisions
+    conformance_path: null
+    exemption_path: null
+    classification: invalid
+    errors:
+    - contract_path_missing
+  - id: spec-workflow
+    path: skills/spec-workflow/SKILL.md
+    type: workflow
+    patterns: []
+    version: 1.0.0
+    implements: contracts/workflows/spec-driven.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: spike
+    path: skills/spike/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/engineering/spike.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: systematic-debugging
+    path: skills/systematic-debugging/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/quality/systematic-debugging.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: systems-thinking
+    path: skills/systems-thinking/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/architecture/systems-thinking.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: technical-debt-governance
+    path: skills/technical-debt-governance/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/engineering/technical-debt-governance.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: test-driven-development
+    path: skills/test-driven-development/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.1
+    implements: contracts/skills/engineering/test-driven-development.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: threat-modeling
+    path: skills/threat-modeling/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/security/threat-modeling.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: ui-components
+    path: skills/ui-components/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.4.0
+    implements: contracts/skills/design/ux-ui-patterns.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: user-research
+    path: skills/user-research/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/product/user-research.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: ux-patterns-for-developers
+    path: skills/ux-patterns-for-developers/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: ux-psychology
+    path: skills/ux-psychology/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/ux-psychology.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: ux-ui-patterns
+    path: skills/ux-ui-patterns/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/design/ux-ui-patterns.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: visual-hierarchy
+    path: skills/visual-hierarchy/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
+  - id: web-performance
+    path: skills/web-performance/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.1
+    implements: contracts/skills/quality/web-performance.contract.yaml
+    contract_version: ^1.0.0
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  - id: workflow-router
+    path: skills/workflow-router/SKILL.md
+    type: meta-skill
+    patterns: []
+    version: 1.5.0
+    implements: contracts/skills/meta/workflow-router.contract.yaml
+    contract_version: ~0.2
+    contract_path_exists: true
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
+  compatibility_manifests:
+  - path: compat/diagram-architect.compat.yaml
+    root_keys:
+    - skill_adapter
+    ids:
+    - diagram-architect
+    repository_coordinates: []
+    implementation_paths:
+    - field: skill_adapter.adapter_path
+      value: adapters/hermes/diagram-architect/SKILL.md
+      exists: false
+    contract_paths: []
+    version_pins: []
+    errors:
+    - missing_implementation_path:skill_adapter.adapter_path
+  - path: compat/master-design.compat.yaml
+    root_keys:
+    - skill_adapter
+    ids:
+    - master-design
+    repository_coordinates: []
+    implementation_paths:
+    - field: skill_adapter.adapter_path
+      value: adapters/hermes/master-design/SKILL.md
+      exists: false
+    contract_paths: []
+    version_pins: []
+    errors:
+    - missing_implementation_path:skill_adapter.adapter_path
+  - path: compat/master-engineer.compat.yaml
+    root_keys:
+    - skill_adapter
+    ids:
+    - master-engineer
+    repository_coordinates: []
+    implementation_paths:
+    - field: skill_adapter.adapter_path
+      value: adapters/hermes/master-engineer/SKILL.md
+      exists: false
+    contract_paths: []
+    version_pins: []
+    errors:
+    - missing_implementation_path:skill_adapter.adapter_path
+  - path: compat/native-ai-engineer.compat.yaml
+    root_keys:
+    - skill_adapter
+    ids:
+    - native-ai-engineer
+    repository_coordinates: []
+    implementation_paths:
+    - field: skill_adapter.adapter_path
+      value: adapters/hermes/native-ai-engineer/SKILL.md
+      exists: false
+    contract_paths: []
+    version_pins: []
+    errors:
+    - missing_implementation_path:skill_adapter.adapter_path
+  - path: compat/native-ai-runtime-agent.compat.yaml
+    root_keys:
+    - skill_adapter
+    ids:
+    - native-ai-runtime-agent
+    repository_coordinates: []
+    implementation_paths:
+    - field: skill_adapter.adapter_path
+      value: adapters/hermes/native-ai-runtime-agent/SKILL.md
+      exists: false
+    contract_paths: []
+    version_pins: []
+    errors:
+    - missing_implementation_path:skill_adapter.adapter_path
+  - path: compat/native-ai-runtime-ops.compat.yaml
+    root_keys:
+    - skill_adapter
+    ids:
+    - native-ai-runtime-ops
+    repository_coordinates: []
+    implementation_paths:
+    - field: skill_adapter.adapter_path
+      value: adapters/hermes/native-ai-runtime-ops/SKILL.md
+      exists: false
+    contract_paths: []
+    version_pins: []
+    errors:
+    - missing_implementation_path:skill_adapter.adapter_path
+  duplicate_compatibility_ids: {}
+  interpretation:
+  - legacy_contract_backed means path and version metadata exist but no reviewed v2
+    declaration exists
+  - unowned means neither an authoritative contract nor a reviewed exemption is declared
+  - inventory presence does not prove structural conformance or executable behavior
+  - compatibility path existence does not prove runtime or product acceptance
