@@ -3,11 +3,11 @@ name: design-refinement
 description: Bounded design correction workflow — consume an evidence-backed design-review result, lock accepted direction and passing regions, discover affected repository implementation conventions, patch within an explicit change budget, verify target, preservation, convention, and technical evidence, then run focused architecture/design re-review and learning promotion.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.2.0
+  ai-native-skills.version: 2.2.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.requires: "design-audit design-review master-design master-engineer implementation-context-discovery architecture-review skill-evolution skill-eval"
-  ai-native-skills.implements: ai-native-core/contracts/skills/quality/design-refinement.contract.yaml
+  ai-native-skills.implements: ai-native-core/contracts/workflows/design-refinement.contract.yaml
   ai-native-skills.contract-version: ^1.2.0
   ai-native-skills.related_skills: '["adaptive-component-design","redesign-workflow","ui-components","accessibility","readability","responsiveness","design-strategy","design-system","design-iconography"]'
 ---
@@ -16,7 +16,7 @@ metadata:
 
 ## Reviewed core contract interface
 
-Source: `ai-native-core/contracts/skills/quality/design-refinement.contract.yaml` · compatible line: `^1.2.0`
+Source: `ai-native-core/contracts/workflows/design-refinement.contract.yaml` · compatible line: `^1.2.0`
 
 ```yaml
 required_inputs:

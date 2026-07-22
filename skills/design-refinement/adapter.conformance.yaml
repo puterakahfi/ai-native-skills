@@ -1,0 +1,79 @@
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: design-refinement
+    kind: workflow
+    patterns:
+    - skill-adapter
+    entrypoint: skills/design-refinement/SKILL.md
+  implements:
+    contract_id: design-refinement
+    contract_kind: workflow_contract
+    contract_path: contracts/workflows/design-refinement.contract.yaml
+    contract_version: ^1.2.0
+  capability: bounded_design_gate_refinement_with_preservation_proof
+  interface:
+    inputs:
+    - target_url_or_artifact
+    - prior_facade_review
+    - target_findings
+    - accepted_direction
+    - preservation_contract
+    outputs:
+    - refinement_route_decision
+    - refinement_lock
+    - component_fitness_or_defect_diagnosis
+    - change_budget
+    - targeted_patch_plan
+    - refined_artifact
+    - before_after_change_manifest
+    - gate_status_delta_report
+    - preservation_evidence_report
+    - adjacent_regression_report
+    - focused_review_result
+    - learning_candidate_report
+    - learning_promotion_report
+    - skill_patch_log
+    - regression_eval_result
+    - promotion_commit
+    - residual_gap_report
+    gates:
+    - accepted_direction_must_be_explicit_and_still_valid
+    - target_findings_must_be_verified_FAIL_or_PARTIAL
+    - primary_domain_coverage_and_governing_reviewers_must_be_sufficient
+    - refinement_lock_and_change_budget_must_precede_patch
+    - passing_gates_regions_component_contracts_and_assets_are_preserved_by_default
+    - no_drive_by_redesign_retheme_or_opportunistic_cleanup
+    - diagnosis_distinguishes_pattern_mismatch_from_implementation_defect
+    - component_substitution_requires_verified_component_fitness_reasoning
+    - every_change_maps_to_target_finding_or_required_dependency
+    - before_after_manifest_and_preservation_evidence_are_required
+    - target_adjacent_preserved_and_affected_hard_gates_are_rechecked
+    - contextual_hard_gates_are_reviewer_owned_not_global
+    - focused_facade_verdict_controls_completion
+    - candidate_fix_must_be_verified_before_shared_learning_promotion
+    - every_verified_reusable_fix_has_a_skill_evolution_verdict
+    - every_promoted_shared_patch_has_regression_eval
+    - max_iterations_exit_includes_honest_gap_and_preservation_report
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+  - artifact_access_method
+  - patch_method
+  - visual_inspection_method
+  - interaction_probe_method
+  - before_after_manifest_method
+  - change_budget_enforcement
+  - full_redesign_fallback
+  - component_fitness_specialist
+  - skill_evolution_contract
+  - eval_method
+  - source_repository_write_policy
+  evidence_refs: []

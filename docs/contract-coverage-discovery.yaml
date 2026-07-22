@@ -13,7 +13,7 @@ contract_coverage_inventory:
       domain-reviewer: 1
       facade: 1
     coverage:
-      invalid: 3
+      contract_backed_v2: 3
       legacy_contract_backed: 88
       unowned: 10
     compatibility_manifests: 6
@@ -667,18 +667,17 @@ contract_coverage_inventory:
     path: skills/design-refinement/SKILL.md
     type: workflow
     patterns: []
-    version: 2.2.0
-    implements: contracts/skills/quality/design-refinement.contract.yaml
+    version: 2.2.1
+    implements: contracts/workflows/design-refinement.contract.yaml
     contract_version: ^1.2.0
-    contract_path_exists: false
+    contract_path_exists: true
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/design-refinement/adapter.conformance.yaml
     exemption_path: null
-    classification: invalid
-    errors:
-    - contract_path_missing
+    classification: contract_backed_v2
+    errors: []
   - id: design-review
     path: skills/design-review/SKILL.md
     type: skill
@@ -1294,10 +1293,10 @@ contract_coverage_inventory:
     path: skills/redesign-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 3.6.0
-    implements: contracts/skills/quality/redesign-workflow.contract.yaml
+    version: 3.6.1
+    implements: contracts/workflows/redesign-workflow.contract.yaml
     contract_version: ^2.2.0
-    contract_path_exists: false
+    contract_path_exists: true
     legacy_boundary:
       covers:
       - existing_visual_surface_redesign
@@ -1326,11 +1325,10 @@ contract_coverage_inventory:
       - legal_trademark_clearance
       - force_overwrite_of_uninspected_concurrent_work
       - destructive_repository_operations_without_approval
-    conformance_path: null
+    conformance_path: skills/redesign-workflow/adapter.conformance.yaml
     exemption_path: null
-    classification: invalid
-    errors:
-    - contract_path_missing
+    classification: contract_backed_v2
+    errors: []
   - id: refactoring
     path: skills/refactoring/SKILL.md
     type: skill
@@ -1485,10 +1483,10 @@ contract_coverage_inventory:
     path: skills/skill-evolution/SKILL.md
     type: workflow
     patterns: []
-    version: 1.0.2
-    implements: contracts/skills/quality/skill-evolution.contract.yaml
+    version: 1.0.3
+    implements: contracts/workflows/skill-evolution.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: false
+    contract_path_exists: true
     legacy_boundary:
       covers:
       - post_fix_learning_review
@@ -1506,11 +1504,10 @@ contract_coverage_inventory:
       - promoting_unverified_anecdotes
       - bypassing_repository_write_or_approval_policy
       - replacing_product_design_locks_or_architecture_decisions
-    conformance_path: null
+    conformance_path: skills/skill-evolution/adapter.conformance.yaml
     exemption_path: null
-    classification: invalid
-    errors:
-    - contract_path_missing
+    classification: contract_backed_v2
+    errors: []
   - id: spec-workflow
     path: skills/spec-workflow/SKILL.md
     type: workflow
