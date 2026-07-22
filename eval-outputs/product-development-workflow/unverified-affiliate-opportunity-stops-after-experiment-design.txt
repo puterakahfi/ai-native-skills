@@ -1,0 +1,23 @@
+## Product lifecycle decision
+
+**Current lifecycle:** product development
+**Current phase:** discovery
+**Verdict:** EXPERIMENT_FIRST
+
+### Required discovery capabilities
+- `business-value-alignment` to establish user value, business value, evidence labels, economics, risks, and measurable signals.
+- `experiment-design` to define one riskiest assumption, a bounded manual pilot, pre-registered PASS/PARTIAL/FAIL rules, and an explicit non-build boundary.
+- `user-research` to study partner past behavior, effort, qualification, and existing alternatives.
+- `decision-provenance` to distinguish agent proposals, approved experiment rules, permanent policy, and implementation authority.
+
+### Lifecycle stop point
+`after_experiment_design`
+
+There is no verified PRD, approved MVP scope, attributable product-owner decision, or unit-economics evidence. Therefore: **do not start implementation**.
+
+The current deliverable is a discovery brief plus experiment specification. Dashboard requirements, technical specification, delivery topology, and production work remain deferred.
+
+### Next route
+- PASS plus verified product approval → PRD and MVP-slice decision.
+- PARTIAL → narrower experiment.
+- FAIL → stop or evaluate a different partner-channel model.
