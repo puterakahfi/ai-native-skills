@@ -1,0 +1,36 @@
+{
+  "overall": "APPLIED",
+  "evidence_strength": "PROVISIONAL_BEHAVIORAL_EVIDENCE",
+  "summary": {
+    "applied": 3,
+    "partial": 0,
+    "ghost": 0,
+    "incomplete": 0,
+    "total": 3
+  },
+  "skills": [
+    {
+      "skill": "business-value-alignment",
+      "case": "affiliate-program-unknown-demand-routes-experiment-first",
+      "classification": "APPLIED",
+      "failed_assertions": []
+    },
+    {
+      "skill": "experiment-design",
+      "case": "affiliate-program-starts-with-bounded-manual-pilot",
+      "classification": "APPLIED",
+      "failed_assertions": []
+    },
+    {
+      "skill": "user-research",
+      "case": "affiliate-partner-research-tests-observed-behavior",
+      "classification": "APPLIED",
+      "failed_assertions": []
+    }
+  ],
+  "promotion_verdict": "EVAL_ONLY",
+  "skill_body_patch": "NONE",
+  "workflow_patch": "NONE",
+  "core_contract_patch": "NONE",
+  "remaining_gate": "Isolated fresh-runtime capture plus direct pinned canonical-runner execution"
+}
