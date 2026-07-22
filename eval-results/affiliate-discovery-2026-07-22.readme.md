@@ -21,7 +21,7 @@ promotion_verdict: EVAL_ONLY
 
 All required patterns were present and no forbidden pattern was found for the six natural-trigger cases.
 
-The composition behavior also remained correct:
+The composition behavior remained correct:
 
 ```text
 unverified opportunity
@@ -38,14 +38,29 @@ agent-authored commission proposal
 → ROUTE_FOR_APPROVAL
 ```
 
+## Canonical runner verification
+
+The captured outputs were executed directly with the pinned canonical runner:
+
+```text
+runner: ai-native-core/scripts/run-eval.py
+core_ref: 5c4c6f21859636a4a143a511030879c9923b2ef1
+workflow_run_id: 29928054775
+artifact_id: 8532790125
+overall: APPLIED
+failed assertions: 0
+```
+
+The temporary verification workflows were removed after the run. The final PR diff does not add product-specific GitHub Actions automation to the shared repository.
+
 ## Evidence boundary
 
-This is provisional behavioral evidence. The outputs were captured in an active ChatGPT project conversation that already had access to VisualMate context and governing skill documents. The natural triggers themselves contained no skill names, but the runtime was not an isolated fresh session.
+The runner result is direct and pinned, but the response generation itself occurred in an active ChatGPT project conversation that already had access to VisualMate context and governing skill documents. The natural triggers contained no skill names, but this was not an isolated fresh-session generation run.
 
-The execution container could not resolve `github.com`, so the pinned canonical runner repository could not be cloned. Classification used the exact casefold substring logic from the fetched pinned `ai-native-core/scripts/run-eval.py` source. Final promotion or claims of isolated natural activation still require:
+Remaining gate:
 
-1. a fresh-runtime capture;
-2. direct execution of the pinned canonical runner;
-3. preservation of model/runtime/context provenance.
+1. repeat generation in an isolated fresh runtime;
+2. preserve model, runtime, and context provenance;
+3. rerun the captured outputs after relevant model or context changes.
 
-No skill body, workflow methodology, or core contract patch is justified by this run. The verified reusable change remains regression coverage only.
+No skill body, workflow methodology, core contract, or runtime framework patch is justified by this run. The verified reusable change remains regression coverage only.
