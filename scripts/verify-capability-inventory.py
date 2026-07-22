@@ -36,9 +36,15 @@ def parse_skill(path: Path) -> dict[str, str]:
         raise InventoryError(f"{path.relative_to(ROOT)}: missing opening frontmatter delimiter")
 
     try:
-        end = next(index for index, line in enumerate(lines[1:], start=1) if line.strip() == "---")
+        end = next(
+            index
+            for index, line in enumerate(lines[1:], start=1)
+            if line.strip() == "---"
+        )
     except StopIteration as exc:
-        raise InventoryError(f"{path.relative_to(ROOT)}: missing closing frontmatter delimiter") from exc
+        raise InventoryError(
+            f"{path.relative_to(ROOT)}: missing closing frontmatter delimiter"
+        ) from exc
 
     frontmatter = lines[1:end]
     name: str | None = None
@@ -58,15 +64,11 @@ def parse_skill(path: Path) -> dict[str, str]:
     if not name:
         raise InventoryError(f"{relative}: missing top-level name")
     if not capability_type:
-        raise InventoryError(f"{relative}: missing metadata[\"ai-native-skills.type\"]")
+        raise InventoryError(f'{relative}: missing metadata["ai-native-skills.type"]')
     if capability_type not in VALID_TYPES:
         raise InventoryError(
             f"{relative}: invalid ai-native-skills.type {capability_type!r}; "
             f"expected one of {', '.join(VALID_TYPES)}"
-        )
-    if path.parent.name != name:
-        raise InventoryError(
-            f"{relative}: directory name {path.parent.name!r} does not match frontmatter name {name!r}"
         )
 
     return {
@@ -81,7 +83,9 @@ def derive_inventory() -> dict[str, object]:
         raise InventoryError("skills directory is missing")
 
     capability_dirs = sorted(path for path in SKILLS_DIR.iterdir() if path.is_dir())
-    missing_entrypoints = [path.name for path in capability_dirs if not (path / "SKILL.md").is_file()]
+    missing_entrypoints = [
+        path.name for path in capability_dirs if not (path / "SKILL.md").is_file()
+    ]
     if missing_entrypoints:
         raise InventoryError(
             "Capability directories missing SKILL.md: " + ", ".join(missing_entrypoints)
@@ -89,9 +93,21 @@ def derive_inventory() -> dict[str, object]:
 
     items = [parse_skill(path / "SKILL.md") for path in capability_dirs]
     name_counts = Counter(item["name"] for item in items)
-    duplicate_names = sorted(name for name, count in name_counts.items() if count > 1)
+    duplicate_names = sorted(
+        name for name, count in name_counts.items() if count > 1
+    )
     if duplicate_names:
         raise InventoryError("Duplicate capability names: " + ", ".join(duplicate_names))
+
+    path_mismatches = []
+    for item in items:
+        directory_name = Path(item["path"]).parent.name
+        if directory_name != item["name"]:
+            path_mismatches.append(
+                f"{item['path']}: directory {directory_name!r} != name {item['name']!r}"
+            )
+    if path_mismatches:
+        raise InventoryError("Capability path/name mismatch: " + "; ".join(path_mismatches))
 
     counts = Counter(item["type"] for item in items)
     ordered_items = sorted(items, key=lambda item: (item["type"], item["name"]))
@@ -114,7 +130,9 @@ def expected_snapshot_text(inventory: dict[str, object]) -> str:
 
 def validate_snapshot(inventory: dict[str, object]) -> None:
     if not SNAPSHOT_PATH.is_file():
-        raise InventoryError(f"{SNAPSHOT_PATH.relative_to(ROOT)} is missing; regenerate it from metadata")
+        raise InventoryError(
+            f"{SNAPSHOT_PATH.relative_to(ROOT)} is missing; regenerate it from metadata"
+        )
     expected = expected_snapshot_text(inventory)
     actual = SNAPSHOT_PATH.read_text(encoding="utf-8")
     if actual != expected:
@@ -126,13 +144,17 @@ def validate_snapshot(inventory: dict[str, object]) -> None:
 
 def validate_readme_counts(counts: dict[str, int]) -> None:
     text = README_PATH.read_text(encoding="utf-8")
-    match = re.search(r"\*\*(\d+) skills · (\d+) workflows · (\d+) meta-skills\*\*", text)
+    match = re.search(
+        r"\*\*(\d+) skills · (\d+) workflows · (\d+) meta-skills\*\*", text
+    )
     if not match:
         raise InventoryError("README.md: inventory summary was not found")
     actual = tuple(int(value) for value in match.groups())
     expected = (counts["skill"], counts["workflow"], counts["meta-skill"])
     if actual != expected:
-        raise InventoryError(f"README.md inventory counts {actual} do not match metadata {expected}")
+        raise InventoryError(
+            f"README.md inventory counts {actual} do not match metadata {expected}"
+        )
 
 
 def validate_taxonomy_counts(counts: dict[str, int]) -> None:
@@ -165,7 +187,9 @@ def documented_workflows() -> set[str]:
     if not section_match:
         raise InventoryError("docs/skills.md: Current workflows section was not found")
 
-    rows = re.findall(r"^\| `([^`]+)` \|", section_match.group(1), flags=re.MULTILINE)
+    rows = re.findall(
+        r"^\| `([^`]+)` \|", section_match.group(1), flags=re.MULTILINE
+    )
     if not rows:
         raise InventoryError("docs/skills.md: Current workflows table has no capability rows")
     duplicates = sorted(name for name, count in Counter(rows).items() if count > 1)
@@ -178,9 +202,7 @@ def documented_workflows() -> set[str]:
 
 def validate_workflow_table(inventory: dict[str, object]) -> None:
     expected = {
-        item["name"]
-        for item in inventory["items"]
-        if item["type"] == "workflow"
+        item["name"] for item in inventory["items"] if item["type"] == "workflow"
     }
     actual = documented_workflows()
     missing = sorted(expected - actual)
@@ -191,7 +213,9 @@ def validate_workflow_table(inventory: dict[str, object]) -> None:
     if extra:
         errors.append("non-workflows or stale rows: " + ", ".join(extra))
     if errors:
-        raise InventoryError("docs/skills.md workflow table drifted: " + "; ".join(errors))
+        raise InventoryError(
+            "docs/skills.md workflow table drifted: " + "; ".join(errors)
+        )
 
 
 def validate_documentation(inventory: dict[str, object]) -> None:
@@ -218,7 +242,9 @@ def main() -> int:
     try:
         inventory = derive_inventory()
         if args.write_snapshot:
-            SNAPSHOT_PATH.write_text(expected_snapshot_text(inventory), encoding="utf-8")
+            SNAPSHOT_PATH.write_text(
+                expected_snapshot_text(inventory), encoding="utf-8"
+            )
         else:
             validate_snapshot(inventory)
         if not args.skip_docs:
