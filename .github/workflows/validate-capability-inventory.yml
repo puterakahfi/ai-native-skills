@@ -1,0 +1,36 @@
+name: Validate capability inventory
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - skills/**/SKILL.md
+      - README.md
+      - docs/skills.md
+      - docs/capability-inventory.json
+      - scripts/verify-capability-inventory.py
+      - .github/workflows/validate-capability-inventory.yml
+  push:
+    branches:
+      - main
+    paths:
+      - skills/**/SKILL.md
+      - README.md
+      - docs/skills.md
+      - docs/capability-inventory.json
+      - scripts/verify-capability-inventory.py
+      - .github/workflows/validate-capability-inventory.yml
+
+permissions:
+  contents: read
+
+jobs:
+  inventory-drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify executable capability metadata and public documentation
+        run: python3 scripts/verify-capability-inventory.py
