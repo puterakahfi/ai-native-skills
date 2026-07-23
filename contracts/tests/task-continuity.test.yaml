@@ -19,7 +19,7 @@ skill_test:
         - "assume the old summary is current"
         - "the previous chat is the source of truth"
       sequence_required:
-        - pattern: "resolve|verify|authoritative sources"
+        - pattern: "authoritative sources"
           must_come_before: "next exact action|execution"
       quality_gates_tested:
         - conversation_history_and_model_memory_are_not_authoritative_task_state
