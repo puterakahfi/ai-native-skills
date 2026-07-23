@@ -1,18 +1,20 @@
 # Capability Discovery
 
-`ai-native-skills` distinguishes **what an executable artifact is** from **where and when it is useful**.
+`ai-native-skills` distinguishes **what an executable artifact is** from **where, when, and how people discover it**.
 
 - `metadata["ai-native-skills.type"]` remains the canonical executable type: `skill`, `workflow`, or `meta-skill`.
 - [`capability-inventory.json`](capability-inventory.json) remains the generated list of executable entry points.
 - [`../catalog/capability-discovery/manifest.json`](../catalog/capability-discovery/manifest.json) is the repository-curated discovery projection for product/runtime consumers.
 
-The discovery catalog is intended for questions such as:
+The discovery catalog answers questions such as:
 
 - Which workflow and skills should I use for product planning?
 - Which capabilities should be loaded to build high-quality code?
 - Which workflows and skills cover security design, review, release, and incident response?
 - Which capabilities apply during `discover`, `build`, `verify`, or `operate`?
-- Which entries belong to Product Development, Engineering, Security, Quality, Design, Operations, or AI Systems?
+- Which capabilities belong to Growth & Marketing or AI & Agent Systems?
+- Which capabilities are relevant to Web, GitHub, ChatGPT Apps, or an AI agent runtime?
+- Which curated topic is the best browse entry point for this intent?
 
 ## Why type is not category
 
@@ -24,35 +26,61 @@ The executable type answers a structural question:
 | `meta-skill` | Which router or composer selects other capabilities? |
 | `skill` | Which focused capability performs the current concern? |
 
-Discovery facets answer different questions:
+Discovery dimensions answer different questions:
 
-| Facet | Question |
-|---|---|
-| `domains` | Which area of work does this capability support? |
-| `lifecycle_stages` | During which phases can it be useful? |
-| `concerns` | Which narrower problem or quality dimension does it address? |
-| `job_profiles` | Which workflow routes and capability groups solve a common job? |
+| Dimension | Question | Semantics |
+|---|---|---|
+| `domains` | Who primarily owns or practices this capability? | Canonical, many-to-many, ownership-oriented |
+| `lifecycle_stages` | During which phases can it be useful? | Canonical, many-to-many |
+| `concerns` | Which narrower problem or quality dimension does it address? | Canonical, cross-cutting |
+| `ecosystems` | Which technology, platform, or runtime context does it support? | Canonical, context-oriented |
+| `topics` | In which curated browse collection should people find it? | Editorial, overlapping, navigation-oriented |
+| `job_profiles` | Which workflow routes and capability groups solve a common job? | Opinionated execution composition |
 
-A capability may belong to several domains, lifecycle stages, and concerns. For example, `security-review` belongs to Engineering, Quality, and Security and is relevant during design, build, verification, and operation. Do not collapse these independent dimensions into one category string.
+A capability can appear in several dimensions. Do not collapse them into one category string.
+
+```text
+domain
+  primary ownership or discipline
+
+concern
+  cross-cutting problem or quality
+
+ecosystem
+  technology/platform/runtime context
+
+topic
+  curated browse collection
+
+job profile
+  workflow-aware execution recommendation
+```
+
+`topics` intentionally follow the useful part of topic directories such as `skills.sh`: a capability can appear in several browse collections. Topics do not replace canonical facets and do not determine execution order.
 
 ## Machine-readable contract
 
-The manifest at `catalog/capability-discovery/manifest.json` points to three versioned files:
+Schema version 2 contains four files:
 
 ```text
 facets.json
-  domain, lifecycle-stage, and concern definitions
+  domain, lifecycle-stage, concern, and ecosystem definitions
 
 classifications.json
   complete executable capability coverage through groups, defaults, and overrides
 
+topics.json
+  curated overlapping browse collections with recommended starting points
+
 job-profiles.json
-  curated workflow routes, required/optional capability groups, evidence, and completion gates
+  workflow routes, required/optional capability groups, evidence, and completion gates
 ```
 
-Each executable capability must be assigned exactly once to a classification group. Defaults define the common facets for the group; an override changes only the facets that differ for one capability.
+Each executable capability must be assigned exactly once to a classification group. Defaults define common facets; an override changes only the values that differ.
 
-The catalog is validated against `docs/capability-inventory.json`, so stale names, missing entries, duplicate assignments, invalid facet values, invalid workflow references, and missing required job profiles fail closed.
+Non-workflow capabilities should use no more than three primary domains. A broader assignment requires an explicit `cross_cutting_reason`. Workflows are exempt because their lifecycle ownership can legitimately span several disciplines.
+
+The catalog is validated against `docs/capability-inventory.json`. Stale names, missing entries, duplicate assignments, invalid facet values, topic reference drift, invalid workflow references, excessive unexplained domain breadth, and missing required topics or job profiles fail closed.
 
 Validate locally:
 
@@ -61,9 +89,62 @@ python3 scripts/verify-capability-inventory.py
 python3 scripts/verify-capability-discovery.py
 ```
 
+## Canonical domains
+
+The current primary domains are:
+
+- Product Development
+- Engineering
+- Experience Design
+- Quality & Verification
+- Security
+- Operations & Reliability
+- AI & Agent Systems
+- Growth & Marketing
+- Governance
+- Developer Experience
+
+Domain assignment is intentionally narrower than topic membership. For example, `code-review-workflow` is primarily Engineering, Quality, and Governance; security remains a concern and the workflow is still discoverable through the Security Engineering topic and profile.
+
+## Ecosystems
+
+Ecosystems remain separate from domains:
+
+- `technology-agnostic`
+- `web`
+- `github`
+- `chatgpt-apps`
+- `ai-agent-runtime`
+
+Do not represent React, Next.js, mobile, databases, or another platform until repository capabilities provide verified coverage for that context. Add ecosystem values with the capabilities and validation evidence that justify them.
+
+## Topics
+
+Initial curated topics:
+
+- Product Management
+- Software Architecture
+- Engineering Quality
+- Security Engineering
+- Design & UI
+- Agent Workflows
+- AI & Agent Systems
+- Operations & Reliability
+- Developer Experience
+- Growth & Marketing
+
+Each topic declares:
+
+- a stable identifier and label;
+- a concise browse description;
+- one or more recommended starting points;
+- a many-to-many capability list.
+
+Topic membership is editorial. It can evolve without changing executable type, canonical workflow procedure, or primary ownership.
+
 ## Job profiles
 
-Job profiles are curated starting points. They do not replace `workflow-router`, repository evidence, active issue acceptance criteria, or phase-specific routing.
+Job profiles are workflow-aware starting points. They do not replace `workflow-router`, repository evidence, active issue acceptance criteria, or phase-specific routing.
 
 ### Product Planning
 
@@ -78,8 +159,6 @@ Core capability groups:
 2. Value and assumption validation: `business-value-alignment`, `user-research`, `experiment-design`.
 3. Requirements and topology: `product-requirements`, `delivery-work-breakdown`, `decision-provenance`, `spec-workflow`.
 
-Use this profile to avoid jumping from an idea directly into implementation.
-
 ### Engineering Quality
 
 Workflow selection depends on the job:
@@ -88,13 +167,7 @@ Workflow selection depends on the job:
 - `bugfix-workflow` for broken or regressed existing behavior.
 - `code-review-workflow` for an evidence-backed merge-readiness verdict.
 
-Core capability groups:
-
-1. Repository and ownership: `workflow-router`, `role-switcher`, `master-engineer`, `implementation-context-discovery`.
-2. Build quality: `test-driven-development`, plus applicable architecture and contract skills.
-3. Independent verification: `architecture-review`, `code-review-workflow`, `security-review`, `skill-eval`, with debugging, refactoring, performance, or debt skills loaded only when relevant.
-
-Use this profile to preserve repository conventions, test accepted behavior, and keep implementation completion separate from independent review and merge authorization.
+Independent verification remains separate from implementation ownership.
 
 ### Security Engineering
 
@@ -105,26 +178,21 @@ Security does not have one universal lifecycle. Select the workflow from the cur
 - `bugfix-workflow` for a confirmed vulnerability or regression.
 - `deployment-workflow` for controlled release, runtime verification, and rollback.
 
-Core capability groups:
-
-1. Authority and threat boundary: `decision-provenance`, `security-engineer`, `threat-modeling`.
-2. Secure design and implementation: `implementation-context-discovery`, with `api-contract`, data, architecture, testing, and resilience capabilities loaded when applicable.
-3. Independent review and operation: `architecture-review`, `security-review`, `code-review-workflow`, with deployment, observability, resilience, and incident capabilities when the risk reaches runtime.
-
-Use this profile to connect threats to architecture, implementation, independent verification, release ownership, and operational response.
+Security workflows can be found through the Security Engineering topic/profile even when Security is a concern rather than their primary ownership domain.
 
 ## Consumer guidance
 
 A product such as `pkahfi.com/ai-skills` should consume the inventory and discovery manifest together:
 
 1. Read `docs/capability-inventory.json` for executable identity, type, and path.
-2. Read the discovery manifest and its three files for domain, lifecycle, concern, and job-profile discovery.
+2. Read the discovery manifest and all four catalog files.
 3. Resolve each classification by applying its group defaults and then its named override.
 4. Join entries by exact capability `name`.
-5. Present `type` and discovery facets as independent filters.
-6. Route broad job intent through `job_profiles` or `workflow-router` before exposing a long atomic-skill list.
-7. Treat a job profile as a curated default, not proof that every listed optional capability must be loaded.
-8. Keep workflow order and quality gates in the executable `SKILL.md`; the discovery catalog is an index, not a duplicate workflow implementation.
+5. Present executable `type`, canonical facets, topics, and job profiles as distinct concepts.
+6. Use topics for broad browse entry points.
+7. Use domain, lifecycle, concern, and ecosystem for composable narrowing.
+8. Route broad execution intent through job profiles or `workflow-router`.
+9. Keep workflow order and quality gates in executable `SKILL.md`; the discovery catalog is an index, not duplicate implementation.
 
 Recommended UI hierarchy:
 
@@ -134,21 +202,24 @@ Start by job
   Engineering Quality
   Security Engineering
 
-Browse by domain
-  Product Development
-  Engineering
-  Experience Design
-  Quality & Verification
-  Security
-  Operations & Reliability
+Browse by topic
+  Product Management
+  Software Architecture
+  Engineering Quality
+  Security Engineering
+  Design & UI
+  Agent Workflows
   AI & Agent Systems
-  Governance & Delivery
+  Operations & Reliability
   Developer Experience
+  Growth & Marketing
 
 Narrow by
   Type
+  Domain
   Lifecycle stage
   Concern
+  Ecosystem
 ```
 
 ## Change policy
@@ -157,9 +228,10 @@ When adding, renaming, deleting, or materially repurposing a capability:
 
 1. update the executable `SKILL.md`;
 2. regenerate and validate `capability-inventory.json` when identity or type changes;
-3. update the capability's domain, lifecycle-stage, and concern classification;
-4. update affected job profiles only when the recommended composition or workflow boundary changes;
-5. run both validators;
-6. update downstream consumers through their own issue, implementation mapping, and acceptance gates.
+3. update domain, lifecycle-stage, concern, and ecosystem classification;
+4. update topics when browse membership or starting points change;
+5. update job profiles only when recommended composition or workflow boundaries change;
+6. run both validators and fail-closed regressions;
+7. update downstream consumers through their own issue, implementation mapping, and acceptance gates.
 
-Do not add a new executable type to represent a domain, job, platform, role, adapter, or reviewer pattern. Those remain separate facets or patterns unless the official taxonomy, validation, documentation, and consumers are intentionally changed together.
+Do not add a new executable type to represent a domain, topic, ecosystem, job, platform, role, adapter, or reviewer pattern.
