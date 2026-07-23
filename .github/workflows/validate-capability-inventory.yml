@@ -115,12 +115,18 @@ jobs:
         run: |
           set -euo pipefail
           classifications="catalog/capability-discovery/classifications.json"
+          facets="catalog/capability-discovery/facets.json"
+          topics="catalog/capability-discovery/topics.json"
           profiles="catalog/capability-discovery/job-profiles.json"
           cp "$classifications" /tmp/classifications.json
+          cp "$facets" /tmp/facets.json
+          cp "$topics" /tmp/topics.json
           cp "$profiles" /tmp/job-profiles.json
 
           restore_catalog() {
             cp /tmp/classifications.json "$classifications"
+            cp /tmp/facets.json "$facets"
+            cp /tmp/topics.json "$topics"
             cp /tmp/job-profiles.json "$profiles"
           }
 
@@ -157,10 +163,12 @@ jobs:
 
           path = Path("catalog/capability-discovery/classifications.json")
           data = json.loads(path.read_text())
-          data["classification_groups"][0]["defaults"]["domains"].append("unknown-domain")
+          data["classification_groups"][0]["defaults"]["ecosystems"].append(
+              "unknown-ecosystem"
+          )
           path.write_text(json.dumps(data))
           PY
-          expect_discovery_failure "unknown values: unknown-domain"
+          expect_discovery_failure "unknown values: unknown-ecosystem"
 
           python3 <<'PY'
           import json
@@ -172,3 +180,50 @@ jobs:
           path.write_text(json.dumps(data))
           PY
           expect_discovery_failure "must reference a workflow; 'product-manager' is 'skill'"
+
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("catalog/capability-discovery/topics.json")
+          data = json.loads(path.read_text())
+          data["topics"][0]["capabilities"].append("unknown-capability")
+          path.write_text(json.dumps(data))
+          PY
+          expect_discovery_failure "topics[0].capabilities unknown: unknown-capability"
+
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("catalog/capability-discovery/topics.json")
+          data = json.loads(path.read_text())
+          data["topics"] = [
+              topic
+              for topic in data["topics"]
+              if topic["id"] != "growth-marketing"
+          ]
+          path.write_text(json.dumps(data))
+          PY
+          expect_discovery_failure "topics missing required entries: growth-marketing"
+
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("catalog/capability-discovery/classifications.json")
+          data = json.loads(path.read_text())
+          for group in data["classification_groups"]:
+              if "architecture-review" in group["capabilities"]:
+                  group.setdefault("overrides", {})["architecture-review"] = {
+                      "domains": [
+                          "engineering",
+                          "quality",
+                          "security",
+                          "governance",
+                      ]
+                  }
+                  break
+          path.write_text(json.dumps(data))
+          PY
+          expect_discovery_failure "'architecture-review' has 4 primary domains"
