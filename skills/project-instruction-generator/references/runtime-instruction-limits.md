@@ -73,4 +73,6 @@ Update or add a profile only when:
 5. conflicting evidence is disclosed;
 6. regression evals are updated when behavior changes.
 
+Revalidate a profile whenever provider documentation, UI behavior, API behavior, or the target instruction surface changes.
+
 Do not promote provider-specific limits into `ai-native-core` unless a future provider-neutral contract needs a generic capacity interface.
