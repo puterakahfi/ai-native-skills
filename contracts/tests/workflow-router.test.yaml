@@ -1,8 +1,7 @@
 skill_test:
   skill: workflow-router
-  version: 1.5.0
-  description: Verify lifecycle selection remains primary while design-domain and platform-specialist overlays load the correct
-    capabilities.
+  version: 1.6.0
+  description: Verify lifecycle selection remains primary while design-domain, platform-specialist, and task-continuity overlays load the correct capabilities.
   cases:
   - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
     description: A ChatGPT App product from zero uses the existing product lifecycle plus the platform specialist.
@@ -48,8 +47,7 @@ skill_test:
     - route_before_execution
   - id: known-tabs-failure-routes-to-refinement
     description: A known narrow failure with preservation constraints belongs to design refinement.
-    trigger: Perbaiki hanya tabs category yang overlap di tablet. Pertahankan direction, layout, dan komponen lain yang sudah
-      benar.
+    trigger: Perbaiki hanya tabs category yang overlap di tablet. Pertahankan direction, layout, dan komponen lain yang sudah benar.
     design_gate_ids:
     - I4
     must_contain:
@@ -64,8 +62,7 @@ skill_test:
     - preserve_scope
   - id: broad-direction-change-routes-to-redesign
     description: Broad structural and visual-direction replacement belongs to redesign workflow.
-    trigger: Redesign landing page ini. Direction, hierarchy, macrostructure, dan visual language sekarang salah dan perlu
-      diganti.
+    trigger: Redesign landing page ini. Direction, hierarchy, macrostructure, dan visual language sekarang salah dan perlu diganti.
     must_contain:
     - redesign-workflow
     - broad
@@ -112,8 +109,7 @@ skill_test:
     - no_ui_fallback_for_identity_domain
   - id: router-clarifies-ambiguity-and-preserves-approval-policy
     description: Route an ambiguous request that may trigger post-fix learning and repository writes.
-    trigger: Apply workflow-router to a realistic context, routing, profile, planning, evaluation, or maintenance task and
-      report the contract-backed result.
+    trigger: Apply workflow-router to a realistic context, routing, profile, planning, evaluation, or maintenance task and report the contract-backed result.
     must_contain:
     - ambiguous_requests_must_be_clarified_not_assumed
     - post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
@@ -129,10 +125,26 @@ skill_test:
     quality_gates_tested:
     - ambiguous_requests_must_be_clarified_not_assumed
     - post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
-
   - id: multi-slice-product-loads-delivery-topology
     description: A dependent broad capability keeps its lifecycle and loads delivery decomposition before Git execution.
     trigger: Add a multi-slice ChatGPT App P0 to an existing product; slices are dependent and targets are undefined.
     must_contain: [new-feature-workflow, chatgpt-app-development, delivery-work-breakdown, epic]
     must_not_contain: [every child PR targets main, default branch decides target]
     quality_gates_tested: [existing_product_feature_route_preserved, platform_specialist_overlay, release_unit_classified_before_repository_execution]
+  - id: fresh-session-continuation-routes-to-task-continuity
+    description: A request to continue work in a fresh chat routes through continuity verification before the governing execution workflow.
+    trigger: Chat sebelumnya sudah kepanjangan. Siapkan handoff dan lanjutkan task yang sama di chat baru tanpa kehilangan issue, branch, acceptance criteria, dan status validasinya.
+    must_contain:
+    - task-continuity
+    - context-manager
+    - current authoritative sources
+    - checkpoint
+    - next exact action
+    must_not_contain:
+    - continue from memory
+    - previous transcript is authoritative
+    - start implementation before verification
+    quality_gates_tested:
+    - cross_session_continuity_route_precedes_execution
+    - continuity_composes_context_resolution
+    - current_sources_are_verified_before_resume

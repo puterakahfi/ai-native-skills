@@ -6,10 +6,10 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 
 Current repository inventory:
 
-- `skill`: 86
+- `skill`: 87
 - `workflow`: 10
 - `meta-skill`: 6
-- Total executable skills: 102
+- Total executable skills: 103
 
 ---
 
@@ -68,6 +68,7 @@ A good skill defines:
 - `collection-discovery-design` — diagnose retrieval and discovery strategy before pagination, tabs, filtering, traversal, or disclosure adapters are selected.
 - `systematic-debugging` — root-cause investigation discipline.
 - `decision-provenance` — verify authority, source, scope, supersession, and conflict behind material decisions.
+- `task-continuity` — checkpoint, hand off, verify, and resume source-backed task state across sessions and runtimes.
 - `accessibility` — WCAG-oriented UI quality gate.
 - `master-design` — senior product-design ownership.
 - `business-value-alignment` — value and metric alignment before execution.

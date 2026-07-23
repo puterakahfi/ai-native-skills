@@ -1,0 +1,140 @@
+skill_test:
+  skill: task-continuity
+  version: "1.0.0"
+  description: Verify that task continuity creates source-backed checkpoints and portable handoffs, validates current state before resume, preserves semantic status separation, and prevents false completion.
+
+  cases:
+    - id: natural-fresh-chat-resume-trigger
+      description: A natural request to continue in a fresh chat must activate continuity behavior without requiring the skill name.
+      trigger: "Chat sebelumnya sudah kepanjangan. Aku pindah ke chat baru dan mau lanjut feature yang sama tanpa kehilangan arah. Tolong cek posisi kerja terakhir dan langkah berikutnya."
+      must_contain:
+        - "authoritative sources"
+        - "checkpoint"
+        - "acceptance criteria"
+        - "continuity validation"
+        - "next exact action"
+        - "expected evidence"
+      must_not_contain:
+        - "continue from memory"
+        - "assume the old summary is current"
+        - "the previous chat is the source of truth"
+      sequence_required:
+        - pattern: "authoritative sources"
+          must_come_before: "next exact action|execution"
+      quality_gates_tested:
+        - conversation_history_and_model_memory_are_not_authoritative_task_state
+        - resume_verifies_current_authoritative_sources_before_execution
+        - handoff_is_portable_without_prior_transcript_and_contains_one_next_exact_action
+
+    - id: pending-checkpoint-is-superseded-by-merged-pr
+      description: Live PR state must replace stale checkpoint state and prevent repeated work.
+      trigger: "Checkpoint menyebut PR #43 masih open, screenshot dan build pending. GitHub terbaru menunjukkan PR #43 sudah merged. Buat resume state yang benar."
+      must_contain:
+        - "SUPERSEDED_CHECKPOINT"
+        - "merged"
+        - "current authoritative source"
+        - "do not repeat"
+        - "refresh"
+        - "next exact action"
+      must_not_contain:
+        - "run the old pending merge step"
+        - "checkpoint overrides GitHub"
+        - "merge PR #43 again"
+      quality_gates_tested:
+        - checkpoint_version_freshness_and_supersession_are_explicit
+        - stale_or_superseded_checkpoints_do_not_silently_override_current_state
+        - completed_actions_are_not_repeated_and_pending_gates_are_not_skipped
+
+    - id: missing-branch-remains-not-verified
+      description: A missing branch, PR, and commit trail must block confident resume rather than invite invention.
+      trigger: "Handoff bilang active branch `44-recommended-pack`, tetapi branch, issue, PR, dan commit tersebut tidak ditemukan. Lanjutkan Recommended Pack."
+      must_contain:
+        - "IDENTITY_MISSING"
+        - "NOT_VERIFIED"
+        - "branch"
+        - "MISSING_CONTEXT"
+        - "block"
+        - "source"
+      must_not_contain:
+        - "assume issue #44 exists"
+        - "create the missing history"
+        - "the branch was probably merged"
+      quality_gates_tested:
+        - material_status_claims_are_source_backed_or_marked_not_verified
+        - missing_or_conflicting_context_is_reported_not_invented
+        - resume_verifies_current_authoritative_sources_before_execution
+
+    - id: issue-scope-overrides-memory
+      description: Explicit issue acceptance criteria and exclusions must beat conflicting remembered discussion.
+      trigger: "Memory bilang scope adalah full redesign. Issue aktif membatasi hierarchy refinement saja dan navigation explicitly out of scope. Siapkan continuity resume."
+      must_contain:
+        - "SCOPE_CONFLICT"
+        - "issue"
+        - "acceptance criteria"
+        - "authority"
+        - "out of scope"
+        - "CONFLICT_RESOLUTION_REQUIRED"
+      must_not_contain:
+        - "memory overrides the issue"
+        - "proceed with full redesign"
+        - "ignore the exclusion"
+      quality_gates_tested:
+        - conversation_history_and_model_memory_are_not_authoritative_task_state
+        - missing_or_conflicting_context_is_reported_not_invented
+        - checkpoint_identity_objective_acceptance_criteria_and_work_state_are_explicit
+
+    - id: build-pass-does-not-imply-review-approval-or-merge
+      description: A passing build must not collapse implementation, visual verification, review, approval, or merge.
+      trigger: "Code sudah dibuat dan build pass. Screenshot belum ada, design review belum dijalankan, approval belum ada, dan PR belum merged. Buat checkpoint."
+      must_contain:
+        - "implemented"
+        - "build passed"
+        - "verification pending"
+        - "review"
+        - "approval"
+        - "merge"
+        - "FALSE_COMPLETION_RISK"
+      must_not_contain:
+        - "fully accepted"
+        - "approved because the build passed"
+        - "merged"
+      quality_gates_tested:
+        - planned_attempted_implemented_verified_reviewed_approved_delivered_merged_and_accepted_remain_distinct
+        - material_status_claims_are_source_backed_or_marked_not_verified
+        - closure_does_not_imply_review_approval_merge_delivery_or_product_acceptance
+
+    - id: handoff-requires-concrete-next-action
+      description: A transcript-dependent handoff with vague continuation language must fail.
+      trigger: "Buat handoff: 'lanjutkan refinement sesuai obrolan sebelumnya'. Tidak ada issue, branch, file, command, expected evidence, atau pending gate."
+      must_contain:
+        - "HANDOFF_INCOMPLETE"
+        - "prior transcript"
+        - "next exact action"
+        - "required sources"
+        - "expected evidence"
+      must_not_contain:
+        - "handoff is valid"
+        - "continue refinement"
+        - "previous discussion is sufficient"
+      quality_gates_tested:
+        - handoff_is_portable_without_prior_transcript_and_contains_one_next_exact_action
+        - missing_or_conflicting_context_is_reported_not_invented
+
+    - id: chat-only-official-decision-needs-durable-promotion
+      description: Closing continuity must route accepted chat-only decisions into durable repository knowledge.
+      trigger: "Di chat tim sudah resmi memutuskan semua generation wajib Identity Lock. Belum ada ADR, contract, blueprint, atau rule di repository. Tutup task ini."
+      must_contain:
+        - "DURABLE_KNOWLEDGE_GAP"
+        - "durable knowledge"
+        - "promotion request"
+        - "decision provenance"
+        - "repository"
+        - "not accepted yet"
+      must_not_contain:
+        - "chat memory is permanent knowledge"
+        - "decision is already documented"
+        - "product acceptance implied"
+      quality_gates_tested:
+        - official_decisions_are_promoted_to_durable_knowledge_when_authorized
+        - conversation_history_and_model_memory_are_not_authoritative_task_state
+        - closure_does_not_imply_review_approval_merge_delivery_or_product_acceptance
