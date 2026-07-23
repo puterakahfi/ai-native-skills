@@ -1,0 +1,113 @@
+name: Finalize task continuity skill
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: 78-add-task-continuity-skill
+
+      - name: Patch routing, inventory, and handoff typo
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              text = p.read_text()
+              if old not in text:
+                  raise SystemExit(f"Expected text not found in {path}: {old!r}")
+              p.write_text(text.replace(old, new, 1))
+
+          replace(
+              "skills/task-continuity/SKILL.md",
+              "issue\\active_branch",
+              "issue\nactive_branch",
+          )
+
+          replace(
+              "README.md",
+              "**86 skills · 10 workflows · 6 meta-skills**",
+              "**87 skills · 10 workflows · 6 meta-skills**",
+          )
+          replace(
+              "README.md",
+              "| Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code | `implementation-context-discovery` |",
+              "| Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code | `implementation-context-discovery` |\n| Preserve and resume task state across chats, agents, and runtimes | `task-continuity` |",
+          )
+          replace(
+              "README.md",
+              "npx skills add puterakahfi/ai-native-skills@decision-provenance -g -y",
+              "npx skills add puterakahfi/ai-native-skills@decision-provenance -g -y\nnpx skills add puterakahfi/ai-native-skills@task-continuity -g -y",
+          )
+          replace(
+              "README.md",
+              "| Verify scope, approval, ownership, dependency, or override authority | `decision-provenance` |",
+              "| Verify scope, approval, ownership, dependency, or override authority | `decision-provenance` |\n| Checkpoint, hand off, or resume work across sessions | `task-continuity` |",
+          )
+
+          replace("docs/skills.md", "- `skill`: 86", "- `skill`: 87")
+          replace("docs/skills.md", "- Total executable skills: 102", "- Total executable skills: 103")
+          replace(
+              "docs/skills.md",
+              "- `decision-provenance` — verify authority, source, scope, supersession, and conflict behind material decisions.",
+              "- `decision-provenance` — verify authority, source, scope, supersession, and conflict behind material decisions.\n- `task-continuity` — checkpoint, hand off, verify, and resume source-backed task state across sessions and runtimes.",
+          )
+
+          replace(
+              "skills/workflow-router/SKILL.md",
+              "Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, or verified-case skill evolution. Route before execution.",
+              "Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, verified-case skill evolution, or cross-session task continuity. Route before execution.",
+          )
+          replace(
+              "skills/workflow-router/SKILL.md",
+              "ai-native-skills.version: 1.5.0",
+              "ai-native-skills.version: 1.6.0",
+          )
+          replace(
+              "skills/workflow-router/SKILL.md",
+              "skill-doctor spec-workflow\"",
+              "skill-doctor spec-workflow task-continuity\"",
+          )
+          replace(
+              "skills/workflow-router/SKILL.md",
+              "\"deployment-workflow\",\"spec-workflow\"]'",
+              "\"deployment-workflow\",\"spec-workflow\",\"task-continuity\"]'",
+          )
+          replace(
+              "skills/workflow-router/SKILL.md",
+              "| Explore a reversible idea | `spike` | plan, experiment skills |",
+              "| Preserve or resume work across sessions or runtimes | `task-continuity` | `context-manager`, `decision-provenance` |\n| Explore a reversible idea | `spike` | plan, experiment skills |",
+          )
+          replace(
+              "skills/workflow-router/SKILL.md",
+              "| “plan/write spec” | `spec-workflow` |",
+              "| “plan/write spec” | `spec-workflow` |\n| “continue this in a new chat”, “prepare a handoff”, “resume the previous task” | `task-continuity` |",
+          )
+          replace(
+              "skills/workflow-router/SKILL.md",
+              "Request\n  ↓\nVerified-case learning required? → skill-evolution",
+              "Request\n  ↓\nCross-session checkpoint, handoff, or resume? → task-continuity\n  ↓\nVerified-case learning required? → skill-evolution",
+          )
+          PY
+
+      - name: Commit patch and remove one-time workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/finalize-task-continuity-skill.yml
+          git add README.md docs/skills.md skills/workflow-router/SKILL.md skills/task-continuity/SKILL.md
+          git commit -m "docs(context): route and catalog task continuity (#78)"
+          git push origin HEAD:78-add-task-continuity-skill
