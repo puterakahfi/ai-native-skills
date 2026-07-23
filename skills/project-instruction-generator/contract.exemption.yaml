@@ -15,10 +15,10 @@ contract_exemption:
   - provider_specific_execution
   review_date: '2026-10-23'
   evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-skills#82
   - kind: executable_source
     ref: skills/project-instruction-generator/SKILL.md
-  - kind: behavioral_test
-    ref: contracts/tests/project-instruction-generator.test.yaml
   revisit:
     triggers:
     - a provider-neutral project instruction or scoped workspace bootstrap contract is accepted in core
