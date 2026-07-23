@@ -91,10 +91,10 @@ Workflow selection depends on the job:
 Core capability groups:
 
 1. Repository and ownership: `workflow-router`, `role-switcher`, `master-engineer`, `implementation-context-discovery`.
-2. Build quality: `architecture-review`, `test-driven-development`, plus applicable architecture and contract skills.
-3. Verification: `code-review-workflow`, `security-review`, `skill-eval`, with debugging, refactoring, performance, or debt skills loaded only when relevant.
+2. Build quality: `test-driven-development`, plus applicable architecture and contract skills.
+3. Independent verification: `architecture-review`, `code-review-workflow`, `security-review`, `skill-eval`, with debugging, refactoring, performance, or debt skills loaded only when relevant.
 
-Use this profile to preserve repository conventions, test accepted behavior, and keep implementation completion separate from merge authorization.
+Use this profile to preserve repository conventions, test accepted behavior, and keep implementation completion separate from independent review and merge authorization.
 
 ### Security Engineering
 
@@ -108,10 +108,10 @@ Security does not have one universal lifecycle. Select the workflow from the cur
 Core capability groups:
 
 1. Authority and threat boundary: `decision-provenance`, `security-engineer`, `threat-modeling`.
-2. Secure design and implementation: `implementation-context-discovery`, `architecture-review`, `api-contract`.
-3. Review and operation: `security-review`, `code-review-workflow`, with deployment, observability, resilience, and incident capabilities when the risk reaches runtime.
+2. Secure design and implementation: `implementation-context-discovery`, with `api-contract`, data, architecture, testing, and resilience capabilities loaded when applicable.
+3. Independent review and operation: `architecture-review`, `security-review`, `code-review-workflow`, with deployment, observability, resilience, and incident capabilities when the risk reaches runtime.
 
-Use this profile to connect threats to architecture, implementation, evidence, release ownership, and operational response.
+Use this profile to connect threats to architecture, implementation, independent verification, release ownership, and operational response.
 
 ## Consumer guidance
 
