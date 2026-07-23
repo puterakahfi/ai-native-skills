@@ -54,3 +54,9 @@ Every valid handoff or resume must state:
 - checkpoint version, freshness, supersession, and continuity verdict.
 
 Conversation memory may help locate context, but it must not establish authoritative task state.
+
+## Validation boundary
+
+Structural skill validation, repository eval-contract validation, generated capability inventory, Core contract compatibility, adapter conformance, and behavioral application are separate evidence layers.
+
+A structurally valid skill or passing synthetic eval output does not prove that a runtime naturally activated and applied task continuity. Fresh-session behavioral evidence remains required before claiming full runtime effectiveness.
