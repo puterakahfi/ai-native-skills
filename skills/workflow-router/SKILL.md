@@ -1,15 +1,15 @@
 ---
 name: workflow-router
-description: Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, or verified-case skill evolution. Route before execution.
+description: Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, verified-case skill evolution, or cross-session task continuity. Route before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.5.0
+  ai-native-skills.version: 1.6.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow"
+  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow task-continuity"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/workflow-router.contract.yaml
   ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow"]'
+  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow","task-continuity"]'
 ---
 
 # Workflow Router
@@ -73,6 +73,7 @@ No execution before routing. The artifact noun does not determine the lifecycle:
 | Review code or PR before merge | `code-review-workflow` | architecture/security/design reviewers |
 | Deploy or release | `deployment-workflow` | security, architecture, operations |
 | Plan or specify | `spec-workflow` | product-manager, plan, relevant owners |
+| Preserve or resume work across sessions or runtimes | `task-continuity` | `context-manager`, `decision-provenance` |
 | Explore a reversible idea | `spike` | plan, experiment skills |
 | Promote a verified lesson | `skill-evolution` | skill-eval, git-workflow |
 
@@ -207,6 +208,7 @@ Never represent universal visual gates as complete specialist-domain coverage.
 | “build a ChatGPT App from zero with Apps SDK/MCP” | `product-development-workflow` + `chatgpt-app-development` |
 | “add ChatGPT App integration to this product” | `new-feature-workflow` + `chatgpt-app-development` |
 | “plan/write spec” | `spec-workflow` |
+| “continue this in a new chat”, “prepare a handoff”, “resume the previous task” | `task-continuity` |
 
 Functional symptom words take precedence over visual-polish words when the requested outcome is a functional fix.
 
@@ -214,6 +216,8 @@ Functional symptom words take precedence over visual-polish words when the reque
 
 ```text
 Request
+  ↓
+Cross-session checkpoint, handoff, or resume? → task-continuity
   ↓
 Verified-case learning required? → skill-evolution
   ↓

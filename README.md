@@ -6,7 +6,7 @@ This repository turns engineering methods and Native AI contracts into reusable 
 
 Works with agents that support the [Agent Skills specification](https://agentskills.io/specification) or the [skills.sh](https://skills.sh) ecosystem, including Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and other compatible runtimes.
 
-**86 skills · 10 workflows · 6 meta-skills**
+**87 skills · 10 workflows · 6 meta-skills**
 
 ## Start here
 
@@ -18,6 +18,7 @@ Works with agents that support the [Agent Skills specification](https://agentski
 | Compose engineering, design, product, and review roles | `role-switcher` |
 | Classify feature vs epic and define issue/branch/PR topology | `delivery-work-breakdown` |
 | Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code | `implementation-context-discovery` |
+| Preserve and resume task state across chats, agents, and runtimes | `task-continuity` |
 | Diagnose discovery for a catalog, registry, directory, feed, or result set | `collection-discovery-design` |
 | Bootstrap an AI-native Hermes profile | [`hermes-profile-bootstrap`](#hermes-profile-bootstrap) |
 | Browse the complete capability taxonomy | [docs/skills.md](docs/skills.md) |
@@ -56,6 +57,7 @@ npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
 npx skills add puterakahfi/ai-native-skills@delivery-work-breakdown -g -y
 npx skills add puterakahfi/ai-native-skills@implementation-context-discovery -g -y
 npx skills add puterakahfi/ai-native-skills@decision-provenance -g -y
+npx skills add puterakahfi/ai-native-skills@task-continuity -g -y
 npx skills add puterakahfi/ai-native-skills@ai-system-design -g -y
 npx skills add puterakahfi/ai-native-skills@chatgpt-app-development -g -y
 npx skills add puterakahfi/ai-native-skills@collection-discovery-design -g -y
@@ -125,6 +127,7 @@ A `SKILL.md` should remain the lean executable entry point. Load references only
 | Fix known design findings while preserving direction and repository conventions | `design-refinement` |
 | Replace design direction, structure, or multiple layers | `redesign-workflow` |
 | Verify scope, approval, ownership, dependency, or override authority | `decision-provenance` |
+| Checkpoint, hand off, or resume work across sessions | `task-continuity` |
 | Audit and repair skill quality | `skill-doctor` |
 
 Use [`workflow-router`](skills/workflow-router/SKILL.md) when the request has not yet been classified.

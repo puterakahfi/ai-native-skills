@@ -293,7 +293,8 @@ continuity_validation:
 
 ```text
 repository
-issue\active_branch
+issue
+active_branch
 pull_request
 objective
 acceptance_criteria
