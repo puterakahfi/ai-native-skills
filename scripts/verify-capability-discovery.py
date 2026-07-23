@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate capability discovery taxonomy and job profiles against inventory."""
+"""Validate capability discovery facets, topics, and job profiles against inventory."""
 
 from __future__ import annotations
 
@@ -12,12 +12,27 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 INVENTORY_PATH = ROOT / "docs" / "capability-inventory.json"
 MANIFEST_PATH = ROOT / "catalog" / "capability-discovery" / "manifest.json"
-FACET_KEYS = ("domains", "lifecycle_stages", "concerns")
-FILE_KEYS = ("facets", "classifications", "job_profiles")
+SCHEMA_VERSION = 2
+FACET_KEYS = ("domains", "lifecycle_stages", "concerns", "ecosystems")
+CLASSIFICATION_METADATA_KEYS = ("cross_cutting_reason",)
+FILE_KEYS = ("facets", "classifications", "topics", "job_profiles")
+MAX_NON_WORKFLOW_DOMAINS = 3
 REQUIRED_JOB_PROFILES = {
     "product-planning",
     "engineering-quality",
     "security-engineering",
+}
+REQUIRED_TOPICS = {
+    "product-management",
+    "software-architecture",
+    "engineering-quality",
+    "security-engineering",
+    "design-ui",
+    "agent-workflows",
+    "ai-agent-systems",
+    "operations-reliability",
+    "developer-experience",
+    "growth-marketing",
 }
 
 
@@ -65,10 +80,12 @@ def require_string_list(
     return value
 
 
-def load_catalog() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+def load_catalog() -> dict[str, dict[str, Any]]:
     manifest = load_json(MANIFEST_PATH)
-    if manifest.get("schema_version") != 1:
-        raise DiscoveryError("catalog manifest schema_version must be 1")
+    if manifest.get("schema_version") != SCHEMA_VERSION:
+        raise DiscoveryError(
+            f"catalog manifest schema_version must be {SCHEMA_VERSION}"
+        )
     require_string(manifest.get("source"), "catalog manifest source")
 
     files = manifest.get("files")
@@ -84,7 +101,7 @@ def load_catalog() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
             parts.append("unknown: " + ", ".join(extra_keys))
         raise DiscoveryError("catalog manifest file keys invalid: " + "; ".join(parts))
 
-    loaded: list[dict[str, Any]] = []
+    loaded: dict[str, dict[str, Any]] = {}
     for key in FILE_KEYS:
         relative = Path(require_string(files[key], f"catalog manifest files.{key}"))
         path = (ROOT / relative).resolve()
@@ -95,11 +112,12 @@ def load_catalog() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
                 f"catalog manifest files.{key} escapes repository root"
             ) from error
         document = load_json(path)
-        if document.get("schema_version") != 1:
-            raise DiscoveryError(f"{relative.as_posix()} schema_version must be 1")
-        loaded.append(document)
-
-    return loaded[0], loaded[1], loaded[2]
+        if document.get("schema_version") != SCHEMA_VERSION:
+            raise DiscoveryError(
+                f"{relative.as_posix()} schema_version must be {SCHEMA_VERSION}"
+            )
+        loaded[key] = document
+    return loaded
 
 
 def inventory_types(inventory: dict[str, Any]) -> dict[str, str]:
@@ -126,6 +144,16 @@ def validate_facet_definitions(document: dict[str, Any]) -> dict[str, set[str]]:
     if not isinstance(facets, dict):
         raise DiscoveryError("facets must be an object")
 
+    missing_keys = sorted(set(FACET_KEYS) - set(facets))
+    extra_keys = sorted(set(facets) - set(FACET_KEYS))
+    if missing_keys or extra_keys:
+        parts: list[str] = []
+        if missing_keys:
+            parts.append("missing: " + ", ".join(missing_keys))
+        if extra_keys:
+            parts.append("unknown: " + ", ".join(extra_keys))
+        raise DiscoveryError("facet keys invalid: " + "; ".join(parts))
+
     allowed: dict[str, set[str]] = {}
     for facet_key in FACET_KEYS:
         values = facets.get(facet_key)
@@ -151,16 +179,23 @@ def validate_facet_definitions(document: dict[str, Any]) -> dict[str, set[str]]:
     return allowed
 
 
-def resolve_facets(
+def resolve_classification(
     defaults: dict[str, Any],
     override: dict[str, Any],
     allowed: dict[str, set[str]],
     location: str,
-) -> dict[str, list[str]]:
-    unknown_keys = sorted(set(override) - set(FACET_KEYS))
-    if unknown_keys:
+) -> tuple[dict[str, list[str]], str | None]:
+    permitted = set(FACET_KEYS) | set(CLASSIFICATION_METADATA_KEYS)
+    unknown_default_keys = sorted(set(defaults) - permitted)
+    if unknown_default_keys:
         raise DiscoveryError(
-            f"{location} has unknown keys: " + ", ".join(unknown_keys)
+            f"{location}.defaults has unknown keys: "
+            + ", ".join(unknown_default_keys)
+        )
+    unknown_override_keys = sorted(set(override) - permitted)
+    if unknown_override_keys:
+        raise DiscoveryError(
+            f"{location} has unknown keys: " + ", ".join(unknown_override_keys)
         )
 
     result: dict[str, list[str]] = {}
@@ -175,7 +210,14 @@ def resolve_facets(
                 f"{location}.{facet_key} unknown values: " + ", ".join(unknown)
             )
         result[facet_key] = values
-    return result
+
+    reason = override.get(
+        "cross_cutting_reason",
+        defaults.get("cross_cutting_reason"),
+    )
+    if reason is not None:
+        reason = require_string(reason, f"{location}.cross_cutting_reason")
+    return result, reason
 
 
 def validate_classifications(
@@ -200,9 +242,6 @@ def validate_classifications(
         defaults = group.get("defaults")
         if not isinstance(defaults, dict):
             raise DiscoveryError(f"{location}.defaults must be an object")
-        resolved_defaults = resolve_facets(
-            defaults, {}, allowed, f"{location}.defaults"
-        )
 
         capabilities = require_string_list(
             group.get("capabilities"), f"{location}.capabilities"
@@ -229,12 +268,31 @@ def validate_classifications(
                 raise DiscoveryError(
                     f"{location}.overrides.{capability} must be an object"
                 )
-            resolved[capability] = resolve_facets(
-                resolved_defaults,
+            classification, cross_cutting_reason = resolve_classification(
+                defaults,
                 override,
                 allowed,
                 f"{location}.overrides.{capability}",
             )
+            domain_count = len(classification["domains"])
+            if inventory[capability] != "workflow":
+                if (
+                    domain_count > MAX_NON_WORKFLOW_DOMAINS
+                    and cross_cutting_reason is None
+                ):
+                    raise DiscoveryError(
+                        f"{capability!r} has {domain_count} primary domains; "
+                        "non-workflow capabilities may use at most "
+                        f"{MAX_NON_WORKFLOW_DOMAINS} without cross_cutting_reason"
+                    )
+                if (
+                    domain_count <= MAX_NON_WORKFLOW_DOMAINS
+                    and cross_cutting_reason is not None
+                ):
+                    raise DiscoveryError(
+                        f"{capability!r} has unnecessary cross_cutting_reason"
+                    )
+            resolved[capability] = classification
 
     duplicate_groups = sorted(
         name for name, count in Counter(group_ids).items() if count > 1
@@ -264,6 +322,56 @@ def validate_classifications(
         raise DiscoveryError("capability discovery coverage mismatch: " + "; ".join(parts))
 
     return resolved
+
+
+def validate_topics(
+    document: dict[str, Any],
+    inventory: dict[str, str],
+) -> int:
+    topics = document.get("topics")
+    if not isinstance(topics, list) or not topics:
+        raise DiscoveryError("topics must be a non-empty list")
+
+    topic_ids: list[str] = []
+    for topic_index, topic in enumerate(topics):
+        location = f"topics[{topic_index}]"
+        if not isinstance(topic, dict):
+            raise DiscoveryError(f"{location} must be an object")
+
+        topic_ids.append(require_string(topic.get("id"), f"{location}.id"))
+        require_string(topic.get("label"), f"{location}.label")
+        require_string(topic.get("description"), f"{location}.description")
+
+        capabilities = require_string_list(
+            topic.get("capabilities"), f"{location}.capabilities"
+        )
+        starting_points = require_string_list(
+            topic.get("starting_points"), f"{location}.starting_points"
+        )
+        unknown = sorted(set(capabilities) - set(inventory))
+        if unknown:
+            raise DiscoveryError(
+                f"{location}.capabilities unknown: " + ", ".join(unknown)
+            )
+        outside = sorted(set(starting_points) - set(capabilities))
+        if outside:
+            raise DiscoveryError(
+                f"{location}.starting_points outside topic capabilities: "
+                + ", ".join(outside)
+            )
+
+    duplicate_ids = sorted(
+        name for name, count in Counter(topic_ids).items() if count > 1
+    )
+    if duplicate_ids:
+        raise DiscoveryError("topics duplicate ids: " + ", ".join(duplicate_ids))
+
+    missing_topics = sorted(REQUIRED_TOPICS - set(topic_ids))
+    if missing_topics:
+        raise DiscoveryError(
+            "topics missing required entries: " + ", ".join(missing_topics)
+        )
+    return len(topics)
 
 
 def validate_job_profiles(
@@ -362,18 +470,22 @@ def validate_job_profiles(
 def main() -> int:
     try:
         inventory_document = load_json(INVENTORY_PATH)
-        facets, classifications, profiles = load_catalog()
+        catalog = load_catalog()
         inventory = inventory_types(inventory_document)
-        allowed = validate_facet_definitions(facets)
-        resolved = validate_classifications(classifications, inventory, allowed)
-        profile_count = validate_job_profiles(profiles, inventory)
+        allowed = validate_facet_definitions(catalog["facets"])
+        resolved = validate_classifications(
+            catalog["classifications"], inventory, allowed
+        )
+        topic_count = validate_topics(catalog["topics"], inventory)
+        profile_count = validate_job_profiles(catalog["job_profiles"], inventory)
     except DiscoveryError as error:
         print(f"discovery error: {error}", file=sys.stderr)
         return 1
 
     print(
         "Capability discovery verified: "
-        f"{len(resolved)} classified capabilities, {profile_count} job profiles."
+        f"{len(resolved)} classified capabilities, "
+        f"{topic_count} topics, {profile_count} job profiles."
     )
     return 0
 
