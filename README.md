@@ -6,7 +6,7 @@ This repository turns engineering methods and Native AI contracts into reusable 
 
 Works with agents that support the [Agent Skills specification](https://agentskills.io/specification) or the [skills.sh](https://skills.sh) ecosystem, including Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and other compatible runtimes.
 
-**86 skills · 10 workflows · 6 meta-skills**
+**87 skills · 10 workflows · 6 meta-skills**
 
 ## Start here
 
@@ -16,6 +16,7 @@ Works with agents that support the [Agent Skills specification](https://agentski
 | Install a complete workflow and its documented dependencies | [Skill packs](docs/skill-packs.md) |
 | Let the agent choose the correct workflow | `workflow-router` |
 | Compose engineering, design, product, and review roles | `role-switcher` |
+| Generate concise standardized Project Instructions | `project-instruction-generator` |
 | Classify feature vs epic and define issue/branch/PR topology | `delivery-work-breakdown` |
 | Discover repository frameworks, components, styling, icons, tooling, and reuse constraints before code | `implementation-context-discovery` |
 | Diagnose discovery for a catalog, registry, directory, feed, or result set | `collection-discovery-design` |
@@ -53,6 +54,7 @@ Examples:
 
 ```bash
 npx skills add puterakahfi/ai-native-skills@workflow-router -g -y
+npx skills add puterakahfi/ai-native-skills@project-instruction-generator -g -y
 npx skills add puterakahfi/ai-native-skills@delivery-work-breakdown -g -y
 npx skills add puterakahfi/ai-native-skills@implementation-context-discovery -g -y
 npx skills add puterakahfi/ai-native-skills@decision-provenance -g -y
@@ -78,7 +80,7 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 | Type | Primary job | Examples |
 |---|---|---|
-| `skill` | One reusable capability or expert lens | `delivery-work-breakdown`, `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `chatgpt-app-development`, `brand-identity-review` |
+| `skill` | One reusable capability or expert lens | `delivery-work-breakdown`, `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `project-instruction-generator`, `chatgpt-app-development`, `brand-identity-review` |
 | `workflow` | An ordered lifecycle with phases and gates | `bugfix-workflow`, `redesign-workflow`, `deployment-workflow` |
 | `meta-skill` | Route or compose other capabilities | `workflow-router`, `role-switcher` |
 
@@ -114,6 +116,7 @@ A `SKILL.md` should remain the lean executable entry point. Load references only
 | Build a product from discovery through launch | `product-development-workflow` |
 | Build a ChatGPT App from zero | `product-development-workflow` + `chatgpt-app-development` |
 | Add ChatGPT App integration to an existing product | `new-feature-workflow` + `chatgpt-app-development` |
+| Generate or audit project-scoped agent instructions | `project-instruction-generator` |
 | Decompose a release into epic/feature/task work and define branch/PR topology | `delivery-work-breakdown` |
 | Map an accepted feature/design into an existing repository stack before implementation | `implementation-context-discovery` |
 | Specify requirements before implementation | `spec-workflow` |

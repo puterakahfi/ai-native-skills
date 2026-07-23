@@ -1,0 +1,67 @@
+skill_test:
+  skill: project-instruction-generator
+  version: 1.0.0
+  description: Verify project-instruction-generator produces a concise reusable bootstrap with routing, disclosure, repository discipline, completion gates, and evidence-gated capability evolution.
+  cases:
+  - id: generate-standard-project-instructions-from-project-resources
+    description: Generate Project Instructions for a repository-backed Custom GPT project where the changing inputs are primarily project identity and resource URLs.
+    trigger: >-
+      Create standardized ChatGPT Project Instructions for a project named VisualMate Custom GPT. Its purpose is to develop, test, and release an AI Creative Control System. Use https://github.com/puterakahfi/visualmate-gpt as the primary repository, https://github.com/users/puterakahfi/projects/10 as project management, https://github.com/puterakahfi/ai-native-skills as executable skills, https://github.com/puterakahfi/ai-native-core as core contracts, and https://github.com/puterakahfi/ai-native-fw as the runtime/control-plane source. Keep the instructions reusable and concise so another project mainly changes the name, purpose, and links.
+    must_contain:
+    - VisualMate Custom GPT
+    - Source-of-Truth Priority
+    - workflow-router
+    - role-switcher
+    - Execution Context
+    - Execution Receipt
+    - route
+    - execute
+    - verify
+    - deliver
+    - learn
+    - evolve when justified
+    - skill-evolution
+    - NO_CHANGE
+    - LOCAL_ONLY
+    - EVAL_ONLY
+    - BUG
+    - IMPROVEMENT
+    - RFC
+    - DEFERRED_UNVERIFIED
+    - ai-native-core
+    - ai-native-skills
+    - ai-native-fw
+    - Verified learning before evolution
+    must_not_contain:
+    - invent an issue number
+    - automatically modify every skill after use
+    - copy the complete methodology of every referenced skill
+    - claim a skill was applied without observable output
+    quality_gates_tested:
+    - project_specific_values_are_traceable
+    - reusable_policy_is_separated_from_project_configuration
+    - routing_and_role_composition_precede_execution
+    - capability_evolution_is_evidence_gated
+    - ownership_boundaries_are_preserved
+    - generated_instructions_remain_a_bootstrap_not_a_methodology_dump
+  - id: audit-bloated-project-instructions
+    description: Reduce a project instruction that duplicates full epic, git, evidence, and skill-evolution procedures.
+    trigger: >-
+      Audit and rewrite project instructions that copy the complete delivery-work-breakdown matrices, every git command, the entire evidence taxonomy, and the full skill-evolution procedure. Preserve the governing behavior but move reusable methodology back behind the owning skills.
+    must_contain:
+    - delivery-work-breakdown
+    - git-workflow
+    - decision-provenance
+    - skill-evolution
+    - concise
+    - observable evidence
+    - Project Instructions
+    must_not_contain:
+    - full epic classification matrix
+    - every git command
+    - entire evidence taxonomy
+    - complete skill-evolution procedure
+    quality_gates_tested:
+    - duplicated_methodology_is_replaced_by_skill_mandates
+    - project_specific_constraints_are_preserved
+    - generated_instructions_remain_concise

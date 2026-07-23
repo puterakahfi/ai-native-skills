@@ -6,10 +6,10 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 
 Current repository inventory:
 
-- `skill`: 86
+- `skill`: 87
 - `workflow`: 10
 - `meta-skill`: 6
-- Total executable skills: 102
+- Total executable skills: 103
 
 ---
 
@@ -21,7 +21,7 @@ Agent Skills frontmatter allows standard fields such as `name`, `description`, `
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
-| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `delivery-work-breakdown`, `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `accessibility`, `chatgpt-app-development` |
+| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `delivery-work-breakdown`, `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `project-instruction-generator`, `accessibility`, `chatgpt-app-development` |
 | `workflow` | Run a sequenced lifecycle | “What phases and gates must this task follow?” | `bugfix-workflow`, `new-feature-workflow`, `redesign-workflow` |
 | `meta-skill` | Route or compose capabilities | “Which workflow and specialists should be loaded?” | `workflow-router`, `role-switcher`, `design-layout` |
 
@@ -66,6 +66,7 @@ A good skill defines:
 - `delivery-work-breakdown` — classify release units, work hierarchy, branch bases, PR targets, and epic acceptance before Git execution.
 - `implementation-context-discovery` — inspect an existing repository before code, classify canonical framework/component/styling/icon/tooling systems, lock conventions, decide reuse/extension/composition/native/dependency, and hand off to implementation plus independent architecture review.
 - `collection-discovery-design` — diagnose retrieval and discovery strategy before pagination, tabs, filtering, traversal, or disclosure adapters are selected.
+- `project-instruction-generator` — generate or audit concise project-scoped bootstrap instructions that bind project identity and resources to reusable routing, disclosure, repository, completion, and capability-evolution policy.
 - `systematic-debugging` — root-cause investigation discipline.
 - `decision-provenance` — verify authority, source, scope, supersession, and conflict behind material decisions.
 - `accessibility` — WCAG-oriented UI quality gate.
