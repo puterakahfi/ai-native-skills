@@ -9,7 +9,10 @@ on:
       - README.md
       - docs/skills.md
       - docs/capability-inventory.json
+      - docs/capability-discovery.md
+      - catalog/capability-discovery/**
       - scripts/verify-capability-inventory.py
+      - scripts/verify-capability-discovery.py
       - .github/workflows/validate-capability-inventory.yml
   push:
     branches:
@@ -19,7 +22,10 @@ on:
       - README.md
       - docs/skills.md
       - docs/capability-inventory.json
+      - docs/capability-discovery.md
+      - catalog/capability-discovery/**
       - scripts/verify-capability-inventory.py
+      - scripts/verify-capability-discovery.py
       - .github/workflows/validate-capability-inventory.yml
 
 permissions:
@@ -32,10 +38,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Verify executable capability metadata and public documentation
-        run: python3 scripts/verify-capability-inventory.py
+      - name: Verify executable inventory and capability discovery
+        run: |
+          python3 scripts/verify-capability-inventory.py
+          python3 scripts/verify-capability-discovery.py
 
-      - name: Prove metadata regressions fail closed
+      - name: Prove executable metadata regressions fail closed
         shell: bash
         run: |
           set -euo pipefail
@@ -101,3 +109,66 @@ jobs:
           path.write_text(source)
           PY
           expect_failure "Capability path/name mismatch"
+
+      - name: Prove discovery regressions fail closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          classifications="catalog/capability-discovery/classifications.json"
+          profiles="catalog/capability-discovery/job-profiles.json"
+          cp "$classifications" /tmp/classifications.json
+          cp "$profiles" /tmp/job-profiles.json
+
+          restore_catalog() {
+            cp /tmp/classifications.json "$classifications"
+            cp /tmp/job-profiles.json "$profiles"
+          }
+
+          expect_discovery_failure() {
+            local expected="$1"
+            set +e
+            output=$(python3 scripts/verify-capability-discovery.py 2>&1)
+            status=$?
+            set -e
+            printf '%s\n' "$output"
+            test "$status" -ne 0
+            grep -Fq "$expected" <<<"$output"
+            restore_catalog
+          }
+
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("catalog/capability-discovery/classifications.json")
+          data = json.loads(path.read_text())
+          for group in data["classification_groups"]:
+              if "accessibility" in group["capabilities"]:
+                  group["capabilities"].remove("accessibility")
+                  group.get("overrides", {}).pop("accessibility", None)
+                  break
+          path.write_text(json.dumps(data))
+          PY
+          expect_discovery_failure "capability discovery coverage mismatch: missing: accessibility"
+
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("catalog/capability-discovery/classifications.json")
+          data = json.loads(path.read_text())
+          data["classification_groups"][0]["defaults"]["domains"].append("unknown-domain")
+          path.write_text(json.dumps(data))
+          PY
+          expect_discovery_failure "unknown values: unknown-domain"
+
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("catalog/capability-discovery/job-profiles.json")
+          data = json.loads(path.read_text())
+          data["job_profiles"][0]["workflow_routes"][0]["workflow"] = "product-manager"
+          path.write_text(json.dumps(data))
+          PY
+          expect_discovery_failure "must reference a workflow; 'product-manager' is 'skill'"
