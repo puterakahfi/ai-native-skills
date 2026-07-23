@@ -1,0 +1,57 @@
+name: Sync project instruction generator inventory
+
+on:
+  push:
+    branches:
+      - 82-project-instruction-generator
+    paths:
+      - .github/workflows/project-instruction-generator-sync.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: 82-project-instruction-generator
+          fetch-depth: 0
+
+      - name: Checkout canonical core
+        uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-core
+          path: .deps/ai-native-core
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install generator dependency
+        run: python -m pip install --disable-pip-version-check PyYAML
+
+      - name: Regenerate contract coverage snapshot
+        run: >-
+          python scripts/inventory-contract-coverage.py
+          --root .
+          --core-root .deps/ai-native-core
+          --output docs/contract-coverage-discovery.yaml
+
+      - name: Commit generated snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/contract-coverage-discovery.yaml
+          if git diff --cached --quiet; then
+            echo "Snapshot already current"
+            exit 0
+          fi
+          git commit -m "chore(docs): regenerate contract coverage inventory"
+          git push origin HEAD:82-project-instruction-generator
