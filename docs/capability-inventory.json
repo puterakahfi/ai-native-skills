@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 86,
+    "skill": 87,
     "workflow": 10,
     "meta-skill": 6,
-    "total": 102
+    "total": 103
   },
   "items": [
     {
@@ -342,6 +342,11 @@
       "name": "product-requirements",
       "type": "skill",
       "path": "skills/product-requirements/SKILL.md"
+    },
+    {
+      "name": "project-instruction-generator",
+      "type": "skill",
+      "path": "skills/project-instruction-generator/SKILL.md"
     },
     {
       "name": "prompt-engineer",
