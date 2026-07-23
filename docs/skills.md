@@ -219,11 +219,85 @@ implementation-context-discovery
   owns:
     repository ecosystem discovery
     canonicality and convention locks
-    reuse/extension/composition/native/dependency decisions
-    evidence-backed implementation mapping
+    reuse/extension/dependency decisions
+    implementation mapping
 
   delegates:
-    actual feature implementation
-    architecture acceptance
-    product-specific approval
+    component fitness → adaptive-component-design
+    product code → master-engineer/product adapter
+    architecture acceptance → architecture-review
+    visual acceptance → design-review
 ```
+
+---
+
+## Decision Guide
+
+| Creating... | Use |
+|---|---|
+| One reusable capability or expert lens | `skill` |
+| A required multi-phase lifecycle | `workflow` |
+| An intent router or capability composer | `meta-skill` |
+| A runtime/product implementation of a core contract | official type + adapter metadata |
+| Reusable platform specialist knowledge without stable core contract | `skill` without invented `implements` |
+| Product-specific framework/library convention | product context consumed by `implementation-context-discovery`, not a universal skill by default |
+| Product-specific override | product/app adapter layer |
+| Temporary idea or scratch note | do not put it in `skills/` |
+
+---
+
+## Frontmatter Contract
+
+Every `SKILL.md` must be valid Agent Skills frontmatter. Keep standard fields at the top level and repo-specific fields under namespaced `metadata` keys.
+
+```yaml
+---
+name: example-skill
+description: Short trigger-focused description.
+license: MIT
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+---
+```
+
+For a Native AI contract-backed skill:
+
+```yaml
+---
+name: implementation-context-discovery
+description: Discover and preserve repository implementation conventions before code.
+license: MIT
+metadata:
+  ai-native-skills.version: 1.0.0
+  ai-native-skills.author: puterakahfi
+  ai-native-skills.type: skill
+  ai-native-skills.implements: ai-native-core/contracts/skills/engineering/implementation-context-discovery.contract.yaml
+  ai-native-skills.contract-version: ^1.0.0
+---
+```
+
+Validate with:
+
+```bash
+skills-ref validate skills/<skill-name>
+```
+
+---
+
+## Anti-patterns
+
+1. **Calling everything a skill.** If phase order is the main value, create a workflow.
+2. **Calling a router a workflow.** If it only selects another process, create a meta-skill.
+3. **Creating product-specific base skills.** Product facts and stack choices belong in product/app context unless generalized.
+4. **Creating a platform workflow when an overlay is enough.** Preserve the product or feature lifecycle.
+5. **Inventing a new type casually.** It affects docs, validation, examples, and consumers.
+6. **Using adapter as a type before tooling supports it.** Keep adapter semantics in namespaced metadata.
+7. **Inventing a core contract for unstable platform trivia.** Generalize only a proven stable boundary.
+8. **Writing no-op skills.** A skill must change agent decisions, procedure, gates, or evidence.
+9. **Mixing routing and execution.** Meta-skills route; workflows and skills execute.
+10. **Naming an implementation adapter as the domain.** Pagination, tabs, shadcn, Tailwind, Lucide, and similar choices are adapters inside broader domains.
+11. **Treating installed as canonical.** Package presence alone does not establish repository authority.
+12. **Making native HTML universally invalid.** Evaluate semantic sufficiency and repository contracts.
+13. **Letting pre-code discovery self-approve.** Architecture review remains independent after implementation.
