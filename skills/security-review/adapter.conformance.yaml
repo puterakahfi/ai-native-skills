@@ -1,0 +1,63 @@
+# Static structural declaration for ai-native-core/contracts/skills/security/security-review.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: security-review
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/security-review/SKILL.md
+  implements:
+    contract_id: security-review
+    contract_kind: skill_contract
+    contract_path: contracts/skills/security/security-review.contract.yaml
+    contract_version: "~0.1"
+  capability: security_baseline_validation
+  interface:
+    inputs:
+      - code_or_diff
+      - security_baseline_ref
+      - dependency_list
+      - environment_config
+      - api_surface
+    outputs:
+      - security_verdict
+      - secret_detection_report
+      - vulnerability_list
+      - dependency_risk_report
+      - blocking_violations
+      - recommendations
+    gates:
+      - no_hardcoded_secrets_or_credentials
+      - no_sql_injection_vectors
+      - input_sanitization_verified
+      - output_encoding_verified
+      - authorization_checks_present
+      - dependency_vulnerabilities_checked
+      - no_sensitive_data_in_logs
+      - security_verdict_required_before_deploy
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - security_baseline_source
+    - secret_scanner
+    - dependency_scanner
+    - blocking_vs_warning_policy
+    - owasp_level
+  evidence_refs:
+    - id: security-review-core-contract
+      layer: structural
+      path: contracts/skills/security/security-review.contract.yaml
+      claim: Canonical contract identity and interface source.
+    - id: migration-issue-103
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/103
+      claim: Bounded migration scope and acceptance criteria.

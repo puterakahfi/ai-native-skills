@@ -1,0 +1,55 @@
+# Static structural declaration for ai-native-core/contracts/skills/engineering/test-driven-development.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: test-driven-development
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/test-driven-development/SKILL.md
+  implements:
+    contract_id: test-driven-development
+    contract_kind: skill_contract
+    contract_path: contracts/skills/engineering/test-driven-development.contract.yaml
+    contract_version: "~0.1"
+  capability: red_green_refactor_test_first_implementation
+  interface:
+    inputs:
+      - feature_or_behavior_to_implement
+      - existing_test_suite
+      - acceptance_criteria
+    outputs:
+      - failing_test
+      - passing_implementation
+      - refactored_code
+      - test_suite
+    gates:
+      - test_must_be_written_before_implementation
+      - test_must_fail_before_implementation_red
+      - implementation_must_make_test_pass_green
+      - refactor_must_not_break_tests
+      - no_implementation_without_test
+      - no_skipped_tests_in_final_output
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - test_framework
+    - coverage_threshold
+    - test_type
+  evidence_refs:
+    - id: test-driven-development-core-contract
+      layer: structural
+      path: contracts/skills/engineering/test-driven-development.contract.yaml
+      claim: Canonical contract identity and interface source.
+    - id: migration-issue-103
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/103
+      claim: Bounded migration scope and acceptance criteria.

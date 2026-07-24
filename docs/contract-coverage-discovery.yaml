@@ -13,8 +13,8 @@ contract_coverage_inventory:
       domain-reviewer: 1
       facade: 1
     coverage:
-      contract_backed_v2: 11
-      legacy_contract_backed: 86
+      contract_backed_v2: 14
+      legacy_contract_backed: 83
       reviewed_exemption: 9
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
@@ -1490,9 +1490,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/security-review/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: service-design
     path: skills/service-design/SKILL.md
@@ -1624,9 +1624,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/systematic-debugging/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: systems-thinking
     path: skills/systems-thinking/SKILL.md
@@ -1669,9 +1669,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/test-driven-development/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: threat-modeling
     path: skills/threat-modeling/SKILL.md
