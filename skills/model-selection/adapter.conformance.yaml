@@ -1,0 +1,72 @@
+# Static structural declaration for ai-native-core/contracts/skills/runtime/model-selection.contract.yaml.
+# Executable methodology and model-class semantics remain owned by SKILL.md and the Core contract.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: model-selection
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/model-selection/SKILL.md
+  implements:
+    contract_id: model-selection
+    contract_kind: skill_contract
+    contract_path: contracts/skills/runtime/model-selection.contract.yaml
+    contract_version: "~0.1"
+  capability: select_model_class_for_ai_native_engineering_tasks
+  interface:
+    inputs:
+      - task_intent
+      - task_risk
+      - required_capabilities
+      - context_constraints
+      - latency_budget
+      - cost_budget
+      - privacy_constraints
+      - available_models
+      - runtime_profile
+      - evaluation_history
+    outputs:
+      - model_selection_decision
+      - model_routing_plan
+      - fallback_model_plan
+      - cost_latency_quality_tradeoff
+      - verification_plan
+      - escalation_policy
+    gates:
+      - task_intent_must_be_classified_before_model_choice
+      - required_capabilities_must_be_explicit
+      - privacy_constraints_must_override_cost_and_latency_preferences
+      - high_risk_tasks_must_use_reasoning_or_specialized_review_model
+      - coding_tasks_with_repo_changes_must_prefer_coding_agent_or_tool_capable_model
+      - vision_tasks_must_require_vision_capability
+      - fallback_must_be_defined_for_unavailable_or_failing_model
+      - decision_must_record_cost_latency_quality_tradeoff
+      - verification_plan_must_match_task_risk
+      - model_choice_must_not_claim_unsupported_capabilities
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - model_registry
+    - provider_names
+    - cost_source
+    - latency_source
+    - privacy_policy
+    - fallback_policy
+    - evaluation_runner
+  evidence_refs:
+    - id: model-selection-core-contract
+      layer: structural
+      path: contracts/skills/runtime/model-selection.contract.yaml
+      claim: Canonical contract identity, interface, model classes, gates, and adapter requirement source.
+    - id: migration-issue-111
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/111
+      claim: Bounded migration scope and acceptance criteria.
