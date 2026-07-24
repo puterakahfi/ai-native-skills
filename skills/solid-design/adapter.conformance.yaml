@@ -1,0 +1,91 @@
+# Reviewed against ai-native-core#50 / PR #51.
+# Executable methodology remains in SKILL.md; this file declares static structural conformance only.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: solid-design
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/solid-design/SKILL.md
+  implements:
+    contract_id: solid-design
+    contract_kind: skill_contract
+    contract_path: contracts/skills/architecture/solid-design.contract.yaml
+    contract_version: ^0.1.0
+  capability: assess_pragmatic_solid_design
+  interface:
+    inputs:
+      - component_or_diff
+      - verified_consumers_and_behavior
+      - change_pressure
+      - repository_conventions
+      - architecture_contract_ref
+      - tests_and_validation_evidence
+      - dependency_graph
+      - considered_alternatives
+    outputs:
+      - per_principle_applicability
+      - solid_finding_list
+      - design_alternatives
+      - smallest_justified_correction
+      - abstraction_risk_assessment
+      - behavior_contract_handoff
+      - refactoring_handoff
+      - architecture_handoff
+    gates:
+      - each_principle_must_be_classified_applicable_partial_not_applicable_or_not_verified
+      - responsibility_findings_must_follow_change_reasons_not_class_size
+      - open_closed_findings_must_be_based_on_verified_variation_pressure
+      - substitution_findings_must_evaluate_behavior_not_type_shape_alone
+      - interface_segmentation_must_follow_real_client_needs
+      - dependency_inversion_must_protect_policy_from_volatile_details
+      - dependency_injection_container_usage_alone_does_not_prove_dependency_inversion
+      - premature_interfaces_pattern_worship_and_abstraction_proliferation_are_forbidden
+      - alternatives_abstraction_risk_and_tradeoffs_must_be_explicit
+      - smallest_justified_design_change_must_be_preferred
+  boundary:
+    covers:
+      - responsibility_design_analysis
+      - extension_pressure_analysis
+      - behavioral_substitutability_analysis
+      - client_specific_interface_analysis
+      - policy_detail_dependency_analysis
+      - abstraction_risk_and_tradeoff_analysis
+    delegates:
+      - architecture_implementation_ownership
+      - design_pattern_implementation
+      - behavior_preserving_refactoring_execution
+      - test_strategy_ownership
+      - independent_architecture_acceptance
+      - product_acceptance
+      - merge_authorization
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - language_and_type_system
+    - repository_design_conventions
+    - client_and_consumer_evidence
+    - change_pressure_evidence
+    - finding_severity_policy
+  evidence_refs:
+    - id: core-rfc-50
+      layer: review
+      uri: https://github.com/puterakahfi/ai-native-core/issues/50
+      claim: Canonical SOLID-design ownership and boundaries were accepted.
+    - id: core-pr-51
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-core/pull/51
+      claim: The solid-design contract was published to ai-native-core main.
+    - id: skills-issue-90
+      layer: review
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/90
+      claim: Executable solid-design scope and acceptance were reviewed.
+    - id: skills-pr-94
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/pull/94
+      claim: The executable solid-design adapter was delivered.

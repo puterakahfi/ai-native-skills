@@ -1,0 +1,94 @@
+# Reviewed against ai-native-core#50 / PR #51.
+# Executable methodology remains in SKILL.md; this file declares static structural conformance only.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: clean-architecture
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/clean-architecture/SKILL.md
+  implements:
+    contract_id: clean-architecture
+    contract_kind: skill_contract
+    contract_path: contracts/skills/architecture/clean-architecture.contract.yaml
+    contract_version: ^0.1.0
+  capability: decide_architecture_style_applicability_and_policy_mechanism_boundaries
+  interface:
+    inputs:
+      - system_or_bounded_slice
+      - verified_forces
+      - repository_conventions
+      - existing_architecture
+      - architecture_contract_ref
+      - dependency_graph
+      - external_authorities
+      - persistence_transport_and_ui_details
+      - migration_constraints
+    outputs:
+      - applicability_verdict
+      - architecture_style_comparison
+      - policy_mechanism_boundary_map
+      - dependency_rule
+      - repository_mapping
+      - boundary_data_translation_plan
+      - bounded_migration_plan
+      - trade_off_analysis
+      - architecture_owner_handoff
+    gates:
+      - applicability_verdict_must_be_recommended_acceptable_not_justified_or_not_verified
+      - architecture_style_selection_must_follow_verified_forces_not_preference
+      - stable_policy_and_volatile_mechanisms_must_be_explicit
+      - dependency_direction_must_be_explicit
+      - boundary_data_translation_must_be_explicit_when_data_crosses_boundaries
+      - repository_conventions_and_accepted_product_contracts_must_be_preserved
+      - fixed_layer_counts_generic_folder_trees_and_framework_bans_are_forbidden
+      - ports_and_use_cases_must_exist_only_when_they_protect_verified_boundaries
+      - bounded_migration_must_prefer_the_smallest_viable_change
+      - alternatives_and_tradeoffs_must_be_explicit
+      - independent_architecture_review_must_remain_separate
+  boundary:
+    covers:
+      - architecture_style_applicability_assessment
+      - policy_mechanism_boundary_mapping
+      - dependency_rule_definition
+      - repository_aware_architecture_mapping
+      - boundary_data_translation_design
+      - bounded_migration_guidance
+    delegates:
+      - architecture_implementation_ownership
+      - concrete_port_and_adapter_implementation
+      - domain_modeling_ownership
+      - design_pattern_selection_and_implementation
+      - independent_architecture_acceptance
+      - product_acceptance
+      - merge_authorization
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - repository_architecture_conventions
+    - accepted_engineering_contract_source
+    - framework_and_provider_constraints
+    - migration_risk_policy
+    - architecture_decision_record_format
+  evidence_refs:
+    - id: core-rfc-50
+      layer: review
+      uri: https://github.com/puterakahfi/ai-native-core/issues/50
+      claim: Canonical clean-architecture ownership and boundaries were accepted.
+    - id: core-pr-51
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-core/pull/51
+      claim: The clean-architecture contract was published to ai-native-core main.
+    - id: skills-issue-91
+      layer: review
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/91
+      claim: Executable clean-architecture scope and acceptance were reviewed.
+    - id: skills-pr-95
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/pull/95
+      claim: The executable clean-architecture adapter was delivered.
