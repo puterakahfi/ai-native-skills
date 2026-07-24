@@ -1,9 +1,9 @@
 ---
 name: role-switcher
-description: Intent and domain detection with explicit role composition — selects one owner, narrow specialists, an independent reviewer facade, and a domain reviewer when specialized acceptance is required.
+description: Intent and domain detection with explicit, evidenced role composition — selects one owner, narrow specialists, an independent reviewer facade, and a domain reviewer when specialized acceptance is required, then verifies that every activated role produced its distinct output.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.4.0
+  ai-native-skills.version: 1.5.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "master-engineer master-design adaptive-component-design product-manager ux-psychology user-research native-ai-engineer chatgpt-app-development diagram-architect design-review brand-identity-review systematic-debugging architecture-review security-review plan"
   ai-native-skills.type: meta-skill
@@ -34,6 +34,8 @@ quality_gates:
 
 State the detected intent and activated roles explicitly. Each role must contribute a distinct lens, and multi-role evidence must remain structured by lens before the owner synthesizes one decision. Never load a role without clear relevance to the user request.
 
+Role names are not execution evidence. For production, review, or acceptance work, `role_composition` must include an observable evidence ledger for every activated role.
+
 ## Core Rule
 
 ```text
@@ -42,6 +44,8 @@ detect intent, lifecycle, platform, and domain
 → load only narrow specialists
 → add a reviewer facade when acceptance is required
 → add the applicable built-in or external domain reviewer
+→ declare expected output for every role
+→ verify produced evidence and status
 → synthesize one decision
 ```
 
@@ -55,6 +59,63 @@ Domain reviewer  specialist-domain gates, evidence, and hard-gate policy
 ```
 
 A platform specialist, domain specialist, or reviewer never silently replaces the owner.
+
+## Role execution evidence
+
+Place evidence inside the contract-approved `role_composition` output:
+
+```yaml
+role_composition:
+  owner: <role>
+  specialists: []
+  reviewer_facade: <role or null>
+  domain_reviewer: <role or null>
+  role_execution_evidence:
+    - role: <activated role>
+      slot: owner | specialist | reviewer_facade | domain_reviewer | implementation_owner
+      required: true | false
+      expected_output: <distinct artifact or decision>
+      evidence_ref: <observable output reference or null>
+      status: PRODUCED | PARTIAL | NOT_VERIFIED | BLOCKED | NOT_APPLICABLE
+      limitation: <reason or null>
+  production_readiness: READY | PARTIAL | BLOCKED | NOT_VERIFIED
+```
+
+Evidence rules:
+
+1. Every activated role has exactly one narrow expected output.
+2. `evidence_ref` points to an observable artifact, decision, mapping, review, test, or rendered/runtime evidence; a role name or activation statement is not enough.
+3. Required role evidence with `PARTIAL`, `NOT_VERIFIED`, or `BLOCKED` prevents production or acceptance PASS.
+4. `NOT_APPLICABLE` requires a reason and must not be used to hide missing required work.
+5. The owner synthesis cites the actual role outputs and preserves their statuses.
+6. Reviewer evidence remains independent from owner or implementation evidence when practical.
+
+Example for repository-backed UI work:
+
+```yaml
+role_execution_evidence:
+  - role: master-design
+    slot: owner
+    required: true
+    expected_output: visual_direction_contract
+    evidence_ref: issue-comment:direction-lock
+    status: PRODUCED
+  - role: implementation-context-discovery
+    slot: specialist
+    required: true
+    expected_output: repository_implementation_mapping
+    evidence_ref: null
+    status: NOT_VERIFIED
+  - role: master-engineer
+    slot: implementation_owner
+    required: true
+    expected_output: repository_patch
+    evidence_ref: null
+    status: BLOCKED
+production_readiness: BLOCKED
+```
+
+Do not begin repository production merely because roles were named when a mandatory pre-code output is missing.
 
 ## Design Review Composition
 
@@ -234,11 +295,16 @@ roles:
   platform: chatgpt-app
 ```
 
+For each slot, immediately declare `expected_output`, whether it is required, and the evidence that will satisfy it.
+
 ### 3. Enforce composition gates
 
 ```text
 □ exactly one owner is explicit
 □ every specialist has a narrow reason
+□ every activated role has one distinct expected output
+□ every required role has produced evidence or a preserved non-pass status
+□ role names or activation statements are not treated as evidence
 □ platform specialist does not replace lifecycle owner
 □ reviewer is independent when practical
 □ design domain and coverage are explicit when design is reviewed
@@ -246,13 +312,14 @@ roles:
 □ missing reviewer limits the verdict
 □ rendered/implemented deliverables have evidence-backed review
 □ ChatGPT App cost owner and generation surface are explicit
+□ owner synthesis references actual role outputs
 ```
 
 ### 4. Synthesize one result
 
 The owner returns one decision with rationale, specialist evidence, trade-offs, implementation/production implications, reviewer verdict, coverage mode, and remaining gaps.
 
-Do not return disconnected role reports.
+The synthesis must include `role_execution_evidence` and `production_readiness`. Do not return disconnected role reports or normalize missing evidence into PASS.
 
 ## Examples
 
@@ -305,6 +372,7 @@ If `brand-identity-review` is not installed, the same request falls back to `LIM
 | Anti-pattern | Why it fails |
 |---|---|
 | Flat list of roles | Ownership and boundaries disappear |
+| Role labels without output evidence | Activation is cosmetic and required work can be skipped |
 | Specialist replaces owner | Narrow expertise controls unrelated decisions |
 | ChatGPT App specialist becomes a new lifecycle owner | Platform knowledge overrides product/feature lifecycle |
 | `design-review` treated as expert in every discipline | Facade coverage is overstated |
@@ -313,3 +381,4 @@ If `brand-identity-review` is not installed, the same request falls back to `LIM
 | Activate all skills for every request | Context and advice become noisy |
 | Skip reviewer for implemented acceptance | Decision maker self-certifies |
 | Return separate reports without synthesis | User must resolve conflicts manually |
+| Required role evidence missing but production proceeds | Workflow gates become descriptive rather than executable |
