@@ -1,6 +1,6 @@
 skill_test:
   skill: code-review-workflow
-  version: "2.1.0"
+  version: "2.2.0"
   description: Verify code review classifies changed domains, requires appropriate evidence, and separates technical review from provenance-backed merge authorization.
 
   cases:
@@ -119,3 +119,18 @@ skill_test:
       quality_gates_tested:
         - technical_and_authority_gates_required_for_merge
         - verified_merge_authority_can_authorize_merge
+
+
+    - id: lint-green-code-still-needs-internal-quality-review
+      description: Passing formatters, lint, tests, and build does not prove readability or maintainability.
+      trigger: "Review PR service ini. Lint, formatter, tests, dan build PASS, tetapi perubahan mencampur provider errors, business decisions, nested flags, dan duplicated condition knowledge. Author menyatakan code quality otomatis PASS."
+      must_contain: ["clean-code", "Code quality", "readability", "behavior", "REQUEST CHANGES"]
+      must_not_contain: ["Code quality: PASS because lint is green", "Approved to merge: YES"]
+      quality_gates_tested: [internal_code_quality_is_explicit, tools_do_not_self_approve_clean_code, named_findings_require_evidence]
+
+    - id: solid-and-clean-architecture-are-conditional-specialists
+      description: Material interface and policy/detail changes load the specialists while trivial local edits do not force ceremony.
+      trigger: "Review PR yang mengubah service ownership, inheritance contract, client interface, dan memindahkan provider SDK ke application policy. Tentukan reviewer dan bedakan specialist guidance dari architecture acceptance."
+      must_contain: ["solid-design", "clean-architecture", "applicability", "architecture-review", "independent"]
+      must_not_contain: ["SOLID required for every file", "Clean Architecture automatically PASS", "architecture-review not needed"]
+      quality_gates_tested: [conditional_engineering_design_specialists, specialist_guidance_does_not_replace_acceptance, no_architecture_ceremony]

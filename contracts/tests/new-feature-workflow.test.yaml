@@ -1,6 +1,6 @@
 skill_test:
   skill: new-feature-workflow
-  version: "2.3.0"
+  version: "2.4.0"
   description: Verify feature scope and decision authority, design and implementation-context preconditions, evidence gates, architecture review, and final merge authorization.
 
   cases:
@@ -161,3 +161,23 @@ skill_test:
       must_contain: [delivery-work-breakdown, release unit, parent_ref, base_branch, pr_target, BLOCKED]
       must_not_contain: [target main by default, create branch immediately]
       quality_gates_tested: [release_unit_classified_before_repository_execution, epic_child_pr_target_matches_integration_branch, no_orphan_feature_slice]
+
+
+    - id: material-boundary-design-precedes-implementation-and-remains-independently-reviewed
+      description: A material provider and policy boundary uses clean-architecture before code but still requires architecture-review after implementation.
+      trigger: "Feature payment baru memindahkan provider SDK keluar dari application policy dan menambah entrypoint queue. Tentukan sequence capability dan acceptance."
+      must_contain: ["clean-architecture", "implementation-context-discovery", "before implementation", "architecture-review", "independent"]
+      must_not_contain: ["clean-architecture self-approves", "generic four-layer folders", "architecture PASS before implementation"]
+      sequence_required:
+        - pattern: "clean-architecture"
+          must_come_before: "implement one approved slice|code production"
+        - pattern: "implement one approved slice|code production"
+          must_come_before: "architecture-review"
+      quality_gates_tested: [material_boundary_design_before_implementation, repository_mapping_before_code, independent_architecture_acceptance]
+
+    - id: local-feature-uses-clean-code-without-forcing-solid-or-clean-architecture
+      description: A bounded local implementation receives clean-code guidance while specialist architecture and SOLID lenses may be not applicable.
+      trigger: "Tambahkan validasi lokal kecil pada module existing tanpa interface, inheritance, provider, boundary, atau architecture change. Terapkan engineering quality tanpa over-engineering."
+      must_contain: ["clean-code", "test", "smallest", "NOT_APPLICABLE"]
+      must_not_contain: ["create a new architecture layer", "interface for every class", "clean-architecture required"]
+      quality_gates_tested: [clean_code_baseline, solid_design_conditional, clean_architecture_conditional, smallest_justified_change]

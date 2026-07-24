@@ -259,17 +259,23 @@ The pack does not define provider commands or environment policy. Product adapte
 
 ## Engineering Quality Pack
 
-Architecture and implementation quality loop — repository-context mapping, architecture review, security review, code review, testing, debugging, refactoring, and technical-debt governance.
+Architecture and implementation quality loop — repository-context mapping, pragmatic architecture and object-design decisions, internal code quality, testing, debugging, behavior-preserving refactoring, independent architecture/security/code review, and technical-debt governance.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
   --skill implementation-context-discovery \
-  --skill architecture-review \
-  --skill security-review \
-  --skill code-review-workflow \
+  --skill master-engineer \
+  --skill clean-architecture \
+  --skill solid-design \
+  --skill clean-code \
   --skill test-driven-development \
   --skill systematic-debugging \
   --skill refactoring \
+  --skill architecture-review \
+  --skill security-review \
+  --skill code-review-workflow \
   --skill technical-debt-governance \
   -g -y
 ```
+
+`clean-code` is the baseline implementation-quality lens. Load `solid-design` only for material responsibility, extension, substitution, client-interface, or dependency-design pressure. Load `clean-architecture` only for material architecture-style or policy/mechanism boundary decisions; it may correctly return `NOT_JUSTIFIED`. Independent `architecture-review` and `code-review-workflow` remain required acceptance gates.
