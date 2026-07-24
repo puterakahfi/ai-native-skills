@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 92-refinement-engineering-quality-integration
+  pull_request:
+    branches:
+      - 88-epic-engineering-design-quality
 
 permissions:
   contents: write
