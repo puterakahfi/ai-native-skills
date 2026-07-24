@@ -22,11 +22,25 @@ jobs:
           ref: 92-refinement-engineering-quality-integration
           fetch-depth: 0
 
+      - name: Checkout canonical core
+        uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-core
+          path: .deps/ai-native-core
+
       - name: Install validation dependencies
         run: python3 -m pip install --quiet pyyaml
 
       - name: Apply workflow and pack refinement
         run: python3 scripts/_tmp_refine_engineering_quality.py
+
+      - name: Regenerate generated inventories
+        run: |
+          python3 scripts/verify-capability-inventory.py --write-snapshot --skip-docs
+          python3 scripts/inventory-contract-coverage.py \
+            --root . \
+            --core-root .deps/ai-native-core \
+            --output docs/contract-coverage-discovery.yaml
 
       - name: Validate discovery and eval contracts
         run: |
@@ -44,6 +58,8 @@ jobs:
           git add skills/code-review-workflow/SKILL.md \
             skills/new-feature-workflow/SKILL.md \
             docs/skill-packs.md \
+            docs/capability-inventory.json \
+            docs/contract-coverage-discovery.yaml \
             catalog/capability-discovery/job-profiles.json \
             contracts/tests/code-review-workflow.test.yaml \
             contracts/tests/new-feature-workflow.test.yaml
