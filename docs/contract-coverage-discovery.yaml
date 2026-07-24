@@ -4,10 +4,10 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 105
+    executable_artifacts: 106
     official_types:
       meta-skill: 6
-      skill: 89
+      skill: 90
       workflow: 10
     patterns:
       domain-reviewer: 1
@@ -15,7 +15,7 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 5
       legacy_contract_backed: 89
-      reviewed_exemption: 11
+      reviewed_exemption: 12
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -185,6 +185,21 @@ contract_coverage_inventory:
       delegates: []
     conformance_path: null
     exemption_path: skills/chatgpt-app-development/contract.exemption.yaml
+    classification: reviewed_exemption
+    errors: []
+  - id: clean-architecture
+    path: skills/clean-architecture/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/clean-architecture/contract.exemption.yaml
     classification: reviewed_exemption
     errors: []
   - id: clean-code
