@@ -1,0 +1,71 @@
+# Static structural declaration for ai-native-core/contracts/skills/quality/decision-provenance.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: decision-provenance
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/decision-provenance/SKILL.md
+  implements:
+    contract_id: decision-provenance
+    contract_kind: skill_contract
+    contract_path: contracts/skills/quality/decision-provenance.contract.yaml
+    contract_version: "^1.0.0"
+  capability: authoritative_decision_provenance_verification
+  interface:
+    inputs:
+      - claim
+      - decision_type
+      - proposed_action
+      - applies_to
+      - candidate_sources
+      - required_authority
+      - previous_decisions
+      - repository_or_organizational_policy
+    outputs:
+      - decision_provenance_report
+    gates:
+      - every_material_decision_claim_has_source_reference
+      - approval_claim_has_attributable_authority
+      - statement_scope_covers_proposed_action
+      - agent_authored_summary_is_not_treated_as_approval
+      - newest_state_is_not_treated_as_authoritative_intent
+      - conflicting_authoritative_decisions_are_not_silently_resolved
+      - supersession_is_explicit
+      - policy_required_approval_is_preserved
+      - missing_provenance_is_not_inferred_consent
+      - action_stays_inside_effective_verified_decision
+      - delivery_cites_decision_ledger
+  boundary:
+    covers:
+      - material_decision_claim_verification
+      - source_attribution
+      - decision_domain_authority_matching
+      - explicit_supersession_and_conflict_detection
+      - scope_lock_route_approval_status_and_ownership_claims
+      - policy_and_required_approval_preservation
+      - decision_ledger_output
+    delegates:
+      - making_product_or_design_decisions_for_the_owner
+      - bypassing_legal_security_repository_or_organizational_policy
+      - proving_runtime_or_design_quality
+      - inventing_missing_decision_sources
+      - treating_agent_authored_text_as_owner_approval
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements: []
+  evidence_refs:
+    - id: decision-provenance-core-contract
+      layer: structural
+      path: contracts/skills/quality/decision-provenance.contract.yaml
+      claim: Canonical contract identity, interface, gates, and boundary source.
+    - id: migration-issue-107
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/107
+      claim: Bounded migration scope and acceptance criteria.

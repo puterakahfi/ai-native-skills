@@ -1,0 +1,142 @@
+# Static structural declaration for ai-native-core/contracts/skills/engineering/implementation-context-discovery.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: implementation-context-discovery
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/implementation-context-discovery/SKILL.md
+  implements:
+    contract_id: implementation-context-discovery
+    contract_kind: skill_contract
+    contract_path: contracts/skills/engineering/implementation-context-discovery.contract.yaml
+    contract_version: "^1.1.0"
+  capability: repository_implementation_context_discovery_and_convention_preservation
+  interface:
+    inputs:
+      - repository_ref
+      - implementation_scope
+      - target_surface
+      - proposed_changes
+      - engineering_contract_ref
+      - architecture_decision_records
+      - package_manifests
+      - lockfiles
+      - workspace_configuration
+      - framework_configuration
+      - source_tree_and_import_evidence
+      - component_registry_configuration
+      - shared_component_inventory
+      - component_source_and_export_inventory
+      - component_variant_and_story_evidence
+      - canonical_registry_availability_evidence
+      - typography_token_and_role_evidence
+      - styling_and_token_configuration
+      - iconography_usage_evidence
+      - state_form_query_and_data_tooling_evidence
+      - build_lint_test_and_story_evidence
+      - migration_and_deprecation_evidence
+      - dependency_policy
+      - ownership_and_approval_policy
+      - preservation_requirements
+      - performance_accessibility_and_security_constraints
+    outputs:
+      - implementation_context_profile
+      - repository_evidence_inventory
+      - framework_runtime_map
+      - component_system_map
+      - canonical_component_inventory
+      - component_capability_coverage_map
+      - component_variant_inventory
+      - official_registry_component_decision
+      - typography_role_map
+      - semantic_native_eligibility_map
+      - styling_system_map
+      - iconography_implementation_map
+      - state_form_data_tooling_map
+      - workspace_build_test_map
+      - convention_locks
+      - canonicality_decisions
+      - reuse_extension_decision
+      - new_dependency_decision
+      - implementation_mapping
+      - convention_drift_findings
+      - evidence_gaps
+      - verification_plan
+    gates:
+      - repository_context_is_inspected_before_implementation
+      - package_presence_alone_does_not_establish_canonical_status
+      - canonicality_uses_declared_dependency_actual_usage_repetition_repository_convention_and_current_decisions
+      - actual_component_exports_variants_registry_and_usage_are_inventoried
+      - component_capability_coverage_is_mapped_before_component_creation
+      - existing_fit_components_and_utilities_are_reused_before_local_duplication
+      - existing_fit_variants_are_reused_before_new_variants
+      - bounded_extension_or_composition_is_preferred_before_product_specific_or_parallel_system_creation
+      - canonical_registry_component_is_considered_before_parallel_library_or_custom_primitive
+      - semantic_native_elements_remain_valid_when_no_richer_canonical_contract_is_needed
+      - semantic_native_structure_does_not_authorize_duplicate_interactive_components
+      - typography_roles_are_mapped_and_preserved_before_route_local_type_system_creation
+      - bypassing_a_fit_canonical_abstraction_without_evidence_is_convention_drift
+      - icon_component_styling_state_and_data_systems_are_not_mixed_without_approved_reason
+      - new_dependencies_require_proven_capability_gap_alternatives_consequences_and_authority
+      - convention_locks_and_scoped_exceptions_are_traceable_to_repository_evidence
+      - implementation_mapping_precedes_code_production
+      - source_only_evidence_does_not_claim_runtime_visual_or_accessibility_conformance
+      - independent_architecture_review_remains_required_after_implementation
+      - unknown_or_conflicting_context_is_reported_not_invented
+  boundary:
+    covers:
+      - repository_implementation_ecosystem_discovery
+      - canonical_framework_runtime_and_tooling_classification
+      - component_system_shared_utility_variant_and_registry_inventory
+      - component_capability_coverage_mapping
+      - typography_role_and_token_mapping
+      - semantic_native_eligibility_mapping
+      - styling_token_and_iconography_implementation_mapping
+      - state_form_query_data_and_build_test_tooling_mapping
+      - repository_convention_lock_definition
+      - reuse_extension_composition_registry_native_or_dependency_decision
+      - capability_gap_and_parallel_system_diagnosis
+      - new_dependency_evidence_and_consequence_record
+      - implementation_mapping_before_code_production
+      - implementation_context_verification_planning
+    delegates:
+      - product_specific_component_implementation
+      - design_pattern_or_component_fitness_selection
+      - visual_style_brand_or_design_system_definition
+      - runtime_behavior_visual_quality_or_accessibility_acceptance
+      - architecture_compliance_acceptance_after_implementation
+      - dependency_purchase_legal_or_licensing_approval
+      - product_specific_migration_execution
+      - backend_domain_or_business_policy
+      - repository_write_or_merge_execution
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - repository_paths_and_tool_names_are_product_defined
+    - framework_component_styling_and_icon_libraries_are_product_defined
+    - canonicality_evidence_must_reference_actual_repository_sources
+    - adapter_must_distinguish_installed_from_canonical_and_legacy_dependencies
+    - adapter_must_inventory_actual_components_variants_registry_availability_and_typography_roles
+    - adapter_must_emit_component_capability_coverage_before_component_creation
+    - adapter_must_distinguish_semantic_native_structure_from_duplicate_interactive_contracts
+    - adapter_must_consider_canonical_registry_addition_before_parallel_component_systems
+    - adapter_must_emit_convention_locks_before_code_production
+    - adapter_must_record_reuse_extension_registry_and_dependency_decisions
+    - adapter_must_preserve_independent_architecture_review
+    - adapter_must_not_claim_runtime_visual_or_accessibility_proof_from_source_only_evidence
+  evidence_refs:
+    - id: implementation-context-discovery-core-contract
+      layer: structural
+      path: contracts/skills/engineering/implementation-context-discovery.contract.yaml
+      claim: Canonical contract identity, interface, gates, boundary, and adapter requirement source.
+    - id: migration-issue-107
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/107
+      claim: Bounded migration scope and acceptance criteria.

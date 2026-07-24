@@ -13,8 +13,8 @@ contract_coverage_inventory:
       domain-reviewer: 1
       facade: 1
     coverage:
-      contract_backed_v2: 14
-      legacy_contract_backed: 83
+      contract_backed_v2: 17
+      legacy_contract_backed: 80
       reviewed_exemption: 9
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
@@ -462,9 +462,9 @@ contract_coverage_inventory:
       - proving_runtime_or_design_quality
       - inventing_missing_decision_sources
       - treating_agent_authored_text_as_owner_approval
-    conformance_path: null
+    conformance_path: skills/decision-provenance/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: delivery-work-breakdown
     path: skills/delivery-work-breakdown/SKILL.md
@@ -495,9 +495,9 @@ contract_coverage_inventory:
       - technical_code_review
       - product_release_authorization
       - deployment_execution
-    conformance_path: null
+    conformance_path: skills/delivery-work-breakdown/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: deployment-workflow
     path: skills/deployment-workflow/SKILL.md
@@ -970,9 +970,9 @@ contract_coverage_inventory:
       - product_specific_migration_execution
       - backend_domain_or_business_policy
       - repository_write_or_merge_execution
-    conformance_path: null
+    conformance_path: skills/implementation-context-discovery/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: incident-response
     path: skills/incident-response/SKILL.md

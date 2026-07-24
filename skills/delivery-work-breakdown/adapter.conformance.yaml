@@ -1,0 +1,104 @@
+# Static structural declaration for ai-native-core/contracts/skills/product/delivery-work-breakdown.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: delivery-work-breakdown
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/delivery-work-breakdown/SKILL.md
+  implements:
+    contract_id: delivery-work-breakdown
+    contract_kind: skill_contract
+    contract_path: contracts/skills/product/delivery-work-breakdown.contract.yaml
+    contract_version: "^1.0.0"
+  capability: release_unit_classification_work_hierarchy_and_branch_topology
+  interface:
+    inputs:
+      - delivery_intent_or_scope
+      - acceptance_criteria
+      - repository_and_release_context
+      - existing_prd_or_feature_spec
+      - existing_issue_hierarchy
+      - existing_branch_policy
+      - release_branch
+      - feature_flag_policy
+      - dependency_constraints
+      - deployment_constraints
+      - independently_releasable_evidence
+      - decision_provenance_records
+    outputs:
+      - release_unit_classification
+      - release_unit_rationale
+      - work_hierarchy
+      - parent_child_traceability
+      - dependency_graph
+      - issue_plan
+      - branch_topology
+      - pr_target_matrix
+      - integration_plan
+      - epic_acceptance_plan
+      - final_release_gate
+      - topology_gap_report
+    gates:
+      - release_unit_must_be_classified_before_branch_creation
+      - epic_required_for_dependent_non_independently_releasable_slices
+      - every_child_work_item_must_trace_to_parent_acceptance_criteria
+      - no_orphan_feature_task_spike_or_bug_items
+      - dependency_graph_must_be_explicit_and_cycle_checked
+      - base_branch_and_pr_target_must_be_explicit_per_work_item
+      - epic_child_prs_must_target_the_epic_or_integration_branch
+      - direct_to_release_branch_requires_independent_releasability_or_approved_safe_feature_flag
+      - feature_flag_exception_requires_disabled_or_equivalent_safe_default_and_no_unflagged_path
+      - green_ci_or_mergeability_does_not_override_release_topology
+      - final_epic_pr_requires_integrated_end_to_end_acceptance
+      - release_ready_state_does_not_self_authorize_merge_or_release
+      - product_defined_repository_and_approval_policy_must_be_preserved
+  boundary:
+    covers:
+      - release_unit_classification
+      - product_epic_feature_task_spike_and_bug_hierarchy
+      - parent_child_acceptance_traceability
+      - delivery_dependency_graph
+      - issue_plan_structure
+      - integration_and_release_branch_topology
+      - work_item_base_branch_and_pr_target_decisions
+      - epic_acceptance_and_final_release_gate_planning
+      - direct_to_release_branch_exception_reasoning
+    delegates:
+      - product_value_or_prd_authoring
+      - acceptance_criterion_definition
+      - issue_tracker_api_execution
+      - repository_branch_commit_or_pr_execution
+      - feature_flag_implementation
+      - code_implementation
+      - technical_code_review
+      - product_release_authorization
+      - deployment_execution
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - issue_tracker
+    - release_branch
+    - branch_naming_policy
+    - integration_branch_policy
+    - pull_request_policy
+    - merge_strategy
+    - feature_flag_policy
+    - release_authority
+    - adapter_must_preserve_release_unit_and_parent_child_traceability
+    - adapter_must_report_unknown_or_conflicting_repository_policy
+  evidence_refs:
+    - id: delivery-work-breakdown-core-contract
+      layer: structural
+      path: contracts/skills/product/delivery-work-breakdown.contract.yaml
+      claim: Canonical contract identity, interface, gates, boundary, and adapter requirement source.
+    - id: migration-issue-107
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/107
+      claim: Bounded migration scope and acceptance criteria.
