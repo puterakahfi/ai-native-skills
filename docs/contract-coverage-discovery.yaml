@@ -13,8 +13,8 @@ contract_coverage_inventory:
       domain-reviewer: 1
       facade: 1
     coverage:
-      contract_backed_v2: 20
-      legacy_contract_backed: 77
+      contract_backed_v2: 23
+      legacy_contract_backed: 74
       reviewed_exemption: 9
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
@@ -1090,9 +1090,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/model-selection/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: motion-design
     path: skills/motion-design/SKILL.md
@@ -1445,9 +1445,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/role-switcher/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: rule-manager
     path: skills/rule-manager/SKILL.md
@@ -1804,9 +1804,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/workflow-router/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   compatibility_manifests: []
   duplicate_compatibility_ids: {}
