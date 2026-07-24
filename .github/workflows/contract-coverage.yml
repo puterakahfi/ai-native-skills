@@ -32,7 +32,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -43,7 +43,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ai-native-skills
-          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Checkout canonical core
         uses: actions/checkout@v4
@@ -66,25 +65,6 @@ jobs:
             ai-native-skills/scripts/map-unowned-contract-candidates.py \
             ai-native-skills/scripts/validate-contract-coverage.py \
             ai-native-skills/tests/test_contract_exemptions.py
-
-      - name: Regenerate contract coverage evidence
-        run: >-
-          python ai-native-skills/scripts/inventory-contract-coverage.py
-          --root ai-native-skills
-          --core-root ai-native-core
-
-      - name: Commit regenerated inventory
-        if: github.event_name == 'pull_request'
-        working-directory: ai-native-skills
-        run: |
-          if git diff --quiet -- docs/contract-coverage-discovery.yaml; then
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/contract-coverage-discovery.yaml
-          git commit -m "chore(contracts): refresh coverage inventory"
-          git push origin "HEAD:${{ github.head_ref }}"
 
       - name: Validate repository contract coverage
         run: >-
