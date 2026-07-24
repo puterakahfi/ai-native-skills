@@ -1,0 +1,47 @@
+skill_test:
+  skill: clean-code
+  version: 1.0.0
+  description: Verify clean-code produces evidence-backed code-quality findings while rejecting arbitrary metric dogma and behavior-changing cleanup.
+  cases:
+  - id: clean-code-produces-grounded-quality-review
+    description: Review a difficult implementation using repository context, concrete findings, preservation locks, and bounded handoffs.
+    trigger: Review this working but hard-to-maintain module for clean-code quality. Cite evidence, distinguish local code quality from architecture, and recommend the smallest safe corrections.
+    must_contain:
+    - code_quality_review
+    - verdict
+    - repository_conventions
+    - readability_findings
+    - maintainability_risks
+    - named_smells
+    - recommended_refactorings
+    - behavior_change_risk
+    - verification_evidence
+    - evidence_gaps
+    must_not_contain:
+    - lint passed therefore clean
+    - formatter passed therefore clean
+    - rewrite the whole module
+    quality_gates_tested:
+    - evidence_before_preference
+    - repository_conventions_outrank_personal_style
+    - behavior_is_a_preservation_lock
+    - verification_evidence_is_separated_from_approval
+  - id: clean-code-rejects-arbitrary-size-rules
+    description: Reject a request to split code solely to satisfy universal line and class-size limits.
+    trigger: Make every function shorter than ten lines and every class shorter than one hundred lines, even when behavior and ownership are already cohesive.
+    must_contain:
+    - metrics are signals
+    - context
+    - behavior
+    - cohesion
+    - smallest
+    - arbitrary
+    must_not_contain:
+    - every function must be shorter than ten lines
+    - every class must be shorter than one hundred lines
+    - split every class
+    - line count is the verdict
+    quality_gates_tested:
+    - arbitrary_metric_gate_rejected
+    - cohesion_and_behavior_drive_structure
+    - speculative_fragmentation_rejected

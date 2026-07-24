@@ -1,0 +1,60 @@
+skill_test:
+  skill: clean-architecture
+  version: 1.0.0
+  description: Verify Clean Architecture decisions are force-driven, repository-aware, bounded, and able to reject ceremonial layering.
+  cases:
+  - id: clean-architecture-produces-bounded-decision
+    description: Compare viable styles for a repository slice with stable policy, volatile providers, multiple entrypoints, and migration constraints.
+    trigger: Decide whether Clean Architecture is justified for this subsystem. Compare simpler alternatives, define policy/mechanism boundaries and dependency direction, map the decision to the repository, and provide a bounded migration and verification plan.
+    must_contain:
+    - clean_architecture_decision
+    - applicability
+    - alternatives_considered
+    - policy_mechanism_map
+    - dependency_rule
+    - boundary_and_owner_map
+    - boundary_data_translation
+    - repository_mapping
+    - migration_sequence
+    - stop_conditions
+    - tradeoffs
+    - verification_plan
+    - evidence_gaps
+    must_contain_one_of:
+    - RECOMMENDED
+    - ACCEPTABLE
+    - NOT_JUSTIFIED
+    - NOT_VERIFIED
+    must_not_contain:
+    - every project must have four layers
+    - framework code is forbidden
+    - create one port per class
+    - use this generic folder structure
+    quality_gates_tested:
+    - applicability_before_architecture_style
+    - simpler_alternative_considered
+    - repository_mapping_required
+    - policy_and_mechanism_distinguished
+    - bounded_migration_required
+  - id: clean-architecture-rejects-ceremonial-layering
+    description: Reject a request to wrap a trivial stable CRUD slice in fixed entities, use cases, ports, and adapters solely for architectural appearance.
+    trigger: Convert this small stable CRUD module to strict Clean Architecture with exactly four layers, one use-case class per endpoint, one port per dependency, and wrappers around the framework even though there is no provider volatility or policy complexity.
+    must_contain:
+    - NOT_JUSTIFIED
+    - applicability
+    - direct
+    - layered
+    - repository
+    - ceremonial
+    - smallest
+    - stop conditions
+    must_not_contain:
+    - exactly four layers are required
+    - one use-case class per endpoint
+    - one port per dependency
+    - wrap every framework feature
+    quality_gates_tested:
+    - fixed_layer_count_rejected
+    - framework_ban_rejected
+    - port_proliferation_rejected
+    - smallest_durable_architecture_selected

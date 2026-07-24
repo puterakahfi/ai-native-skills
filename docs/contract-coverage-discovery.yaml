@@ -4,10 +4,10 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 103
+    executable_artifacts: 106
     official_types:
       meta-skill: 6
-      skill: 87
+      skill: 90
       workflow: 10
     patterns:
       domain-reviewer: 1
@@ -15,7 +15,7 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 5
       legacy_contract_backed: 89
-      reviewed_exemption: 9
+      reviewed_exemption: 12
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -187,11 +187,41 @@ contract_coverage_inventory:
     exemption_path: skills/chatgpt-app-development/contract.exemption.yaml
     classification: reviewed_exemption
     errors: []
+  - id: clean-architecture
+    path: skills/clean-architecture/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/clean-architecture/contract.exemption.yaml
+    classification: reviewed_exemption
+    errors: []
+  - id: clean-code
+    path: skills/clean-code/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/clean-code/contract.exemption.yaml
+    classification: reviewed_exemption
+    errors: []
   - id: code-review-workflow
     path: skills/code-review-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 2.1.0
+    version: 2.2.0
     implements: contracts/workflows/code-review.contract.yaml
     contract_version: ~0.3
     contract_path_exists: true
@@ -1128,7 +1158,7 @@ contract_coverage_inventory:
     path: skills/new-feature-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 2.3.0
+    version: 2.4.0
     implements: contracts/workflows/new-feature.contract.yaml
     contract_version: ~0.4
     contract_path_exists: true
@@ -1537,6 +1567,21 @@ contract_coverage_inventory:
     conformance_path: skills/skill-evolution/adapter.conformance.yaml
     exemption_path: null
     classification: contract_backed_v2
+    errors: []
+  - id: solid-design
+    path: skills/solid-design/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/solid-design/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: spec-workflow
     path: skills/spec-workflow/SKILL.md

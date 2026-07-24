@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 87,
+    "skill": 90,
     "workflow": 10,
     "meta-skill": 6,
-    "total": 103
+    "total": 106
   },
   "items": [
     {
@@ -82,6 +82,16 @@
       "name": "chatgpt-app-development",
       "type": "skill",
       "path": "skills/chatgpt-app-development/SKILL.md"
+    },
+    {
+      "name": "clean-architecture",
+      "type": "skill",
+      "path": "skills/clean-architecture/SKILL.md"
+    },
+    {
+      "name": "clean-code",
+      "type": "skill",
+      "path": "skills/clean-code/SKILL.md"
     },
     {
       "name": "collection-discovery-design",
@@ -407,6 +417,11 @@
       "name": "skill-eval",
       "type": "skill",
       "path": "skills/skill-eval/SKILL.md"
+    },
+    {
+      "name": "solid-design",
+      "type": "skill",
+      "path": "skills/solid-design/SKILL.md"
     },
     {
       "name": "spike",
