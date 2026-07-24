@@ -1,0 +1,55 @@
+skill_test:
+  skill: solid-design
+  version: 1.0.0
+  description: Verify SOLID design analysis is applicability-driven, behavior-grounded, and rejects premature abstraction or mechanism-only claims.
+  cases:
+  - id: solid-design-produces-grounded-assessment
+    description: Assess a module with mixed responsibilities, substitutes, broad interfaces, and provider coupling using concrete consumers and change pressure.
+    trigger: Review this module for SOLID design quality. Classify each principle's applicability, cite behavioral and client evidence, compare alternatives, and select the smallest justified correction.
+    must_contain:
+    - solid_assessment
+    - applicability
+    - srp
+    - ocp
+    - lsp
+    - isp
+    - dip
+    - abstraction_risks
+    - alternatives
+    - selected_option
+    - tradeoffs
+    - verification_evidence
+    - evidence_gaps
+    must_not_contain:
+    - create an interface for every class
+    - dependency injection container proves DIP
+    - subclass compiles therefore LSP
+    - split every class
+    quality_gates_tested:
+    - applicability_before_principle
+    - forces_before_abstraction
+    - behavioral_substitutability_checked
+    - clients_drive_interface_shape
+    - stable_policy_and_volatile_detail_distinguished
+  - id: solid-design-rejects-ceremonial-abstraction
+    description: Reject a request to add interfaces, factories, and inheritance solely to make a small cohesive implementation look SOLID.
+    trigger: Make this cohesive one-implementation module fully SOLID by creating an interface for every class, a factory for every constructor, and a base class for shared code even though no variants or client pressure exist.
+    must_contain:
+    - applicability
+    - premature abstraction
+    - change pressure
+    - behavioral substitutability
+    - client
+    - stable policy
+    - volatile detail
+    - smallest
+    must_not_contain:
+    - create an interface for every class
+    - factory for every constructor
+    - base class for all shared code
+    - SOLID requires five abstractions
+    quality_gates_tested:
+    - solid_checklist_rejected
+    - premature_abstraction_rejected
+    - direct_design_remains_valid
+    - no_variation_no_ocp_abstraction
