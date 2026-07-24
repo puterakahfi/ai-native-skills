@@ -13,8 +13,8 @@ contract_coverage_inventory:
       domain-reviewer: 1
       facade: 1
     coverage:
-      contract_backed_v2: 23
-      legacy_contract_backed: 74
+      contract_backed_v2: 26
+      legacy_contract_backed: 71
       reviewed_exemption: 9
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
@@ -1255,9 +1255,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/product-manager/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: product-requirements
     path: skills/product-requirements/SKILL.md
@@ -1270,9 +1270,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/product-requirements/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: project-instruction-generator
     path: skills/project-instruction-generator/SKILL.md
@@ -1714,9 +1714,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
+    conformance_path: skills/user-research/adapter.conformance.yaml
     exemption_path: null
-    classification: legacy_contract_backed
+    classification: contract_backed_v2
     errors: []
   - id: ux-patterns-for-developers
     path: skills/ux-patterns-for-developers/SKILL.md
