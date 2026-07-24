@@ -1,0 +1,61 @@
+# Static structural declaration for ai-native-core/contracts/skills/engineering/master-engineer.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: master-engineer
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/master-engineer/SKILL.md
+  implements:
+    contract_id: master-engineer
+    contract_kind: skill_contract
+    contract_path: contracts/skills/engineering/master-engineer.contract.yaml
+    contract_version: "~0.1"
+  capability: software_architecture_and_system_design
+  interface:
+    inputs:
+      - system_goal
+      - existing_context
+      - constraints
+      - decision_point
+      - engineering_contract
+      - runtime_binding
+      - architecture_rules
+      - codebase_context
+    outputs:
+      - architecture_decision
+      - design_critique
+      - system_design
+      - refactor_strategy
+      - engineering_contract_update
+      - implementation_handoff
+    gates:
+      - purpose_before_pattern
+      - boundaries_explicit
+      - tradeoffs_documented
+      - smallest_durable_design
+      - runtime_behavior_not_leaked_into_core
+      - verification_criteria_defined
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - runtime_specific_behavior_must_stay_out_of_core
+    - product_specific_constraints_must_be_layered_by_app_adapter
+  evidence_refs:
+    - id: master-engineer-core-contract
+      layer: structural
+      path: contracts/skills/engineering/master-engineer.contract.yaml
+      claim: Canonical contract identity, interface, gates, and adapter requirement source.
+    - id: migration-issue-109
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/109
+      claim: Bounded migration scope and acceptance criteria.
