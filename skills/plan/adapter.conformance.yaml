@@ -1,0 +1,55 @@
+# Static structural declaration for ai-native-core/contracts/skills/engineering/plan.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: plan
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/plan/SKILL.md
+  implements:
+    contract_id: plan
+    contract_kind: skill_contract
+    contract_path: contracts/skills/engineering/plan.contract.yaml
+    contract_version: "~0.1"
+  capability: actionable_plan_authoring_before_execution
+  interface:
+    inputs:
+      - goal_or_task
+      - existing_codebase_context
+      - constraints
+      - acceptance_criteria
+    outputs:
+      - plan_document
+      - task_list
+      - file_path_references
+      - approach_summary
+    gates:
+      - plan_must_be_written_before_execution_starts
+      - plan_must_have_bite_sized_steps_not_vague_phases
+      - plan_must_reference_exact_file_paths
+      - plan_must_not_contain_execution_only_planning
+      - each_step_must_be_independently_verifiable
+      - plan_must_be_saved_to_file_not_just_in_context
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - plan_storage
+    - plan_format
+  evidence_refs:
+    - id: plan-core-contract
+      layer: structural
+      path: contracts/skills/engineering/plan.contract.yaml
+      claim: Canonical contract identity, interface, gates, and adapter requirement source.
+    - id: migration-issue-109
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/109
+      claim: Bounded migration scope and acceptance criteria.
