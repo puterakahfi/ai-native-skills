@@ -1,0 +1,34 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: clean-code
+    path: skills/clean-code/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: The executable capability is source-grounded and bounded, but Native AI Core
+    does not yet publish a stable contract for evidence-backed internal code-quality
+    assessment that rejects arbitrary metric dogma and preserves behavior.
+  scope:
+  - static_contract_ownership
+  - core_gap_tracking
+  review_date: '2026-10-22'
+  evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-core#50
+  - kind: github_issue
+    ref: puterakahfi/ai-native-skills#88
+  - kind: executable_source
+    ref: skills/clean-code/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#50
+    triggers:
+    - a clean-code or engineering-design-quality contract is accepted and published
+    - executable inputs, outputs, gates, and boundaries are reviewed against that contract
+  prohibited_claims:
+  - core_contract_conformance
+  - behavioral_verification
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active
