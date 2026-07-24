@@ -1,0 +1,51 @@
+name: Temporary contract coverage snapshot regeneration
+
+on:
+  push:
+    branches:
+      - 89-feature-clean-code
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout skills repository
+        uses: actions/checkout@v4
+        with:
+          ref: 89-feature-clean-code
+          fetch-depth: 0
+
+      - name: Checkout canonical core
+        uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-core
+          path: .deps/ai-native-core
+
+      - name: Install validation dependencies
+        run: python3 -m pip install --quiet pyyaml
+
+      - name: Regenerate contract coverage snapshot
+        run: |
+          python3 scripts/inventory-contract-coverage.py \
+            --root . \
+            --core-root .deps/ai-native-core \
+            --output docs/contract-coverage-discovery.yaml
+
+      - name: Commit generated snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/contract-coverage-discovery.yaml
+          if git diff --cached --quiet; then
+            echo "No snapshot changes"
+            exit 0
+          fi
+          git commit -m "docs(clean-code): refresh contract coverage snapshot"
+          git push origin HEAD:89-feature-clean-code
