@@ -16,7 +16,7 @@ contract_exemption:
   evidence_refs:
   - kind: github_issue
     ref: puterakahfi/ai-native-core#50
-  - kind: source_case
+  - kind: github_issue
     ref: puterakahfi/ai-native-skills#88
   - kind: executable_source
     ref: skills/clean-code/SKILL.md
