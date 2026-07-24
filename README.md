@@ -14,6 +14,7 @@ Works with agents that support the [Agent Skills specification](https://agentski
 |---|---|
 | Install one reusable capability | [Single skill](#install-one-skill) |
 | Install a complete workflow and its documented dependencies | [Skill packs](docs/skill-packs.md) |
+| Find workflows and skills by job, domain, lifecycle stage, or concern | [Capability discovery](docs/capability-discovery.md) |
 | Let the agent choose the correct workflow | `workflow-router` |
 | Compose engineering, design, product, and review roles | `role-switcher` |
 | Generate concise standardized Project Instructions | `project-instruction-generator` |
@@ -86,7 +87,9 @@ npx skills add puterakahfi/ai-native-skills -g -y
 
 `facade`, `domain-reviewer`, and adapter are patterns rather than additional official types. Contract-backed implementations remain a `skill`, `workflow`, or `meta-skill` and declare their relationship through namespaced metadata.
 
-The canonical definitions, decision rules, frontmatter contract, and complete inventory live in [`docs/skills.md`](docs/skills.md).
+Executable type is separate from discovery facets. The versioned [capability discovery catalog](docs/capability-discovery.md) classifies capabilities by domain, lifecycle stage, and concern, then provides curated job profiles such as Product Planning, Engineering Quality, and Security Engineering.
+
+The canonical type definitions, decision rules, frontmatter contract, and complete inventory live in [`docs/skills.md`](docs/skills.md).
 
 ## Repository map
 
@@ -102,6 +105,9 @@ contracts/tests/<name>.test.yaml
 
 compat/*.compat.yaml
   compatibility evidence for contract-backed adapters when required
+
+catalog/capability-discovery/
+  versioned facets, complete classifications, and job-oriented profiles
 
 docs/
   canonical taxonomy, architecture patterns, skill packs, and repository guidance
@@ -223,6 +229,7 @@ bash scripts/run-eval.sh
 Repository CI also validates:
 
 - skill frontmatter and taxonomy;
+- complete capability discovery coverage, valid facets, and job-profile references;
 - contract-backed adapter path/version conformance;
 - structured boundary declarations;
 - behavioral evaluation contracts;
