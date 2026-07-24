@@ -1438,7 +1438,7 @@ contract_coverage_inventory:
     path: skills/role-switcher/SKILL.md
     type: meta-skill
     patterns: []
-    version: 1.4.0
+    version: 1.5.0
     implements: contracts/skills/meta/role-switcher.contract.yaml
     contract_version: ~0.1
     contract_path_exists: true
