@@ -73,7 +73,19 @@ adapter_conformance:
     - change_pressure_evidence
     - finding_severity_policy
   evidence_refs:
-    - puterakahfi/ai-native-core#50
-    - puterakahfi/ai-native-core#51
-    - puterakahfi/ai-native-skills#90
-    - puterakahfi/ai-native-skills#94
+    - id: core-rfc-50
+      layer: review
+      uri: https://github.com/puterakahfi/ai-native-core/issues/50
+      claim: Canonical SOLID-design ownership and boundaries were accepted.
+    - id: core-pr-51
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-core/pull/51
+      claim: The solid-design contract was published to ai-native-core main.
+    - id: skills-issue-90
+      layer: review
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/90
+      claim: Executable solid-design scope and acceptance were reviewed.
+    - id: skills-pr-94
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/pull/94
+      claim: The executable solid-design adapter was delivered.
