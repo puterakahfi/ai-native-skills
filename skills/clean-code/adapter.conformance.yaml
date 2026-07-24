@@ -1,0 +1,74 @@
+# Reviewed against ai-native-core#50 / PR #51.
+# Executable methodology remains in SKILL.md; this file declares static structural conformance only.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: clean-code
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/clean-code/SKILL.md
+  implements:
+    contract_id: clean-code
+    contract_kind: skill_contract
+    contract_path: contracts/skills/engineering/clean-code.contract.yaml
+    contract_version: ^0.1.0
+  capability: assess_and_improve_internal_code_expression_quality
+  interface:
+    inputs:
+      - code_or_diff
+      - intended_behavior
+      - repository_conventions
+      - tests_and_validation_evidence
+      - architecture_contract_ref
+      - change_scope
+      - operational_context
+    outputs:
+      - code_quality_assessment
+      - named_finding_list
+      - smallest_safe_correction_plan
+      - corrected_code_or_patch
+      - behavior_preservation_evidence
+      - refactoring_handoff
+      - architecture_handoff
+    gates:
+      - findings_must_reference_observable_code_evidence
+      - behavior_must_be_preserved_unless_change_is_explicitly_authorized
+      - repository_conventions_must_be_respected
+      - smallest_safe_correction_must_be_preferred
+      - arbitrary_numeric_size_thresholds_are_forbidden
+      - formatter_linter_compiler_or_green_tests_alone_do_not_prove_code_quality
+      - naming_flow_errors_comments_duplication_and_structure_must_be_evaluated_contextually
+      - behavior_change_refactoring_and_architecture_change_must_be_separated
+      - unsupported_claims_and_evidence_gaps_must_be_explicit
+  boundary:
+    covers:
+      - internal_code_expression_quality_assessment
+      - readability_and_maintainability_findings
+      - smallest_safe_local_correction_guidance
+      - behavior_preservation_lock
+      - explicit_specialist_handoff
+    delegates:
+      - product_behavior_change_authorization
+      - behavior_preserving_structural_refactoring_execution
+      - architecture_style_selection
+      - independent_architecture_acceptance
+      - test_strategy_ownership
+      - product_acceptance
+      - merge_authorization
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - language_and_framework_rules
+    - repository_style_rules
+    - validation_commands
+    - finding_severity_policy
+  evidence_refs:
+    - puterakahfi/ai-native-core#50
+    - puterakahfi/ai-native-core#51
+    - puterakahfi/ai-native-skills#89
+    - puterakahfi/ai-native-skills#93
