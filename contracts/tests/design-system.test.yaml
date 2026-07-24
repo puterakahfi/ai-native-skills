@@ -1,20 +1,41 @@
 skill_test:
   skill: design-system
-  version: 1.0.1
-  description: Verify the adapter exposes and applies its reviewed core interface.
+  version: "1.1.0"
+  description: Verify the adapter exposes its core interface and preserves accepted repository systems before new token creation.
   cases:
-  - id: design-system-emits-semantic-token-contract
-    description: Protect the reviewed core interface and its executable interpretation.
-    trigger: Create a design-system token contract from a palette and type-scale intent.
-    must_contain:
-    - spacing_multiples_of_base_unit
-    - token_map
-    - semantic_role_assignments
-    - token_violation_list
-    - design_system_gate_scores
-    - color_palette
-    - type_scale_intent
-    must_not_contain:
-    - arbitrary spacing values outside the base unit
-    quality_gates_tested:
-    - spacing_multiples_of_base_unit
+    - id: design-system-emits-semantic-token-contract
+      description: Protect the reviewed core interface and its executable interpretation.
+      trigger: Create a design-system token contract from a palette and type-scale intent for a net-new product.
+      must_contain:
+        - spacing_multiples_of_base_unit
+        - token_map
+        - semantic_role_assignments
+        - token_violation_list
+        - design_system_gate_scores
+        - color_palette
+        - type_scale_intent
+      must_not_contain:
+        - arbitrary spacing values outside the base unit
+      quality_gates_tested:
+        - spacing_multiples_of_base_unit
+
+    - id: existing-repository-consumes-canonical-design-system
+      description: Existing product work maps and reuses the repository component and token system instead of inventing a route-local theme.
+      trigger: "Redesign a member management page in an existing Next.js repository. The repo already has shadcn components, Tailwind semantic tokens, and a light application shell."
+      must_contain:
+        - implementation-context-discovery
+        - canonical_token_sources
+        - canonical_component_sources
+        - prohibited_parallel_systems
+        - reuse
+        - NOT_VERIFIED
+      must_not_contain:
+        - create a new route-local token table
+        - install a dark theme on the document root
+        - hardcode a second feature palette
+        - package presence alone proves canonicality
+      quality_gates_tested:
+        - existing_repository_precedence
+        - canonical_system_reuse_before_extension
+        - no_route_local_design_system
+        - implementation_context_before_visual_production
