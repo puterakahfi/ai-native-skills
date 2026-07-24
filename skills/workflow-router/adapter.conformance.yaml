@@ -1,0 +1,66 @@
+# Static structural declaration for ai-native-core/contracts/skills/meta/workflow-router.contract.yaml.
+# Executable methodology and route semantics remain owned by SKILL.md and the Core contract.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: workflow-router
+    kind: meta-skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/workflow-router/SKILL.md
+  implements:
+    contract_id: workflow-router
+    contract_kind: skill_contract
+    contract_path: contracts/skills/meta/workflow-router.contract.yaml
+    contract_version: "~0.2"
+  capability: detect_task_type_and_route_to_correct_workflow_automatically
+  interface:
+    inputs:
+      - user_request
+      - context_pack
+      - available_workflows
+      - parent_workflow_state
+      - verified_fix_evidence
+    outputs:
+      - workflow_selection
+      - skill_load_order
+      - routing_rationale
+      - ambiguity_resolution
+      - post_fix_learning_route
+    gates:
+      - task_type_must_be_classified_before_workflow_selection
+      - routing_decision_must_be_stated_explicitly
+      - ambiguous_requests_must_be_clarified_not_assumed
+      - selected_workflow_must_be_loaded_before_execution
+      - no_execution_before_routing_confirmed
+      - fallback_must_be_defined_when_no_workflow_matches
+      - product_from_zero_requests_must_not_route_directly_to_implementation
+      - existing_ui_refinement_requests_must_route_to_redesign_workflow_not_new_surface_workflows
+      - targeted_design_gate_fixes_must_route_to_design_refinement
+      - explicit_verified_case_learning_requests_must_route_to_skill_evolution
+      - parent_workflows_with_verified_fixes_must_route_to_skill_evolution_before_final_delivery
+      - post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - available_workflows
+    - ambiguity_threshold
+    - fallback_behavior
+    - post_fix_learning_route_enabled
+    - repository_write_policy
+  evidence_refs:
+    - id: workflow-router-core-contract
+      layer: structural
+      path: contracts/skills/meta/workflow-router.contract.yaml
+      claim: Canonical contract identity, interface, route semantics, gates, and adapter requirement source.
+    - id: migration-issue-111
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/111
+      claim: Bounded migration scope and acceptance criteria.

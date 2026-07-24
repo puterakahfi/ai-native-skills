@@ -1,0 +1,55 @@
+# Static structural declaration for ai-native-core/contracts/skills/meta/role-switcher.contract.yaml.
+# Executable methodology and role composition semantics remain owned by SKILL.md and the Core contract.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: role-switcher
+    kind: meta-skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/role-switcher/SKILL.md
+  implements:
+    contract_id: role-switcher
+    contract_kind: skill_contract
+    contract_path: contracts/skills/meta/role-switcher.contract.yaml
+    contract_version: "~0.1"
+  capability: intent_detection_and_automatic_role_composition
+  interface:
+    inputs:
+      - user_request
+      - product_context
+      - available_skills
+    outputs:
+      - detected_intent
+      - role_composition
+      - skills_to_load
+      - analysis_with_multi_lens
+    gates:
+      - intent_must_be_detected_before_role_selection
+      - role_composition_must_be_explicit_not_implicit
+      - each_role_must_contribute_a_distinct_lens
+      - no_role_loaded_without_clear_relevance_to_intent
+      - multi_role_output_must_be_structured_by_lens
+      - agent_must_state_which_roles_were_activated
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - role_map
+    - intent_detection_strategy
+    - max_concurrent_roles
+  evidence_refs:
+    - id: role-switcher-core-contract
+      layer: structural
+      path: contracts/skills/meta/role-switcher.contract.yaml
+      claim: Canonical contract identity, interface, gates, and adapter requirement source.
+    - id: migration-issue-111
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/111
+      claim: Bounded migration scope and acceptance criteria.
