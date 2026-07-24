@@ -765,7 +765,7 @@ contract_coverage_inventory:
     path: skills/design-system/SKILL.md
     type: skill
     patterns: []
-    version: 1.0.1
+    version: 1.1.0
     implements: contracts/skills/design/design-system.contract.yaml
     contract_version: ^1.0.0
     contract_path_exists: true
