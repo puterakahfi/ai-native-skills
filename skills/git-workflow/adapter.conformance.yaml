@@ -1,0 +1,63 @@
+# Static structural declaration for ai-native-core/contracts/skills/engineering/git-workflow.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: git-workflow
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/git-workflow/SKILL.md
+  implements:
+    contract_id: git-workflow
+    contract_kind: skill_contract
+    contract_path: contracts/skills/engineering/git-workflow.contract.yaml
+    contract_version: "~0.1"
+  capability: source_control_operations
+  interface:
+    inputs:
+      - intent
+      - base_branch
+      - branch_naming_convention
+      - commit_message_convention
+      - issue_ref
+      - pr_template
+    outputs:
+      - branch_created
+      - commits_authored
+      - pr_or_mr_opened
+      - merge_executed
+      - conflict_report
+    gates:
+      - branch_must_be_created_from_correct_base
+      - commit_message_must_follow_convention
+      - no_direct_push_to_protected_branch
+      - pr_must_reference_issue_before_submit
+      - conflicts_must_be_resolved_before_merge
+      - no_force_push_to_shared_branch
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - base_branch
+    - branch_naming_convention
+    - commit_message_convention
+    - protected_branches
+    - pr_or_mr_mechanism
+    - issue_tracker
+    - merge_strategy
+  evidence_refs:
+    - id: git-workflow-core-contract
+      layer: structural
+      path: contracts/skills/engineering/git-workflow.contract.yaml
+      claim: Canonical contract identity, interface, gates, and adapter requirement source.
+    - id: migration-issue-109
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/109
+      claim: Bounded migration scope and acceptance criteria.
