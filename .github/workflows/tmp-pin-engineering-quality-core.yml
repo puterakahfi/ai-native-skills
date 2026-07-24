@@ -1,0 +1,40 @@
+name: Temporary pinned Core update
+
+on:
+  push:
+    branches:
+      - 26-engineering-quality-conformance-migration
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update immutable Core pin
+        shell: bash
+        run: |
+          set -euo pipefail
+          old='18b4b84b1c8552d07ee3d4622d05d1ee2e84af2c'
+          new='f5add4bec5f27ae4d98d96de9b4200b84aabd4dc'
+          grep -q "$old" .github/workflows/skill-eval.yml
+          sed -i "s/$old/$new/" .github/workflows/skill-eval.yml
+          grep -q "$new" .github/workflows/skill-eval.yml
+
+      - name: Commit pinned Core update
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- .github/workflows/skill-eval.yml; then
+            echo 'Pinned Core ref already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/skill-eval.yml
+          git commit -m 'chore(governance): pin engineering quality core contracts'
+          git push
