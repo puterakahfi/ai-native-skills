@@ -1,0 +1,81 @@
+# Static structural declaration for ai-native-core/contracts/skills/product/product-requirements.contract.yaml.
+# Executable methodology, required PRD sections, and traceability semantics remain owned by SKILL.md and the Core contract.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: product-requirements
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/product-requirements/SKILL.md
+  implements:
+    contract_id: product-requirements
+    contract_kind: skill_contract
+    contract_path: contracts/skills/product/product-requirements.contract.yaml
+    contract_version: "~0.2"
+  capability: author_and_verify_product_requirements_documents
+  interface:
+    inputs:
+      - product_or_feature_intent
+      - target_users
+      - problem_statement
+      - user_research
+      - business_goals
+      - value_alignment_brief
+      - experiment_results
+      - experiment_design
+      - technical_constraints
+      - design_constraints
+      - market_context
+      - existing_prd
+      - stakeholder_feedback
+      - launch_constraints
+    outputs:
+      - prd
+      - requirements_summary
+      - scope_boundary
+      - acceptance_criteria
+      - user_and_business_value
+      - success_metrics
+      - risk_and_dependency_list
+      - open_questions
+      - launch_readiness_criteria
+    gates:
+      - problem_statement_must_be_user_or_business_outcome_not_solution
+      - target_users_must_be_explicit
+      - goals_and_non_goals_must_both_exist
+      - user_value_and_business_value_must_be_explicit
+      - unvalidated_high_risk_assumptions_must_reference_experiment_design_or_open_questions
+      - success_metrics_must_be_measurable
+      - scope_in_and_scope_out_must_both_be_explicit
+      - requirements_must_be_testable_or_traceable_to_testable_acceptance_criteria
+      - acceptance_criteria_must_be_verifiable
+      - non_functional_requirements_must_include_reliability_security_or_performance_when_relevant
+      - constraints_and_dependencies_must_be_explicit
+      - open_questions_must_be_named_not_hidden
+      - launch_criteria_must_define_readiness_not_just_completion
+      - implementation_details_must_be_excluded_unless_marked_as_constraints
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - prd_format
+    - requirement_id_format
+    - stakeholder_approval
+    - task_tracker
+    - evidence_store
+  evidence_refs:
+    - id: product-requirements-core-contract
+      layer: structural
+      path: contracts/skills/product/product-requirements.contract.yaml
+      claim: Canonical contract identity, interface, gates, and adapter requirement source.
+    - id: migration-issue-113
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/113
+      claim: Bounded migration scope and acceptance criteria.

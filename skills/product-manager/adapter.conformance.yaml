@@ -1,0 +1,62 @@
+# Static structural declaration for ai-native-core/contracts/skills/product/product-manager.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: product-manager
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/product-manager/SKILL.md
+  implements:
+    contract_id: product-manager
+    contract_kind: skill_contract
+    contract_path: contracts/skills/product/product-manager.contract.yaml
+    contract_version: "~0.1"
+  capability: product_definition_and_task_breakdown
+  interface:
+    inputs:
+      - product_intent_or_feature_request
+      - existing_prd
+      - user_research
+      - engineering_constraints
+      - business_constraints
+      - existing_tasks
+    outputs:
+      - product_intent_document
+      - prd
+      - feature_spec
+      - acceptance_criteria
+      - task_breakdown
+      - priority_list
+      - out_of_scope_list
+    gates:
+      - acceptance_criteria_must_be_testable_not_vague
+      - scope_in_and_scope_out_must_both_be_explicit
+      - tasks_must_trace_to_acceptance_criteria
+      - no_implementation_detail_in_prd_without_engineering_review
+      - priority_must_be_explicit_not_implicit
+      - prd_must_define_success_metric
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - prd_format
+    - task_tracker
+    - priority_framework
+    - stakeholder_approval_required
+  evidence_refs:
+    - id: product-manager-core-contract
+      layer: structural
+      path: contracts/skills/product/product-manager.contract.yaml
+      claim: Canonical contract identity, interface, gates, and adapter requirement source.
+    - id: migration-issue-113
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/113
+      claim: Bounded migration scope and acceptance criteria.
