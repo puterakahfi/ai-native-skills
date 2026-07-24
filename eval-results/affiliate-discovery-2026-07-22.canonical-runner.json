@@ -1,0 +1,54 @@
+{
+  "workflow_run_id": 29928054775,
+  "artifact_id": 8532790125,
+  "artifact_digest": "sha256:59dc2364feb143c2a142802a422013d60b9e4800856ac2155b6506916a2c2b58",
+  "runner": "ai-native-core/scripts/run-eval.py",
+  "core_ref": "5c4c6f21859636a4a143a511030879c9923b2ef1",
+  "overall": "APPLIED",
+  "summary": {
+    "applied": 6,
+    "partial": 0,
+    "ghost": 0,
+    "incomplete": 0,
+    "total": 6
+  },
+  "skills": [
+    {
+      "skill": "business-value-alignment",
+      "overall": "APPLIED",
+      "case": "affiliate-program-unknown-demand-routes-experiment-first",
+      "failures": []
+    },
+    {
+      "skill": "decision-provenance",
+      "overall": "APPLIED",
+      "case": "agent-proposed-affiliate-terms-are-not-permanent-policy",
+      "failures": []
+    },
+    {
+      "skill": "experiment-design",
+      "overall": "APPLIED",
+      "case": "affiliate-program-starts-with-bounded-manual-pilot",
+      "failures": []
+    },
+    {
+      "skill": "product-development-workflow",
+      "overall": "APPLIED",
+      "case": "unverified-affiliate-opportunity-stops-after-experiment-design",
+      "failures": []
+    },
+    {
+      "skill": "user-research",
+      "overall": "APPLIED",
+      "case": "affiliate-partner-research-tests-observed-behavior",
+      "failures": []
+    },
+    {
+      "skill": "workflow-router",
+      "overall": "APPLIED",
+      "case": "affiliate-opportunity-routes-product-discovery-before-build",
+      "failures": []
+    }
+  ],
+  "evidence_boundary": "Captured outputs were produced in the active VisualMate project context; runner execution is canonical and pinned, but generation was not an isolated fresh-runtime capture."
+}

@@ -1,0 +1,54 @@
+## Experiment specification
+
+### Target users
+A curated cohort of existing customers, micro-creators, freelancers, educators, or small agencies whose audiences overlap with the product's users.
+
+### Riskiest assumption
+The **riskiest assumption** is that qualified partners will create and publish useful promotional content when the commission from a one-time SaaS purchase may be relatively small.
+
+### Falsifiable hypothesis
+This hypothesis is **falsifiable**: if qualified partners receive a clear offer, referral identity, disclosure rules, and a lightweight content kit, then a measurable share will publish original content and generate valid, activated customers during a fixed pilot period.
+
+### Smallest test
+Run a 30-day **manual pilot** with approximately 15 curated partners. Use manual approval, unique links or coupon codes, a lightweight ledger, manual reversal review, and weekly evidence capture.
+
+### What will not be built
+**What will not be built** during this test:
+- a full self-service dashboard;
+- automated payout integration;
+- multi-level referrals;
+- an open affiliate marketplace;
+- lifetime or recurring commission logic;
+- advanced campaign automation.
+
+### Pre-registered decision rules
+
+**PASS**
+- at least 60% of approved partners publish an eligible content item within seven days;
+- at least three different partners generate valid transactions;
+- at least ten valid transactions occur;
+- at least 70% of referred customers create a meaningful first output within seven days;
+- direct commission and operating cost remain within the approved economics ceiling.
+
+**PARTIAL**
+- content publication or transactions occur, but results are concentrated in one or two partners;
+- meaningful traffic appears but conversion or customer activation remains weak;
+- unit economics are plausible but not yet stable.
+
+**FAIL**
+- fewer than 30% of approved partners publish;
+- no valid transaction occurs;
+- repeated observed behavior shows the incentive is not worth the effort;
+- fraud, refund, support, or dispute cost makes the channel unsafe.
+
+### Guardrail criteria
+- **Guardrail:** no unsupported income claims, hidden affiliate relationship, spam, self-referral, attribution manipulation, or unnecessary customer-data exposure.
+- Refunds, chargebacks, fraud, and disputes must remain below pre-approved thresholds.
+
+### Evidence collection
+Capture **evidence** from publication links, referral events, valid transactions, activation events, reversals, direct variable costs, partner interviews about actual behavior, and customer first-value behavior.
+
+### Decision handoff
+- PASS routes to product requirements and a bounded MVP slice.
+- PARTIAL routes to one narrower follow-up experiment with a single changed assumption.
+- FAIL stops platform development and evaluates a different channel model.

@@ -1,0 +1,21 @@
+## Decision provenance report
+
+**Source type:** `AGENT_AUTHORED_SUMMARY`
+**Authority status:** `NON_AUTHORITATIVE`
+**Decision status:** `PROPOSED`
+
+### Source record
+- `source_ref`: affiliate-program ticket containing proposed commission and pilot thresholds.
+- Verified owner approval: missing.
+- Approved policy or system-of-record reference: missing.
+- Exact scope authorization for public permanent terms: missing.
+
+### Effective verdict
+`PROVENANCE_BLOCKED`
+
+The ticket proves that an agent documented a proposal. It does not prove that the product owner accepted the commission rate, attribution window, thresholds, economics risk, or publication action.
+
+### Required next action
+`ROUTE_FOR_APPROVAL`
+
+The product authority must review the economics evidence and explicitly approve the exact pilot scope or permanent policy. Until then, the numbers may be labeled as experiment hypotheses only and must not be published as final terms.

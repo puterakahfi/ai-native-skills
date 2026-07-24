@@ -1,0 +1,32 @@
+{
+  "source_case": "VisualMate Partner Program",
+  "source_issues": [
+    "puterakahfi/visualmate#98",
+    "puterakahfi/visualmate#99",
+    "puterakahfi/ai-native-skills#70"
+  ],
+  "model": "GPT-5.6 Thinking",
+  "runtime": "ChatGPT project conversation",
+  "capture_type": "in-conversation natural-trigger response",
+  "trigger_policy": "Exact natural trigger from each eval case; no skill name included in the trigger",
+  "context_note": "The runtime had access to VisualMate project context and the governing ai-native-skills documents. This was not an isolated fresh-session run.",
+  "runner": {
+    "core_commit": "5c4c6f21859636a4a143a511030879c9923b2ef1",
+    "source": "ai-native-core/scripts/run-eval.py",
+    "execution_mode": "direct pinned canonical runner execution in GitHub Actions",
+    "workflow_run_id": 29928054775,
+    "artifact_id": 8532790125,
+    "artifact_digest": "sha256:59dc2364feb143c2a142802a422013d60b9e4800856ac2155b6506916a2c2b58",
+    "result": "APPLIED"
+  },
+  "captured_cases": [
+    "workflow-router/affiliate-opportunity-routes-product-discovery-before-build",
+    "product-development-workflow/unverified-affiliate-opportunity-stops-after-experiment-design",
+    "business-value-alignment/affiliate-program-unknown-demand-routes-experiment-first",
+    "experiment-design/affiliate-program-starts-with-bounded-manual-pilot",
+    "user-research/affiliate-partner-research-tests-observed-behavior",
+    "decision-provenance/agent-proposed-affiliate-terms-are-not-permanent-policy"
+  ],
+  "evidence_strength": "PINNED_CANONICAL_RUNNER_VERIFIED_WITH_CONTEXT_LIMITATION",
+  "remaining_gate": "Repeat generation in an isolated fresh runtime while preserving model, runtime, and context provenance."
+}

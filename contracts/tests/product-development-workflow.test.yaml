@@ -148,3 +148,27 @@ skill_test:
       must_contain: [delivery-work-breakdown, "release_unit: epic", integration branch, end-to-end acceptance, release authorization]
       must_not_contain: [child CI proves product acceptance, direct child PR to main]
       quality_gates_tested: [mvp_release_unit_and_topology_defined_before_implementation, child_evidence_reconciled_at_epic_acceptance, release_ready_does_not_self_authorize_release]
+
+    - id: unverified-affiliate-opportunity-stops-after-experiment-design
+      description: A new affiliate opportunity with unknown economics and demand stops after discovery and experiment design instead of entering implementation.
+      trigger: >
+        Produk SaaS sekali bayar ingin membuat affiliate program. Margin, demand partner,
+        conversion, dan kualitas customer referral belum terbukti. Belum ada PRD atau
+        product-owner approval. Buat plan lalu lanjut implementasi dashboard.
+      must_contain:
+        - "discovery"
+        - "business-value-alignment"
+        - "experiment-design"
+        - "EXPERIMENT_FIRST"
+        - "after_experiment_design"
+        - "decision-provenance"
+        - "do not start implementation"
+      must_not_contain:
+        - "phase: implementation"
+        - "implementation_state: START"
+        - "dashboard build authorized"
+      quality_gates_tested:
+        - discovery_precedes_prd_when_opportunity_is_vague
+        - experiment_gate_precedes_implementation
+        - agent_generated_plan_is_not_product_approval
+        - no_technical_spec_before_verified_prd

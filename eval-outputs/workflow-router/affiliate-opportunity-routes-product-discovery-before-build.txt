@@ -1,0 +1,24 @@
+## Workflow selection
+
+**Primary lifecycle:** `product-development-workflow`
+
+**Current phase:** discovery
+
+### Routing rationale
+This is a new distribution capability with material uncertainty around unit economics, partner behavior, conversion, referral-customer quality, fraud, and operating cost. It is not yet a verified implementation request.
+
+### Skill load order now
+1. `business-value-alignment` — make partner and customer value, business value, metrics, assumptions, risks, and the stop/continue verdict explicit.
+2. `experiment-design` — identify one riskiest assumption and define the smallest bounded pilot with pre-registered success and failure rules.
+3. `user-research` — study past partner behavior, existing alternatives, effort, and qualification evidence.
+4. `product-manager` and `decision-provenance` — preserve scope, non-goals, proposed policy status, and approval boundaries.
+
+### Current decision
+**EXPERIMENT_FIRST**
+
+The immediate output should be an approved discovery brief and manual-pilot contract. Technical specification, production dashboard work, automated payouts, and delivery topology remain deferred until the experiment evidence and product authority support an MVP decision.
+
+### Handoff
+- Experiment PASS plus attributable product approval → requirements and MVP-slice decision.
+- PARTIAL → narrower experiment.
+- FAIL → stop or evaluate a different partner-channel model.
