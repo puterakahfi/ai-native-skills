@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 88,
+    "skill": 89,
     "workflow": 10,
     "meta-skill": 6,
-    "total": 104
+    "total": 105
   },
   "items": [
     {
@@ -412,6 +412,11 @@
       "name": "skill-eval",
       "type": "skill",
       "path": "skills/skill-eval/SKILL.md"
+    },
+    {
+      "name": "solid-design",
+      "type": "skill",
+      "path": "skills/solid-design/SKILL.md"
     },
     {
       "name": "spike",
