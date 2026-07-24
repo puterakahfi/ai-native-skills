@@ -1,0 +1,58 @@
+# Static structural declaration for ai-native-core/contracts/skills/architecture/adr.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: adr
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/adr/SKILL.md
+  implements:
+    contract_id: adr
+    contract_kind: skill_contract
+    contract_path: contracts/skills/architecture/adr.contract.yaml
+    contract_version: "~0.1"
+  capability: author_and_maintain_architecture_decision_records
+  interface:
+    inputs:
+      - decision_context
+      - options_considered
+      - existing_adr_log
+      - constraints
+      - stakeholders
+    outputs:
+      - adr_document
+      - decision_log_entry
+      - superseded_adr_reference
+    gates:
+      - adr_must_state_status_explicitly
+      - context_must_explain_why_decision_was_needed
+      - all_options_considered_must_be_listed
+      - decision_must_be_stated_in_one_sentence
+      - consequences_must_include_tradeoffs_not_just_benefits
+      - adr_must_be_immutable_once_accepted
+      - superseding_adr_must_reference_original
+      - decision_must_be_traceable_to_forcing_function
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - adr_format
+    - storage_location
+    - review_process
+  evidence_refs:
+    - id: adr-core-contract
+      layer: structural
+      path: contracts/skills/architecture/adr.contract.yaml
+      claim: Canonical contract identity and interface source.
+    - id: migration-issue-99
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/99
+      claim: Bounded migration scope and acceptance criteria.

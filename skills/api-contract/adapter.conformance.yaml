@@ -1,0 +1,60 @@
+# Static structural declaration for ai-native-core/contracts/skills/architecture/api-contract.contract.yaml.
+# Executable methodology remains owned by SKILL.md.
+contract_schema:
+  kind: adapter_conformance
+  version: 1.0.0
+  path: schemas/adapter-conformance.schema.yaml
+adapter_conformance:
+  adapter:
+    id: api-contract
+    kind: skill
+    patterns:
+      - skill-adapter
+    entrypoint: skills/api-contract/SKILL.md
+  implements:
+    contract_id: api-contract
+    contract_kind: skill_contract
+    contract_path: contracts/skills/architecture/api-contract.contract.yaml
+    contract_version: "~0.1"
+  capability: design_enforce_and_version_api_contracts_between_services
+  interface:
+    inputs:
+      - api_description_or_spec
+      - consumer_list
+      - existing_spec
+      - breaking_change_candidate
+    outputs:
+      - openapi_spec
+      - contract_test_suite
+      - versioning_decision
+      - breaking_change_report
+      - consumer_impact_analysis
+    gates:
+      - api_must_have_explicit_versioning_strategy
+      - breaking_changes_must_be_detected_before_deploy
+      - contract_tests_must_exist_for_every_consumer
+      - no_undocumented_endpoints_in_production
+      - error_responses_must_follow_consistent_schema
+      - backward_compatibility_must_be_preserved_within_major_version
+      - api_design_must_be_consumer_driven
+      - deprecation_must_be_announced_before_removal
+  boundary:
+    covers: []
+    delegates: []
+  dependencies: []
+  handoffs: []
+  unsupported_claims: []
+  adapter_requirements:
+    - spec_format
+    - contract_testing_tool
+    - versioning_scheme
+    - gateway
+  evidence_refs:
+    - id: api-contract-core-contract
+      layer: structural
+      path: contracts/skills/architecture/api-contract.contract.yaml
+      claim: Canonical contract identity and interface source.
+    - id: migration-issue-99
+      layer: structural
+      uri: https://github.com/puterakahfi/ai-native-skills/issues/99
+      claim: Bounded migration scope and acceptance criteria.
