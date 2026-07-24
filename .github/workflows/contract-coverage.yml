@@ -56,7 +56,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install validation dependencies
-        run: python -m pip install --disable-pip-version-check PyYAML jsonschema
+        run: python -m pip install --disable-pip-check PyYAML jsonschema
 
       - name: Compile coverage tooling and tests
         run: |
@@ -65,6 +65,12 @@ jobs:
             ai-native-skills/scripts/map-unowned-contract-candidates.py \
             ai-native-skills/scripts/validate-contract-coverage.py \
             ai-native-skills/tests/test_contract_exemptions.py
+
+      - name: Regenerate contract coverage evidence
+        run: >-
+          python ai-native-skills/scripts/inventory-contract-coverage.py
+          --root ai-native-skills
+          --core-root ai-native-core
 
       - name: Validate repository contract coverage
         run: >-
