@@ -13,9 +13,9 @@ contract_coverage_inventory:
       domain-reviewer: 1
       facade: 1
     coverage:
-      contract_backed_v2: 5
+      contract_backed_v2: 8
       legacy_contract_backed: 89
-      reviewed_exemption: 12
+      reviewed_exemption: 9
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -198,9 +198,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
-    exemption_path: skills/clean-architecture/contract.exemption.yaml
-    classification: reviewed_exemption
+    conformance_path: skills/clean-architecture/adapter.conformance.yaml
+    exemption_path: null
+    classification: contract_backed_v2
     errors: []
   - id: clean-code
     path: skills/clean-code/SKILL.md
@@ -213,9 +213,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
-    exemption_path: skills/clean-code/contract.exemption.yaml
-    classification: reviewed_exemption
+    conformance_path: skills/clean-code/adapter.conformance.yaml
+    exemption_path: null
+    classification: contract_backed_v2
     errors: []
   - id: code-review-workflow
     path: skills/code-review-workflow/SKILL.md
@@ -1579,9 +1579,9 @@ contract_coverage_inventory:
     legacy_boundary:
       covers: []
       delegates: []
-    conformance_path: null
-    exemption_path: skills/solid-design/contract.exemption.yaml
-    classification: reviewed_exemption
+    conformance_path: skills/solid-design/adapter.conformance.yaml
+    exemption_path: null
+    classification: contract_backed_v2
     errors: []
   - id: spec-workflow
     path: skills/spec-workflow/SKILL.md
