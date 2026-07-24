@@ -1,21 +1,21 @@
 ---
 name: code-review-workflow
-description: Evidence-backed code review workflow — classify changed domains, verify architecture, route user-facing changes through the design-review facade, inspect logic and security, then separate technical approval from provenance-backed merge authorization.
+description: Evidence-backed code review workflow — classify changed domains, verify architecture, route user-facing changes through design review, assess internal code and object/module design quality, inspect logic and security, then separate technical approval from provenance-backed merge authorization.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.1.0
+  ai-native-skills.version: 2.2.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "architecture-review design-review decision-provenance master-engineer systematic-debugging security-review threat-modeling"
+  ai-native-skills.requires: "architecture-review clean-architecture clean-code solid-design design-review decision-provenance master-engineer systematic-debugging security-review threat-modeling"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/code-review.contract.yaml
   ai-native-skills.contract-version: "~0.3"
-  ai-native-skills.skill_load_order: '[{"phase":"load-context","load":["decision-provenance"]},{"phase":"architecture-check","load":["architecture-review"]},{"phase":"design-check","load":["design-review"]},{"phase":"logic-check","load":["systematic-debugging","master-engineer"]},{"phase":"security-check","load":["security-review","threat-modeling"]},{"phase":"verdict","load":["decision-provenance"]}]'
-  ai-native-skills.skills: '{"required":["architecture-review","decision-provenance"],"optional":["design-review","systematic-debugging","master-engineer","security-review","threat-modeling"]}'
+  ai-native-skills.skill_load_order: '[{"phase":"load-context","load":["decision-provenance"]},{"phase":"architecture-check","load":["architecture-review","clean-architecture"]},{"phase":"design-check","load":["design-review"]},{"phase":"code-design-quality","load":["clean-code","solid-design"]},{"phase":"logic-check","load":["systematic-debugging","master-engineer"]},{"phase":"security-check","load":["security-review","threat-modeling"]},{"phase":"verdict","load":["decision-provenance"]}]'
+  ai-native-skills.skills: '{"required":["architecture-review","decision-provenance","clean-code"],"optional":["clean-architecture","solid-design","design-review","systematic-debugging","master-engineer","security-review","threat-modeling"]}'
 ---
 
 # Code Review Workflow
 
-Load context → classify changes and decision claims → architecture → design acceptance → logic → security → technical verdict → merge authorization.
+Load context → classify changes and decision claims → architecture → design acceptance → internal code/object quality → logic → security → technical verdict → merge authorization.
 
 ## Core boundary
 
@@ -56,6 +56,10 @@ all affected technical domains pass
 14. Accepted risk requires verified authority and cannot hide a blocker.
 15. Technical review verdict and merge authorization must be reported separately.
 16. No merge without explicit technical approval and merge authorization.
+17. Run `clean-code` for materially changed implementation; lint, formatting, compilation, and green tests are not clean-code approval.
+18. Run `solid-design` only when responsibility, variation, substitution, client-interface, or dependency relationships are materially affected.
+19. Use `clean-architecture` as an architecture-style or policy/mechanism specialist only when that decision is material; `architecture-review` remains the acceptance gate.
+20. Do not force SOLID or Clean Architecture ceremony into changes where applicability is `NOT_APPLICABLE` or `NOT_JUSTIFIED`.
 ```
 
 ## Inputs
@@ -115,6 +119,9 @@ Load `decision-provenance` when a material claim affects scope, exception, accep
 ```yaml
 change_impact:
   architecture: <none | affected>
+  architecture_style_or_boundary_design: <none | affected>
+  internal_code_quality: <none | affected>
+  object_module_design: <none | affected>
   logic: <none | affected>
   security: <none | affected>
   data_or_migration: <none | affected>
@@ -143,7 +150,7 @@ Do not infer a claim is authoritative because it appears in the latest commit or
 
 ## Phase 3 — Architecture check
 
-Load `architecture-review`.
+Load `architecture-review`. Load `clean-architecture` only when the submission materially changes or claims an architecture style, policy/mechanism boundary, dependency rule, use-case boundary, or broad architecture migration. `clean-architecture` supplies applicability and boundary reasoning; it does not replace the independent architecture verdict.
 
 Review applicable concerns:
 
@@ -190,7 +197,48 @@ A `CONDITIONAL PASS` is technically usable only when the remaining risk is verif
 
 **Gate:** facade design acceptance is resolved for every affected user-facing surface.
 
-## Phase 5 — Logic check
+## Phase 5 — Internal code and object/module design quality
+
+Run `clean-code` when materially changed hand-written or generated implementation affects readability, maintainability, control flow, errors, duplication, local contracts, or test readability.
+
+Run `solid-design` only when the change materially affects:
+
+```text
+class/module/service responsibility and ownership
+proven variation or extension seams
+inheritance, substitution, or implementation contracts
+client-specific interface shape
+stable-policy versus volatile-detail dependency direction
+an explicit SOLID or abstraction claim
+```
+
+Inspect:
+
+```text
+repository vocabulary and conventions
+readability and working-memory load
+control flow, errors, comments, and duplicated knowledge
+cohesive ownership and reasons to change
+behavioral substitutability rather than type compatibility alone
+actual client needs rather than interface-size dogma
+abstraction benefit versus new indirection
+behavior-change risk and required tests
+```
+
+Do not fail a submission from arbitrary line, method, parameter, or class-size limits. Do not approve internal quality merely because formatters, linters, compilation, or tests pass.
+
+Output:
+
+```text
+Code quality: PASS | PASS WITH FLAGS | NEEDS WORK | NOT_VERIFIED | N/A
+Object/module design: PASS | PASS WITH FLAGS | NEEDS WORK | NOT_VERIFIED | N/A
+```
+
+A verified blocking code-quality or object-design issue prevents technical approval. `NOT_APPLICABLE` or `NOT_JUSTIFIED` specialist conclusions must not be converted into invented work.
+
+**Gate:** local implementation quality and materially applicable object/module design are resolved without duplicating architecture acceptance or refactoring ownership.
+
+## Phase 6 — Logic check
 
 Load `master-engineer` for complex logic. Load `systematic-debugging` when the submission claims to fix a bug or regression.
 
@@ -212,7 +260,7 @@ Output:
 Logic: PASS | PASS WITH FLAGS | FAIL | NOT_VERIFIED | N/A
 ```
 
-## Phase 6 — Security check
+## Phase 7 — Security check
 
 Load `security-review` and `threat-modeling` when trust boundaries, authentication/authorization, secrets/tokens, untrusted input, sensitive data, permissions, tenancy, isolation, or high-impact behavior are affected.
 
@@ -224,7 +272,7 @@ Security: PASS | PASS WITH FLAGS | FAIL | NOT_VERIFIED | N/A
 
 Applicable unresolved high-risk findings block technical approval. A risk-acceptance claim must still pass decision provenance and applicable policy.
 
-## Phase 7 — Technical verdict and merge authorization
+## Phase 8 — Technical verdict and merge authorization
 
 Load:
 
@@ -241,7 +289,7 @@ APPROVED
   or only verified non-blocking flags remain
 
 REQUEST CHANGES
-  correctable architecture, design, logic, security, test,
+  correctable architecture, design, code-quality, object-design, logic, security, test,
   reviewer, or evidence gaps remain
 
 BLOCKED
@@ -291,6 +339,9 @@ That is not a contradiction; it preserves the authority boundary.
 
 ## Change Classification
 - Architecture: [affected/none]
+- Architecture style/boundary design: [affected/none]
+- Internal code quality: [affected/none]
+- Object/module design: [affected/none]
 - Logic: [affected/none]
 - Security: [affected/none]
 - User-facing design: [affected/none]
@@ -298,7 +349,10 @@ That is not a contradiction; it preserves the authority boundary.
 
 ## Domain Results
 - Architecture: [result]
+- Clean Architecture specialist: [applicability/boundary decision or N/A]
 - Design: [facade verdict, evidence coverage, primary-domain coverage]
+- Code quality: [clean-code verdict/findings/gaps]
+- Object/module design: [solid-design verdict/findings/gaps or N/A]
 - Logic: [result]
 - Security: [result]
 
@@ -341,3 +395,7 @@ Do not approve with “looks good”, “CI passed”, a high partial design sco
 | Let author accept their own risk without policy authority | Risk acceptance provenance is missing |
 | Report technical APPROVED as automatic merge permission | Review and authorization are separate |
 | Merge without explicit final statuses | Responsibility and authority are ambiguous |
+
+| Treat lint, formatting, or green tests as clean-code approval | Tools prove selected checks, not readability or maintainability |
+| Run SOLID on every local edit | Specialist applicability and concrete change pressure are missing |
+| Require fixed Clean Architecture layers during review | Architecture-style dogma bypasses repository context and applicability |

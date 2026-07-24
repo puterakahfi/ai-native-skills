@@ -221,7 +221,7 @@ contract_coverage_inventory:
     path: skills/code-review-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 2.1.0
+    version: 2.2.0
     implements: contracts/workflows/code-review.contract.yaml
     contract_version: ~0.3
     contract_path_exists: true
@@ -1158,7 +1158,7 @@ contract_coverage_inventory:
     path: skills/new-feature-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 2.3.0
+    version: 2.4.0
     implements: contracts/workflows/new-feature.contract.yaml
     contract_version: ~0.4
     contract_path_exists: true

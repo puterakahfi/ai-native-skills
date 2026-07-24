@@ -3,14 +3,14 @@ name: new-feature-workflow
 description: Evidence-backed new-feature workflow — verify scope and decision authority, approve architecture/design decisions, discover repository implementation context, implement with tests, verify technical, convention, and rendered outcomes, submit a decision ledger, and merge only through code-review-workflow approval plus merge authorization.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.3.0
+  ai-native-skills.version: 2.4.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "master-engineer master-design delivery-work-breakdown implementation-context-discovery decision-provenance spec-workflow test-driven-development architecture-review code-review-workflow design-review"
+  ai-native-skills.requires: "master-engineer master-design delivery-work-breakdown implementation-context-discovery decision-provenance spec-workflow clean-architecture solid-design clean-code test-driven-development architecture-review code-review-workflow design-review"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/new-feature.contract.yaml
   ai-native-skills.contract-version: ~0.4
-  ai-native-skills.skill_load_order: '[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"delivery-topology","load":["delivery-work-breakdown","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["master-engineer","test-driven-development"]},{"phase":"verify","load":["architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]'
-  ai-native-skills.skills: '{"required":["master-engineer","delivery-work-breakdown","implementation-context-discovery","decision-provenance","test-driven-development","architecture-review","code-review-workflow"],"optional":["diagram-architect","master-design","design-review"]}'
+  ai-native-skills.skill_load_order: '[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"delivery-topology","load":["delivery-work-breakdown","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","clean-architecture","solid-design","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["master-engineer","clean-code","solid-design","test-driven-development"]},{"phase":"verify","load":["clean-code","solid-design","architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]'
+  ai-native-skills.skills: '{"required":["master-engineer","delivery-work-breakdown","implementation-context-discovery","decision-provenance","clean-code","test-driven-development","architecture-review","code-review-workflow"],"optional":["clean-architecture","solid-design","diagram-architect","master-design","design-review"]}'
 ---
 
 # New Feature Workflow
@@ -62,6 +62,10 @@ A wireframe or specification decides what to build. `implementation-context-disc
 18. Submit spec, issue, decision ledger, implementation-context handoff, technical evidence, and applicable design evidence together.
 19. Final technical review and merge authorization belong to code-review-workflow.
 20. Do not bundle unrelated, unapproved, or opportunistic migration work.
+21. Use `clean-architecture` only when architecture-style or policy/mechanism boundaries are materially affected and justified by forces.
+22. Use `solid-design` only when responsibility, extension, substitution, client-interface, or dependency design is material.
+23. Apply `clean-code` during implementation and verification without arbitrary size metrics or behavior-changing cleanup.
+24. Pre-implementation engineering design guidance never self-approves the implemented architecture or code quality.
 ```
 
 ## When to use
@@ -113,6 +117,9 @@ feature:
   acceptance_criteria: []
   affected_domains:
     architecture: <true | false>
+    architecture_style_or_boundary_design: <true | false>
+    internal_code_quality: <true | false>
+    object_module_design: <true | false>
     logic: <true | false>
     data: <true | false>
     security: <true | false>
@@ -187,6 +194,8 @@ Load only relevant owners:
 
 ```text
 master-engineer       architecture, contracts, data, integration
+clean-architecture    architecture-style applicability and policy/mechanism boundaries when material
+solid-design          responsibility, extension, substitution, client-interface, dependency design when material
 master-design         task flow, component model, responsive behavior, visual direction
 diagram-architect     decision-bearing diagrams when useful
 decision-provenance   authority, scope, supersession, unresolved approval
@@ -250,7 +259,9 @@ When a dependency candidate remains `ROUTE_FOR_APPROVAL` or material canonicalit
 
 **Gate:** code traces to verified scope, decisions, convention locks, and implementation mapping.
 
-Load `master-engineer` and `test-driven-development`.
+Load `master-engineer`, `clean-code`, and `test-driven-development`. Load `solid-design` only when the approved implementation materially changes class/module/service ownership, extension seams, substitution contracts, client interfaces, or policy/detail dependency relationships.
+
+`clean-code` guides local implementation quality; it does not authorize unrelated cleanup or replace behavior tests. `solid-design` may conclude `NOT_APPLICABLE`; do not manufacture abstractions.
 
 ```text
 implement one approved slice at a time
@@ -288,6 +299,9 @@ contract, migration, runtime, or integration evidence
 changed import/path/dependency audit
 canonical component/token/icon/state/form/query/data mapping check
 local parallel-system inspection
+clean-code review and behavior-change risk
+solid-design assessment when materially applicable
+clean-architecture decision trace when architecture-style or boundary design was material
 architecture-review
 security evidence when affected
 ```
@@ -327,6 +341,9 @@ implementation_context_profile and convention locks
 reuse/extension/composition/native/dependency decisions
 implementation mapping and prohibited parallel systems
 implementation diff and technical evidence
+clean-code verdict/findings/gaps
+solid-design applicability/verdict/findings when applicable
+clean-architecture applicability and boundary decision when applicable
 architecture-review result
 design-review route/verdict/findings/gaps when applicable
 accepted risks with authority, owner, mitigation, expiry
@@ -390,7 +407,9 @@ Feature-level `NEEDS WORK`, `CRITICAL`, `LIMITED REVIEW`, `ROUTE ELSEWHERE`, `NO
 | New icon/component library added for convenience | Require capability gap and authority |
 | Native HTML is always forbidden | Evaluate semantic sufficiency and repository precedent |
 | Wireframe or mapping reviewed, therefore UI passed | Verify implementation later |
-| CI green, therefore feature complete | Collect architecture, runtime, design, and risk evidence |
+| CI green, therefore feature complete | Collect code quality, object-design when applicable, architecture, runtime, design, and risk evidence |
+| Apply SOLID or Clean Architecture to every change | Classify applicability and select the smallest justified design |
+| Lint and formatting pass, therefore code quality PASS | Run clean-code evidence review without arbitrary metrics |
 | No package change means no stack drift | Inspect local parallel systems and imports |
 | Technical approval means merge now | Wait for merge authorization |
 | Scope or dependency grows during implementation | Stop, re-map, verify provenance, and reapprove |
