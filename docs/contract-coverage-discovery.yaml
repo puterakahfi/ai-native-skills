@@ -470,7 +470,7 @@ contract_coverage_inventory:
     path: skills/delivery-work-breakdown/SKILL.md
     type: skill
     patterns: []
-    version: 1.0.0
+    version: 1.0.1
     implements: contracts/skills/product/delivery-work-breakdown.contract.yaml
     contract_version: ^1.0.0
     contract_path_exists: true

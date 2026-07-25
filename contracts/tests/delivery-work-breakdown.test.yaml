@@ -1,7 +1,7 @@
 skill_test:
   skill: delivery-work-breakdown
-  version: 1.0.0
-  description: Verify delivery decomposition classifies release units and produces traceable hierarchy and repository topology before execution.
+  version: 1.0.1
+  description: Verify delivery decomposition resolves canonical work-item identity, classifies release units, and produces traceable hierarchy and repository topology before execution.
   cases:
   - id: visualmate-chatgpt-app-p0-uses-epic-integration
     description: Dependent ChatGPT App slices form one epic and must not independently target main.
@@ -124,3 +124,111 @@ skill_test:
     - base_branch_and_pr_target_must_be_explicit_per_work_item
     - epic_child_prs_must_target_the_epic_or_integration_branch
     - product_defined_repository_and_approval_policy_must_be_preserved
+
+
+  - id: narrow-query-miss-recovers-existing-owner
+    description: Different incident vocabulary must not create a parallel canonical owner.
+    trigger: Create an issue named Fix API returning 503 during uploads. The first exact-title search is empty. An older open issue named Object storage saturation causes upload service unavailable has the same upload failure, objective, acceptance criteria, and parent incident. Decide whether to create the issue.
+    must_contain:
+    - EXISTING_OWNER
+    - canonical owner
+    - symptoms
+    - synonyms
+    - acceptance criteria
+    - empty result from one query
+    - do not create parallel ownership
+    must_not_contain:
+    - NEW because the title is different
+    - create the issue immediately
+    - one empty search proves uniqueness
+    quality_gates_tested:
+    - work_item_identity_is_explicit_before_issue_plan_execution
+    - multi_query_duplicate_search_covers_identity_entities_symptoms_synonyms_and_parent_refs
+    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only
+    - existing_canonical_owner_is_reused_or_extended_instead_of_duplicated
+
+  - id: overlapping-migration-scope-requires-split
+    description: Related migration work is compared by acceptance boundary before deciding ownership.
+    trigger: Plan an issue Replace deprecated skill repository URLs. An existing issue Migrate runtime bindings to current Core and Skills contracts explicitly covers legacy Core and Skills runtime-binding URLs but excludes the product self-repository URL. Determine the work-item identity and scope.
+    must_contain:
+    - OVERLAP_REQUIRES_SCOPE_SPLIT
+    - existing owner covers related migration scope
+    - uncovered self-repository scope
+    - scope boundary
+    - acceptance criteria
+    - candidate refs
+    - parent
+    must_not_contain:
+    - same keywords means duplicate
+    - create an unscoped parallel issue
+    quality_gates_tested:
+    - work_item_identity_is_explicit_before_issue_plan_execution
+    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only
+    - scope_split_is_explicit_when_related_work_is_not_fully_duplicate
+
+  - id: similar-title-different-port-remains-separate
+    description: Similar GitHub adapter titles do not collapse distinct provider-neutral capabilities.
+    trigger: A task proposes a read-only pull-request topology adapter. An existing task owns GitHub issue and Project task-management reads. Compare their ports, outputs, and acceptance criteria before deciding whether a new child task is valid.
+    must_contain:
+    - NEW
+    - related but separate scope
+    - repository or pull-request topology
+    - task-management
+    - different acceptance criteria
+    must_not_contain:
+    - DUPLICATE because both mention GitHub
+    - title similarity is sufficient
+    quality_gates_tested:
+    - work_item_identity_is_explicit_before_issue_plan_execution
+    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only
+
+  - id: superseded-closed-item-does-not-block-current-work
+    description: Closed historical work is inspected for authority and supersession rather than blindly reused.
+    trigger: A closed issue has the same title as the proposed task, but it targets an obsolete architecture and an accepted newer contract explicitly supersedes it. Decide the canonical identity and preserve history.
+    must_contain:
+    - SUPERSEDED_OWNER
+    - current authority
+    - supersession
+    - provenance
+    - closed
+    must_not_contain:
+    - closed issues never matter
+    - same title always blocks new work
+    quality_gates_tested:
+    - open_and_closed_tracker_state_is_considered_when_relevant
+    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only
+
+  - id: accidental-duplicate-transfers-evidence-before-closure
+    description: A discovered duplicate is repaired without losing unique diagnostic evidence.
+    trigger: A new issue was created after a narrow search. A broader search finds an older canonical owner with the same symptom and acceptance criteria. The new issue contains one additional diagnostic run. Produce the recovery plan.
+    must_contain:
+    - DUPLICATE
+    - transfer unique evidence
+    - update dependent references
+    - preserve provenance
+    - close
+    - tracker authority
+    must_not_contain:
+    - delete the duplicate history
+    - close before transferring evidence
+    - both issues remain canonical
+    quality_gates_tested:
+    - accidental_duplicate_recovery_transfers_unique_evidence_and_preserves_provenance
+    - existing_canonical_owner_is_reused_or_extended_instead_of_duplicated
+
+  - id: incomplete-tracker-search-remains-not-verified
+    description: Search or index limitations block a uniqueness claim.
+    trigger: The tracker search endpoint returns no matches, but repository search is known to miss existing content and recent issue listing is unavailable. The user asks to create the issue now.
+    must_contain:
+    - NOT_VERIFIED
+    - BLOCKED
+    - search limitations
+    - next_exact_action
+    - empty result from one query
+    must_not_contain:
+    - NEW
+    - no result proves uniqueness
+    - create the canonical issue now
+    quality_gates_tested:
+    - empty_single_query_result_does_not_prove_uniqueness
+    - duplicate_search_limitations_are_disclosed_as_not_verified
