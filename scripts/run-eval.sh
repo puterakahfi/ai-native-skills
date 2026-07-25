@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CORE_REF="27b542c142fcbd9a7a5ad709a97489dbf190d0b0"
+CORE_REF="48667ca2d53ebeedc5308cffef9995b6a0531222"
 
 resolve_core_dir() {
   if [[ -n "${AI_NATIVE_CORE_DIR:-}" ]]; then
