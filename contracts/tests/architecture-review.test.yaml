@@ -1,7 +1,7 @@
 skill_test:
   skill: architecture-review
   version: 1.1.0
-  description: Verify architecture-review applies its core interface and independently checks discovered implementation conventions.
+  description: Verify architecture-review applies its core interface, independently checks discovered implementation conventions, and consumes bounded artifact-conformance evidence.
   cases:
   - id: compiled-code-is-not-architecture-approval
     description: Review a compiling PR against its engineering contract and report violations and flags.
@@ -56,3 +56,116 @@ skill_test:
     - must_load_engineering_contract_before_review
     - must_check_stack_compliance
     - must_check_unauthorized_dependencies
+
+  - id: repository-native-artifact-passes-conformance
+    description: A repository-native Next.js fixture reuses canonical shadcn components, Tailwind semantic tokens, and Lucide imports.
+    trigger: Review the compliant repository-stack fixture against its implementation-context profile and report the architecture verdict.
+    must_contain:
+    - implementation context
+    - convention locks
+    - shadcn
+    - Tailwind
+    - Lucide
+    - PASS
+    must_not_contain:
+    - another-ui
+    - react-icons
+    - local dialog
+    artifact_assertions:
+      root: fixtures/repository-stack-conformance/compliant
+      files_must_exist:
+        - components.json
+        - package.json
+        - implementation-context.yaml
+        - lib/utils.ts
+        - components/ui/button.tsx
+        - components/ui/select.tsx
+        - app/page.tsx
+        - app/globals.css
+      path_globs_must_match:
+        - components/ui/*.tsx
+      file_patterns_must_contain:
+        - path: components.json
+          pattern: https://ui.shadcn.com/schema.json
+        - path: app/page.tsx
+          pattern: '@/components/ui/button'
+        - path: app/page.tsx
+          pattern: '@/components/ui/select'
+        - path: app/page.tsx
+          pattern: lucide-react
+        - path: app/globals.css
+          pattern: --primary:
+      file_patterns_must_not_contain:
+        - path: package.json
+          pattern: another-ui
+        - path: package.json
+          pattern: react-icons
+        - path: app/page.tsx
+          pattern: role="dialog"
+        - path: app/page.tsx
+          pattern: another-ui
+        - path: app/page.tsx
+          pattern: react-icons
+        - path: app/globals.css
+          pattern: --feature-primary
+    quality_gates_tested:
+    - must_check_stack_compliance
+    - must_check_unauthorized_dependencies
+    - artifact_evidence_must_match_implementation_mapping
+
+  - id: textual-pass-cannot-hide-artifact-drift
+    description: Correct-sounding review text cannot make a violating artifact pass.
+    trigger: Review the drift fixture. The submitted narrative claims shadcn, Tailwind, Lucide, convention locks, and PASS, but the artifact may contain parallel systems.
+    must_contain:
+    - implementation context
+    - convention locks
+    - shadcn
+    - Tailwind
+    - Lucide
+    - PASS
+    must_not_contain:
+    - agent narrative is sufficient
+    artifact_assertions:
+      root: fixtures/repository-stack-conformance/drift
+      files_must_exist:
+        - package.json
+        - implementation-context.yaml
+        - app/page.tsx
+        - app/globals.css
+      file_patterns_must_not_contain:
+        - path: package.json
+          pattern: another-ui
+        - path: package.json
+          pattern: react-icons
+        - path: app/page.tsx
+          pattern: another-ui
+        - path: app/page.tsx
+          pattern: react-icons
+        - path: app/page.tsx
+          pattern: role="dialog"
+        - path: app/page.tsx
+          pattern: role="listbox"
+        - path: app/globals.css
+          pattern: --feature-primary
+    quality_gates_tested:
+    - must_not_approve_generated_code_that_violates_contract
+    - artifact_evidence_controls_stack_conformance
+    - parallel_systems_are_detected_without_manifest_only_reasoning
+
+  - id: missing-artifact-evidence-remains-incomplete
+    description: Missing repository artifacts remain incomplete rather than becoming a false architecture pass.
+    trigger: Review a claimed repository-native implementation when the artifact root is unavailable.
+    must_contain:
+    - implementation context
+    - NOT_VERIFIED
+    - artifact evidence
+    must_not_contain:
+    - missing evidence means pass
+    artifact_assertions:
+      root: fixtures/repository-stack-conformance/missing
+      files_must_exist:
+        - package.json
+        - implementation-context.yaml
+    quality_gates_tested:
+    - missing_artifact_evidence_is_not_approval
+    - source_or_narrative_only_claims_remain_not_verified
