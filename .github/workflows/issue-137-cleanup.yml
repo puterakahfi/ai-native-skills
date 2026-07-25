@@ -1,0 +1,32 @@
+name: Issue 137 Cleanup
+
+on:
+  push:
+    branches:
+      - 137-production-code-quality-baseline
+    paths:
+      - .github/workflows/issue-137-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove nested checkout artifact and cleanup workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm -f .deps/ai-native-core
+          rm .github/workflows/issue-137-cleanup.yml
+          git add -A
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(metadata): remove nested core checkout artifact'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
