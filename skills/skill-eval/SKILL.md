@@ -3,7 +3,7 @@ name: skill-eval
 description: Skill application verifier — evaluates per-case agent outputs against regression contracts and classifies behavior as APPLIED, PARTIAL, GHOST, or INCOMPLETE. Separates contract validation from real behavioral evaluation.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.1
+  ai-native-skills.version: 1.1.2
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.implements: ai-native-core/contracts/skills/quality/skill-eval.contract.yaml
@@ -75,7 +75,7 @@ positive and negative rules do not directly contradict
 canonical runner accepts the schema
 ```
 
-Contract validation does not prove an agent applied the skill.
+Contract validation does not prove an agent applied the skill. It also does not prove that factual assertions or expected verdicts are semantically grounded by the trigger.
 
 ### Behavioral evaluation
 
@@ -133,6 +133,50 @@ Rules:
 - Each case represents one coherent behavior or gate cluster.
 - `must_not_contain` targets meaningful regressions, not common words.
 - Test version matches `metadata["ai-native-skills.version"]` in the governing `SKILL.md`.
+- Classify every assertion as behavioral, structural, or factual before treating it as a valid expectation.
+- Every factual assertion and expected verdict must be supported by the trigger or explicitly attributable context.
+- Uncertain trigger wording cannot force a certain factual conclusion.
+
+## Trigger-Assertion Grounding Review
+
+Run this review before scoring model behavior or patching the target skill.
+
+For each regression case:
+
+```text
+1. classify each assertion as behavioral, structural, or factual
+2. map every factual assertion to exact trigger or context evidence
+3. verify the expected verdict has enough decision facts
+4. preserve uncertainty when the trigger leaves a material fact unknown
+5. classify unsupported expectations as test contract defect
+```
+
+```yaml
+trigger_assertion_grounding:
+  case_id: <case id>
+  verdict: GROUNDED | TEST_CONTRACT_DEFECT
+  factual_assertions:
+    - assertion: <required fact or verdict>
+      evidence: <exact trigger/context fact or missing>
+      status: SUPPORTED | UNSUPPORTED
+  expected_verdict_support: <sufficient | insufficient>
+  uncertainty_handling: <preserved | collapsed | not applicable>
+  next_exact_action: <one action>
+```
+
+Local quality gates:
+
+```text
+every_factual_must_contain_is_supported_by_trigger_or_attributable_context
+expected_verdict_has_sufficient_decision_facts_in_trigger
+uncertain_trigger_language_does_not_force_a_certain_factual_conclusion
+missing_decision_fact_produces_test_contract_defect_or_not_verified_expectation
+assertions_do_not_reward_hallucinated_scope_status_or_authority
+```
+
+A grounding review does not require every expected phrase to appear verbatim in the trigger. Valid reasoning may combine supplied facts, but it cannot invent scope, approval, runtime, authority, or verification state.
+
+When a case is `TEST_CONTRACT_DEFECT`, do not score the model against the defective expectation and do not patch the target skill. Correct the test contract first, then rerun validation and behavioral evaluation.
 
 ## Output Layout
 
@@ -257,6 +301,8 @@ test contract defect
 local product override
 ```
 
+If a required factual assertion or expected verdict lacks support in the trigger or attributable context, classify the failure as `test contract defect` before changing the target skill.
+
 ## Anti-Patterns
 
 | Anti-pattern | Why it fails |
@@ -267,7 +313,11 @@ local product override
 | Use vague required words such as “good” | Generic outputs pass accidentally |
 | Use broad forbidden words such as “the” | Valid outputs fail accidentally |
 | Ignore missing outputs | Evaluation coverage is overstated |
+| Force a certain conclusion from `may`, `might`, or missing evidence | The test rewards unsupported assumptions |
+| Treat CI, screenshots, or status labels as approval/runtime proof without the required evidence | Authority and verification states collapse |
 | Patch the skill before classifying the failure | Test, routing, or context defects get copied into skill knowledge |
 | Never rerun after model/context changes | Drift remains invisible |
 
 > **Hard rule:** Send each case trigger verbatim without skill names, hints, or extra steering context.
+
+> **Grounding hard rule:** Never require the evaluated output to assert a factual state that the trigger or attributable context does not establish.
