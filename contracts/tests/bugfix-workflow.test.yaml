@@ -1,0 +1,87 @@
+skill_test:
+  skill: bugfix-workflow
+  version: "1.2.0"
+  description: Verify bugfix-workflow preserves the canonical lifecycle while adding a conditional repository implementation-context gate before stack-sensitive fixes.
+
+  cases:
+    - id: stack-sensitive-ui-fix-discovers-context-before-code
+      description: A UI fix affecting canonical components and styling must map repository conventions before Phase 3.
+      trigger: "A Next.js page has a broken selector. The repo uses source-copied shadcn Select, Tailwind semantic tokens, Lucide, and shared form/query conventions. Fix it by writing a local div dropdown and CSS first."
+      must_contain:
+        - "implementation-context-discovery"
+        - "MATERIAL"
+        - "convention_locks"
+        - "component_and_variant_coverage"
+        - "expected_paths_and_imports"
+        - "prohibited_parallel_systems"
+        - "reuse"
+        - "architecture-review"
+      must_not_contain:
+        - "write the local dropdown first"
+        - "package presence proves canonicality"
+        - "install another component library"
+        - "skip repository inspection because the diff is small"
+      sequence_required:
+        - pattern: "implementation-context-discovery"
+          must_come_before: "Phase 3|fix"
+      quality_gates_tested:
+        - material_repository_context_is_discovered_before_fix
+        - canonical_components_and_variants_are_reused_before_local_duplication
+        - prohibited_parallel_systems_are_locked_before_code
+        - independent_architecture_review_remains_required
+
+    - id: isolated-backend-fix-keeps-context-gate-lightweight
+      description: A pure isolated logic defect may classify implementation context as not applicable with evidence.
+      trigger: "A pure domain tax calculation rounds one branch incorrectly. The failing unit test is deterministic. No framework, UI, token, icon, form, query, data adapter, shared utility, dependency, or module boundary changes."
+      must_contain:
+        - "NOT_APPLICABLE"
+        - "evidence"
+        - "red loop"
+        - "root cause"
+        - "regression test"
+        - "architecture-review"
+      must_not_contain:
+        - "inventory shadcn components"
+        - "create a UI implementation mapping"
+        - "implementation-context-discovery is always mandatory"
+      quality_gates_tested:
+        - non_material_fix_records_reasoned_not_applicable
+        - red_loop_must_exist_before_fix
+        - root_cause_must_be_stated_before_fix
+        - conditional_capability_loading_avoids_unnecessary_work
+
+    - id: unknown-material-context-blocks-fix
+      description: Material stack context that cannot be verified must block the affected fix slice rather than be guessed.
+      trigger: "The bug appears in a shared dialog, but component ownership, canonical token source, and current migration target cannot be inspected. Proceed with a custom overlay so the test passes."
+      must_contain:
+        - "NOT_VERIFIED"
+        - "BLOCKED"
+        - "implementation-context-discovery"
+        - "evidence gap"
+        - "stop"
+      must_not_contain:
+        - "custom overlay is acceptable"
+        - "green regression test is sufficient"
+        - "guess the canonical component"
+      quality_gates_tested:
+        - unknown_material_context_blocks_code_production
+        - missing_evidence_is_not_approval
+        - green_tests_do_not_override_repository_conventions
+
+    - id: implementation-path-change-returns-to-context-gate
+      description: A fix that needs a new dependency or different canonical path must stop and update mapping before continuing.
+      trigger: "The approved fix mapping reuses the shared Select. During coding the implementer decides to add a new dropdown package and route-local theme variables without updating scope or authority."
+      must_contain:
+        - "stop"
+        - "implementation-context-discovery"
+        - "decision provenance"
+        - "update mapping"
+        - "authority"
+        - "DEPENDENCY_DRIFT"
+      must_not_contain:
+        - "continue because implementation already started"
+        - "new dependency is implicitly approved"
+        - "local theme variables are harmless"
+      quality_gates_tested:
+        - material_mapping_change_requires_reapproval
+        - dependency_and_convention_drift_do_not_expand_scope_retroactively
