@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 4%;
+    --primary: 240 6% 10%;
+    --primary-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --border: 240 6% 90%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer utilities {
+  .text-page-title {
+    @apply text-4xl font-semibold tracking-tight;
+  }
+}

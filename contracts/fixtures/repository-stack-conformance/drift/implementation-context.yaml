@@ -1,0 +1,14 @@
+implementation_context_profile:
+  framework_runtime: Next.js
+  component_system: source-copied shadcn/ui
+  styling_and_tokens: Tailwind semantic CSS variables
+  iconography: lucide-react
+  expected_paths_and_imports:
+    - '@/components/ui/button'
+    - '@/components/ui/select'
+    - lucide-react
+  prohibited_parallel_systems:
+    - another-ui
+    - react-icons
+    - route-local theme grammar
+    - local dialog and select behavior

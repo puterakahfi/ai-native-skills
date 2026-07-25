@@ -1,0 +1,13 @@
+{
+  "name": "repository-stack-conformance-compliant-fixture",
+  "private": true,
+  "dependencies": {
+    "next": "fixture",
+    "react": "fixture",
+    "lucide-react": "fixture",
+    "@radix-ui/react-select": "fixture",
+    "class-variance-authority": "fixture",
+    "clsx": "fixture",
+    "tailwind-merge": "fixture"
+  }
+}
