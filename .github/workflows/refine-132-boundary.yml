@@ -1,0 +1,77 @@
+name: Refine issue 132 boundary
+
+on:
+  push:
+    branches:
+      - feat/132-work-item-deduplication
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/132-work-item-deduplication
+          fetch-depth: 0
+
+      - name: Apply boundary refinement
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              file = Path(path)
+              text = file.read_text(encoding="utf-8")
+              if new in text:
+                  return
+              if old not in text:
+                  raise SystemExit(f"Missing anchor in {path}: {old[:100]!r}")
+              file.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          skill = "skills/delivery-work-breakdown/SKILL.md"
+          tests = "contracts/tests/delivery-work-breakdown.test.yaml"
+
+          replace_once(
+              skill,
+              "- release planning where partial integration risk matters.\n",
+              "- release planning where partial integration risk matters;\n- an issue plan may create a tracker item or the canonical work-item owner is uncertain.\n",
+          )
+          replace_once(
+              skill,
+              "Do not load merely for a single already-classified atomic task whose approved parent, base branch, and PR target are all explicit.",
+              "Do not load merely for a single already-classified atomic task only when its canonical owner, approved parent, base branch, and PR target are already explicit and verified.",
+          )
+          replace_once(
+              skill,
+              "```yaml\nwork_item_identity_decision:\n  proposed_canonical_task_id: <id>",
+              "```yaml\nissue_plan:\n  work_item_identity_decision:\n    proposed_canonical_task_id: <id>",
+          )
+          replace_once(
+              skill,
+              "  verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED\n  canonical_owner_ref: <ref or null>\n  candidate_refs: []\n  search_evidence: []\n  limitations: []\n  next_exact_action: <action>\n\nrelease_unit_classification:",
+              "    verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED\n    canonical_owner_ref: <ref or null>\n    candidate_refs: []\n    search_evidence: []\n    limitations: []\n    next_exact_action: <action>\n\nrelease_unit_classification:",
+          )
+          replace_once(
+              tests,
+              "    - work_item_identity_is_explicit_before_issue_plan_execution\n    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only\n    - scope_split_is_explicit_when_related_work_is_not_fully_duplicate\n\n  - id: superseded-closed-item-does-not-block-current-work",
+              "    - work_item_identity_is_explicit_before_issue_plan_execution\n    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only\n\n  - id: superseded-closed-item-does-not-block-current-work",
+          )
+          replace_once(
+              tests,
+              "    - existing owner covers related migration scope\n    - uncovered self-repository scope\n",
+              "",
+          )
+          PY
+
+      - name: Commit refinement
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills/delivery-work-breakdown/SKILL.md contracts/tests/delivery-work-breakdown.test.yaml
+          git commit -m "fix(delivery): keep identity decision inside issue plan (#132)"
+          git push origin HEAD:feat/132-work-item-deduplication
