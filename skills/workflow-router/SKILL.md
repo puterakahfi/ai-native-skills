@@ -3,13 +3,13 @@ name: workflow-router
 description: Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, verified-case skill evolution, or cross-session task continuity. Route before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.6.0
+  ai-native-skills.version: 1.7.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow task-continuity"
+  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow task-continuity production-code-quality-baseline"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/workflow-router.contract.yaml
   ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow","task-continuity"]'
+  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow","task-continuity","production-code-quality-baseline"]'
 ---
 
 # Workflow Router
@@ -51,6 +51,8 @@ Keep this interface synchronized with the pinned core contract. Exact declaratio
 ```text
 classify requested outcome
 → select one primary lifecycle or capability
+→ classify production-code impact
+→ attach production-code-quality-baseline when production behavior changes
 → resolve platform/domain overlays
 → resolve design domain when design is involved
 → load only required skills/reviewers
@@ -67,14 +69,58 @@ No execution before routing. The artifact noun does not determine the lifecycle:
 | Audit/critique an existing design without changing it | `design-audit` | `design-review` + applicable domain reviewer |
 | Fix known specific design findings while preserving direction | `design-refinement` | prior review, governing reviewer, skill-evolution |
 | Change design direction, structure, or multiple layers | `redesign-workflow` | owner, specialists, `design-review` |
-| Fix broken implementation behavior | `bugfix-workflow` | systematic-debugging, relevant reviewers |
-| Add a capability to an existing product | `new-feature-workflow` | spec, product/design/engineering owners |
+| Fix broken implementation behavior | `bugfix-workflow` | `production-code-quality-baseline`, systematic-debugging, relevant reviewers |
+| Add a capability to an existing product | `new-feature-workflow` | `production-code-quality-baseline`, spec, product/design/engineering owners |
 | Review code or PR before merge | `code-review-workflow` | architecture/security/design reviewers |
 | Deploy or release | `deployment-workflow` | security, architecture, operations |
 | Plan or specify | `spec-workflow` | product-manager, plan, relevant owners |
 | Preserve or resume work across sessions or runtimes | `task-continuity` | `context-manager`, `decision-provenance` |
 | Explore a reversible idea | `spike` | plan, experiment skills |
 | Promote a verified lesson | `skill-evolution` | skill-eval, git-workflow |
+
+
+## Production-Code Quality Overlay
+
+Production-code quality is an overlay, not a second lifecycle.
+
+```text
+new feature, bugfix, behavior change, refactor, migration,
+or generated code intended for repository submission
+  → classify production impact
+  → preserve the selected primary lifecycle
+  → attach production-code-quality-baseline
+```
+
+Classification:
+
+```text
+PRODUCTION_CODE_CHANGE
+NON_PRODUCTION_CHANGE
+DISPOSABLE_EXPERIMENT
+NOT_VERIFIED
+```
+
+Use requested outcome and repository impact, not the artifact noun or diff size alone.
+`NOT_VERIFIED` blocks complete implementation or merge-readiness claims.
+
+When attached, the overlay coordinates:
+
+```text
+TDD or attributable authorized exception
+clean-code and module/failure-path assessment
+conditional SOLID, DDD, pattern, Clean Architecture, security,
+performance, resilience, observability, data, and design applicability
+claim-appropriate evidence
+independent architecture and code review
+remaining approval and merge authority
+```
+
+The overlay must not manufacture abstractions. Conditional concerns may resolve to
+`NOT_APPLICABLE` or `NOT_JUSTIFIED` with inspectable evidence. Silence is
+`NOT_VERIFIED`, never PASS.
+
+Until `ai-native-core#56` is accepted, this route is provisional under the reviewed
+core-gap exemption owned by `production-code-quality-baseline`.
 
 ## Delivery Topology Overlay
 
@@ -243,7 +289,7 @@ Verified-case learning required? → skill-evolution
   ↓
 Product from zero / no PRD? → product-development-workflow
   ↓
-Functional symptom or regression? → bugfix-workflow
+Functional symptom or regression? → bugfix-workflow + production-code-quality-baseline
   ↓
 Design-related?
   audit only              → design-audit
@@ -252,7 +298,7 @@ Design-related?
   advisory only           → role-switcher
   then resolve domain reviewer and coverage
   ↓
-New capability? → new-feature-workflow
+New capability? → new-feature-workflow + production-code-quality-baseline
   multi-slice or target unresolved? → delivery-work-breakdown
   ↓
 Code/PR acceptance? → code-review-workflow

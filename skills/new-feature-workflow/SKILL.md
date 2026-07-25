@@ -3,20 +3,21 @@ name: new-feature-workflow
 description: Evidence-backed new-feature workflow — verify scope and decision authority, approve architecture/design decisions, discover repository implementation context, implement with tests, verify technical, convention, and rendered outcomes, submit a decision ledger, and merge only through code-review-workflow approval plus merge authorization.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.4.0
+  ai-native-skills.version: 2.5.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "master-engineer master-design delivery-work-breakdown implementation-context-discovery decision-provenance spec-workflow clean-architecture solid-design clean-code test-driven-development architecture-review code-review-workflow design-review"
+  ai-native-skills.requires: "master-engineer master-design delivery-work-breakdown implementation-context-discovery decision-provenance spec-workflow production-code-quality-baseline clean-architecture solid-design clean-code test-driven-development architecture-review code-review-workflow design-review"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/new-feature.contract.yaml
   ai-native-skills.contract-version: ~0.4
-  ai-native-skills.skill_load_order: '[{"phase":"plan","load":["master-engineer","decision-provenance"]},{"phase":"delivery-topology","load":["delivery-work-breakdown","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","clean-architecture","solid-design","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["master-engineer","clean-code","solid-design","test-driven-development"]},{"phase":"verify","load":["clean-code","solid-design","architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]'
-  ai-native-skills.skills: '{"required":["master-engineer","delivery-work-breakdown","implementation-context-discovery","decision-provenance","clean-code","test-driven-development","architecture-review","code-review-workflow"],"optional":["clean-architecture","solid-design","diagram-architect","master-design","design-review"]}'
+  ai-native-skills.skill_load_order: '[{"phase":"plan","load":["production-code-quality-baseline","master-engineer","decision-provenance"]},{"phase":"delivery-topology","load":["delivery-work-breakdown","decision-provenance"]},{"phase":"design-decision","load":["master-engineer","clean-architecture","solid-design","diagram-architect","master-design","decision-provenance"]},{"phase":"implementation-context","load":["implementation-context-discovery","decision-provenance"]},{"phase":"implement","load":["production-code-quality-baseline","master-engineer","clean-code","solid-design","test-driven-development"]},{"phase":"verify","load":["production-code-quality-baseline","clean-code","solid-design","architecture-review","design-review","decision-provenance"]},{"phase":"submit","load":["decision-provenance"]},{"phase":"review","load":["code-review-workflow"]}]'
+  ai-native-skills.skills: '{"required":["production-code-quality-baseline","master-engineer","delivery-work-breakdown","implementation-context-discovery","decision-provenance","clean-code","test-driven-development","architecture-review","code-review-workflow"],"optional":["clean-architecture","solid-design","diagram-architect","master-design","design-review"]}'
 ---
 
 # New Feature Workflow
 
 ```text
 verified scope
+→ production-code-quality-baseline attachment and applicability map
 → approved delivery topology
 → approved architecture/design decisions
 → repository implementation-context mapping
@@ -66,6 +67,9 @@ A wireframe or specification decides what to build. `implementation-context-disc
 22. Use `solid-design` only when responsibility, extension, substitution, client-interface, or dependency design is material.
 23. Apply `clean-code` during implementation and verification without arbitrary size metrics or behavior-changing cleanup.
 24. Pre-implementation engineering design guidance never self-approves the implemented architecture or code quality.
+25. Attach `production-code-quality-baseline` for the production implementation slice; it remains an overlay and never replaces this lifecycle.
+26. Record RED-before-GREEN evidence or an attributable authorized exception; final green tests alone do not prove TDD.
+27. Classify conditional quality concerns before loading specialists, and preserve `NOT_APPLICABLE`, `NOT_JUSTIFIED`, and `NOT_VERIFIED` honestly.
 ```
 
 ## When to use
@@ -259,7 +263,7 @@ When a dependency candidate remains `ROUTE_FOR_APPROVAL` or material canonicalit
 
 **Gate:** code traces to verified scope, decisions, convention locks, and implementation mapping.
 
-Load `master-engineer`, `clean-code`, and `test-driven-development`. Load `solid-design` only when the approved implementation materially changes class/module/service ownership, extension seams, substitution contracts, client interfaces, or policy/detail dependency relationships.
+Load `production-code-quality-baseline`, `master-engineer`, `clean-code`, and `test-driven-development`. Load `solid-design` only when the applicability map and approved implementation materially change class/module/service ownership, extension seams, substitution contracts, client interfaces, or policy/detail dependency relationships.
 
 `clean-code` guides local implementation quality; it does not authorize unrelated cleanup or replace behavior tests. `solid-design` may conclude `NOT_APPLICABLE`; do not manufacture abstractions.
 
@@ -301,6 +305,7 @@ canonical component/token/icon/state/form/query/data mapping check
 local parallel-system inspection
 clean-code review and behavior-change risk
 solid-design assessment when materially applicable
+production-code baseline claims, executed-capability refs, evidence, gate results, and blocking gaps
 clean-architecture decision trace when architecture-style or boundary design was material
 architecture-review
 security evidence when affected

@@ -3,13 +3,14 @@ name: spec-workflow
 description: 'Spec-driven development workflow — constitution → specify → plan → tasks → implement. Eliminates vibe coding at the input layer: no implementation without a precise, agent-executable spec.'
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
+  ai-native-skills.requires: "product-manager plan context-manager rule-manager master-engineer native-ai-engineer test-driven-development clean-code production-code-quality-baseline"
   ai-native-skills.implements: ai-native-core/contracts/workflows/spec-driven.contract.yaml
   ai-native-skills.contract-version: "~0.1"
-  ai-native-skills.skill_load_order: '[{''phase'': ''constitution'', ''load'': [''native-ai-engineer'', ''master-engineer'']}, {''phase'': ''specify'', ''load'': [''product-manager'']}, {''phase'': ''plan'', ''load'': [''plan'']}, {''phase'': ''tasks'', ''load'': [''context-manager'', ''rule-manager'']}, {''phase'': ''implement'', ''load'': [''master-engineer'', ''test-driven-development'']}]'
-  ai-native-skills.skills: '{''required'': [''product-manager'', ''plan'', ''context-manager'', ''rule-manager'', ''master-engineer'', ''native-ai-engineer''], ''optional'': [''test-driven-development'', ''spike'', ''diagram-architect'']}'
+  ai-native-skills.skill_load_order: '[{''phase'': ''constitution'', ''load'': [''native-ai-engineer'', ''master-engineer'']}, {''phase'': ''specify'', ''load'': [''product-manager'']}, {''phase'': ''plan'', ''load'': [''plan'']}, {''phase'': ''tasks'', ''load'': [''context-manager'', ''rule-manager'']}, {''phase'': ''implement'', ''load'': [''production-code-quality-baseline'', ''master-engineer'', ''test-driven-development'', ''clean-code'']}]'
+  ai-native-skills.skills: '{''required'': [''product-manager'', ''plan'', ''context-manager'', ''rule-manager'', ''master-engineer'', ''native-ai-engineer'', ''production-code-quality-baseline'', ''test-driven-development'', ''clean-code''], ''optional'': [''spike'', ''diagram-architect'']}'
 ---
 
 # Spec-Driven Development Workflow
@@ -22,6 +23,8 @@ Precise specs → agent-executable tasks → production-grade output.
 
 No implementation starts without a spec.
 No spec is valid without testable acceptance criteria.
+Production-code implementation attaches production-code-quality-baseline.
+TDD is the default; an exception requires attributable authority and alternative verification.
 ```
 
 ## When to Use
@@ -158,13 +161,13 @@ For each task handed to an agent, build context pack:
 ## Phase 5: Implement
 **Gate:** Implementation must not exceed spec scope.
 
-Load `master-engineer` + `test-driven-development`.
+Load `production-code-quality-baseline`, `master-engineer`, `test-driven-development`, and `clean-code` for tasks classified as production-code changes.
 
 Execute tasks in order. For each task:
 
 1. Load context pack
-2. Write test first (if TDD applies)
-3. Implement to make test pass
+2. Record the failing behavior and RED evidence before implementation; when TDD cannot validly apply, stop for an attributable authorized exception with alternative verification
+3. Implement the smallest change to make the test pass and record GREEN evidence
 4. Verify against AC — does it satisfy Given/When/Then?
 5. Check scope — any drift beyond spec?
 
@@ -174,7 +177,7 @@ Execute tasks in order. For each task:
 - [ ] No refactoring outside task scope?
 - [ ] AC satisfied — not just "works", but provably satisfies the criterion?
 
-**Done when:** All tasks complete, all ACs satisfied, no scope drift.
+**Done when:** All tasks complete, all ACs are satisfied, no scope drift exists, and the production-code quality baseline exposes evidence, gate results, reviews, and remaining authority honestly.
 
 ---
 
@@ -186,7 +189,7 @@ Execute tasks in order. For each task:
 | **2. Specify** | `product-manager` | Testable ACs, explicit scope |
 | **3. Plan** | `plan` | All tasks trace to AC |
 | **4. Tasks** | `context-manager`, `rule-manager` | Context pack complete |
-| **5. Implement** | `master-engineer`, `test-driven-development` | No scope drift |
+| **5. Implement** | `production-code-quality-baseline`, `master-engineer`, `test-driven-development`, `clean-code` | No scope drift; quality evidence and authority boundaries explicit |
 
 ---
 

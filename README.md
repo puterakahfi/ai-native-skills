@@ -6,7 +6,7 @@ This repository turns engineering methods and Native AI contracts into reusable 
 
 Works with agents that support the [Agent Skills specification](https://agentskills.io/specification) or the [skills.sh](https://skills.sh) ecosystem, including Hermes, Claude Code, Cursor, Codex, Gemini, Windsurf, and other compatible runtimes.
 
-**91 skills · 10 workflows · 6 meta-skills**
+**91 skills · 11 workflows · 6 meta-skills**
 
 ## Start here
 
@@ -180,8 +180,11 @@ Design work
   → design-interaction + adaptive-component-design
 
 Engineering quality
-  implementation-context-discovery when convention evidence is material
-  → architecture-review → security-review → code-review-workflow → skill-eval
+  workflow-router classifies production impact
+  → one primary lifecycle + production-code-quality-baseline overlay
+  → implementation-context-discovery when convention evidence is material
+  → TDD + clean-code + justified conditional specialists
+  → architecture-review → code-review-workflow → remaining merge authority
 
 Product delivery
   product-development-workflow → spec-workflow → delivery-work-breakdown

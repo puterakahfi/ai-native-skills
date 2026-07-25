@@ -4,18 +4,18 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 107
+    executable_artifacts: 108
     official_types:
       meta-skill: 6
       skill: 91
-      workflow: 10
+      workflow: 11
     patterns:
       domain-reviewer: 1
       facade: 1
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 72
-      reviewed_exemption: 9
+      reviewed_exemption: 10
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -146,7 +146,7 @@ contract_coverage_inventory:
     path: skills/bugfix-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 1.1.0
+    version: 1.2.0
     implements: contracts/workflows/bugfix.contract.yaml
     contract_version: ~0.3
     contract_path_exists: true
@@ -1158,7 +1158,7 @@ contract_coverage_inventory:
     path: skills/new-feature-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 2.4.0
+    version: 2.5.0
     implements: contracts/workflows/new-feature.contract.yaml
     contract_version: ~0.4
     contract_path_exists: true
@@ -1273,6 +1273,21 @@ contract_coverage_inventory:
     conformance_path: skills/product-requirements/adapter.conformance.yaml
     exemption_path: null
     classification: contract_backed_v2
+    errors: []
+  - id: production-code-quality-baseline
+    path: skills/production-code-quality-baseline/SKILL.md
+    type: workflow
+    patterns: []
+    version: 0.1.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/production-code-quality-baseline/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: project-instruction-generator
     path: skills/project-instruction-generator/SKILL.md
@@ -1587,7 +1602,7 @@ contract_coverage_inventory:
     path: skills/spec-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 1.0.0
+    version: 1.1.0
     implements: contracts/workflows/spec-driven.contract.yaml
     contract_version: ~0.1
     contract_path_exists: true
@@ -1831,7 +1846,7 @@ contract_coverage_inventory:
     path: skills/workflow-router/SKILL.md
     type: meta-skill
     patterns: []
-    version: 1.6.0
+    version: 1.7.0
     implements: contracts/skills/meta/workflow-router.contract.yaml
     contract_version: ~0.2
     contract_path_exists: true
