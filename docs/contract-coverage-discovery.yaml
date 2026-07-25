@@ -1528,7 +1528,7 @@ contract_coverage_inventory:
     path: skills/skill-eval/SKILL.md
     type: skill
     patterns: []
-    version: 1.1.1
+    version: 1.1.2
     implements: contracts/skills/quality/skill-eval.contract.yaml
     contract_version: ~0.1
     contract_path_exists: true
