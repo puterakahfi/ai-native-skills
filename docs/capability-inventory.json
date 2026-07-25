@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 90,
+    "skill": 91,
     "workflow": 10,
     "meta-skill": 6,
-    "total": 106
+    "total": 107
   },
   "items": [
     {
@@ -437,6 +437,11 @@
       "name": "systems-thinking",
       "type": "skill",
       "path": "skills/systems-thinking/SKILL.md"
+    },
+    {
+      "name": "task-continuity",
+      "type": "skill",
+      "path": "skills/task-continuity/SKILL.md"
     },
     {
       "name": "technical-debt-governance",

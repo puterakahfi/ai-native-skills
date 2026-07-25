@@ -6,10 +6,10 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 
 Current repository inventory:
 
-- `skill`: 90
+- `skill`: 91
 - `workflow`: 10
 - `meta-skill`: 6
-- Total executable skills: 106
+- Total executable skills: 107
 
 ---
 
@@ -21,7 +21,7 @@ Agent Skills frontmatter allows standard fields such as `name`, `description`, `
 
 | Type | Primary job | Answers | Examples |
 |---|---|---|---|
-| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `delivery-work-breakdown`, `implementation-context-discovery`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `project-instruction-generator`, `accessibility`, `chatgpt-app-development` |
+| `skill` | Provide one reusable capability | “What capability or expert lens is needed?” | `delivery-work-breakdown`, `implementation-context-discovery`, `task-continuity`, `systematic-debugging`, `collection-discovery-design`, `decision-provenance`, `project-instruction-generator`, `accessibility`, `chatgpt-app-development` |
 | `workflow` | Run a sequenced lifecycle | “What phases and gates must this task follow?” | `bugfix-workflow`, `new-feature-workflow`, `redesign-workflow` |
 | `meta-skill` | Route or compose capabilities | “Which workflow and specialists should be loaded?” | `workflow-router`, `role-switcher`, `design-layout` |
 
@@ -65,6 +65,7 @@ A good skill defines:
 
 - `delivery-work-breakdown` — classify release units, work hierarchy, branch bases, PR targets, and epic acceptance before Git execution.
 - `implementation-context-discovery` — inspect an existing repository before code, classify canonical framework/component/styling/icon/tooling systems, lock conventions, decide reuse/extension/composition/native/dependency, and hand off to implementation plus independent architecture review.
+- `task-continuity` — checkpoint and hand off source-backed task state, verify live sources before resume, reject stale or conflicting continuity, and preserve exact status/authority boundaries.
 - `collection-discovery-design` — diagnose retrieval and discovery strategy before pagination, tabs, filtering, traversal, or disclosure adapters are selected.
 - `project-instruction-generator` — generate or audit concise project-scoped bootstrap instructions that bind project identity and resources to reusable routing, disclosure, repository, completion, and capability-evolution policy.
 - `systematic-debugging` — root-cause investigation discipline.
@@ -161,14 +162,14 @@ A good meta-skill defines:
 
 | Meta-skill | Responsibility |
 |---|---|
-| `workflow-router` | Select one primary lifecycle and applicable platform/domain overlays. |
+| `workflow-router` | Select one primary lifecycle and applicable platform/domain/continuity overlays. |
 | `role-switcher` | Assign one owner, narrow specialists, independent reviewers, and domain reviewers. |
 | `design-layout` | Route macrostructure, component strategy, responsiveness, and spacing. |
 | `design-visual` | Route visual direction, composition, hierarchy, type, color, depth, iconography, motion, and readability. |
 | `design-strategy` | Route psychology, information architecture, collection discovery, CRO, copy, and content. |
 | `design-interaction` | Route interaction patterns, states, behavior, and accessibility semantics. |
 
-A platform or repository specialist normally overlays an existing lifecycle rather than replacing it.
+A platform, repository, or continuity specialist normally overlays an existing lifecycle rather than replacing it.
 
 ```text
 ChatGPT App product from zero
@@ -178,6 +179,10 @@ ChatGPT App product from zero
 Existing product adds ChatGPT integration
   primary lifecycle: new-feature-workflow
   platform specialist: chatgpt-app-development
+
+Cross-session feature resume
+  continuity overlay: task-continuity
+  primary lifecycle after verified resume: new-feature-workflow
 
 Repository-backed redesign or feature
   lifecycle remains redesign/new-feature/refinement
@@ -204,6 +209,7 @@ Examples:
 
 - `delivery-work-breakdown`;
 - `implementation-context-discovery`;
+- `task-continuity`;
 - `collection-discovery-design`;
 - `native-ai-engineer`;
 - `native-ai-runtime-agent`;

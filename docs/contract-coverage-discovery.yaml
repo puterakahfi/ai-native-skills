@@ -4,17 +4,17 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 106
+    executable_artifacts: 107
     official_types:
       meta-skill: 6
-      skill: 90
+      skill: 91
       workflow: 10
     patterns:
       domain-reviewer: 1
       facade: 1
     coverage:
       contract_backed_v2: 26
-      legacy_contract_backed: 71
+      legacy_contract_backed: 72
       reviewed_exemption: 9
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
@@ -1643,6 +1643,40 @@ contract_coverage_inventory:
     exemption_path: null
     classification: legacy_contract_backed
     errors: []
+  - id: task-continuity
+    path: skills/task-continuity/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: contracts/skills/context/task-continuity.contract.yaml
+    contract_version: ~0.1
+    contract_path_exists: true
+    legacy_boundary:
+      covers:
+      - source_backed_task_checkpoint_creation
+      - portable_cross_session_handoff_creation
+      - checkpoint_freshness_and_supersession_evaluation
+      - current_source_verification_before_resume
+      - continuity_gap_staleness_and_conflict_classification
+      - status_semantic_preservation_across_handoff
+      - exact_next_action_definition
+      - continuity_closure_evaluation
+      - durable_knowledge_promotion_request_for_official_chat_only_decisions
+      delegates:
+      - chat_transcript_storage
+      - provider_specific_memory_api_implementation
+      - product_specific_checkpoint_persistence
+      - repository_issue_branch_or_pull_request_mutation
+      - task_implementation_or_execution
+      - evidence_generation_or_gate_evaluation
+      - review_or_approval_execution
+      - delivery_merge_or_product_acceptance_authority
+      - learning_candidate_evaluation_or_promotion
+      - product_specific_source_priority_policy
+    conformance_path: null
+    exemption_path: null
+    classification: legacy_contract_backed
+    errors: []
   - id: technical-debt-governance
     path: skills/technical-debt-governance/SKILL.md
     type: skill
@@ -1797,7 +1831,7 @@ contract_coverage_inventory:
     path: skills/workflow-router/SKILL.md
     type: meta-skill
     patterns: []
-    version: 1.5.0
+    version: 1.6.0
     implements: contracts/skills/meta/workflow-router.contract.yaml
     contract_version: ~0.2
     contract_path_exists: true
