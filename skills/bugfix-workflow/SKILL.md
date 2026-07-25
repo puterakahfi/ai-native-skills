@@ -3,7 +3,7 @@ name: bugfix-workflow
 description: Guided bugfix workflow — reproduce, investigate, classify repository-convention impact, discover implementation context when material, fix, verify, submit, and review. Stack-sensitive fixes must map canonical repository systems before code; isolated fixes remain lightweight.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.2.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "systematic-debugging implementation-context-discovery master-engineer security-review test-driven-development architecture-review"
   ai-native-skills.type: workflow
