@@ -38,6 +38,9 @@ approval or authorization
 
 The overlay coordinates existing capabilities. It does not absorb their methods or replace their ownership.
 
+Use `references/evidence-status-authority-matrix.md` when producing applicability,
+capability-state, evidence, gate, review, or transition results.
+
 ## Core operating rule
 
 ```text

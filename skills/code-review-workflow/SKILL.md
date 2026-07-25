@@ -3,14 +3,14 @@ name: code-review-workflow
 description: Evidence-backed code review workflow — classify changed domains, verify architecture, route user-facing changes through design review, assess internal code and object/module design quality, inspect logic and security, then separate technical approval from provenance-backed merge authorization.
 license: MIT
 metadata:
-  ai-native-skills.version: 2.2.0
+  ai-native-skills.version: 2.3.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "architecture-review clean-architecture clean-code solid-design design-review decision-provenance master-engineer systematic-debugging security-review threat-modeling"
+  ai-native-skills.requires: "architecture-review clean-architecture clean-code solid-design design-review decision-provenance master-engineer systematic-debugging security-review threat-modeling production-code-quality-baseline"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/code-review.contract.yaml
   ai-native-skills.contract-version: "~0.3"
   ai-native-skills.skill_load_order: '[{"phase":"load-context","load":["decision-provenance"]},{"phase":"architecture-check","load":["architecture-review","clean-architecture"]},{"phase":"design-check","load":["design-review"]},{"phase":"code-design-quality","load":["clean-code","solid-design"]},{"phase":"logic-check","load":["systematic-debugging","master-engineer"]},{"phase":"security-check","load":["security-review","threat-modeling"]},{"phase":"verdict","load":["decision-provenance"]}]'
-  ai-native-skills.skills: '{"required":["architecture-review","decision-provenance","clean-code"],"optional":["clean-architecture","solid-design","design-review","systematic-debugging","master-engineer","security-review","threat-modeling"]}'
+  ai-native-skills.skills: '{"required":["architecture-review","decision-provenance","clean-code"],"optional":["production-code-quality-baseline","clean-architecture","solid-design","design-review","systematic-debugging","master-engineer","security-review","threat-modeling"]}'
 ---
 
 # Code Review Workflow
@@ -60,6 +60,10 @@ all affected technical domains pass
 18. Run `solid-design` only when responsibility, variation, substitution, client-interface, or dependency relationships are materially affected.
 19. Use `clean-architecture` as an architecture-style or policy/mechanism specialist only when that decision is material; `architecture-review` remains the acceptance gate.
 20. Do not force SOLID or Clean Architecture ceremony into changes where applicability is `NOT_APPLICABLE` or `NOT_JUSTIFIED`.
+21. For production-code submissions, consume the `production-code-quality-baseline` report when available; do not re-run or replace the primary lifecycle.
+22. Distinguish capabilities resolved, executed, evidenced, and reviewed; a capability list is not proof of execution.
+23. Missing TDD ordering, clean-code, module/failure-path, conditional-applicability, or baseline gate evidence remains `NOT_VERIFIED` and may require changes.
+24. Use `references/production-code-quality-baseline.md` and preserve all approval, merge, delivery, and product-acceptance boundaries.
 ```
 
 ## Inputs
@@ -87,6 +91,17 @@ review_context:
     exports: []
     accessibility: []
 
+  engineering_quality_baseline:
+    report: <reference | missing | not-applicable>
+    primary_lifecycle: <workflow | unknown>
+    applicability_map: {}
+    capabilities_resolved: []
+    capabilities_executed: []
+    tdd_evidence: []
+    gate_results: []
+    blocking_gaps: []
+    remaining_authorities: []
+
   approval_policy: <product-defined>
   merge_authority: <role or policy>
 ```
@@ -104,6 +119,7 @@ repository and product instructions
 engineering contracts and ADRs
 product design system, locks, and required assets
 verification evidence attached to the submission
+production-code quality baseline report and capability execution/evidence refs when applicable
 claimed scope, exception, accepted-risk, and merge decisions
 source references and required authorities for those decisions
 ```
@@ -129,6 +145,10 @@ change_impact:
   design_domain: <digital-interface | visual-communication | presentation | brand-identity | other | N/A>
   surface_profile: <profile | N/A>
   artifact_state: <rendered-interactive | rendered-static | source-only | mixed | N/A>
+  production_code_applicability: <status>
+  quality_baseline_report: <present | partial | missing | not-applicable>
+  tdd_ordering_evidence: <pass | authorized-exception | needs-work | not-verified | not-applicable>
+  conditional_quality_map: <pass | needs-work | not-verified | not-applicable>
   required_reviewers: []
   evidence_gaps: []
 
@@ -147,6 +167,12 @@ Do not infer “no design change” because only CSS, tokens, props, content dat
 Do not infer a claim is authoritative because it appears in the latest commit or PR body.
 
 **Gate:** affected domains, reviewers, material claims, and required authorities are resolved.
+
+For a production-code submission, load `references/production-code-quality-baseline.md`.
+A missing or partial baseline is an evidence classification, not automatic proof of failure or
+success. Reconstruct only what current evidence can support; never invent RED-before-GREEN
+history. Mandatory unsupported claims remain `NOT_VERIFIED`, `REQUEST CHANGES`, or `BLOCKED`
+according to materiality and safety.
 
 ## Phase 3 — Architecture check
 
@@ -199,7 +225,7 @@ A `CONDITIONAL PASS` is technically usable only when the remaining risk is verif
 
 ## Phase 5 — Internal code and object/module design quality
 
-Run `clean-code` when materially changed hand-written or generated implementation affects readability, maintainability, control flow, errors, duplication, local contracts, or test readability.
+Run `clean-code` when materially changed hand-written or generated implementation affects readability, maintainability, control flow, errors, duplication, local contracts, or test readability. Consume the submitted baseline findings as evidence inputs, then independently verify them against the actual diff and repository state.
 
 Run `solid-design` only when the change materially affects:
 
@@ -346,6 +372,18 @@ That is not a contradiction; it preserves the authority boundary.
 - Security: [affected/none]
 - User-facing design: [affected/none]
 - Design domain/profile/state: [...]
+
+## Production-Code Quality Baseline
+- Production-code applicability: [status]
+- Primary lifecycle and overlay consistency: [result]
+- Baseline report: [present | partial | missing | N/A]
+- Capabilities resolved/executed/evidenced: [result]
+- TDD ordering or authorized exception: [result]
+- Clean-code and module/failure-path result: [result]
+- Conditional applicability map: [result]
+- Mandatory gate result: [result]
+- Blocking gaps: [...]
+- Remaining authorities: [...]
 
 ## Domain Results
 - Architecture: [result]

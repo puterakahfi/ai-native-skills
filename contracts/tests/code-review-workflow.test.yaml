@@ -1,6 +1,6 @@
 skill_test:
   skill: code-review-workflow
-  version: "2.2.0"
+  version: "2.3.0"
   description: Verify code review classifies changed domains, requires appropriate evidence, and separates technical review from provenance-backed merge authorization.
 
   cases:
@@ -134,3 +134,10 @@ skill_test:
       must_contain: ["solid-design", "clean-architecture", "applicability", "architecture-review", "independent"]
       must_not_contain: ["SOLID required for every file", "Clean Architecture automatically PASS", "architecture-review not needed"]
       quality_gates_tested: [conditional_engineering_design_specialists, specialist_guidance_does_not_replace_acceptance, no_architecture_ceremony]
+
+    - id: resolved-baseline-capabilities-without-execution-evidence
+      description: A production-code baseline that lists selected capabilities without execution outputs or evidence cannot support technical approval.
+      trigger: "Review this production PR. Its quality report lists TDD, clean-code, SOLID, and architecture-review as resolved, but contains no execution records, RED/GREEN ordering evidence, outputs, or reviewer results."
+      must_contain: ["quality baseline", "capabilities resolved", "capabilities executed", "NOT_VERIFIED", "REQUEST CHANGES"]
+      must_not_contain: ["Technical review: APPROVED", "Approved to merge: YES", "resolved capability proves execution"]
+      quality_gates_tested: ["quality_baseline_evidence_required", "capability_resolution_is_not_execution", "technical_approval_requires_domain_evidence"]

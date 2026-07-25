@@ -38,6 +38,7 @@ spec-workflow
 product-development-workflow
 new-feature-workflow
 bugfix-workflow
+production-code-quality-baseline
 code-review-workflow
 deployment-workflow
 ```
@@ -72,8 +73,14 @@ Purpose: keep core/app/runtime/product/profile boundaries explicit, make profile
 Install for `engineering`, `product`, `runtime-ops`, and `full`:
 
 ```text
+implementation-context-discovery
+master-engineer
+production-code-quality-baseline
 systematic-debugging
 test-driven-development
+clean-code
+solid-design
+clean-architecture
 refactoring
 architecture-review
 security-review

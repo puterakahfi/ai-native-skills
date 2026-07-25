@@ -145,3 +145,20 @@ skill_test:
     quality_gates_tested:
     - code_review_required_before_merge_authorization
     - technical_quality_does_not_self_authorize_merge_delivery_or_product_acceptance
+
+  - id: spec-production-implementation-removes-optional-tdd-ambiguity
+    description: A spec-driven production implementation must attach the baseline and use TDD unless an attributable exception exists.
+    trigger: The specification and acceptance criteria are complete. Implement the production task, but treat TDD as optional because the spec workflow used to say "if TDD applies".
+    must_contain:
+    - spec-workflow
+    - production-code-quality-baseline
+    - RED evidence
+    - GREEN evidence
+    - authorized exception
+    must_not_contain:
+    - if TDD applies
+    - skip test-first without authority
+    - test later and call it TDD
+    quality_gates_tested:
+    - spec_production_implementation_attaches_quality_baseline
+    - tdd_red_green_refactor_required_or_authorized_exception_with_evidence
