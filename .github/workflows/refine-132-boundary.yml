@@ -30,7 +30,7 @@ jobs:
               if new in text:
                   return
               if old not in text:
-                  raise SystemExit(f"Missing anchor in {path}: {old[:100]!r}")
+                  raise SystemExit(f"Missing anchor in {path}: {old[:120]!r}")
               file.write_text(text.replace(old, new, 1), encoding="utf-8")
 
           skill = "skills/delivery-work-breakdown/SKILL.md"
@@ -48,13 +48,8 @@ jobs:
           )
           replace_once(
               skill,
-              "```yaml\nwork_item_identity_decision:\n  proposed_canonical_task_id: <id>",
-              "```yaml\nissue_plan:\n  work_item_identity_decision:\n    proposed_canonical_task_id: <id>",
-          )
-          replace_once(
-              skill,
-              "  verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED\n  canonical_owner_ref: <ref or null>\n  candidate_refs: []\n  search_evidence: []\n  limitations: []\n  next_exact_action: <action>\n\nrelease_unit_classification:",
-              "    verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED\n    canonical_owner_ref: <ref or null>\n    candidate_refs: []\n    search_evidence: []\n    limitations: []\n    next_exact_action: <action>\n\nrelease_unit_classification:",
+              "## Output contract\n\n```yaml\nwork_item_identity_decision:\n  proposed_canonical_task_id: <id>\n  verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED\n  canonical_owner_ref: <ref or null>\n  candidate_refs: []\n  search_evidence: []\n  limitations: []\n  next_exact_action: <action>\n\nrelease_unit_classification:",
+              "## Output contract\n\n```yaml\nissue_plan:\n  work_item_identity_decision:\n    proposed_canonical_task_id: <id>\n    verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED\n    canonical_owner_ref: <ref or null>\n    candidate_refs: []\n    search_evidence: []\n    limitations: []\n    next_exact_action: <action>\n\nrelease_unit_classification:",
           )
           replace_once(
               tests,
