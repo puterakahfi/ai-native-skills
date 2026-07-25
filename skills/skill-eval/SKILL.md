@@ -154,7 +154,7 @@ For each regression case:
 ```yaml
 trigger_assertion_grounding:
   case_id: <case id>
-  verdict: GROUNDED | TEST_CONTRACT_DEFECT
+  grounding_verdict: GROUNDED | TEST_CONTRACT_DEFECT
   factual_assertions:
     - assertion: <required fact or verdict>
       evidence: <exact trigger/context fact or missing>
@@ -176,7 +176,7 @@ assertions_do_not_reward_hallucinated_scope_status_or_authority
 
 A grounding review does not require every expected phrase to appear verbatim in the trigger. Valid reasoning may combine supplied facts, but it cannot invent scope, approval, runtime, authority, or verification state.
 
-When a case is `TEST_CONTRACT_DEFECT`, do not score the model against the defective expectation and do not patch the target skill. Correct the test contract first, then rerun validation and behavioral evaluation.
+When `grounding_verdict` is `TEST_CONTRACT_DEFECT`, do not score the model against the defective expectation and do not patch the target skill. Correct the test contract first, then rerun validation and behavioral evaluation.
 
 ## Output Layout
 
