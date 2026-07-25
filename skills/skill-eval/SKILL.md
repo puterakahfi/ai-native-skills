@@ -152,17 +152,20 @@ For each regression case:
 ```
 
 ```yaml
-trigger_assertion_grounding:
-  case_id: <case id>
-  grounding_verdict: GROUNDED | TEST_CONTRACT_DEFECT
-  factual_assertions:
-    - assertion: <required fact or verdict>
-      evidence: <exact trigger/context fact or missing>
-      status: SUPPORTED | UNSUPPORTED
-  expected_verdict_support: <sufficient | insufficient>
-  uncertainty_handling: <preserved | collapsed | not applicable>
-  next_exact_action: <one action>
+gate_compliance_report:
+  trigger_assertion_grounding:
+    case_id: <case id>
+    grounding_verdict: GROUNDED | TEST_CONTRACT_DEFECT
+    factual_assertions:
+      - assertion: <required fact or verdict>
+        evidence: <exact trigger/context fact or missing>
+        status: SUPPORTED | UNSUPPORTED
+    expected_verdict_support: <sufficient | insufficient>
+    uncertainty_handling: <preserved | collapsed | not applicable>
+    next_exact_action: <one action>
 ```
+
+`trigger_assertion_grounding` is a local section of the existing `gate_compliance_report` output. It is not a new top-level output or Core verdict.
 
 Local quality gates:
 
