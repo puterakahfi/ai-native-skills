@@ -116,7 +116,7 @@ Never use `done` without naming the strongest evidence-supported state.
 8. Define exactly one next action and its expected evidence.
 9. Record checkpoint version, observed time, source revisions, and supersession.
 
-Load [checkpoint schema](references/checkpoint-schema.md) for a full artifact.
+Load [checkpoint schema](references/checkpoint-schema.md) for a full artifact. See the [Native AI Engineering dogfood checkpoint](references/native-ai-engineering-dogfood.md) for a source-backed execution example that deliberately keeps implemented, verified, merged, and accepted state separate.
 
 A checkpoint is invalid when it lacks a governing task, sources, status separation, pending gates, freshness metadata, or one exact next action.
 
