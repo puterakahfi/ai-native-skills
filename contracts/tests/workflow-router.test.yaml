@@ -136,3 +136,22 @@ skill_test:
     must_contain: [new-feature-workflow, chatgpt-app-development, delivery-work-breakdown, epic]
     must_not_contain: [every child PR targets main, default branch decides target]
     quality_gates_tested: [existing_product_feature_route_preserved, platform_specialist_overlay, release_unit_classified_before_repository_execution]
+
+  - id: natural-member-management-routes-feature-lifecycle-plus-delivery-topology
+    description: A broad existing-product capability naturally loads delivery decomposition before any issue, branch, or PR execution.
+    trigger: VisualMate already exists. Add Member Management covering member lifecycle, SUPERADMIN and MEMBER roles, product entitlement, invitation and administration, server-enforced authorization, responsive UI, safe mutations, replaceable authority adapters, audit evidence, and final product acceptance. Start implementing it.
+    must_contain:
+    - new-feature-workflow
+    - delivery-work-breakdown
+    - 'release_unit: epic'
+    - parent epic
+    - before repository execution
+    must_not_contain:
+    - one ordinary feature task
+    - start implementation immediately
+    - create child branches before classification
+    - default branch decides target
+    quality_gates_tested:
+    - existing_product_feature_route_preserved
+    - release_unit_classified_before_repository_execution
+    - no_execution_before_routing_confirmed

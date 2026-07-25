@@ -25,6 +25,36 @@ skill_test:
     - epic_child_prs_must_target_the_epic_or_integration_branch
     - final_epic_pr_requires_integrated_end_to_end_acceptance
 
+  - id: natural-member-management-request-requires-epic-control
+    description: A broad Member Management request is classified from dependent delivery behavior even when the user never says epic.
+    trigger: VisualMate already exists. Add Member Management covering member lifecycle, SUPERADMIN and MEMBER roles, product entitlement, invitation and administration, server-enforced authorization, responsive UI, safe mutations, replaceable authority adapters, audit evidence, and final product acceptance. Start implementing it.
+    must_contain:
+    - 'release_unit: epic'
+    - dependent slices
+    - not independently releasable
+    - parent epic
+    - parent acceptance criteria
+    - dependency graph
+    - base_branch
+    - pr_target
+    - integrated acceptance
+    - BLOCKED
+    must_not_contain:
+    - one giant task
+    - one standalone feature
+    - create child branches immediately
+    - every child PR targets main
+    - feature noun determines release unit
+    quality_gates_tested:
+    - release_unit_must_be_classified_before_branch_creation
+    - epic_required_for_dependent_non_independently_releasable_slices
+    - every_child_work_item_must_trace_to_parent_acceptance_criteria
+    - no_orphan_feature_task_spike_or_bug_items
+    - dependency_graph_must_be_explicit_and_cycle_checked
+    - base_branch_and_pr_target_must_be_explicit_per_work_item
+    - epic_child_prs_must_target_the_epic_or_integration_branch
+    - final_epic_pr_requires_integrated_end_to_end_acceptance
+
   - id: autonomous-feature-can-target-release-branch
     description: A small backward-compatible feature remains a feature when it is safe and useful alone.
     trigger: Add one backward-compatible read-only endpoint with its own acceptance criteria, no sibling dependencies, no incomplete activation path, and independent rollback. Classify the release unit and target.
