@@ -34,12 +34,12 @@ jobs:
           test -n "$core_ref"
           echo "ref=$core_ref" >> "$GITHUB_OUTPUT"
 
-      - name: Checkout pinned canonical Core outside repository
+      - name: Checkout pinned canonical Core
         uses: actions/checkout@v4
         with:
           repository: puterakahfi/ai-native-core
           ref: ${{ steps.core-ref.outputs.ref }}
-          path: ${{ runner.temp }}/ai-native-core
+          path: .deps/ai-native-core
 
       - uses: actions/setup-python@v5
         with:
@@ -54,7 +54,7 @@ jobs:
         run: >-
           python scripts/inventory-contract-coverage.py
           --root .
-          --core-root "${RUNNER_TEMP}/ai-native-core"
+          --core-root .deps/ai-native-core
 
       - name: Validate migrated state
         shell: bash
@@ -63,10 +63,11 @@ jobs:
           python scripts/validate-eval-contracts.py
           python scripts/verify-capability-inventory.py
           python scripts/verify-capability-discovery.py
-          python scripts/validate-contract-coverage.py --root . --core-root "${RUNNER_TEMP}/ai-native-core"
+          python scripts/validate-contract-coverage.py --root . --core-root .deps/ai-native-core
 
-      - name: Remove branch-local migration source
+      - name: Remove branch-local dependencies and migration source
         run: |
+          rm -rf .deps
           rm scripts/apply-production-code-quality-baseline-review-and-pack-migration.py
           rm .github/workflows/issue-137-review-pack-migration.yml
 
