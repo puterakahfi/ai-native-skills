@@ -1,0 +1,8 @@
+schema_version: 1
+
+default_classification: APPLIED
+
+expected_classifications:
+  architecture-review:
+    textual-pass-cannot-hide-artifact-drift: GHOST
+    missing-artifact-evidence-remains-incomplete: INCOMPLETE
