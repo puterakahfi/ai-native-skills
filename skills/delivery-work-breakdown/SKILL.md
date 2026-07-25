@@ -96,9 +96,10 @@ Load for:
 - unclear epic/feature/task decomposition;
 - branch-base or PR-target decisions;
 - trunk-based versus epic-branch decisions;
-- release planning where partial integration risk matters.
+- release planning where partial integration risk matters;
+- an issue plan may create a tracker item or the canonical work-item owner is uncertain.
 
-Do not load merely for a single already-classified atomic task whose approved parent, base branch, and PR target are all explicit.
+Do not load merely for a single already-classified atomic task only when its canonical owner, approved parent, base branch, and PR target are already explicit and verified.
 
 ## Required context
 
@@ -311,14 +312,15 @@ integrated acceptance evidence + no blocking gap
 ## Output contract
 
 ```yaml
-work_item_identity_decision:
-  proposed_canonical_task_id: <id>
-  verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED
-  canonical_owner_ref: <ref or null>
-  candidate_refs: []
-  search_evidence: []
-  limitations: []
-  next_exact_action: <action>
+issue_plan:
+  work_item_identity_decision:
+    proposed_canonical_task_id: <id>
+    verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED
+    canonical_owner_ref: <ref or null>
+    candidate_refs: []
+    search_evidence: []
+    limitations: []
+    next_exact_action: <action>
 
 release_unit_classification:
   type: epic

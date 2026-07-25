@@ -179,8 +179,8 @@ skill_test:
     - DUPLICATE because both mention GitHub
     - title similarity is sufficient
     quality_gates_tested:
+    - work_item_identity_is_explicit_before_issue_plan_execution
     - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only
-    - scope_split_is_explicit_when_related_work_is_not_fully_duplicate
 
   - id: superseded-closed-item-does-not-block-current-work
     description: Closed historical work is inspected for authority and supersession rather than blindly reused.
