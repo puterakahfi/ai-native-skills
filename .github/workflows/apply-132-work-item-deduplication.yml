@@ -1,0 +1,119 @@
+name: Apply work-item deduplication improvement
+
+on:
+  push:
+    branches:
+      - feat/132-work-item-deduplication
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          ref: feat/132-work-item-deduplication
+          fetch-depth: 0
+
+      - name: Apply minimal skill and eval patch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              file = Path(path)
+              text = file.read_text(encoding="utf-8")
+              if new in text:
+                  return
+              if old not in text:
+                  raise SystemExit(f"Expected anchor not found in {path}: {old[:80]!r}")
+              file.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          skill = "skills/delivery-work-breakdown/SKILL.md"
+          tests = "contracts/tests/delivery-work-breakdown.test.yaml"
+
+          replace_once(
+              skill,
+              "  ai-native-skills.version: 1.0.0",
+              "  ai-native-skills.version: 1.0.1",
+          )
+
+          replace_once(
+              skill,
+              "10. Release-ready quality does not self-authorize merge or release.\n```",
+              "10. Release-ready quality does not self-authorize merge or release.\n11. Prove the canonical work-item identity before executing an issue plan; one empty search does not prove uniqueness.\n```",
+          )
+
+          replace_once(
+              skill,
+              "  decision_provenance_refs: []\n```",
+              "  decision_provenance_refs: []\n  work_item_identity_context:\n    proposed_canonical_task_id: <id or provisional id>\n    tracker_scope: <repository, project, or task system>\n    known_related_refs: []\n    tracker_search_access: <available | partial | unavailable>\n```",
+          )
+
+          phase_zero = '''## Phase 0 — Resolve canonical work-item identity\n\nBefore executing an `issue_plan`, determine whether the proposed work is new, already owned, overlapping, superseded, duplicated, or not verifiable.\n\nUse `references/work-item-identity-and-deduplication.md`.\n\nSearch with multiple independent angles:\n\n```text\nexact canonical task ID or proposed identifier\nprimary entities and capability names\nobserved symptom or requested outcome\nsynonyms, legacy terms, and alternate wording\nparent workstream and known related references\nrecent items when search quality is uncertain\nopen and closed tracker state when relevant\n```\n\nOpen plausible candidates and compare objective, scope, acceptance criteria, source case, parent/dependency position, authority, and supersession. Title similarity alone cannot prove duplication, and different wording cannot prove independence.\n\nAllowed verdicts:\n\n```text\nNEW\nEXISTING_OWNER\nOVERLAP_REQUIRES_SCOPE_SPLIT\nSUPERSEDED_OWNER\nDUPLICATE\nNOT_VERIFIED\n```\n\n```yaml\nwork_item_identity_decision:\n  proposed_canonical_task_id: <id>\n  verdict: <allowed verdict>\n  canonical_owner_ref: <ref or null>\n  candidate_refs: []\n  search_queries: []\n  tracker_states_inspected: []\n  comparison_summary: []\n  search_limitations: []\n  scope_split: []\n  evidence_transfer_required: []\n  next_exact_action: <one concrete action>\n```\n\nBehavior:\n\n- `NEW`: proceed only with attributable search coverage.\n- `EXISTING_OWNER`: update or link the canonical owner; do not create parallel ownership.\n- `OVERLAP_REQUIRES_SCOPE_SPLIT`: define non-overlapping parent/child or sibling acceptance boundaries first.\n- `SUPERSEDED_OWNER`: preserve history and identify current authority.\n- `DUPLICATE`: do not create; after accidental creation, transfer unique evidence, update dependents, and close only with tracker authority.\n- `NOT_VERIFIED`: block tracker writes or use only an explicitly allowed provisional draft.\n\nAn empty result from one query is never sufficient evidence for `NEW`.\n\n'''
+          replace_once(
+              skill,
+              "## Phase 1 — Classify the release unit",
+              phase_zero + "## Phase 1 — Classify the release unit",
+          )
+
+          replace_once(
+              skill,
+              "```yaml\nrelease_unit_classification:",
+              "```yaml\nwork_item_identity_decision:\n  proposed_canonical_task_id: <id>\n  verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED\n  canonical_owner_ref: <ref or null>\n  candidate_refs: []\n  search_evidence: []\n  limitations: []\n  next_exact_action: <action>\n\nrelease_unit_classification:",
+          )
+
+          replace_once(
+              skill,
+              "- release unit is unresolved;\n",
+              "- work-item identity is unresolved or duplicate-search coverage is insufficient;\n- an existing canonical owner or duplicate is known but the issue plan still proposes parallel ownership;\n- release unit is unresolved;\n",
+          )
+
+          replace_once(
+              skill,
+              "product-development-workflow | new-feature-workflow\n→ product-manager defines verified scope and acceptance criteria\n→ delivery-work-breakdown classifies release unit and topology",
+              "product-development-workflow | new-feature-workflow\n→ product-manager defines verified scope and acceptance criteria\n→ delivery-work-breakdown resolves canonical work-item identity\n→ delivery-work-breakdown classifies release unit and topology",
+          )
+
+          replace_once(
+              skill,
+              "This skill may prove that a topology is explicit and internally consistent. It cannot prove:",
+              "This skill may prove that the planned work-item identity decision and topology are explicit and internally consistent. It cannot prove tracker mutations were executed or that an unavailable tracker search was complete. It cannot prove:",
+          )
+
+          replace_once(
+              tests,
+              "  version: 1.0.0",
+              "  version: 1.0.1",
+          )
+          replace_once(
+              tests,
+              "  description: Verify delivery decomposition classifies release units and produces traceable hierarchy and repository topology before execution.",
+              "  description: Verify delivery decomposition resolves canonical work-item identity, classifies release units, and produces traceable hierarchy and repository topology before execution.",
+          )
+
+          test_file = Path(tests)
+          text = test_file.read_text(encoding="utf-8")
+          marker = "  - id: narrow-query-miss-recovers-existing-owner"
+          if marker not in text:
+              text += '''\n\n  - id: narrow-query-miss-recovers-existing-owner\n    description: Different incident vocabulary must not create a parallel canonical owner.\n    trigger: Create an issue named Fix API returning 503 during uploads. The first exact-title search is empty. An older open issue named Object storage saturation causes upload service unavailable has the same upload failure, objective, acceptance criteria, and parent incident. Decide whether to create the issue.\n    must_contain:\n    - EXISTING_OWNER\n    - canonical owner\n    - symptoms\n    - synonyms\n    - acceptance criteria\n    - empty result from one query\n    - do not create parallel ownership\n    must_not_contain:\n    - NEW because the title is different\n    - create the issue immediately\n    - one empty search proves uniqueness\n    quality_gates_tested:\n    - work_item_identity_is_explicit_before_issue_plan_execution\n    - multi_query_duplicate_search_covers_identity_entities_symptoms_synonyms_and_parent_refs\n    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only\n    - existing_canonical_owner_is_reused_or_extended_instead_of_duplicated\n\n  - id: overlapping-migration-scope-requires-split\n    description: Related migration work is compared by acceptance boundary before deciding ownership.\n    trigger: Plan an issue Replace deprecated skill repository URLs. An existing issue Migrate runtime bindings to current Core and Skills contracts covers several legacy sources but may not cover the product self-repository URL. Determine the work-item identity and scope.\n    must_contain:\n    - EXISTING_OWNER\n    - OVERLAP_REQUIRES_SCOPE_SPLIT\n    - scope boundary\n    - acceptance criteria\n    - candidate refs\n    - parent\n    must_not_contain:\n    - same keywords means duplicate\n    - create an unscoped parallel issue\n    quality_gates_tested:\n    - work_item_identity_is_explicit_before_issue_plan_execution\n    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only\n    - scope_split_is_explicit_when_related_work_is_not_fully_duplicate\n\n  - id: similar-title-different-port-remains-separate\n    description: Similar GitHub adapter titles do not collapse distinct provider-neutral capabilities.\n    trigger: A task proposes a read-only pull-request topology adapter. An existing task owns GitHub issue and Project task-management reads. Compare their ports, outputs, and acceptance criteria before deciding whether a new child task is valid.\n    must_contain:\n    - NEW\n    - OVERLAP_REQUIRES_SCOPE_SPLIT\n    - repository or pull-request topology\n    - task-management\n    - different acceptance criteria\n    must_not_contain:\n    - DUPLICATE because both mention GitHub\n    - title similarity is sufficient\n    quality_gates_tested:\n    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only\n    - scope_split_is_explicit_when_related_work_is_not_fully_duplicate\n\n  - id: superseded-closed-item-does-not-block-current-work\n    description: Closed historical work is inspected for authority and supersession rather than blindly reused.\n    trigger: A closed issue has the same title as the proposed task, but it targets an obsolete architecture and an accepted newer contract explicitly supersedes it. Decide the canonical identity and preserve history.\n    must_contain:\n    - SUPERSEDED_OWNER\n    - current authority\n    - supersession\n    - provenance\n    - closed\n    must_not_contain:\n    - closed issues never matter\n    - same title always blocks new work\n    quality_gates_tested:\n    - open_and_closed_tracker_state_is_considered_when_relevant\n    - candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only\n\n  - id: accidental-duplicate-transfers-evidence-before-closure\n    description: A discovered duplicate is repaired without losing unique diagnostic evidence.\n    trigger: A new issue was created after a narrow search. A broader search finds an older canonical owner with the same symptom and acceptance criteria. The new issue contains one additional diagnostic run. Produce the recovery plan.\n    must_contain:\n    - DUPLICATE\n    - transfer unique evidence\n    - update dependent references\n    - preserve provenance\n    - close\n    - tracker authority\n    must_not_contain:\n    - delete the duplicate history\n    - close before transferring evidence\n    - both issues remain canonical\n    quality_gates_tested:\n    - accidental_duplicate_recovery_transfers_unique_evidence_and_preserves_provenance\n    - existing_canonical_owner_is_reused_or_extended_instead_of_duplicated\n\n  - id: incomplete-tracker-search-remains-not-verified\n    description: Search or index limitations block a uniqueness claim.\n    trigger: The tracker search endpoint returns no matches, but repository search is known to miss existing content and recent issue listing is unavailable. The user asks to create the issue now.\n    must_contain:\n    - NOT_VERIFIED\n    - BLOCKED\n    - search limitations\n    - next_exact_action\n    - empty result from one query\n    must_not_contain:\n    - NEW\n    - no result proves uniqueness\n    - create the canonical issue now\n    quality_gates_tested:\n    - empty_single_query_result_does_not_prove_uniqueness\n    - duplicate_search_limitations_are_disclosed_as_not_verified\n'''
+              test_file.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills/delivery-work-breakdown/SKILL.md contracts/tests/delivery-work-breakdown.test.yaml
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "feat(delivery): require work-item identity deduplication (#132)"
+          git push origin HEAD:feat/132-work-item-deduplication
