@@ -1,0 +1,38 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: production-code-quality-baseline
+    path: skills/production-code-quality-baseline/SKILL.md
+    type: workflow
+  classification: core_gap
+  owner: ai-native-skills engineering workflow maintainers
+  reason: >-
+    The executable quality-lifecycle overlay is required by the verified cross-workflow
+    source case, but its canonical workflow contract remains under review in
+    puterakahfi/ai-native-core#56 and draft PR #59. The adapter may be developed and
+    evaluated provisionally, but it cannot yet declare accepted contract conformance.
+  scope:
+    - static_contract_ownership
+    - core_gap_tracking
+  review_date: '2026-08-15'
+  evidence_refs:
+    - kind: github_issue
+      ref: puterakahfi/ai-native-core#56
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#137
+    - kind: executable_source
+      ref: skills/production-code-quality-baseline/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#56
+    triggers:
+      - core RFC #56 is accepted, rejected, or superseded
+      - core PR #59 changes contract identity, boundary, status semantics, or version
+      - adapter behavior diverges from the reviewed core candidate
+      - review date is reached before the exemption is retired
+  prohibited_claims:
+    - core_contract_conformance
+    - behavioral_verification
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active
