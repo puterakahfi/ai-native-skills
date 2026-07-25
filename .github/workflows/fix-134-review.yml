@@ -1,0 +1,46 @@
+name: Fix PR 134 review finding
+
+on:
+  push:
+    branches:
+      - feat/132-work-item-deduplication
+    paths:
+      - .github/workflows/fix-134-review.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/132-work-item-deduplication
+          fetch-depth: 0
+
+      - name: Ground migration overlap regression
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('contracts/tests/delivery-work-breakdown.test.yaml')
+          text = path.read_text(encoding='utf-8')
+          old = '    trigger: Plan an issue Replace deprecated skill repository URLs. An existing issue Migrate runtime bindings to current Core and Skills contracts covers several legacy sources but may not cover the product self-repository URL. Determine the work-item identity and scope.\n'
+          new = '    trigger: Plan an issue Replace deprecated skill repository URLs. An existing issue Migrate runtime bindings to current Core and Skills contracts explicitly covers legacy Core and Skills runtime-binding URLs but excludes the product self-repository URL. Determine the work-item identity and scope.\n'
+          if old not in text:
+              raise SystemExit('Expected migration regression trigger was not found')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Commit correction
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add contracts/tests/delivery-work-breakdown.test.yaml
+          git commit -m "fix(eval): ground migration overlap case (#132)"
+          git push origin HEAD:feat/132-work-item-deduplication
