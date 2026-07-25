@@ -1,0 +1,21 @@
+implementation_context_profile:
+  framework_runtime: Next.js
+  component_system: source-copied shadcn/ui
+  component_registry: components.json
+  styling_and_tokens: Tailwind semantic CSS variables
+  iconography: lucide-react
+  canonical_components:
+    - components/ui/button.tsx
+    - components/ui/select.tsx
+  canonical_variants:
+    - Button.default
+    - Button.outline
+  expected_paths_and_imports:
+    - '@/components/ui/button'
+    - '@/components/ui/select'
+    - lucide-react
+  prohibited_parallel_systems:
+    - second component library
+    - second icon family
+    - route-local theme grammar
+    - local dialog or select behavior when canonical coverage exists

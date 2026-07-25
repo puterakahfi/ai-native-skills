@@ -1,0 +1,5 @@
+ARCHITECTURE REVIEW VERDICT
+Status: NOT_VERIFIED
+
+Implementation context cannot be accepted because artifact evidence is unavailable.
+Missing evidence remains NOT_VERIFIED and cannot be upgraded to PASS from a narrative alone.

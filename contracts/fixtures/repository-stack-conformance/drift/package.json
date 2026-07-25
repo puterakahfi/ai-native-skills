@@ -1,0 +1,11 @@
+{
+  "name": "repository-stack-conformance-drift-fixture",
+  "private": true,
+  "dependencies": {
+    "next": "fixture",
+    "react": "fixture",
+    "lucide-react": "fixture",
+    "another-ui": "fixture",
+    "react-icons": "fixture"
+  }
+}

@@ -1,0 +1,14 @@
+.feature-theme {
+  --feature-primary: violet;
+  --feature-radius: 18px;
+}
+
+.local-dialog {
+  background: white;
+  border-radius: var(--feature-radius);
+}
+
+.local-select {
+  padding: 10px 15px;
+  border: 1px solid var(--feature-primary);
+}
