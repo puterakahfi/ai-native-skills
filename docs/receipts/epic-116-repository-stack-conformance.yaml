@@ -1,0 +1,176 @@
+epic: 116
+canonical_task_id: ai-native-skills.engineering.repository-stack-conformance
+integration_branch: epic/116-repository-stack-conformance
+integration_head_before_receipt: 7d22b54800bd3fbd803cdd598361175e276cd66f
+release_branch: main
+status: PASS
+
+child_completion:
+  - issue: 117
+    status: DUPLICATE_COMPLETED
+    evidence:
+      pull_request: 105
+      merged_commit: 790648255af80b65cae7a80e34e9a001fdd055b3
+      result: design-system preserves accepted repository systems before greenfield token creation
+  - issue: 118
+    status: COMPLETED
+    evidence:
+      pull_request: 121
+      merged_commit: 8a921fc1a56fd2fecab7fd3613e26a39c0af5ca8
+      result: stack-sensitive bugfixes require implementation-context mapping before code; isolated fixes support reasoned NOT_APPLICABLE
+  - issue: 119
+    status: COMPLETED
+    evidence:
+      pull_request: 122
+      merged_commit: 7d22b54800bd3fbd803cdd598361175e276cd66f
+      result: bounded artifact fixtures distinguish APPLIED, GHOST, and INCOMPLETE outcomes
+  - issue: 120
+    status: IN_REVIEW
+    evidence:
+      result: this receipt and combined epic validation
+
+core_dependency:
+  issue: puterakahfi/ai-native-core#52
+  pull_request: puterakahfi/ai-native-core#53
+  merged_commit: 27b542c142fcbd9a7a5ad709a97489dbf190d0b0
+  pinned_by: scripts/run-eval.sh
+  status: COMPLETED
+
+validation_evidence:
+  core_contract_integrity:
+    workflow_run: 30140654951
+    conclusion: success
+  bugfix_contract_coverage:
+    workflow_run: 30140818459
+    conclusion: success
+  bugfix_skill_and_gate_contracts:
+    workflow_run: 30140818453
+    conclusion: success
+  bugfix_skill_pack_contracts:
+    workflow_run: 30140818473
+    conclusion: success
+  artifact_contract_coverage:
+    workflow_run: 30141314213
+    conclusion: success
+  artifact_skill_and_gate_contracts:
+    workflow_run: 30141314232
+    conclusion: success
+  executable_repository_stack_conformance:
+    workflow_run: 30141314229
+    conclusion: success
+    verified_outcomes:
+      compliant_fixture: APPLIED
+      textually_compliant_drift_fixture: GHOST
+      missing_artifact_fixture: INCOMPLETE
+
+integrated_scenarios:
+  - id: existing-repository-redesign
+    expected: reuse canonical components, variants, registry, tokens, typography roles, and icons
+    evidence:
+      - skills/implementation-context-discovery/SKILL.md
+      - skills/redesign-workflow/SKILL.md
+      - contracts/tests/redesign-workflow.test.yaml
+      - contracts/fixtures/repository-stack-conformance/compliant
+    status: PASS
+  - id: bounded-design-refinement
+    expected: preserve convention locks and avoid re-theme or parallel component systems
+    evidence:
+      - skills/design-refinement/SKILL.md
+      - skills/implementation-context-discovery/references/verification-and-workflow-handoff.md
+    status: PASS
+  - id: repository-backed-new-feature
+    expected: implementation-context mapping exists before code production
+    evidence:
+      - skills/new-feature-workflow/SKILL.md
+      - skills/implementation-context-discovery/SKILL.md
+    status: PASS
+  - id: stack-sensitive-bugfix
+    expected: MATERIAL context runs implementation-context-discovery before Phase 3
+    evidence:
+      - skills/bugfix-workflow/SKILL.md
+      - contracts/tests/bugfix-workflow.test.yaml
+    status: PASS
+  - id: isolated-backend-bugfix
+    expected: reasoned NOT_APPLICABLE avoids unnecessary UI stack discovery
+    evidence:
+      - contracts/tests/bugfix-workflow.test.yaml
+    status: PASS
+  - id: existing-and-greenfield-design-system
+    expected: existing repository conventions take precedence; net-new system creation remains authorized and explicit
+    evidence:
+      - skills/design-system/SKILL.md
+      - contracts/tests/design-system.test.yaml
+      - puterakahfi/ai-native-skills#105
+    status: PASS
+  - id: narrative-cannot-hide-artifact-drift
+    expected: static artifact violations override a correct-sounding PASS narrative
+    evidence:
+      - contracts/tests/architecture-review.test.yaml
+      - contracts/fixtures/repository-stack-conformance/drift
+      - workflow_run: 30141314229
+    status: PASS
+  - id: missing-artifact-evidence
+    expected: unavailable artifact evidence remains INCOMPLETE or NOT_VERIFIED
+    evidence:
+      - contracts/tests/architecture-review.test.yaml
+      - workflow_run: 30141314229
+    status: PASS
+
+acceptance_matrix:
+  - criterion: preserve verified spacing, typography, semantic tokens, component, styling, and icon systems
+    evidence: ["#105", "#117", "design-system existing repository regression"]
+    status: PASS
+  - criterion: greenfield design-system creation remains supported without overriding existing repositories
+    evidence: ["design-system net-new token contract case"]
+    status: PASS
+  - criterion: stack-sensitive bugfixes discover repository context before code
+    evidence: ["#118", "PR #121", "bugfix-workflow behavioral cases"]
+    status: PASS
+  - criterion: canonical runner supports bounded artifact-aware assertions with backward compatibility
+    evidence: ["ai-native-core#52", "core PR #53", "workflow run 30140654951"]
+    status: PASS
+  - criterion: artifact evidence detects canonical bypass and parallel systems
+    evidence: ["#119", "PR #122", "workflow run 30141314229"]
+    status: PASS
+  - criterion: realistic repository fixture exercises discover-map-verify behavior
+    evidence: ["contracts/fixtures/repository-stack-conformance"]
+    status: PASS
+  - criterion: compliant artifact passes and drift artifacts fail explicitly
+    evidence: ["APPLIED/GHOST/INCOMPLETE workflow assertions"]
+    status: PASS
+  - criterion: existing contracts, metadata, references, and regression tests remain valid
+    evidence: ["Contract Coverage", "Skill and Gate Contracts", "Skill Pack Contracts"]
+    status: PASS
+  - criterion: core dependency merged and pinned
+    evidence: ["27b542c142fcbd9a7a5ad709a97489dbf190d0b0", "scripts/run-eval.sh"]
+    status: PASS
+  - criterion: skills children integrated into epic branch
+    evidence: ["8a921fc1a56fd2fecab7fd3613e26a39c0af5ca8", "7d22b54800bd3fbd803cdd598361175e276cd66f"]
+    status: PASS
+
+scope_review:
+  in_scope_paths:
+    - skills/design-system/**
+    - skills/bugfix-workflow/**
+    - skills/architecture-review/references/artifact-conformance-evidence.md
+    - contracts/tests/design-system.test.yaml
+    - contracts/tests/bugfix-workflow.test.yaml
+    - contracts/tests/architecture-review.test.yaml
+    - contracts/fixtures/repository-stack-conformance/**
+    - scripts/run-eval.sh
+    - scripts/run-stack-conformance-eval.sh
+    - .github/workflows/repository-stack-conformance.yml
+    - docs/repository-stack-conformance-eval.md
+  out_of_scope_changes_found: []
+  native_ai_os_changes: none
+  product_repository_changes: none
+  universal_stack_prescription: none
+
+known_gaps:
+  - artifact assertions prove bounded static files, paths, imports, and text patterns; they do not prove runtime, rendered, accessibility, performance, or security behavior
+  - repository-specific acceptance still requires each product's actual implementation-context profile and governing evidence
+  - no independent human review was available during automated execution; CI gates, explicit user merge authorization, effective-diff review, and repository merge policy govern this delivery
+
+final_epic_verdict: PASS
+release_eligibility: ELIGIBLE_AFTER_ISSUE_120_PR_PASSES
+merge_authorization: explicit_user_instruction_to_execute_epic_through_main
