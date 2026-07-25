@@ -61,11 +61,20 @@ jobs:
           python scripts/validate-eval-contracts.py \
             --write-smoke-outputs .tmp/eval-smoke-outputs
 
+      - name: Resolve pinned ai-native-core revision
+        id: core-ref
+        shell: bash
+        run: |
+          set -euo pipefail
+          core_ref="$(sed -n 's/^CORE_REF="\(.*\)"/\1/p' scripts/run-eval.sh)"
+          test -n "$core_ref"
+          echo "ref=$core_ref" >> "$GITHUB_OUTPUT"
+
       - name: Checkout pinned ai-native-core runner
         uses: actions/checkout@v6
         with:
           repository: puterakahfi/ai-native-core
-          ref: f5add4bec5f27ae4d98d96de9b4200b84aabd4dc
+          ref: ${{ steps.core-ref.outputs.ref }}
           path: .deps/ai-native-core
 
       - name: Stage production skill adapters
