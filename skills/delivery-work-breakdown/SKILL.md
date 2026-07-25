@@ -3,7 +3,7 @@ name: delivery-work-breakdown
 description: Classify a delivery release unit, decompose verified scope into product/epic/feature/task/spike/bug hierarchy, trace child work to parent acceptance criteria, and define branch bases, PR targets, integration topology, and final epic acceptance before repository work begins.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "product-manager decision-provenance git-workflow"
   ai-native-skills.type: skill
@@ -82,6 +82,7 @@ Exact declarations make ownership reviewable. They do not replace product approv
 8. A flag name alone is not evidence: default state and all runtime paths must be verified.
 9. Child CI success is not epic acceptance.
 10. Release-ready quality does not self-authorize merge or release.
+11. Prove the canonical work-item identity before executing an issue plan; one empty search does not prove uniqueness.
 ```
 
 ## When to load
@@ -117,9 +118,71 @@ delivery_context:
     independently_releasable_evidence: []
     feature_flag_policy_ref: <record | none | unknown>
   decision_provenance_refs: []
+  work_item_identity_context:
+    proposed_canonical_task_id: <id or provisional id>
+    tracker_scope: <repository, project, or task system>
+    known_related_refs: []
+    tracker_search_access: <available | partial | unavailable>
 ```
 
 Unknown repository or release policy is a topology gap, not permission to assume `main`.
+
+## Phase 0 — Resolve canonical work-item identity
+
+Before executing an `issue_plan`, determine whether the proposed work is new, already owned, overlapping, superseded, duplicated, or not verifiable.
+
+Use `references/work-item-identity-and-deduplication.md`.
+
+Search with multiple independent angles:
+
+```text
+exact canonical task ID or proposed identifier
+primary entities and capability names
+observed symptom or requested outcome
+synonyms, legacy terms, and alternate wording
+parent workstream and known related references
+recent items when search quality is uncertain
+open and closed tracker state when relevant
+```
+
+Open plausible candidates and compare objective, scope, acceptance criteria, source case, parent/dependency position, authority, and supersession. Title similarity alone cannot prove duplication, and different wording cannot prove independence.
+
+Allowed verdicts:
+
+```text
+NEW
+EXISTING_OWNER
+OVERLAP_REQUIRES_SCOPE_SPLIT
+SUPERSEDED_OWNER
+DUPLICATE
+NOT_VERIFIED
+```
+
+```yaml
+work_item_identity_decision:
+  proposed_canonical_task_id: <id>
+  verdict: <allowed verdict>
+  canonical_owner_ref: <ref or null>
+  candidate_refs: []
+  search_queries: []
+  tracker_states_inspected: []
+  comparison_summary: []
+  search_limitations: []
+  scope_split: []
+  evidence_transfer_required: []
+  next_exact_action: <one concrete action>
+```
+
+Behavior:
+
+- `NEW`: proceed only with attributable search coverage.
+- `EXISTING_OWNER`: update or link the canonical owner; do not create parallel ownership.
+- `OVERLAP_REQUIRES_SCOPE_SPLIT`: define non-overlapping parent/child or sibling acceptance boundaries first.
+- `SUPERSEDED_OWNER`: preserve history and identify current authority.
+- `DUPLICATE`: do not create; after accidental creation, transfer unique evidence, update dependents, and close only with tracker authority.
+- `NOT_VERIFIED`: block tracker writes or use only an explicitly allowed provisional draft.
+
+An empty result from one query is never sufficient evidence for `NEW`.
 
 ## Phase 1 — Classify the release unit
 
@@ -233,6 +296,15 @@ integrated acceptance evidence + no blocking gap
 ## Output contract
 
 ```yaml
+work_item_identity_decision:
+  proposed_canonical_task_id: <id>
+  verdict: NEW | EXISTING_OWNER | OVERLAP_REQUIRES_SCOPE_SPLIT | SUPERSEDED_OWNER | DUPLICATE | NOT_VERIFIED
+  canonical_owner_ref: <ref or null>
+  candidate_refs: []
+  search_evidence: []
+  limitations: []
+  next_exact_action: <action>
+
 release_unit_classification:
   type: epic
   rationale: []
@@ -271,6 +343,8 @@ verdict: PASS | NEEDS_WORK | BLOCKED
 
 Return `BLOCKED` when:
 
+- work-item identity is unresolved or duplicate-search coverage is insufficient;
+- an existing canonical owner or duplicate is known but the issue plan still proposes parallel ownership;
 - release unit is unresolved;
 - required parent or acceptance traceability is missing;
 - dependency cycles remain;
@@ -284,6 +358,7 @@ Return `BLOCKED` when:
 ```text
 product-development-workflow | new-feature-workflow
 → product-manager defines verified scope and acceptance criteria
+→ delivery-work-breakdown resolves canonical work-item identity
 → delivery-work-breakdown classifies release unit and topology
 → implementation-context-discovery maps repository conventions
 → implementation slices execute
@@ -296,7 +371,7 @@ product-development-workflow | new-feature-workflow
 
 ## Evidence boundary
 
-This skill may prove that a topology is explicit and internally consistent. It cannot prove:
+This skill may prove that the planned work-item identity decision and topology are explicit and internally consistent. It cannot prove tracker mutations were executed or that an unavailable tracker search was complete. It cannot prove:
 
 - branches or PRs were actually created;
 - a feature flag protects every runtime path;
