@@ -7,6 +7,7 @@ on:
       - "contracts/tests/architecture-review.test.yaml"
       - "scripts/run-eval.sh"
       - "scripts/run-stack-conformance-eval.sh"
+      - "docs/receipts/epic-116-repository-stack-conformance.yaml"
       - ".github/workflows/repository-stack-conformance.yml"
   workflow_dispatch:
 
