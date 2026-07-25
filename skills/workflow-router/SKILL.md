@@ -1,15 +1,15 @@
 ---
 name: workflow-router
-description: Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, or verified-case skill evolution. Route before execution.
+description: Detect task intent and route to the correct workflow or standalone capability — product-from-zero, design audit, design refinement, redesign, bug, feature, review, deploy, spike, verified-case skill evolution, or cross-session task continuity. Route before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.5.0
+  ai-native-skills.version: 1.6.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow"
+  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-evolution skill-eval git-workflow skill-doctor spec-workflow task-continuity"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/workflow-router.contract.yaml
   ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow"]'
+  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-evolution","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow","task-continuity"]'
 ---
 
 # Workflow Router
@@ -46,7 +46,6 @@ Start from user_request and return workflow_selection, skill_load_order, routing
 
 Keep this interface synchronized with the pinned core contract. Exact declarations make ownership reviewable; they do not replace repository, runtime, workflow, review, approval, or product evidence.
 
-
 ## Core Rule
 
 ```text
@@ -73,6 +72,7 @@ No execution before routing. The artifact noun does not determine the lifecycle:
 | Review code or PR before merge | `code-review-workflow` | architecture/security/design reviewers |
 | Deploy or release | `deployment-workflow` | security, architecture, operations |
 | Plan or specify | `spec-workflow` | product-manager, plan, relevant owners |
+| Preserve or resume work across sessions or runtimes | `task-continuity` | `context-manager`, `decision-provenance` |
 | Explore a reversible idea | `spike` | plan, experiment skills |
 | Promote a verified lesson | `skill-evolution` | skill-eval, git-workflow |
 
@@ -108,6 +108,25 @@ ChatGPT App, Apps SDK, MCP app, or ChatGPT widget
 Load `native-ai-engineer` with `chatgpt-app-development` when the request includes contract ownership, MCP/application boundaries, runtime binding, or product-versus-platform placement.
 
 Do not create a separate ChatGPT App lifecycle merely because the target platform is specialized.
+
+## Continuity Overlay
+
+Cross-session continuity does not replace the lifecycle that owns the work.
+
+```text
+checkpoint or handoff only
+  → task-continuity
+
+resume feature implementation
+  → task-continuity verifies live state
+  → new-feature-workflow remains the governing lifecycle
+
+resume bugfix, redesign, review, or deployment
+  → task-continuity verifies live state
+  → preserve the original governing lifecycle
+```
+
+Load `task-continuity` before execution when the user asks to continue in a new chat, prepare a handoff, resume interrupted work, validate a checkpoint, or reconcile remembered state with current repository evidence.
 
 ## Design Routing
 
@@ -207,6 +226,7 @@ Never represent universal visual gates as complete specialist-domain coverage.
 | “build a ChatGPT App from zero with Apps SDK/MCP” | `product-development-workflow` + `chatgpt-app-development` |
 | “add ChatGPT App integration to this product” | `new-feature-workflow` + `chatgpt-app-development` |
 | “plan/write spec” | `spec-workflow` |
+| “continue this in a new chat”, “prepare a handoff”, “resume the previous task” | `task-continuity` before the preserved governing lifecycle |
 
 Functional symptom words take precedence over visual-polish words when the requested outcome is a functional fix.
 
@@ -214,6 +234,10 @@ Functional symptom words take precedence over visual-polish words when the reque
 
 ```text
 Request
+  ↓
+Cross-session checkpoint, handoff, or resume?
+  → task-continuity verifies current state
+  → preserve the governing lifecycle when execution continues
   ↓
 Verified-case learning required? → skill-evolution
   ↓
@@ -241,6 +265,19 @@ Apply platform specialist overlay when target platform requires it
 ```
 
 ## Routing Output
+
+### Cross-session feature resume
+
+```text
+Workflow Router
+────────────────────────────────────
+Request: "Continue this feature in a new chat"
+Classification: CROSS-SESSION RESUME + EXISTING FEATURE LIFECYCLE
+
+Continuity overlay: task-continuity
+Primary lifecycle after VALID resume: new-feature-workflow
+Execution boundary: verify live issue, branch, PR, acceptance, and gate state first
+```
 
 ### ChatGPT App product from zero
 
@@ -286,7 +323,7 @@ Handoff: install/load adapter or route to identity specialist
 
 ## Composition with Role Switcher
 
-`workflow-router` chooses lifecycle and platform/domain overlays. `role-switcher` assigns owner, specialists, facade, and domain reviewer.
+`workflow-router` chooses lifecycle and overlays. `role-switcher` assigns owner, specialists, facade, and domain reviewer.
 
 ```text
 identity audit
@@ -322,6 +359,8 @@ skill-evolution → skill-eval → git-workflow when promotable and writable
 | Logo audit uses UI/static gates only | Load `brand-identity-review` or return LIMITED REVIEW |
 | Identity adapter exists but router ignores it | Route to `brand-identity-review` with BI namespace |
 | ChatGPT App target creates a competing primary workflow | Preserve lifecycle and add `chatgpt-app-development` as overlay |
+| A fresh chat starts execution from memory | Run `task-continuity` against current sources first |
+| Continuity replaces feature/bug/design lifecycle | Use continuity as verification overlay; preserve lifecycle |
 | Child work targets the default branch automatically | Run `delivery-work-breakdown` and preserve the governing release unit |
 | One request executes competing primary workflows | Select one lifecycle and explicit handoffs |
 | Reviewer selected before domain classification | Resolve lifecycle and domain first |
