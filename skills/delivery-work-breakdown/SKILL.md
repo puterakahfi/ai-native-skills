@@ -20,6 +20,7 @@ Classify the release unit before creating branches, issues, or pull requests.
 
 ```text
 verified delivery scope
+→ canonical work-item identity decision
 → release-unit classification
 → work hierarchy and dependencies
 → branch topology and PR targets
@@ -183,6 +184,20 @@ Behavior:
 - `NOT_VERIFIED`: block tracker writes or use only an explicitly allowed provisional draft.
 
 An empty result from one query is never sufficient evidence for `NEW`.
+
+Local quality gates for the issue-plan boundary:
+
+```text
+work_item_identity_is_explicit_before_issue_plan_execution
+multi_query_duplicate_search_covers_identity_entities_symptoms_synonyms_and_parent_refs
+open_and_closed_tracker_state_is_considered_when_relevant
+candidate_matches_are_inspected_by_scope_and_acceptance_not_title_only
+empty_single_query_result_does_not_prove_uniqueness
+existing_canonical_owner_is_reused_or_extended_instead_of_duplicated
+scope_split_is_explicit_when_related_work_is_not_fully_duplicate
+accidental_duplicate_recovery_transfers_unique_evidence_and_preserves_provenance
+duplicate_search_limitations_are_disclosed_as_not_verified
+```
 
 ## Phase 1 — Classify the release unit
 

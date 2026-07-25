@@ -151,8 +151,9 @@ skill_test:
     description: Related migration work is compared by acceptance boundary before deciding ownership.
     trigger: Plan an issue Replace deprecated skill repository URLs. An existing issue Migrate runtime bindings to current Core and Skills contracts covers several legacy sources but may not cover the product self-repository URL. Determine the work-item identity and scope.
     must_contain:
-    - EXISTING_OWNER
     - OVERLAP_REQUIRES_SCOPE_SPLIT
+    - existing owner covers related migration scope
+    - uncovered self-repository scope
     - scope boundary
     - acceptance criteria
     - candidate refs
@@ -170,7 +171,7 @@ skill_test:
     trigger: A task proposes a read-only pull-request topology adapter. An existing task owns GitHub issue and Project task-management reads. Compare their ports, outputs, and acceptance criteria before deciding whether a new child task is valid.
     must_contain:
     - NEW
-    - OVERLAP_REQUIRES_SCOPE_SPLIT
+    - related but separate scope
     - repository or pull-request topology
     - task-management
     - different acceptance criteria
