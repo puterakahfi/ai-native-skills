@@ -6,18 +6,22 @@ on:
     paths:
       - "contracts/conformance/**"
       - "contracts/tests/**"
+      - "contracts/eval-smoke-expectations.yaml"
       - "skills/**"
       - "scripts/run-eval.sh"
       - "scripts/validate-eval-contracts.py"
+      - "scripts/validate-eval-smoke-report.py"
       - "scripts/validate-design-gate-registry.py"
       - ".github/workflows/skill-eval.yml"
   pull_request:
     paths:
       - "contracts/conformance/**"
       - "contracts/tests/**"
+      - "contracts/eval-smoke-expectations.yaml"
       - "skills/**"
       - "scripts/run-eval.sh"
       - "scripts/validate-eval-contracts.py"
+      - "scripts/validate-eval-smoke-report.py"
       - "scripts/validate-design-gate-registry.py"
       - ".github/workflows/skill-eval.yml"
   workflow_dispatch:
@@ -51,6 +55,7 @@ jobs:
         run: |
           python -m py_compile scripts/validate-design-gate-registry.py
           python -m py_compile scripts/validate-eval-contracts.py
+          python -m py_compile scripts/validate-eval-smoke-report.py
           bash -n scripts/run-eval.sh
 
       - name: Validate canonical design gate registry
@@ -232,12 +237,21 @@ jobs:
       - name: Run per-case runner compatibility smoke
         env:
           AI_NATIVE_CORE_DIR: ${{ github.workspace }}/.deps/ai-native-core
+        shell: bash
         run: |
+          set -euo pipefail
           mkdir -p .tmp/eval-reports
+          set +e
           bash scripts/run-eval.sh \
             --all \
             --output-dir .tmp/eval-smoke-outputs \
             --report-json .tmp/eval-reports/contract-smoke.json
+          runner_status=$?
+          set -e
+          echo "Canonical runner exit status: $runner_status"
+          python scripts/validate-eval-smoke-report.py \
+            --report .tmp/eval-reports/contract-smoke.json \
+            --expectations contracts/eval-smoke-expectations.yaml
 
       - name: Upload adapter conformance reports
         if: always()
