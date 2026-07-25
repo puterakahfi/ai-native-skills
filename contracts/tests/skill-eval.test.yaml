@@ -30,7 +30,7 @@ skill_test:
     - uncertain_trigger_language_does_not_force_a_certain_factual_conclusion
     - do not patch the target skill
     must_not_contain:
-    - 'verdict: APPLIED'
+    - 'grounding_verdict: GROUNDED'
     - self-repository scope is definitely uncovered
     - patch delivery-work-breakdown
     quality_gates_tested:
@@ -67,7 +67,7 @@ skill_test:
     - correct the test contract first
     must_not_contain:
     - screenshot proves interaction
-    - interaction is verified
+    - 'interaction status: verified'
     - patch the UI skill
     quality_gates_tested:
     - every_factual_must_contain_is_supported_by_trigger_or_attributable_context
@@ -84,9 +84,9 @@ skill_test:
     - product self-repository URL is excluded
     - expected verdict has sufficient decision facts
     must_not_contain:
-    - TEST_CONTRACT_DEFECT
-    - unsupported assumption
-    - NOT_VERIFIED
+    - 'grounding_verdict: TEST_CONTRACT_DEFECT'
+    - expected verdict has insufficient decision facts
+    - expected verdict requires NOT_VERIFIED
     quality_gates_tested:
     - every_factual_must_contain_is_supported_by_trigger_or_attributable_context
     - expected_verdict_has_sufficient_decision_facts_in_trigger
