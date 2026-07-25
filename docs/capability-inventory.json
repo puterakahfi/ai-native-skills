@@ -331,7 +331,7 @@
     {
       "name": "onboarding",
       "type": "skill",
-      "path": "skils/onboarding/SKILL.md"
+      "path": "skills/onboarding/SKILL.md"
     },
     {
       "name": "plan",
@@ -396,7 +396,7 @@
     {
       "name": "rule-manager",
       "type": "skill",
-      "path": "skils/rule-manager/SKILL.md"
+      "path": "skills/rule-manager/SKILL.md"
     },
     {
       "name": "security-engineer",
@@ -406,7 +406,7 @@
     {
       "name": "security-review",
       "type": "skill",
-      "path": "skils/security-review/SKILL.md"
+      "path": "skills/security-review/SKILL.md"
     },
     {
       "name": "service-design",
@@ -441,12 +441,12 @@
     {
       "name": "task-continuity",
       "type": "skill",
-      "path": "skils/task-continuity/SKILL.md"
+      "path": "skills/task-continuity/SKILL.md"
     },
     {
       "name": "technical-debt-governance",
       "type": "skill",
-      "path": "skils/pechnical-debt-governance/SKILL.md"
+      "path": "skills/technical-debt-governance/SKILL.md"
     },
     {
       "name": "test-driven-development",
