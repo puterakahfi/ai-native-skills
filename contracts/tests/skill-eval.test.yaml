@@ -1,12 +1,11 @@
 skill_test:
   skill: skill-eval
-  version: 1.1.1
-  description: Verify skill-eval exposes and applies its reviewed context, workflow, profile, or maintenance contract interface.
+  version: 1.1.2
+  description: Verify skill-eval detects generic behavior and rejects regression expectations that are not grounded by trigger or attributable context facts.
   cases:
   - id: skill-eval-detects-generic-responses
     description: Evaluate whether a skill was actually applied instead of merely producing output.
-    trigger: Apply skill-eval to a realistic context, routing, profile, planning, evaluation, or maintenance task and report
-      the contract-backed result.
+    trigger: Apply skill-eval to a realistic context, routing, profile, planning, evaluation, or maintenance task and report the contract-backed result.
     must_contain:
     - generic_response_detection_is_mandatory
     - eval_verdict
@@ -20,3 +19,75 @@ skill_test:
     quality_gates_tested:
     - generic_response_detection_is_mandatory
     - eval_must_test_behavior_not_just_presence_of_output
+
+  - id: uncertain-overlap-trigger-is-test-contract-defect
+    description: Uncertain scope wording cannot force a certain uncovered-scope verdict.
+    trigger: Review this regression contract before changing the target skill. Its trigger says an older migration issue may not cover the product self-repository URL, while its assertions require uncovered self-repository scope and OVERLAP_REQUIRES_SCOPE_SPLIT.
+    must_contain:
+    - TEST_CONTRACT_DEFECT
+    - unsupported factual assertion
+    - expected verdict has insufficient decision facts
+    - uncertain_trigger_language_does_not_force_a_certain_factual_conclusion
+    - do not patch the target skill
+    must_not_contain:
+    - 'grounding_verdict: GROUNDED'
+    - self-repository scope is definitely uncovered
+    - patch delivery-work-breakdown
+    quality_gates_tested:
+    - every_factual_must_contain_is_supported_by_trigger_or_attributable_context
+    - expected_verdict_has_sufficient_decision_facts_in_trigger
+    - uncertain_trigger_language_does_not_force_a_certain_factual_conclusion
+
+  - id: ci-pass-without-approval-is-test-contract-defect
+    description: Green CI cannot supply a missing approval record.
+    trigger: Review a regression case whose only evidence says all CI checks passed. The case requires the evaluated output to state approved for merge, but it provides no review, approval, or merge-authorization record.
+    must_contain:
+    - TEST_CONTRACT_DEFECT
+    - approval evidence is missing
+    - assertions_do_not_reward_hallucinated_scope_status_or_authority
+    - test contract defect
+    - do not patch the target skill
+    must_not_contain:
+    - CI proves approval
+    - therefore approved for merge
+    - change the implementation skill
+    quality_gates_tested:
+    - every_factual_must_contain_is_supported_by_trigger_or_attributable_context
+    - expected_verdict_has_sufficient_decision_facts_in_trigger
+    - assertions_do_not_reward_hallucinated_scope_status_or_authority
+
+  - id: screenshot-without-interaction-is-test-contract-defect
+    description: Static visual evidence cannot prove runtime interaction.
+    trigger: Review a regression case that provides one static screenshot and no interaction test, event trace, or runtime evidence. Its assertions require the evaluated output to state interaction verified.
+    must_contain:
+    - TEST_CONTRACT_DEFECT
+    - runtime interaction evidence is missing
+    - missing_decision_fact_produces_test_contract_defect_or_not_verified_expectation
+    - test contract defect
+    - correct the test contract first
+    must_not_contain:
+    - screenshot proves interaction
+    - 'interaction status: verified'
+    - patch the UI skill
+    quality_gates_tested:
+    - every_factual_must_contain_is_supported_by_trigger_or_attributable_context
+    - missing_decision_fact_produces_test_contract_defect_or_not_verified_expectation
+    - assertions_do_not_reward_hallucinated_scope_status_or_authority
+
+  - id: explicit-scope-exclusion-is-grounded
+    description: Explicit coverage and exclusion facts support a deterministic overlap verdict.
+    trigger: Review this regression contract. The trigger explicitly states that the existing issue covers legacy Core and Skills runtime-binding URLs and excludes the product self-repository URL. The assertions require OVERLAP_REQUIRES_SCOPE_SPLIT and uncovered self-repository scope.
+    must_contain:
+    - GROUNDED
+    - OVERLAP_REQUIRES_SCOPE_SPLIT
+    - existing issue covers legacy Core and Skills runtime-binding URLs
+    - product self-repository URL is excluded
+    - expected verdict has sufficient decision facts
+    must_not_contain:
+    - 'grounding_verdict: TEST_CONTRACT_DEFECT'
+    - expected verdict has insufficient decision facts
+    - expected verdict requires NOT_VERIFIED
+    quality_gates_tested:
+    - every_factual_must_contain_is_supported_by_trigger_or_attributable_context
+    - expected_verdict_has_sufficient_decision_facts_in_trigger
+    - uncertain_trigger_language_does_not_force_a_certain_factual_conclusion
