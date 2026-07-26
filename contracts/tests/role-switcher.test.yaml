@@ -1,7 +1,7 @@
 skill_test:
   skill: role-switcher
-  version: "1.5.0"
-  description: Verify role composition separates ownership and reviewers, then requires observable evidence for every activated role.
+  version: "1.6.0"
+  description: Verify role composition separates lifecycle, decision ownership, narrow specialists, execution ownership, and independent reviewers, then requires observable evidence for every activated role.
 
   cases:
     - id: chatgpt-app-product-from-zero-composition
@@ -145,3 +145,102 @@ skill_test:
         - every_activated_role_has_distinct_output
         - missing_required_role_output_blocks_production
         - owner_synthesis_preserves_role_status
+
+    - id: raw-product-photo-commercial-ad-composition
+      description: Net-new commercial production separates lifecycle, design, asset, prompt, execution, and review ownership.
+      trigger: "Compose roles untuk membuat Instagram ads baru dari raw product photo sampai final exported creative. Background perlu dihapus dan produk harus tetap identik."
+      design_gate_ids: [SV5, SV8, SV9, SV11, SV12, SV17, SV18, SV20, SV21]
+      must_contain:
+        - "commercial-creative-production"
+        - "master-design"
+        - "product-image-production"
+        - "design-visual"
+        - "prompt-engineer"
+        - "provider adapter"
+        - "design-review"
+        - "built-in static"
+        - "Product Asset Master"
+      must_not_contain:
+        - "prompt-engineer as owner"
+        - "master-design owns product truth"
+        - "producer owns acceptance"
+        - "all skills"
+      quality_gates_tested:
+        - one_owner
+        - raw_product_sources_cannot_bypass_Product_Image_Production
+        - prompt_specialist_boundary
+        - execution_owner_is_explicit
+        - independent_reviewer_present
+
+    - id: approved-master-commercial-ad-skips-reprocessing
+      description: A verified Product Asset Master is handed to the design owner without unnecessary image-production work.
+      trigger: "Compose roles untuk membuat marketplace banner dari PAM-24. Variant transparan sudah approved untuk destination ini dan tidak perlu diedit ulang."
+      must_contain:
+        - "commercial-creative-production"
+        - "master-design"
+        - "design-visual"
+        - "product-image-production: NOT_APPLICABLE"
+        - "preservation locks"
+        - "design-review"
+      must_not_contain:
+        - "remove background again"
+        - "regenerate product"
+        - "product-image-production required to reprocess"
+      quality_gates_tested:
+        - verified_master_reuse
+        - one_owner
+        - specialist_not_loaded_without_clear_relevance
+
+    - id: standalone-product-cutout-composition
+      description: A reusable transparent product asset without final commercial composition uses Product Image Production as the standalone owner.
+      trigger: "Compose roles untuk retouch dan cutout satu foto produk menjadi transparent Product Asset Master. Tidak membuat iklan, flyer, atau banner."
+      must_contain:
+        - "standalone product-image-production"
+        - "owner: product-image-production"
+        - "provider adapter"
+        - "design-review only when acceptance is requested"
+      must_not_contain:
+        - "commercial-creative-production as lifecycle"
+        - "master-design required"
+        - "prompt-engineer owns fidelity"
+      quality_gates_tested:
+        - standalone_asset_owner
+        - prompt_specialist_boundary
+        - no_unnecessary_commercial_owner
+
+    - id: targeted-halo-fix-preserves-refinement-owner
+      description: A known product-edge defect loads Product Image Production as a causal specialist without replacing the refinement lifecycle.
+      trigger: "Compose roles untuk memperbaiki hanya dark-background halo pada approved transparent product asset. Layout, copy, visual direction, bentuk, warna, dan shadow mode harus dipertahankan."
+      design_gate_ids: [SV9, SV15, SV18]
+      must_contain:
+        - "design-refinement"
+        - "master-design"
+        - "product-image-production"
+        - "design-review"
+        - "preservation"
+      must_not_contain:
+        - "commercial-creative-production as lifecycle"
+        - "redesign-workflow"
+        - "product-image-production as lifecycle owner"
+      quality_gates_tested:
+        - lifecycle_owner_preserved
+        - causal_specialist_boundary
+        - independent_reviewer_present
+
+    - id: produced-commercial-export-cannot-self-accept
+      description: The design owner and execution adapter cannot replace independent static visual acceptance.
+      trigger: "Provider sudah menghasilkan banner final. Producer dan master-design bilang hasilnya bagus, jadi tandai PASS tanpa design-review."
+      must_contain:
+        - "design-review"
+        - "built-in static"
+        - "independent"
+        - "NOT_VERIFIED"
+        - "role_execution_evidence"
+      must_not_contain:
+        - "producer approval is sufficient"
+        - "master-design self-certifies"
+        - "PASS"
+      quality_gates_tested:
+        - independent_reviewer_present
+        - role_names_are_not_execution_evidence
+        - missing_required_role_output_blocks_production
