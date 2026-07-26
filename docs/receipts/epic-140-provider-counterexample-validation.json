@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "epic": "puterakahfi/ai-native-skills#140",
+  "validation_issue": "puterakahfi/ai-native-skills#145",
+  "product_evidence_provider": "puterakahfi/visualmate#181",
+  "evidence_class": "provider_backed_negative_metadata_only",
+  "binary_repository_storage_authorized": false,
+  "production_readiness_claim": false,
+  "source_authorization": "NOT_VERIFIED",
+  "summary": {
+    "source_candidates": 3,
+    "provider_outputs_inspected": 3,
+    "provider_outputs_accepted_as_product_asset_master": 0,
+    "provider_counterexamples_recorded": 3,
+    "real_product_acceptance": "NOT_VERIFIED",
+    "independent_visual_acceptance": "NOT_VERIFIED"
+  },
+  "cases": [
+    {
+      "case_id": "OI-01",
+      "category": "organic_irregular_soft_edge_product",
+      "source": {
+        "sha256": "e5be662c9a04f94ed2548ee6274ef91401bd53488cce62ff8d43d0359e84012a",
+        "format": "JPEG",
+        "width": 678,
+        "height": 452
+      },
+      "provider_output": {
+        "sha256": "1b711e067514648a347b54552aab6673380de827958c9e5c3309324d5a6f61a9",
+        "format": "PNG",
+        "mode": "RGBA",
+        "width": 1536,
+        "height": 1024,
+        "alpha_zero_pixels": 768718,
+        "alpha_partial_pixels": 344535,
+        "alpha_opaque_pixels": 459611,
+        "alpha_bbox": [12, 0, 1525, 1024],
+        "touches_canvas_border": true
+      },
+      "verdict": "NEEDS_WORK",
+      "findings": [
+        "Actual RGBA alpha exists.",
+        "Content reaches the top and bottom canvas boundaries.",
+        "Shape, arrangement, and surface details were regenerated rather than proven source-faithful.",
+        "The result is not eligible as a Product Asset Master."
+      ]
+    },
+    {
+      "case_id": "RT-01",
+      "category": "reflective_or_translucent_product",
+      "source": {
+        "sha256": "69fffe27f5a1c15aa1fe2d5dc54b0db7052106f6e38f93c252802ed926c50570",
+        "format": "JPEG",
+        "width": 860,
+        "height": 860
+      },
+      "provider_output": {
+        "sha256": "ed0057a0c0510edadff4229b6adb90ad82cdf8eca2810f663c4d93a14b662ce5",
+        "format": "PNG",
+        "mode": "RGBA",
+        "width": 1024,
+        "height": 1024,
+        "alpha_zero_pixels": 721932,
+        "alpha_partial_pixels": 132148,
+        "alpha_opaque_pixels": 194496,
+        "alpha_bbox": [0, 6, 966, 945],
+        "touches_canvas_border": true
+      },
+      "verdict": "FAIL",
+      "findings": [
+        "Partial alpha exists and the glass remains visibly translucent.",
+        "A detached black cap reaches or clips the left canvas edge.",
+        "Arrangement and proportions are not proven source-faithful.",
+        "The result is not eligible as a Transparent Product Asset Master."
+      ]
+    },
+    {
+      "case_id": "RP-01",
+      "category": "rigid_packaged_product",
+      "source": {
+        "sha256": "fd0be735004e7e08bb90137e22e991e9f219d810fa7d3672912342b6121d515c",
+        "format": "WEBP",
+        "width": 960,
+        "height": 960
+      },
+      "provider_output": {
+        "sha256": "f28299b876e4fb09a5ca1a517958d4b24b4d3f41b9c803d0e5f989e09152f1cd",
+        "format": "PNG",
+        "mode": "RGBA",
+        "width": 1024,
+        "height": 1024,
+        "alpha_zero_pixels": 468146,
+        "alpha_partial_pixels": 82290,
+        "alpha_opaque_pixels": 498140,
+        "alpha_bbox": [40, 102, 975, 935],
+        "touches_canvas_border": false
+      },
+      "verdict": "FAIL_CLOSED",
+      "findings": [
+        "Actual RGBA alpha exists and the product has safe canvas padding.",
+        "Packaging and label text were corrupted or invented.",
+        "Exact-text and product-identity locks fail.",
+        "Valid alpha cannot override a product-truth failure."
+      ]
+    }
+  ],
+  "learning": {
+    "verdict": "IMPROVEMENT",
+    "existing_owners": [
+      "puterakahfi/visualmate#152",
+      "puterakahfi/visualmate#168"
+    ],
+    "finding": "Identity-critical and text-locked product assets must not default to generative recreation when the renderer cannot guarantee exact preservation. Prefer deterministic source-layer extraction, compositing, or matting, followed by independent identity, exact-text, alpha-edge, and delivery revalidation.",
+    "new_issue_created": false
+  },
+  "limitations": [
+    "Source ownership and repository/provider-use authorization remain NOT_VERIFIED.",
+    "No binary source or output is stored in this repository.",
+    "No provider output passed independent design review.",
+    "No Product Asset Master was accepted.",
+    "No downstream catalog and commercial reuse acceptance was performed."
+  ]
+}
