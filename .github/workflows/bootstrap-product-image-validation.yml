@@ -1,0 +1,79 @@
+name: Bootstrap Product Image Validation
+
+on:
+  pull_request:
+    branches:
+      - 140-commercial-creative-production-spec
+    paths:
+      - "validation/product-image-production/bootstrap/payload.b64"
+      - ".github/workflows/bootstrap-product-image-validation.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Verify expected validation branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_HEAD_REF}" = "140-145-creative-production-validation"
+
+      - name: Extract deterministic validation pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64
+          import io
+          import zipfile
+          from pathlib import Path
+
+          payload_path = Path("validation/product-image-production/bootstrap/payload.b64")
+          archive = base64.b64decode(payload_path.read_text(encoding="utf-8"), validate=True)
+          with zipfile.ZipFile(io.BytesIO(archive)) as bundle:
+              names = bundle.namelist()
+              prohibited = [name for name in names if name.startswith("/") or ".." in Path(name).parts]
+              if prohibited:
+                  raise SystemExit(f"unsafe payload paths: {prohibited}")
+              bundle.extractall(Path("."))
+          PY
+
+      - name: Validate extracted pack before commit
+        run: |
+          python scripts/validate-product-image-fixtures.py \
+            --manifest validation/product-image-production/fixtures/manifest.json \
+            --report /tmp/product-image-validation.json \
+            --compare docs/receipts/epic-140-creative-production-validation.json
+
+      - name: Commit canonical validation files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add \
+            scripts/validate-product-image-fixtures.py \
+            validation/product-image-production/fixtures/manifest.json \
+            validation/product-image-production/fixtures/bundle.json \
+            validation/product-image-production/README.md \
+            validation/product-image-production/real-product-evidence-template.json \
+            docs/receipts/epic-140-creative-production-validation.json \
+            docs/receipts/epic-140-integrated-acceptance.json \
+            .github/workflows/product-image-binary-fixtures.yml
+          if git diff --cached --quiet; then
+            echo "Validation pack already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "test(creative): add binary product image validation evidence"
+          git push origin "HEAD:${GITHUB_HEAD_REF}"
