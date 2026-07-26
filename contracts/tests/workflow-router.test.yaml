@@ -1,7 +1,7 @@
 skill_test:
   skill: workflow-router
-  version: 1.6.0
-  description: Verify lifecycle selection remains primary while design-domain, platform-specialist, delivery-topology, and task-continuity overlays load the correct capabilities.
+  version: 1.7.0
+  description: Verify lifecycle selection remains primary while commercial-production, product-image, design-domain, platform-specialist, delivery-topology, and task-continuity overlays load the correct capabilities.
   cases:
   - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
     description: A ChatGPT App product from zero uses the existing product lifecycle plus the platform specialist.
@@ -113,3 +113,83 @@ skill_test:
     - existing_product_feature_route_preserved
     - release_unit_classified_before_repository_execution
     - no_execution_before_routing_confirmed
+
+  - id: raw-product-photo-new-ad-routes-commercial-production-plus-image-specialist
+    description: A net-new commercial ad from a raw product source uses the commercial lifecycle and prepares the product before composition.
+    trigger: Buat Instagram ads baru dari foto mentah botol ini. Retouch, hapus background, susun headline, layout, dan export final.
+    must_contain:
+    - commercial-creative-production
+    - product-image-production
+    - Product Asset Master
+    - master-design
+    - design-review
+    must_not_contain:
+    - raw product source directly to final design
+    - prompt-engineer as fidelity owner
+    - redesign-workflow as primary
+    quality_gates_tested:
+    - commercial_production_is_distinguished_from_asset_preparation_prompt_audit_refinement_and_redesign
+    - raw_product_source_cannot_bypass_required_product_image_production
+    - exactly_one_primary_lifecycle_or_capability
+
+  - id: standalone-transparent-product-request-routes-specialist-only
+    description: A request for one reusable transparent asset does not load the full commercial lifecycle.
+    trigger: Hapus background foto produk ini dan berikan transparent PNG master untuk dipakai berulang. Jangan buat banner atau iklan.
+    must_contain:
+    - product-image-production
+    - standalone
+    - Product Asset Master
+    must_not_contain:
+    - commercial-creative-production as primary
+    - master-design required
+    - campaign composition
+    quality_gates_tested:
+    - commercial_production_is_distinguished_from_asset_preparation_prompt_audit_refinement_and_redesign
+    - exactly_one_primary_lifecycle_or_capability
+
+  - id: prepared-master-new-banner-reuses-approved-asset
+    description: A verified destination-compatible Product Asset Master enters commercial production without repeated image processing.
+    trigger: Buat marketplace banner baru menggunakan Product Asset Master PAM-24. Variant transparan sudah approved untuk channel, ukuran, background, dan shadow mode ini.
+    must_contain:
+    - commercial-creative-production
+    - reuse
+    - approved Product Asset Master
+    - master-design
+    must_not_contain:
+    - remove background again
+    - regenerate product
+    - reprocess raw source
+    quality_gates_tested:
+    - verified_Product_Asset_Master_can_be_reused_without_unnecessary_reprocessing
+    - exactly_one_primary_lifecycle_or_capability
+
+  - id: existing-commercial-poster-broad-change-remains-redesign
+    description: Broad changes to an existing commercial artifact remain redesign.
+    trigger: Redesign poster existing ini. Ganti campaign concept, hierarchy, composition, type system, dan visual language, tetapi pertahankan product truth.
+    must_contain:
+    - redesign-workflow
+    - existing artifact
+    - broad direction
+    - product-image-production
+    must_not_contain:
+    - commercial-creative-production as primary
+    - net-new artifact
+    quality_gates_tested:
+    - commercial_production_is_distinguished_from_asset_preparation_prompt_audit_refinement_and_redesign
+    - broad_direction_routes_to_redesign
+
+  - id: known-product-halo-remains-targeted-refinement
+    description: A verified narrow asset defect preserves the refinement lifecycle while loading the causal image specialist.
+    trigger: Fix hanya halo pada edge produk transparan ini. Direction, layout, copy, warna produk, bentuk, dan shadow mode sudah approved dan harus dipertahankan.
+    must_contain:
+    - design-refinement
+    - product-image-production
+    - targeted
+    - preserve
+    must_not_contain:
+    - redesign-workflow
+    - commercial-creative-production as primary
+    - rebuild everything
+    quality_gates_tested:
+    - targeted_design_gate_fixes_must_route_to_design_refinement
+    - raw_product_source_cannot_bypass_required_product_image_production

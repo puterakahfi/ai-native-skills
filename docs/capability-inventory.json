@@ -3,9 +3,9 @@
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
     "skill": 92,
-    "workflow": 10,
+    "workflow": 11,
     "meta-skill": 6,
-    "total": 108
+    "total": 109
   },
   "items": [
     {
@@ -507,6 +507,11 @@
       "name": "code-review-workflow",
       "type": "workflow",
       "path": "skills/code-review-workflow/SKILL.md"
+    },
+    {
+      "name": "commercial-creative-production",
+      "type": "workflow",
+      "path": "skills/commercial-creative-production/SKILL.md"
     },
     {
       "name": "deployment-workflow",

@@ -4,11 +4,11 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 108
+    executable_artifacts: 109
     official_types:
       meta-skill: 6
       skill: 92
-      workflow: 10
+      workflow: 11
     patterns:
       domain-reviewer: 1
       facade: 1
@@ -16,7 +16,7 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 72
-      reviewed_exemption: 10
+      reviewed_exemption: 11
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -270,6 +270,38 @@ contract_coverage_inventory:
     conformance_path: null
     exemption_path: null
     classification: legacy_contract_backed
+    errors: []
+  - id: commercial-creative-production
+    path: skills/commercial-creative-production/SKILL.md
+    type: workflow
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers:
+      - net_new_commercial_static_visual_production
+      - brief_and_required_content_intake
+      - source_asset_inventory_and_preparation_decision
+      - product_asset_master_verification
+      - commercial_direction_and_composition_handoff
+      - provider_execution_handoff
+      - exported_artifact_review
+      - destination_scoped_delivery
+      - defect_ownership_and_return_routing
+      delegates:
+      - single_product_asset_preparation_without_commercial_composition
+      - audit_only_existing_artifact_review
+      - known_narrow_existing_artifact_refinement
+      - broad_existing_artifact_redesign
+      - provider_specific_prompt_syntax
+      - binary_provider_execution
+      - product_repository_storage_ui_and_provider_configuration
+      - legal_and_regulated_claim_approval
+    conformance_path: null
+    exemption_path: skills/commercial-creative-production/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: component-family-design
     path: skills/component-family-design/SKILL.md
@@ -1455,7 +1487,7 @@ contract_coverage_inventory:
     path: skills/role-switcher/SKILL.md
     type: meta-skill
     patterns: []
-    version: 1.5.0
+    version: 1.6.0
     implements: contracts/skills/meta/role-switcher.contract.yaml
     contract_version: ~0.1
     contract_path_exists: true
@@ -1848,7 +1880,7 @@ contract_coverage_inventory:
     path: skills/workflow-router/SKILL.md
     type: meta-skill
     patterns: []
-    version: 1.6.0
+    version: 1.7.0
     implements: contracts/skills/meta/workflow-router.contract.yaml
     contract_version: ~0.2
     contract_path_exists: true

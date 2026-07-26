@@ -1,0 +1,172 @@
+skill_test:
+  skill: commercial-creative-production
+  version: "1.0.0"
+  description: Verify net-new commercial static production preserves lifecycle boundaries, blocks raw-source bypass, keeps product fidelity and provider execution with their owners, and requires exported evidence plus independent review.
+
+  cases:
+    - id: raw-product-photo-new-ad-routes-through-asset-preparation
+      description: A new commercial ad from raw product photography must prepare and verify the product asset before final composition.
+      trigger: "Create a new Instagram product ad from this raw bottle photo. Remove the background, retouch it, compose the ad, and deliver the final export."
+      must_contain:
+        - "commercial-creative-production"
+        - "product-image-production"
+        - "Product Asset Master"
+        - "asset readiness"
+        - "master-design"
+        - "design-review"
+      must_not_contain:
+        - "raw source directly to final composition"
+        - "prompt-engineer owns fidelity"
+        - "preview is sufficient"
+      quality_gates_tested:
+        - net_new_commercial_production_routes_to_this_workflow
+        - raw_product_source_does_not_bypass_required_product_image_production
+        - Product_Asset_Master_destination_and_variant_are_verified_before_handoff
+
+    - id: prepared-master-is-reused-without-unnecessary-reprocessing
+      description: A verified destination-compatible Product Asset Master should enter commercial design without repeating raw image production.
+      trigger: "Create a marketplace banner using Product Asset Master PAM-24. The approved transparent variant is ready for this exact channel, dimensions, background range, and shadow mode."
+      must_contain:
+        - "reuse"
+        - "approved variant"
+        - "master-design"
+        - "design-visual"
+        - "preservation locks"
+      must_not_contain:
+        - "reprocess the raw source"
+        - "remove the background again"
+        - "regenerate the product"
+      quality_gates_tested:
+        - prepared_master_is_not_reprocessed_without_a_valid_condition
+        - Product_Asset_Master_destination_and_variant_are_verified_before_handoff
+        - commercial_direction_does_not_reinterpret_product_truth
+
+    - id: prompt-only-request-does-not-enter-production-workflow
+      description: Provider-specific prompt translation alone remains owned by prompt-engineer.
+      trigger: "Translate this already approved product-image operation plan into instructions for the selected image editor. Do not execute, compose an ad, or review an export."
+      must_contain:
+        - "prompt-engineer"
+        - "prompt-only"
+        - "locked plan"
+      must_not_contain:
+        - "commercial-creative-production as primary"
+        - "master-design as owner"
+        - "asset accepted"
+      quality_gates_tested:
+        - standalone_asset_prompt_audit_refinement_and_redesign_boundaries_are_preserved
+        - prompt_engineer_translates_but_does_not_own_fidelity_or_lifecycle
+
+    - id: existing-poster-broad-change-remains-redesign
+      description: Broad change to an existing commercial artifact remains redesign, not net-new production.
+      trigger: "Redesign this existing poster. Replace the visual direction, hierarchy, composition, type system, and campaign concept while preserving approved product truth."
+      must_contain:
+        - "redesign-workflow"
+        - "existing"
+        - "broad direction"
+        - "product-image-production"
+      must_not_contain:
+        - "commercial-creative-production as primary"
+        - "net-new artifact"
+      quality_gates_tested:
+        - standalone_asset_prompt_audit_refinement_and_redesign_boundaries_are_preserved
+        - product_image_specialist_can_overlay_existing_redesign
+
+    - id: known-halo-defect-routes-targeted-correction
+      description: A known edge defect in an approved asset does not justify a full redesign.
+      trigger: "The approved transparent product asset has a verified dark-background halo. Fix only that edge defect, preserve the ad direction, copy, layout, product shape, color, and shadow mode."
+      must_contain:
+        - "design-refinement"
+        - "product-image-production"
+        - "targeted"
+        - "preserve"
+      must_not_contain:
+        - "redesign-workflow"
+        - "replace the campaign direction"
+        - "rebuild everything"
+      quality_gates_tested:
+        - standalone_asset_prompt_audit_refinement_and_redesign_boundaries_are_preserved
+        - causal_defect_owner_is_identified_before_fix
+
+    - id: audit-only-commercial-creative-does-not-produce
+      description: Audit-only review stops with findings and evidence status.
+      trigger: "Audit this exported marketplace creative for product fidelity, prices, crop, legibility, mask edges, resolution, and compression. Do not change or regenerate anything."
+      design_gate_ids: [SV5, SV9, SV11, SV12, SV17, SV18, SV20]
+      must_contain:
+        - "design-audit"
+        - "design-review"
+        - "built-in static"
+        - "report only"
+      must_not_contain:
+        - "commercial-creative-production as primary"
+        - "start production"
+      quality_gates_tested:
+        - standalone_asset_prompt_audit_refinement_and_redesign_boundaries_are_preserved
+        - review_is_independent_and_uses_static_visual_gates
+
+    - id: producer-cannot-self-certify-final-export
+      description: A produced export requires independent review and honest gate statuses.
+      trigger: "The provider produced a final banner and the producer says it looks good. Mark it accepted without a separate review or source comparison."
+      must_contain:
+        - "design-review"
+        - "independent"
+        - "NOT_VERIFIED"
+        - "exported artifact"
+      must_not_contain:
+        - "accepted because the producer approved"
+        - "PASS"
+        - "looks good is sufficient"
+      quality_gates_tested:
+        - production_claims_require_actual_export_evidence
+        - review_is_independent_and_uses_static_visual_gates
+        - failure_states_preserve_FAIL_PARTIAL_NOT_VERIFIED_and_NOT_APPLICABLE
+
+    - id: product-fidelity-failure-returns-to-image-production
+      description: A review finding caused by product alteration returns to Product Image Production rather than being hidden by design changes.
+      trigger: "Review found that the generated ad changed the cap geometry, corrupted label text, and introduced a fringe around the package. Classify and route the correction."
+      must_contain:
+        - "product-image-production"
+        - "product fidelity"
+        - "causal owner"
+        - "return route"
+      must_not_contain:
+        - "fix only with typography"
+        - "prompt-engineer owns product truth"
+        - "accept with visual polish"
+      quality_gates_tested:
+        - causal_defect_owner_is_identified_before_fix
+        - commercial_direction_does_not_reinterpret_product_truth
+        - review_is_independent_and_uses_static_visual_gates
+
+    - id: provider-export-defect-does-not-reopen-approved-design
+      description: A provider/export defect with a valid locked plan returns to the execution adapter without discarding approved design decisions.
+      trigger: "The approved design and Product Asset Master are correct, but the exported PNG was flattened without alpha and has the wrong dimensions. Route the smallest correction."
+      must_contain:
+        - "product/runtime adapter"
+        - "export defect"
+        - "preserve"
+        - "locked plan"
+      must_not_contain:
+        - "replace visual direction"
+        - "rebuild product truth"
+        - "full redesign"
+      quality_gates_tested:
+        - provider_execution_remains_adapter_owned
+        - causal_defect_owner_is_identified_before_fix
+        - valid_upstream_locks_survive_narrow_correction
+
+    - id: specification-only-cannot-claim-delivered
+      description: A workflow specification without binary execution remains specified and unverified.
+      trigger: "Write the full commercial creative workflow, handoffs, and production plan, but do not run any provider or export a file. Confirm the campaign creative is delivered."
+      must_contain:
+        - "specification-only"
+        - "NOT_VERIFIED"
+        - "delivery not completed"
+        - "actual export"
+      must_not_contain:
+        - "DELIVERED"
+        - "accepted"
+        - "production PASS"
+      quality_gates_tested:
+        - production_claims_require_actual_export_evidence
+        - final_delivery_is_destination_scoped
+        - failure_states_preserve_FAIL_PARTIAL_NOT_VERIFIED_and_NOT_APPLICABLE
