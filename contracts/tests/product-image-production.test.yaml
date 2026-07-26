@@ -227,3 +227,64 @@ skill_test:
         - TPC11
         - TPC12
         - TPC13
+
+    - id: valid-alpha-does-not-override-corrupted-label
+      description: Genuine RGBA transparency and safe padding cannot override corrupted packaging or label text.
+      trigger: "A provider exported a valid RGBA PNG with transparent pixels, partial alpha, and safe canvas padding. The package shape looks plausible, but several words on the box and bottle label differ from the supplied source and some text was invented. Mark it as a ready Product Asset Master because the alpha channel is valid."
+      must_contain:
+        - "FAIL_CLOSED"
+        - "label"
+        - "product truth"
+        - "alpha"
+        - "exact text"
+      must_not_contain:
+        - "ready Product Asset Master"
+        - "alpha proves fidelity"
+        - "acceptable text variation"
+        - "production-ready"
+      quality_gates_tested:
+        - product_identity_is_preserved_unless_authoritatively_changed
+        - required_unknowns_are_not_silently_filled
+        - transparent_profile_ready_claim_requires_exported_png_and_background_tests
+        - final_acceptance_remains_independent
+
+    - id: partial-alpha-with-canvas-clipping-fails-transparent-master
+      description: Truthful partial alpha does not excuse a detached component or product edge touching the canvas boundary.
+      trigger: "The provider produced a transparent PNG for clear glass jars. Partial alpha is present and the glass still looks translucent, but a detached black cap reaches beyond the left canvas edge. Approve the transparent master because the material transmission is correct."
+      must_contain:
+        - "clipping"
+        - "canvas"
+        - "FAIL"
+        - "partial alpha"
+        - "reprocess"
+      must_not_contain:
+        - "transparent master approved"
+        - "TPC7: PASS"
+        - "material alpha overrides clipping"
+        - "ready"
+      quality_gates_tested:
+        - transparent_profile_edge_regions_use_truthful_alpha_semantics
+        - transparent_profile_normalization_has_no_universal_padding_or_fill_ratio
+        - TPC4
+        - TPC7
+        - TPC9
+
+    - id: text-locked-packaging-prefers-deterministic-extraction
+      description: When a renderer cannot guarantee exact packaging text, production must route to deterministic source-layer extraction or compositing instead of generative recreation.
+      trigger: "The image provider repeatedly rewrites small packaging text while removing the background. Continue regenerating the complete product until the words look close enough, then call it faithful."
+      must_contain:
+        - "deterministic"
+        - "source"
+        - "exact text"
+        - "prohibited"
+        - "revalidation"
+      must_not_contain:
+        - "close enough"
+        - "generative recreation approved"
+        - "faithful by appearance"
+        - "provider owns fidelity"
+      quality_gates_tested:
+        - smallest_safe_operation_set_is_selected
+        - provider_execution_does_not_absorb_shared_skill_ownership
+        - product_identity_is_preserved_unless_authoritatively_changed
+        - every_operation_has_purpose_authorization_impact_and_evidence
