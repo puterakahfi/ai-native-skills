@@ -10,6 +10,8 @@ on:
       - skills/workflow-router/SKILL.md
       - skills/role-switcher/SKILL.md
       - catalog/capability-discovery/**
+      - README.md
+      - docs/skills.md
 
 permissions:
   contents: write
@@ -89,6 +91,61 @@ jobs:
           )
           PY
 
+      - name: Synchronize readable inventory documentation
+        shell: bash
+        run: |
+          python - <<'PY'
+          import re
+          from collections import Counter
+          from pathlib import Path
+
+          counts = Counter()
+          for skill_file in sorted(Path("skills").glob("*/SKILL.md")):
+              text = skill_file.read_text(encoding="utf-8")
+              match = re.search(r"^\s+ai-native-skills\.type:\s*(\S+)\s*$", text, re.MULTILINE)
+              if not match:
+                  raise SystemExit(f"missing official type: {skill_file}")
+              counts[match.group(1).strip("'\"")] += 1
+
+          skills = counts["skill"]
+          workflows = counts["workflow"]
+          meta = counts["meta-skill"]
+          total = skills + workflows + meta
+
+          readme_path = Path("README.md")
+          readme = readme_path.read_text(encoding="utf-8")
+          readme, replacements = re.subn(
+              r"\*\*\d+ skills · \d+ workflows · \d+ meta-skills\*\*",
+              f"**{skills} skills · {workflows} workflows · {meta} meta-skills**",
+              readme,
+              count=1,
+          )
+          if replacements != 1:
+              raise SystemExit("README inventory summary anchor missing")
+          readme_path.write_text(readme, encoding="utf-8")
+
+          taxonomy_path = Path("docs/skills.md")
+          taxonomy = taxonomy_path.read_text(encoding="utf-8")
+          replacements = {
+              r"^- `skill`: \d+$": f"- `skill`: {skills}",
+              r"^- `workflow`: \d+$": f"- `workflow`: {workflows}",
+              r"^- `meta-skill`: \d+$": f"- `meta-skill`: {meta}",
+              r"^- Total executable skills: \d+$": f"- Total executable skills: {total}",
+          }
+          for pattern, replacement in replacements.items():
+              taxonomy, changed = re.subn(pattern, replacement, taxonomy, count=1, flags=re.MULTILINE)
+              if changed != 1:
+                  raise SystemExit(f"taxonomy count anchor missing: {pattern}")
+
+          workflow_row = "| `commercial-creative-production` | route → intake → asset readiness → commercial direction → provider execution → exported evidence → independent static review → destination delivery |"
+          if workflow_row not in taxonomy:
+              table_anchor = "| Workflow | Lifecycle |\n|---|---|\n"
+              if table_anchor not in taxonomy:
+                  raise SystemExit("workflow table anchor missing")
+              taxonomy = taxonomy.replace(table_anchor, table_anchor + workflow_row + "\n", 1)
+          taxonomy_path.write_text(taxonomy, encoding="utf-8")
+          PY
+
       - name: Regenerate canonical capability evidence
         run: |
           python scripts/verify-capability-inventory.py --write-snapshot
@@ -102,6 +159,8 @@ jobs:
         run: |
           set -euo pipefail
           git add \
+            README.md \
+            docs/skills.md \
             catalog/capability-discovery/classifications.json \
             catalog/capability-discovery/topics.json \
             docs/capability-inventory.json \
