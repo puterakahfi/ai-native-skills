@@ -6,10 +6,10 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 
 Current repository inventory:
 
-- `skill`: 91
-- `workflow`: 10
+- `skill`: 92
+- `workflow`: 11
 - `meta-skill`: 6
-- Total executable skills: 107
+- Total executable skills: 109
 
 ---
 
@@ -126,6 +126,7 @@ A good workflow defines:
 
 | Workflow | Lifecycle |
 |---|---|
+| `commercial-creative-production` | route → intake → asset readiness → commercial direction → provider execution → exported evidence → independent static review → destination delivery |
 | `spec-workflow` | constitution → specify → plan → tasks → implement |
 | `new-feature-workflow` | plan → delivery topology → architecture/design decision → implementation-context discovery → implement → verify → submit → review |
 | `bugfix-workflow` | reproduce → investigate → fix → verify → submit → review |
