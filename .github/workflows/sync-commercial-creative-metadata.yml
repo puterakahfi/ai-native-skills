@@ -1,11 +1,15 @@
 name: Sync Commercial Creative Metadata
 
 on:
-  push:
+  pull_request:
     branches:
-      - 140-144-creative-production-routing
+      - 140-commercial-creative-production-spec
     paths:
       - .github/workflows/sync-commercial-creative-metadata.yml
+      - skills/commercial-creative-production/**
+      - skills/workflow-router/SKILL.md
+      - skills/role-switcher/SKILL.md
+      - catalog/capability-discovery/**
 
 permissions:
   contents: write
@@ -16,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout feature branch
+      - name: Checkout pull-request head
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
 
       - name: Resolve pinned Core revision
@@ -109,4 +113,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore(metadata): register commercial creative production"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_HEAD_REF}"
