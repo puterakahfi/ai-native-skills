@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "epic": "puterakahfi/ai-native-skills#140",
+  "validation_issue": "puterakahfi/ai-native-skills#145",
+  "status": "PARTIALLY_COMPLETED",
+  "production_readiness": "NOT_VERIFIED",
+  "evidence": {
+    "boundary_decision": "puterakahfi/ai-native-skills#141",
+    "specialist_mvp": "puterakahfi/ai-native-skills#142",
+    "transparent_profile": "puterakahfi/ai-native-skills#143",
+    "routing_and_handoffs": "puterakahfi/ai-native-skills#144",
+    "binary_fixture_receipt": "docs/receipts/epic-140-creative-production-validation.json"
+  },
+  "acceptance_criteria": {
+    "AC-1": {
+      "status": "PASS",
+      "basis": [
+        "boundary and ownership decision",
+        "routing and role regressions"
+      ]
+    },
+    "AC-2": {
+      "status": "PARTIAL",
+      "basis": [
+        "fidelity-lock contracts",
+        "protected-region binary fixture"
+      ],
+      "gap": "real-product fidelity comparison is NOT_VERIFIED"
+    },
+    "AC-3": {
+      "status": "PARTIAL",
+      "basis": [
+        "transparent PNG, alpha, halo, clipping, residue, crop and export fixtures"
+      ],
+      "gap": "provider-produced real catalog output is NOT_VERIFIED"
+    },
+    "AC-4": {
+      "status": "PASS",
+      "basis": [
+        "unreadable label, unsuitable source, aggressive upscale and unsafe transformation fail-closed cases"
+      ]
+    },
+    "AC-5": {
+      "status": "PARTIAL",
+      "basis": [
+        "Product Asset Master contract and deterministic reuse fixture"
+      ],
+      "gap": "real Product Asset Master export is NOT_VERIFIED"
+    },
+    "AC-6": {
+      "status": "PASS",
+      "basis": [
+        "commercial workflow handoff contract",
+        "router and role composition regressions"
+      ]
+    },
+    "AC-7": {
+      "status": "PARTIAL",
+      "basis": [
+        "binary export evidence and deterministic receipt"
+      ],
+      "gap": "independent real-product static-visual acceptance is NOT_VERIFIED"
+    },
+    "AC-8": {
+      "status": "PARTIAL",
+      "basis": [
+        "synthetic rigid, translucent and organic categories"
+      ],
+      "gap": "three authorized real-product categories are NOT_VERIFIED"
+    },
+    "AC-9": {
+      "status": "PASS",
+      "basis": [
+        "halo, clipping, residue, invented label, baked shadow and aggressive upscale counterexamples"
+      ]
+    },
+    "AC-10": {
+      "status": "PASS",
+      "basis": [
+        "repository eval contracts",
+        "binary fixture validator",
+        "CI workflow and immutable receipt comparison"
+      ]
+    }
+  },
+  "blocking_gaps": [
+    "authorized real-product sources for at least three materially different categories",
+    "provider-backed before/after exports",
+    "actual-size fidelity and alpha review",
+    "prepared asset used in real catalog and composed commercial output",
+    "independent design-review verdict"
+  ],
+  "capability_evolution_verdict": "EVAL_ONLY",
+  "core_promotion": "DEFERRED_UNVERIFIED"
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "case_id": null,
+  "product_category": null,
+  "authorization": {
+    "source_owner_or_license": null,
+    "use_authorized": false,
+    "authority_refs": []
+  },
+  "source": {
+    "asset_ref": null,
+    "sha256": null,
+    "dimensions": null,
+    "declared_product_identity": null,
+    "provenance_status": "NOT_VERIFIED"
+  },
+  "destination": {
+    "profile": null,
+    "channels": [],
+    "dimensions": [],
+    "backgrounds": [],
+    "shadow_mode": null
+  },
+  "fidelity_locks": {
+    "shape": true,
+    "packaging": true,
+    "logo": true,
+    "label_text": true,
+    "material": true,
+    "product_color": true,
+    "distinguishing_details": true,
+    "additional": []
+  },
+  "operations": [],
+  "provider_execution": {
+    "adapter": null,
+    "run_ref": null,
+    "status": "NOT_VERIFIED",
+    "limitations": []
+  },
+  "exports": [],
+  "product_fidelity_review": {
+    "comparison_refs": [],
+    "status": "NOT_VERIFIED",
+    "findings": []
+  },
+  "mask_edge_export_review": {
+    "actual_size_refs": [],
+    "background_test_refs": [],
+    "status": "NOT_VERIFIED",
+    "findings": []
+  },
+  "downstream_handoff": {
+    "product_asset_master_ref": null,
+    "catalog_output_ref": null,
+    "commercial_output_ref": null,
+    "status": "NOT_VERIFIED"
+  },
+  "independent_review": {
+    "reviewer": null,
+    "design_review_ref": null,
+    "static_visual_gate_statuses": {},
+    "verdict": "NOT_VERIFIED"
+  },
+  "limitations": [],
+  "overall_status": "NOT_VERIFIED"
+}
