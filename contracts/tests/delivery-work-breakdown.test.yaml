@@ -55,6 +55,30 @@ skill_test:
     - epic_child_prs_must_target_the_epic_or_integration_branch
     - final_epic_pr_requires_integrated_end_to_end_acceptance
 
+  - id: natural-isolated-fix-remains-standalone-change
+    description: A bounded dependency-free change is completed directly instead of being inflated into an epic or artificial feature hierarchy.
+    trigger: In the existing documentation site, one navigation link points to the wrong already-existing page. Correct that single link. The destination and expected behavior are verified, no runtime contract or shared component changes, no sibling work, no migration, and acceptance is simply that the link resolves correctly and existing navigation tests remain green.
+    must_contain:
+    - 'release_unit: standalone_change'
+    - bounded change
+    - no sibling dependencies
+    - independently completable
+    - acceptance criteria
+    - required validation
+    - complete directly
+    - product-defined branch policy
+    must_not_contain:
+    - 'release_unit: epic'
+    - create a parent epic
+    - invent sibling features
+    - one feature per file
+    - repository work is always an epic
+    - task noun determines release unit
+    quality_gates_tested:
+    - release_unit_must_be_classified_before_branch_creation
+    - direct_to_release_branch_requires_independent_releasability_or_approved_safe_feature_flag
+    - product_defined_repository_and_approval_policy_must_be_preserved
+
   - id: autonomous-feature-can-target-release-branch
     description: A small backward-compatible feature remains a feature when it is safe and useful alone.
     trigger: Add one backward-compatible read-only endpoint with its own acceptance criteria, no sibling dependencies, no incomplete activation path, and independent rollback. Classify the release unit and target.
@@ -124,7 +148,6 @@ skill_test:
     - base_branch_and_pr_target_must_be_explicit_per_work_item
     - epic_child_prs_must_target_the_epic_or_integration_branch
     - product_defined_repository_and_approval_policy_must_be_preserved
-
 
   - id: narrow-query-miss-recovers-existing-owner
     description: Different incident vocabulary must not create a parallel canonical owner.
