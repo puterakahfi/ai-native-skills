@@ -13,7 +13,7 @@
 {{ADDITIONAL_REPOSITORIES}}
 {{PROJECT_SPECIFIC_SOURCES}}
 
-Use only verified resources. Omit unused optional lines. Do not invent URLs, repositories, issues, branches, files, status, tests, limits, approvals, or implementation evidence.
+Use only verified resources. Omit unused lines. Do not invent resources, repository state, tests, limits, approvals, or evidence.
 
 ## Source Priority
 
@@ -82,22 +82,13 @@ Capability evolution verdict:
 Next eligible action:
 ```
 
-Claim a capability as applied only when its procedure produced an observable decision, artifact, finding, evidence item, or gate result. Do not reveal private chain-of-thought; report only reviewable rationale, evidence, decisions, outputs, trade-offs, limits, and handoffs.
+Claim a capability as applied only when it produced an observable decision, artifact, finding, evidence item, or gate result. Report reviewable rationale and evidence, not private chain-of-thought.
 
 ## Before Repository Work
 
-Verify:
+Verify the target repository and branch; issue/project item; objective, scope, and acceptance criteria; governing contracts and skills; repository conventions and current implementation; dependencies and risks; required tests, gates, write policy, and merge authorization.
 
-1. target repository and active branch;
-2. related issue or project item;
-3. objective, scope, and testable acceptance criteria;
-4. relevant core contracts, skills, and workflows;
-5. repository structure, stack, commands, and conventions;
-6. current implementation and known constraints;
-7. dependencies, risks, and known unknowns;
-8. required tests, validators, review gates, write policy, and merge authorization.
-
-Use `NOT_VERIFIED` when evidence is missing. Do not assume an issue number, default branch, PR target, prior merge, or completion state.
+Use `NOT_VERIFIED` for missing evidence. Never assume an issue, branch, PR target, prior merge, or completion state.
 
 ## Delivery Management
 
@@ -111,6 +102,29 @@ Use:
 
 Do not create orphan work items or direct-commit to protected/release branches without authorization.
 
+## Scope and Delivery Granularity
+
+The active scope is the explicit objective, acceptance criteria, approved dependencies, and required validation.
+
+- Execute only work traceable to the active issue, project item, or explicit user instruction.
+- Keep unrequested ideas as deferred recommendations. Do not activate them without approval.
+- Do not use quality, cleanup, or architecture improvement as permission to expand scope.
+- Only disclosed security, correctness, data-loss, or release blockers may enter scope.
+
+Use `delivery-work-breakdown` for formal classification. Operationally:
+
+```text
+epic    = combined outcome requiring dependent features
+feature = coherent, independently reviewable capability or complete flow slice
+task    = implementation work contributing to a feature
+```
+
+Plan tasks separately when useful, but execute and validate a coherent batch that completes an observable feature slice such as a landing page, detail page, settings flow, or API capability.
+
+Avoid separate branches, PRs, commits, or GitHub Actions runs for trivial fragments that can be safely reviewed together. Choose boundaries from acceptance, risk, ownership, and independent releasability—not file count.
+
+Complete the requested end-to-end flow before optional polish, cleanup, broad refactoring, or refinement. Refine earlier only when required or blocking.
+
 ## Evidence and Completion
 
 Keep evidence, inference, assumption, review, approval, delivery, and product acceptance distinct. Missing evidence is not `PASS` or automatic `FAIL`.
@@ -118,6 +132,7 @@ Keep evidence, inference, assumption, review, approval, delivery, and product ac
 Work is complete only when:
 
 - objective and acceptance criteria are met;
+- the complete requested flow works as an integrated outcome;
 - applicable validation and gates pass;
 - repository and project state are updated when changed;
 - known failures and limitations are disclosed;
@@ -133,16 +148,11 @@ After substantive execution, run `skill-evolution` and use:
 NO_CHANGE | LOCAL_ONLY | EVAL_ONLY | BUG | IMPROVEMENT | RFC | DUPLICATE | DEFERRED_UNVERIFIED
 ```
 
-Route findings to:
+Route executable behavior to `ai-native-skills`, canonical meaning/contracts to `ai-native-core`, orchestration/state to `ai-native-fw`, and local implementation/policy to the product repository.
 
-- `ai-native-skills`: executable behavior, workflow, roles, references, rubrics, or evals;
-- `ai-native-core`: canonical meaning, universal contracts, terminology, boundaries, or cross-adapter obligations;
-- `ai-native-fw`: orchestration, bindings, execution state, persistence, or observability;
-- product repository: local implementation, policy, architecture decision, or design lock.
+Create an issue only with a verified case, observed/expected behavior, evidence, reusable gap, duplicate check, owner, and write authorization. Otherwise use a draft, `LOCAL_ONLY`, `DUPLICATE`, or `DEFERRED_UNVERIFIED`.
 
-Create an issue only with a verified source case, observed and expected behavior, evidence, reusable gap, clear owner, duplicate check, and write authorization. Otherwise use a draft, `LOCAL_ONLY`, `DUPLICATE`, or `DEFERRED_UNVERIFIED`.
-
-`BUG` means documented or contract-backed behavior failed. `IMPROVEMENT` means behavior works but reusable reasoning, procedure, gate, reference, composition, or eval is insufficient. `RFC` changes canonical meaning, public contracts, boundaries, taxonomy, lifecycle, or behavior across capabilities/adapters.
+Use `BUG` for contract-backed failure, `IMPROVEMENT` for insufficient reusable behavior, and `RFC` for canonical or public-contract change.
 
 ## Project-Specific Rules
 
@@ -155,6 +165,9 @@ Omit this section when no additional verified rules exist.
 ```text
 Route before execution.
 Inspect before changing.
+Scope before expansion.
+Feature outcome before micro-task churn.
+Flow completion before refinement.
 Evidence before claims.
 Acceptance before completion.
 Authorization before merge.
