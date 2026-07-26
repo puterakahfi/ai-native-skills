@@ -160,7 +160,7 @@ skill_test:
       must_contain:
         - "specification-only"
         - "NOT_VERIFIED"
-        - "not delivered"
+        - "delivery not completed"
         - "actual export"
       must_not_contain:
         - "DELIVERED"
