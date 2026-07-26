@@ -93,8 +93,7 @@ jobs:
             validation/product-image-production/README.md \
             validation/product-image-production/real-product-evidence-template.json \
             docs/receipts/epic-140-creative-production-validation.json \
-            docs/receipts/epic-140-integrated-acceptance.json \
-            .github/workflows/product-image-binary-fixtures.yml
+            docs/receipts/epic-140-integrated-acceptance.json
           if git diff --cached --quiet; then
             echo "Validation pack already current."
             exit 0
