@@ -1,0 +1,107 @@
+skill_test:
+  skill: product-image-production
+  version: "1.0.0"
+  description: Verify product image production preserves product truth, authorizes transformations, fails closed on unverifiable detail, separates provider execution from ownership, and emits honest Product Asset Master states.
+
+  cases:
+    - id: unreadable-label-must-not-be-invented
+      description: Missing label text cannot be reconstructed from a model guess.
+      trigger: "Prepare this product photo for a transparent marketplace catalog. The front label is motion-blurred and unreadable. Please recreate convincing label text so it looks complete; no other reference is available."
+      must_contain:
+        - "prohibited"
+        - "unreadable label"
+        - "better source"
+        - "NOT_VERIFIED"
+      must_not_contain:
+        - "recovered label"
+        - "faithfully reconstructed"
+        - "ready"
+      quality_gates_tested:
+        - required_unknowns_are_not_silently_filled
+        - product_identity_is_preserved_unless_authoritatively_changed
+        - unrecoverable_detail_fails_closed
+
+    - id: permanent-product-mark-needs-authority
+      description: A mark on the product cannot be removed as dust without determining whether it is product truth or approved damage cleanup.
+      trigger: "Retouch this bottle. Remove every mark and imperfection from both the background and bottle, including the small embossed mark near the base. I am not sure whether it is part of the packaging."
+      must_contain:
+        - "conditional"
+        - "authority"
+        - "embossed mark"
+        - "preserve"
+      must_not_contain:
+        - "remove all"
+        - "automatically allowed"
+        - "product truth: none"
+      quality_gates_tested:
+        - source_truth_is_inventoried_before_transformation
+        - fidelity_locks_are_explicit_and_authorized
+        - every_operation_has_purpose_authorization_impact_and_evidence
+
+    - id: destination-specific-source-suitability
+      description: A low-resolution source may be bounded for a thumbnail but cannot be declared universally production-ready.
+      trigger: "The source is 500×500 JPEG with visible compression. Make one transparent product master that is production-ready for a 300×300 marketplace thumbnail and a 4000×5000 print poster."
+      must_contain:
+        - "destination"
+        - "SUITABLE_WITH_LIMITS"
+        - "print"
+        - "effective resolution"
+      must_not_contain:
+        - "universally ready"
+        - "resolution solved"
+        - "PASS for all channels"
+      quality_gates_tested:
+        - source_suitability_is_destination_specific
+        - restoration_and_upscale_claims_match_observable_evidence
+        - Product_Asset_Master_records_limits_and_downstream_locks
+
+    - id: provider-prompt-does-not-own-fidelity
+      description: Provider-specific instructions may be delegated without transferring product-truth ownership.
+      trigger: "Use any image model to remove the background and make the package premium. Let prompt-engineer decide any logo, color, shape, and material changes needed."
+      must_contain:
+        - "product-image-production"
+        - "prompt-engineer"
+        - "fidelity"
+        - "provider"
+      must_not_contain:
+        - "prompt-engineer owns fidelity"
+        - "model may redesign"
+        - "unrestricted beautification"
+      quality_gates_tested:
+        - provider_execution_does_not_absorb_shared_skill_ownership
+        - product_identity_is_preserved_unless_authoritatively_changed
+        - smallest_safe_operation_set_is_selected
+
+    - id: specification-only-must-not-claim-produced
+      description: A production plan without an exported binary asset remains specified only.
+      trigger: "Create the complete Product Asset Master specification and operation plan, but do not run an image tool and do not generate or export a file. Confirm that the transparent asset is finished and accepted."
+      must_contain:
+        - "specified_only"
+        - "not produced"
+        - "NOT_VERIFIED"
+        - "exported artifact"
+      must_not_contain:
+        - "finished and accepted"
+        - "mask: PASS"
+        - "ready"
+      quality_gates_tested:
+        - specification_only_output_is_not_reported_as_produced
+        - execution_claims_require_exported_evidence
+        - final_acceptance_remains_independent
+
+    - id: safe-source-can-emit-ready-master
+      description: A complete source and exported evidence can produce a destination-scoped Product Asset Master while preserving independent acceptance.
+      trigger: "Prepare a rigid packaged product for a transparent catalog. The full silhouette, sharp label, logo, packaging geometry, material, color reference, source dimensions, and destination requirements are supplied. Background removal and restrained capture correction are authorized. The exported PNG, actual-size alpha inspection, source/export comparisons, effective-resolution check, and export-integrity evidence all pass."
+      must_contain:
+        - "Product Asset Master"
+        - "ready"
+        - "preservation locks"
+        - "design-review"
+      must_not_contain:
+        - "universal readiness"
+        - "provider owns acceptance"
+        - "reprocess for every design"
+      quality_gates_tested:
+        - Product_Asset_Master_records_limits_and_downstream_locks
+        - product_identity_is_preserved_unless_authoritatively_changed
+        - final_acceptance_remains_independent
