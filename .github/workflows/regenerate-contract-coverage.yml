@@ -1,0 +1,55 @@
+name: Regenerate Contract Coverage Report
+
+on:
+  push:
+    branches:
+      - 140-142-product-image-production-mvp
+    paths:
+      - .github/workflows/regenerate-contract-coverage.yml
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Checkout canonical core
+        uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-core
+          path: ai-native-core
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install generator dependencies
+        run: python -m pip install --disable-pip-version-check PyYAML
+
+      - name: Generate canonical report
+        run: >-
+          python scripts/inventory-contract-coverage.py
+          --root .
+          --core-root ai-native-core
+          --output docs/contract-coverage-discovery.yaml
+
+      - name: Commit generated report
+        shell: bash
+        run: |
+          if git diff --quiet -- docs/contract-coverage-discovery.yaml; then
+            echo "Report already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/contract-coverage-discovery.yaml
+          git commit -m "docs(contracts): regenerate coverage inventory"
+          git push origin HEAD:${{ github.ref_name }}
