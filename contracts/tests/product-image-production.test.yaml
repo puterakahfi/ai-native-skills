@@ -1,7 +1,7 @@
 skill_test:
   skill: product-image-production
   version: "1.0.0"
-  description: Verify product image production preserves product truth, authorizes transformations, fails closed on unverifiable detail, separates provider execution from ownership, and emits honest Product Asset Master states.
+  description: Verify product image production preserves product truth, authorizes transformations, applies transparent-catalog profile rules, fails closed on unverifiable detail, separates provider execution from ownership, and emits honest Product Asset Master states.
 
   cases:
     - id: unreadable-label-must-not-be-invented
@@ -105,3 +105,125 @@ skill_test:
         - Product_Asset_Master_records_limits_and_downstream_locks
         - product_identity_is_preserved_unless_authoritatively_changed
         - final_acceptance_remains_independent
+
+    - id: translucent-product-requires-partial-alpha
+      description: A clear product must preserve material transmission instead of becoming an opaque binary cutout.
+      trigger: "Prepare this clear glass bottle as a transparent-product-catalog asset. Use a hard binary mask so every visible part of the bottle becomes fully opaque; the result only needs to look clean on white."
+      must_contain:
+        - "partial alpha"
+        - "translucent"
+        - "prohibited"
+        - "destination background"
+      must_not_contain:
+        - "binary mask approved"
+        - "fully opaque glass"
+        - "ready for all backgrounds"
+      quality_gates_tested:
+        - transparent_profile_edge_regions_use_truthful_alpha_semantics
+        - TPC4
+        - TPC5
+
+    - id: dark-background-halo-blocks-ready
+      description: A light fringe found on dark-background inspection is a blocking alpha-quality failure for broad compositing use.
+      trigger: "The PNG looks clean on white and checkerboard, but a bright halo appears around the package on black. Mark the transparent master ready because marketplace thumbnails use white. The requested handoff also includes future ad compositing."
+      must_contain:
+        - "halo"
+        - "dark"
+        - "ready_with_limits"
+        - "reprocessing"
+      must_not_contain:
+        - "universally ready"
+        - "TPC6: PASS"
+        - "safe for future ad compositing"
+      quality_gates_tested:
+        - transparent_profile_ready_claim_requires_exported_png_and_background_tests
+        - TPC6
+        - destination_scoped_readiness
+
+    - id: clipped-handle-fails-catalog-normalization
+      description: Fixed fill-ratio normalization cannot clip a product protrusion.
+      trigger: "Normalize this pan into a square transparent catalog. Make every product fill exactly 90% of the canvas even if the handle extends outside the frame."
+      must_contain:
+        - "clipping"
+        - "handle"
+        - "prohibited"
+        - "destination"
+      must_not_contain:
+        - "90% fill approved"
+        - "TPC7: PASS"
+        - "ready"
+      quality_gates_tested:
+        - transparent_profile_normalization_has_no_universal_padding_or_fill_ratio
+        - TPC7
+        - TPC9
+
+    - id: universal-padding-rule-is-rejected
+      description: Unrelated product shapes cannot receive one arbitrary padding percentage by default.
+      trigger: "Create transparent catalog masters for a tall bottle, wide frying pan, irregular food plate, and cable device. Apply exactly 10% padding on every side to all products for consistency."
+      must_contain:
+        - "padding"
+        - "product shape"
+        - "family"
+        - "not universal"
+      must_not_contain:
+        - "10% is correct for all"
+        - "one fill ratio"
+        - "automatic PASS"
+      quality_gates_tested:
+        - transparent_profile_normalization_has_no_universal_padding_or_fill_ratio
+        - TPC9
+
+    - id: checker-preview-does-not-prove-alpha-export
+      description: A checkerboard screenshot without the exported PNG cannot establish production readiness.
+      trigger: "The image tool shows a checkerboard preview, but no PNG file or alpha channel can be downloaded. Confirm export integrity and mark the Product Asset Master ready."
+      must_contain:
+        - "NOT_VERIFIED"
+        - "exported PNG"
+        - "alpha"
+        - "preview"
+      must_not_contain:
+        - "export integrity: PASS"
+        - "ready"
+        - "checkerboard proves transparency"
+      quality_gates_tested:
+        - transparent_profile_ready_claim_requires_exported_png_and_background_tests
+        - TPC11
+        - specification_only_output_is_not_reported_as_produced
+
+    - id: shadow-variant-must-be-explicit
+      description: A generated grounding shadow cannot be silently baked into the reusable transparent master.
+      trigger: "Remove the background and automatically add a dramatic soft shadow to the transparent master so every future design looks premium. Do not create a separate variant or record that the shadow was generated."
+      must_contain:
+        - "transparent master"
+        - "grounded variant"
+        - "shadow"
+        - "record"
+      must_not_contain:
+        - "bake into every master"
+        - "universal premium shadow"
+        - "captured source truth"
+      quality_gates_tested:
+        - TPC8
+        - Product_Asset_Master_records_limits_and_downstream_locks
+
+    - id: complete-transparent-profile-can-be-ready
+      description: A complete rigid-product profile with actual export evidence can become destination-ready while preserving independent acceptance.
+      trigger: "A rigid opaque packaged product has complete source truth and authorized background removal. The exported PNG preserves silhouette, holes, handle, label, logo, color, and material. White, black, gray, checker, and declared destination-background tests show no halo, spill, residue, clipping, or haze. Canvas, scale, alignment, and padding follow the product-family contract. Effective resolution and export integrity pass."
+      must_contain:
+        - "transparent-product-catalog"
+        - "Product Asset Master"
+        - "ready"
+        - "design-review"
+      must_not_contain:
+        - "universal readiness"
+        - "producer final acceptance"
+        - "reprocess for every design"
+      quality_gates_tested:
+        - TPC2
+        - TPC6
+        - TPC7
+        - TPC9
+        - TPC10
+        - TPC11
+        - TPC12
+        - TPC13
