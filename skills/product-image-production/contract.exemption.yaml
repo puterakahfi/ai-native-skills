@@ -24,6 +24,7 @@ contract_exemption:
   - kind: decision_record
     ref: docs/decisions/issue-140-creative-production-boundaries.md
   revisit:
+    blocking_issue: puterakahfi/ai-native-skills#140
     triggers:
     - product-image-production passes multi-category real-product validation
     - transparent-product-catalog and commercial-production routing are validated
