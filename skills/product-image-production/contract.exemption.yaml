@@ -19,19 +19,21 @@ contract_exemption:
     ref: puterakahfi/ai-native-skills#140
   - kind: github_issue
     ref: puterakahfi/ai-native-skills#141
+  - kind: github_issue
+    ref: puterakahfi/ai-native-core#60
   - kind: executable_source
     ref: skills/product-image-production/SKILL.md
-  - kind: decision_record
+  - kind: executable_source
     ref: docs/decisions/issue-140-creative-production-boundaries.md
   revisit:
-    blocking_issue: puterakahfi/ai-native-skills#140
+    blocking_issue: puterakahfi/ai-native-core#60
     triggers:
     - product-image-production passes multi-category real-product validation
     - transparent-product-catalog and commercial-production routing are validated
     - a public cross-adapter obligation is demonstrated by multiple executable cases
   prohibited_claims:
   - core_contract_conformance
-  - exported_artifact_verification
+  - behavioral_verification
   - runtime_acceptance
   - product_acceptance
   - approval_or_authorization
