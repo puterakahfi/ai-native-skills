@@ -1,18 +1,17 @@
-name: Bootstrap Product Image Validation
+name: Cleanup Product Image Validation Bootstrap
 
 on:
   pull_request:
     branches:
       - 140-commercial-creative-production-spec
     paths:
-      - "validation/product-image-production/bootstrap/payload.part*"
       - ".github/workflows/bootstrap-product-image-validation.yml"
 
 permissions:
   contents: write
 
 jobs:
-  bootstrap:
+  cleanup:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -23,82 +22,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
-      - name: Verify expected validation branch
+      - name: Remove temporary bootstrap payloads
         shell: bash
         run: |
           set -euo pipefail
-          test "${GITHUB_HEAD_REF}" = "140-145-creative-production-validation"
-
-      - name: Extract deterministic validation pack
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import base64
-          import hashlib
-          import io
-          import zipfile
-          from pathlib import Path
-
-          bootstrap = Path("validation/product-image-production/bootstrap")
-          chunk_names = [
-              "payload.part01",
-              "payload.part02",
-              "payload.part03",
-              "payload.part04",
-              "payload.part05a",
-              "payload.part05b1",
-              "payload.part05b2",
-              "payload.part05b3",
-          ]
-          encoded = "".join(
-              "".join((bootstrap / name).read_text(encoding="utf-8").split())
-              for name in chunk_names
-          )
-          if len(encoded) != 29428:
-              raise SystemExit(f"unexpected payload length: {len(encoded)}")
-
-          archive = base64.b64decode(encoded, validate=True)
-          digest = hashlib.sha256(archive).hexdigest()
-          expected_digest = "d612deb6f39600bfd93d6fa340890d4737fa254ff23be7e840d3b4bec8b878e0"
-          if digest != expected_digest:
-              raise SystemExit(f"payload digest mismatch: {digest}")
-
-          with zipfile.ZipFile(io.BytesIO(archive)) as bundle:
-              names = bundle.namelist()
-              prohibited = [
-                  name for name in names
-                  if name.startswith("/") or ".." in Path(name).parts
-              ]
-              if prohibited:
-                  raise SystemExit(f"unsafe payload paths: {prohibited}")
-              bundle.extractall(Path("."))
-          PY
-
-      - name: Validate extracted pack before commit
-        run: |
-          python scripts/validate-product-image-fixtures.py \
-            --manifest validation/product-image-production/fixtures/manifest.json \
-            --report /tmp/product-image-validation.json \
-            --compare docs/receipts/epic-140-creative-production-validation.json
-
-      - name: Commit canonical validation files
-        shell: bash
-        run: |
-          set -euo pipefail
-          git add \
-            scripts/validate-product-image-fixtures.py \
-            validation/product-image-production/fixtures/manifest.json \
-            validation/product-image-production/fixtures/bundle.json \
-            validation/product-image-production/README.md \
-            validation/product-image-production/real-product-evidence-template.json \
-            docs/receipts/epic-140-creative-production-validation.json \
-            docs/receipts/epic-140-integrated-acceptance.json
-          if git diff --cached --quiet; then
-            echo "Validation pack already current."
-            exit 0
-          fi
+          git rm -r validation/product-image-production/bootstrap
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "test(creative): add binary product image validation evidence"
+          git commit -m "chore(validation): remove bootstrap payloads"
           git push origin "HEAD:${GITHUB_HEAD_REF}"
