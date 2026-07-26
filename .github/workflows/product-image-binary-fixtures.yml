@@ -1,0 +1,46 @@
+name: Product Image Binary Fixtures
+
+on:
+  pull_request:
+    paths:
+      - "scripts/validate-product-image-fixtures.py"
+      - "validation/product-image-production/**"
+      - "docs/receipts/epic-140-creative-production-validation.json"
+      - ".github/workflows/product-image-binary-fixtures.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/validate-product-image-fixtures.py"
+      - "validation/product-image-production/**"
+      - "docs/receipts/epic-140-creative-production-validation.json"
+      - ".github/workflows/product-image-binary-fixtures.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate deterministic product-image fixtures
+        run: |
+          python scripts/validate-product-image-fixtures.py \
+            --manifest validation/product-image-production/fixtures/manifest.json \
+            --report /tmp/product-image-validation.json \
+            --compare docs/receipts/epic-140-creative-production-validation.json
+
+      - name: Upload validation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: product-image-binary-validation-${{ github.run_id }}
+          path: /tmp/product-image-validation.json
