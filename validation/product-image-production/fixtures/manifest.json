@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "evidence_class": "synthetic_controlled_binary_fixtures",
+  "production_readiness_claim": false,
+  "limitations": [
+    "Fixtures are deterministic synthetic product-like images, not real product photography.",
+    "No external provider/model execution is represented.",
+    "Real-product before/after validation and independent visual acceptance remain NOT_VERIFIED."
+  ],
+  "cases": [
+    {
+      "id": "rigid-packaged-pass",
+      "category": "rigid_packaged_product",
+      "expected": "PASS",
+      "source": "rigid_source.png",
+      "output": "rigid_transparent_master.png",
+      "checks": {
+        "png_integrity": true,
+        "no_border_clipping": true,
+        "no_transparent_rgb_spill": true,
+        "max_small_components": 0,
+        "label_region": [
+          34,
+          35,
+          62,
+          62
+        ],
+        "label_must_match_source": true,
+        "required_alpha_mode": "binary",
+        "minimum_effective_resolution": [
+          64,
+          64
+        ]
+      }
+    },
+    {
+      "id": "translucent-partial-alpha-pass",
+      "category": "reflective_or_translucent_product",
+      "expected": "PASS",
+      "source": "translucent_source.png",
+      "output": "translucent_transparent_master.png",
+      "checks": {
+        "png_integrity": true,
+        "no_border_clipping": true,
+        "required_alpha_mode": "partial",
+        "minimum_partial_alpha_pixels": 200,
+        "no_transparent_rgb_spill": true
+      }
+    },
+    {
+      "id": "organic-soft-edge-pass",
+      "category": "organic_soft_edge_product",
+      "expected": "PASS",
+      "source": "organic_source.png",
+      "output": "organic_transparent_master.png",
+      "checks": {
+        "png_integrity": true,
+        "no_border_clipping": true,
+        "required_alpha_mode": "partial",
+        "minimum_partial_alpha_pixels": 100,
+        "no_transparent_rgb_spill": true,
+        "max_small_components": 0
+      }
+    },
+    {
+      "id": "unsuitable-source-fail",
+      "category": "unsuitable_source",
+      "expected": "FAIL_CLOSED",
+      "source": "unsuitable_lowres_source.png",
+      "checks": {
+        "minimum_source_resolution": [
+          64,
+          64
+        ],
+        "fine_detail_required": true,
+        "required_product_truth": [
+          "label_text"
+        ],
+        "missing_product_truth": [
+          "label_text"
+        ]
+      }
+    },
+    {
+      "id": "downstream-reuse-pass",
+      "category": "prepared_asset_reuse",
+      "expected": "PASS",
+      "asset": "rigid_transparent_master.png",
+      "clean_composite": "rigid_clean_catalog.png",
+      "ad_composite": "rigid_ad_composite.png",
+      "checks": {
+        "composites_match_asset_math": true,
+        "asset_hash_unchanged": true,
+        "expected_asset_sha256": "8c597b956eac7bbef763a3bbc97f813888961038f4f43f1e31b477c34b94a0ee"
+      }
+    },
+    {
+      "id": "halo-fail",
+      "category": "counterexample",
+      "expected": "FAIL",
+      "output": "negative_halo.png",
+      "checks": {
+        "no_transparent_rgb_spill": true
+      }
+    },
+    {
+      "id": "clipping-fail",
+      "category": "counterexample",
+      "expected": "FAIL",
+      "output": "negative_clipping.png",
+      "checks": {
+        "no_border_clipping": true
+      }
+    },
+    {
+      "id": "residue-fail",
+      "category": "counterexample",
+      "expected": "FAIL",
+      "output": "negative_residue.png",
+      "checks": {
+        "max_small_components": 0
+      }
+    },
+    {
+      "id": "invented-label-fail",
+      "category": "counterexample",
+      "expected": "FAIL",
+      "source": "rigid_source.png",
+      "output": "negative_invented_label.png",
+      "checks": {
+        "label_region": [
+          34,
+          35,
+          62,
+          62
+        ],
+        "label_must_match_source": true
+      }
+    },
+    {
+      "id": "baked-shadow-fail",
+      "category": "counterexample",
+      "expected": "FAIL",
+      "output": "negative_baked_shadow.png",
+      "checks": {
+        "declared_variant_role": "transparent_master",
+        "authorized_product_bbox": [
+          28,
+          12,
+          68,
+          84
+        ],
+        "allow_alpha_outside_product_bbox": false
+      }
+    },
+    {
+      "id": "aggressive-upscale-fail",
+      "category": "counterexample",
+      "expected": "FAIL_CLOSED",
+      "source": "unsuitable_lowres_source.png",
+      "output": "negative_aggressive_upscale.png",
+      "checks": {
+        "maximum_upscale_ratio": 4.0,
+        "fine_detail_required": true
+      }
+    }
+  ],
+  "bundle_file": "bundle.json"
+}
