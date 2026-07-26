@@ -87,17 +87,40 @@ Verified feature scope, repository implementation-context mapping, implementatio
 ```bash
 npx skills add puterakahfi/ai-native-skills \
   --skill new-feature-workflow \
+  --skill production-code-quality-baseline \
   --skill master-engineer \
   --skill master-design \
   --skill implementation-context-discovery \
   --skill decision-provenance \
   --skill spec-workflow \
   --skill test-driven-development \
+  --skill clean-code \
   --skill architecture-review \
   --skill design-review \
   --skill code-review-workflow \
   --skill security-review \
   --skill threat-modeling \
+  -g -y
+```
+
+---
+
+## Bugfix Delivery Pack
+
+Root-cause repair with explicit RED-before-GREEN evidence, repository-context mapping when material, clean-code and module/failure-path assessment, independent architecture and code review, and separate merge authorization.
+
+```bash
+npx skills add puterakahfi/ai-native-skills \
+  --skill bugfix-workflow \
+  --skill production-code-quality-baseline \
+  --skill systematic-debugging \
+  --skill implementation-context-discovery \
+  --skill master-engineer \
+  --skill test-driven-development \
+  --skill clean-code \
+  --skill architecture-review \
+  --skill code-review-workflow \
+  --skill security-review \
   -g -y
 ```
 
@@ -170,6 +193,9 @@ npx skills add puterakahfi/ai-native-skills \
   --skill implementation-context-discovery \
   --skill spec-workflow \
   --skill new-feature-workflow \
+  --skill production-code-quality-baseline \
+  --skill test-driven-development \
+  --skill clean-code \
   --skill design-review \
   --skill threat-modeling \
   --skill code-review-workflow \
@@ -212,7 +238,9 @@ npx skills add puterakahfi/ai-native-skills \
   --skill implementation-context-discovery \
   --skill spec-workflow \
   --skill new-feature-workflow \
+  --skill production-code-quality-baseline \
   --skill test-driven-development \
+  --skill clean-code \
   --skill design-review \
   --skill threat-modeling \
   --skill security-review \
@@ -259,10 +287,11 @@ The pack does not define provider commands or environment policy. Product adapte
 
 ## Engineering Quality Pack
 
-Architecture and implementation quality loop — repository-context mapping, pragmatic architecture and object-design decisions, internal code quality, testing, debugging, behavior-preserving refactoring, independent architecture/security/code review, and technical-debt governance.
+Default cross-workflow production-code quality overlay plus repository-context mapping, pragmatic architecture and object-design decisions, internal code quality, testing, debugging, behavior-preserving refactoring, independent architecture/security/code review, and technical-debt governance.
 
 ```bash
 npx skills add puterakahfi/ai-native-skills \
+  --skill production-code-quality-baseline \
   --skill implementation-context-discovery \
   --skill master-engineer \
   --skill clean-architecture \
@@ -278,4 +307,4 @@ npx skills add puterakahfi/ai-native-skills \
   -g -y
 ```
 
-`clean-code` is the baseline implementation-quality lens. Load `solid-design` only for material responsibility, extension, substitution, client-interface, or dependency-design pressure. Load `clean-architecture` only for material architecture-style or policy/mechanism boundary decisions; it may correctly return `NOT_JUSTIFIED`. Independent `architecture-review` and `code-review-workflow` remain required acceptance gates.
+`production-code-quality-baseline` coordinates applicability, execution evidence, gate results, and authority handoff across the governing lifecycle. `clean-code` remains the baseline implementation-quality lens. Load `solid-design` only for material responsibility, extension, substitution, client-interface, or dependency-design pressure. Load `clean-architecture` only for material architecture-style or policy/mechanism boundary decisions; it may correctly return `NOT_JUSTIFIED`. Independent `architecture-review` and `code-review-workflow` remain required acceptance gates.

@@ -1,6 +1,6 @@
 skill_test:
   skill: new-feature-workflow
-  version: "2.4.0"
+  version: "2.5.0"
   description: Verify feature scope and decision authority, design and implementation-context preconditions, evidence gates, architecture review, and final merge authorization.
 
   cases:

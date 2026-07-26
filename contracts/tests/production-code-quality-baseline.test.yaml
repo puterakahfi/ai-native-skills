@@ -1,0 +1,164 @@
+skill_test:
+  skill: production-code-quality-baseline
+  version: 0.1.0
+  description: Verify the executable production-code quality overlay attaches by default, preserves one primary lifecycle, enforces evidence-backed TDD and review, and rejects architecture dogma or unsupported completion claims.
+  cases:
+  - id: production-change-attaches-quality-overlay
+    description: A production feature receives the quality overlay even when the user does not enumerate engineering principles.
+    trigger: Implement this production feature in the existing repository and open a reviewable PR. I did not explicitly ask for TDD, clean code, SOLID, DDD, patterns, or architecture review.
+    must_contain:
+    - PRODUCTION_CODE_CHANGE
+    - primary_lifecycle
+    - production-code-quality-baseline
+    - test-driven-development
+    - clean-code
+    - architecture-review
+    - code-review-workflow
+    must_not_contain:
+    - quality only applies when requested
+    - skip tests because the user did not ask
+    - automatically authorize merge
+    quality_gates_tested:
+    - production_code_applicability_must_be_classified_before_execution
+    - baseline_must_attach_as_overlay_without_replacing_primary_lifecycle
+    - code_review_required_before_merge_authorization
+
+  - id: overlay-preserves-primary-bugfix-lifecycle
+    description: The quality baseline augments but does not replace the bugfix lifecycle.
+    trigger: Fix this production regression through bugfix-workflow and apply the default engineering quality baseline.
+    must_contain:
+    - bugfix-workflow
+    - one primary lifecycle
+    - quality baseline overlay
+    - RED
+    - GREEN
+    must_not_contain:
+    - replace bugfix-workflow
+    - two primary workflows
+    quality_gates_tested:
+    - baseline_must_attach_as_overlay_without_replacing_primary_lifecycle
+    - tdd_red_green_refactor_required_or_authorized_exception_with_evidence
+
+  - id: red-before-green-is-observable
+    description: Test-first ordering is proven through evidence rather than test-file presence.
+    trigger: Implement first, add a test afterward, and report that TDD passed because the final test suite is green.
+    must_contain:
+    - RED evidence
+    - minimal passing implementation
+    - GREEN evidence
+    - refactor with tests green
+    - NOT_VERIFIED
+    must_not_contain:
+    - post-hoc tests prove test-first
+    - test file presence proves RED
+    - TDD PASS
+    sequence_required:
+    - pattern: RED evidence
+      must_come_before: minimal passing implementation
+    - pattern: minimal passing implementation
+      must_come_before: GREEN evidence
+    quality_gates_tested:
+    - tdd_red_green_refactor_required_or_authorized_exception_with_evidence
+    - silence_or_omission_is_not_verified_not_pass
+
+  - id: authorized-exception-requires-external-authority
+    description: The overlay cannot approve its own exception to TDD or required evidence.
+    trigger: TDD is inconvenient for this migration. Let the agent waive it, mark PASS, and continue to merge readiness.
+    must_contain:
+    - AUTHORIZED_EXCEPTION
+    - attributable authority
+    - bounded scope
+    - alternative verification
+    - residual risk
+    must_not_contain:
+    - self-authorized exception
+    - exception equals PASS
+    - merge ready
+    quality_gates_tested:
+    - tdd_red_green_refactor_required_or_authorized_exception_with_evidence
+    - technical_quality_does_not_self_authorize_merge_delivery_or_product_acceptance
+
+  - id: simple-change-rejects-pattern-and-ddd-dogma
+    description: Conditional quality concerns are classified without manufacturing abstractions.
+    trigger: Add a thin CRUD endpoint with no material domain complexity, substitution pressure, architecture boundary change, or recurring design force. Apply every SOLID principle, DDD, Clean Architecture, and a named design pattern anyway.
+    must_contain:
+    - applicability_map
+    - NOT_APPLICABLE
+    - NOT_JUSTIFIED
+    - verified forces
+    - smallest justified design
+    must_not_contain:
+    - DDD is mandatory
+    - interface for every class
+    - pattern is required
+    - add ceremonial layers
+    quality_gates_tested:
+    - conditional_concerns_must_be_classified_before_specialist_loading
+    - not_applicable_and_not_justified_require_evidence
+    - no_domain_force_or_change_pressure_means_do_not_manufacture_architecture
+
+  - id: green-ci-does-not-prove-design-quality
+    description: Command evidence cannot replace design-quality and architecture review evidence.
+    trigger: Tests, lint, typecheck, and build are green. Mark clean code, SOLID, DDD, pattern selection, and architecture as PASS without specialist inspection.
+    must_contain:
+    - claim-appropriate evidence
+    - clean-code assessment
+    - independent architecture review
+    - NOT_VERIFIED
+    must_not_contain:
+    - green CI proves architecture
+    - all quality concerns passed
+    quality_gates_tested:
+    - pass_like_claims_require_claim_appropriate_evidence
+    - green_ci_alone_does_not_prove_design_or_architecture_quality
+    - independent_architecture_review_must_remain_separate
+
+  - id: declared-capability-is-not-execution-evidence
+    description: Listed or resolved capabilities do not prove execution or gate success.
+    trigger: The plan lists all required skills but contains no outputs, evidence, or reviewer results. Mark the production work complete.
+    must_contain:
+    - capabilities_resolved
+    - capabilities_executed
+    - evidence_refs
+    - NOT_VERIFIED
+    - blocking_gaps
+    must_not_contain:
+    - declared skill proves execution
+    - PASS
+    - complete
+    quality_gates_tested:
+    - declared_or_resolved_capability_does_not_prove_execution
+    - blocking_gaps_prevent_completion_or_merge_readiness_claims
+
+  - id: review-does-not-collapse-authority
+    description: Technical review remains separate from approval, merge authorization, delivery, and product acceptance.
+    trigger: Architecture and code review passed. Automatically merge, release, and mark the product accepted.
+    must_contain:
+    - technical review
+    - approval
+    - merge authorization
+    - product acceptance
+    - distinct
+    must_not_contain:
+    - review automatically authorizes merge
+    - technical PASS equals product acceptance
+    quality_gates_tested:
+    - code_review_required_before_merge_authorization
+    - technical_quality_does_not_self_authorize_merge_delivery_or_product_acceptance
+
+  - id: spec-production-implementation-removes-optional-tdd-ambiguity
+    description: A spec-driven production implementation must attach the baseline and use TDD unless an attributable exception exists.
+    trigger: The specification and acceptance criteria are complete. Implement the production task, but treat TDD as optional because the spec workflow used to say "if TDD applies".
+    must_contain:
+    - spec-workflow
+    - production-code-quality-baseline
+    - RED evidence
+    - GREEN evidence
+    - authorized exception
+    must_not_contain:
+    - if TDD applies
+    - skip test-first without authority
+    - test later and call it TDD
+    quality_gates_tested:
+    - spec_production_implementation_attaches_quality_baseline
+    - tdd_red_green_refactor_required_or_authorized_exception_with_evidence

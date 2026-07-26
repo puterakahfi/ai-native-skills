@@ -3,15 +3,15 @@ name: bugfix-workflow
 description: Guided bugfix workflow — reproduce, investigate, classify repository-convention impact, discover implementation context when material, fix, verify, submit, and review. Stack-sensitive fixes must map canonical repository systems before code; isolated fixes remain lightweight.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.2.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "systematic-debugging implementation-context-discovery master-engineer security-review test-driven-development architecture-review"
+  ai-native-skills.requires: "systematic-debugging implementation-context-discovery master-engineer security-review test-driven-development clean-code architecture-review code-review-workflow production-code-quality-baseline"
   ai-native-skills.type: workflow
   ai-native-skills.implements: ai-native-core/contracts/workflows/bugfix.contract.yaml
   ai-native-skills.contract-version: "~0.3"
-  ai-native-skills.skill_load_order: '[{"phase":"investigate","load":["systematic-debugging"]},{"phase":"pre-fix-context","load":["implementation-context-discovery"],"condition":"material_repository_conventions_affected"},{"phase":"fix","load":["systematic-debugging"]},{"phase":"review","load":["architecture-review"]}]'
-  ai-native-skills.skills: '{"required":["systematic-debugging","architecture-review"],"optional":["implementation-context-discovery","master-engineer"]}'
-  ai-native-skills.related_skills: '["implementation-context-discovery","architecture-review","test-driven-development","decision-provenance"]'
+  ai-native-skills.skill_load_order: '[{"phase":"reproduce","load":["production-code-quality-baseline","test-driven-development"]},{"phase":"investigate","load":["systematic-debugging"]},{"phase":"pre-fix-context","load":["implementation-context-discovery"],"condition":"material_repository_conventions_affected"},{"phase":"fix","load":["systematic-debugging","master-engineer","test-driven-development","clean-code"]},{"phase":"verify","load":["clean-code","production-code-quality-baseline"]},{"phase":"review","load":["architecture-review","code-review-workflow"]}]'
+  ai-native-skills.skills: '{"required":["production-code-quality-baseline","systematic-debugging","test-driven-development","clean-code","architecture-review","code-review-workflow"],"optional":["implementation-context-discovery","master-engineer","security-review"]}'
+  ai-native-skills.related_skills: '["production-code-quality-baseline","implementation-context-discovery","architecture-review","code-review-workflow","test-driven-development","clean-code","decision-provenance"]'
 ---
 
 # Bugfix Workflow
@@ -42,14 +42,16 @@ This adapter preserves the canonical six-phase lifecycle. The pre-fix repository
 ## Overview
 
 ```text
-reproduce
+reproduce and record RED evidence
+→ attach production-code-quality-baseline
 → investigate root cause
-→ classify implementation-context impact
+→ classify implementation-context and conditional quality impact
 → discover and lock repository conventions when material
-→ regression test and smallest root-cause fix
-→ verify
+→ smallest root-cause fix with TDD and clean-code
+→ verify claims, evidence, and baseline gates
 → submit
-→ independent architecture review and approval
+→ independent architecture review and code review
+→ separate merge authorization
 ```
 
 Branch strategy, issue tracker, verification method, and approval policy remain product-defined.
@@ -66,15 +68,22 @@ Branch strategy, issue tracker, verification method, and approval policy remain 
 8. When implementation context is not material, record `NOT_APPLICABLE` with evidence and keep the workflow lightweight.
 9. One root-cause fix at a time; no unrelated cleanup, migration, redesign, or dependency change.
 10. Architecture review remains independent after implementation.
+11. Attach `production-code-quality-baseline` because a production bugfix changes existing behavior.
+12. `test-driven-development` owns RED → minimal GREEN → refactor while green; final green tests do not prove test-first ordering.
+13. Apply `clean-code` to the materially changed implementation without unrelated cleanup.
+14. Classify SOLID, DDD, patterns, Clean Architecture, security, performance, resilience, observability, data, and design concerns; load specialists only when justified.
+15. Run `code-review-workflow` after architecture review; technical review does not create merge authorization.
 
 ## Required skills
 
 | Phase | Skill | Applicability |
 |---|---|---|
+| Reproduce/plan | `production-code-quality-baseline`, `test-driven-development` | required |
 | Investigate | `systematic-debugging` | required |
 | Pre-fix context | `implementation-context-discovery` | conditional when material repository conventions are affected |
-| Fix | `systematic-debugging`; `master-engineer` when needed | required / conditional |
-| Review | `architecture-review` | required |
+| Fix | `systematic-debugging`, `master-engineer`, `test-driven-development`, `clean-code` | required / conditional owner |
+| Verify | `clean-code`, `production-code-quality-baseline` | required |
+| Review | `architecture-review`, `code-review-workflow` | required |
 
 ## Phase 1 — Reproduce
 
@@ -181,7 +190,7 @@ Examples include a bounded pure-domain calculation defect or an isolated parser 
 
 **Gate:** one mapped root-cause change at a time.
 
-1. Write a regression test that reproduces the bug (`RED`).
+1. Load `production-code-quality-baseline`, `test-driven-development`, and `clean-code`; write a regression test that reproduces the bug (`RED`) and preserve ordering evidence.
 2. Implement the smallest fix targeting the stated root cause.
 3. When context is material, reuse/extend/compose only through the approved mapping.
 4. Confirm the regression test passes (`GREEN`).
@@ -211,6 +220,8 @@ changed import/path/dependency audit
 canonical component/token/icon/state/form/query/data conformance
 rendered/runtime/accessibility evidence when behavior is user-facing
 absence of prohibited parallel systems
+clean-code assessment and behavior-change risk
+production-code quality claims, evidence, gate results, and blocking gaps
 ```
 
 Source/import alignment does not prove runtime, visual, interaction, or accessibility acceptance.
@@ -238,7 +249,7 @@ Include:
 
 **Gate:** independent approval before merge.
 
-Load `architecture-review`. Verify the actual diff against the engineering contract and discovered implementation context. Compilation or a green regression test is not architecture approval.
+Load `architecture-review`, then `code-review-workflow`. Verify the actual diff against the engineering contract, quality-baseline report, and discovered implementation context. Compilation or a green regression test is not architecture approval, and technical review does not create merge authorization.
 
 - [ ] root-cause correction is bounded;
 - [ ] canonical systems were preserved;
@@ -257,7 +268,7 @@ Load `architecture-review`. Verify the actual diff against the engineering contr
 | Fix | One mapped change | Regression green; no drift |
 | Verify | Evidence | Technical and convention checks resolved |
 | Submit | Issue and topology traceability | Reviewable submission open |
-| Review | Independent approval | Approved and authorized for merge |
+| Review | Independent architecture and code review | Technical verdict recorded; separate merge authority still required |
 
 ## Common pitfalls
 

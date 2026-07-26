@@ -7,9 +7,9 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 Current repository inventory:
 
 - `skill`: 91
-- `workflow`: 10
+- `workflow`: 11
 - `meta-skill`: 6
-- Total executable skills: 107
+- Total executable skills: 108
 
 ---
 
@@ -133,6 +133,7 @@ A good workflow defines:
 | `deployment-workflow` | pre-deploy → context-load → deploy → health-verify → confirm/rollback |
 | `redesign-workflow` | route → owners → inspect → direction → layered plan → implementation-context mapping → produce → verify → architecture/design review → fix → deliver |
 | `product-development-workflow` | discovery → PRD → MVP/release-unit decomposition → spec → implementation → verification → release → deploy → launch → learn |
+| `production-code-quality-baseline` | classify production impact → attach to one primary lifecycle → plan TDD/quality applicability → execute → verify claims/evidence → independent review → authority handoff |
 | `design-refinement` | verified finding → lock/budget → implementation-context mapping → smallest patch → verify → focused review → deliver |
 | `skill-doctor` | audit → triage → repair → verify |
 | `skill-evolution` | observe verified product learning → diagnose reusable gap → apply minimal skill/workflow/eval/core patch → validate → promote |
@@ -169,7 +170,7 @@ A good meta-skill defines:
 | `design-strategy` | Route psychology, information architecture, collection discovery, CRO, copy, and content. |
 | `design-interaction` | Route interaction patterns, states, behavior, and accessibility semantics. |
 
-A platform, repository, or continuity specialist normally overlays an existing lifecycle rather than replacing it.
+A platform, repository, continuity, or production-code quality specialist normally overlays an existing lifecycle rather than replacing it.
 
 ```text
 ChatGPT App product from zero

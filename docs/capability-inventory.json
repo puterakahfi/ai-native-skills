@@ -3,9 +3,9 @@
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
     "skill": 91,
-    "workflow": 10,
+    "workflow": 11,
     "meta-skill": 6,
-    "total": 107
+    "total": 108
   },
   "items": [
     {
@@ -522,6 +522,11 @@
       "name": "product-development-workflow",
       "type": "workflow",
       "path": "skills/product-development-workflow/SKILL.md"
+    },
+    {
+      "name": "production-code-quality-baseline",
+      "type": "workflow",
+      "path": "skills/production-code-quality-baseline/SKILL.md"
     },
     {
       "name": "redesign-workflow",
