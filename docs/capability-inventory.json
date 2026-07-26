@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 91,
+    "skill": 92,
     "workflow": 10,
     "meta-skill": 6,
-    "total": 107
+    "total": 108
   },
   "items": [
     {
@@ -342,6 +342,11 @@
       "name": "ports-and-adapters",
       "type": "skill",
       "path": "skills/ports-and-adapters/SKILL.md"
+    },
+    {
+      "name": "product-image-production",
+      "type": "skill",
+      "path": "skills/product-image-production/SKILL.md"
     },
     {
       "name": "product-manager",
