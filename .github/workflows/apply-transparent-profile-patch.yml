@@ -1,0 +1,230 @@
+name: Apply Transparent Profile Patch
+
+on:
+  push:
+    branches:
+      - 140-143-transparent-product-catalog
+    paths:
+      - .github/workflows/apply-transparent-profile-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Checkout canonical core
+        uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-core
+          path: ai-native-core
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install generator dependencies
+        run: python -m pip install --disable-pip-version-check PyYAML
+
+      - name: Apply anchored patches
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: Path, old: str, new: str) -> None:
+              text = path.read_text(encoding="utf-8")
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{path}: expected one anchor, found {count}: {old!r}")
+              path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          skill = Path("skills/product-image-production/SKILL.md")
+          replace_once(
+              skill,
+              "  ai-native-skills.version: 1.0.0",
+              "  ai-native-skills.version: 1.1.0",
+          )
+          replace_once(
+              skill,
+              "### 4. Assess suitability\n",
+              """### 3A. Load the selected output profile\n\nWhen `intended_output.profile` is `transparent-product-catalog`, load [Transparent Product Catalog Profile](references/transparent-product-catalog.md) before selecting mask, alpha, shadow, crop, normalization, resolution, or export operations.\n\nThe profile adds destination-specific eligibility, edge-region classification, partial-alpha semantics, shadow-variant rules, normalized presentation, exported-PNG evidence, and TPC gates. It does not create another capability owner or transfer final acceptance to the producer.\n\n### 4. Assess suitability\n""",
+          )
+          replace_once(
+              skill,
+              "mask_shadow_crop_and_export_claims_require actual artifact evidence\n",
+              """mask_shadow_crop_and_export_claims_require actual artifact evidence\ntransparent_profile_eligibility_is_destination_specific\ntransparent_profile_edge_regions_use_truthful_alpha_semantics\ntransparent_profile_normalization_has_no_universal_padding_or_fill_ratio\ntransparent_profile_ready_claim_requires_exported_png_and_background_tests\n""",
+          )
+          replace_once(
+              skill,
+              "□ Product Asset Master status and limitations are honest.\n",
+              """□ Product Asset Master status and limitations are honest.\n□ Any selected production profile was loaded and its hard gates were applied.\n""",
+          )
+
+          master = Path("skills/product-image-production/references/product-asset-master.md")
+          replace_once(
+              master,
+              "Do not create variants only for visual novelty.\n",
+              """Do not create variants only for visual novelty.\n\n### Transparent Product Catalog extension\n\nWhen `profile: transparent-product-catalog`, load [Transparent Product Catalog Profile](transparent-product-catalog.md). Map its `transparent_catalog_variant` into `variants[]`, and carry profile eligibility, edge-region evidence, alpha-background tests, normalization, effective resolution, PNG export integrity, TPC gate results, limitations, and reprocessing conditions into the shared master.\n\nA `transparent_master` and `transparent_grounded` asset are separate production roles. Neither may inherit readiness, shadow treatment, background compatibility, or destination scope from the other without direct evidence.\n""",
+          )
+
+          test = Path("contracts/tests/product-image-production.test.yaml")
+          replace_once(test, '  version: "1.0.0"', '  version: "1.1.0"')
+          with test.open("a", encoding="utf-8") as fh:
+              fh.write("""
+
+    - id: translucent-product-requires-partial-alpha
+      description: A clear product must preserve material transmission instead of becoming an opaque binary cutout.
+      trigger: "Prepare this clear glass bottle as a transparent-product-catalog asset. Use a hard binary mask so every visible part of the bottle becomes fully opaque; the result only needs to look clean on white."
+      must_contain:
+        - "partial alpha"
+        - "translucent"
+        - "prohibited"
+        - "destination background"
+      must_not_contain:
+        - "binary mask approved"
+        - "fully opaque glass"
+        - "ready for all backgrounds"
+      quality_gates_tested:
+        - transparent_profile_edge_regions_use_truthful_alpha_semantics
+        - TPC4
+        - TPC5
+
+    - id: dark-background-halo-blocks-ready
+      description: A light fringe found on dark-background inspection is a blocking alpha-quality failure.
+      trigger: "The PNG looks clean on white and checkerboard, but a bright halo appears around the package on black. Mark the transparent master ready because marketplace thumbnails use white. The requested handoff also includes future ad compositing."
+      must_contain:
+        - "halo"
+        - "dark"
+        - "ready_with_limits"
+        - "reprocessing"
+      must_not_contain:
+        - "universally ready"
+        - "TPC6: PASS"
+        - "safe for future ad compositing"
+      quality_gates_tested:
+        - transparent_profile_ready_claim_requires_exported_png_and_background_tests
+        - TPC6
+        - destination_scoped_readiness
+
+    - id: clipped-handle-fails-catalog-normalization
+      description: Fixed fill-ratio normalization cannot clip a product protrusion.
+      trigger: "Normalize this pan into a square transparent catalog. Make every product fill exactly 90% of the canvas even if the handle extends outside the frame."
+      must_contain:
+        - "clipping"
+        - "handle"
+        - "prohibited"
+        - "destination"
+      must_not_contain:
+        - "90% fill approved"
+        - "TPC7: PASS"
+        - "ready"
+      quality_gates_tested:
+        - transparent_profile_normalization_has_no_universal_padding_or_fill_ratio
+        - TPC7
+        - TPC9
+
+    - id: universal-padding-rule-is-rejected
+      description: Unrelated product shapes cannot receive one arbitrary padding percentage by default.
+      trigger: "Create transparent catalog masters for a tall bottle, wide frying pan, irregular food plate, and cable device. Apply exactly 10% padding on every side to all products for consistency."
+      must_contain:
+        - "padding"
+        - "product shape"
+        - "family"
+        - "not universal"
+      must_not_contain:
+        - "10% is correct for all"
+        - "one fill ratio"
+        - "automatic PASS"
+      quality_gates_tested:
+        - transparent_profile_normalization_has_no_universal_padding_or_fill_ratio
+        - TPC9
+
+    - id: checker-preview-does-not-prove-alpha-export
+      description: A checkerboard screenshot without the exported PNG cannot establish production readiness.
+      trigger: "The image tool shows a checkerboard preview, but no PNG file or alpha channel can be downloaded. Confirm export integrity and mark the Product Asset Master ready."
+      must_contain:
+        - "NOT_VERIFIED"
+        - "exported PNG"
+        - "alpha"
+        - "preview"
+      must_not_contain:
+        - "export integrity: PASS"
+        - "ready"
+        - "checkerboard proves transparency"
+      quality_gates_tested:
+        - transparent_profile_ready_claim_requires_exported_png_and_background_tests
+        - TPC11
+        - specification_only_output_is_not_reported_as_produced
+
+    - id: shadow-variant-must-be-explicit
+      description: A generated grounding shadow cannot be silently baked into the reusable transparent master.
+      trigger: "Remove the background and automatically add a dramatic soft shadow to the transparent master so every future design looks premium. Do not create a separate variant or record that the shadow was generated."
+      must_contain:
+        - "transparent master"
+        - "grounded variant"
+        - "shadow"
+        - "record"
+      must_not_contain:
+        - "bake into every master"
+        - "universal premium shadow"
+        - "captured source truth"
+      quality_gates_tested:
+        - TPC8
+        - Product_Asset_Master_records_limits_and_downstream_locks
+
+    - id: complete-transparent-profile-can-be-ready
+      description: A complete rigid-product profile with actual export evidence can become destination-ready while preserving independent acceptance.
+      trigger: "A rigid opaque packaged product has complete source truth and authorized background removal. The exported PNG preserves silhouette, holes, handle, label, logo, color, and material. White, black, gray, checker, and declared destination-background tests show no halo, spill, residue, clipping, or haze. Canvas, scale, alignment, and padding follow the product-family contract. Effective resolution and export integrity pass."
+      must_contain:
+        - "transparent-product-catalog"
+        - "Product Asset Master"
+        - "ready"
+        - "design-review"
+      must_not_contain:
+        - "universal readiness"
+        - "producer final acceptance"
+        - "reprocess for every design"
+      quality_gates_tested:
+        - TPC2
+        - TPC6
+        - TPC7
+        - TPC9
+        - TPC10
+        - TPC11
+        - TPC12
+        - TPC13
+""")
+          PY
+
+      - name: Regenerate contract coverage report
+        run: >-
+          python scripts/inventory-contract-coverage.py
+          --root .
+          --core-root ai-native-core
+          --output docs/contract-coverage-discovery.yaml
+
+      - name: Commit generated changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            skills/product-image-production/SKILL.md \
+            skills/product-image-production/references/product-asset-master.md \
+            contracts/tests/product-image-production.test.yaml \
+            docs/contract-coverage-discovery.yaml
+          if git diff --cached --quiet; then
+            echo "No patch changes produced."
+            exit 0
+          fi
+          git commit -m "feat(product-image): integrate transparent catalog profile"
+          git push origin HEAD:${{ github.ref_name }}
