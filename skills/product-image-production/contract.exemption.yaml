@@ -1,0 +1,37 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: product-image-production
+    path: skills/product-image-production/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: Product Image Production has a reusable provider-neutral executable boundary,
+    but Epic 140 intentionally defers a canonical core contract until the specialist,
+    transparent profile, routing composition, and multiple real-product cases have
+    produced regression and exported-artifact evidence.
+  scope:
+  - static_contract_ownership
+  - core_gap_tracking
+  review_date: '2026-10-26'
+  evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-skills#140
+  - kind: github_issue
+    ref: puterakahfi/ai-native-skills#141
+  - kind: executable_source
+    ref: skills/product-image-production/SKILL.md
+  - kind: decision_record
+    ref: docs/decisions/issue-140-creative-production-boundaries.md
+  revisit:
+    triggers:
+    - product-image-production passes multi-category real-product validation
+    - transparent-product-catalog and commercial-production routing are validated
+    - a public cross-adapter obligation is demonstrated by multiple executable cases
+  prohibited_claims:
+  - core_contract_conformance
+  - exported_artifact_verification
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active
