@@ -9,7 +9,8 @@
     "specialist_mvp": "puterakahfi/ai-native-skills#142",
     "transparent_profile": "puterakahfi/ai-native-skills#143",
     "routing_and_handoffs": "puterakahfi/ai-native-skills#144",
-    "binary_fixture_receipt": "docs/receipts/epic-140-creative-production-validation.json"
+    "binary_fixture_receipt": "docs/receipts/epic-140-creative-production-validation.json",
+    "provider_counterexample_receipt": "docs/receipts/epic-140-provider-counterexample-validation.json"
   },
   "acceptance_criteria": {
     "AC-1": {
@@ -23,29 +24,33 @@
       "status": "PARTIAL",
       "basis": [
         "fidelity-lock contracts",
-        "protected-region binary fixture"
+        "protected-region binary fixture",
+        "provider-backed exact-text and product-identity fail-closed evidence"
       ],
-      "gap": "real-product fidelity comparison is NOT_VERIFIED"
+      "gap": "authorized real-product fidelity comparison with an accepted output is NOT_VERIFIED"
     },
     "AC-3": {
       "status": "PARTIAL",
       "basis": [
-        "transparent PNG, alpha, halo, clipping, residue, crop and export fixtures"
+        "transparent PNG, alpha, halo, clipping, residue, crop and export fixtures",
+        "provider-backed RGBA, partial-alpha and canvas-clipping measurements"
       ],
-      "gap": "provider-produced real catalog output is NOT_VERIFIED"
+      "gap": "an authorized provider-produced transparent catalog output that passes all hard gates is NOT_VERIFIED"
     },
     "AC-4": {
       "status": "PASS",
       "basis": [
-        "unreadable label, unsuitable source, aggressive upscale and unsafe transformation fail-closed cases"
+        "unreadable label, unsuitable source, aggressive upscale and unsafe transformation fail-closed cases",
+        "provider output with valid alpha but corrupted packaging text fails closed"
       ]
     },
     "AC-5": {
       "status": "PARTIAL",
       "basis": [
-        "Product Asset Master contract and deterministic reuse fixture"
+        "Product Asset Master contract and deterministic reuse fixture",
+        "three provider outputs correctly rejected from Product Asset Master status"
       ],
-      "gap": "real Product Asset Master export is NOT_VERIFIED"
+      "gap": "an authorized real Product Asset Master export is NOT_VERIFIED"
     },
     "AC-6": {
       "status": "PASS",
@@ -57,21 +62,26 @@
     "AC-7": {
       "status": "PARTIAL",
       "basis": [
-        "binary export evidence and deterministic receipt"
+        "binary export evidence and deterministic receipt",
+        "provider-backed output inspection with SHA-256, alpha metrics and attributable hard-gate verdicts"
       ],
-      "gap": "independent real-product static-visual acceptance is NOT_VERIFIED"
+      "gap": "independent acceptance of an authorized releaseable real-product output is NOT_VERIFIED"
     },
     "AC-8": {
       "status": "PARTIAL",
       "basis": [
-        "synthetic rigid, translucent and organic categories"
+        "synthetic rigid, translucent and organic categories",
+        "provider-backed negative cases across rigid packaging, translucent glass and organic textured food"
       ],
-      "gap": "three authorized real-product categories are NOT_VERIFIED"
+      "gap": "three authorized real-product categories with accepted outputs remain NOT_VERIFIED"
     },
     "AC-9": {
       "status": "PASS",
       "basis": [
-        "halo, clipping, residue, invented label, baked shadow and aggressive upscale counterexamples"
+        "halo, clipping, residue, invented label, baked shadow and aggressive upscale counterexamples",
+        "provider-backed corrupted exact text despite valid alpha",
+        "provider-backed partial-alpha output with canvas clipping",
+        "provider-backed generative recreation without proven source fidelity"
       ]
     },
     "AC-10": {
@@ -79,17 +89,21 @@
       "basis": [
         "repository eval contracts",
         "binary fixture validator",
+        "provider-evidence regressions",
         "CI workflow and immutable receipt comparison"
       ]
     }
   },
   "blocking_gaps": [
-    "authorized real-product sources for at least three materially different categories",
-    "provider-backed before/after exports",
-    "actual-size fidelity and alpha review",
-    "prepared asset used in real catalog and composed commercial output",
-    "independent design-review verdict"
+    "explicit source ownership and repository/provider-use authorization for at least three materially different categories",
+    "provider-backed outputs that pass product-fidelity, exact-text, alpha-edge, clipping and delivery hard gates",
+    "an accepted Product Asset Master used in real catalog and composed commercial output",
+    "independent design-review verdict for an authorized releaseable output"
   ],
-  "capability_evolution_verdict": "EVAL_ONLY",
+  "capability_evolution_verdict": "IMPROVEMENT",
+  "capability_evolution_route": [
+    "puterakahfi/visualmate#152",
+    "puterakahfi/visualmate#168"
+  ],
   "core_promotion": "DEFERRED_UNVERIFIED"
 }
