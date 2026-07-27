@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "evidence_class": "contract_fixture",
+  "case_id": "REPLACE-WITH-STABLE-CASE-ID",
+  "authority": {
+    "refs": [
+      "evidence://authority/approved-brief",
+      "evidence://authority/approved-brand-assets",
+      "evidence://authority/approved-product-reference"
+    ]
+  },
+  "authorized_content_ledger": {
+    "ledger_id": "ACL-REPLACE",
+    "authority_refs": [
+      "evidence://authority/approved-brief",
+      "evidence://authority/approved-brand-assets",
+      "evidence://authority/approved-product-reference"
+    ],
+    "unknown_content_policy": "prohibit",
+    "authorized_items": [
+      {
+        "content_id": "TEXT-BRAND",
+        "kind": "rendered_text",
+        "value": "AUTHORIZED BRAND",
+        "authority_ref": "evidence://authority/approved-brand-assets",
+        "render_policy": "required",
+        "normalization": "exact"
+      },
+      {
+        "content_id": "TEXT-PRODUCT",
+        "kind": "rendered_text",
+        "value": "AUTHORIZED PRODUCT",
+        "authority_ref": "evidence://authority/approved-product-reference",
+        "render_policy": "required",
+        "normalization": "exact"
+      },
+      {
+        "content_id": "MARK-BRAND",
+        "kind": "brand_mark",
+        "value": "evidence://assets/approved-brand-mark.svg",
+        "authority_ref": "evidence://authority/approved-brand-assets",
+        "render_policy": "allowed",
+        "normalization": "exact"
+      }
+    ],
+    "prohibited_items": [
+      {
+        "kind": "factual_claim",
+        "value": "UNSUPPORTED CLAIM",
+        "reason": "No authority record"
+      }
+    ],
+    "unresolved_items": []
+  },
+  "provider_execution_handoff": {
+    "handoff_id": "PEH-REPLACE",
+    "locked_brief_ref": "evidence://brief/locked",
+    "authorized_content_ledger_ref": "ACL-REPLACE",
+    "authorized_content_ids": [
+      "TEXT-BRAND",
+      "TEXT-PRODUCT",
+      "MARK-BRAND"
+    ],
+    "exact_rendered_text": [
+      {
+        "content_id": "TEXT-BRAND",
+        "value": "AUTHORIZED BRAND"
+      },
+      {
+        "content_id": "TEXT-PRODUCT",
+        "value": "AUTHORIZED PRODUCT"
+      }
+    ],
+    "approved_mark_ids": [
+      "MARK-BRAND"
+    ],
+    "specific_product_required": true,
+    "product_reference_refs": [
+      "evidence://assets/source-product.png"
+    ],
+    "preservation_locks": {
+      "preserve_shape": true,
+      "preserve_packaging": true,
+      "preserve_logo": true,
+      "preserve_label_text": true,
+      "preserve_material": true,
+      "preserve_product_color": true,
+      "preserve_distinguishing_details": true
+    },
+    "operation_or_design_plan_ref": "evidence://plan/locked",
+    "provider_specific_translation_owner": "prompt-engineer",
+    "binary_execution_owner": "provider-adapter",
+    "negative_constraints": [
+      "no_additional_content",
+      "no_inferred_claims",
+      "preserve_product_truth"
+    ],
+    "comparison_required": {
+      "authorized_content": true,
+      "brand_fidelity": true,
+      "product_fidelity": true,
+      "content_accuracy": true
+    }
+  },
+  "provider_output_comparison": {
+    "output_ref": "evidence://outputs/commercial.png",
+    "ledger_ref": "ACL-REPLACE",
+    "detected_content": [
+      {
+        "kind": "rendered_text",
+        "value": "AUTHORIZED BRAND",
+        "authorized_content_id": "TEXT-BRAND"
+      },
+      {
+        "kind": "rendered_text",
+        "value": "AUTHORIZED PRODUCT",
+        "authorized_content_id": "TEXT-PRODUCT"
+      },
+      {
+        "kind": "brand_mark",
+        "value": "evidence://assets/approved-brand-mark.svg",
+        "authorized_content_id": "MARK-BRAND"
+      }
+    ],
+    "unmatched_content": [],
+    "altered_authorized_content": [],
+    "fidelity_gates": {
+      "SV8": "PASS",
+      "SV9": "PASS",
+      "SV11": "PASS"
+    },
+    "result": "PASS"
+  },
+  "independent_review": {
+    "reviewer": "design-review",
+    "verdict": "PASS",
+    "gates": {
+      "SV8": "PASS",
+      "SV9": "PASS",
+      "SV11": "PASS"
+    }
+  },
+  "decision": {
+    "state": "ACCEPTED",
+    "accepted": true,
+    "delivered": false,
+    "return_routes": []
+  }
+}
