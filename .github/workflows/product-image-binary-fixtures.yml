@@ -4,8 +4,11 @@ on:
   pull_request:
     paths:
       - "scripts/validate-product-image-fixtures.py"
+      - "scripts/validate-real-product-evidence.py"
+      - "tests/test_validate_real_product_evidence.py"
       - "validation/product-image-production/**"
       - "docs/receipts/epic-140-creative-production-validation.json"
+      - "docs/receipts/epic-140-real-product-evidence-gate.json"
       - "docs/receipts/epic-140-integrated-acceptance.json"
       - ".github/workflows/product-image-binary-fixtures.yml"
   push:
@@ -13,8 +16,11 @@ on:
       - main
     paths:
       - "scripts/validate-product-image-fixtures.py"
+      - "scripts/validate-real-product-evidence.py"
+      - "tests/test_validate_real_product_evidence.py"
       - "validation/product-image-production/**"
       - "docs/receipts/epic-140-creative-production-validation.json"
+      - "docs/receipts/epic-140-real-product-evidence-gate.json"
       - "docs/receipts/epic-140-integrated-acceptance.json"
       - ".github/workflows/product-image-binary-fixtures.yml"
 
@@ -57,11 +63,13 @@ jobs:
         run: |
           python -m py_compile \
             scripts/validate-product-image-fixtures.py \
+            scripts/validate-real-product-evidence.py \
             scripts/validate-design-gate-registry.py \
             scripts/validate-eval-contracts.py \
             scripts/validate-skill-packs.py \
             scripts/verify-capability-inventory.py \
             scripts/validate-contract-coverage.py \
+            tests/test_validate_real_product_evidence.py \
             tests/test_validate_skill_packs.py \
             tests/test_contract_exemptions.py
           bash -n scripts/run-eval.sh
@@ -72,6 +80,16 @@ jobs:
             --manifest validation/product-image-production/fixtures/manifest.json \
             --report /tmp/product-image-validation.json \
             --compare docs/receipts/epic-140-creative-production-validation.json
+
+      - name: Validate real-product evidence contract
+        run: |
+          python -m unittest tests/test_validate_real_product_evidence.py -v
+          python -m json.tool \
+            validation/product-image-production/real-product-evidence-template.json \
+            > /dev/null
+          python -m json.tool \
+            validation/product-image-production/real-product-acceptance-bundle-template.json \
+            > /dev/null
 
       - name: Validate repository eval and design-gate contracts
         run: |
