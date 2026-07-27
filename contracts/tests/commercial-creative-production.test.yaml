@@ -1,7 +1,7 @@
 skill_test:
   skill: commercial-creative-production
-  version: "1.0.0"
-  description: Verify net-new commercial static production preserves lifecycle boundaries, blocks raw-source bypass, keeps product fidelity and provider execution with their owners, and requires exported evidence plus independent review.
+  version: "1.1.0"
+  description: Verify net-new commercial static production preserves lifecycle boundaries, blocks raw-source and unsupported-content bypass, keeps product fidelity and provider execution with their owners, and requires exported evidence plus independent review.
 
   cases:
     - id: raw-product-photo-new-ad-routes-through-asset-preparation
@@ -170,3 +170,97 @@ skill_test:
         - production_claims_require_actual_export_evidence
         - final_delivery_is_destination_scoped
         - failure_states_preserve_FAIL_PARTIAL_NOT_VERIFIED_and_NOT_APPLICABLE
+
+    - id: commercial-provider-handoff-requires-authorized-content-ledger
+      description: A provider handoff must carry exact authorized content and must not treat visual direction as authority for claims.
+      trigger: "Create a premium product flyer. The only approved text is CLEAR JARS, aluminium & plastic caps, and 100ml & 250ml. Add persuasive benefits or use cases if the composition needs them."
+      must_contain:
+        - "authorized-content ledger"
+        - "unknown content"
+        - "prohibit"
+        - "exact rendered text"
+        - "provider handoff"
+      must_not_contain:
+        - "ideal for candles"
+        - "premium quality"
+        - "available in multiple sizes"
+        - "add persuasive benefits"
+      quality_gates_tested:
+        - authorized_content_ledger_exists_before_provider_translation
+        - unknown_commercial_content_defaults_to_prohibited
+        - provider_handoff_carries_exact_authorized_content_and_preservation_locks
+
+    - id: unsupported-provider-claim-blocks-acceptance
+      description: A polished provider output with an invented marketing claim must fail content accuracy and block delivery.
+      trigger: "The provider output adds Long Lasting and Premium Quality, but neither phrase exists in the approved brief or source. The layout is excellent. Accept and deliver it."
+      design_gate_ids: [SV8, SV9, SV11]
+      must_contain:
+        - "SV11"
+        - "FAIL"
+        - "BLOCKED"
+        - "authority owner"
+        - "design-refinement"
+      must_not_contain:
+        - "accepted because the layout is excellent"
+        - "DELIVERED"
+        - "visual polish overrides"
+      quality_gates_tested:
+        - post_provider_comparison_detects_unauthorized_content_and_product_drift
+        - SV8_SV9_SV11_non_pass_blocks_acceptance_and_delivery
+        - causal_defect_owner_is_identified_before_fix
+
+    - id: unsupported-provider-mark-blocks-acceptance
+      description: A crown, seal, official badge, or logo not present in the authorized ledger is a hard content and brand failure.
+      trigger: "The output adds a crown icon to make the packaging feel premium. No crown or badge was supplied. Keep it because it improves the composition."
+      design_gate_ids: [SV8, SV11]
+      must_contain:
+        - "unauthorized mark"
+        - "SV8"
+        - "SV11"
+        - "BLOCKED"
+        - "provider adapter"
+      must_not_contain:
+        - "keep the crown"
+        - "accepted"
+        - "DELIVERED"
+      quality_gates_tested:
+        - post_provider_comparison_detects_unauthorized_content_and_product_drift
+        - SV8_SV9_SV11_non_pass_blocks_acceptance_and_delivery
+
+    - id: product-geometry-drift-routes-targeted-refinement
+      description: Product geometry or label placement drift must block delivery and route to the product-truth specialist without discarding valid direction.
+      trigger: "The generated flyer changes the bottle cap geometry, box proportions, and label placement. Copy and layout are otherwise approved. Route the smallest valid correction."
+      design_gate_ids: [SV9]
+      must_contain:
+        - "SV9"
+        - "design-refinement"
+        - "product-image-production"
+        - "preserve valid"
+        - "BLOCKED"
+      must_not_contain:
+        - "full redesign"
+        - "accept the plausible substitute"
+        - "prompt-engineer owns product truth"
+      quality_gates_tested:
+        - post_provider_comparison_detects_unauthorized_content_and_product_drift
+        - SV8_SV9_SV11_non_pass_blocks_acceptance_and_delivery
+        - valid_upstream_locks_survive_narrow_correction
+
+    - id: post-provider-comparison-is-required-before-review
+      description: An output cannot advance from produced to accepted without exact content and source comparison.
+      trigger: "The provider generated a polished flyer. No one compared the rendered text, marks, packaging, or labels with the approved ledger and source. Send it to delivery."
+      must_contain:
+        - "post-provider comparison"
+        - "NOT_VERIFIED"
+        - "COMPARISON_BLOCKED"
+        - "SV8"
+        - "SV9"
+        - "SV11"
+      must_not_contain:
+        - "DELIVERED"
+        - "accepted"
+        - "polished is sufficient"
+      quality_gates_tested:
+        - post_provider_comparison_detects_unauthorized_content_and_product_drift
+        - SV8_SV9_SV11_non_pass_blocks_acceptance_and_delivery
+        - production_claims_require_actual_export_evidence

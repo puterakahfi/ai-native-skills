@@ -11,7 +11,8 @@
     "routing_and_handoffs": "puterakahfi/ai-native-skills#144",
     "binary_fixture_receipt": "docs/receipts/epic-140-creative-production-validation.json",
     "provider_counterexample_receipt": "docs/receipts/epic-140-provider-counterexample-validation.json",
-    "real_product_evidence_gate_receipt": "docs/receipts/epic-140-real-product-evidence-gate.json"
+    "real_product_evidence_gate_receipt": "docs/receipts/epic-140-real-product-evidence-gate.json",
+    "claim_lock_provider_handoff_receipt": "docs/receipts/epic-140-claim-lock-provider-handoff.json"
   },
   "acceptance_criteria": {
     "AC-1": {
@@ -27,7 +28,8 @@
         "fidelity-lock contracts",
         "protected-region binary fixture",
         "provider-backed exact-text and product-identity fail-closed evidence",
-        "real-product evidence gate requires every fidelity lock to pass"
+        "real-product evidence gate requires every fidelity lock to pass",
+        "claim-lock provider handoff requires source references and seven explicit product preservation locks"
       ],
       "gap": "authorized real-product fidelity comparison with an accepted output is NOT_VERIFIED"
     },
@@ -44,7 +46,9 @@
       "status": "PASS",
       "basis": [
         "unreadable label, unsuitable source, aggressive upscale and unsafe transformation fail-closed cases",
-        "provider output with valid alpha but corrupted packaging text fails closed"
+        "provider output with valid alpha but corrupted packaging text fails closed",
+        "live unsuitable organic source was correctly blocked before provider execution",
+        "unknown commercial content now defaults to prohibited"
       ]
     },
     "AC-5": {
@@ -60,7 +64,9 @@
       "status": "PASS",
       "basis": [
         "commercial workflow handoff contract",
-        "router and role composition regressions"
+        "router and role composition regressions",
+        "authorized-content ledger and exact provider handoff",
+        "post-provider source/content comparison and narrow return routes"
       ]
     },
     "AC-7": {
@@ -68,7 +74,8 @@
       "basis": [
         "binary export evidence and deterministic receipt",
         "provider-backed output inspection with SHA-256, alpha metrics and attributable hard-gate verdicts",
-        "real-product evidence gate requires a reviewer independent from provider execution"
+        "real-product evidence gate requires a reviewer independent from provider execution",
+        "live HMNS and clear-jars outputs received independent SV8, SV9, and SV11 review and were correctly retained as negative evidence"
       ],
       "gap": "independent acceptance of an authorized releaseable real-product output is NOT_VERIFIED"
     },
@@ -77,7 +84,8 @@
       "basis": [
         "synthetic rigid, translucent and organic categories",
         "provider-backed negative cases across rigid packaging, translucent glass and organic textured food",
-        "real-product evidence gate requires all three materially different categories"
+        "real-product evidence gate requires all three materially different categories",
+        "live cases exercised rigid perfume packaging, translucent glass jars, and an unsuitable organic source"
       ],
       "gap": "three authorized real-product categories with accepted outputs remain NOT_VERIFIED"
     },
@@ -87,7 +95,9 @@
         "halo, clipping, residue, invented label, baked shadow and aggressive upscale counterexamples",
         "provider-backed corrupted exact text despite valid alpha",
         "provider-backed partial-alpha output with canvas clipping",
-        "provider-backed generative recreation without proven source fidelity"
+        "provider-backed generative recreation without proven source fidelity",
+        "live invented claim, unsupported mark, inferred use-case, and product-geometry drift counterexamples",
+        "20 executable claim-lock and provider-handoff regressions"
       ]
     },
     "AC-10": {
@@ -97,7 +107,9 @@
         "binary fixture validator",
         "provider-evidence regressions",
         "real-product acceptance bundle validator and 16 fail-closed regressions",
-        "CI workflow and immutable receipt comparison"
+        "claim-lock provider handoff validator and 20 focused regressions",
+        "CI workflow and immutable receipt comparison for prior integrated slices",
+        "local validation used for this patch to avoid unnecessary hosted Actions consumption"
       ]
     }
   },
@@ -106,12 +118,11 @@
     "a completed real-product acceptance bundle whose evidence references are resolvable and whose manifest passes the repository gate",
     "provider-backed outputs that pass product-fidelity, exact-text, alpha-edge, clipping and delivery hard gates",
     "an accepted Product Asset Master used in real catalog and composed commercial output",
-    "independent design-review verdict for an authorized releaseable output"
+    "independent design-review PASS for an authorized releaseable output"
   ],
-  "capability_evolution_verdict": "IMPROVEMENT",
+  "capability_evolution_verdict": "BUG",
   "capability_evolution_route": [
-    "puterakahfi/visualmate#152",
-    "puterakahfi/visualmate#168"
+    "puterakahfi/ai-native-skills#158"
   ],
   "core_promotion": "DEFERRED_UNVERIFIED"
 }
