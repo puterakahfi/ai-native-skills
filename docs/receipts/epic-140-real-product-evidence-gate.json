@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "epic": "puterakahfi/ai-native-skills#140",
+  "validation_issue": "puterakahfi/ai-native-skills#145",
+  "feature_flow": "real_product_acceptance_evidence_gate",
+  "status": "PASS",
+  "real_product_acceptance": "NOT_VERIFIED",
+  "production_readiness_claim": false,
+  "objective": "Provide one deterministic fail-closed contract gate for the complete real-product acceptance bundle without treating manifest completeness as visual or product acceptance.",
+  "observable_outputs": [
+    "scripts/validate-real-product-evidence.py",
+    "tests/test_validate_real_product_evidence.py",
+    "validation/product-image-production/real-product-evidence-template.json",
+    "validation/product-image-production/real-product-acceptance-bundle-template.json",
+    "validation/product-image-production/README.md",
+    ".github/workflows/product-image-binary-fixtures.yml"
+  ],
+  "enforced_invariants": [
+    "three materially different product categories are represented",
+    "source use and provider processing are explicitly authorized",
+    "source and exported artifacts have immutable SHA-256 records",
+    "every operation records purpose, authorization, preservation impact, and evidence",
+    "all product-fidelity locks pass",
+    "actual-size mask, edge, clipping, residue, crop, padding, resolution, and export checks pass",
+    "one Product Asset Master is reused in catalog and commercial outputs",
+    "the independent reviewer is distinct from the provider executor",
+    "contract fixtures cannot claim production readiness",
+    "real acceptance bundles fail closed on any non-PASS hard-gate status"
+  ],
+  "validation": {
+    "python_compile": "PASS",
+    "unit_tests": {
+      "status": "PASS",
+      "passed": 16,
+      "failed": 0
+    },
+    "template_json_parse": "PASS",
+    "repository_ci": "NOT_VERIFIED",
+    "canonical_core_conformance": "NOT_VERIFIED"
+  },
+  "validator_boundary": {
+    "remote_binary_resolution": "NOT_VERIFIED",
+    "semantic_visual_quality": "NOT_VERIFIED",
+    "human_review_authenticity": "NOT_VERIFIED",
+    "product_acceptance": "NOT_VERIFIED"
+  },
+  "limitations": [
+    "No authorized positive real-product evidence bundle is committed.",
+    "No provider-produced Product Asset Master is accepted by this receipt.",
+    "Manifest validation does not replace actual-size visual inspection or independent design review.",
+    "Issue #145 remains open until a real evidence bundle passes the gate and all external evidence is resolvable."
+  ],
+  "capability_evolution": {
+    "verdict": "EVAL_ONLY",
+    "reason": "This slice improves executable evidence validation and regression coverage without changing canonical capability meaning or shared skill ownership."
+  }
+}

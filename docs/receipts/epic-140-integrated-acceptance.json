@@ -10,7 +10,8 @@
     "transparent_profile": "puterakahfi/ai-native-skills#143",
     "routing_and_handoffs": "puterakahfi/ai-native-skills#144",
     "binary_fixture_receipt": "docs/receipts/epic-140-creative-production-validation.json",
-    "provider_counterexample_receipt": "docs/receipts/epic-140-provider-counterexample-validation.json"
+    "provider_counterexample_receipt": "docs/receipts/epic-140-provider-counterexample-validation.json",
+    "real_product_evidence_gate_receipt": "docs/receipts/epic-140-real-product-evidence-gate.json"
   },
   "acceptance_criteria": {
     "AC-1": {
@@ -25,7 +26,8 @@
       "basis": [
         "fidelity-lock contracts",
         "protected-region binary fixture",
-        "provider-backed exact-text and product-identity fail-closed evidence"
+        "provider-backed exact-text and product-identity fail-closed evidence",
+        "real-product evidence gate requires every fidelity lock to pass"
       ],
       "gap": "authorized real-product fidelity comparison with an accepted output is NOT_VERIFIED"
     },
@@ -33,7 +35,8 @@
       "status": "PARTIAL",
       "basis": [
         "transparent PNG, alpha, halo, clipping, residue, crop and export fixtures",
-        "provider-backed RGBA, partial-alpha and canvas-clipping measurements"
+        "provider-backed RGBA, partial-alpha and canvas-clipping measurements",
+        "real-product evidence gate requires actual-size edge and export checks"
       ],
       "gap": "an authorized provider-produced transparent catalog output that passes all hard gates is NOT_VERIFIED"
     },
@@ -48,7 +51,8 @@
       "status": "PARTIAL",
       "basis": [
         "Product Asset Master contract and deterministic reuse fixture",
-        "three provider outputs correctly rejected from Product Asset Master status"
+        "three provider outputs correctly rejected from Product Asset Master status",
+        "real-product evidence gate cross-checks master, catalog, and commercial export references"
       ],
       "gap": "an authorized real Product Asset Master export is NOT_VERIFIED"
     },
@@ -63,7 +67,8 @@
       "status": "PARTIAL",
       "basis": [
         "binary export evidence and deterministic receipt",
-        "provider-backed output inspection with SHA-256, alpha metrics and attributable hard-gate verdicts"
+        "provider-backed output inspection with SHA-256, alpha metrics and attributable hard-gate verdicts",
+        "real-product evidence gate requires a reviewer independent from provider execution"
       ],
       "gap": "independent acceptance of an authorized releaseable real-product output is NOT_VERIFIED"
     },
@@ -71,7 +76,8 @@
       "status": "PARTIAL",
       "basis": [
         "synthetic rigid, translucent and organic categories",
-        "provider-backed negative cases across rigid packaging, translucent glass and organic textured food"
+        "provider-backed negative cases across rigid packaging, translucent glass and organic textured food",
+        "real-product evidence gate requires all three materially different categories"
       ],
       "gap": "three authorized real-product categories with accepted outputs remain NOT_VERIFIED"
     },
@@ -90,12 +96,14 @@
         "repository eval contracts",
         "binary fixture validator",
         "provider-evidence regressions",
+        "real-product acceptance bundle validator and 16 fail-closed regressions",
         "CI workflow and immutable receipt comparison"
       ]
     }
   },
   "blocking_gaps": [
     "explicit source ownership and repository/provider-use authorization for at least three materially different categories",
+    "a completed real-product acceptance bundle whose evidence references are resolvable and whose manifest passes the repository gate",
     "provider-backed outputs that pass product-fidelity, exact-text, alpha-edge, clipping and delivery hard gates",
     "an accepted Product Asset Master used in real catalog and composed commercial output",
     "independent design-review verdict for an authorized releaseable output"

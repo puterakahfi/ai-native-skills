@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "epic": "puterakahfi/ai-native-skills#140",
+  "validation_issue": "puterakahfi/ai-native-skills#145",
+  "evidence_class": "real_product_acceptance",
+  "production_readiness_claim": false,
+  "case_files": [
+    "evidence/rigid-packaged-product.json",
+    "evidence/reflective-or-translucent-product.json",
+    "evidence/organic-irregular-soft-edge-product.json"
+  ],
+  "prepared_asset_reuse": {
+    "case_ref": null,
+    "product_asset_master_ref": null,
+    "catalog_output_ref": null,
+    "commercial_output_ref": null,
+    "status": "NOT_VERIFIED"
+  },
+  "acceptance_summary": {
+    "source_authorization": "NOT_VERIFIED",
+    "provider_backed_execution": "NOT_VERIFIED",
+    "product_asset_master_acceptance": "NOT_VERIFIED",
+    "downstream_reuse": "NOT_VERIFIED",
+    "independent_visual_acceptance": "NOT_VERIFIED",
+    "real_product_acceptance": "NOT_VERIFIED"
+  }
+}

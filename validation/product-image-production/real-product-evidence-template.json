@@ -1,10 +1,10 @@
 {
-  "schema_version": 1,
   "case_id": null,
   "product_category": null,
   "authorization": {
     "source_owner_or_license": null,
     "use_authorized": false,
+    "provider_processing_authorized": false,
     "authority_refs": []
   },
   "source": {
@@ -14,39 +14,75 @@
     "declared_product_identity": null,
     "provenance_status": "NOT_VERIFIED"
   },
-  "destination": {
-    "profile": null,
-    "channels": [],
-    "dimensions": [],
-    "backgrounds": [],
-    "shadow_mode": null
-  },
-  "fidelity_locks": {
-    "shape": true,
-    "packaging": true,
-    "logo": true,
-    "label_text": true,
-    "material": true,
-    "product_color": true,
-    "distinguishing_details": true,
-    "additional": []
-  },
-  "operations": [],
+  "operations": [
+    {
+      "operation": null,
+      "purpose": null,
+      "authorization_ref": null,
+      "preservation_impact": null,
+      "evidence_refs": []
+    }
+  ],
   "provider_execution": {
     "adapter": null,
     "run_ref": null,
+    "executor": null,
     "status": "NOT_VERIFIED",
+    "version_attribution": {},
     "limitations": []
   },
-  "exports": [],
+  "exports": [
+    {
+      "role": "product_asset_master",
+      "artifact_ref": null,
+      "sha256": null,
+      "format": "PNG",
+      "dimensions": null,
+      "status": "NOT_VERIFIED"
+    },
+    {
+      "role": "catalog_output",
+      "artifact_ref": null,
+      "sha256": null,
+      "format": "PNG",
+      "dimensions": null,
+      "status": "NOT_VERIFIED"
+    },
+    {
+      "role": "commercial_output",
+      "artifact_ref": null,
+      "sha256": null,
+      "format": "PNG",
+      "dimensions": null,
+      "status": "NOT_VERIFIED"
+    }
+  ],
   "product_fidelity_review": {
     "comparison_refs": [],
+    "lock_statuses": {
+      "shape": "NOT_VERIFIED",
+      "packaging": "NOT_VERIFIED",
+      "logo": "NOT_VERIFIED",
+      "label_text": "NOT_VERIFIED",
+      "material": "NOT_VERIFIED",
+      "product_color": "NOT_VERIFIED",
+      "distinguishing_details": "NOT_VERIFIED"
+    },
     "status": "NOT_VERIFIED",
     "findings": []
   },
   "mask_edge_export_review": {
     "actual_size_refs": [],
     "background_test_refs": [],
+    "checks": {
+      "transparent_png_integrity": "NOT_VERIFIED",
+      "no_canvas_clipping": "NOT_VERIFIED",
+      "no_halo_or_fringe": "NOT_VERIFIED",
+      "no_residue": "NOT_VERIFIED",
+      "crop_and_padding": "NOT_VERIFIED",
+      "effective_resolution": "NOT_VERIFIED",
+      "export_integrity": "NOT_VERIFIED"
+    },
     "status": "NOT_VERIFIED",
     "findings": []
   },
