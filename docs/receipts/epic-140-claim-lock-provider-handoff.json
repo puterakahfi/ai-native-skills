@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "epic": "puterakahfi/ai-native-skills#140",
+  "validation_issue": "puterakahfi/ai-native-skills#145",
+  "bug_issue": "puterakahfi/ai-native-skills#158",
+  "feature_flow": "authorized_content_claim_lock_and_provider_fidelity_handoff",
+  "status": "PASS",
+  "production_readiness_claim": false,
+  "source_case": {
+    "classification": "verified_live_provider_failure",
+    "observed_failures": [
+      "unsupported fragrance claims and fragrance-note lists were added to a generated HMNS commercial flyer",
+      "unsupported packaging quality, availability, use-case claims, and a crown mark were added to a clear-jars flyer",
+      "specific product geometry, packaging proportions, cap geometry, and label placement drifted while remaining visually plausible"
+    ],
+    "expected_behavior": [
+      "only authority-backed exact content may be rendered",
+      "unknown commercial content defaults to prohibited",
+      "product references and preservation locks survive provider translation",
+      "actual output is compared with source and ledger before acceptance",
+      "non-PASS SV8, SV9, or SV11 blocks acceptance and delivery"
+    ]
+  },
+  "live_evidence": [
+    {
+      "case_id": "LIVE-HMNS-01",
+      "source_sha256": "fd0be735004e7e08bb90137e22e991e9f219d810fa7d3672912342b6121d515c",
+      "output_sha256": "c02dbada35a7d27324e99436f2885d55df87b0cbafa0d09d345bc7c8bd1528e5",
+      "verdict": "CONDITIONAL_PASS",
+      "hard_gate_status": {
+        "SV8": "PARTIAL",
+        "SV9": "PARTIAL",
+        "SV11": "PASS"
+      },
+      "accepted_positive_evidence": false
+    },
+    {
+      "case_id": "LIVE-HMNS-GIFT-02",
+      "source_sha256": "78a814a6906b391c10c71d040daa130c1908af3980f0b9fc9a9609b0bdaaddce",
+      "output_sha256": "d8945ba3d7868043c7d0b05803e597f5009316540d3ef2f62fe1530d4c58de47",
+      "verdict": "CRITICAL",
+      "hard_gate_status": {
+        "SV8": "PARTIAL",
+        "SV9": "FAIL",
+        "SV11": "FAIL"
+      },
+      "unsupported_content": [
+        "Bold & Masculine",
+        "Long Lasting",
+        "Premium Quality",
+        "invented fragrance-note lists"
+      ],
+      "accepted_positive_evidence": false
+    },
+    {
+      "case_id": "LIVE-CLEAR-JARS-03",
+      "source_sha256": "69fffe27f5a1c15aa1fe2d5dc54b0db7052106f6e38f93c252802ed926c50570",
+      "output_sha256": "8465cf3c7ece442b733948a4486f3326701e05eb9d9bb9bad45556244f4705ad",
+      "verdict": "CRITICAL",
+      "hard_gate_status": {
+        "SV8": "FAIL",
+        "SV9": "PARTIAL",
+        "SV11": "FAIL"
+      },
+      "unsupported_content": [
+        "Premium glass packaging",
+        "Available in multiple sizes",
+        "Ideal for candles, skincare, gifts & storage",
+        "unsupported crown mark"
+      ],
+      "accepted_positive_evidence": false
+    },
+    {
+      "case_id": "LIVE-UNSUITABLE-ORGANIC-04",
+      "source_sha256": "ba3ff997121815afce5d84802835ddaeb3ba3387252cd7e5de295eddddd5181b",
+      "verdict": "FAIL_CLOSED_PASS",
+      "provider_execution_performed": false,
+      "accepted_positive_evidence": false
+    }
+  ],
+  "observable_outputs": [
+    "skills/commercial-creative-production/SKILL.md",
+    "skills/commercial-creative-production/references/authorized-content-and-provider-handoff.md",
+    "skills/prompt-engineer/SKILL.md",
+    "contracts/tests/commercial-creative-production.test.yaml",
+    "contracts/tests/prompt-engineer.test.yaml",
+    "scripts/validate-commercial-creative-handoff.py",
+    "tests/test_validate_commercial_creative_handoff.py",
+    "validation/commercial-creative-production/provider-handoff-template.json",
+    "validation/commercial-creative-production/README.md"
+  ],
+  "enforced_invariants": [
+    "every renderable commercial content item is allowlisted and linked to authority",
+    "unknown commercial content policy is prohibit",
+    "required exact text and approved marks survive provider translation",
+    "specific products require source references and all fidelity locks",
+    "provider handoff contains no-additional-content, no-inferred-claims, and preserve-product-truth constraints",
+    "actual detected output content is compared with the authorized ledger",
+    "unmatched, altered, omitted, or explicitly prohibited content blocks acceptance",
+    "SV8, SV9, and SV11 non-PASS blocks acceptance and delivery",
+    "SV9 failure routes to design-refinement plus product-image-production",
+    "provider executor and independent reviewer are distinct"
+  ],
+  "validation": {
+    "python_compile": "PASS",
+    "focused_unit_tests": {
+      "status": "PASS",
+      "passed": 20,
+      "failed": 0
+    },
+    "commercial_eval_yaml_parse": "PASS",
+    "prompt_engineer_eval_yaml_parse": "PASS",
+    "template_json_parse": "PASS",
+    "receipt_json_parse": "PASS",
+    "github_actions_run": "NOT_RUN_BY_DECISION"
+  },
+  "validator_boundary": {
+    "binary_pixel_inspection": "NOT_VERIFIED",
+    "ocr_or_text_detection": "NOT_VERIFIED",
+    "reviewer_authenticity": "NOT_VERIFIED",
+    "semantic_product_fidelity": "SUPPLIED_EVIDENCE_ONLY",
+    "accepted_real_product_output": "NOT_VERIFIED"
+  },
+  "limitations": [
+    "The patch strengthens shared workflow and provider handoff behavior but cannot force an external image model to obey constraints.",
+    "Provider outputs still require actual source/content comparison and independent review.",
+    "The live outputs are retained as negative evidence and are not accepted Product Asset Masters or releaseable commercial artifacts.",
+    "Issue #145 remains open until at least one authorized provider output passes all applicable hard gates."
+  ],
+  "capability_evolution": {
+    "verdict": "BUG",
+    "route": "puterakahfi/ai-native-skills#158",
+    "reason": "Documented commercial content and fidelity constraints existed, but live provider handoff behavior produced invented claims, unsupported marks, and product drift."
+  }
+}
