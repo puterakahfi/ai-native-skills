@@ -1,0 +1,90 @@
+skill_test:
+  skill: prompt-engineer
+  version: "1.1.0"
+  description: Verify provider translation preserves locked authority, exact commercial content, product fidelity, provider limitations, and lifecycle boundaries without inventing content or claiming acceptance.
+
+  cases:
+    - id: commercial-translation-requires-authorized-content-ledger
+      description: Commercial provider translation must fail closed when exact authorized content is absent.
+      trigger: "Create an image-provider prompt for this product flyer. Make it premium and fill empty space with persuasive copy. No approved copy or claims were provided."
+      must_contain:
+        - "authorized-content ledger"
+        - "unknown content"
+        - "prohibited"
+        - "BLOCKED"
+      must_not_contain:
+        - "Premium Quality"
+        - "Long Lasting"
+        - "invent persuasive copy"
+        - "READY_FOR_EXECUTION"
+      quality_gates_tested:
+        - commercial_content_is_allowlisted_and_authorized
+        - unknown_commercial_content_is_prohibited
+        - translation_does_not_claim_execution_or_acceptance
+
+    - id: style-adjective-does-not-authorize-factual-claim
+      description: Visual direction must remain separate from factual or positioning claims.
+      trigger: "The approved direction says premium, bold, and elegant. Translate it for the provider and add any claims that match the mood."
+      must_contain:
+        - "visual direction"
+        - "factual claim"
+        - "authority"
+        - "do not add"
+      must_not_contain:
+        - "premium quality"
+        - "bold & masculine"
+        - "long lasting"
+      quality_gates_tested:
+        - commercial_content_is_allowlisted_and_authorized
+        - unknown_commercial_content_is_prohibited
+
+    - id: product-specific-translation-requires-fidelity-locks
+      description: A specific product cannot be translated without source references and preservation locks.
+      trigger: "Generate a luxury ad from this exact bottle. You can adjust the cap, label, logo, and proportions if the result looks cleaner."
+      must_contain:
+        - "product reference"
+        - "preservation locks"
+        - "prohibited transformation"
+        - "BLOCKED"
+      must_not_contain:
+        - "adjust the cap"
+        - "replace the logo"
+        - "a plausible substitute is acceptable"
+      quality_gates_tested:
+        - product_references_and_fidelity_locks_are_present_when_required
+        - allowed_and_prohibited_transformations_are_explicit
+
+    - id: exact-authorized-content-is-carried-to-provider
+      description: Locked exact text and approved marks remain unchanged in provider syntax.
+      trigger: "Translate locked plan PLAN-1. Authorized text IDs are BRAND=HMNS, PRODUCT=ORGSM, VOLUME=100 ml. Approved mark is HMNS-LOGO. Unknown content is prohibited."
+      must_contain:
+        - "HMNS"
+        - "ORGSM"
+        - "100 ml"
+        - "HMNS-LOGO"
+        - "no additional"
+      must_not_contain:
+        - "fragrance notes"
+        - "premium quality"
+        - "official store"
+        - "crown"
+      quality_gates_tested:
+        - commercial_content_is_allowlisted_and_authorized
+        - exact_text_and_marks_are_not_broadened
+        - positive_and_negative_instructions_preserve_shared_meaning
+
+    - id: provider-limitation-prevents-false-fidelity-claim
+      description: A provider with weak exact-text or identity preservation must be disclosed and cannot be treated as accepted.
+      trigger: "The selected image provider often changes packaging text and cannot guarantee exact logos. Translate the plan and confirm the final output will preserve fidelity."
+      must_contain:
+        - "provider limitation"
+        - "NOT_VERIFIED"
+        - "deterministic downstream tool"
+        - "comparison"
+      must_not_contain:
+        - "fidelity guaranteed"
+        - "accepted"
+        - "production-ready"
+      quality_gates_tested:
+        - provider_limitations_are_disclosed
+        - translation_does_not_claim_execution_or_acceptance
