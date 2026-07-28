@@ -43,7 +43,7 @@ jobs:
           p.write_text(t)
           p=Path("catalog/capability-discovery/classifications.json"); d=json.loads(p.read_text()); g=next(x for x in d["classification_groups"] if x["id"]=="workflows")
           if "software-testing-workflow" not in g["capabilities"]: g["capabilities"].append("software-testing-workflow")
-          g["capabilities"].sort(); g.setdefault("overrides",{})["software-testing-workflow"]={"domains":["engineering","quality"],"lifecycle_stages":["plan","build","verify","release"],"concerns":["workflow-routing","testing","review","evidence"],"ecosystems":["technology-agnostic"]}
+          g["capabilities"].sort(); g.setdefault("overrides",{})["software-testing-workflow"]={"domains":["engineering","quality"],"lifecycle_stages":["plan","build","verify","release"],"concerns":["workflow-routing","testing","review","governance"],"ecosystems":["technology-agnostic"]}
           p.write_text(json.dumps(d,separators=(",",":"))+"\n")
       - run: python scripts/verify-capability-inventory.py --write-snapshot
       - run: python scripts/inventory-contract-coverage.py --root . --core-root .deps/ai-native-core
