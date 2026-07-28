@@ -4,21 +4,20 @@ on:
   push:
     branches:
       - 189-skill-lifecycle-integration-v2
-  pull_request:
-    branches:
-      - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   sync:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: 189-skill-lifecycle-integration-v2
           path: ai-native-skills
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: puterakahfi/ai-native-core
@@ -73,12 +72,14 @@ jobs:
           PY
           python scripts/verify-capability-inventory.py
           python scripts/inventory-contract-coverage.py --root . --core-root ../ai-native-core
-      - uses: actions/upload-artifact@v4
-        with:
-          name: lifecycle-generated-evidence
-          path: |
-            ai-native-skills/README.md
-            ai-native-skills/docs/skills.md
-            ai-native-skills/catalog/capability-discovery/classifications.json
-            ai-native-skills/docs/capability-inventory.json
-            ai-native-skills/docs/contract-coverage-discovery.yaml
+      - name: Commit generated metadata
+        working-directory: ai-native-skills
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md docs/skills.md catalog/capability-discovery/classifications.json docs/capability-inventory.json docs/contract-coverage-discovery.yaml
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore(metadata): synchronize lifecycle integration evidence'
+          git push origin HEAD:189-skill-lifecycle-integration-v2
