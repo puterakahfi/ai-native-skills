@@ -8,8 +8,8 @@ Current repository inventory:
 
 - `skill`: 92
 - `workflow`: 11
-- `meta-skill`: 6
-- Total executable skills: 109
+- `meta-skill`: 7
+- Total executable skills: 110
 
 ---
 
@@ -164,6 +164,7 @@ A good meta-skill defines:
 | Meta-skill | Responsibility |
 |---|---|
 | `workflow-router` | Select one primary lifecycle and applicable platform/domain/continuity overlays. |
+| `systems-reasoning` | Establish a proportionate implementation-independent system model and hand it to the selected lifecycle. |
 | `role-switcher` | Assign one owner, narrow specialists, independent reviewers, and domain reviewers. |
 | `design-layout` | Route macrostructure, component strategy, responsiveness, and spacing. |
 | `design-visual` | Route visual direction, composition, hierarchy, type, color, depth, iconography, motion, and readability. |
