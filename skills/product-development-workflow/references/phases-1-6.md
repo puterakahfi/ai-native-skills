@@ -66,7 +66,7 @@ Do not define detailed branch, PR, or task topology here. That belongs to Phase 
 
 **Goal:** Make the core user or consumer experience understandable and evaluable before technical solution design.
 
-Compose existing design capabilities; do not create a duplicate design lifecycle. Scale outputs by product type, risk, and complexity.
+Compose existing design capabilities; do not create a duplicate design lifecycle. Scale outputs by product type, risk, and complexity. Load `product-experience-design.md` for applicability, package shape, procedure, traceability, and the downstream gate.
 
 Produce when applicable:
 
@@ -105,7 +105,7 @@ implementation-context discovery
 → executable technical specification
 ```
 
-Load `implementation-context-discovery` before material architecture, dependency, stack, or repository-mapping decisions.
+Load `implementation-context-discovery` before material architecture, dependency, stack, or repository-mapping decisions. Load `solution-design-and-technology-selection.md` for the complete package and technology-decision gate.
 
 Produce architecture constraints, solution design, technology trade-offs, tasks/context packs, criterion traceability, evidence/runtime plan, reviewer plan, and approved dependency/exception records.
 
@@ -117,7 +117,7 @@ Produce architecture constraints, solution design, technology trade-offs, tasks/
 
 **Goal:** Convert the approved MVP and sufficient Solution Design into independently testable delivery slices and authorized repository topology.
 
-Load `delivery-work-breakdown` and `decision-provenance`.
+Load `delivery-work-breakdown` and `decision-provenance`. Load `delivery-planning-and-vertical-slices.md` for the vertical-slice contract, enabling-work exceptions, topology, and traceability requirements.
 
 Produce:
 
