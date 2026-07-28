@@ -1,0 +1,65 @@
+skill_test:
+  skill: software-testing-workflow
+  version: 0.1.0
+  description: Verify risk-based routing, adapter separation, normalized evidence, non-use cases, and primary-lifecycle ownership.
+  cases:
+    - id: pure-domain-library
+      description: Select focused unit evidence and reject disproportionate environment-heavy levels.
+      trigger: A deterministic domain library changes pricing rules with explicit inputs, outputs, and no external boundary.
+      must_contain: [test-strategy, unit-testing, rejected_levels, NOT_JUSTIFIED, rationale]
+      must_not_contain: [run every test level, browser required]
+      quality_gates_tested: [risk_based_selection, anti_dogma]
+    - id: database-crud-service
+      description: Select unit and real persistence integration evidence for transaction and migration risk.
+      trigger: A CRUD service changes validation plus a database migration and transaction boundary.
+      must_contain: [unit-testing, integration-testing, database, migration, cleanup]
+      must_not_contain: [mock proves migration]
+      quality_gates_tested: [boundary_coverage]
+    - id: provider-consumer-change
+      description: Preserve contract ownership and compatibility evidence.
+      trigger: An API provider changes a response field consumed by two independently deployed clients.
+      must_contain: [contract-testing, provider, consumer, compatibility, breaking]
+      must_not_contain: [generic integration is sufficient]
+      quality_gates_tested: [contract_routing]
+    - id: event-driven-eventual-workflow
+      description: Select integration and justified non-browser E2E with eventual-consistency diagnostics.
+      trigger: An order crosses API, broker, worker, and database with eventual consistency and retry behavior.
+      must_contain: [integration-testing, end-to-end-testing, non-browser, eventual, diagnostics]
+      must_not_contain: [Playwright required]
+      quality_gates_tested: [transfer_non_browser]
+    - id: bugfix-regression
+      description: Keep bugfix workflow primary and route minimum credible regression evidence.
+      trigger: A production bug in a parser requires a regression check while the bugfix workflow owns delivery.
+      must_contain: [bugfix-workflow, primary_workflow, regression, unit-testing]
+      must_not_contain: [software-testing-workflow becomes primary]
+      quality_gates_tested: [single_primary_lifecycle]
+    - id: legacy-no-seam
+      description: Preserve limitations when credible evidence cannot yet be isolated.
+      trigger: Legacy code has hidden global state, no test seam, and an unavailable external environment.
+      must_contain: [NOT_VERIFIED, limitations, seam, unavailable_evidence]
+      must_not_contain: [PASS]
+      quality_gates_tested: [missing_evidence_fails_closed]
+    - id: e2e-not-justified
+      description: Reject duplicate browser automation for a risk already proven precisely below the journey level.
+      trigger: Unit and contract checks fully prove a pure transformation and schema change, but a browser suite is proposed.
+      must_contain: [end-to-end-testing, NOT_JUSTIFIED, duplicate, rejected_levels]
+      must_not_contain: [browser by default]
+      quality_gates_tested: [excessive_e2e_rejected]
+    - id: bdd-not-justified
+      description: Reject ceremonial BDD when no business ambiguity or collaboration need exists.
+      trigger: A dependency patch changes no observable business behavior, but a Gherkin workshop is proposed.
+      must_contain: [behavior-driven-development, NOT_JUSTIFIED, ceremonial]
+      must_not_contain: [BDD mandatory]
+      quality_gates_tested: [ceremonial_bdd_rejected]
+    - id: flaky-skipped-unavailable
+      description: Preserve every non-PASS result and block sufficient-confidence claims.
+      trigger: One suite fails then passes on retry, two tests are skipped, and the E2E environment is unavailable.
+      must_contain: [FLAKY, SKIPPED, unavailable_evidence, INSUFFICIENT, NEEDS_WORK]
+      must_not_contain: [verdict: PASS]
+      quality_gates_tested: [evidence_semantics]
+    - id: adapter-after-discovery
+      description: Select framework adapters only after repository evidence is verified.
+      trigger: A repository might be TypeScript, Go, or PHP, but no manifest or command has been inspected.
+      must_contain: [implementation-context-discovery, NOT_VERIFIED, adapter, commands]
+      must_not_contain: [use Vitest, use PHPUnit, use go test]
+      quality_gates_tested: [adapter_selection_order]
