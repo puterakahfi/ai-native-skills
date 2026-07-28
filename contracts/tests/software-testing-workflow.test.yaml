@@ -55,7 +55,7 @@ skill_test:
       description: Preserve every non-PASS result and block sufficient-confidence claims.
       trigger: One suite fails then passes on retry, two tests are skipped, and the E2E environment is unavailable.
       must_contain: [FLAKY, SKIPPED, unavailable_evidence, INSUFFICIENT, NEEDS_WORK]
-      must_not_contain: [verdict: PASS]
+      must_not_contain: ["verdict: PASS"]
       quality_gates_tested: [evidence_semantics]
     - id: adapter-after-discovery
       description: Select framework adapters only after repository evidence is verified.
