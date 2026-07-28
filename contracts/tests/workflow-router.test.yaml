@@ -1,6 +1,6 @@
 skill_test:
   skill: workflow-router
-  version: 1.8.0
+  version: 1.8.1
   description: Verify lifecycle selection remains primary while platform, delivery, continuity, design, and skill-lifecycle overlays load the correct capabilities.
   cases:
     - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
@@ -101,3 +101,38 @@ skill_test:
       must_contain: [ambiguity, authoring, doctor, evolution, evaluation]
       must_not_contain: [start modifying files, assume CREATE, assume repair]
       quality_gates_tested: [ambiguous_requests_must_be_clarified_not_assumed, no_execution_before_routing_confirmed]
+
+    - id: indonesian-create-prd-routes-product-requirements
+      description: An explicit Indonesian PRD authoring request routes to the product lifecycle and product-requirements capability.
+      trigger: Buatkan PRD buat fitur centralized project OS ini dong.
+      must_contain: [product-development-workflow, product-requirements, product-manager, PRD]
+      must_not_contain: [spec-workflow as primary, start implementation immediately, explain concept only]
+      quality_gates_tested: [explicit_prd_authoring_routes_product_requirements, route_before_execution]
+
+    - id: indonesian-product-needs-without-prd-acronym-routes-product-requirements
+      description: Indonesian product-needs wording routes by intent rather than relying on the PRD acronym.
+      trigger: Tolong susun kebutuhan produk untuk fitur reusable virtual talent.
+      must_contain: [product-development-workflow, product-requirements, product-manager, requirements]
+      must_not_contain: [keyword match required, spec-workflow as primary, implementation]
+      quality_gates_tested: [semantic_product_requirements_intent, acronym_not_required]
+
+    - id: indonesian-revise-prd-routes-product-requirements
+      description: Revising an existing PRD remains in product-requirements and does not jump to implementation.
+      trigger: Tolong revisi PRD ini agar acceptance criterianya lebih terukur.
+      must_contain: [product-development-workflow, product-requirements, acceptance criteria, revise]
+      must_not_contain: [start implementation, technical spec as primary, approved automatically]
+      quality_gates_tested: [prd_revision_routes_product_requirements, revision_preserves_approval_boundary]
+
+    - id: indonesian-explain-prd-does-not-trigger-authoring
+      description: A conceptual PRD question receives an explanation without starting the product authoring workflow.
+      trigger: Apa itu PRD?
+      must_contain: [explain, concept]
+      must_not_contain: [start product-development-workflow, activate product-requirements, create PRD]
+      quality_gates_tested: [concept_question_is_not_authoring_intent, no_false_positive_prd_route]
+
+    - id: indonesian-compare-prd-rfc-does-not-trigger-authoring
+      description: Comparing PRD and RFC does not activate PRD creation.
+      trigger: Apa perbedaan PRD dan RFC?
+      must_contain: [compare, PRD, RFC]
+      must_not_contain: [start product-development-workflow, activate product-requirements, create PRD]
+      quality_gates_tested: [comparison_is_not_authoring_intent, no_false_positive_prd_route]
