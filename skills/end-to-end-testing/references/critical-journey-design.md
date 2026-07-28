@@ -18,7 +18,7 @@ Assert durable business or system outcomes. Prefer stable identifiers and observ
 
 ## Diagnostics
 
-Capture correlation identifiers, logs, traces, screenshots when relevant, response payloads, service versions, and the first known failing boundary.
+Capture correlation identifiers, logs, traces, screenshots when relevant, response payloads, service versions, and the first known failing boundary. Distinguish deterministic product failure, environmental failure, unsupported setup, and unexplained flakiness in the recorded result.
 
 ## Retry and flakiness
 
