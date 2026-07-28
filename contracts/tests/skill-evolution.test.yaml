@@ -1,22 +1,77 @@
 skill_test:
   skill: skill-evolution
-  version: 1.0.3
-  description: Verify skill-evolution exposes and applies its reviewed context, workflow, profile, or maintenance contract
-    interface.
+  version: 1.1.0
+  description: Verify verified learning promotion remains transferable, deduplicated, package-compliant, regression-backed, and authority-safe.
   cases:
-  - id: transferable-rule-needs-multiple-contexts-and-counterexamples
-    description: Evaluate whether a verified fix should become reusable shared behavior.
-    trigger: Apply skill-evolution to a realistic context, routing, profile, planning, evaluation, or maintenance task and
-      report the contract-backed result.
-    must_contain:
-    - transferable_rule_is_validated_against_multiple_contexts_and_counterexamples
-    - generalization_report
-    - target_layer_decision
-    - minimal_patch_plan
-    - promotion_verdict
-    - promotion_commit
-    must_not_contain:
-    - promote one anecdote as universal
-    - skip counterexample testing
-    quality_gates_tested:
-    - transferable_rule_is_validated_against_multiple_contexts_and_counterexamples
+    - id: transferable-rule-needs-multiple-contexts-and-counterexamples
+      description: Evaluate whether a verified fix should become reusable shared behavior.
+      trigger: Apply skill-evolution to a realistic context, routing, profile, planning, evaluation, or maintenance task and report the contract-backed result.
+      must_contain:
+        - transferable_rule_is_validated_against_multiple_contexts_and_counterexamples
+        - generalization_report
+        - target_layer_decision
+        - minimal_patch_plan
+        - promotion_verdict
+        - promotion_commit
+      must_not_contain:
+        - promote one anecdote as universal
+        - skip counterexample testing
+      quality_gates_tested:
+        - transferable_rule_is_validated_against_multiple_contexts_and_counterexamples
+
+    - id: valid-promotion-requires-package-evidence
+      description: A reusable verified rule cannot be promoted without package validation and centralized regression evidence.
+      trigger: A verified product fix exposed a reusable reasoning gap in an existing skill. Promote the minimal shared rule and report all gates.
+      must_contain:
+        - contracts/skill-package-policy.yaml
+        - scripts/validate-skill-packages.py
+        - contracts/tests/
+        - package_status
+        - behavioral_status
+      must_not_contain:
+        - skills/
+        - /evals/
+        - package validation optional
+      quality_gates_tested:
+        - promoted_patch_requires_package_evidence
+        - centralized_regression_source_is_preserved
+
+    - id: package-error-defers-promotion
+      description: Blocking package errors prevent a promoted verdict.
+      trigger: The reusable learning is verified, but the candidate skill package contains a prohibited outputs directory and package validation fails.
+      must_contain:
+        - DEFERRED_UNVERIFIED
+        - package_status
+        - ERROR
+        - blocking
+      must_not_contain:
+        - PROMOTED
+        - package error can be ignored
+      quality_gates_tested:
+        - package_error_blocks_promotion
+
+    - id: eval-only-does-not-change-package
+      description: When the rule already exists but application is unreliable, add regression evidence only.
+      trigger: The target skill already contains the correct reusable rule, but a verified case shows the agent sometimes ignores it.
+      must_contain:
+        - EVAL_ONLY
+        - contracts/tests/
+        - no package change
+        - skill-eval
+      must_not_contain:
+        - duplicate rule
+        - bump package for no behavior change
+      quality_gates_tested:
+        - eval_only_avoids_unnecessary_package_changes
+
+    - id: intentional-new-capability-delegates-to-authoring
+      description: An unverified new capability idea belongs to authoring, not evolution.
+      trigger: Create a new reusable skill idea that has no verified source case or before-and-after evidence.
+      must_contain:
+        - skill-authoring-workflow
+        - unverified
+        - no promotion
+      must_not_contain:
+        - promote as verified learning
+      quality_gates_tested:
+        - authoring_and_evolution_boundaries_do_not_overlap
