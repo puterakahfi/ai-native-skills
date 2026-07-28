@@ -25,7 +25,7 @@ contract_exemption:
   - kind: third_party_source
     ref: ai-native-core/contracts/skills/architecture/systems-thinking.contract.yaml
   revisit:
-    blocking_issue: null
+    blocking_issue: puterakahfi/ai-native-core#70
     triggers:
     - a systems-reasoning core contract or RFC is accepted and published
     - the foundational overlay boundary is reviewed against canonical core terminology
