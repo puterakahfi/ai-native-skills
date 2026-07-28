@@ -1711,7 +1711,7 @@ contract_coverage_inventory:
       - product_specific_test_policy_or_acceptance
       - merge_release_or_production_authorization
     conformance_path: null
-    exemption_path: skills/software-testing-workflow/contract.exemption.yaml
+    exemption_path: null
     classification: invalid
     errors:
     - contract_path_missing
