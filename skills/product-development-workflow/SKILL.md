@@ -1,9 +1,9 @@
 ---
 name: product-development-workflow
-description: End-to-end digital product workflow from zero to launch — discovery, provenance-backed PRD and MVP decisions, technical specification, feature implementation, product acceptance, release readiness, delivery approval, launch, and learning.
+description: End-to-end digital product workflow from idea to validated product — Product Brief, PRD, MVP, experience and solution design, vertical-slice delivery, implementation, evidence-backed acceptance, release, deploy, launch, and real-user validation.
 license: MIT
 metadata:
-  ai-native-skills.version: 3.0.0
+  ai-native-skills.version: 3.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "product-requirements business-value-alignment experiment-design user-research product-manager delivery-work-breakdown decision-provenance master-design master-engineer native-ai-engineer chatgpt-app-development spec-workflow new-feature-workflow code-review-workflow design-review deployment-workflow observability-design"
   ai-native-skills.type: workflow
@@ -100,6 +100,18 @@ Phases 7–12
 
 Acceptance, accepted-risk authority, and release boundary
   references/acceptance-and-release.md
+
+Product Experience Design composition
+  references/product-experience-design.md
+
+Solution Design and technology selection composition
+  references/solution-design-and-technology-selection.md
+
+Delivery Planning and vertical-slice composition
+  references/delivery-planning-and-vertical-slices.md
+
+Product Validation and Learning composition
+  references/product-validation-and-learning.md
 
 Formats, stop points, and pitfalls
   references/formats-pitfalls.md
