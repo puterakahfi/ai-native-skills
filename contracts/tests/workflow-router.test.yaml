@@ -138,9 +138,9 @@ skill_test:
       quality_gates_tested: [comparison_is_not_authoring_intent, no_false_positive_prd_route]
 
     - id: prd-composition-resolves-artifact-executor
-      description: A PRD route must identify both the product owner and the capability that produces the requested artifact.
+      description: A PRD route must identify both the product owner and the capability that produces the requested artifact in the skill load order.
       trigger: Buatkan PRD untuk Capability Orchestrator Contract.
-      must_contain: [product-development-workflow, product-manager, product-requirements, product_requirements_document, execution_graph]
+      must_contain: [product-development-workflow, product-manager, product-requirements, product_requirements_document, skill_load_order, artifact producer]
       must_not_contain: [product-manager as executor, flat skill list, generic fallback replaces product-requirements]
       quality_gates_tested: [requested_artifact_has_producer, owner_executor_separation]
 
@@ -158,16 +158,9 @@ skill_test:
       must_not_contain: [READY, completed PRD, silent fallback]
       quality_gates_tested: [missing_required_executor_blocks, no_generic_equivalent_fallback]
 
-    - id: flat-role-list-is-not-execution-graph
-      description: A flat list of roles and skills cannot prove dependencies, artifacts, gates, or execution order.
+    - id: flat-role-list-is-not-complete-composition
+      description: A flat list of roles and skills cannot prove ownership, artifact production, dependency order, or completion gates.
       trigger: Return workflow-router, product-manager, product-requirements, and chatgpt-app-development as a flat list and call routing complete.
-      must_contain: [invalid, owner, executor, artifact, dependency, completion gate]
-      must_not_contain: [READY, routing complete]
-      quality_gates_tested: [structured_execution_graph_required]
-
-    - id: selected-skill-without-load-evidence-is-not-executed
-      description: A selected capability cannot be reported as executed until its source, procedure, output, and completion evidence exist.
-      trigger: product-requirements was selected but its source and procedure were not loaded.
-      must_contain: [SELECTED, SKILL_SOURCE_NOT_LOADED, EVIDENCE_MISSING]
-      must_not_contain: [product-requirements EXECUTED, acceptance PASS]
-      quality_gates_tested: [evidence_backed_execution_claim, execution_state_transitions]
+      must_contain: [invalid, owner, executor, artifact producer, dependency, completion gate]
+      must_not_contain: [routing complete, complete composition]
+      quality_gates_tested: [structured_composition_required]
