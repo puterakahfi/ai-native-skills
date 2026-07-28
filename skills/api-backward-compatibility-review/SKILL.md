@@ -3,7 +3,7 @@ name: api-backward-compatibility-review
 description: Review a proposed API change against an explicit prior contract, classify compatibility impact, and require migration, deprecation, consumer, versioning, and release evidence. Use before changing a published or consumed API; do not use as the primary skill for greenfield API design or implementation-only debugging.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.0.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.requires: "api-contract decision-provenance"
@@ -61,7 +61,7 @@ Review only dimensions relevant to the API, and state which were not applicable:
 
 ## Classification
 
-Use exactly one primary result:
+Use exactly one primary compatibility result:
 
 ```text
 ADDITIVE                 existing consumers remain valid; new behavior is opt-in
@@ -73,6 +73,8 @@ NOT_VERIFIED             evidence is insufficient for a defensible classificatio
 
 A syntactically additive field can still be behaviorally or operationally breaking. A version-number change does not prove compatibility.
 
+Report approval independently as `APPROVED`, `REJECTED`, or `NOT_VERIFIED`. Never downgrade or upgrade the compatibility classification merely because approval authority is absent.
+
 ## Procedure
 
 1. Verify repository, issue, baseline revision, proposed revision, consumers, and review scope.
@@ -82,7 +84,7 @@ A syntactically additive field can still be behaviorally or operationally breaki
 5. Classify each change as additive, compatible, conditional, breaking, or not verified.
 6. Aggregate the strictest supported result; do not average away a breaking consumer impact.
 7. Define required migration, deprecation, versioning, rollout, monitoring, and rollback actions.
-8. Separate evidence, inference, assumptions, and approvals.
+8. Separate evidence, inference, assumptions, compatibility classification, and approval.
 9. Issue a review report and explicit next gate.
 
 ## Breaking-change signals
@@ -116,21 +118,23 @@ api_backward_compatibility_review:
   deprecation_requirements: []
   versioning_requirements: []
   rollout_and_rollback: []
-  approvals: []
+  approval_status: APPROVED | REJECTED | NOT_VERIFIED
+  approval_evidence: []
   known_gaps: []
   next_gate: <one exact action>
 ```
 
 ## Hard gates
 
-Return `NOT_VERIFIED` or `BREAKING` rather than PASS when:
+Return compatibility classification `NOT_VERIFIED` or `BREAKING` rather than a positive compatibility result when:
 
 - the previous contract or proposed contract is missing;
 - consumer impact is unknown for a destructive or semantic change;
 - a migration is required but no migration path exists;
 - deprecation timing violates verified policy;
-- rollout or rollback evidence is missing for a conditional change;
-- the reviewer lacks release approval authority.
+- rollout or rollback evidence is missing for a conditional change.
+
+Return approval status `NOT_VERIFIED` when the reviewer lacks verified release authority. Compatibility evidence may still support a classification, but release approval remains blocked.
 
 ## Evidence rules
 
