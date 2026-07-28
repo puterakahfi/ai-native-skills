@@ -131,12 +131,20 @@ capability_orchestration:
       - review_findings_recorded
       - review_verdict_recorded
 
+  fail_closed_requirements:
+    - duplicate_capability_ids_block
+    - undeclared_dependencies_block
+    - only_selected_capabilities_produce_artifacts
+    - blocked_graphs_have_no_execution_order
+
   typed_errors:
     - ROUTING_AMBIGUOUS
     - PRIMARY_WORKFLOW_NOT_FOUND
     - MULTIPLE_PRIMARY_WORKFLOWS
     - OWNER_NOT_FOUND
     - MULTIPLE_OWNERS
+    - DUPLICATE_CAPABILITY_ID
+    - UNDECLARED_DEPENDENCY
     - ARTIFACT_PRODUCER_NOT_FOUND
     - REQUIRED_CAPABILITY_MISSING
     - CAPABILITY_VERSION_INCOMPATIBLE
