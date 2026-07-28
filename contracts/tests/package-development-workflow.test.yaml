@@ -1,0 +1,115 @@
+skill_test:
+  skill: package-development-workflow
+  version: "0.1.0"
+  description: Verify package boundary decisions, compatibility classification, publication evidence discipline, and fresh external-consumer acceptance.
+
+  cases:
+    - id: shared-auth-uses-ports-and-interchangeable-adapters
+      description: Shared auth keeps domain/application provider-neutral and makes the app the composition root.
+      trigger: "Design reusable auth packages for several products. Clerk, Auth.js, and JWT must be interchangeable. Next.js apps choose secrets, routes, UI, environment mapping, and product authorization policy. Decide package boundaries and acceptance proof."
+      must_contain:
+        - "@pkahfi/auth-contracts"
+        - "@pkahfi/auth-domain"
+        - "@pkahfi/auth-application"
+        - "@pkahfi/auth-adapter-clerk"
+        - "@pkahfi/auth-adapter-authjs"
+        - "@pkahfi/auth-adapter-jwt"
+        - "@pkahfi/auth-nextjs"
+        - "composition root"
+        - "adapter substitution"
+        - "fresh independent repository"
+      must_not_contain:
+        - "domain reads environment variables"
+        - "auth-domain imports Clerk"
+        - "product authorization policy belongs in shared core"
+      sequence_required:
+        - pattern: "ownership|bounded context|implementation context"
+          must_come_before: "package boundaries|public API|implementation"
+        - pattern: "publication|immutable version"
+          must_come_before: "fresh independent repository|external consumer"
+      quality_gates_tested:
+        - canonical_owner_and_bounded_context_must_be_explicit
+        - domain_and_application_must_not_depend_on_framework_database_provider_environment_or_adapter
+        - adapters_must_depend_inward_and_be_selected_by_application_composition_root
+        - external_consumer_pass_requires_actual_fresh_install_and_execution_evidence
+
+    - id: validator-with-filesystem-assumptions-is-only-partially-portable
+      description: Portable validation rules must be separated from repository/filesystem adapters.
+      trigger: "A validator has reusable rule evaluation, but it assumes cwd, reads repository files directly, resolves owner-specific paths, and requires cloning the source repository. The team wants to publish it as a pure library. Classify and propose the boundary."
+      must_contain:
+        - "partially portable"
+        - "filesystem"
+        - "repository"
+        - "port"
+        - "adapter"
+        - "extractable_with_changes"
+        - "source inspection"
+      must_not_contain:
+        - "pure domain library as-is"
+        - "clone the owner repository is acceptable"
+        - "PASS"
+      quality_gates_tested:
+        - package_boundary_and_publishability_must_be_classified
+        - domain_and_application_must_not_depend_on_framework_database_provider_environment_or_adapter
+        - unsupported_pass_or_completion_claims_are_blocking
+
+    - id: react-ui-package-uses-peer-dependency-and-framework-boundary
+      description: Reusable UI declares consumer-owned React/framework peer ranges and isolates framework adapters.
+      trigger: "Extract a React UI package used by Next.js and another React app. Components are reusable, but routing and server data helpers are Next.js-specific. Decide dependencies, exports, and package split."
+      must_contain:
+        - "reusable UI"
+        - "peer dependency"
+        - "supported range"
+        - "framework adapter"
+        - "documented exports"
+        - "consumer"
+      must_not_contain:
+        - "bundle a second React runtime"
+        - "put Next.js routing in the framework-neutral UI core"
+        - "package.json alone proves portability"
+      quality_gates_tested:
+        - interface_contract_and_public_api_must_be_explicit_and_stable
+        - package_artifact_must_not_expose_workspace_source_or_owner_repository_requirements
+        - design_patterns_require_observed_variation_or_change_pressure
+
+    - id: sdk-breaking-public-api-requires-major-and-migration
+      description: Breaking SDK exports or behavior cannot be classified as patch/minor because internal tests pass.
+      trigger: "SDK v2 removes a documented method, changes an error type, and renames a required configuration field. Repository tests pass. The author proposes a minor release. Classify compatibility and required evidence."
+      must_contain:
+        - "breaking"
+        - "major"
+        - "public API"
+        - "compatibility diff"
+        - "migration"
+        - "deprecation"
+      must_not_contain:
+        - "minor because tests pass"
+        - "internal implementation only"
+        - "SemVer follows diff size"
+      quality_gates_tested:
+        - compatibility_diff_and_semver_classification_are_required
+        - interface_contract_and_public_api_must_be_explicit_and_stable
+
+    - id: monorepo-build-does-not-prove-external-consumer
+      description: A workspace-successful build that cannot install in a fresh repo fails consumer acceptance.
+      trigger: "A package builds in Turborepo using workspace:* and source aliases. npm pack succeeds locally, but a fresh repository cannot install the published version and types resolve only through owner source paths. Report each gate."
+      must_contain:
+        - "package build"
+        - "workspace:*"
+        - "source-path"
+        - "fresh repository"
+        - "external installation"
+        - "FAIL"
+        - "publication"
+      must_not_contain:
+        - "external-consumer PASS"
+        - "monorepo build proves portability"
+        - "clone the platform"
+      sequence_required:
+        - pattern: "package build"
+          must_come_before: "external installation|fresh repository"
+      quality_gates_tested:
+        - package_artifact_must_not_expose_workspace_source_or_owner_repository_requirements
+        - publication_pass_requires_actual_immutable_registry_publish_evidence
+        - external_consumer_pass_requires_actual_fresh_install_and_execution_evidence
+        - unsupported_pass_or_completion_claims_are_blocking
