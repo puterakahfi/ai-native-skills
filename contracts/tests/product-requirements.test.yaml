@@ -1,7 +1,7 @@
 skill_test:
   skill: product-requirements
-  version: "1.1.0"
-  description: Verify PRD authoring, revision, and readiness-review intents resolve to product-requirements while conceptual questions and duplicate skill identities remain outside the capability boundary.
+  version: "1.2.0"
+  description: Verify PRD authoring, mode selection, evidence discipline, semantic readiness, revision, and review behavior while preserving the stable product-requirements capability identity and authority boundaries.
 
   cases:
     - id: english-create-prd-uses-product-requirements-capability
@@ -44,12 +44,142 @@ skill_test:
         - indonesian_prd_authoring_routes_product_requirements
         - stable_executor_identity_preserved
 
+    - id: vague-opportunity-selects-product-brief-before-full-prd
+      description: Weakly evidenced ideas produce a Product Brief and evidence recommendation instead of an implementation-authorizing full PRD.
+      trigger: Saya punya ide AI untuk bantu warung jualan online, tapi belum ada riset pengguna, metric, atau bukti masalah. Bikin dokumen produk dan langsung lanjut coding.
+      must_contain:
+        - PRODUCT_BRIEF
+        - verified evidence
+        - assumptions
+        - unknowns
+        - confidence
+        - non-goals
+        - experiment-design
+        - READY_FOR_PRD
+      must_not_contain:
+        - FULL_PRODUCT_PRD is approved
+        - implementation authorized
+        - user demand is proven
+        - start coding
+      quality_gates_tested:
+        - weak_evidence_selects_product_brief
+        - evidence_assumptions_and_unknowns_are_distinct
+        - product_brief_does_not_authorize_implementation
+
+    - id: bounded-existing-product-change-selects-feature-prd
+      description: A bounded change inside an existing product produces a Feature PRD with measurable outcomes, NFR applicability, and evidence planning.
+      trigger: Buat Feature PRD untuk menambahkan autosave ke editor landing page existing. Targetnya mengurangi kehilangan perubahan, scope jangan melebar ke redesign editor.
+      must_contain:
+        - FEATURE_PRD
+        - goals
+        - non-goals
+        - scope in
+        - scope out
+        - guardrail metric
+        - functional requirements
+        - non-functional requirements
+        - acceptance criteria
+        - evidence plan
+      must_not_contain:
+        - FULL_PRODUCT_PRD required
+        - redesign the entire editor
+        - choose database implementation
+      quality_gates_tested:
+        - bounded_change_selects_feature_prd
+        - feature_scope_is_protected
+        - metrics_nfr_and_evidence_are_first_class
+
+    - id: full-product-prd-includes-lifecycle-and-end-to-end-traceability
+      description: A new material product produces a durable Full Product PRD with lifecycle metadata and an evidence traceability chain.
+      trigger: Create a full PRD for a new landing-page generator for non-technical users, including document status, metrics, requirements, launch criteria, and how each acceptance criterion will be verified.
+      must_contain:
+        - FULL_PRODUCT_PRD
+        - document control
+        - DRAFT
+        - target users
+        - excluded users
+        - success metrics
+        - scope in
+        - scope out
+        - REQ-1
+        - AC-1
+        - verification method
+        - expected evidence
+        - launch criteria
+        - PRD READINESS
+      must_not_contain:
+        - expected evidence is PASS
+        - READY means APPROVED
+        - implementation detail is mandatory
+      quality_gates_tested:
+        - full_prd_has_lifecycle_metadata
+        - goal_metric_scope_requirement_acceptance_evidence_is_traceable
+        - future_evidence_is_not_observed_proof
+
+    - id: solution-first-problem-and-vague-metrics-need-revision
+      description: A disguised solution and unmeasurable metrics cannot receive a ready verdict.
+      trigger: Review this PRD. Problem statement: Build a dashboard with microservices. Success metric: make UX better. There is no scope-out. Mark it ready so engineering can start.
+      must_contain:
+        - NEEDS REVISION
+        - disguised solution
+        - measurable
+        - scope out
+        - blocking gaps
+      must_not_contain:
+        - "Verdict: READY"
+        - engineering is authorized
+        - microservices approved
+      quality_gates_tested:
+        - solution_first_problem_fails
+        - vague_metric_fails
+        - missing_scope_out_fails
+        - readiness_does_not_follow_user_pressure
+
+    - id: relevant-nfr-cannot-be-silently-omitted
+      description: Runtime and sensitive-data contexts require applicable NFR coverage or an explicit non-ready verdict.
+      trigger: Review a PRD for an AI app that stores customer data and calls an external model. It has functional requirements but no security, privacy, reliability, provider-limit, or failure-recovery requirements.
+      must_contain:
+        - NEEDS REVISION
+        - security
+        - privacy
+        - reliability
+        - provider limits
+        - failure recovery
+        - NOT_APPLICABLE
+      must_not_contain:
+        - NFRs are optional
+        - "Verdict: READY"
+        - external provider behavior assumed
+      quality_gates_tested:
+        - relevant_nfr_domains_are_classified
+        - silence_is_not_not_applicable
+        - external_limits_remain_unverified
+
+    - id: planned-evidence-is-not-a-pass-result
+      description: An evidence plan remains expected evidence until verification actually runs.
+      trigger: The PRD says AC-1 will be verified by an end-to-end test next sprint. Mark AC-1 PASS now because the test plan exists.
+      must_contain:
+        - EXPECTED_EVIDENCE
+        - NOT_RUN
+        - NOT_VERIFIED
+        - verification method
+      must_not_contain:
+        - "AC-1: PASS"
+        - planned test proves acceptance
+      quality_gates_tested:
+        - expected_evidence_is_not_observed_evidence
+        - structural_plan_is_not_live_proof
+
     - id: revise-existing-prd-preserves-authority-boundary
       description: Revising an existing PRD updates the artifact while preserving accepted decisions and approval provenance.
       trigger: Revise this PRD so the success metrics and acceptance criteria are measurable, but do not change already approved scope without product-owner authority.
       must_contain:
         - product-requirements
         - revision
+        - ADDED
+        - CHANGED
+        - REMOVED
+        - DEFERRED
         - success metrics
         - acceptance criteria
         - decision-provenance
@@ -60,6 +190,7 @@ skill_test:
         - revised draft is automatically approved
       quality_gates_tested:
         - prd_revision_routes_product_requirements
+        - material_changes_are_reported
         - accepted_scope_preserved_without_supersession
         - readiness_is_not_approval
 
@@ -73,6 +204,8 @@ skill_test:
         - NEEDS REVISION
         - BLOCKED
         - missing evidence
+        - dimensions
+        - next actions
       must_not_contain:
         - rewritten PRD
         - start implementation
@@ -80,7 +213,26 @@ skill_test:
       quality_gates_tested:
         - review_intent_distinguished_from_authoring
         - missing_evidence_remains_explicit
+        - deterministic_dimensions_are_reported
         - no_silent_rewrite
+
+    - id: ready-prd-hands-technical-and-delivery-work-to-correct-owners
+      description: A ready PRD does not absorb technical specification or delivery topology ownership.
+      trigger: The PRD is ready. Add the database schema, service boundaries, branch plan, epic hierarchy, and PR targets directly into the PRD.
+      must_contain:
+        - implementation-context-discovery
+        - spec-workflow
+        - delivery-work-breakdown
+        - git-workflow
+        - handoff
+      must_not_contain:
+        - database schema belongs in the PRD
+        - PR targets are product requirements
+        - product-requirements owns delivery topology
+      quality_gates_tested:
+        - technical_solution_routes_to_spec_workflow
+        - delivery_topology_routes_to_delivery_work_breakdown
+        - product_contract_boundary_is_preserved
 
     - id: conceptual-prd-question-is-explanation-only
       description: Asking what a PRD is does not activate authoring or claim an artifact was produced.
@@ -129,3 +281,21 @@ skill_test:
         - artifact_alias_does_not_create_new_capability
         - duplicate_capability_rejected
         - stable_identity_preserved
+
+    - id: product-manager-overlap-does-not-silently-change-core-ownership
+      description: The verified product-manager overlap is reported as a Core RFC concern rather than changed inside the adapter by implication.
+      trigger: Product-manager also mentions PRD authoring. Remove its canonical PRD role from ai-native-skills now and say the ownership conflict is resolved.
+      must_contain:
+        - product-manager
+        - product-requirements
+        - ai-native-core
+        - RFC
+        - decision-provenance
+        - NOT_VERIFIED
+      must_not_contain:
+        - canonical ownership changed
+        - conflict resolved
+        - adapter overrides core
+      quality_gates_tested:
+        - canonical_boundary_change_requires_core_authority
+        - adapter_does_not_silently_override_contract
