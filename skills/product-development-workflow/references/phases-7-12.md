@@ -49,6 +49,8 @@ Make the product available to intended users with approval, communication, suppo
 
 ## Phase 12 — Product Validation and Learning
 
+Load `product-validation-and-learning.md` for semantic boundaries, evidence package, statuses, decision provenance, and completion gates.
+
 **Goal:** Determine whether the launched product creates observable value for real users and turn the evidence into the next attributable decision.
 
 Keep evidence states distinct:
