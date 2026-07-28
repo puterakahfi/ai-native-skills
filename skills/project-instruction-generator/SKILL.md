@@ -1,9 +1,9 @@
 ---
 name: project-instruction-generator
-description: Generate or audit concise, runtime-valid Project Instructions for ChatGPT Projects and equivalent project-scoped agent workspaces. Use when a project needs reusable routing, source-of-truth, execution disclosure, repository, completion, capability-evolution, and platform-capacity rules while changing mainly project identity and resource links.
+description: Generate or audit concise, runtime-valid Project Instructions for ChatGPT Projects and equivalent project-scoped agent workspaces. Use when a project needs reusable routing, source-of-truth, execution disclosure, repository, completion, capability-evolution, scope-containment, and platform-capacity rules while changing mainly project identity and resource links.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.1.0
+  ai-native-skills.version: 1.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.requires: "workflow-router role-switcher skill-evolution"
@@ -20,6 +20,7 @@ Generate a lean project-level bootstrap that tells an agent:
 - which sources govern decisions;
 - how work is routed and disclosed;
 - which repository and delivery safeguards apply;
+- how requested scope and feature-sized delivery are preserved;
 - when work may be called complete;
 - how verified lessons are reviewed for reusable evolution;
 - whether the artifact fits the target runtime.
@@ -33,8 +34,8 @@ Use this skill to:
 - create Project Instructions for ChatGPT Projects or a similar scoped workspace;
 - standardize instructions across projects;
 - convert a long project prompt into a reusable template;
-- add workflow, role, skill, evidence, and learning disclosure;
-- audit duplicated methodology or runtime-size violations.
+- add workflow, role, skill, evidence, learning, and scope-containment disclosure;
+- audit duplicated methodology, fragmented delivery rules, or runtime-size violations.
 
 Do not use it to:
 
@@ -80,7 +81,7 @@ Produce:
 2. unresolved-placeholder and omitted-section report;
 3. source-of-truth and ownership review;
 4. exact character-count and runtime-budget report;
-5. duplication warnings;
+5. duplication and delivery-fragmentation warnings;
 6. generation verification result.
 ```
 
@@ -179,7 +180,21 @@ route
 
 The loop requires a learning review, not automatic skill modification.
 
-### 6. Keep disclosure observable
+### 6. Contain scope and delivery topology
+
+Every generated artifact must require agents to:
+
+- implement only the requested objective, active issue scope, and accepted dependencies;
+- preserve unrequested ideas as deferred recommendations rather than silently expanding delivery;
+- organize work into complete feature or user-flow slices that produce observable outcomes;
+- avoid splitting one coherent feature into tiny technical tasks, branches, PRs, or CI runs without a verified dependency or review reason;
+- batch tightly coupled changes when doing so remains reviewable and safe;
+- distinguish epic, feature, task, and acceptance completion so partial technical progress is not reported as a completed user outcome;
+- finish the requested end-to-end flow before optional refinement.
+
+Use `delivery-work-breakdown` for delivery hierarchy and `decision-provenance` when scope authority conflicts. Scope containment must not suppress required safety, compliance, dependency, or acceptance work.
+
+### 7. Keep disclosure observable
 
 Require:
 
@@ -193,7 +208,7 @@ Require:
 
 Do not require private chain-of-thought. Require reviewable routing rationale, evidence, decisions, outputs, gate results, limitations, and handoffs.
 
-### 7. Add capability evolution
+### 8. Add capability evolution
 
 Route post-execution findings through `skill-evolution` using:
 
@@ -217,7 +232,7 @@ Route issues to:
 
 Issue creation requires evidence, duplicate checking, clear ownership, and write authorization.
 
-### 8. Remove duplicated methodology
+### 9. Remove duplicated methodology
 
 Replace copied procedures with mandates to load the owning skill.
 
@@ -234,7 +249,7 @@ Correct:
 
 Preserve only constraints that genuinely govern the project.
 
-### 9. Validate character capacity
+### 10. Validate character capacity
 
 Count the final artifact, excluding commentary and reports outside the text to be pasted.
 
@@ -273,7 +288,7 @@ python3 skills/project-instruction-generator/scripts/validate-instruction-size.p
 
 Report actual count, maximum, target, safety margin, and remaining hard-budget characters. Shorten by removing duplication, optional prose, repeated warnings, and explanatory detail before removing governing rules.
 
-### 10. Verify the artifact
+### 11. Verify the artifact
 
 Confirm:
 
@@ -285,6 +300,8 @@ Confirm:
 □ output does not exceed a verified hard maximum
 □ source-of-truth priority is explicit
 □ workflow-router and role-switcher are mandated
+□ requested scope is explicit and unrequested expansion is deferred
+□ delivery uses feature-sized end-to-end slices rather than technical micro-fragments
 □ disclosure precedes substantive work
 □ completion uses evidence and acceptance criteria
 □ repository inspection precedes modification
@@ -302,11 +319,12 @@ Confirm:
 - project values trace to user input or verified sources;
 - reusable policy and project configuration remain separated;
 - runtime capacity is verified and the artifact is within the target budget;
-- routing, role composition, disclosure, evidence, completion, and evolution are covered;
+- routing, role composition, disclosure, scope containment, evidence, completion, and evolution are covered;
+- delivery is organized around complete observable feature or user-flow outcomes;
 - missing information is explicit;
 - the artifact remains reusable by changing mainly project identity and links.
 
-Use `NEEDS_WORK` when the artifact is complete but bloated, ambiguous, over target budget, or over the hard maximum.
+Use `NEEDS_WORK` when the artifact is complete but bloated, ambiguous, fragmented, over target budget, or over the hard maximum.
 
 Use `NOT_VERIFIED` for runtime capacity when the platform limit is unknown.
 
@@ -319,7 +337,7 @@ PROJECT INSTRUCTION GENERATION
 ────────────────────────────────────
 Project:
 Runtime target:
-Template version: 1.1.0
+Template version: 1.2.0
 Resolved resources:
 Unresolved placeholders:
 Omitted optional sections:
@@ -331,6 +349,8 @@ Remaining hard budget:
 Limit provenance:
 Runtime capacity: PASS | NEEDS_WORK | FAIL | NOT_VERIFIED
 Routing policy: PASS | NEEDS_WORK | BLOCKED
+Scope containment: PASS | NEEDS_WORK | BLOCKED
+Delivery slicing: PASS | NEEDS_WORK | BLOCKED
 Disclosure policy: PASS | NEEDS_WORK | BLOCKED
 Repository policy: PASS | NEEDS_WORK | BLOCKED
 Evolution loop: PASS | NEEDS_WORK | BLOCKED

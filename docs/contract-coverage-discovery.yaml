@@ -1383,7 +1383,7 @@ contract_coverage_inventory:
     path: skills/project-instruction-generator/SKILL.md
     type: skill
     patterns: []
-    version: 1.1.0
+    version: 1.2.0
     implements: null
     contract_version: null
     contract_path_exists: null
