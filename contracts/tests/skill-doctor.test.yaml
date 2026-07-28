@@ -1,0 +1,60 @@
+skill_test:
+  skill: skill-doctor
+  version: "1.1.0"
+  description: Verify health audits separate canonical package compliance from advisory content-health findings and delegate behavioral scoring correctly.
+  cases:
+    - id: blocking-package-error-prevents-healthy-verdict
+      description: A prohibited package path blocks a healthy verdict.
+      trigger: Audit a skill package that contains SKILL.md and a generated outputs directory inside the skill. Report health without modifying files.
+      must_contain:
+        - PACKAGE_ERROR
+        - scripts/validate-skill-packages.py
+        - package_status
+        - ERROR
+        - audit-only
+      must_not_contain:
+        - HEALTHY
+        - package warning only
+        - modify files
+      quality_gates_tested:
+        - package_error_blocks_healthy
+        - audit_only_preserves_files
+
+    - id: advisory-line-count-does-not-invalidate-package
+      description: A long but coherent skill receives an advisory finding rather than automatic package invalidity.
+      trigger: Audit a coherent 240-line skill with valid package structure, no contradictions, and conditional references. Do not rewrite it solely because of length.
+      must_contain:
+        - advisory
+        - content
+        - package
+        - preserve
+      must_not_contain:
+        - package invalid because over 200
+        - mandatory split
+      quality_gates_tested:
+        - advisory_health_target_is_not_package_policy
+
+    - id: behavior-question-delegates-to-skill-eval
+      description: Applied behavior is evaluated by skill-eval, not inferred from structure.
+      trigger: The package validator is green. Determine whether the agent actually applied the skill in a saved output.
+      must_contain:
+        - skill-eval
+        - behavioral
+        - saved output
+        - package validation
+      must_not_contain:
+        - green package proves APPLIED
+      quality_gates_tested:
+        - package_validation_is_not_behavioral_proof
+
+    - id: intentional-migration-hands-off-to-authoring
+      description: A broad accepted migration belongs to skill-authoring-workflow.
+      trigger: Migrate this accepted legacy skill to the canonical package layout, update its behavior contract, and prepare delivery.
+      must_contain:
+        - skill-authoring-workflow
+        - MIGRATE
+        - intentional
+      must_not_contain:
+        - skill-doctor owns broad migration
+      quality_gates_tested:
+        - intentional_migration_owner_is_preserved
