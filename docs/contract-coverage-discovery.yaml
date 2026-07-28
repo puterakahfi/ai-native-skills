@@ -1618,7 +1618,7 @@ contract_coverage_inventory:
     path: skills/skill-authoring-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 1.0.0
+    version: 1.1.0
     implements: null
     contract_version: null
     contract_path_exists: null
