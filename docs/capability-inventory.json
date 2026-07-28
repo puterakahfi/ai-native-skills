@@ -3,9 +3,9 @@
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
     "skill": 99,
-    "workflow": 12,
+    "workflow": 13,
     "meta-skill": 7,
-    "total": 118
+    "total": 119
   },
   "items": [
     {
@@ -592,6 +592,11 @@
       "name": "skill-evolution",
       "type": "workflow",
       "path": "skills/skill-evolution/SKILL.md"
+    },
+    {
+      "name": "software-testing-workflow",
+      "type": "workflow",
+      "path": "skills/software-testing-workflow/SKILL.md"
     },
     {
       "name": "spec-workflow",
