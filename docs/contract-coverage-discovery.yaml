@@ -15,8 +15,8 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 72
-      reviewed_exemption: 12
-      unowned: 2
+      reviewed_exemption: 13
+      unowned: 1
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -1810,8 +1810,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/unit-testing/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: user-research
     path: skills/user-research/SKILL.md
