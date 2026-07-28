@@ -1,5 +1,5 @@
 skill_package_policy:
-  version: "1.0.0"
+  version: "1.1.0"
   behavioral_contract_root: contracts/tests
   generated_paths:
     - .tmp
@@ -12,6 +12,7 @@ skill_package_policy:
     - scripts
     - assets
     - adapter.conformance.yaml
+    - contract.exemption.yaml
   conditional:
     tests:
       required_when_scripts_present: true
@@ -28,9 +29,17 @@ skill_package_policy:
     - node_modules
     - .venv
     - __pycache__
+  lifecycle_owners:
+    authoring: skill-authoring-workflow
+    health: skill-doctor
+    evolution: skill-evolution
+    behavioral_evaluation: skill-eval
+    routing: workflow-router
   pilot_skills:
     - test-driven-development
     - workflow-router
+    - skill-authoring-workflow
+    - skill-doctor
     - skill-evolution
   enforcement:
     pilot_missing_behavioral_contract: error

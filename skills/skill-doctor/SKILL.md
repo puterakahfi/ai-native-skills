@@ -1,175 +1,190 @@
 ---
 name: skill-doctor
-description: Skill health workflow — audit, triage, fix, and verify skill files. Detects monoliths (> 200L), Lost-in-Middle violations, stale content, duplicate rules, and missing structure. Run periodically or before publishing skills.
+description: Audit, triage, repair, and verify existing skill packages. Use for unclear health problems, contradictions, stale content, package-policy violations, broken references, bloat, or missing maintenance evidence.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "skill-eval"
   ai-native-skills.type: workflow
-  ai-native-skills.related_skills: '["skill-eval","redesign-workflow","context-engineering"]'
+  ai-native-skills.related_skills: '["skill-eval","skill-authoring-workflow","skill-evolution","context-engineering"]'
 ---
 
 # Skill Doctor
 
-Audit → Triage → Fix → Verify. Produces healthy, agent-compliant skill files.
+Audit → Triage → Repair → Verify.
 
-<!-- CRITICAL RULES — top placement -->
+## Boundary
+
+`skill-doctor` owns health diagnosis and repair of existing capability packages when the failure or required fix is not already an accepted intentional change.
+
+It does not own:
+
+- creating a new capability or accepted structural redesign (`skill-authoring-workflow`);
+- promoting verified product learning (`skill-evolution`);
+- scoring whether an agent applied a skill (`skill-eval`);
+- protected-branch writes, review approval, or merge authority.
+
+## Canonical sources
+
+Load before assigning package compliance:
+
+```text
+contracts/skill-package-policy.yaml
+docs/skill-package-standard.md
+scripts/validate-skill-packages.py
 ```
-HARD RULES:
-  1. Read skill fully before modifying
-  2. Preserve ALL functional content — trim derivable/redundant only
-  3. Critical rules → top (first 20L) AND bottom (last 10L) of every skill
-  4. Split only when > 200L AND content separable by phase/topic
-  5. Verify line count + structure after every fix
+
+Do not duplicate package rules inside this workflow.
+
+## Health dimensions
+
+Keep two verdict classes separate.
+
+### Package compliance — blocking when policy says error
+
+```text
+required and prohibited paths
+conditional tests for bundled scripts
+central behavioral contract requirements
+frontmatter and metadata validity
+generated-artifact leakage
+explicit exemptions
 ```
 
-## When to Use
+### Content health — advisory unless another contract makes it blocking
 
-- Before publishing to skills.sh / ai-native-skills repo
-- When `skill-eval` returns PARTIAL or GHOST — root cause may be skill structure
-- After a skill has been patched 3+ times (check for drift/contradiction)
-- Periodic maintenance (monthly across all skills)
+```text
+clarity and cohesion
+contradictions
+stale examples or links
+unreferenced resources
+unnecessary duplication
+progressive disclosure
+readability and context cost
+```
 
-`skill-doctor` = checks the skill file.  `skill-eval` = checks agent behavior. Both needed.
+A line-count target such as `≤ 200` is advisory. It may identify review pressure, but it is not package invalidity by itself. Split only when content is separable and behavior can be preserved.
 
----
+## Inputs
 
-## Parameters
+```yaml
+skill_health_request:
+  target: <skill or all>
+  mode: audit-only | triage | repair
+  issue: <verified issue or NOT_VERIFIED>
+  accepted_behavior: <evidence or NOT_VERIFIED>
+  write_authority: <verified | not verified>
+```
 
-| Param | Required | Description |
-|---|---|---|
-| `target` | NO | Skill name — omit to audit all skills |
-| `mode` | NO | `audit-only` / `triage` / `full` — default: `full` |
-| `auto_fix` | NO | `true` = apply fixes; `false` = report only (default) |
+## Phase 1 — Inspect
 
----
-
-## Phase 1: AUDIT
+1. Read the complete target skill and every referenced resource needed to understand behavior.
+2. Inspect related skills, central behavioral contracts, conformance declarations, docs, and recent changes.
+3. Run package validation:
 
 ```bash
-# Line count all skills, flag over-limit
-wc -l skills/*/SKILL.md | sort -rn
-wc -l skills/*/SKILL.md | awk '$1 > 200 {print "OVER:", $1, $2}'
+python scripts/validate-skill-packages.py --skill <skill-name>
 ```
 
-Per-skill checks:
-```
-□ Line count ≤ 200L
-□ Critical rules in first 20L
-□ Critical rules repeated in last 10L
-□ One topic per file (not multiple unrelated domains)
-□ No derivable content (dir listings, dep trees, obvious facts)
-□ No internal contradictions
-□ No stale examples (paths/files that no longer exist)
-```
+4. Inspect content health without treating advisory style preferences as canonical validity rules.
+5. When behavioral correctness is questioned, delegate scoring to `skill-eval` using real per-case outputs.
 
-Cross-skill checks:
-```
-□ Duplicate rules across skills
-□ Contradictions (skill A says X, skill B says not-X)
-□ Missing delegation (skill re-implements what ux-patterns covers)
-□ Orphan references (skill references non-existent skill)
+## Phase 2 — Classify findings
+
+Use:
+
+```text
+PACKAGE_ERROR       blocking policy violation
+PACKAGE_WARNING     migration or discouraged-path finding
+CONTENT_ERROR       contradiction or broken executable guidance
+CONTENT_WARNING     bloat, readability, duplication, stale example risk
+BEHAVIOR_NOT_VERIFIED no real behavioral evidence
+HEALTHY             no blocking finding and required evidence exists
 ```
 
-For full fix criteria → `skill_view(name='skill-doctor', file_path='references/fix-guide.md')`
+Package status:
 
----
-
-## Phase 2: TRIAGE
-
-```
-HEALTHY  — ≤ 200L, rules at top+bottom, one topic, no stale content
-TRIM     — > 200L but all content necessary; remove derivable only
-SPLIT    — > 200L AND content separable by phase/topic
-REWRITE  — contradictions or fundamentally wrong structure
-DEFER    — over-limit but rarely loaded; flag, don't fix now
+```text
+COMPLIANT | PARTIAL | EXEMPT | ERROR | NOT_VERIFIED
 ```
 
-Triage report:
-```
-TRIAGE REPORT
-══════════════
-Healthy:  N — [names]
-Trim:     N — [names]
-Split:    N — [names]
-Rewrite:  N — [names]
-Defer:    N — [names]
-Over-limit (> 200L): N skills
-```
+Do not report `HEALTHY` when package status is `ERROR`, accepted behavior is unknown after a behavior-affecting repair, or required validation was not run.
 
----
+## Phase 3 — Triage
 
-## Phase 3: FIX
+Choose one primary action:
 
-Priority order:
-1. **REWRITE** — contradictions first (most agent confusion)
-2. **SPLIT** — monoliths (Lost in Middle)
-3. **TRIM** — remove derivable content
-4. **Top/Bottom** — move critical rules to correct positions
-
-Split pattern:
-```
-Before: skills/big-skill/SKILL.md  (800L)
-After:
-  skills/big-skill/SKILL.md              (~150L router)
-  skills/big-skill/references/part-a.md  (~180L, on-demand)
-  skills/big-skill/references/part-b.md  (~180L, on-demand)
-
-Router must have: hard rules top + phase overview + load instructions + hard rules bottom
-Each ref file must have: critical rule reminder at top, ≤ 200L
+```text
+NO_CHANGE    no actionable defect
+TRIM         remove redundant or derivable content
+SPLIT        move conditional depth into references
+REPAIR       fix contradiction, stale path, broken resource, or policy violation
+MIGRATE      hand intentional broad package migration to skill-authoring-workflow
+DEFER        evidence, authority, or safe repair scope is missing
 ```
 
----
+If the target change is already intentional and accepted rather than diagnostic, hand off to `skill-authoring-workflow`.
 
-## Phase 4: VERIFY
+## Phase 4 — Repair
+
+Rules:
+
+- preserve accepted functional behavior;
+- patch the smallest correct layer;
+- never remove content merely to satisfy an advisory line target;
+- link references from `SKILL.md` with explicit load conditions;
+- remove or relocate generated state;
+- add tests when bundled scripts require them;
+- update centralized behavioral contracts when executable behavior changes;
+- bump version for executable behavior changes;
+- avoid unrelated cleanup;
+- respect repository write and approval policy.
+
+## Phase 5 — Verify
+
+Run applicable checks:
 
 ```bash
-wc -l skills/<name>/SKILL.md        # ≤ 200L
-head -20 skills/<name>/SKILL.md     # critical rules present?
-tail -10 skills/<name>/SKILL.md     # reminder present?
-ls skills/<name>/references/         # sub-files exist if referenced
+skills-ref validate skills/<skill-name>
+python scripts/validate-skill-packages.py --skill <skill-name>
+python scripts/validate-eval-contracts.py
+AI_NATIVE_CORE_DIR=../ai-native-core bash scripts/run-eval.sh --skill <skill-name> --validate-tests
 ```
 
----
+Also verify:
 
-## Health Scorecard
+- bundled executable tests;
+- target and affected related-skill behavioral contracts;
+- adapter/core conformance when applicable;
+- links and referenced files;
+- original accepted behavior after behavior-affecting repairs.
 
-| Dimension | Pass condition | Score |
-|---|---|---|
-| Length | ≤ 200L | /10 |
-| Top placement | Critical rules in first 20L | /10 |
-| Bottom repeat | Critical rules in last 10L | /10 |
-| One topic | Single coherent domain | /10 |
-| No derivable | No obvious/stale content | /10 |
-| Has templates | Copy-pasteable blocks present | /10 |
-| Has gates | Specific, verifiable criteria | /10 |
-| No contradiction | No conflicting rules internally | /10 |
+Structural checks do not prove behavioral application. Missing live outputs remain `NOT_VERIFIED` or `INCOMPLETE`.
 
-**Health score: __ / 80.  Pass: ≥ 64 (80%)**
+## Required report
 
----
-
-## Delivery Report
-
-```
-SKILL DOCTOR REPORT
-════════════════════
-Skills audited: N  |  Fixed: N  |  Healthy: N
-
-Fixed:
-  [skill]: [N]L → [N]L router + N refs — [action]
-
-Deferred:
-  [skill]: [reason]
-════════════════════
+```yaml
+skill_doctor_report:
+  target: <skill>
+  action: NO_CHANGE | TRIM | SPLIT | REPAIR | MIGRATE | DEFER
+  package_status: COMPLIANT | PARTIAL | EXEMPT | ERROR | NOT_VERIFIED
+  content_status: HEALTHY | WARNING | ERROR | NOT_VERIFIED
+  behavioral_status: APPLIED | PARTIAL | GHOST | INCOMPLETE | NOT_RUN
+  blocking_findings: []
+  advisory_findings: []
+  changes: []
+  evidence: []
+  known_gaps: []
+  next_action: <one exact action>
 ```
 
-<!-- CRITICAL RULES — bottom repeat (Lost in Middle fix) -->
-```
-REMINDER:
-  1. Read fully before modifying
-  2. Trim derivable only — preserve functional content
-  3. Critical rules at top AND bottom
-  4. Verify line count after every fix
-```
+## Hard gates
+
+- Never claim `HEALTHY` while package validation has blocking errors.
+- Never promote advisory style preferences into repository policy.
+- Never repair unknown behavior without preservation evidence.
+- Never treat package validation as behavioral proof.
+- Never treat behavioral output scoring as package-compliance proof.
+- Never modify files in audit-only mode.
+- Never bypass repository write, review, or merge authority.

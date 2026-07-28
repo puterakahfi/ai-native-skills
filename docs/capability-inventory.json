@@ -3,9 +3,9 @@
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
     "skill": 98,
-    "workflow": 11,
+    "workflow": 12,
     "meta-skill": 7,
-    "total": 116
+    "total": 117
   },
   "items": [
     {
@@ -572,6 +572,11 @@
       "name": "redesign-workflow",
       "type": "workflow",
       "path": "skills/redesign-workflow/SKILL.md"
+    },
+    {
+      "name": "skill-authoring-workflow",
+      "type": "workflow",
+      "path": "skills/skill-authoring-workflow/SKILL.md"
     },
     {
       "name": "skill-doctor",
