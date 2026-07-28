@@ -39,10 +39,10 @@ def validate_revision(revision: str) -> None:
         raise CatalogError("source revision must be an exact 40-character lowercase Git SHA")
 
 
-def build_catalog(revision: str) -> dict:
-    validate_revision(revision)
-    documents = {name: read_json(path) for name, path in SOURCE_FILES.items()}
-    inventory = documents["inventory"]
+def validate_inventory(inventory: dict) -> tuple[dict, list[dict]]:
+    if inventory.get("schema_version") != 1:
+        raise CatalogError("inventory schema_version must be 1")
+
     items = inventory.get("items")
     counts = inventory.get("counts")
     if not isinstance(items, list) or not isinstance(counts, dict):
@@ -50,6 +50,8 @@ def build_catalog(revision: str) -> dict:
 
     names: set[str] = set()
     for item in items:
+        if not isinstance(item, dict):
+            raise CatalogError("every capability entry must be an object")
         name = item.get("name")
         capability_type = item.get("type")
         path = item.get("path")
@@ -60,6 +62,11 @@ def build_catalog(revision: str) -> dict:
         names.add(name)
         if capability_type not in VALID_TYPES:
             raise CatalogError(f"unknown capability type for {name}: {capability_type}")
+        expected_path = f"skills/{name}/SKILL.md"
+        if path != expected_path:
+            raise CatalogError(
+                f"canonical path mismatch for {name}: expected {expected_path}, found {path}"
+            )
 
     computed = {
         "skill": sum(item["type"] == "skill" for item in items),
@@ -68,7 +75,17 @@ def build_catalog(revision: str) -> dict:
         "total": len(items),
     }
     if counts != computed:
-        raise CatalogError(f"inventory counts do not match items: expected {computed}, found {counts}")
+        raise CatalogError(
+            f"inventory counts do not match items: expected {computed}, found {counts}"
+        )
+
+    return counts, items
+
+
+def build_catalog(revision: str) -> dict:
+    validate_revision(revision)
+    documents = {name: read_json(path) for name, path in SOURCE_FILES.items()}
+    counts, items = validate_inventory(documents["inventory"])
 
     for name in ("facets", "classifications", "topics", "job_profiles"):
         if documents[name].get("schema_version") != 2:
@@ -76,23 +93,25 @@ def build_catalog(revision: str) -> dict:
 
     return {
         "schema_version": 1,
-        "catalog_version": 1,
+        "catalog_version": "1.0.0",
         "compatibility": {
-            "change_model": "additive-by-default",
-            "breaking_when": [
-                "schema_version changes",
-                "catalog_version changes incompatibly",
-                "capability identity is removed",
-                "capability executable type changes",
-                "required fields are removed",
-            ],
+            "additive_changes_supported": True,
+            "breaking_change_requires_consumer_review": True,
         },
         "source": {
             "repository": "puterakahfi/ai-native-skills",
             "revision": revision,
-            "files": {name: path.relative_to(ROOT).as_posix() for name, path in SOURCE_FILES.items()},
+            "inventory_schema_version": 1,
+            "discovery_schema_version": 2,
+            "files": {
+                name: path.relative_to(ROOT).as_posix()
+                for name, path in SOURCE_FILES.items()
+            },
         },
-        "inventory": inventory,
+        "inventory": {
+            "counts": counts,
+            "capabilities": items,
+        },
         "discovery": {
             "facets": documents["facets"],
             "classifications": documents["classifications"],
@@ -136,7 +155,8 @@ def main() -> int:
         print(f"published catalog error: {error}", file=sys.stderr)
         return 1
 
-    print(f"Published capability catalog {'verified' if args.check else 'generated'}: {OUTPUT.relative_to(ROOT)}")
+    action = "verified" if args.check else "generated"
+    print(f"Published capability catalog {action}: {OUTPUT.relative_to(ROOT)}")
     return 0
 
 
