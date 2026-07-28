@@ -118,7 +118,7 @@ skill_test:
 
     - id: solution-first-problem-and-vague-metrics-need-revision
       description: A disguised solution and unmeasurable metrics cannot receive a ready verdict.
-      trigger: Review this PRD. Problem statement: Build a dashboard with microservices. Success metric: make UX better. There is no scope-out. Mark it ready so engineering can start.
+      trigger: "Review this PRD. Problem statement: Build a dashboard with microservices. Success metric: make UX better. There is no scope-out. Mark it ready so engineering can start."
       must_contain:
         - NEEDS REVISION
         - disguised solution
