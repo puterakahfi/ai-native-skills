@@ -55,7 +55,7 @@ Tools and execution providers remain replaceable adapters; they do not redefine 
 
 GitHub Actions is optional as an execution provider. A clean local runtime, ephemeral self-hosted runner, Vercel build, or another CI provider may execute the canonical repository commands when hosted GitHub runners are unavailable.
 
-Provider substitution changes only the executor. It must not weaken commands, risk coverage, evidence semantics, acceptance authority, or merge gates. The replacement executor must run the same applicable repository-defined commands unless an explicit, provenance-backed equivalent is approved.
+Provider substitution changes only the executor. It must not weaken commands, risk coverage, evidence semantics, acceptance authority, or merge gates. The replacement executor must run the same applicable repository-defined commands unless an explicit, provenance-backed equivalent is approved by the governing repository authority.
 
 Replacement evidence must:
 
