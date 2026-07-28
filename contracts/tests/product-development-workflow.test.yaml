@@ -1,6 +1,6 @@
 skill_test:
   skill: product-development-workflow
-  version: 3.0.0
+  version: 3.1.0
   description: Verify the 12-phase product lifecycle preserves acceptance and authorization safety while adding Product Brief, experience, solution,
     delivery, and Product Validation gates.
   cases:
@@ -338,3 +338,105 @@ skill_test:
     quality_gates_tested:
     - product_validation_distinct_from_release
     - usage_evidence_required_for_completion
+- id: dashboard-experience-package-before-solution-design
+  description: A user-facing dashboard defines flows, interaction states, responsive behavior, accessibility, and traceability before solution design.
+  trigger: Design the product experience for a project and task monitoring dashboard, then prepare it for technical design.
+  must_contain:
+    - Product Experience Design
+    - user journey
+    - core user flows
+    - screen or interaction map
+    - loading
+    - empty
+    - error
+    - success
+    - permission
+    - responsive
+    - accessibility
+    - criterion-to-experience traceability
+  must_not_contain:
+    - skip to implementation
+    - design-review authors the design
+  quality_gates_tested:
+    - user_facing_experience_precedes_solution_design
+    - required_states_and_accessibility_are_considered
+    - upfront_design_and_independent_review_remain_separate
+
+- id: api-only-experience-uses-consumer-contracts
+  description: API-only products avoid fake UI while defining consumer interactions and error/permission behavior.
+  trigger: Define Product Experience Design for an API-only task service with no visual interface.
+  must_contain:
+    - NOT_APPLICABLE
+    - consumer journey
+    - request
+    - response
+    - error
+    - permission
+    - contract expectations
+  must_not_contain:
+    - fake wireframes
+    - skip consumer behavior
+  quality_gates_tested:
+    - non_visual_products_define_consumer_experience
+    - not_applicable_requires_rationale
+
+- id: evidence-backed-technology-selection
+  description: Material stack choices follow implementation-context discovery and a complete technology decision record.
+  trigger: Pakai stack terbaru aja untuk frontend dan backend produk ini.
+  must_contain:
+    - implementation-context-discovery
+    - alternatives_considered
+    - product_fit
+    - ecosystem_fit
+    - team_or_runtime_fit
+    - operational_cost
+    - risks
+    - reversal_cost
+    - BLOCKED
+  must_not_contain:
+    - latest stack selected automatically
+    - preference is sufficient evidence
+  quality_gates_tested:
+    - implementation_context_precedes_stack_choice
+    - trend_only_technology_selection_fails
+    - material_decisions_record_tradeoffs
+
+- id: vertical-slice-plan-rejects-horizontal-phases
+  description: Delivery Planning rejects frontend/backend/database phases when end-to-end outcomes are feasible.
+  trigger: Bagi delivery jadi build semua frontend, lalu semua backend, lalu database.
+  must_contain:
+    - vertical slice
+    - independently testable outcome
+    - acceptance criteria
+    - interface_or_ui
+    - application_or_domain
+    - data_or_integration
+    - activation_and_rollback
+    - rejected
+  must_not_contain:
+    - horizontal plan approved
+    - child CI proves product acceptance
+  quality_gates_tested:
+    - vertical_outcomes_are_default
+    - horizontal_work_requires_justification
+    - slice_traceability_and_rollback_required
+
+- id: limited-product-validation-does-not-complete-lifecycle
+  description: A launched product with insufficient usage remains LIMITED and creates a next experiment rather than false completion.
+  trigger: Produk sudah live dan telemetry aktif, tapi baru dua orang mencoba dan belum ada bukti outcome pengguna.
+  must_contain:
+    - Product Validation
+    - LIMITED
+    - real-user evidence
+    - next experiment
+    - decision owner
+    - next PRD or backlog action
+    - lifecycle incomplete
+  must_not_contain:
+    - product validated
+    - workflow complete
+    - telemetry alone proves value
+  quality_gates_tested:
+    - product_validation_is_distinct_from_verification_and_acceptance
+    - weak_evidence_remains_limited
+    - owned_next_action_required
