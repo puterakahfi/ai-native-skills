@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 93,
+    "skill": 94,
     "workflow": 11,
     "meta-skill": 7,
-    "total": 111
+    "total": 112
   },
   "items": [
     {
@@ -277,6 +277,11 @@
       "name": "information-architecture",
       "type": "skill",
       "path": "skills/information-architecture/SKILL.md"
+    },
+    {
+      "name": "integration-testing",
+      "type": "skill",
+      "path": "skills/integration-testing/SKILL.md"
     },
     {
       "name": "language-standards",
