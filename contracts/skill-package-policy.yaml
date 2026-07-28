@@ -1,0 +1,40 @@
+skill_package_policy:
+  version: "1.0.0"
+  behavioral_contract_root: contracts/tests
+  generated_paths:
+    - .tmp
+    - eval-outputs
+    - eval-results
+  required:
+    - SKILL.md
+  optional:
+    - references
+    - scripts
+    - assets
+    - adapter.conformance.yaml
+  conditional:
+    tests:
+      required_when_scripts_present: true
+  discouraged:
+    - docs
+    - evals
+    - examples
+  prohibited:
+    - workspace
+    - results
+    - outputs
+    - tmp
+    - dist
+    - node_modules
+    - .venv
+    - __pycache__
+  pilot_skills:
+    - test-driven-development
+    - workflow-router
+    - skill-evolution
+  enforcement:
+    pilot_missing_behavioral_contract: error
+    pilot_prohibited_path: error
+    repository_missing_behavioral_contract: warning
+    discouraged_path: warning
+    scripts_without_tests: warning
