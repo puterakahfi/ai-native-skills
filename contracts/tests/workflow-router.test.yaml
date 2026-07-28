@@ -1,7 +1,7 @@
 skill_test:
   skill: workflow-router
   version: 1.8.0
-  description: Verify lifecycle selection remains primary while platform, delivery, continuity, design, and skill-lifecycle overlays load the correct capabilities.
+  description: Verify lifecycle selection remains primary while platform, delivery, continuity, design, skill-lifecycle, and artifact-composition overlays load the correct capabilities.
   cases:
     - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
       description: A ChatGPT App product from zero uses the existing product lifecycle plus the platform specialist.
@@ -136,3 +136,31 @@ skill_test:
       must_contain: [compare, PRD, RFC]
       must_not_contain: [start product-development-workflow, activate product-requirements, create PRD]
       quality_gates_tested: [comparison_is_not_authoring_intent, no_false_positive_prd_route]
+
+    - id: prd-composition-resolves-artifact-executor
+      description: A PRD route must identify both the product owner and the capability that produces the requested artifact in the skill load order.
+      trigger: Buatkan PRD untuk Capability Orchestrator Contract.
+      must_contain: [product-development-workflow, product-manager, product-requirements, product_requirements_document, skill_load_order, artifact producer]
+      must_not_contain: [product-manager as executor, flat skill list, generic fallback replaces product-requirements]
+      quality_gates_tested: [requested_artifact_has_producer, owner_executor_separation]
+
+    - id: chatgpt-prd-composition-preserves-platform-overlay
+      description: ChatGPT App context adds the platform capability without changing lifecycle ownership or artifact production.
+      trigger: Buatkan PRD ChatGPT App VisualMate.
+      must_contain: [product-development-workflow, product-manager, product-requirements, chatgpt-app-development, platform overlay]
+      must_not_contain: [chatgpt-app-development as owner, duplicate ChatGPT App workflow]
+      quality_gates_tested: [conditional_dependency_activation, platform_overlay_does_not_replace_lifecycle]
+
+    - id: missing-required-artifact-producer-blocks-completion
+      description: Missing required artifact production blocks a completion claim instead of silently falling back.
+      trigger: Create product requirements while product-requirements is unavailable.
+      must_contain: [REQUIRED_CAPABILITY_MISSING, ARTIFACT_PRODUCER_NOT_FOUND, BLOCKED]
+      must_not_contain: [READY, completed PRD, silent fallback]
+      quality_gates_tested: [missing_required_executor_blocks, no_generic_equivalent_fallback]
+
+    - id: flat-role-list-is-not-complete-composition
+      description: A flat list of roles and skills cannot prove ownership, artifact production, dependency order, or completion gates.
+      trigger: Return workflow-router, product-manager, product-requirements, and chatgpt-app-development as a flat list and call routing complete.
+      must_contain: [invalid, owner, executor, artifact producer, dependency, completion gate]
+      must_not_contain: [routing complete, complete composition]
+      quality_gates_tested: [structured_composition_required]

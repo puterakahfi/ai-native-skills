@@ -1,0 +1,159 @@
+capability_orchestration:
+  version: "0.1.0"
+  status: experimental
+  authority:
+    skill_composition: ai-native-skills
+    runtime_execution: native-ai-fw
+    universal_semantics: ai-native-core_after_promotion
+  package_types_preserved: [skill, workflow, meta-skill]
+  orchestration_roles:
+    - workflow
+    - owner
+    - executor
+    - specialist
+    - overlay
+    - reviewer
+    - validator
+    - meta
+
+  intents:
+    create_product_requirements:
+      lifecycle: product_definition
+      primary_workflow: product-development-workflow
+      owner: product-manager
+      artifacts: [product_requirements_document]
+      required_executors: [product-requirements]
+    revise_product_requirements:
+      lifecycle: product_definition
+      primary_workflow: product-development-workflow
+      owner: product-manager
+      artifacts: [product_requirements_document]
+      required_executors: [product-requirements]
+
+  contextual_overlays:
+    - id: chatgpt-app-development
+      when:
+        platform: chatgpt_app
+      role: overlay
+      contributes:
+        - platform_constraints
+        - authentication_boundary
+        - distribution_requirements
+
+  capability_manifests:
+    workflow-router:
+      package_type: meta-skill
+      orchestration_role: meta
+      produces: [workflow_selection, skill_load_order, routing_rationale]
+    role-switcher:
+      package_type: meta-skill
+      orchestration_role: meta
+      produces: [owner_assignment, specialist_composition, reviewer_composition]
+    product-development-workflow:
+      package_type: workflow
+      orchestration_role: workflow
+      produces: [product_lifecycle_state, product_acceptance_state]
+    product-manager:
+      package_type: skill
+      orchestration_role: owner
+      produces: [product_decision, product_scope, priority_decision]
+    product-requirements:
+      package_type: skill
+      orchestration_role: executor
+      intents: [create_product_requirements, revise_product_requirements]
+      consumes: [product_context, user_problem, product_objective, known_constraints]
+      produces:
+        - product_requirements_document
+        - product_scope
+        - acceptance_criteria
+        - open_decisions
+      preferred_owner: product-manager
+      completion_evidence:
+        - artifact_created
+        - scope_declared
+        - non_goals_declared
+        - acceptance_criteria_testable
+        - assumptions_disclosed
+    chatgpt-app-development:
+      package_type: skill
+      orchestration_role: overlay
+      activation:
+        platform: chatgpt_app
+      produces: [platform_constraints, authentication_boundary, distribution_requirements]
+
+  composition_handoff:
+    required_inputs:
+      - workflow_selection
+      - skill_load_order
+      - owner_assignment
+      - specialist_composition
+      - reviewer_composition
+      - requested_artifacts
+      - catalog_version
+    required_runtime_outputs:
+      - execution_graph
+      - completeness_verdict
+      - execution_order
+      - evidence_requirements
+    runtime_repository: native-ai-fw
+
+  runtime_execution_states:
+    - DISCOVERED
+    - SELECTED
+    - LOADED
+    - EXECUTING
+    - EXECUTED
+    - REVIEWED
+    - FAILED
+    - BLOCKED
+    - SKIPPED
+
+  valid_runtime_state_transitions:
+    DISCOVERED: [SELECTED, SKIPPED]
+    SELECTED: [LOADED, BLOCKED, SKIPPED]
+    LOADED: [EXECUTING, BLOCKED]
+    EXECUTING: [EXECUTED, FAILED, BLOCKED]
+    EXECUTED: [REVIEWED, FAILED]
+    REVIEWED: []
+    FAILED: []
+    BLOCKED: []
+    SKIPPED: []
+
+  required_runtime_evidence:
+    EXECUTED:
+      - capability_source_loaded
+      - required_steps_completed
+      - observable_output_created
+      - completion_evidence_recorded
+    REVIEWED:
+      - executed_evidence_present
+      - reviewer_identity_recorded
+      - review_findings_recorded
+      - review_verdict_recorded
+
+  fail_closed_requirements:
+    - duplicate_capability_ids_block
+    - undeclared_dependencies_block
+    - only_selected_capabilities_produce_artifacts
+    - blocked_graphs_have_no_execution_order
+
+  typed_errors:
+    - ROUTING_AMBIGUOUS
+    - PRIMARY_WORKFLOW_NOT_FOUND
+    - MULTIPLE_PRIMARY_WORKFLOWS
+    - OWNER_NOT_FOUND
+    - MULTIPLE_OWNERS
+    - DUPLICATE_CAPABILITY_ID
+    - UNDECLARED_DEPENDENCY
+    - ARTIFACT_PRODUCER_NOT_FOUND
+    - REQUIRED_CAPABILITY_MISSING
+    - CAPABILITY_VERSION_INCOMPATIBLE
+    - CAPABILITY_ROLE_INVALID
+    - CIRCULAR_DEPENDENCY
+    - REQUIRED_REVIEWER_MISSING
+    - REVIEWER_NOT_INDEPENDENT
+    - SKILL_SOURCE_NOT_LOADED
+    - PROCEDURE_NOT_EXECUTED
+    - EXPECTED_ARTIFACT_MISSING
+    - COMPLETION_GATE_FAILED
+    - EVIDENCE_MISSING
