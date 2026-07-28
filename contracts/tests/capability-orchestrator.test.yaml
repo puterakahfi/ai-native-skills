@@ -1,0 +1,76 @@
+skill_test:
+  skill: capability-orchestrator
+  version: 0.1.0
+  description: Verify outcome-to-execution composition resolves owners, artifact executors, overlays, gates, ordering, and evidence without flat-list or false-execution claims.
+  cases:
+    - id: generic-prd-resolves-owner-and-executor
+      trigger: Buatkan PRD untuk capability orchestration ini.
+      must_contain: [product-development-workflow, product-manager, product-requirements, product_requirements_document, execution_graph, READY]
+      must_not_contain: [flat skill list, product-manager as artifact executor, start implementation before routing]
+      quality_gates_tested: [one_primary_workflow, one_owner, requested_artifact_has_producer]
+
+    - id: semantic-indonesian-product-needs-resolves-artifact
+      trigger: Susun kebutuhan produk lengkap dan acceptance criteria untuk fitur reusable virtual talent.
+      must_contain: [create_product_requirements, product_requirements_document, product-requirements, product-manager]
+      must_not_contain: [PRD acronym required, generic reasoning replaces executor]
+      quality_gates_tested: [semantic_intent_resolution, outcome_to_artifact_resolution]
+
+    - id: chatgpt-app-prd-activates-platform-overlay
+      trigger: Buatkan PRD ChatGPT App VisualMate.
+      must_contain: [product-development-workflow, product-manager, product-requirements, chatgpt-app-development, platform overlay]
+      must_not_contain: [chatgpt-app-development as owner, duplicate ChatGPT App workflow]
+      quality_gates_tested: [platform_overlay_does_not_replace_lifecycle, conditional_dependency_activation]
+
+    - id: missing-artifact-producer-blocks
+      trigger: Produce an unknown artifact with no declared producer in the available capability catalog.
+      must_contain: [ARTIFACT_PRODUCER_NOT_FOUND, BLOCKED]
+      must_not_contain: [READY, generic fallback is equivalent, EXECUTED]
+      quality_gates_tested: [missing_producer_blocks_execution]
+
+    - id: missing-required-executor-blocks
+      trigger: Create product requirements while product-requirements is unavailable.
+      must_contain: [REQUIRED_CAPABILITY_MISSING, product-requirements, BLOCKED]
+      must_not_contain: [silent fallback, completed PRD, READY]
+      quality_gates_tested: [required_dependency_resolution]
+
+    - id: multiple-owners-is-ambiguous
+      trigger: Compose a graph where product-manager and master-engineer are both declared as final owner.
+      must_contain: [MULTIPLE_OWNERS, AMBIGUOUS]
+      must_not_contain: [choose silently, READY]
+      quality_gates_tested: [exactly_one_owner]
+
+    - id: circular-dependency-blocks
+      trigger: Compose capabilities A and B where A requires B and B requires A.
+      must_contain: [CIRCULAR_DEPENDENCY, BLOCKED]
+      must_not_contain: [execution_order complete, READY]
+      quality_gates_tested: [dependency_graph_acyclic]
+
+    - id: flat-list-is-not-complete-graph
+      trigger: Return only workflow-router, product-manager, product-requirements, and chatgpt-app-development as a list.
+      must_contain: [invalid, owner, executor, artifact, dependency, completion gate]
+      must_not_contain: [routing complete, READY]
+      quality_gates_tested: [structured_graph_required]
+
+    - id: selected-not-loaded-cannot-be-executed
+      trigger: product-requirements was selected but its source and procedure were not loaded.
+      must_contain: [SELECTED, SKILL_SOURCE_NOT_LOADED, not EXECUTED]
+      must_not_contain: [product-requirements EXECUTED, acceptance PASS]
+      quality_gates_tested: [evidence_backed_execution_claim]
+
+    - id: executed-not-reviewed
+      trigger: The executor produced the PRD with evidence but no independent reviewer ran.
+      must_contain: [EXECUTED, review NOT_VERIFIED, not REVIEWED]
+      must_not_contain: [independent acceptance PASS, REVIEWED]
+      quality_gates_tested: [execution_and_review_are_distinct]
+
+    - id: optional-specialist-unavailable-is-limited
+      trigger: A non-required specialist is unavailable but all required workflow, owner, executor, artifacts, and gates are present.
+      must_contain: [LIMITED, optional specialist unavailable, required graph complete]
+      must_not_contain: [REQUIRED_CAPABILITY_MISSING, silent PASS]
+      quality_gates_tested: [optional_and_required_dependencies_distinct]
+
+    - id: fixed-catalog-replay-is-deterministic
+      trigger: Route the same PRD request twice with the same context and catalog version.
+      must_contain: [same execution graph, same execution order, catalog version]
+      must_not_contain: [random executor, different owner]
+      quality_gates_tested: [deterministic_replay]
