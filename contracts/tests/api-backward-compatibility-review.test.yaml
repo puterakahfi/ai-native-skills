@@ -1,14 +1,14 @@
 skill_test:
   skill: api-backward-compatibility-review
-  version: 1.0.0
+  version: 1.0.1
   description: Verify compatibility review classifies changes from explicit evidence, fails closed on missing baselines, and does not replace greenfield API design or release approval.
   cases:
     - id: additive-optional-field-with-consumer-evidence
-      description: An optional response field with tolerant consumers can be classified as additive.
-      trigger: Review an API proposal that adds an optional response field. The previous and proposed OpenAPI contracts are available, all supported consumers ignore unknown fields, and consumer contract tests pass.
-      must_contain: [ADDITIVE, previous contract, proposed contract, consumers, evidence, next gate]
-      must_not_contain: [version bump proves compatibility, release approved]
-      quality_gates_tested: [explicit_baseline_required, consumer_evidence_required, approval_boundary_preserved]
+      description: An optional response field with tolerant consumers can be classified as additive while approval remains independent.
+      trigger: Review an API proposal that adds an optional response field. The previous and proposed OpenAPI contracts are available, all supported consumers ignore unknown fields, and consumer contract tests pass. The reviewer does not have release approval authority.
+      must_contain: [ADDITIVE, previous contract, proposed contract, consumers, evidence, approval status, NOT_VERIFIED, next gate]
+      must_not_contain: [version bump proves compatibility, release approved, compatibility is NOT_VERIFIED because approval authority is missing]
+      quality_gates_tested: [explicit_baseline_required, consumer_evidence_required, approval_boundary_preserved, compatibility_and_approval_are_independent]
 
     - id: missing-baseline-fails-closed
       description: Compatibility cannot be proven without the previous contract.
