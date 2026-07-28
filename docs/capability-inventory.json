@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 91,
+    "skill": 92,
     "workflow": 11,
     "meta-skill": 6,
-    "total": 108
+    "total": 109
   },
   "items": [
     {
@@ -452,6 +452,11 @@
       "name": "test-driven-development",
       "type": "skill",
       "path": "skills/test-driven-development/SKILL.md"
+    },
+    {
+      "name": "test-strategy",
+      "type": "skill",
+      "path": "skills/test-strategy/SKILL.md"
     },
     {
       "name": "threat-modeling",

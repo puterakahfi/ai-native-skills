@@ -1,0 +1,101 @@
+skill_test:
+  skill: test-strategy
+  version: 0.1.0
+  description: Verify risk-based test portfolio selection occurs before adapter choice and preserves non-PASS evidence semantics.
+  cases:
+    - id: strategy-selects-levels-from-risks-before-frameworks
+      description: Select a proportionate test portfolio for a database-backed API change with active consumers.
+      trigger: >-
+        Design a test strategy for changing validation and persistence behavior in an API
+        used by external consumers. The repository uses TypeScript, but no framework choice
+        has been approved yet.
+      must_contain:
+        - risks
+        - boundaries
+        - integration
+        - contract
+        - selected
+        - rejected
+        - evidence_required
+      must_not_contain:
+        - Playwright is mandatory
+        - Vitest is the canonical strategy
+        - coverage percentage proves completion
+      quality_gates_tested:
+        - objective_and_risk_before_adapter_selection
+        - selected_levels_map_to_material_risks
+        - framework_choice_deferred_until_context_verification
+
+    - id: strategy-rejects-ceremonial-layers-for-simple-utility
+      description: Avoid a fixed pyramid for a deterministic utility with no material external boundary.
+      trigger: >-
+        Design a test strategy for a pure deterministic formatting utility with explicit
+        inputs and outputs, no persistence, no consumer contract, and no user journey.
+      must_contain:
+        - unit
+        - NOT_APPLICABLE
+        - NOT_JUSTIFIED
+        - rationale
+      must_not_contain:
+        - every change requires E2E
+        - browser automation is required
+        - contract testing is mandatory
+      quality_gates_tested:
+        - proportionate_portfolio
+        - rejected_levels_have_rationale
+        - anti_dogma_selection
+
+    - id: strategy-does-not-reduce-cross-boundary-risk-to-unit-tests
+      description: Preserve database, compatibility, and journey confidence gaps when unit tests cannot observe them.
+      trigger: >-
+        A checkout change touches pricing rules, database transactions, an event consumed by
+        fulfillment, and the critical purchase journey. Propose the minimum credible test portfolio.
+      must_contain:
+        - unit
+        - integration
+        - contract
+        - acceptance
+        - e2e
+        - critical
+        - confidence_limits
+      must_not_contain:
+        - unit tests alone prove all boundaries
+        - mocks prove the real transaction
+      quality_gates_tested:
+        - cross_boundary_risks_receive_boundary_evidence
+        - critical_journey_selection_is_risk_based
+        - confidence_limits_are_explicit
+
+    - id: strategy-fails-closed-on-missing-context
+      description: Do not invent repository commands, consumers, or environments when material context is unavailable.
+      trigger: >-
+        Create a complete test strategy, but the architecture, consumers, runtime boundaries,
+        and repository test commands have not been inspected.
+      must_contain:
+        - NOT_VERIFIED
+        - missing
+        - context
+        - do not invent
+      must_not_contain:
+        - PASS
+        - verified Playwright command
+        - verified Vitest command
+      quality_gates_tested:
+        - missing_context_remains_not_verified
+        - unsupported_completion_is_blocked
+
+    - id: strategy-detects-duplicated-e2e-coverage
+      description: Reject browser duplication when lower levels already cover the same risks and no distinct journey confidence is added.
+      trigger: >-
+        A proposal repeats every unit and integration assertion in twenty browser scenarios,
+        although only one critical cross-boundary journey exists.
+      must_contain:
+        - duplicated
+        - E2E
+        - NOT_JUSTIFIED
+        - critical journey
+      must_not_contain:
+        - more browser tests always increase confidence
+      quality_gates_tested:
+        - redundant_e2e_is_detected
+        - each_selected_level_requires_distinct_risk_coverage
