@@ -1,6 +1,6 @@
 skill_test:
   skill: product-development-workflow
-  version: "2.3.1"
+  version: "2.3.0"
   description: Verify product-level acceptance reconciles every criterion, reviewer, decision source, platform specialist gate, accepted risk, and release approval before delivery actions.
 
   cases:
