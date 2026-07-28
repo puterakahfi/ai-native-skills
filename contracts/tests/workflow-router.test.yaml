@@ -55,7 +55,7 @@ skill_test:
 
     - id: multi-slice-product-loads-delivery-topology
       description: A dependent broad capability keeps its lifecycle and loads delivery decomposition before Git execution.
-      trigger: Add a multi-slice ChatGPT App P0 to an existing product; slices are dependent and targets are undefined.
+      trigger: Add a multi-slice priority-zero ChatGPT App to an existing product; slices are dependent and targets are undefined.
       must_contain: [new-feature-workflow, chatgpt-app-development, delivery-work-breakdown, epic]
       must_not_contain: [every child PR targets main, default branch decides target]
       quality_gates_tested: [existing_product_feature_route_preserved, platform_specialist_overlay, release_unit_classified_before_repository_execution]
