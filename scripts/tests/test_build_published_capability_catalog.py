@@ -46,13 +46,21 @@ class PublishedCatalogTest(unittest.TestCase):
             files[name] = path
         return files
 
+    def build_from_temp(self, root: Path, files: dict[str, Path]) -> dict:
+        original_root = catalog.ROOT
+        catalog.ROOT = root
+        try:
+            return catalog.build_catalog(REVISION, files)
+        finally:
+            catalog.ROOT = original_root
+
     def test_build_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             items = [{"name": "alpha", "type": "skill", "path": "skills/alpha/SKILL.md"}]
             files = self.write_sources(root, inventory(items))
-            first = catalog.render(catalog.build_catalog(REVISION, files))
-            second = catalog.render(catalog.build_catalog(REVISION, files))
+            first = catalog.render(self.build_from_temp(root, files))
+            second = catalog.render(self.build_from_temp(root, files))
             self.assertEqual(first, second)
 
     def test_duplicate_identity_fails_closed(self) -> None:
@@ -75,7 +83,7 @@ class PublishedCatalogTest(unittest.TestCase):
             discovery = {"schema_version": 2, "capabilities": ["missing"]}
             files = self.write_sources(root, inventory(items), discovery)
             with self.assertRaisesRegex(catalog.CatalogError, "unknown capability reference"):
-                catalog.build_catalog(REVISION, files)
+                self.build_from_temp(root, files)
 
     def test_addition_is_non_breaking(self) -> None:
         before = {"schema_version": 1, "inventory": {"capabilities": [{"name": "a", "type": "skill"}]}}
