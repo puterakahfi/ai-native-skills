@@ -1,6 +1,34 @@
 # Skill Authoring Template
 
-Use this guide together with [`skill-package-standard.md`](skill-package-standard.md).
+Use this guide with [`skill-package-standard.md`](skill-package-standard.md) and the `skill-authoring-workflow` lifecycle.
+
+## Choose the correct lifecycle first
+
+```text
+Create, intentionally update, restructure, migrate, or deprecate
+→ skill-authoring-workflow
+
+Audit or repair unclear health problems
+→ skill-doctor
+
+Promote verified reusable learning
+→ skill-evolution
+
+Evaluate whether saved output applied a skill
+→ skill-eval
+```
+
+Do not start writing files until the operation, target, issue, acceptance criteria, repository, branch base, and authority are resolved.
+
+## Canonical package sources
+
+```text
+contracts/skill-package-policy.yaml
+docs/skill-package-standard.md
+scripts/validate-skill-packages.py
+```
+
+Do not duplicate the package policy inside a skill or workflow.
 
 ## Minimal `SKILL.md`
 
@@ -25,7 +53,8 @@ The body must define:
 5. quality gates;
 6. evidence required before completion;
 7. failure and limitation behavior;
-8. exact conditions for loading each reference or invoking each script.
+8. exact conditions for loading references or invoking scripts;
+9. repository side effects and approval boundaries when applicable.
 
 ## Description review
 
@@ -53,11 +82,11 @@ Link it from `SKILL.md` with a loading condition, for example:
 Read `references/api-errors.md` when a non-2xx response must be classified.
 ```
 
-Do not use vague instructions such as “see references for more information.”
+Do not use vague instructions such as “see references for more information.” Skill-local `docs/` is discouraged for runtime knowledge.
 
 ## Behavioral regression contract
 
-Create or update:
+Create or update the centralized source:
 
 ```text
 contracts/tests/<name>.test.yaml
@@ -65,14 +94,49 @@ contracts/tests/<name>.test.yaml
 
 A useful case includes a natural trigger, required behavior, prohibited behavior, sequence constraints when applicable, and quality gates tested.
 
-Include positive behavior and realistic near-miss or forbidden behavior. Do not hint to the model that it must use the target skill.
+Include positive behavior and realistic near-miss or forbidden behavior. Do not hint to the model that it must use the target skill. Do not create a package-local `evals/` duplicate.
 
 ## Executable resources
 
 When a skill bundles reusable scripts, document inputs, outputs, dependencies, exit codes, side effects, idempotency, timeout/retry behavior, security assumptions, and evidence produced.
 
-Add package-local `tests/` for non-trivial executable behavior. Keep generated results outside the skill directory.
+Add package-local `tests/` for applicable executable behavior. Keep generated results outside the skill directory.
+
+## Operation-specific requirements
+
+### CREATE
+
+Create the smallest complete package, metadata, centralized behavioral contract, and applicable tests.
+
+### UPDATE
+
+Preserve accepted behavior, bump version for executable changes, and update target and related regression evidence.
+
+### RESTRUCTURE
+
+Prove behavior preservation. Structural validation alone is insufficient.
+
+### MIGRATE
+
+Record current compliance, target compliance, exemptions, warnings, and deferred debt. File presence alone does not prove compliance.
+
+### DEPRECATE
+
+Document replacement, dependency and catalog impact, migration path, compatibility expectations, and removal authority.
+
+## Validation order
+
+```bash
+skills-ref validate skills/<skill-name>
+python scripts/validate-skill-packages.py --skill <skill-name>
+python scripts/validate-eval-contracts.py
+AI_NATIVE_CORE_DIR=../ai-native-core bash scripts/run-eval.sh --skill <skill-name> --validate-tests
+```
+
+Also run applicable executable tests, related-skill contracts, adapter/core conformance, documentation/link checks, and live behavioral evaluation when real outputs exist.
 
 ## Pull request evidence
 
-A skill change is not complete until applicable package validation, executable tests, behavioral-contract validation, domain evidence, independent review, and acceptance are reported. Missing evidence remains `NOT_VERIFIED`.
+A skill change is not complete until applicable package validation, executable tests, behavioral-contract validation, related regressions, conformance, independent review, and acceptance are reported.
+
+Report package, behavioral, executable-test, and conformance status independently. Missing evidence remains `NOT_VERIFIED`; structural CI does not prove live behavioral application.
