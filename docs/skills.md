@@ -7,9 +7,9 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 Current repository inventory:
 
 - `skill`: 99
-- `workflow`: 12
+- `workflow`: 13
 - `meta-skill`: 7
-- Total executable skills: 118
+- Total executable skills: 119
 
 ---
 
@@ -136,6 +136,7 @@ A good workflow defines:
 | `production-code-quality-baseline` | classify production impact → attach to one primary lifecycle → plan TDD/quality applicability → execute → verify claims/evidence → independent review → authority handoff |
 | `design-refinement` | verified finding → lock/budget → implementation-context mapping → smallest patch → verify → focused review → deliver |
 | `skill-authoring-workflow` | classify operation → discover → shape package → implement → validate → review → deliver |
+| `software-testing-workflow` | discover context and risks → select justified test levels and adapters → execute → normalize evidence → confidence and acceptance handoff |
 | `skill-doctor` | audit → triage → repair → verify |
 | `skill-evolution` | observe verified product learning → diagnose reusable gap → apply minimal skill/workflow/eval/core patch → validate → promote |
 
