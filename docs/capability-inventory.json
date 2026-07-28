@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 97,
+    "skill": 98,
     "workflow": 11,
     "meta-skill": 7,
-    "total": 115
+    "total": 116
   },
   "items": [
     {
@@ -77,6 +77,11 @@
       "name": "architecture-review",
       "type": "skill",
       "path": "skills/architecture-review/SKILL.md"
+    },
+    {
+      "name": "behavior-driven-development",
+      "type": "skill",
+      "path": "skills/behavior-driven-development/SKILL.md"
     },
     {
       "name": "brand-identity-review",
