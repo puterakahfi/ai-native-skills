@@ -6,10 +6,10 @@ The goal is to keep authoring decisions consistent: when to create an atomic ski
 
 Current repository inventory:
 
-- `skill`: 95
+- `skill`: 96
 - `workflow`: 11
 - `meta-skill`: 7
-- Total executable skills: 113
+- Total executable skills: 114
 
 ---
 

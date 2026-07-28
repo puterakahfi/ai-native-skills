@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 95,
+    "skill": 96,
     "workflow": 11,
     "meta-skill": 7,
-    "total": 113
+    "total": 114
   },
   "items": [
     {
@@ -42,6 +42,11 @@
       "name": "workflow-router",
       "type": "meta-skill",
       "path": "skills/workflow-router/SKILL.md"
+    },
+    {
+      "name": "acceptance-testing",
+      "type": "skill",
+      "path": "skills/acceptance-testing/SKILL.md"
     },
     {
       "name": "accessibility",
