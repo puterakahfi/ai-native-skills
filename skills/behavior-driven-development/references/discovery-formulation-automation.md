@@ -14,7 +14,7 @@ Describe observable preconditions, event or action, and outcome in shared domain
 
 ## Automation handoff
 
-Approved examples route to `acceptance-testing`, then to the minimum justified unit, integration, contract, or E2E surface. BDD does not automatically imply browser or E2E automation.
+Approved examples route to `acceptance-testing`, then to the minimum justified unit, integration, contract, or E2E surface. BDD does not automatically imply browser or E2E automation. Each handoff records the approved example identifier, selected test level, rejected alternatives, and evidence owner.
 
 ## Non-use cases
 
