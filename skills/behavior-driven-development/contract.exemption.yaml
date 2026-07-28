@@ -1,0 +1,15 @@
+schema_version: 1
+capability: behavior-driven-development
+classification: reviewed_exemption
+reason: Canonical Core contract is not yet verified for this capability.
+tracking_issue: puterakahfi/ai-native-core#76
+review:
+  source_issue: puterakahfi/ai-native-skills#164
+  authority: executable repository owner
+  scope: provisional skill behavior only
+  expires_on_core_decision: true
+constraints:
+  - discovery, formulation, and automation remain distinct
+  - Gherkin and Cucumber remain optional adapters
+  - product acceptance authority remains external
+  - ceremonial BDD must be rejected
