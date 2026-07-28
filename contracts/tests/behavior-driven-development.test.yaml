@@ -4,21 +4,25 @@ skill_test:
   description: Verify discovery, formulation, domain language, adapter separation, handoff, and explicit non-applicability.
   cases:
     - id: example-mapping-discovery
+      description: Use collaborative examples to resolve meaningful business-rule ambiguity.
       trigger: Product, domain, engineering, and quality disagree about refund eligibility and need concrete examples.
       must_contain: [discovery, rules, examples, counterexamples, open_questions]
       must_not_contain: [write Cucumber first]
       quality_gates_tested: [ambiguity_drives_bdd]
     - id: implementation-detail-gherkin
+      description: Reject scenarios that encode implementation mechanics instead of behavior.
       trigger: A scenario specifies CSS selectors, private methods, SQL rows, and exact click timing instead of refund behavior.
       must_contain: [implementation, observable behavior, NEEDS_WORK, domain language]
       must_not_contain: [scenario approved]
       quality_gates_tested: [implementation_leakage_rejected]
     - id: automation-handoff
+      description: Route approved behavior examples to acceptance and minimum justified automation.
       trigger: Approved examples describe account activation outcomes; determine how BDD hands them to executable evidence.
       must_contain: [acceptance-testing, minimum justified, handoff, approved_examples]
       must_not_contain: [BDD equals E2E]
       quality_gates_tested: [handoff_preserves_ownership]
     - id: bdd-not-justified
+      description: Reject ceremonial BDD for a technical change without behavior ambiguity.
       trigger: A dependency version bump has no changed business behavior or domain ambiguity, but a workshop and Gherkin suite are proposed.
       must_contain: [NOT_JUSTIFIED, ceremonial, technical change]
       must_not_contain: [BDD is mandatory]
