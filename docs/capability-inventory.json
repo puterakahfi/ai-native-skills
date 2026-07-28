@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 98,
+    "skill": 99,
     "workflow": 12,
     "meta-skill": 7,
-    "total": 117
+    "total": 118
   },
   "items": [
     {
@@ -67,6 +67,11 @@
       "name": "ai-system-design",
       "type": "skill",
       "path": "skills/ai-system-design/SKILL.md"
+    },
+    {
+      "name": "api-backward-compatibility-review",
+      "type": "skill",
+      "path": "skills/api-backward-compatibility-review/SKILL.md"
     },
     {
       "name": "api-contract",
