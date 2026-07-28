@@ -31,4 +31,6 @@ if [[ ! -f "$CORE_DIR/scripts/run-eval.py" ]]; then
   exit 1
 fi
 
+export SKILL_EVAL_TESTS_DIR="${SKILL_EVAL_TESTS_DIR:-$ROOT_DIR/contracts/tests}"
+
 exec python3 "$CORE_DIR/scripts/run-eval.py" "$@"
