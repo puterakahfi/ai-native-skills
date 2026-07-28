@@ -1,0 +1,39 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: systems-reasoning
+    path: skills/systems-reasoning/SKILL.md
+    type: meta-skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: The repository needs a foundational orchestration layer for system boundaries,
+    capability-policy-mechanism separation, proportional depth, uncertainty, and downstream
+    handoff. The existing systems-thinking core contract owns deep dynamics analysis but does
+    not define this broader meta-skill interface. A new canonical core contract requires
+    separate RFC authority and must not be invented inside the adapter repository.
+  scope:
+  - static_contract_ownership
+  - core_gap_tracking
+  - local_behavioral_validation
+  review_date: '2026-10-28'
+  evidence_refs:
+  - kind: github_issue
+    ref: puterakahfi/ai-native-skills#179
+  - kind: executable_source
+    ref: skills/systems-reasoning/SKILL.md
+  - kind: behavioral_contract
+    ref: contracts/tests/systems-reasoning.test.yaml
+  - kind: related_core_contract
+    ref: ai-native-core/contracts/skills/architecture/systems-thinking.contract.yaml
+  revisit:
+    blocking_issue: puterakahfi/ai-native-skills#179
+    triggers:
+    - a systems-reasoning core contract or RFC is accepted and published
+    - the foundational overlay boundary is reviewed against canonical core terminology
+    - evidence shows the capability should merge into or replace systems-thinking
+  prohibited_claims:
+  - core_contract_conformance
+  - runtime_acceptance
+  - product_acceptance
+  - approval_or_authorization
+  status: active
