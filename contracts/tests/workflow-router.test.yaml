@@ -1,6 +1,6 @@
 skill_test:
   skill: workflow-router
-  version: 1.8.1
+  version: 1.8.0
   description: Verify lifecycle selection remains primary while platform, delivery, continuity, design, and skill-lifecycle overlays load the correct capabilities.
   cases:
     - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
