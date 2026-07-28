@@ -22,6 +22,8 @@ The existing `systems-thinking` atomic skill owns deep analysis of reinforcing a
 
 `systems-reasoning` owns the broader orchestration layer: establish the system of interest, boundary, actors, capability/policy/mechanism separation, invariants, uncertainty, proportional depth, and downstream handoff. It delegates deep dynamics analysis instead of duplicating that ownership.
 
+The canonical cross-repository boundary remains tracked by `puterakahfi/ai-native-core#70`. Until that RFC is accepted, the executable capability uses a reviewed core-gap exemption and must not claim core-contract conformance.
+
 ## Canonical entry point
 
 - `skills/systems-reasoning/SKILL.md`
