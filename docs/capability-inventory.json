@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 94,
+    "skill": 95,
     "workflow": 11,
     "meta-skill": 7,
-    "total": 112
+    "total": 113
   },
   "items": [
     {
@@ -127,6 +127,11 @@
       "name": "context-manager",
       "type": "skill",
       "path": "skills/context-manager/SKILL.md"
+    },
+    {
+      "name": "contract-testing",
+      "type": "skill",
+      "path": "skills/contract-testing/SKILL.md"
     },
     {
       "name": "copywriting",
