@@ -1,0 +1,32 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: skill-authoring-workflow
+    path: skills/skill-authoring-workflow/SKILL.md
+    type: workflow
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: Skill package authoring and structural lifecycle management are reusable, but no accepted ai-native-core contract currently owns CREATE, UPDATE, RESTRUCTURE, MIGRATE, and DEPRECATE operations as one lifecycle.
+  scope:
+    - static_contract_ownership
+    - core_gap_tracking
+  review_date: '2026-10-28'
+  evidence_refs:
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#189
+    - kind: executable_source
+      ref: skills/skill-authoring-workflow/SKILL.md
+    - kind: package_policy
+      ref: contracts/skill-package-policy.yaml
+  revisit:
+    blocking_issue: puterakahfi/ai-native-skills#189
+    triggers:
+      - a canonical skill-authoring lifecycle contract is accepted in ai-native-core
+      - cross-adapter authoring obligations are proven by multiple implementations
+  prohibited_claims:
+    - core_contract_conformance
+    - live_behavioral_verification
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active
