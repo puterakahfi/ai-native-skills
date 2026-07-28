@@ -20,17 +20,29 @@ resolve_core_dir() {
     return
   fi
 
-  printf '%s\n' "$ROOT_DIR/.deps/ai-native-core"
+  return 1
 }
 
-CORE_DIR="$(resolve_core_dir)"
+if ! CORE_DIR="$(resolve_core_dir)"; then
+  cat >&2 <<EOF
+ai-native-core eval runner was not found.
 
-if [[ ! -f "$CORE_DIR/scripts/run-eval.py" ]]; then
-  echo "Missing ai-native-core eval runner at $CORE_DIR/scripts/run-eval.py" >&2
-  echo "Clone ai-native-core at $CORE_REF into $CORE_DIR or set AI_NATIVE_CORE_DIR." >&2
-  exit 1
+Provide one of:
+  AI_NATIVE_CORE_DIR=/path/to/ai-native-core ./scripts/run-eval.sh ...
+  clone ai-native-core beside this repository
+  clone pinned core commit into .deps/ai-native-core:
+
+    git clone https://github.com/puterakahfi/ai-native-core.git .deps/ai-native-core
+    git -C .deps/ai-native-core checkout $CORE_REF
+EOF
+  exit 2
 fi
 
-export SKILL_EVAL_TESTS_DIR="${SKILL_EVAL_TESTS_DIR:-$ROOT_DIR/contracts/tests}"
+RUNNER="$CORE_DIR/scripts/run-eval.py"
+if [[ ! -f "$RUNNER" ]]; then
+  echo "Missing core eval runner: $RUNNER" >&2
+  exit 2
+fi
 
-exec python3 "$CORE_DIR/scripts/run-eval.py" "$@"
+export SKILL_EVAL_TESTS_DIR="$ROOT_DIR/contracts/tests"
+exec python3 "$RUNNER" "$@"
