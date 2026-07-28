@@ -105,30 +105,6 @@ jobs:
                   raise SystemExit(f"taxonomy inventory line was not updated exactly once: {pattern}")
           taxonomy.write_text(taxonomy_text, encoding="utf-8")
 
-      - name: Synchronize issue 162 capability discovery
-        shell: python
-        run: |
-          import json
-          from pathlib import Path
-
-          path = Path("catalog/capability-discovery/classifications.json")
-          data = json.loads(path.read_text(encoding="utf-8"))
-          group = next(item for item in data["classification_groups"] if item["id"] == "engineering-quality")
-          for capability in ["integration-testing", "unit-testing"]:
-              if capability not in group["capabilities"]:
-                  group["capabilities"].append(capability)
-          group["capabilities"].sort()
-          overrides = group.setdefault("overrides", {})
-          overrides["unit-testing"] = {
-              "lifecycle_stages": ["build", "verify"],
-              "concerns": ["implementation", "testing", "code-quality"],
-          }
-          overrides["integration-testing"] = {
-              "lifecycle_stages": ["build", "verify"],
-              "concerns": ["implementation", "testing", "reliability"],
-          }
-          path.write_text(json.dumps(data, separators=(",", ":")) + "\n", encoding="utf-8")
-
       - name: Regenerate capability inventory
         run: python scripts/verify-capability-inventory.py --write-snapshot
 
@@ -142,7 +118,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add README.md docs/skills.md catalog/capability-discovery/classifications.json docs/capability-inventory.json docs/contract-coverage-discovery.yaml
+          git add README.md docs/skills.md docs/capability-inventory.json docs/contract-coverage-discovery.yaml
           if git diff --cached --quiet; then
             echo "Generated capability metadata is already current."
             exit 0
