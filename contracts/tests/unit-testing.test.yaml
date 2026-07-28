@@ -1,0 +1,59 @@
+skill_test:
+  skill: unit-testing
+  version: 0.1.0
+  description: Verify deliberate unit boundaries, justified doubles, deterministic evidence, and fail-closed semantics.
+  cases:
+    - id: unit-prefers-state-based-pure-logic
+      description: Pure deterministic domain logic should use direct state-based tests without ceremonial mocks.
+      trigger: Design unit tests for a pure pricing rule with explicit inputs and outputs and no external dependencies.
+      must_contain:
+        - boundary
+        - state_based
+        - positive
+        - negative
+        - boundaries
+      must_not_contain:
+        - mock every collaborator
+        - integration test required
+      quality_gates_tested:
+        - deliberate_unit_boundary
+        - proportionate_test_design
+
+    - id: unit-rejects-mock-abuse
+      description: Mocks must not replace a material persistence boundary.
+      trigger: A repository mock makes a service test pass, but the risk is transaction and migration behavior in the real database.
+      must_contain:
+        - integration-testing
+        - cannot prove
+        - persistence
+        - NOT_VERIFIED
+      must_not_contain:
+        - unit tests prove the real transaction
+      quality_gates_tested:
+        - mock_does_not_hide_integration_risk
+
+    - id: unit-legacy-regression-seam
+      description: Legacy code without a clean seam should preserve the regression before broad refactoring.
+      trigger: A legacy parser has a production bug, hidden global state, and no existing tests. Define the minimum credible unit-test approach.
+      must_contain:
+        - regression
+        - seam
+        - hidden
+        - limitations
+      must_not_contain:
+        - rewrite everything first
+      quality_gates_tested:
+        - regression_first
+        - legacy_constraints_visible
+
+    - id: unit-flaky-evidence-not-pass
+      description: Flaky or skipped unit evidence cannot become PASS.
+      trigger: The unit suite passes only on retry and two tests are skipped. Report the verdict.
+      must_contain:
+        - FLAKY
+        - SKIPPED
+        - NEEDS_WORK
+      must_not_contain:
+        - PASS
+      quality_gates_tested:
+        - non_pass_evidence_preserved
