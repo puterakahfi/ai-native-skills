@@ -1,0 +1,36 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: api-backward-compatibility-review
+    path: skills/api-backward-compatibility-review/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: >-
+    API backward-compatibility review is reusable across adapters, but no accepted
+    ai-native-core contract currently owns compatibility classification, consumer-impact
+    evidence, migration requirements, and fail-closed release guidance as one capability.
+  scope:
+    - static_contract_ownership
+    - core_gap_tracking
+  review_date: '2026-10-28'
+  evidence_refs:
+    - kind: github_issue
+      ref: puterakahfi/ai-native-core#78
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#207
+    - kind: executable_source
+      ref: skills/api-backward-compatibility-review/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#78
+    triggers:
+      - core issue #78 is accepted, rejected, or superseded
+      - another adapter validates or contradicts the candidate boundary
+      - review date is reached before exemption retirement
+  prohibited_claims:
+    - core_contract_conformance
+    - behavioral_verification
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active
