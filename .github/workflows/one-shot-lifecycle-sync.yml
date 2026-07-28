@@ -1,0 +1,104 @@
+name: One-shot lifecycle metadata sync
+
+on:
+  push:
+    branches:
+      - 189-skill-lifecycle-integration-v2
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 189-skill-lifecycle-integration-v2
+          path: ai-native-skills
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-core
+          path: ai-native-core
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check PyYAML
+      - name: Synchronize catalog and public inventory docs
+        working-directory: ai-native-skills
+        shell: python
+        run: |
+          import importlib.util
+          import json
+          import re
+          from pathlib import Path
+
+          catalog_path = Path('catalog/capability-discovery/classifications.json')
+          catalog = json.loads(catalog_path.read_text(encoding='utf-8'))
+          groups = {group['id']: group for group in catalog['classification_groups']}
+          workflows = groups['workflows']
+          name = 'skill-authoring-workflow'
+          if name not in workflows['capabilities']:
+              index = workflows['capabilities'].index('skill-doctor')
+              workflows['capabilities'].insert(index, name)
+          workflows.setdefault('overrides', {})[name] = {
+              'domains': ['quality', 'ai-systems', 'governance', 'developer-experience'],
+              'lifecycle_stages': ['define', 'plan', 'build', 'verify', 'release'],
+              'concerns': ['workflow-routing', 'delivery', 'governance', 'documentation', 'evaluation']
+          }
+          catalog_path.write_text(json.dumps(catalog, separators=(',', ':')) + '\n', encoding='utf-8')
+
+          script = Path('scripts/verify-capability-inventory.py')
+          spec = importlib.util.spec_from_file_location('capability_inventory', script)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          counts = module.derive_inventory()['counts']
+
+          readme = Path('README.md')
+          text = readme.read_text(encoding='utf-8')
+          text, replaced = re.subn(r'\*\*\d+ skills · \d+ workflows · \d+ meta-skills\*\*', f"**{counts['skill']} skills · {counts['workflow']} workflows · {counts['meta-skill']} meta-skills**", text, count=1)
+          if replaced != 1:
+              raise SystemExit('README count update failed')
+          readme.write_text(text, encoding='utf-8')
+
+          taxonomy = Path('docs/skills.md')
+          text = taxonomy.read_text(encoding='utf-8')
+          replacements = {
+              r'^- `skill`: \d+$': f"- `skill`: {counts['skill']}",
+              r'^- `workflow`: \d+$': f"- `workflow`: {counts['workflow']}",
+              r'^- `meta-skill`: \d+$': f"- `meta-skill`: {counts['meta-skill']}",
+              r'^- Total executable skills: \d+$': f"- Total executable skills: {counts['total']}",
+          }
+          for pattern, replacement in replacements.items():
+              text, replaced = re.subn(pattern, replacement, text, count=1, flags=re.MULTILINE)
+              if replaced != 1:
+                  raise SystemExit(f'taxonomy count update failed: {pattern}')
+          row = '| `skill-authoring-workflow` | classify operation → discover → shape package → implement → validate → review → deliver |'
+          if row not in text:
+              anchor = '| `skill-doctor` | audit → triage → repair → verify |'
+              if anchor not in text:
+                  raise SystemExit('workflow table anchor missing')
+              text = text.replace(anchor, row + '\n' + anchor, 1)
+          taxonomy.write_text(text, encoding='utf-8')
+      - name: Regenerate inventory
+        working-directory: ai-native-skills
+        run: python scripts/verify-capability-inventory.py --write-snapshot
+      - name: Regenerate contract coverage
+        run: python ai-native-skills/scripts/inventory-contract-coverage.py --root ai-native-skills --core-root ai-native-core
+      - name: Commit generated metadata
+        working-directory: ai-native-skills
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md docs/skills.md catalog/capability-discovery/classifications.json docs/capability-inventory.json docs/contract-coverage-discovery.yaml
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore(metadata): synchronize lifecycle integration evidence'
+          git push origin HEAD:189-skill-lifecycle-integration-v2
