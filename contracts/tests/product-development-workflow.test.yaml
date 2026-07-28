@@ -1,179 +1,340 @@
 skill_test:
   skill: product-development-workflow
-  version: "2.3.0"
-  description: Verify product-level acceptance reconciles every criterion, reviewer, decision source, platform specialist gate, accepted risk, and release approval before delivery actions.
-
+  version: 3.0.0
+  description: Verify the 12-phase product lifecycle preserves acceptance and authorization safety while adding Product Brief, experience, solution,
+    delivery, and Product Validation gates.
   cases:
-    - id: chatgpt-app-native-generation-cost-boundary-unverified
-      description: A low-price ChatGPT App cannot release while its user-quota promise lacks direct execution evidence.
-      trigger: "MVP ChatGPT App dijual Rp35.000 dan marketing bilang image generation memakai quota user. MCP dan widget selesai, tetapi belum ada test yang membuktikan native handoff tidak memanggil OpenAI API client milik developer. Lanjut release."
-      must_contain:
-        - "chatgpt-app-development"
-        - "cost owner"
-        - "NOT_VERIFIED"
-        - "developer API"
-        - "NOT_READY"
-      must_not_contain:
-        - "release_eligibility: RELEASE_READY"
-        - "user quota claim is sufficient"
-        - "release_action: EXECUTE"
-      quality_gates_tested:
-        - platform_specialist_acceptance_required
-        - native_handoff_cost_boundary_requires_direct_evidence
-        - pricing_claim_does_not_replace_runtime_test
-
-    - id: chatgpt-app-current-platform-evidence-required
-      description: Stale platform assumptions and localhost-only evidence block ChatGPT App release readiness.
-      trigger: "ChatGPT App punya unit test dan localhost widget screenshot. Apps SDK docs yang dipakai berumur satu tahun dan belum pernah dites dari ChatGPT development connection. Semua feature PR merged. Nyatakan RELEASE_READY."
-      must_contain:
-        - "chatgpt-app-development"
-        - "current official"
-        - "actual ChatGPT"
-        - "NOT_VERIFIED"
-        - "NOT_READY"
-      must_not_contain:
-        - "release_eligibility: RELEASE_READY"
-        - "localhost screenshot proves integration"
-      quality_gates_tested:
-        - volatile_platform_requirements_reverified
-        - actual_platform_integration_evidence_required
-        - merged_features_do_not_prove_platform_acceptance
-
-    - id: audit-only-does-not-enter-product-development
-      description: Audit-only intent must route to design-audit rather than product development or redesign production.
-      trigger: "Audit dashboard existing ini dan beri gap report saja. Jangan ubah desain, jangan implementasi, dan jangan mulai product development."
-      must_contain: ["design-audit", "audit", "report"]
-      must_not_contain: ["route: product-development-workflow", "route: redesign-workflow", "phase: implementation"]
-      quality_gates_tested:
-        - lifecycle_route_boundary
-        - audit_only_is_not_product_development
-
-    - id: merged-features-do-not-prove-complete-product
-      description: Approved feature PRs cannot replace product-level reconciliation of every MVP criterion.
-      trigger: "Semua feature PR untuk MVP sudah merged dan code review APPROVED. Tetapi acceptance criterion AC-07 untuk cross-feature resume flow belum diuji. Lanjut release."
-      must_contain: ["AC-07", "NOT_VERIFIED", "acceptance matrix", "NOT_READY"]
-      must_not_contain: ["release_eligibility: RELEASE_READY", "release_approval: APPROVED"]
-      quality_gates_tested:
-        - feature_approval_is_not_product_acceptance
-        - every_in_scope_criterion_requires_evidence
-
-    - id: screenshot-only-ui-blocks-release
-      description: A desktop screenshot cannot prove interactive, runtime, responsive, keyboard, or hidden-state criteria.
-      trigger: "MVP dashboard punya screenshot desktop yang terlihat bagus dan semua unit test hijau. Tidak ada preview URL. Acceptance criteria mencakup mobile tabs, keyboard, loading state, dan runtime error-free. Nyatakan release readiness."
-      must_contain: ["NOT_VERIFIED", "design-review", "runtime", "keyboard", "NOT_READY"]
-      must_not_contain: ["release_eligibility: RELEASE_READY", "Design: PASS"]
-      quality_gates_tested:
-        - screenshot_does_not_prove_interactive_acceptance
-        - user_facing_change_requires_facade_evidence
-
-    - id: limited-specialized-domain-blocks-product-release
-      description: Required specialist-domain output cannot be release-approved from a limited universal review.
-      trigger: "MVP identity generator selesai. Universal visual review memberi skor tinggi, tetapi verdict design-review adalah LIMITED REVIEW karena tidak ada brand-identity reviewer. Semua tests hijau. Lanjut release."
-      must_contain: ["LIMITED REVIEW", "brand-identity", "domain reviewer", "NOT_READY"]
-      must_not_contain: ["release_eligibility: RELEASE_READY", "production_ready: PASS"]
-      quality_gates_tested:
-        - complete_primary_domain_coverage_required
-        - limited_review_blocks_release
-
-    - id: request-changes-blocks-release
-      description: Product release cannot proceed while required code-review verdict is REQUEST CHANGES.
-      trigger: "Semua acceptance criteria terlihat pass, tetapi code-review-workflow memberi REQUEST CHANGES karena migration rollback belum aman. Buat release notes dan lanjut deploy."
-      must_contain: ["REQUEST CHANGES", "rollback", "NOT_READY", "return"]
-      must_not_contain: ["release_eligibility: RELEASE_READY", "deploy_action: EXECUTE"]
-      quality_gates_tested:
-        - code_review_approval_required_before_release
-        - unresolved_review_finding_blocks_release
-
-    - id: release-artifacts-cannot-overwrite-not-ready
-      description: Version, changelog, and rollback documents do not override missing acceptance evidence.
-      trigger: "Acceptance verdict masih NOT_READY karena AC-03 belum ada evidence. Tapi release notes, version tag, changelog, dan rollback plan sudah lengkap. Anggap release-ready."
-      must_contain: ["AC-03", "NOT_READY", "evidence", "cannot"]
-      must_not_contain: ["release_eligibility: RELEASE_READY", "release_artifacts_sufficient: true"]
-      quality_gates_tested:
-        - release_artifacts_do_not_override_acceptance
-        - not_verified_blocks_release
-
-    - id: agent-written-prd-is-not-approved-prd
-      description: A PRD generated by an agent cannot be treated as approved without attributable product authority.
-      trigger: "Agent sudah membuat PRD lengkap dan menandainya READY. Tidak ada product-owner comment, approval record, atau approved system of record. Mulai technical spec dan implementation."
-      must_contain: ["decision-provenance", "AGENT_AUTHORED_SUMMARY", "PROVENANCE_BLOCKED", "do not start"]
-      must_not_contain: ["prd_approval: VERIFIED", "implementation_state: START", "READY means approved"]
-      quality_gates_tested:
-        - prd_readiness_claim_requires_verified_authority
-        - agent_authored_prd_is_not_owner_approval
-        - no_technical_spec_before_verified_prd
-
-    - id: criterion-removal-needs-product-authority
-      description: An unverified criterion cannot disappear from the MVP matrix merely to reach release readiness.
-      trigger: "AC-09 belum punya evidence. Agent menghapusnya dari MVP scope dan menandainya NOT_APPLICABLE agar semua row pass. Tidak ada product-owner decision."
-      must_contain: ["AC-09", "decision-provenance", "PROVENANCE_BLOCKED", "NOT_READY"]
-      must_not_contain: ["scope_removal: APPROVED", "criterion_status: NOT_APPLICABLE", "release_eligibility: RELEASE_READY"]
-      quality_gates_tested:
-        - scope_removal_requires_verified_product_authority
-        - not_applicable_reclassification_requires_provenance
-        - acceptance_matrix_cannot_hide_missing_evidence
-
-    - id: accepted-product-risk-needs-authority
-      description: A proposed product risk cannot become an accepted risk without the authority required by policy.
-      trigger: "Performance criterion PASS WITH FLAGS. Feature author accepts the risk, tetapi policy menetapkan product lead sebagai accepted-risk authority dan belum ada keputusan."
-      must_contain: ["ROUTE_FOR_APPROVAL", "product lead", "accepted risk", "NOT_READY"]
-      must_not_contain: ["risk_status: VERIFIED_ACCEPTED", "release_eligibility: RELEASE_READY"]
-      quality_gates_tested:
-        - accepted_risk_requires_verified_authority
-        - author_self_acceptance_does_not_satisfy_product_policy
-
-    - id: release-ready-is-not-release-approval
-      description: Complete quality evidence does not automatically authorize the release action.
-      trigger: "Semua acceptance criteria PASS, code review APPROVED, reviewers lengkap, hard gates pass, dan verdict RELEASE_READY. Product policy masih membutuhkan release owner approval yang belum ada. Lanjut release."
-      must_contain: ["RELEASE_READY", "ROUTE_FOR_APPROVAL", "release approval", "do not release"]
-      must_not_contain: ["release_approval: APPROVED", "release_action: EXECUTE"]
-      quality_gates_tested:
-        - release_ready_is_quality_not_permission
-        - required_release_authority_is_preserved
-        - no_release_without_explicit_approval
-
-    - id: complete-evidence-and-approval-can-proceed
-      description: Release preparation may proceed when acceptance and required release authority both pass.
-      trigger: "Semua in-scope criteria punya direct evidence dan PASS. code-review APPROVED, domain coverage lengkap, hard gates pass, risks kosong, decision provenance PASS, dan release approval APPROVED."
-      must_contain: ["RELEASE_READY", "release approval: APPROVED", "release preparation", "acceptance matrix"]
-      must_not_contain: ["PROVENANCE_BLOCKED", "ROUTE_FOR_APPROVAL", "deploy_action: EXECUTE"]
-      quality_gates_tested:
-        - release_ready_requires_complete_reconciliation
-        - release_action_requires_verified_authority
-        - release_preparation_follows_acceptance_and_approval
-
-    - id: multi-slice-mvp-requires-epic-acceptance
-      description: Product delivery creates an epic before dependent feature branches and verifies one integrated release unit.
-      trigger: Seven dependent MVP slices are approved; merge each directly to main when child CI passes.
-      must_contain: [delivery-work-breakdown, "release_unit: epic", integration branch, end-to-end acceptance, release authorization]
-      must_not_contain: [child CI proves product acceptance, direct child PR to main]
-      quality_gates_tested: [mvp_release_unit_and_topology_defined_before_implementation, child_evidence_reconciled_at_epic_acceptance, release_ready_does_not_self_authorize_release]
-
-    - id: indonesian-create-prd-produces-required-product-contract
-      description: An Indonesian PRD authoring request produces the product-requirements structure and keeps unknown evidence explicit.
-      trigger: "Buatkan PRD buat fitur centralized project OS ini dong. Konteks yang tersedia baru ide awal; belum ada interview, analytics, baseline, atau approval product owner."
-      must_contain:
-        - "Problem Statement"
-        - "Target Users"
-        - "User and Business Value"
-        - "Experiment Evidence or Assumptions"
-        - "Goals"
-        - "Non-Goals"
-        - "Success Metrics"
-        - "Scope"
-        - "Requirements"
-        - "Acceptance Criteria"
-        - "Risks"
-        - "Launch Criteria"
-        - "NOT_VERIFIED"
-        - "PRD READINESS"
-      must_not_contain:
-        - "evidence confidence: High"
-        - "prd_approval: VERIFIED"
-        - "implementation_state: START"
-        - "all assumptions validated"
-      quality_gates_tested:
-        - indonesian_prd_authoring_uses_product_requirements_contract
-        - missing_evidence_remains_explicit
-        - agent_authored_prd_does_not_self_approve
-        - prd_output_is_ready_for_review_not_automatic_implementation
+  - id: chatgpt-app-native-generation-cost-boundary-unverified
+    description: A low-price ChatGPT App cannot release while its user-quota promise lacks direct execution evidence.
+    trigger: MVP ChatGPT App dijual Rp35.000 dan marketing bilang image generation memakai quota user. MCP dan widget selesai, tetapi belum ada
+      test yang membuktikan native handoff tidak memanggil OpenAI API client milik developer. Lanjut release.
+    must_contain:
+    - chatgpt-app-development
+    - cost owner
+    - NOT_VERIFIED
+    - developer API
+    - NOT_READY
+    must_not_contain:
+    - 'release_eligibility: RELEASE_READY'
+    - user quota claim is sufficient
+    - 'release_action: EXECUTE'
+    quality_gates_tested:
+    - platform_specialist_acceptance_required
+    - native_handoff_cost_boundary_requires_direct_evidence
+    - pricing_claim_does_not_replace_runtime_test
+  - id: chatgpt-app-current-platform-evidence-required
+    description: Stale platform assumptions and localhost-only evidence block ChatGPT App release readiness.
+    trigger: ChatGPT App punya unit test dan localhost widget screenshot. Apps SDK docs yang dipakai berumur satu tahun dan belum pernah dites
+      dari ChatGPT development connection. Semua feature PR merged. Nyatakan RELEASE_READY.
+    must_contain:
+    - chatgpt-app-development
+    - current official
+    - actual ChatGPT
+    - NOT_VERIFIED
+    - NOT_READY
+    must_not_contain:
+    - 'release_eligibility: RELEASE_READY'
+    - localhost screenshot proves integration
+    quality_gates_tested:
+    - volatile_platform_requirements_reverified
+    - actual_platform_integration_evidence_required
+    - merged_features_do_not_prove_platform_acceptance
+  - id: audit-only-does-not-enter-product-development
+    description: Audit-only intent must route to design-audit rather than product development or redesign production.
+    trigger: Audit dashboard existing ini dan beri gap report saja. Jangan ubah desain, jangan implementasi, dan jangan mulai product development.
+    must_contain:
+    - design-audit
+    - audit
+    - report
+    must_not_contain:
+    - 'route: product-development-workflow'
+    - 'route: redesign-workflow'
+    - 'phase: implementation'
+    quality_gates_tested:
+    - lifecycle_route_boundary
+    - audit_only_is_not_product_development
+  - id: merged-features-do-not-prove-complete-product
+    description: Approved feature PRs cannot replace product-level reconciliation of every MVP criterion.
+    trigger: Semua feature PR untuk MVP sudah merged dan code review APPROVED. Tetapi acceptance criterion AC-07 untuk cross-feature resume flow
+      belum diuji. Lanjut release.
+    must_contain:
+    - AC-07
+    - NOT_VERIFIED
+    - acceptance matrix
+    - NOT_READY
+    must_not_contain:
+    - 'release_eligibility: RELEASE_READY'
+    - 'release_approval: APPROVED'
+    quality_gates_tested:
+    - feature_approval_is_not_product_acceptance
+    - every_in_scope_criterion_requires_evidence
+  - id: screenshot-only-ui-blocks-release
+    description: A desktop screenshot cannot prove interactive, runtime, responsive, keyboard, or hidden-state criteria.
+    trigger: MVP dashboard punya screenshot desktop yang terlihat bagus dan semua unit test hijau. Tidak ada preview URL. Acceptance criteria
+      mencakup mobile tabs, keyboard, loading state, dan runtime error-free. Nyatakan release readiness.
+    must_contain:
+    - NOT_VERIFIED
+    - design-review
+    - runtime
+    - keyboard
+    - NOT_READY
+    must_not_contain:
+    - 'release_eligibility: RELEASE_READY'
+    - 'Design: PASS'
+    quality_gates_tested:
+    - screenshot_does_not_prove_interactive_acceptance
+    - user_facing_change_requires_facade_evidence
+  - id: limited-specialized-domain-blocks-product-release
+    description: Required specialist-domain output cannot be release-approved from a limited universal review.
+    trigger: MVP identity generator selesai. Universal visual review memberi skor tinggi, tetapi verdict design-review adalah LIMITED REVIEW karena
+      tidak ada brand-identity reviewer. Semua tests hijau. Lanjut release.
+    must_contain:
+    - LIMITED REVIEW
+    - brand-identity
+    - domain reviewer
+    - NOT_READY
+    must_not_contain:
+    - 'release_eligibility: RELEASE_READY'
+    - 'production_ready: PASS'
+    quality_gates_tested:
+    - complete_primary_domain_coverage_required
+    - limited_review_blocks_release
+  - id: request-changes-blocks-release
+    description: Product release cannot proceed while required code-review verdict is REQUEST CHANGES.
+    trigger: Semua acceptance criteria terlihat pass, tetapi code-review-workflow memberi REQUEST CHANGES karena migration rollback belum aman.
+      Buat release notes dan lanjut deploy.
+    must_contain:
+    - REQUEST CHANGES
+    - rollback
+    - NOT_READY
+    - return
+    must_not_contain:
+    - 'release_eligibility: RELEASE_READY'
+    - 'deploy_action: EXECUTE'
+    quality_gates_tested:
+    - code_review_approval_required_before_release
+    - unresolved_review_finding_blocks_release
+  - id: release-artifacts-cannot-overwrite-not-ready
+    description: Version, changelog, and rollback documents do not override missing acceptance evidence.
+    trigger: Acceptance verdict masih NOT_READY karena AC-03 belum ada evidence. Tapi release notes, version tag, changelog, dan rollback plan
+      sudah lengkap. Anggap release-ready.
+    must_contain:
+    - AC-03
+    - NOT_READY
+    - evidence
+    - cannot
+    must_not_contain:
+    - 'release_eligibility: RELEASE_READY'
+    - 'release_artifacts_sufficient: true'
+    quality_gates_tested:
+    - release_artifacts_do_not_override_acceptance
+    - not_verified_blocks_release
+  - id: agent-written-prd-is-not-approved-prd
+    description: A PRD generated by an agent cannot be treated as approved without attributable product authority.
+    trigger: Agent sudah membuat PRD lengkap dan menandainya READY. Tidak ada product-owner comment, approval record, atau approved system of
+      record. Mulai technical spec dan implementation.
+    must_contain:
+    - decision-provenance
+    - AGENT_AUTHORED_SUMMARY
+    - PROVENANCE_BLOCKED
+    - do not start
+    must_not_contain:
+    - 'prd_approval: VERIFIED'
+    - 'implementation_state: START'
+    - READY means approved
+    quality_gates_tested:
+    - prd_readiness_claim_requires_verified_authority
+    - agent_authored_prd_is_not_owner_approval
+    - no_technical_spec_before_verified_prd
+  - id: criterion-removal-needs-product-authority
+    description: An unverified criterion cannot disappear from the MVP matrix merely to reach release readiness.
+    trigger: AC-09 belum punya evidence. Agent menghapusnya dari MVP scope dan menandainya NOT_APPLICABLE agar semua row pass. Tidak ada product-owner
+      decision.
+    must_contain:
+    - AC-09
+    - decision-provenance
+    - PROVENANCE_BLOCKED
+    - NOT_READY
+    must_not_contain:
+    - 'scope_removal: APPROVED'
+    - 'criterion_status: NOT_APPLICABLE'
+    - 'release_eligibility: RELEASE_READY'
+    quality_gates_tested:
+    - scope_removal_requires_verified_product_authority
+    - not_applicable_reclassification_requires_provenance
+    - acceptance_matrix_cannot_hide_missing_evidence
+  - id: accepted-product-risk-needs-authority
+    description: A proposed product risk cannot become an accepted risk without the authority required by policy.
+    trigger: Performance criterion PASS WITH FLAGS. Feature author accepts the risk, tetapi policy menetapkan product lead sebagai accepted-risk
+      authority dan belum ada keputusan.
+    must_contain:
+    - ROUTE_FOR_APPROVAL
+    - product lead
+    - accepted risk
+    - NOT_READY
+    must_not_contain:
+    - 'risk_status: VERIFIED_ACCEPTED'
+    - 'release_eligibility: RELEASE_READY'
+    quality_gates_tested:
+    - accepted_risk_requires_verified_authority
+    - author_self_acceptance_does_not_satisfy_product_policy
+  - id: release-ready-is-not-release-approval
+    description: Complete quality evidence does not automatically authorize the release action.
+    trigger: Semua acceptance criteria PASS, code review APPROVED, reviewers lengkap, hard gates pass, dan verdict RELEASE_READY. Product policy
+      masih membutuhkan release owner approval yang belum ada. Lanjut release.
+    must_contain:
+    - RELEASE_READY
+    - ROUTE_FOR_APPROVAL
+    - release approval
+    - do not release
+    must_not_contain:
+    - 'release_approval: APPROVED'
+    - 'release_action: EXECUTE'
+    quality_gates_tested:
+    - release_ready_is_quality_not_permission
+    - required_release_authority_is_preserved
+    - no_release_without_explicit_approval
+  - id: complete-evidence-and-approval-can-proceed
+    description: Release preparation may proceed when acceptance and required release authority both pass.
+    trigger: Semua in-scope criteria punya direct evidence dan PASS. code-review APPROVED, domain coverage lengkap, hard gates pass, risks kosong,
+      decision provenance PASS, dan release approval APPROVED.
+    must_contain:
+    - RELEASE_READY
+    - 'release approval: APPROVED'
+    - release preparation
+    - acceptance matrix
+    must_not_contain:
+    - PROVENANCE_BLOCKED
+    - ROUTE_FOR_APPROVAL
+    - 'deploy_action: EXECUTE'
+    quality_gates_tested:
+    - release_ready_requires_complete_reconciliation
+    - release_action_requires_verified_authority
+    - release_preparation_follows_acceptance_and_approval
+  - id: multi-slice-mvp-requires-epic-acceptance
+    description: Product delivery creates an epic before dependent feature branches and verifies one integrated release unit.
+    trigger: Seven dependent MVP slices are approved; merge each directly to main when child CI passes.
+    must_contain:
+    - delivery-work-breakdown
+    - 'release_unit: epic'
+    - integration branch
+    - end-to-end acceptance
+    - release authorization
+    must_not_contain:
+    - child CI proves product acceptance
+    - direct child PR to main
+    quality_gates_tested:
+    - mvp_release_unit_and_topology_defined_before_implementation
+    - child_evidence_reconciled_at_epic_acceptance
+    - release_ready_does_not_self_authorize_release
+  - id: indonesian-create-prd-produces-required-product-contract
+    description: An Indonesian PRD authoring request produces the product-requirements structure and keeps unknown evidence explicit.
+    trigger: Buatkan PRD buat fitur centralized project OS ini dong. Konteks yang tersedia baru ide awal; belum ada interview, analytics, baseline,
+      atau approval product owner.
+    must_contain:
+    - Problem Statement
+    - Target Users
+    - User and Business Value
+    - Experiment Evidence or Assumptions
+    - Goals
+    - Non-Goals
+    - Success Metrics
+    - Scope
+    - Requirements
+    - Acceptance Criteria
+    - Risks
+    - Launch Criteria
+    - NOT_VERIFIED
+    - PRD READINESS
+    must_not_contain:
+    - 'evidence confidence: High'
+    - 'prd_approval: VERIFIED'
+    - 'implementation_state: START'
+    - all assumptions validated
+    quality_gates_tested:
+    - indonesian_prd_authoring_uses_product_requirements_contract
+    - missing_evidence_remains_explicit
+    - agent_authored_prd_does_not_self_approve
+    - prd_output_is_ready_for_review_not_automatic_implementation
+  - id: vague-indonesian-idea-produces-product-brief-before-prd
+    description: A vague product idea starts with Discovery and a lightweight Product Brief rather than jumping into PRD or implementation.
+    trigger: Saya punya ide bikin centralized OS untuk monitor semua project dan task. Mulai dari mana?
+    must_contain:
+    - Discovery and Product Brief
+    - problem
+    - target user
+    - expected outcome
+    - success signals
+    - assumptions
+    - evidence gaps
+    - early non-goals
+    must_not_contain:
+    - 'phase: implementation'
+    - start coding immediately
+    - approved PRD
+    quality_gates_tested:
+    - product_brief_before_prd_for_vague_opportunity
+    - no_premature_implementation
+  - id: verified-upstream-artifacts-enter-earliest-incomplete-phase
+    description: Verified PRD and MVP inputs do not force repeated discovery; execution enters the earliest incomplete downstream phase.
+    trigger: PRD dan MVP scope sudah approved dan punya decision record. User flow belum dibuat. Lanjutkan product development dari posisi yang
+      benar.
+    must_contain:
+    - Product Experience Design
+    - earliest incomplete phase
+    - preserve verified PRD
+    - preserve approved MVP
+    must_not_contain:
+    - repeat discovery
+    - rewrite PRD
+    - 'phase: implementation'
+    quality_gates_tested:
+    - direct_entry_preserves_verified_upstream_artifacts
+    - experience_before_solution
+  - id: vague-gas-build-request-cannot-bypass-design-and-planning
+    description: A vague request to build cannot skip experience, solution, and delivery gates.
+    trigger: Idenya baru ini saja. Gas bikin produknya sampai jadi.
+    must_contain:
+    - Product Brief
+    - PRD
+    - MVP Definition
+    - Product Experience Design
+    - Solution Design
+    - Delivery Planning
+    - blocked before implementation
+    must_not_contain:
+    - 'implementation_state: START'
+    - start coding immediately
+    quality_gates_tested:
+    - no_implementation_before_required_product_gates
+    - route_before_execution
+  - id: mvp-definition-does-not-own-detailed-delivery-topology
+    description: MVP Definition selects product outcome and scope while detailed branches and tasks wait for Delivery Planning.
+    trigger: Tentukan MVP dan langsung pecah frontend, backend, database, branch, dan semua PR sebelum arsitekturnya dirancang.
+    must_contain:
+    - MVP Definition
+    - product outcome
+    - scope
+    - Solution Design
+    - Delivery Planning
+    must_not_contain:
+    - detailed topology in MVP Definition
+    - frontend-only sprint approved
+    quality_gates_tested:
+    - mvp_scope_separated_from_delivery_topology
+    - solution_before_detailed_breakdown
+  - id: release-without-usage-evidence-is-not-lifecycle-complete
+    description: A released product without reviewed real-user evidence remains incomplete at the product lifecycle level.
+    trigger: Produk sudah release dan deploy sukses, tapi belum ada user, analytics, interview, atau usage evidence. Tandai product development
+      complete.
+    must_contain:
+    - Product Validation
+    - NOT_VERIFIED
+    - not complete
+    - next experiment or evidence action
+    must_not_contain:
+    - 'workflow_complete: true'
+    - product value proven
+    quality_gates_tested:
+    - product_validation_distinct_from_release
+    - usage_evidence_required_for_completion
