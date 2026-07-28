@@ -6,6 +6,7 @@ on:
       - feat/239-complete-product-phase-compositions
     paths:
       - scripts/apply_product_phase_compositions.py
+      - .github/workflows/apply-product-phase-compositions.yml
 
 permissions:
   contents: write
