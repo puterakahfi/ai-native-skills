@@ -24,7 +24,7 @@ contract_exemption:
     - kind: executable_source
       ref: skills/test-strategy/SKILL.md
   revisit:
-    blocking_issue: NOT_VERIFIED
+    blocking_issue: null
     triggers:
       - an accepted ai-native-core test-strategy contract is created
       - canonical testing terminology or ownership is changed by an authorized core decision
@@ -32,8 +32,7 @@ contract_exemption:
       - the review date is reached before the exemption is retired
   prohibited_claims:
     - core_contract_conformance
-    - adapter_conformance
-    - behavioral_verification_without_eval_evidence
+    - behavioral_verification
     - runtime_acceptance
     - product_acceptance
     - approval_or_authorization
