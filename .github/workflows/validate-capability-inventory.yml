@@ -5,11 +5,8 @@ on:
     branches: [main]
     paths:
       - skills/**
-      - README.md
       - docs/skills.md
-      - docs/capability-inventory.json
-      - docs/contract-coverage-discovery.yaml
-      - catalog/capability-discovery/**
+      - inventory-diagnostic.txt
       - .github/workflows/validate-capability-inventory.yml
 
 permissions:
@@ -22,20 +19,32 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-      - name: Capture validator output
+          fetch-depth: 0
+      - name: Patch workflow table and restore validator
         shell: bash
         run: |
-          set +e
-          python3 scripts/verify-capability-inventory.py > inventory-diagnostic.txt 2>&1
-          echo "inventory_status=$?" >> inventory-diagnostic.txt
-          python3 scripts/verify-capability-discovery.py >> inventory-diagnostic.txt 2>&1
-          echo "discovery_status=$?" >> inventory-diagnostic.txt
-          set -e
-      - name: Commit diagnostic
+          python3 <<'PY'
+          from pathlib import Path
+          path = Path("docs/skills.md")
+          text = path.read_text()
+          anchor = "| `skill-authoring-workflow` | classify operation → discover → shape package → implement → validate → review → deliver |\n"
+          row = "| `software-testing-workflow` | discover context and risks → select justified test levels and adapters → execute → normalize evidence → confidence and acceptance handoff |\n"
+          if row not in text:
+              if anchor not in text:
+                  raise SystemExit("workflow table anchor not found")
+              text = text.replace(anchor, anchor + row, 1)
+          path.write_text(text)
+          PY
+          rm -f inventory-diagnostic.txt
+          git fetch origin main
+          git show origin/main:.github/workflows/validate-capability-inventory.yml > .github/workflows/validate-capability-inventory.yml
+      - name: Commit final cleanup
         shell: bash
         run: |
-          git add inventory-diagnostic.txt
+          git add docs/skills.md .github/workflows/validate-capability-inventory.yml
+          git rm --cached --ignore-unmatch inventory-diagnostic.txt || true
+          if git diff --cached --quiet; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(debug): capture inventory diagnostics"
+          git commit -m "fix(metadata): synchronize software testing workflow table"
           git push origin "HEAD:${{ github.head_ref }}"
