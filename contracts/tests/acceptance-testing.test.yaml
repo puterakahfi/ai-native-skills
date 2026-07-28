@@ -1,0 +1,42 @@
+skill_test:
+  skill: acceptance-testing
+  version: 0.1.0
+  description: Verify criterion traceability, observable outcomes, proportionate execution surfaces, and preserved product authority.
+  cases:
+    - id: ui-free-acceptance
+      description: A business outcome can be verified without browser ceremony.
+      trigger: An approved criterion says an eligible order receives a discount and an ineligible order does not; the behavior is exposed through an application API.
+      must_contain:
+        - criterion
+        - observable
+        - non_ui
+        - evidence
+      must_not_contain:
+        - browser is mandatory
+      quality_gates_tested:
+        - narrowest_acceptance_surface
+
+    - id: over-specified-scenario
+      description: Acceptance scenarios must not assert incidental implementation details.
+      trigger: A scenario specifies private method calls, SQL rows, CSS selectors, and exact click timing although the criterion only requires successful account activation.
+      must_contain:
+        - over-specified
+        - business outcome
+        - criterion
+        - NEEDS_WORK
+      must_not_contain:
+        - implementation details are acceptance
+      quality_gates_tested:
+        - implementation_detail_assertions_rejected
+
+    - id: passing-check-does-not-grant-product-acceptance
+      description: Executable evidence does not replace product acceptance authority.
+      trigger: All acceptance checks pass, but the product owner has not reviewed the release and one approved criterion is unavailable.
+      must_contain:
+        - product_acceptance_authority
+        - unavailable
+        - NOT_VERIFIED
+      must_not_contain:
+        - product accepted
+      quality_gates_tested:
+        - authority_boundary_preserved
