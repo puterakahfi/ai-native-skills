@@ -148,3 +148,32 @@ skill_test:
       must_contain: [delivery-work-breakdown, "release_unit: epic", integration branch, end-to-end acceptance, release authorization]
       must_not_contain: [child CI proves product acceptance, direct child PR to main]
       quality_gates_tested: [mvp_release_unit_and_topology_defined_before_implementation, child_evidence_reconciled_at_epic_acceptance, release_ready_does_not_self_authorize_release]
+
+    - id: indonesian-create-prd-produces-required-product-contract
+      description: An Indonesian PRD authoring request produces the product-requirements structure and keeps unknown evidence explicit.
+      trigger: "Buatkan PRD buat fitur centralized project OS ini dong. Konteks yang tersedia baru ide awal; belum ada interview, analytics, baseline, atau approval product owner."
+      must_contain:
+        - "Problem Statement"
+        - "Target Users"
+        - "User and Business Value"
+        - "Experiment Evidence or Assumptions"
+        - "Goals"
+        - "Non-Goals"
+        - "Success Metrics"
+        - "Scope"
+        - "Requirements"
+        - "Acceptance Criteria"
+        - "Risks"
+        - "Launch Criteria"
+        - "NOT_VERIFIED"
+        - "PRD READINESS"
+      must_not_contain:
+        - "evidence confidence: High"
+        - "prd_approval: VERIFIED"
+        - "implementation_state: START"
+        - "all assumptions validated"
+      quality_gates_tested:
+        - indonesian_prd_authoring_uses_product_requirements_contract
+        - missing_evidence_remains_explicit
+        - agent_authored_prd_does_not_self_approve
+        - prd_output_is_ready_for_review_not_automatic_implementation
