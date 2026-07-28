@@ -2,6 +2,15 @@ name: Generate published capability catalog
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - docs/capability-inventory.json
+      - catalog/capability-discovery/**
+      - scripts/build-published-capability-catalog.py
+      - docs/published-capability-catalog.md
+      - .github/workflows/generate-published-capability-catalog.yml
   push:
     branches:
       - 204-feature-published-capability-catalog
@@ -13,11 +22,11 @@ on:
       - .github/workflows/generate-published-capability-catalog.yml
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: published-capability-catalog-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   generate:
@@ -26,7 +35,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
           fetch-depth: 2
 
       - name: Generate deterministic catalog
@@ -36,18 +44,14 @@ jobs:
           python3 scripts/build-published-capability-catalog.py \
             --write \
             --source-revision "${GITHUB_SHA}"
-          python3 scripts/build-published-capability-catalog.py --check
+          python3 scripts/build-published-capability-catalog.py \
+            --check \
+            --source-revision "${GITHUB_SHA}"
 
-      - name: Commit generated artifact when changed
-        shell: bash
-        run: |
-          set -euo pipefail
-          if git diff --quiet -- catalog/published/capability-catalog.json; then
-            echo "Published catalog is already current."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add catalog/published/capability-catalog.json
-          git commit -m "chore(catalog): regenerate published capability catalog"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+      - name: Upload generated catalog
+        uses: actions/upload-artifact@v4
+        with:
+          name: published-capability-catalog-${{ github.run_id }}
+          path: catalog/published/capability-catalog.json
+          if-no-files-found: error
+          retention-days: 14
