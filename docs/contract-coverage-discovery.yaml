@@ -4,18 +4,18 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 116
+    executable_artifacts: 117
     official_types:
       meta-skill: 7
       skill: 98
-      workflow: 11
+      workflow: 12
     patterns:
       domain-reviewer: 1
       facade: 1
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 72
-      reviewed_exemption: 18
+      reviewed_exemption: 19
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -1599,11 +1599,26 @@ contract_coverage_inventory:
     exemption_path: null
     classification: legacy_contract_backed
     errors: []
+  - id: skill-authoring-workflow
+    path: skills/skill-authoring-workflow/SKILL.md
+    type: workflow
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/skill-authoring-workflow/contract.exemption.yaml
+    classification: reviewed_exemption
+    errors: []
   - id: skill-doctor
     path: skills/skill-doctor/SKILL.md
     type: workflow
     patterns: []
-    version: 1.0.0
+    version: 1.1.0
     implements: null
     contract_version: null
     contract_path_exists: null
@@ -1633,7 +1648,7 @@ contract_coverage_inventory:
     path: skills/skill-evolution/SKILL.md
     type: workflow
     patterns: []
-    version: 1.0.3
+    version: 1.1.0
     implements: contracts/workflows/skill-evolution.contract.yaml
     contract_version: ^1.0.0
     contract_path_exists: true
@@ -1966,7 +1981,7 @@ contract_coverage_inventory:
     path: skills/workflow-router/SKILL.md
     type: meta-skill
     patterns: []
-    version: 1.7.0
+    version: 1.8.0
     implements: contracts/skills/meta/workflow-router.contract.yaml
     contract_version: ~0.2
     contract_path_exists: true
