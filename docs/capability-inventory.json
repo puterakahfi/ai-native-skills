@@ -4,8 +4,8 @@
   "counts": {
     "skill": 92,
     "workflow": 11,
-    "meta-skill": 6,
-    "total": 109
+    "meta-skill": 7,
+    "total": 110
   },
   "items": [
     {
@@ -32,6 +32,11 @@
       "name": "role-switcher",
       "type": "meta-skill",
       "path": "skills/role-switcher/SKILL.md"
+    },
+    {
+      "name": "systems-reasoning",
+      "type": "meta-skill",
+      "path": "skills/systems-reasoning/SKILL.md"
     },
     {
       "name": "workflow-router",

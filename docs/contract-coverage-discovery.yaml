@@ -4,9 +4,9 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 109
+    executable_artifacts: 110
     official_types:
-      meta-skill: 6
+      meta-skill: 7
       skill: 92
       workflow: 11
     patterns:
@@ -15,7 +15,7 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 72
-      reviewed_exemption: 11
+      reviewed_exemption: 12
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -1642,6 +1642,21 @@ contract_coverage_inventory:
     conformance_path: skills/systematic-debugging/adapter.conformance.yaml
     exemption_path: null
     classification: contract_backed_v2
+    errors: []
+  - id: systems-reasoning
+    path: skills/systems-reasoning/SKILL.md
+    type: meta-skill
+    patterns: []
+    version: 0.1.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/systems-reasoning/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: systems-thinking
     path: skills/systems-thinking/SKILL.md

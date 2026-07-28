@@ -1,0 +1,150 @@
+skill_test:
+  skill: systems-reasoning
+  version: 0.1.0
+  description: Verify systems-reasoning activates for system-level abstraction problems, remains proportionate, separates capabilities from mechanisms and adapters, records dynamics and uncertainty, and preserves downstream lifecycle ownership.
+  cases:
+  - id: explicit-shared-capability-uses-system-model
+    description: A shared capability request produces an implementation-independent system model before adapter selection.
+    trigger: Design a reusable authentication capability for several products. Keep the canonical skill independent from OAuth vendors, frameworks, databases, and UI implementations.
+    must_contain:
+    - system_of_interest
+    - inside_boundary
+    - outside_boundary
+    - capabilities
+    - policies
+    - mechanisms
+    - adapters
+    - runtime_bindings
+    - invariants
+    - downstream_handoff
+    must_not_contain:
+    - OAuth is the authentication domain
+    - provider payload is the canonical identity model
+    - select the framework first
+    quality_gates_tested:
+    - system_of_interest_and_desired_outcome_are_explicit
+    - capabilities_policies_mechanisms_adapters_and_runtime_bindings_are_not_conflated
+    - framework_first_reasoning_and_adapter_leakage_are_rejected
+
+  - id: implicit-cross-boundary-change-detects-system-effects
+    description: An implementation-shaped prompt with multiple actors and delayed consequences receives standard or deep systems reasoning.
+    trigger: Increase queue worker concurrency to clear the backlog across API, database, provider rate limits, retries, and operations. Implement immediately because the queue is the obvious bottleneck.
+    must_contain:
+    - causal_relationships
+    - bottlenecks
+    - failure_modes
+    - unintended_consequences
+    - leverage_points
+    - trade_offs
+    - downstream_handoff
+    must_not_contain:
+    - queue length proves the queue is the constraint
+    - increase concurrency without verification
+    - local throughput equals system throughput
+    quality_gates_tested:
+    - material_relationships_and_dependency_directions_are_visible
+    - dynamics_analysis_is_proportionate_to_complexity_and_risk
+    - leverage_points_and_trade_offs_precede_implementation_selection
+
+  - id: adapter-heavy-prompt-does-not-redefine-capability
+    description: A named provider remains a runtime binding rather than becoming canonical system meaning.
+    trigger: Build our notification domain directly around Firebase Cloud Messaging request and response fields so every product shares the exact provider payload.
+    must_contain:
+    - capability
+    - policy
+    - adapter
+    - runtime binding
+    - canonical notification contract
+    - adapter leakage
+    must_not_contain:
+    - Firebase payload is the domain model
+    - provider schema defines the capability
+    - canonical contract must equal provider contract
+    quality_gates_tested:
+    - capabilities_policies_mechanisms_adapters_and_runtime_bindings_are_not_conflated
+    - framework_first_reasoning_and_adapter_leakage_are_rejected
+
+  - id: simple-local-task-remains-proportionate
+    description: A bounded low-risk implementation task is not inflated into ceremonial system modeling.
+    trigger: Rename a private local variable in one function without changing behavior, public contracts, dependencies, or ownership.
+    must_contain:
+    - LIGHT
+    - bounded
+    - no material system-level analysis
+    must_not_contain:
+    - DEEP
+    - causal-loop diagram required
+    - stakeholder map required
+    - universal abstraction required
+    quality_gates_tested:
+    - simple_tasks_are_not_inflated_into_ceremonial_modeling
+    - dynamics_analysis_is_proportionate_to_complexity_and_risk
+
+  - id: missing-boundary-evidence-blocks-certainty
+    description: Unknown ownership and system boundary remain explicit instead of being invented.
+    trigger: Define the canonical shared package contract and mark it approved, but no governing repository, owner, project item, or acceptance authority is available.
+    must_contain:
+    - NOT_VERIFIED
+    - owner
+    - boundary
+    - evidence
+    - blocking_gaps
+    - decision provenance
+    must_not_contain:
+    - approved
+    - acceptance passed
+    - assume the platform team owns it
+    quality_gates_tested:
+    - inside_outside_boundaries_and_decision_ownership_are_explicit_or_not_verified
+    - invariants_constraints_assumptions_and_uncertainty_are_distinct
+    - output_does_not_self_authorize_acceptance
+
+  - id: overlay-preserves-primary-workflow
+    description: Systems reasoning supports but does not replace the selected lifecycle.
+    trigger: Route and implement a new cross-product capability. Use systems-reasoning as the primary workflow instead of new-feature-workflow.
+    must_contain:
+    - one primary workflow
+    - new-feature-workflow
+    - foundational overlay
+    - downstream_handoff
+    must_not_contain:
+    - systems-reasoning replaces new-feature-workflow
+    - two primary workflows
+    - systems reasoning owns implementation acceptance
+    quality_gates_tested:
+    - output_preserves_one_primary_workflow
+    - foundational_overlay_does_not_replace_downstream_lifecycle_ownership
+
+  - id: component-list-without-relationships-is-incomplete
+    description: Listing components alone does not satisfy system modeling.
+    trigger: The system model is complete because it lists an API, database, queue, worker, and dashboard. Do not analyze ownership, dependency direction, delays, or failure propagation.
+    must_contain:
+    - relationships
+    - dependency_direction
+    - ownership
+    - delays
+    - failure propagation
+    - NEEDS_WORK
+    must_not_contain:
+    - component inventory is sufficient
+    - PASS
+    quality_gates_tested:
+    - material_relationships_and_dependency_directions_are_visible
+    - complex_tasks_cannot_bypass_material_relationship_analysis
+
+  - id: named-pattern-is-not-system-capability
+    description: A requested pattern is classified as a possible mechanism rather than canonical capability.
+    trigger: The capability is Repository Pattern. Make every module use repositories, factories, domain events, and ports even where there is no verified substitution pressure or domain complexity.
+    must_contain:
+    - implementation mechanism
+    - capability outcome
+    - verified forces
+    - smallest justified design
+    - NOT_JUSTIFIED
+    must_not_contain:
+    - Repository Pattern is the capability
+    - every module requires the pattern
+    - architecture by default
+    quality_gates_tested:
+    - capabilities_policies_mechanisms_adapters_and_runtime_bindings_are_not_conflated
+    - unsupported_universal_abstraction_is_rejected
