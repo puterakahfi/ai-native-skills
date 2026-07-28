@@ -43,13 +43,26 @@ None may silently become PASS.
 
 ## Adapter selection
 
-Load the relevant adapter reference only after repository stack, scripts, services, and CI commands are verified:
+Load the relevant adapter reference only after repository stack, scripts, services, and validation commands are verified:
 
 - `adapters/javascript-typescript.md`
 - `adapters/go.md`
 - `adapters/php.md`
 
-Tools remain replaceable adapters; they do not redefine canonical test-level semantics.
+Tools and execution providers remain replaceable adapters; they do not redefine canonical test-level or evidence semantics.
+
+## Validation execution providers
+
+GitHub Actions is optional as an execution provider. A clean local runtime, ephemeral self-hosted runner, Vercel build, or another CI provider may execute the canonical repository commands when hosted GitHub runners are unavailable.
+
+Replacement evidence must:
+
+- identify the exact repository, branch, and commit;
+- execute the applicable verified repository commands;
+- record executor and environment versions;
+- preserve command results, failures, skips, flakiness, and limitations;
+- distinguish provider unavailability from test failure;
+- never translate an unavailable provider into PASS.
 
 ## Evidence contract
 
@@ -69,6 +82,9 @@ software_testing:
   selected_levels: []
   rejected_levels: []
   adapters: []
+  execution_provider:
+    id: <github-actions | local-clean-runtime | self-hosted | vercel | other>
+    status: AVAILABLE | UNAVAILABLE | PARTIAL
   commands: []
   results: []
   failures: []
@@ -87,6 +103,8 @@ software_testing:
 - selected and rejected levels have rationale;
 - each command is verified from repository evidence;
 - adapters match the verified stack;
+- execution evidence is attributable to an exact repository and commit;
+- provider failure remains separate from test failure;
 - duplicate E2E, ceremonial BDD, mock abuse, and browser-by-default are rejected;
 - unresolved failures or insufficient evidence block PASS;
 - product acceptance and merge authorization remain external.
