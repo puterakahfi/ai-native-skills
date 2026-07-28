@@ -14,8 +14,9 @@ contract_coverage_inventory:
       facade: 1
     coverage:
       contract_backed_v2: 26
+      invalid: 1
       legacy_contract_backed: 72
-      reviewed_exemption: 21
+      reviewed_exemption: 20
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -1693,16 +1694,27 @@ contract_coverage_inventory:
     type: workflow
     patterns: []
     version: 0.1.0
-    implements: null
-    contract_version: null
-    contract_path_exists: null
+    implements: contracts/workflows/software-testing.contract.yaml
+    contract_version: ^0.1.0
+    contract_path_exists: false
     legacy_boundary:
-      covers: []
-      delegates: []
+      covers:
+      - testing_risk_discovery_and_strategy_composition
+      - applicability_driven_test_level_selection
+      - post_discovery_adapter_selection
+      - normalized_testing_evidence_and_non_pass_states
+      - testing_failure_analysis_and_confidence_handoff
+      - preservation_of_one_primary_engineering_lifecycle
+      delegates:
+      - runtime_orchestration_and_persistent_execution_state
+      - provider_specific_commands_or_framework_configuration
+      - product_specific_test_policy_or_acceptance
+      - merge_release_or_production_authorization
     conformance_path: null
     exemption_path: skills/software-testing-workflow/contract.exemption.yaml
-    classification: reviewed_exemption
-    errors: []
+    classification: invalid
+    errors:
+    - contract_path_missing
   - id: solid-design
     path: skills/solid-design/SKILL.md
     type: skill
