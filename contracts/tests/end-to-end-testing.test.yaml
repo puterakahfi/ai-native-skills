@@ -6,24 +6,51 @@ skill_test:
     - id: critical-cross-service-journey
       description: Select a material cross-service journey from explicit financial consistency risk.
       trigger: A payment authorization crosses gateway, order, and ledger services; failure would create financial inconsistency.
-      must_contain: [risk, journey, boundary, observability, cleanup]
-      must_not_contain: [browser is mandatory]
-      quality_gates_tested: [critical_journey_selected]
+      must_contain:
+        - risk
+        - journey
+        - boundary
+        - observability
+        - cleanup
+      must_not_contain:
+        - browser is mandatory
+      quality_gates_tested:
+        - critical_journey_selected
+
     - id: non-browser-e2e
       description: Verify that a real-system journey may be executed without a browser.
       trigger: Verify an event-driven order workflow across API, broker, worker, and database without any user interface.
-      must_contain: [non-browser, cross_service, eventual, diagnostics]
-      must_not_contain: [Playwright required]
-      quality_gates_tested: [non_browser_supported]
+      must_contain:
+        - non-browser
+        - cross_service
+        - eventual
+        - diagnostics
+      must_not_contain:
+        - Playwright required
+      quality_gates_tested:
+        - non_browser_supported
+
     - id: e2e-not-justified
       description: Reject E2E ceremony when a pure unit boundary proves the risk.
       trigger: A pure tax calculation has explicit inputs and outputs and no integration boundary, but a browser suite is proposed.
-      must_contain: [NOT_JUSTIFIED, unit-testing, risk]
-      must_not_contain: [add browser tests]
-      quality_gates_tested: [excessive_e2e_rejected]
+      must_contain:
+        - NOT_JUSTIFIED
+        - unit-testing
+        - risk
+      must_not_contain:
+        - add browser tests
+      quality_gates_tested:
+        - excessive_e2e_rejected
+
     - id: flaky-e2e
       description: Preserve uncertainty when retries expose unexplained flakiness.
       trigger: The journey fails twice and passes on the third retry with no diagnosed cause.
-      must_contain: [FLAKY, diagnostics, non-PASS, retry]
-      must_not_contain: [PASS]
-      quality_gates_tested: [flakiness_fails_closed]
+      must_contain:
+        - FLAKY
+        - diagnostics
+        - NEEDS_WORK
+        - retry
+      must_not_contain:
+        - PASS
+      quality_gates_tested:
+        - flakiness_fails_closed
