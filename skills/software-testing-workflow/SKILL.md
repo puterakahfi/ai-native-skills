@@ -7,10 +7,20 @@ metadata:
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: workflow
   ai-native-skills.requires: "test-strategy unit-testing integration-testing contract-testing acceptance-testing end-to-end-testing behavior-driven-development implementation-context-discovery decision-provenance"
+  ai-native-skills.implements: ai-native-core/contracts/workflows/software-testing.contract.yaml
+  ai-native-skills.contract-version: "^0.1.0"
+  ai-native-skills.boundary.covers: '["testing_risk_discovery_and_strategy_composition","applicability_driven_test_level_selection","post_discovery_adapter_selection","normalized_testing_evidence_and_non_pass_states","testing_failure_analysis_and_confidence_handoff","preservation_of_one_primary_engineering_lifecycle"]'
+  ai-native-skills.boundary.delegates: '["runtime_orchestration_and_persistent_execution_state","provider_specific_commands_or_framework_configuration","product_specific_test_policy_or_acceptance","merge_release_or_production_authorization"]'
   ai-native-skills.related_skills: '["test-driven-development","production-code-quality-baseline","workflow-router","role-switcher","code-review-workflow"]'
 ---
 
 # Software Testing Workflow
+
+## Reviewed core contract interface
+
+Source: `ai-native-core/contracts/workflows/software-testing.contract.yaml` · compatible line: `^0.1.0`.
+
+The Core contract owns testing-risk discovery and strategy composition, applicability-driven level selection, post-discovery adapter selection, normalized non-PASS evidence semantics, failure-analysis and confidence handoff, and preservation of one primary engineering lifecycle. Runtime orchestration, provider-specific framework configuration, product-specific testing policy or acceptance, and merge/release/production authorization remain delegated outside this adapter.
 
 ## Ownership
 
