@@ -1353,7 +1353,7 @@ contract_coverage_inventory:
     path: skills/product-requirements/SKILL.md
     type: skill
     patterns: []
-    version: 1.1.0
+    version: 1.2.0
     implements: contracts/skills/product/product-requirements.contract.yaml
     contract_version: ~0.2
     contract_path_exists: true
