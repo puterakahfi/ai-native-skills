@@ -66,27 +66,18 @@ jobs:
           import importlib.util
           import re
           from pathlib import Path
-
           script = Path("scripts/verify-capability-inventory.py")
           spec = importlib.util.spec_from_file_location("capability_inventory", script)
           module = importlib.util.module_from_spec(spec)
           spec.loader.exec_module(module)
           counts = module.derive_inventory()["counts"]
-
           readme = Path("README.md")
-          readme_text = readme.read_text(encoding="utf-8")
-          readme_text, replaced = re.subn(
-              r"\*\*\d+ skills · \d+ workflows · \d+ meta-skills\*\*",
-              f"**{counts['skill']} skills · {counts['workflow']} workflows · {counts['meta-skill']} meta-skills**",
-              readme_text,
-              count=1,
-          )
-          if replaced != 1:
-              raise SystemExit("README inventory summary was not updated exactly once")
-          readme.write_text(readme_text, encoding="utf-8")
-
+          text = readme.read_text(encoding="utf-8")
+          text, replaced = re.subn(r"\*\*\d+ skills · \d+ workflows · \d+ meta-skills\*\*", f"**{counts['skill']} skills · {counts['workflow']} workflows · {counts['meta-skill']} meta-skills**", text, count=1)
+          if replaced != 1: raise SystemExit("README inventory summary was not updated exactly once")
+          readme.write_text(text, encoding="utf-8")
           taxonomy = Path("docs/skills.md")
-          taxonomy_text = taxonomy.read_text(encoding="utf-8")
+          text = taxonomy.read_text(encoding="utf-8")
           replacements = {
               r"^- `skill`: \d+$": f"- `skill`: {counts['skill']}",
               r"^- `workflow`: \d+$": f"- `workflow`: {counts['workflow']}",
@@ -94,16 +85,25 @@ jobs:
               r"^- Total executable skills: \d+$": f"- Total executable skills: {counts['total']}",
           }
           for pattern, replacement in replacements.items():
-              taxonomy_text, replaced = re.subn(
-                  pattern,
-                  replacement,
-                  taxonomy_text,
-                  count=1,
-                  flags=re.MULTILINE,
-              )
-              if replaced != 1:
-                  raise SystemExit(f"taxonomy inventory line was not updated exactly once: {pattern}")
-          taxonomy.write_text(taxonomy_text, encoding="utf-8")
+              text, replaced = re.subn(pattern, replacement, text, count=1, flags=re.MULTILINE)
+              if replaced != 1: raise SystemExit(f"taxonomy inventory line was not updated exactly once: {pattern}")
+          taxonomy.write_text(text, encoding="utf-8")
+
+      - name: Synchronize issue 163 capability discovery
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          path = Path("catalog/capability-discovery/classifications.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          group = next(item for item in data["classification_groups"] if item["id"] == "engineering-quality")
+          for capability in ["acceptance-testing", "contract-testing"]:
+              if capability not in group["capabilities"]: group["capabilities"].append(capability)
+          group["capabilities"].sort()
+          overrides = group.setdefault("overrides", {})
+          overrides["contract-testing"] = {"lifecycle_stages": ["verify"], "concerns": ["api-contracts", "testing", "review"]}
+          overrides["acceptance-testing"] = {"lifecycle_stages": ["verify"], "concerns": ["requirements", "testing", "evaluation"]}
+          path.write_text(json.dumps(data, separators=(",", ":")) + "\n", encoding="utf-8")
 
       - name: Regenerate capability inventory
         run: python scripts/verify-capability-inventory.py --write-snapshot
@@ -118,11 +118,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add README.md docs/skills.md docs/capability-inventory.json docs/contract-coverage-discovery.yaml
-          if git diff --cached --quiet; then
-            echo "Generated capability metadata is already current."
-            exit 0
-          fi
+          git add README.md docs/skills.md catalog/capability-discovery/classifications.json docs/capability-inventory.json docs/contract-coverage-discovery.yaml
+          if git diff --cached --quiet; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore(metadata): sync generated capability evidence"
