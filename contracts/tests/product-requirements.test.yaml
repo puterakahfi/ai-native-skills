@@ -18,7 +18,7 @@ skill_test:
         - "skill: prd"
         - create a new prd skill
         - start implementation immediately
-        - prd_approval: VERIFIED
+        - "prd_approval: VERIFIED"
       quality_gates_tested:
         - prd_is_artifact_product_requirements_is_executor
         - explicit_prd_authoring_routes_product_requirements
