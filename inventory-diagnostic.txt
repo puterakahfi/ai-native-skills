@@ -1,4 +1,0 @@
-inventory error: docs/skills.md workflow table drifted: missing workflows: software-testing-workflow
-inventory_status=1
-Capability discovery verified: 119 classified capabilities, 10 topics, 3 job profiles.
-discovery_status=0
