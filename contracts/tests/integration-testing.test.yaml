@@ -1,0 +1,58 @@
+skill_test:
+  skill: integration-testing
+  version: 0.1.0
+  description: Verify real-boundary selection, dependency fidelity, environment contracts, nondeterminism handling, and scope control.
+  cases:
+    - id: integration-database-boundary
+      description: Database transaction and migration risks require credible database evidence.
+      trigger: Design integration tests for repository persistence, transaction rollback, and a schema migration.
+      must_contain:
+        - boundary
+        - migration
+        - transaction
+        - cleanup
+        - dependency_fidelity
+      must_not_contain:
+        - repository mocks prove the database
+      quality_gates_tested:
+        - material_boundary_receives_realistic_evidence
+
+    - id: integration-rejects-over-integration
+      description: A component boundary test must not become a full browser journey without distinct risk.
+      trigger: Test an HTTP adapter and database repository, but the proposal adds browser login, checkout, and email verification.
+      must_contain:
+        - scope
+        - E2E
+        - not justified
+        - boundary
+      must_not_contain:
+        - every integration test needs a browser
+      quality_gates_tested:
+        - integration_does_not_expand_to_e2e
+
+    - id: integration-eventual-consistency
+      description: Async behavior uses bounded observation rather than arbitrary sleep.
+      trigger: An event is published and consumed asynchronously; the current test sleeps for ten seconds and sometimes fails.
+      must_contain:
+        - bounded polling
+        - timeout
+        - FLAKY
+        - eventual consistency
+      must_not_contain:
+        - increase the sleep forever
+      quality_gates_tested:
+        - nondeterminism_is_explicit
+        - arbitrary_sleep_rejected
+
+    - id: integration-unavailable-dependency
+      description: Unavailable external sandbox remains NOT_VERIFIED.
+      trigger: The required provider sandbox and credentials are unavailable, but a protocol stub passes.
+      must_contain:
+        - NOT_VERIFIED
+        - stub
+        - limitations
+        - compatibility
+      must_not_contain:
+        - PASS
+      quality_gates_tested:
+        - unavailable_real_boundary_not_silently_passed
