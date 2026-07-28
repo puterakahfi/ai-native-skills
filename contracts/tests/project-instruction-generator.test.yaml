@@ -1,7 +1,7 @@
 skill_test:
   skill: project-instruction-generator
-  version: 1.1.0
-  description: Verify project-instruction-generator produces a concise runtime-valid bootstrap with routing, disclosure, repository discipline, completion gates, evidence-gated evolution, and character-capacity validation.
+  version: 1.2.0
+  description: Verify project-instruction-generator produces a concise runtime-valid bootstrap with routing, disclosure, scope containment, feature-sized delivery, repository discipline, completion gates, evidence-gated evolution, and character-capacity validation.
   cases:
   - id: generate-standard-project-instructions-from-project-resources
     description: Generate paste-ready ChatGPT Project Instructions where changing inputs are mainly project identity and resource URLs.
@@ -31,6 +31,8 @@ skill_test:
     - ai-native-core
     - ai-native-skills
     - ai-native-fw
+    - Scope and Delivery Containment
+    - feature or user-flow slices
     - Character count
     - 8,000
     - 7,200
@@ -45,10 +47,39 @@ skill_test:
     - project_specific_values_are_traceable
     - reusable_policy_is_separated_from_project_configuration
     - routing_and_role_composition_precede_execution
+    - requested_scope_is_contained
+    - delivery_uses_feature_sized_outcomes
     - capability_evolution_is_evidence_gated
     - ownership_boundaries_are_preserved
     - generated_instructions_remain_a_bootstrap_not_a_methodology_dump
     - chatgpt_runtime_capacity_is_reported
+  - id: contain-scope-and-prevent-micro-slicing
+    description: A verified execution failure must produce instructions that defer unrequested work and batch coherent delivery around complete outcomes.
+    trigger: >-
+      A previous project execution expanded into unrelated improvements and split one requested feature into many tiny technical tickets, branches, pull requests, and CI runs. Generate refined Project Instructions that prevent the same failure while preserving necessary safety and acceptance work.
+    must_contain:
+    - requested objective
+    - deferred recommendations
+    - feature or user-flow slices
+    - observable outcomes
+    - tightly coupled
+    - delivery-work-breakdown
+    - epic
+    - feature
+    - task
+    - acceptance
+    - end-to-end flow
+    must_not_contain:
+    - implement every adjacent improvement
+    - one pull request per file
+    - every technical step requires a separate branch
+    - partial technical progress is complete
+    quality_gates_tested:
+    - unrequested_scope_expansion_is_prohibited
+    - optional_ideas_are_deferred
+    - coherent_changes_are_batched_when_safe
+    - micro_pr_and_ci_churn_is_discouraged
+    - completion_is_tied_to_user_outcomes
   - id: audit-bloated-project-instructions
     description: Reduce instructions that duplicate full delivery, git, evidence, and evolution procedures.
     trigger: >-
