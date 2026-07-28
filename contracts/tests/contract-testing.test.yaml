@@ -1,0 +1,44 @@
+skill_test:
+  skill: contract-testing
+  version: 0.1.0
+  description: Verify explicit provider-consumer compatibility, breaking-change detection, and fail-closed evidence.
+  cases:
+    - id: compatible-optional-field-evolution
+      description: An optional field addition follows the verified compatibility promise.
+      trigger: A provider adds an optional response field while existing consumers ignore unknown fields by documented policy.
+      must_contain:
+        - provider
+        - consumers
+        - backward
+        - compatible
+        - evidence
+      must_not_contain:
+        - every schema change is breaking
+      quality_gates_tested:
+        - compatible_evolution_is_explicit
+
+    - id: breaking-required-field-removal
+      description: Required-field removal is detected as incompatible for existing consumers.
+      trigger: A provider removes a required field used by two active consumers without a version or deprecation window.
+      must_contain:
+        - breaking
+        - consumers
+        - deprecation
+        - FAIL
+      must_not_contain:
+        - PASS
+      quality_gates_tested:
+        - breaking_change_detected
+
+    - id: false-compatibility-from-permissive-mock
+      description: A permissive mock cannot prove real contract compatibility.
+      trigger: Consumer tests pass against a mock that accepts any payload, but the provider schema rejects an emitted enum value.
+      must_contain:
+        - false compatibility
+        - mock
+        - provider
+        - NOT_VERIFIED
+      must_not_contain:
+        - mock proves compatibility
+      quality_gates_tested:
+        - permissive_mock_rejected
