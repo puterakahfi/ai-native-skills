@@ -1,52 +1,33 @@
 ---
-name: skill-evolution
-description: Convert verified lessons from real product work into minimal reusable skill, reference, workflow, eval, or core-contract improvements while preserving package policy, regression evidence, and repository authority.
+name: skill-doctor
+description: Audit, triage, repair, and verify existing skill packages. Use for unclear health problems, contradictions, stale content, package-policy violations, broken references, bloat, or missing maintenance evidence.
 license: MIT
 metadata:
   ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
+  ai-native-skills.requires: "skill-eval"
   ai-native-skills.type: workflow
-  ai-native-skills.requires: "skill-eval git-workflow"
-  ai-native-skills.implements: ai-native-core/contracts/workflows/skill-evolution.contract.yaml
-  ai-native-skills.contract-version: "^1.0.0"
-  ai-native-skills.boundary.covers: '["post_fix_learning_review","reusable_reason_extraction","local_vs_shared_knowledge_classification","target_layer_selection","minimal_skill_or_reference_patch","regression_eval_creation","skill_version_and_promotion_decision","provenance_logging_outside_skill_body"]'
-  ai-native-skills.boundary.delegates: '["solving_the_original_product_issue","copying_product_implementation_into_shared_skills","storing_product_specific_breakpoints_routes_or_component_names_in_shared_skills","promoting_unverified_anecdotes","bypassing_repository_write_or_approval_policy","replacing_product_design_locks_or_architecture_decisions"]'
-  ai-native-skills.related_skills: '["skill-eval","skill-doctor","skill-authoring-workflow","git-workflow","systematic-debugging"]'
+  ai-native-skills.related_skills: '["skill-eval","skill-authoring-workflow","skill-evolution","context-engineering"]'
 ---
 
-# Skill Evolution
+# Skill Doctor
 
-## Reviewed core contract interface
-
-Source: `ai-native-core/contracts/workflows/skill-evolution.contract.yaml` · compatible line: `^1.0.0`.
-
-Required inputs include the source case, observed failure, verified fix, before/after evidence, and candidate capability. Outputs include the learning candidate, root reason, generalization report, target layer, minimal patch, regression eval, promotion verdict, commit or no-promotion reason, and provenance record.
-
-## Core rule
-
-```text
-verified real case
-→ explain why the fix worked
-→ classify local versus reusable knowledge
-→ test transfer and counterexamples
-→ deduplicate against existing ownership
-→ patch the smallest correct shared layer
-→ add centralized regression evidence
-→ validate package, behavior, and conformance
-→ promote only with authority and passing gates
-```
-
-A resolved product issue always receives a learning review. It is not always promoted.
+Audit → Triage → Repair → Verify.
 
 ## Boundary
 
-This workflow owns post-fix learning review and minimal reusable promotion. It does not solve the original product issue, create a capability from an unverified idea, copy product implementation into shared instructions, or bypass repository policy.
+`skill-doctor` owns health diagnosis and repair of existing capability packages when the failure or required fix is not already an accepted intentional change.
 
-Use `skill-authoring-workflow` when the request is intentional creation, accepted redesign, broad migration, or deprecation rather than promotion from a verified case.
+It does not own:
 
-## Canonical package sources
+- creating a new capability or accepted structural redesign (`skill-authoring-workflow`);
+- promoting verified product learning (`skill-evolution`);
+- scoring whether an agent applied a skill (`skill-eval`);
+- protected-branch writes, review approval, or merge authority.
 
-Before shaping a promoted patch, load:
+## Canonical sources
+
+Load before assigning package compliance:
 
 ```text
 contracts/skill-package-policy.yaml
@@ -54,97 +35,115 @@ docs/skill-package-standard.md
 scripts/validate-skill-packages.py
 ```
 
-Do not create a second policy or package-local behavioral eval source.
+Do not duplicate package rules inside this workflow.
 
-## Automatic invocation
+## Health dimensions
 
-Run before final delivery when:
+Keep two verdict classes separate.
 
-- a real implementation or design failure was observed;
-- a fix was applied;
-- relevant runtime, visual, interaction, accessibility, or test verification passed;
-- the governing workflow is about to close or deliver.
-
-If no reusable learning exists, return `NO_CHANGE`, `LOCAL_ONLY`, `DUPLICATE`, or `DEFERRED_UNVERIFIED` and continue honest delivery.
-
-## Phase 1 — Record the verified case
-
-Capture:
-
-```yaml
-source_case:
-  observed_failure: <fact>
-  verified_fix: <fact>
-  before_after_evidence: []
-  candidate_skill_or_workflow: <target or unknown>
-  remaining_uncertainty: []
-```
-
-Unverified fixes cannot produce shared promotion.
-
-## Phase 2 — Select one target layer
-
-| Defect class | Destination | Shared package change |
-|---|---|---:|
-| Local implementation defect | product repository | No |
-| Product-specific durable decision | product ADR/design lock/context | No |
-| Reusable decision rule or gate | target `SKILL.md` | Yes |
-| Extended rationale or matrix | target `references/` | Yes |
-| Workflow ordering or role gap | workflow `SKILL.md` | Yes |
-| Correct rule applied unreliably | `contracts/tests/<skill>.test.yaml` | Eval only |
-| Missing cross-adapter obligation | `ai-native-core` | Controlled RFC/contract route |
-
-Product names, routes, class names, exact breakpoints, and local component names remain outside shared instructions unless they are evidence records.
-
-## Phase 3 — Extract and test the reusable reason
-
-The candidate must explain:
-
-1. which assumption failed;
-2. why the verified fix worked;
-3. decision factors and conditions;
-4. counterexamples where the rule should not apply;
-5. transfer to at least two materially different contexts;
-6. why the candidate target owns the rule.
-
-One successful anecdote is insufficient.
-
-## Phase 4 — Deduplicate
-
-Read the complete target skill, related skills, references, core contract, and existing central behavioral contracts.
-
-Classify:
+### Package compliance — blocking when policy says error
 
 ```text
-IMPROVEMENT
-EVAL_ONLY
-LOCAL_ONLY
-DUPLICATE
-RFC
-DEFERRED_UNVERIFIED
+required and prohibited paths
+conditional tests for bundled scripts
+central behavioral contract requirements
+frontmatter and metadata validity
+generated-artifact leakage
+explicit exemptions
 ```
 
-Do not append a second wording of an existing principle merely because a new case confirmed it. Add regression coverage or clarify minimally.
+### Content health — advisory unless another contract makes it blocking
 
-## Phase 5 — Apply the minimal patch
+```text
+clarity and cohesion
+contradictions
+stale examples or links
+unreferenced resources
+unnecessary duplication
+progressive disclosure
+readability and context cost
+```
 
-When a package change is justified:
+A line-count target such as `≤ 200` is advisory. It may identify review pressure, but it is not package invalidity by itself. Split only when content is separable and behavior can be preserved.
 
-- preserve its boundary;
+## Inputs
+
+```yaml
+skill_health_request:
+  target: <skill or all>
+  mode: audit-only | triage | repair
+  issue: <verified issue or NOT_VERIFIED>
+  accepted_behavior: <evidence or NOT_VERIFIED>
+  write_authority: <verified | not verified>
+```
+
+## Phase 1 — Inspect
+
+1. Read the complete target skill and every referenced resource needed to understand behavior.
+2. Inspect related skills, central behavioral contracts, conformance declarations, docs, and recent changes.
+3. Run package validation:
+
+```bash
+python scripts/validate-skill-packages.py --skill <skill-name>
+```
+
+4. Inspect content health without treating advisory style preferences as canonical validity rules.
+5. When behavioral correctness is questioned, delegate scoring to `skill-eval` using real per-case outputs.
+
+## Phase 2 — Classify findings
+
+Use:
+
+```text
+PACKAGE_ERROR       blocking policy violation
+PACKAGE_WARNING     migration or discouraged-path finding
+CONTENT_ERROR       contradiction or broken executable guidance
+CONTENT_WARNING     bloat, readability, duplication, stale example risk
+BEHAVIOR_NOT_VERIFIED no real behavioral evidence
+HEALTHY             no blocking finding and required evidence exists
+```
+
+Package status:
+
+```text
+COMPLIANT | PARTIAL | EXEMPT | ERROR | NOT_VERIFIED
+```
+
+Do not report `HEALTHY` when package status is `ERROR`, accepted behavior is unknown after a behavior-affecting repair, or required validation was not run.
+
+## Phase 3 — Triage
+
+Choose one primary action:
+
+```text
+NO_CHANGE    no actionable defect
+TRIM         remove redundant or derivable content
+SPLIT        move conditional depth into references
+REPAIR       fix contradiction, stale path, broken resource, or policy violation
+MIGRATE      hand intentional broad package migration to skill-authoring-workflow
+DEFER        evidence, authority, or safe repair scope is missing
+```
+
+If the target change is already intentional and accepted rather than diagnostic, hand off to `skill-authoring-workflow`.
+
+## Phase 4 — Repair
+
+Rules:
+
+- preserve accepted functional behavior;
 - patch the smallest correct layer;
-- bump executable version when behavior changes;
-- update dependencies only when they changed;
-- keep provenance outside reusable instructions;
-- create or update the centralized behavioral contract;
-- add tests when bundled scripts or validators change;
-- do not create skill-local `evals/` or generated output directories;
-- respect branch, write, review, and merge policy.
+- never remove content merely to satisfy an advisory line target;
+- link references from `SKILL.md` with explicit load conditions;
+- remove or relocate generated state;
+- add tests when bundled scripts require them;
+- update centralized behavioral contracts when executable behavior changes;
+- bump version for executable behavior changes;
+- avoid unrelated cleanup;
+- respect repository write and approval policy.
 
-`EVAL_ONLY` must not create unnecessary package changes.
+## Phase 5 — Verify
 
-## Phase 6 — Package and regression gates
-
-A promoted package patch must run:
+Run applicable checks:
 
 ```bash
 skills-ref validate skills/<skill-name>
@@ -153,60 +152,39 @@ python scripts/validate-eval-contracts.py
 AI_NATIVE_CORE_DIR=../ai-native-core bash scripts/run-eval.sh --skill <skill-name> --validate-tests
 ```
 
-Also run applicable:
+Also verify:
 
 - bundled executable tests;
-- real target behavioral eval using per-case outputs;
-- related-skill evals affected by the boundary;
-- adapter/core conformance;
-- original product verification when feasible;
-- documentation and link checks.
+- target and affected related-skill behavioral contracts;
+- adapter/core conformance when applicable;
+- links and referenced files;
+- original accepted behavior after behavior-affecting repairs.
 
-Package validation with blocking errors prevents promotion. Missing package evidence returns `DEFERRED_UNVERIFIED`, not `PROMOTED`.
-
-## Phase 7 — Promote
-
-```text
-writable branch + authority + all applicable gates pass
-→ commit through repository policy
-
-approval-gated
-→ prepare exact patch and request approval
-
-read-only or incomplete evidence
-→ report not written / deferred
-```
+Structural checks do not prove behavioral application. Missing live outputs remain `NOT_VERIFIED` or `INCOMPLETE`.
 
 ## Required report
 
 ```yaml
-skill_evolution_review:
-  verification: PASS | INCOMPLETE
-  root_reason: <reason>
-  classification: IMPROVEMENT | EVAL_ONLY | LOCAL_ONLY | DUPLICATE | RFC | DEFERRED_UNVERIFIED
-  transfer_test: PASS | FAIL | NOT_VERIFIED
-  duplicate_check: NEW | EXISTING | OVERLAP
-  target: <file or none>
+skill_doctor_report:
+  target: <skill>
+  action: NO_CHANGE | TRIM | SPLIT | REPAIR | MIGRATE | DEFER
   package_status: COMPLIANT | PARTIAL | EXEMPT | ERROR | NOT_VERIFIED
+  content_status: HEALTHY | WARNING | ERROR | NOT_VERIFIED
   behavioral_status: APPLIED | PARTIAL | GHOST | INCOMPLETE | NOT_RUN
-  executable_test_status: PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
-  conformance_status: PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
-  regression_eval: <file/result or none>
-  commit: <sha or not written>
-  provenance: <location>
+  blocking_findings: []
+  advisory_findings: []
+  changes: []
+  evidence: []
   known_gaps: []
+  next_action: <one exact action>
 ```
 
 ## Hard gates
 
-Fail or defer promotion when:
-
-- the original fix is unverified;
-- the candidate is product-specific without reusable reasoning;
-- transfer or counterexample testing fails;
-- another capability already owns the rule;
-- no centralized regression evidence exists;
-- package validation has blocking errors;
-- required executable tests are missing;
-- related evals or conformance fail;
-- repository authority is missing.
+- Never claim `HEALTHY` while package validation has blocking errors.
+- Never promote advisory style preferences into repository policy.
+- Never repair unknown behavior without preservation evidence.
+- Never treat package validation as behavioral proof.
+- Never treat behavioral output scoring as package-compliance proof.
+- Never modify files in audit-only mode.
+- Never bypass repository write, review, or merge authority.

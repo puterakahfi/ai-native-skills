@@ -1,170 +1,212 @@
 ---
-name: workflow-router
-description: Detect task intent and route to the correct primary lifecycle or standalone capability, including product, feature, bugfix, design, review, deployment, continuity, and skill creation or maintenance. Route before execution.
+name: skill-evolution
+description: Convert verified lessons from real product work into minimal reusable skill, reference, workflow, eval, or core-contract improvements while preserving package policy, regression evidence, and repository authority.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.8.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-authoring-workflow skill-evolution skill-eval git-workflow skill-doctor spec-workflow task-continuity production-code-quality-baseline"
-  ai-native-skills.type: meta-skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/meta/workflow-router.contract.yaml
-  ai-native-skills.contract-version: "~0.2"
-  ai-native-skills.related_skills: '["role-switcher","product-development-workflow","delivery-work-breakdown","chatgpt-app-development","redesign-workflow","design-audit","design-refinement","design-review","brand-identity-review","skill-authoring-workflow","skill-doctor","skill-evolution","skill-eval","bugfix-workflow","new-feature-workflow","code-review-workflow","deployment-workflow","spec-workflow","task-continuity","production-code-quality-baseline"]'
+  ai-native-skills.type: workflow
+  ai-native-skills.requires: "skill-eval git-workflow"
+  ai-native-skills.implements: ai-native-core/contracts/workflows/skill-evolution.contract.yaml
+  ai-native-skills.contract-version: "^1.0.0"
+  ai-native-skills.boundary.covers: '["post_fix_learning_review","reusable_reason_extraction","local_vs_shared_knowledge_classification","target_layer_selection","minimal_skill_or_reference_patch","regression_eval_creation","skill_version_and_promotion_decision","provenance_logging_outside_skill_body"]'
+  ai-native-skills.boundary.delegates: '["solving_the_original_product_issue","copying_product_implementation_into_shared_skills","storing_product_specific_breakpoints_routes_or_component_names_in_shared_skills","promoting_unverified_anecdotes","bypassing_repository_write_or_approval_policy","replacing_product_design_locks_or_architecture_decisions"]'
+  ai-native-skills.related_skills: '["skill-eval","skill-doctor","skill-authoring-workflow","git-workflow","systematic-debugging"]'
 ---
 
-# Workflow Router
+# Skill Evolution
 
 ## Reviewed core contract interface
 
-Source: `ai-native-core/contracts/skills/meta/workflow-router.contract.yaml` · compatible line: `~0.2`
+Source: `ai-native-core/contracts/workflows/skill-evolution.contract.yaml` · compatible line: `^1.0.0`.
 
-```yaml
-required_inputs:
-- user_request
-allowed_outputs:
-- workflow_selection
-- skill_load_order
-- routing_rationale
-- ambiguity_resolution
-- post_fix_learning_route
-quality_gates:
-- task_type_must_be_classified_before_workflow_selection
-- routing_decision_must_be_stated_explicitly
-- ambiguous_requests_must_be_clarified_not_assumed
-- selected_workflow_must_be_loaded_before_execution
-- no_execution_before_routing_confirmed
-- fallback_must_be_defined_when_no_workflow_matches
-- product_from_zero_requests_must_not_route_directly_to_implementation
-- existing_ui_refinement_requests_must_route_to_redesign_workflow_not_new_surface_workflows
-- targeted_design_gate_fixes_must_route_to_design_refinement
-- explicit_verified_case_learning_requests_must_route_to_skill_evolution
-- parent_workflows_with_verified_fixes_must_route_to_skill_evolution_before_final_delivery
-- post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
-```
-
-Exact declarations make ownership reviewable; they do not replace repository, runtime, review, approval, or product evidence.
+Required inputs include the source case, observed failure, verified fix, before/after evidence, and candidate capability. Outputs include the learning candidate, root reason, generalization report, target layer, minimal patch, regression eval, promotion verdict, commit or no-promotion reason, and provenance record.
 
 ## Core rule
 
 ```text
-classify requested outcome
-→ select exactly one primary lifecycle or standalone capability
-→ attach only justified overlays and specialists
-→ resolve ambiguity before execution
-→ execute only after routing is explicit
+verified real case
+→ explain why the fix worked
+→ classify local versus reusable knowledge
+→ test transfer and counterexamples
+→ deduplicate against existing ownership
+→ patch the smallest correct shared layer
+→ add centralized regression evidence
+→ validate package, behavior, and conformance
+→ promote only with authority and passing gates
 ```
 
-The artifact noun does not choose the lifecycle. A skill, dashboard, logo, API, or application may be created, audited, repaired, evolved, evaluated, reviewed, or deprecated.
+A resolved product issue always receives a learning review. It is not always promoted.
 
-## Route classes
+## Boundary
 
-| Intent | Primary route | Supporting capabilities |
-|---|---|---|
-| Build a product from zero | `product-development-workflow` | research, requirements, design, engineering |
-| Add capability to existing product | `new-feature-workflow` | delivery topology, quality overlay, specialists |
-| Fix broken implementation | `bugfix-workflow` | debugging, quality overlay, reviewers |
-| Plan or specify | `spec-workflow` | product and relevant owners |
-| Review code or PR | `code-review-workflow` | architecture/security/design reviewers |
-| Deploy or release | `deployment-workflow` | operations, security, observability |
-| Audit existing design only | `design-audit` | design-review + domain reviewer |
-| Fix known design findings | `design-refinement` | preservation scope + reviewer |
-| Replace design direction or structure | `redesign-workflow` | design owner + specialists |
-| Resume or hand off work | `task-continuity` | governing lifecycle remains primary |
-| Explore reversible idea | `spike` | experiment skills |
-| Create or intentionally manage a skill package | `skill-authoring-workflow` | package policy, doctor, eval, git |
-| Audit or repair skill health | `skill-doctor` | package validator + skill-eval when needed |
-| Promote a verified reusable lesson | `skill-evolution` | skill-eval + git-workflow |
-| Evaluate whether skill behavior was applied | `skill-eval` | saved per-case output and contract |
+This workflow owns post-fix learning review and minimal reusable promotion. It does not solve the original product issue, create a capability from an unverified idea, copy product implementation into shared instructions, or bypass repository policy.
 
-## Skill lifecycle routing
+Use `skill-authoring-workflow` when the request is intentional creation, accepted redesign, broad migration, or deprecation rather than promotion from a verified case.
 
-Classify the requested operation before loading a capability:
+## Canonical package sources
+
+Before shaping a promoted patch, load:
 
 ```text
-new reusable skill/workflow/meta-skill
-intentional update, restructure, migration, or deprecation
-→ skill-authoring-workflow
-
-health audit, contradiction diagnosis, stale content, package repair
-→ skill-doctor
-
-verified real-world fix with candidate reusable learning
-→ skill-evolution
-
-score a saved output against a behavioral contract
-→ skill-eval
-
-run package compliance only
-→ documented package-validator path; do not pretend it is behavioral evaluation
+contracts/skill-package-policy.yaml
+docs/skill-package-standard.md
+scripts/validate-skill-packages.py
 ```
 
-Near-miss rules:
+Do not create a second policy or package-local behavioral eval source.
 
-- The word “create” does not route to authoring when the user asks to create a regression eval from verified learning; use `skill-evolution`.
-- The word “fix” does not route to doctor when the defect and intentional target change are already accepted; use `skill-authoring-workflow`.
-- The word “test” does not route to `skill-eval` when the user asks to unit-test bundled scripts; preserve the governing authoring or maintenance lifecycle.
-- Package compliance cannot prove that an agent applied a skill.
-- Behavioral output evaluation cannot prove the package is structurally compliant.
+## Automatic invocation
 
-Ambiguous examples such as “improve this skill” must resolve whether the user wants intentional behavior change, health diagnosis, verified-learning promotion, or output evaluation. No file modification before this distinction is known.
+Run before final delivery when:
 
-## Production-code quality overlay
+- a real implementation or design failure was observed;
+- a fix was applied;
+- relevant runtime, visual, interaction, accessibility, or test verification passed;
+- the governing workflow is about to close or deliver.
 
-For production code changes, preserve the selected lifecycle and attach `production-code-quality-baseline`.
+If no reusable learning exists, return `NO_CHANGE`, `LOCAL_ONLY`, `DUPLICATE`, or `DEFERRED_UNVERIFIED` and continue honest delivery.
 
-```text
-PRODUCTION_CODE_CHANGE
-NON_PRODUCTION_CHANGE
-DISPOSABLE_EXPERIMENT
-NOT_VERIFIED
-```
+## Phase 1 — Record the verified case
 
-`NOT_VERIFIED` blocks implementation-complete or merge-ready claims. Conditional architecture concerns may be `NOT_APPLICABLE` or `NOT_JUSTIFIED` with evidence; silence is not PASS.
-
-## Delivery topology overlay
-
-Load `delivery-work-breakdown` before Git execution for broad dependent slices, new applications, unresolved branch bases, or epic/feature/task decomposition. Repository defaults and green CI cannot choose the PR target.
-
-## Platform overlays
-
-Platform specialists do not replace the primary lifecycle. For example:
-
-```text
-ChatGPT App from zero
-→ product-development-workflow + chatgpt-app-development
-
-ChatGPT integration in an existing product
-→ new-feature-workflow + chatgpt-app-development
-```
-
-## Continuity overlay
-
-`task-continuity` verifies live state before the original governing lifecycle resumes. It never replaces feature, bugfix, redesign, review, deployment, or skill lifecycle ownership.
-
-## Design routing
-
-```text
-audit only → design-audit
-known narrow findings with preservation scope → design-refinement
-broad direction or structural replacement → redesign-workflow
-```
-
-When findings are unknown, audit before production. A narrow problem does not become redesign merely because the user says “polish.”
-
-## Required output
+Capture:
 
 ```yaml
-workflow_selection: <one primary route>
-skill_load_order: []
-routing_rationale: <intent and boundary evidence>
-ambiguity_resolution: <resolved | clarification required | not applicable>
-post_fix_learning_route: <skill-evolution | no promotion | not applicable>
+source_case:
+  observed_failure: <fact>
+  verified_fix: <fact>
+  before_after_evidence: []
+  candidate_skill_or_workflow: <target or unknown>
+  remaining_uncertainty: []
+```
+
+Unverified fixes cannot produce shared promotion.
+
+## Phase 2 — Select one target layer
+
+| Defect class | Destination | Shared package change |
+|---|---|---:|
+| Local implementation defect | product repository | No |
+| Product-specific durable decision | product ADR/design lock/context | No |
+| Reusable decision rule or gate | target `SKILL.md` | Yes |
+| Extended rationale or matrix | target `references/` | Yes |
+| Workflow ordering or role gap | workflow `SKILL.md` | Yes |
+| Correct rule applied unreliably | `contracts/tests/<skill>.test.yaml` | Eval only |
+| Missing cross-adapter obligation | `ai-native-core` | Controlled RFC/contract route |
+
+Product names, routes, class names, exact breakpoints, and local component names remain outside shared instructions unless they are evidence records.
+
+## Phase 3 — Extract and test the reusable reason
+
+The candidate must explain:
+
+1. which assumption failed;
+2. why the verified fix worked;
+3. decision factors and conditions;
+4. counterexamples where the rule should not apply;
+5. transfer to at least two materially different contexts;
+6. why the candidate target owns the rule.
+
+One successful anecdote is insufficient.
+
+## Phase 4 — Deduplicate
+
+Read the complete target skill, related skills, references, core contract, and existing central behavioral contracts.
+
+Classify:
+
+```text
+IMPROVEMENT
+EVAL_ONLY
+LOCAL_ONLY
+DUPLICATE
+RFC
+DEFERRED_UNVERIFIED
+```
+
+Do not append a second wording of an existing principle merely because a new case confirmed it. Add regression coverage or clarify minimally.
+
+## Phase 5 — Apply the minimal patch
+
+When a package change is justified:
+
+- preserve its boundary;
+- patch the smallest correct layer;
+- bump executable version when behavior changes;
+- update dependencies only when they changed;
+- keep provenance outside reusable instructions;
+- create or update the centralized behavioral contract;
+- add tests when bundled scripts or validators change;
+- do not create skill-local `evals/` or generated output directories;
+- respect branch, write, review, and merge policy.
+
+`EVAL_ONLY` must not create unnecessary package changes.
+
+## Phase 6 — Package and regression gates
+
+A promoted package patch must run:
+
+```bash
+skills-ref validate skills/<skill-name>
+python scripts/validate-skill-packages.py --skill <skill-name>
+python scripts/validate-eval-contracts.py
+AI_NATIVE_CORE_DIR=../ai-native-core bash scripts/run-eval.sh --skill <skill-name> --validate-tests
+```
+
+Also run applicable:
+
+- bundled executable tests;
+- real target behavioral eval using per-case outputs;
+- related-skill evals affected by the boundary;
+- adapter/core conformance;
+- original product verification when feasible;
+- documentation and link checks.
+
+Package validation with blocking errors prevents promotion. Missing package evidence returns `DEFERRED_UNVERIFIED`, not `PROMOTED`.
+
+## Phase 7 — Promote
+
+```text
+writable branch + authority + all applicable gates pass
+→ commit through repository policy
+
+approval-gated
+→ prepare exact patch and request approval
+
+read-only or incomplete evidence
+→ report not written / deferred
+```
+
+## Required report
+
+```yaml
+skill_evolution_review:
+  verification: PASS | INCOMPLETE
+  root_reason: <reason>
+  classification: IMPROVEMENT | EVAL_ONLY | LOCAL_ONLY | DUPLICATE | RFC | DEFERRED_UNVERIFIED
+  transfer_test: PASS | FAIL | NOT_VERIFIED
+  duplicate_check: NEW | EXISTING | OVERLAP
+  target: <file or none>
+  package_status: COMPLIANT | PARTIAL | EXEMPT | ERROR | NOT_VERIFIED
+  behavioral_status: APPLIED | PARTIAL | GHOST | INCOMPLETE | NOT_RUN
+  executable_test_status: PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+  conformance_status: PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+  regression_eval: <file/result or none>
+  commit: <sha or not written>
+  provenance: <location>
+  known_gaps: []
 ```
 
 ## Hard gates
 
-- No execution before routing is explicit.
-- Do not guess ambiguous lifecycle, authority, branch base, or acceptance state.
-- Do not create a duplicate lifecycle because a platform or artifact is specialized.
-- Do not route package validation to behavioral evaluation or vice versa.
-- Post-fix learning never bypasses repository write, review, or approval policy.
+Fail or defer promotion when:
+
+- the original fix is unverified;
+- the candidate is product-specific without reusable reasoning;
+- transfer or counterexample testing fails;
+- another capability already owns the rule;
+- no centralized regression evidence exists;
+- package validation has blocking errors;
+- required executable tests are missing;
+- related evals or conformance fail;
+- repository authority is missing.
