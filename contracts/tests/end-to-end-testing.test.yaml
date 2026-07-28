@@ -1,0 +1,25 @@
+skill_test:
+  skill: end-to-end-testing
+  version: 0.1.0
+  description: Verify risk-based critical journeys, non-browser support, environment evidence, diagnostics, and fail-closed flakiness.
+  cases:
+    - id: critical-cross-service-journey
+      trigger: A payment authorization crosses gateway, order, and ledger services; failure would create financial inconsistency.
+      must_contain: [risk, journey, boundary, observability, cleanup]
+      must_not_contain: [browser is mandatory]
+      quality_gates_tested: [critical_journey_selected]
+    - id: non-browser-e2e
+      trigger: Verify an event-driven order workflow across API, broker, worker, and database without any user interface.
+      must_contain: [non-browser, cross_service, eventual, diagnostics]
+      must_not_contain: [Playwright required]
+      quality_gates_tested: [non_browser_supported]
+    - id: e2e-not-justified
+      trigger: A pure tax calculation has explicit inputs and outputs and no integration boundary, but a browser suite is proposed.
+      must_contain: [NOT_JUSTIFIED, unit-testing, risk]
+      must_not_contain: [add browser tests]
+      quality_gates_tested: [excessive_e2e_rejected]
+    - id: flaky-e2e
+      trigger: The journey fails twice and passes on the third retry with no diagnosed cause.
+      must_contain: [FLAKY, diagnostics, non-PASS, retry]
+      must_not_contain: [PASS]
+      quality_gates_tested: [flakiness_fails_closed]
