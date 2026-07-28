@@ -1,97 +1,55 @@
 name: Sync Generated Capability Metadata
-
 on:
   workflow_dispatch:
   push:
-    branches:
-      - "feat/**"
-      - "fix/**"
-      - "test/**"
-      - "chore/**"
-      - "epic/**"
-    paths:
-      - "skills/**"
-      - "README.md"
-      - "docs/skills.md"
-      - "scripts/run-eval.sh"
-      - "scripts/verify-capability-inventory.py"
-      - "scripts/inventory-contract-coverage.py"
-      - ".github/workflows/sync-generated-capability-metadata.yml"
-
+    branches: ["feat/**", "fix/**", "test/**", "chore/**", "epic/**"]
+    paths: ["skills/**", "README.md", "docs/skills.md", "scripts/run-eval.sh", "scripts/verify-capability-inventory.py", "scripts/inventory-contract-coverage.py", ".github/workflows/sync-generated-capability-metadata.yml"]
 permissions:
   contents: write
-
 concurrency:
   group: sync-generated-capability-metadata-${{ github.ref }}
   cancel-in-progress: false
-
 jobs:
   sync:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout executable repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Resolve pinned Core revision
-        id: core-ref
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - id: core-ref
         shell: bash
         run: |
-          set -euo pipefail
           core_ref="$(sed -n 's/^CORE_REF="\(.*\)"/\1/p' scripts/run-eval.sh)"
           test -n "$core_ref"
           echo "ref=$core_ref" >> "$GITHUB_OUTPUT"
-      - name: Checkout pinned canonical Core
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           repository: puterakahfi/ai-native-core
           ref: ${{ steps.core-ref.outputs.ref }}
           path: .deps/ai-native-core
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Install metadata dependencies
-        run: python -m pip install --disable-pip-version-check PyYAML
-      - name: Synchronize documented inventory counts
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: python -m pip install --disable-pip-version-check PyYAML
+      - name: Synchronize documented inventory and discovery
         shell: python
         run: |
-          import importlib.util
-          import re
+          import importlib.util, json, re
           from pathlib import Path
-          script = Path("scripts/verify-capability-inventory.py")
-          spec = importlib.util.spec_from_file_location("capability_inventory", script)
-          module = importlib.util.module_from_spec(spec)
-          spec.loader.exec_module(module)
-          counts = module.derive_inventory()["counts"]
-          readme = Path("README.md")
-          readme_text = readme.read_text(encoding="utf-8")
-          readme_text, replaced = re.subn(r"\*\*\d+ skills · \d+ workflows · \d+ meta-skills\*\*", f"**{counts['skill']} skills · {counts['workflow']} workflows · {counts['meta-skill']} meta-skills**", readme_text, count=1)
-          if replaced != 1: raise SystemExit("README inventory summary was not updated exactly once")
-          readme.write_text(readme_text, encoding="utf-8")
-          taxonomy = Path("docs/skills.md")
-          taxonomy_text = taxonomy.read_text(encoding="utf-8")
-          replacements = {r"^- `skill`: \d+$": f"- `skill`: {counts['skill']}", r"^- `workflow`: \d+$": f"- `workflow`: {counts['workflow']}", r"^- `meta-skill`: \d+$": f"- `meta-skill`: {counts['meta-skill']}", r"^- Total executable skills: \d+$": f"- Total executable skills: {counts['total']}"}
-          for pattern, replacement in replacements.items():
-              taxonomy_text, replaced = re.subn(pattern, replacement, taxonomy_text, count=1, flags=re.MULTILINE)
-              if replaced != 1: raise SystemExit(f"taxonomy inventory line was not updated exactly once: {pattern}")
-          taxonomy.write_text(taxonomy_text, encoding="utf-8")
-      - name: Regenerate capability inventory
-        run: python scripts/verify-capability-inventory.py --write-snapshot
-      - name: Regenerate contract coverage evidence
-        run: >-
-          python scripts/inventory-contract-coverage.py
-          --root .
-          --core-root .deps/ai-native-core
-      - name: Commit generated metadata
-        shell: bash
+          script=Path("scripts/verify-capability-inventory.py"); spec=importlib.util.spec_from_file_location("inventory",script); m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m); counts=m.derive_inventory()["counts"]
+          p=Path("README.md"); t=p.read_text(); t,n=re.subn(r"\*\*\d+ skills · \d+ workflows · \d+ meta-skills\*\*",f"**{counts['skill']} skills · {counts['workflow']} workflows · {counts['meta-skill']} meta-skills**",t,count=1); assert n==1; p.write_text(t)
+          p=Path("docs/skills.md"); t=p.read_text(); reps={r"^- `skill`: \d+$":f"- `skill`: {counts['skill']}",r"^- `workflow`: \d+$":f"- `workflow`: {counts['workflow']}",r"^- `meta-skill`: \d+$":f"- `meta-skill`: {counts['meta-skill']}",r"^- Total executable skills: \d+$":f"- Total executable skills: {counts['total']}"}
+          for a,b in reps.items(): t,n=re.subn(a,b,t,count=1,flags=re.M); assert n==1
+          p.write_text(t)
+          p=Path("catalog/capability-discovery/classifications.json"); d=json.loads(p.read_text()); g=next(x for x in d["classification_groups"] if x["id"]=="workflows")
+          if "software-testing-workflow" not in g["capabilities"]: g["capabilities"].append("software-testing-workflow")
+          g["capabilities"].sort(); g.setdefault("overrides",{})["software-testing-workflow"]={"domains":["engineering","quality"],"lifecycle_stages":["plan","build","verify","release"],"concerns":["workflow-routing","testing","review","evidence"],"ecosystems":["technology-agnostic"]}
+          p.write_text(json.dumps(d,separators=(",",":"))+"\n")
+      - run: python scripts/verify-capability-inventory.py --write-snapshot
+      - run: python scripts/inventory-contract-coverage.py --root . --core-root .deps/ai-native-core
+      - shell: bash
         run: |
-          set -euo pipefail
-          git add README.md docs/skills.md docs/capability-inventory.json docs/contract-coverage-discovery.yaml
+          git add README.md docs/skills.md catalog/capability-discovery/classifications.json docs/capability-inventory.json docs/contract-coverage-discovery.yaml
           if git diff --cached --quiet; then exit 0; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(metadata): sync generated capability evidence"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(metadata): sync generated capability evidence"; git push origin "HEAD:${GITHUB_REF_NAME}"
