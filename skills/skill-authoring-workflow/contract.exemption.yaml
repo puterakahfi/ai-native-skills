@@ -20,8 +20,6 @@ contract_exemption:
       ref: puterakahfi/ai-native-core#75
     - kind: github_issue
       ref: puterakahfi/ai-native-skills#189
-    - kind: github_pr
-      ref: puterakahfi/ai-native-skills#203
     - kind: executable_source
       ref: skills/skill-authoring-workflow/SKILL.md
   revisit:
