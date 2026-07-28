@@ -29,6 +29,8 @@ Use bounded polling or observable completion for asynchronous behavior. Do not u
 
 Integration testing stops at the selected component or dependency boundary. A full user journey belongs to E2E only when a distinct risk requires journey-level evidence.
 
+When the selected claim is provider-consumer compatibility rather than component behavior, hand off to contract testing. When the claim is product-defined behavior, hand off to acceptance testing without transferring product acceptance authority.
+
 ## Cleanup gate
 
 A credible test restores or disposes of data, messages, processes, ports, containers, and external sandbox state. Leaked or order-dependent state is `NEEDS_WORK`, not PASS.
