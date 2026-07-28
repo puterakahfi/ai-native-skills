@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 92,
+    "skill": 93,
     "workflow": 11,
     "meta-skill": 6,
-    "total": 109
+    "total": 110
   },
   "items": [
     {
@@ -467,6 +467,11 @@
       "name": "ui-components",
       "type": "skill",
       "path": "skills/ui-components/SKILL.md"
+    },
+    {
+      "name": "unit-testing",
+      "type": "skill",
+      "path": "skills/unit-testing/SKILL.md"
     },
     {
       "name": "user-research",
