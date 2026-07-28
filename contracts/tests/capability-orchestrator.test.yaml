@@ -1,7 +1,7 @@
 skill_test:
-  skill: capability-orchestrator
-  version: 0.1.0
-  description: Verify outcome-to-execution composition resolves owners, artifact executors, overlays, gates, ordering, and evidence without flat-list or false-execution claims.
+  skill: workflow-router
+  version: 1.8.0
+  description: Verify routed outcomes are composed into owners, artifact executors, overlays, gates, ordering, and evidence without flat-list or false-execution claims.
   cases:
     - id: generic-prd-resolves-owner-and-executor
       trigger: Buatkan PRD untuk capability orchestration ini.
