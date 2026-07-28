@@ -2,111 +2,98 @@
 
 Thank you for improving the executable capability layer of Native AI Engineering.
 
-This repository is not a general prompt collection. Contributions should change agent behavior in a reusable, inspectable way through explicit scope, procedure, quality gates, evidence, and failure boundaries.
+This repository is not a prompt collection. Contributions must change agent behavior in a reusable, inspectable way through explicit scope, procedure, quality gates, evidence, and failure boundaries.
 
-## Before you change anything
+## Before changing anything
 
-1. Identify the target issue and acceptance criteria.
-2. Confirm that the change belongs in this repository.
-3. Inspect the current implementation and preserve good existing work.
-4. Check whether a canonical contract already exists in [`ai-native-core`](https://github.com/puterakahfi/ai-native-core).
-5. Classify the artifact using [`docs/skills.md`](docs/skills.md): `skill`, `workflow`, or `meta-skill`.
-6. Determine which tests, compatibility records, references, and documentation must change with it.
+1. Identify the target issue and testable acceptance criteria.
+2. Confirm repository ownership and inspect current implementation.
+3. Check whether `ai-native-core` already owns the universal contract.
+4. Resolve the skill operation and governing lifecycle.
+5. Verify branch base, PR target, write policy, and merge authority.
+6. Determine affected package rules, tests, behavioral contracts, conformance, docs, and related capabilities.
 
 Repository boundaries:
 
 ```text
-ai-native-core    canonical domain, contracts, boundaries, terminology, and quality standards
-ai-native-skills  executable skills, workflows, references, rubrics, and behavioral evaluation
-native-ai-fw      orchestration, discovery, adapters, context packs, and control-plane behavior
+ai-native-core    canonical domain, contracts, boundaries, terminology, quality standards
+ai-native-skills  executable skills, workflows, references, rubrics, behavioral evaluation
+native-ai-fw      orchestration, discovery, adapters, context packs, control-plane behavior
 product repos     implementation and real-world validation
 ```
 
-Update the correct repository instead of copying universal contracts into runtime or product-specific files.
-
-## Contribution paths
-
-### Add or refine a skill
-
-Use `skills/<skill-name>/SKILL.md` for one reusable capability or expert lens.
-
-A skill should define:
-
-- when it applies;
-- what it owns and does not own;
-- the procedure or decision rules;
-- quality gates and failure signals;
-- checkable evidence before completion.
-
-Keep the main `SKILL.md` as the executable entry point. Move deep methodology, matrices, examples, and checklists into `skills/<skill-name>/references/` when they are loaded conditionally.
-
-### Add or refine a workflow
-
-Use a workflow when ordered phases, gates, ownership, and handoffs are the main value. A workflow may compose many skills, but it owns the lifecycle rather than the specialist decisions.
-
-When workflow dependencies change, also inspect:
-
-- `metadata["ai-native-skills.requires"]`;
-- [`docs/skill-packs.md`](docs/skill-packs.md);
-- routing and role-composition behavior;
-- affected behavioral cases.
-
-### Add or refine a meta-skill
-
-Use a meta-skill only when the artifact routes or composes other skills and workflows. It must make the routing decision and then hand execution to the selected capability.
-
-Do not mix routing and domain execution in one artifact.
-
-### Add a reference
-
-Place supporting material under `skills/<skill-name>/references/` when it is part of that skill's executable method but does not need to load for every invocation.
-
-The parent `SKILL.md` must state when the reference should be loaded. Do not create unreferenced documentation islands.
-
-### Add a behavioral evaluation case
-
-Regression contracts live under:
+## Skill lifecycle entry points
 
 ```text
-contracts/tests/<skill-name>.test.yaml
+CREATE | UPDATE | RESTRUCTURE | MIGRATE | DEPRECATE
+→ skill-authoring-workflow
+
+Audit, diagnose, or repair unclear skill health
+→ skill-doctor
+
+Promote verified reusable learning from a real case
+→ skill-evolution
+
+Evaluate whether a saved output applied a skill
+→ skill-eval
 ```
 
-A useful case contains:
+Do not route from the artifact noun alone. “Improve this skill” is ambiguous until intentional authoring, health repair, verified learning, or behavioral evaluation is resolved.
 
-- a realistic trigger;
-- required and prohibited behavior;
-- sequence constraints when order matters;
-- the quality gates being exercised.
+## Canonical package policy
 
-Prefer cases that prevent a known failure mode or preserve a verified reusable learning. Do not add cases that only restate the skill description.
+Use:
 
-### Implement a Native AI Core contract
-
-A contract-compatible adapter remains an official `skill`, `workflow`, or `meta-skill` and declares the contract through namespaced metadata:
-
-```yaml
-metadata:
-  ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/<category>/<contract>.contract.yaml
-  ai-native-skills.contract-version: "^1.0.0"
-  ai-native-skills.boundary.covers: '["<reviewed-contract-cover-item>"]'
-  ai-native-skills.boundary.delegates: '["<reviewed-contract-does-not-cover-item>"]'
+```text
+contracts/skill-package-policy.yaml
+docs/skill-package-standard.md
+docs/skill-authoring-template.md
+scripts/validate-skill-packages.py
 ```
 
-When the implemented contract declares non-empty `boundary.covers` or `boundary.does_not_cover`, review the executable skill and its handoffs, then add exact structured declarations. Do not bulk-copy contract values without verifying actual ownership. Missing declarations are `NOT_CHECKABLE`; explicit delegated-responsibility overclaims are `ERROR`. See the canonical [`adapter-conformance` guide](https://github.com/puterakahfi/ai-native-core/blob/main/docs/adapter-conformance.md).
+Package direction:
 
-When the universal capability contract, terminology, boundary, or quality standard changes, update `ai-native-core` first. Update this repository when executable agent behavior changes.
+```text
+skills/<name>/SKILL.md              required
+skills/<name>/references/           optional runtime knowledge
+skills/<name>/scripts/              optional executable resources
+skills/<name>/tests/                conditional for bundled scripts
+skills/<name>/assets/               optional static resources
+skills/<name>/adapter.conformance.yaml optional contract declaration
+contracts/tests/<name>.test.yaml    centralized behavioral regression contract
+```
 
-Use `compat/*.compat.yaml` when compatibility evidence is required. Do not present a missing or partial contract implementation as complete.
+Do not create package-local behavioral `evals/` duplicates. Keep generated state outside authored packages. Use explicit exemptions rather than silent violations.
 
-## Frontmatter rules
+## Capability types
 
-Every `SKILL.md` must use valid Agent Skills frontmatter.
+- `skill`: one reusable capability or expert lens;
+- `workflow`: ordered phases, gates, ownership, and handoffs;
+- `meta-skill`: routes or composes other capabilities.
+
+A workflow owns lifecycle; specialists own domain decisions. Do not mix routing and domain execution in one artifact.
+
+## Authoring requirements
+
+A capability should define:
+
+- when it applies and near misses;
+- what it owns and delegates;
+- required inputs and allowed outputs;
+- ordered procedure or decision rules;
+- quality gates and failure signals;
+- checkable evidence before completion;
+- resource loading conditions;
+- repository side effects and approval boundaries.
+
+Keep `SKILL.md` as the lean executable entry point. Move conditional depth into linked `references/`.
+
+## Frontmatter
 
 ```yaml
 ---
 name: example-skill
-description: Trigger-focused explanation of what the skill does and when to use it.
+description: Trigger-focused explanation of what the capability does, when to use it, and an important near miss.
 license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
@@ -117,81 +104,63 @@ metadata:
 
 Rules:
 
-- the directory name and `name` must match;
+- directory and `name` match;
 - use lowercase kebab-case;
-- keep repository-specific fields under namespaced `metadata` keys;
-- do not invent a new official type without updating taxonomy, validation, examples, and downstream consumers;
-- increase the skill version when executable behavior or its contract changes.
+- keep repository fields namespaced under `metadata`;
+- do not invent a type without updating taxonomy and downstream validation;
+- bump version when executable behavior or contract changes.
 
-The canonical type and adapter rules live in [`docs/skills.md`](docs/skills.md).
+## Behavioral regression contracts
+
+Store cases at:
+
+```text
+contracts/tests/<skill-name>.test.yaml
+```
+
+A useful case has a natural trigger, required and prohibited behavior, sequence constraints when needed, and quality gates tested. Assertions must be grounded by the trigger or attributable context.
+
+A green contract validation proves structure and runner compatibility, not live behavioral application. Real per-case outputs are required for `APPLIED`, `PARTIAL`, or `GHOST` evidence.
+
+## Executable resources
+
+Reusable scripts must document inputs, outputs, dependencies, exit codes, error handling, side effects, idempotency, timeout/retry behavior, security assumptions, and evidence produced.
+
+Add package-local `tests/` when required by policy. Use isolated fixtures or dry-run behavior for mutations.
 
 ## Validation
 
-Validate the individual skill package:
+Run applicable checks:
 
 ```bash
 skills-ref validate skills/<skill-name>
+python scripts/validate-skill-packages.py --skill <skill-name>
+python scripts/validate-eval-contracts.py
+AI_NATIVE_CORE_DIR=../ai-native-core bash scripts/run-eval.sh --skill <skill-name> --validate-tests
 ```
 
-Run behavioral evaluation with a checked-out `ai-native-core` runner available at `ai-native-core/`:
+For core-backed adapters also run the pinned conformance validators. Run executable tests, affected related-skill regressions, documentation/link checks, and domain-specific evidence.
 
-```bash
-python ai-native-core/scripts/run-eval.py \
-  --skill <skill-name> \
-  --output-dir eval-outputs
-```
-
-Validate adapter paths, pinned versions, interface coverage, and structured boundaries with a checked-out core at `ai-native-core/`:
-
-```bash
-bash ai-native-core/scripts/validate-implements.sh ai-native-core
-python ai-native-core/scripts/validate-conformance.py ai-native-core .
-```
-
-A zero process exit means no critical declaration error. It does not replace behavioral, runtime, visual, security, or product evidence. `NOT_CHECKABLE` must be eliminated for adapters whose contracts define string boundary items.
-
-Changes to executable skills, contracts, compatibility records, or behavioral evals must pass the repository's **Skill and Gate Contracts** workflow. The workflow currently checks:
-
-- local validator and runner syntax;
-- the canonical design-gate registry;
-- repository evaluation contracts;
-- validation through the pinned `ai-native-core` runner;
-- adapter path/version and structured boundary conformance;
-- wrapper integration;
-- per-case runner compatibility smoke.
-
-Documentation-only changes may not trigger every executable-contract check. For those changes, inspect rendered Markdown, local links, commands, terminology, and source-of-truth references directly.
-
-A green workflow is required when applicable, but it does not replace domain evidence. Visual, interaction, runtime, security, or architecture claims still require evidence appropriate to that domain.
+A zero exit code from a structural validator does not replace behavioral, runtime, visual, security, architecture, approval, or product evidence.
 
 ## Documentation responsibilities
 
-Update documentation whenever a change affects:
+Update authoritative documentation whenever changes affect taxonomy, inventory counts, workflow entry points, skill packs, package policy, adapter patterns, installation instructions, repository boundaries, or public validation commands.
 
-- the official type taxonomy or inventory counts;
-- workflow entry points or skill packs;
-- facade, adapter, or domain-reviewer patterns;
-- installation instructions;
-- repository boundaries or terminology;
-- public examples and evaluation commands.
-
-Keep [`docs/skills.md`](docs/skills.md) authoritative for taxonomy and the complete inventory. Keep [`docs/skill-packs.md`](docs/skill-packs.md) authoritative for workflow bundle installation.
+Runtime methodology belongs in skill `references/`. Repository maintainer guidance belongs in root `docs/`.
 
 ## Pull request checklist
 
-Before requesting review:
-
-- [ ] The issue objective and acceptance criteria are satisfied.
-- [ ] The change is in the correct repository and layer.
-- [ ] Existing useful behavior is preserved unless the issue explicitly replaces it.
-- [ ] Frontmatter, paths, links, and declared dependencies are valid.
-- [ ] Contract-backed adapters declare reviewed `covers` and `delegates` metadata when the core contract has a boundary.
-- [ ] Required references are linked from the executable skill.
-- [ ] Behavioral regressions are covered when reusable behavior changed.
-- [ ] Local validation has been run where available.
-- [ ] Applicable Skill and Gate Contracts checks are green.
-- [ ] Documentation-only changes were reviewed for rendered structure and link integrity.
-- [ ] Known gaps are reported as `PARTIAL`, `NOT_VERIFIED`, or `NOT_APPLICABLE` rather than hidden.
-- [ ] No secrets, credentials, private product context, or generated runtime state were committed.
-
-Use focused commits and a PR description that explains the objective, changed behavior, validation evidence, and known limitations.
+- [ ] Issue, objective, scope, and acceptance criteria are verified.
+- [ ] Correct lifecycle and repository layer are selected.
+- [ ] Useful existing behavior is preserved unless replacement is accepted.
+- [ ] Package policy and frontmatter pass validation.
+- [ ] References, dependencies, links, and catalog entries are valid.
+- [ ] Bundled executable behavior has applicable tests.
+- [ ] Centralized behavioral contract is updated when behavior changes.
+- [ ] Target and affected related regressions are checked.
+- [ ] Core conformance is checked when applicable.
+- [ ] Package, behavioral, executable-test, and conformance evidence are reported independently.
+- [ ] Known gaps use `PARTIAL`, `NOT_VERIFIED`, or `NOT_APPLICABLE` rather than hidden PASS.
+- [ ] No secrets, private product context, dependency directories, or generated runtime state are committed.
+- [ ] Review, approval, and merge authority remain explicit.
