@@ -1,0 +1,71 @@
+name: Skill Package Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills/**"
+      - "contracts/tests/**"
+      - "contracts/skill-package-policy.yaml"
+      - "docs/skill-package-standard.md"
+      - "scripts/validate-skill-packages.py"
+      - "scripts/tests/test_validate_skill_packages.py"
+      - ".github/workflows/skill-package-validation.yml"
+  pull_request:
+    paths:
+      - "skills/**"
+      - "contracts/tests/**"
+      - "contracts/skill-package-policy.yaml"
+      - "docs/skill-package-standard.md"
+      - "scripts/validate-skill-packages.py"
+      - "scripts/tests/test_validate_skill_packages.py"
+      - ".github/workflows/skill-package-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skill-package-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install "PyYAML>=6,<7"
+      - name: Check syntax
+        run: python -m py_compile scripts/validate-skill-packages.py scripts/tests/test_validate_skill_packages.py
+      - name: Run validator tests
+        run: python -m unittest scripts/tests/test_validate_skill_packages.py
+      - name: Validate packages and generate inventory
+        run: python scripts/validate-skill-packages.py --report-json .tmp/skill-package-validation/report.json
+      - name: Publish summary
+        if: always()
+        run: |
+          if test -f .tmp/skill-package-validation/report.json; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          report = json.loads(Path('.tmp/skill-package-validation/report.json').read_text())['skill_package_validation']
+          summary = report['summary']
+          print('## Skill package validation')
+          print(f"- Skills: {summary['skills']}")
+          print(f"- Errors: {summary['errors']}")
+          print(f"- Warnings: {summary['warnings']}")
+          PY
+          fi
+      - name: Upload compliance inventory
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: skill-package-compliance
+          path: .tmp/skill-package-validation/report.json
+          if-no-files-found: warn
+          retention-days: 14
