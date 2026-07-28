@@ -6,7 +6,8 @@ metadata:
   ai-native-skills.version: 0.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.requires: "decision-provenance"
-  ai-native-skills.type: foundational-meta-skill
+  ai-native-skills.type: meta-skill
+  ai-native-skills.role: foundational-overlay
   ai-native-skills.related_skills: '["workflow-router","product-manager","delivery-work-breakdown","implementation-context-discovery","architecture-review","test-strategy","production-code-quality-baseline","skill-eval","skill-evolution"]'
 ---
 
