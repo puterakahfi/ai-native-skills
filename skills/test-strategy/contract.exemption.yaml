@@ -1,0 +1,40 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: test-strategy
+    path: skills/test-strategy/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills engineering capability maintainers
+  reason: >-
+    The verified source case in puterakahfi/ai-native-skills#161 requires an executable,
+    risk-based test strategy capability, but no accepted ai-native-core contract for
+    test-strategy has been verified. The skill may be developed and behaviorally evaluated
+    provisionally, but it must not declare core contract conformance or fabricate an
+    adapter-conformance record.
+  scope:
+    - static_contract_ownership
+    - core_gap_tracking
+  review_date: '2026-08-31'
+  evidence_refs:
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#160
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#161
+    - kind: executable_source
+      ref: skills/test-strategy/SKILL.md
+  revisit:
+    blocking_issue: NOT_VERIFIED
+    triggers:
+      - an accepted ai-native-core test-strategy contract is created
+      - canonical testing terminology or ownership is changed by an authorized core decision
+      - the executable behavior diverges from the accepted epic boundaries
+      - the review date is reached before the exemption is retired
+  prohibited_claims:
+    - core_contract_conformance
+    - adapter_conformance
+    - behavioral_verification_without_eval_evidence
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active
