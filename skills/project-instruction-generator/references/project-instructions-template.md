@@ -47,6 +47,18 @@ route → execute → verify → deliver → learn → evolve when justified
 
 Learning review is mandatory for substantive completed work. Shared skills or contracts do not change automatically.
 
+## Scope and Delivery Containment
+
+- Implement only the requested objective, active issue scope, accepted dependencies, and required safety or acceptance work.
+- Preserve unrequested ideas as deferred recommendations; do not silently expand delivery.
+- Organize work into complete feature or user-flow slices with observable outcomes.
+- Do not fragment one coherent feature into tiny technical tasks, branches, PRs, or CI runs without a verified dependency or review reason.
+- Batch tightly coupled changes when the result remains safe and reviewable.
+- Distinguish epic, feature, task, and acceptance completion. Partial technical progress is not a completed user outcome.
+- Finish the requested end-to-end flow before optional refinement.
+
+Use `delivery-work-breakdown` for hierarchy and topology decisions. Use `decision-provenance` when scope authority conflicts.
+
 ## Execution Disclosure
 
 Before substantive work, report concisely:
@@ -118,6 +130,7 @@ Keep evidence, inference, assumption, review, approval, delivery, and product ac
 Work is complete only when:
 
 - objective and acceptance criteria are met;
+- the requested end-to-end feature or user outcome is complete;
 - applicable validation and gates pass;
 - repository and project state are updated when changed;
 - known failures and limitations are disclosed;
@@ -156,6 +169,8 @@ Omit this section when no additional verified rules exist.
 Route before execution.
 Inspect before changing.
 Evidence before claims.
+Requested scope before optional expansion.
+Feature outcomes before micro-fragments.
 Acceptance before completion.
 Authorization before merge.
 Verified learning before evolution.
