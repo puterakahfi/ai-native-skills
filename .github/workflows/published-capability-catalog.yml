@@ -1,0 +1,40 @@
+name: Published Capability Catalog
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**/SKILL.md'
+      - 'docs/capability-inventory.json'
+      - 'catalog/capability-discovery/**'
+      - 'catalog/published/capability-catalog.json'
+      - 'scripts/build-published-capability-catalog.py'
+      - 'scripts/tests/test_build_published_capability_catalog.py'
+      - '.github/workflows/published-capability-catalog.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**/SKILL.md'
+      - 'docs/capability-inventory.json'
+      - 'catalog/capability-discovery/**'
+      - 'catalog/published/capability-catalog.json'
+      - 'scripts/build-published-capability-catalog.py'
+      - 'scripts/tests/test_build_published_capability_catalog.py'
+      - '.github/workflows/published-capability-catalog.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run catalog regression tests
+        run: python3 -m unittest scripts/tests/test_build_published_capability_catalog.py
+      - name: Verify published artifact freshness
+        run: python3 scripts/build-published-capability-catalog.py --check

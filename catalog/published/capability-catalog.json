@@ -1,0 +1,2985 @@
+{
+  "catalog_version": "1.0.0",
+  "compatibility": {
+    "additive_changes_supported": true,
+    "breaking_change_requires_consumer_review": true,
+    "policy": "semver"
+  },
+  "discovery": {
+    "classifications": {
+      "classification_groups": [
+        {
+          "capabilities": [
+            "adr",
+            "api-contract",
+            "clean-architecture",
+            "data-modeling",
+            "design-patterns",
+            "domain-driven-design",
+            "event-driven-design",
+            "micro-frontend",
+            "ports-and-adapters",
+            "service-design",
+            "solid-design",
+            "systems-reasoning",
+            "systems-thinking"
+          ],
+          "defaults": {
+            "concerns": [
+              "architecture",
+              "implementation"
+            ],
+            "domains": [
+              "engineering"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "design",
+              "build",
+              "verify"
+            ]
+          },
+          "id": "domain-architecture",
+          "overrides": {
+            "adr": {
+              "concerns": [
+                "architecture",
+                "governance",
+                "documentation"
+              ]
+            },
+            "api-contract": {
+              "concerns": [
+                "architecture",
+                "api-contracts",
+                "review"
+              ]
+            },
+            "clean-architecture": {
+              "concerns": [
+                "architecture",
+                "implementation",
+                "testing"
+              ],
+              "lifecycle_stages": [
+                "design",
+                "build",
+                "verify"
+              ]
+            },
+            "data-modeling": {
+              "concerns": [
+                "architecture",
+                "data",
+                "implementation"
+              ]
+            },
+            "micro-frontend": {
+              "ecosystems": [
+                "web"
+              ]
+            },
+            "solid-design": {
+              "concerns": [
+                "architecture",
+                "implementation",
+                "code-quality"
+              ]
+            },
+            "systems-reasoning": {
+              "concerns": [
+                "product-strategy",
+                "architecture",
+                "governance",
+                "workflow-routing"
+              ],
+              "domains": [
+                "product",
+                "engineering",
+                "governance"
+              ],
+              "ecosystems": [
+                "technology-agnostic"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "define",
+                "plan",
+                "design",
+                "verify"
+              ]
+            },
+            "systems-thinking": {
+              "concerns": [
+                "product-strategy",
+                "architecture",
+                "governance"
+              ],
+              "domains": [
+                "product",
+                "engineering",
+                "governance"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "acceptance-testing",
+            "api-backward-compatibility-review",
+            "architecture-review",
+            "behavior-driven-development",
+            "clean-code",
+            "contract-testing",
+            "decision-making",
+            "end-to-end-testing",
+            "implementation-context-discovery",
+            "integration-testing",
+            "refactoring",
+            "skill-eval",
+            "systematic-debugging",
+            "technical-debt-governance",
+            "test-driven-development",
+            "test-strategy",
+            "unit-testing",
+            "web-performance"
+          ],
+          "defaults": {
+            "concerns": [
+              "code-quality",
+              "review"
+            ],
+            "domains": [
+              "engineering",
+              "quality"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "build",
+              "verify"
+            ]
+          },
+          "id": "engineering-quality",
+          "overrides": {
+            "acceptance-testing": {
+              "concerns": [
+                "requirements",
+                "testing",
+                "evaluation"
+              ],
+              "lifecycle_stages": [
+                "verify"
+              ]
+            },
+            "api-backward-compatibility-review": {
+              "concerns": [
+                "api-contracts",
+                "review",
+                "governance"
+              ],
+              "domains": [
+                "engineering",
+                "quality",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "design",
+                "verify",
+                "release"
+              ]
+            },
+            "behavior-driven-development": {
+              "concerns": [
+                "requirements",
+                "testing",
+                "evaluation"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "define",
+                "verify"
+              ]
+            },
+            "clean-code": {
+              "concerns": [
+                "implementation",
+                "code-quality",
+                "review"
+              ],
+              "lifecycle_stages": [
+                "build",
+                "verify"
+              ]
+            },
+            "contract-testing": {
+              "concerns": [
+                "api-contracts",
+                "testing",
+                "review"
+              ],
+              "lifecycle_stages": [
+                "verify"
+              ]
+            },
+            "decision-making": {
+              "concerns": [
+                "planning",
+                "review",
+                "governance"
+              ],
+              "domains": [
+                "product",
+                "engineering",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan",
+                "verify"
+              ]
+            },
+            "end-to-end-testing": {
+              "concerns": [
+                "testing",
+                "reliability",
+                "review"
+              ],
+              "lifecycle_stages": [
+                "verify"
+              ]
+            },
+            "implementation-context-discovery": {
+              "concerns": [
+                "architecture",
+                "implementation",
+                "developer-experience"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "design",
+                "build"
+              ]
+            },
+            "integration-testing": {
+              "concerns": [
+                "implementation",
+                "testing",
+                "reliability"
+              ],
+              "lifecycle_stages": [
+                "build",
+                "verify"
+              ]
+            },
+            "refactoring": {
+              "concerns": [
+                "implementation",
+                "code-quality",
+                "testing"
+              ]
+            },
+            "skill-eval": {
+              "concerns": [
+                "testing",
+                "evaluation",
+                "learning"
+              ],
+              "lifecycle_stages": [
+                "verify",
+                "learn"
+              ]
+            },
+            "systematic-debugging": {
+              "concerns": [
+                "code-quality",
+                "testing",
+                "debugging"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "build",
+                "verify"
+              ]
+            },
+            "technical-debt-governance": {
+              "concerns": [
+                "planning",
+                "code-quality",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan",
+                "build",
+                "verify",
+                "learn"
+              ]
+            },
+            "test-driven-development": {
+              "concerns": [
+                "implementation",
+                "code-quality",
+                "testing"
+              ]
+            },
+            "test-strategy": {
+              "concerns": [
+                "planning",
+                "testing",
+                "review"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "verify"
+              ]
+            },
+            "unit-testing": {
+              "concerns": [
+                "implementation",
+                "testing",
+                "code-quality"
+              ],
+              "lifecycle_stages": [
+                "build",
+                "verify"
+              ]
+            },
+            "web-performance": {
+              "concerns": [
+                "testing",
+                "review",
+                "performance"
+              ],
+              "domains": [
+                "engineering",
+                "quality",
+                "operations"
+              ],
+              "ecosystems": [
+                "web"
+              ],
+              "lifecycle_stages": [
+                "design",
+                "build",
+                "verify",
+                "operate"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "security-engineer",
+            "security-review",
+            "threat-modeling"
+          ],
+          "defaults": {
+            "concerns": [
+              "security",
+              "review"
+            ],
+            "domains": [
+              "engineering",
+              "quality",
+              "security"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "design",
+              "build",
+              "verify",
+              "operate"
+            ]
+          },
+          "id": "security",
+          "overrides": {
+            "security-engineer": {
+              "concerns": [
+                "architecture",
+                "implementation",
+                "security"
+              ]
+            },
+            "threat-modeling": {
+              "concerns": [
+                "architecture",
+                "review",
+                "security"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "design",
+                "verify"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "incident-response",
+            "native-ai-runtime-ops",
+            "observability-design",
+            "resilience-engineering"
+          ],
+          "defaults": {
+            "concerns": [
+              "reliability",
+              "observability"
+            ],
+            "domains": [
+              "quality",
+              "operations"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "release",
+              "operate",
+              "learn"
+            ]
+          },
+          "id": "operations-reliability",
+          "overrides": {
+            "incident-response": {
+              "concerns": [
+                "debugging",
+                "incident-management",
+                "learning"
+              ],
+              "lifecycle_stages": [
+                "operate",
+                "learn"
+              ]
+            },
+            "native-ai-runtime-ops": {
+              "concerns": [
+                "observability",
+                "deployment",
+                "ai-systems"
+              ],
+              "domains": [
+                "operations",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ]
+            },
+            "resilience-engineering": {
+              "concerns": [
+                "architecture",
+                "testing",
+                "reliability"
+              ],
+              "lifecycle_stages": [
+                "design",
+                "build",
+                "verify",
+                "operate"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "accessibility",
+            "adaptive-component-design",
+            "brand-identity-review",
+            "collection-discovery-design",
+            "component-family-design",
+            "composition",
+            "content-strategy",
+            "copywriting",
+            "cro",
+            "dark-light-theming",
+            "design-audit",
+            "design-brand",
+            "design-color",
+            "design-depth",
+            "design-foundation",
+            "design-genre",
+            "design-iconography",
+            "design-interaction",
+            "design-layout",
+            "design-review",
+            "design-spacing",
+            "design-strategy",
+            "design-system",
+            "design-typography",
+            "design-visual",
+            "github-profile",
+            "information-architecture",
+            "macrostructures",
+            "master-design",
+            "motion-design",
+            "readability",
+            "responsiveness",
+            "ui-components",
+            "ux-patterns-for-developers",
+            "ux-psychology",
+            "ux-ui-patterns",
+            "visual-hierarchy"
+          ],
+          "defaults": {
+            "concerns": [
+              "visual-design",
+              "interaction-design"
+            ],
+            "domains": [
+              "design"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "discover",
+              "design",
+              "build",
+              "verify"
+            ]
+          },
+          "id": "experience-design",
+          "overrides": {
+            "accessibility": {
+              "concerns": [
+                "review",
+                "interaction-design",
+                "accessibility"
+              ],
+              "domains": [
+                "design",
+                "quality"
+              ]
+            },
+            "adaptive-component-design": {
+              "concerns": [
+                "design-system",
+                "interaction-design",
+                "responsive-design"
+              ],
+              "ecosystems": [
+                "web"
+              ]
+            },
+            "brand-identity-review": {
+              "concerns": [
+                "review",
+                "visual-design",
+                "brand"
+              ],
+              "domains": [
+                "design",
+                "quality",
+                "growth-marketing"
+              ]
+            },
+            "collection-discovery-design": {
+              "concerns": [
+                "product-strategy",
+                "information-architecture",
+                "interaction-design"
+              ],
+              "domains": [
+                "product",
+                "design"
+              ]
+            },
+            "component-family-design": {
+              "concerns": [
+                "design-system",
+                "interaction-design",
+                "responsive-design"
+              ],
+              "ecosystems": [
+                "web"
+              ]
+            },
+            "composition": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "content-strategy": {
+              "concerns": [
+                "product-strategy",
+                "review",
+                "content"
+              ],
+              "domains": [
+                "product",
+                "design",
+                "growth-marketing"
+              ]
+            },
+            "copywriting": {
+              "concerns": [
+                "product-strategy",
+                "review",
+                "content"
+              ],
+              "domains": [
+                "design",
+                "growth-marketing"
+              ]
+            },
+            "cro": {
+              "concerns": [
+                "product-strategy",
+                "content",
+                "evaluation"
+              ],
+              "domains": [
+                "product",
+                "design",
+                "growth-marketing"
+              ]
+            },
+            "dark-light-theming": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "design-audit": {
+              "concerns": [
+                "review",
+                "visual-design"
+              ],
+              "domains": [
+                "design",
+                "quality"
+              ]
+            },
+            "design-brand": {
+              "concerns": [
+                "visual-design",
+                "content",
+                "brand"
+              ],
+              "domains": [
+                "design",
+                "growth-marketing"
+              ]
+            },
+            "design-color": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "design-depth": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "design-foundation": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "design-genre": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "design-iconography": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "design-interaction": {
+              "concerns": [
+                "design-system",
+                "interaction-design",
+                "accessibility"
+              ]
+            },
+            "design-layout": {
+              "concerns": [
+                "workflow-routing",
+                "design-system",
+                "responsive-design"
+              ]
+            },
+            "design-review": {
+              "concerns": [
+                "review",
+                "visual-design"
+              ],
+              "domains": [
+                "design",
+                "quality"
+              ]
+            },
+            "design-spacing": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "design-strategy": {
+              "concerns": [
+                "workflow-routing",
+                "product-strategy",
+                "content"
+              ],
+              "domains": [
+                "product",
+                "design",
+                "growth-marketing"
+              ]
+            },
+            "design-system": {
+              "concerns": [
+                "design-system",
+                "interaction-design",
+                "responsive-design"
+              ]
+            },
+            "design-typography": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            },
+            "design-visual": {
+              "concerns": [
+                "workflow-routing",
+                "visual-design",
+                "brand"
+              ]
+            },
+            "github-profile": {
+              "concerns": [
+                "visual-design",
+                "content",
+                "brand"
+              ],
+              "domains": [
+                "design",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "github"
+              ]
+            },
+            "information-architecture": {
+              "concerns": [
+                "planning",
+                "information-architecture",
+                "content"
+              ]
+            },
+            "macrostructures": {
+              "concerns": [
+                "design-system",
+                "visual-design",
+                "responsive-design"
+              ]
+            },
+            "master-design": {
+              "concerns": [
+                "planning",
+                "visual-design",
+                "interaction-design"
+              ]
+            },
+            "motion-design": {
+              "concerns": [
+                "design-system",
+                "visual-design",
+                "interaction-design",
+                "accessibility"
+              ]
+            },
+            "readability": {
+              "concerns": [
+                "design-system",
+                "visual-design",
+                "accessibility"
+              ]
+            },
+            "responsiveness": {
+              "concerns": [
+                "testing",
+                "interaction-design",
+                "responsive-design"
+              ],
+              "ecosystems": [
+                "web"
+              ]
+            },
+            "ui-components": {
+              "concerns": [
+                "design-system",
+                "interaction-design",
+                "responsive-design"
+              ],
+              "ecosystems": [
+                "web"
+              ]
+            },
+            "ux-patterns-for-developers": {
+              "concerns": [
+                "design-system",
+                "interaction-design",
+                "accessibility"
+              ],
+              "ecosystems": [
+                "web"
+              ]
+            },
+            "ux-psychology": {
+              "concerns": [
+                "product-strategy",
+                "research",
+                "interaction-design"
+              ],
+              "domains": [
+                "product",
+                "design"
+              ]
+            },
+            "ux-ui-patterns": {
+              "concerns": [
+                "design-system",
+                "interaction-design",
+                "accessibility"
+              ]
+            },
+            "visual-hierarchy": {
+              "concerns": [
+                "design-system",
+                "visual-design"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "business-value-alignment",
+            "delivery-work-breakdown",
+            "experiment-design",
+            "product-manager",
+            "product-requirements",
+            "user-research"
+          ],
+          "defaults": {
+            "concerns": [
+              "product-strategy",
+              "planning"
+            ],
+            "domains": [
+              "product"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "discover",
+              "define",
+              "plan",
+              "learn"
+            ]
+          },
+          "id": "product-management",
+          "overrides": {
+            "business-value-alignment": {
+              "concerns": [
+                "product-strategy",
+                "governance",
+                "evaluation"
+              ]
+            },
+            "delivery-work-breakdown": {
+              "concerns": [
+                "planning",
+                "delivery",
+                "governance"
+              ]
+            },
+            "experiment-design": {
+              "concerns": [
+                "research",
+                "experimentation",
+                "evaluation"
+              ]
+            },
+            "product-requirements": {
+              "concerns": [
+                "requirements",
+                "planning",
+                "documentation"
+              ]
+            },
+            "user-research": {
+              "concerns": [
+                "product-strategy",
+                "research",
+                "evaluation"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "ai-system-design",
+            "chatgpt-app-development",
+            "context-engineering",
+            "context-manager",
+            "hermes-profile-bootstrap",
+            "model-selection",
+            "native-ai-engineer",
+            "native-ai-runtime-agent",
+            "project-instruction-generator",
+            "prompt-engineer",
+            "prompt-optimizer",
+            "response-contract",
+            "task-continuity"
+          ],
+          "defaults": {
+            "concerns": [
+              "ai-systems",
+              "context"
+            ],
+            "domains": [
+              "engineering",
+              "ai-systems"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "design",
+              "build",
+              "verify"
+            ]
+          },
+          "id": "ai-agent-systems",
+          "overrides": {
+            "chatgpt-app-development": {
+              "concerns": [
+                "api-contracts",
+                "security",
+                "interaction-design",
+                "ai-systems"
+              ],
+              "domains": [
+                "engineering",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "chatgpt-apps"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "define",
+                "design",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "context-engineering": {
+              "concerns": [
+                "context",
+                "governance",
+                "documentation"
+              ]
+            },
+            "context-manager": {
+              "concerns": [
+                "workflow-routing",
+                "context",
+                "governance"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ]
+            },
+            "hermes-profile-bootstrap": {
+              "concerns": [
+                "implementation",
+                "context",
+                "developer-experience"
+              ],
+              "domains": [
+                "ai-systems",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify"
+              ]
+            },
+            "model-selection": {
+              "concerns": [
+                "planning",
+                "ai-systems",
+                "evaluation"
+              ]
+            },
+            "native-ai-engineer": {
+              "concerns": [
+                "architecture",
+                "implementation",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ]
+            },
+            "native-ai-runtime-agent": {
+              "concerns": [
+                "implementation",
+                "ai-systems",
+                "context"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ]
+            },
+            "project-instruction-generator": {
+              "concerns": [
+                "context",
+                "governance",
+                "documentation"
+              ],
+              "domains": [
+                "ai-systems",
+                "governance",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "define",
+                "plan",
+                "verify"
+              ]
+            },
+            "prompt-engineer": {
+              "concerns": [
+                "visual-design",
+                "prompt-engineering",
+                "evaluation"
+              ],
+              "domains": [
+                "design",
+                "ai-systems"
+              ]
+            },
+            "prompt-optimizer": {
+              "concerns": [
+                "prompt-engineering",
+                "context",
+                "evaluation"
+              ]
+            },
+            "response-contract": {
+              "concerns": [
+                "context",
+                "governance",
+                "documentation"
+              ]
+            },
+            "task-continuity": {
+              "concerns": [
+                "workflow-routing",
+                "context",
+                "governance",
+                "documentation"
+              ],
+              "domains": [
+                "ai-systems",
+                "governance",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify",
+                "release",
+                "learn"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "decision-provenance",
+            "ethics-responsible-ai",
+            "git-workflow",
+            "language-standards",
+            "role-switcher",
+            "rule-manager",
+            "workflow-router"
+          ],
+          "defaults": {
+            "concerns": [
+              "governance",
+              "workflow-routing"
+            ],
+            "domains": [
+              "governance"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "discover",
+              "plan",
+              "verify",
+              "release"
+            ]
+          },
+          "id": "governance-delivery",
+          "overrides": {
+            "decision-provenance": {
+              "concerns": [
+                "review",
+                "governance",
+                "documentation"
+              ]
+            },
+            "ethics-responsible-ai": {
+              "concerns": [
+                "review",
+                "ai-systems",
+                "governance"
+              ],
+              "domains": [
+                "ai-systems",
+                "governance"
+              ]
+            },
+            "git-workflow": {
+              "concerns": [
+                "delivery",
+                "governance",
+                "developer-experience"
+              ],
+              "domains": [
+                "governance",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "github"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "language-standards": {
+              "concerns": [
+                "content",
+                "governance",
+                "documentation"
+              ]
+            },
+            "role-switcher": {
+              "concerns": [
+                "workflow-routing",
+                "planning",
+                "governance"
+              ],
+              "domains": [
+                "governance",
+                "developer-experience"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan"
+              ]
+            },
+            "rule-manager": {
+              "concerns": [
+                "context",
+                "governance",
+                "documentation"
+              ],
+              "domains": [
+                "governance",
+                "developer-experience"
+              ]
+            },
+            "workflow-router": {
+              "concerns": [
+                "workflow-routing",
+                "planning",
+                "delivery"
+              ],
+              "domains": [
+                "governance",
+                "developer-experience"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "diagram-architect",
+            "master-engineer",
+            "onboarding",
+            "plan",
+            "spike"
+          ],
+          "defaults": {
+            "concerns": [
+              "developer-experience",
+              "planning",
+              "documentation"
+            ],
+            "domains": [
+              "engineering",
+              "developer-experience"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "plan",
+              "build",
+              "verify"
+            ]
+          },
+          "id": "developer-experience",
+          "overrides": {
+            "diagram-architect": {
+              "concerns": [
+                "architecture",
+                "visual-design",
+                "documentation"
+              ],
+              "lifecycle_stages": [
+                "define",
+                "design",
+                "verify"
+              ]
+            },
+            "master-engineer": {
+              "concerns": [
+                "architecture",
+                "implementation",
+                "code-quality"
+              ]
+            },
+            "onboarding": {
+              "concerns": [
+                "context",
+                "developer-experience",
+                "documentation"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan",
+                "build"
+              ]
+            },
+            "spike": {
+              "concerns": [
+                "experimentation",
+                "planning",
+                "evaluation"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan",
+                "verify"
+              ]
+            }
+          }
+        },
+        {
+          "capabilities": [
+            "bugfix-workflow",
+            "code-review-workflow",
+            "deployment-workflow",
+            "design-refinement",
+            "new-feature-workflow",
+            "product-development-workflow",
+            "production-code-quality-baseline",
+            "redesign-workflow",
+            "skill-authoring-workflow",
+            "skill-doctor",
+            "skill-evolution",
+            "software-testing-workflow",
+            "spec-workflow"
+          ],
+          "defaults": {
+            "concerns": [
+              "workflow-routing",
+              "delivery",
+              "review"
+            ],
+            "domains": [
+              "governance"
+            ],
+            "ecosystems": [
+              "technology-agnostic"
+            ],
+            "lifecycle_stages": [
+              "plan",
+              "build",
+              "verify"
+            ]
+          },
+          "id": "workflows",
+          "overrides": {
+            "bugfix-workflow": {
+              "concerns": [
+                "workflow-routing",
+                "implementation",
+                "testing",
+                "debugging",
+                "review"
+              ],
+              "domains": [
+                "engineering",
+                "quality"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "code-review-workflow": {
+              "concerns": [
+                "code-quality",
+                "review",
+                "security",
+                "governance"
+              ],
+              "domains": [
+                "engineering",
+                "quality",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "verify",
+                "release"
+              ]
+            },
+            "deployment-workflow": {
+              "concerns": [
+                "security",
+                "reliability",
+                "observability",
+                "deployment"
+              ],
+              "domains": [
+                "quality",
+                "operations",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "release",
+                "operate"
+              ]
+            },
+            "design-refinement": {
+              "concerns": [
+                "implementation",
+                "review",
+                "visual-design",
+                "interaction-design"
+              ],
+              "domains": [
+                "engineering",
+                "design",
+                "quality"
+              ]
+            },
+            "new-feature-workflow": {
+              "concerns": [
+                "workflow-routing",
+                "requirements",
+                "delivery",
+                "implementation",
+                "testing",
+                "review"
+              ],
+              "domains": [
+                "product",
+                "engineering",
+                "design",
+                "quality"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "design",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "product-development-workflow": {
+              "concerns": [
+                "workflow-routing",
+                "product-strategy",
+                "requirements",
+                "delivery",
+                "implementation",
+                "review",
+                "deployment",
+                "learning"
+              ],
+              "domains": [
+                "product",
+                "engineering",
+                "design",
+                "quality",
+                "operations"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "define",
+                "plan",
+                "design",
+                "build",
+                "verify",
+                "release",
+                "operate",
+                "learn"
+              ]
+            },
+            "production-code-quality-baseline": {
+              "concerns": [
+                "workflow-routing",
+                "implementation",
+                "testing",
+                "code-quality",
+                "review",
+                "governance"
+              ],
+              "domains": [
+                "engineering",
+                "quality",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "redesign-workflow": {
+              "concerns": [
+                "workflow-routing",
+                "product-strategy",
+                "implementation",
+                "review",
+                "visual-design",
+                "interaction-design"
+              ],
+              "domains": [
+                "product",
+                "engineering",
+                "design",
+                "quality"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "define",
+                "design",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "skill-authoring-workflow": {
+              "concerns": [
+                "workflow-routing",
+                "delivery",
+                "governance",
+                "documentation",
+                "evaluation"
+              ],
+              "domains": [
+                "quality",
+                "ai-systems",
+                "governance",
+                "developer-experience"
+              ],
+              "lifecycle_stages": [
+                "define",
+                "plan",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "skill-doctor": {
+              "concerns": [
+                "code-quality",
+                "governance",
+                "evaluation",
+                "documentation"
+              ],
+              "domains": [
+                "quality",
+                "ai-systems",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan",
+                "build",
+                "verify"
+              ]
+            },
+            "skill-evolution": {
+              "concerns": [
+                "delivery",
+                "governance",
+                "evaluation",
+                "learning"
+              ],
+              "domains": [
+                "quality",
+                "ai-systems",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify",
+                "learn"
+              ]
+            },
+            "software-testing-workflow": {
+              "concerns": [
+                "workflow-routing",
+                "testing",
+                "review",
+                "governance"
+              ],
+              "domains": [
+                "engineering",
+                "quality"
+              ],
+              "ecosystems": [
+                "technology-agnostic"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "spec-workflow": {
+              "concerns": [
+                "requirements",
+                "planning",
+                "implementation",
+                "review",
+                "documentation"
+              ],
+              "domains": [
+                "product",
+                "engineering",
+                "governance"
+              ],
+              "lifecycle_stages": [
+                "define",
+                "plan",
+                "build",
+                "verify"
+              ]
+            }
+          }
+        }
+      ],
+      "schema_version": 2
+    },
+    "facets": {
+      "facets": {
+        "concerns": [
+          {
+            "id": "workflow-routing",
+            "label": "Workflow Routing"
+          },
+          {
+            "id": "product-strategy",
+            "label": "Product Strategy"
+          },
+          {
+            "id": "research",
+            "label": "Research"
+          },
+          {
+            "id": "experimentation",
+            "label": "Experimentation"
+          },
+          {
+            "id": "requirements",
+            "label": "Requirements"
+          },
+          {
+            "id": "planning",
+            "label": "Planning"
+          },
+          {
+            "id": "delivery",
+            "label": "Delivery"
+          },
+          {
+            "id": "architecture",
+            "label": "Architecture"
+          },
+          {
+            "id": "api-contracts",
+            "label": "API Contracts"
+          },
+          {
+            "id": "data",
+            "label": "Data"
+          },
+          {
+            "id": "implementation",
+            "label": "Implementation"
+          },
+          {
+            "id": "code-quality",
+            "label": "Code Quality"
+          },
+          {
+            "id": "testing",
+            "label": "Testing"
+          },
+          {
+            "id": "debugging",
+            "label": "Debugging"
+          },
+          {
+            "id": "review",
+            "label": "Review"
+          },
+          {
+            "id": "security",
+            "label": "Security"
+          },
+          {
+            "id": "reliability",
+            "label": "Reliability"
+          },
+          {
+            "id": "observability",
+            "label": "Observability"
+          },
+          {
+            "id": "deployment",
+            "label": "Deployment"
+          },
+          {
+            "id": "incident-management",
+            "label": "Incident Management"
+          },
+          {
+            "id": "design-system",
+            "label": "Design System"
+          },
+          {
+            "id": "visual-design",
+            "label": "Visual Design"
+          },
+          {
+            "id": "information-architecture",
+            "label": "Information Architecture"
+          },
+          {
+            "id": "interaction-design",
+            "label": "Interaction Design"
+          },
+          {
+            "id": "content",
+            "label": "Content"
+          },
+          {
+            "id": "accessibility",
+            "label": "Accessibility"
+          },
+          {
+            "id": "performance",
+            "label": "Performance"
+          },
+          {
+            "id": "ai-systems",
+            "label": "AI Systems"
+          },
+          {
+            "id": "prompt-engineering",
+            "label": "Prompt Engineering"
+          },
+          {
+            "id": "context",
+            "label": "Context"
+          },
+          {
+            "id": "governance",
+            "label": "Governance"
+          },
+          {
+            "id": "evaluation",
+            "label": "Evaluation"
+          },
+          {
+            "id": "learning",
+            "label": "Learning"
+          },
+          {
+            "id": "developer-experience",
+            "label": "Developer Experience"
+          },
+          {
+            "id": "documentation",
+            "label": "Documentation"
+          },
+          {
+            "id": "brand",
+            "label": "Brand"
+          },
+          {
+            "id": "responsive-design",
+            "label": "Responsive Design"
+          }
+        ],
+        "domains": [
+          {
+            "description": "Opportunity, value, research, requirements, scope, prioritization, and product acceptance.",
+            "id": "product",
+            "label": "Product Development"
+          },
+          {
+            "description": "Architecture, implementation, code structure, APIs, data, debugging, and technical delivery.",
+            "id": "engineering",
+            "label": "Engineering"
+          },
+          {
+            "description": "Information architecture, interaction, visual systems, responsive behavior, content, and accessibility.",
+            "id": "design",
+            "label": "Experience Design"
+          },
+          {
+            "description": "Testing, review, evidence, regression prevention, evaluation, and acceptance gates.",
+            "id": "quality",
+            "label": "Quality & Verification"
+          },
+          {
+            "description": "Threat analysis, secure design and implementation, security review, and incident boundaries.",
+            "id": "security",
+            "label": "Security"
+          },
+          {
+            "description": "Deployment, observability, resilience, runtime health, incidents, and rollback.",
+            "id": "operations",
+            "label": "Operations & Reliability"
+          },
+          {
+            "description": "Model, prompt, context, agent runtime, AI architecture, and AI product integration.",
+            "id": "ai-systems",
+            "label": "AI & Agent Systems"
+          },
+          {
+            "description": "Positioning, content, acquisition, conversion, launch, retention, and market communication.",
+            "id": "growth-marketing",
+            "label": "Growth & Marketing"
+          },
+          {
+            "description": "Authority, provenance, rules, ethics, workflow discipline, and release authorization.",
+            "id": "governance",
+            "label": "Governance"
+          },
+          {
+            "description": "Repository discovery, planning, onboarding, tooling, documentation, and reusable execution support.",
+            "id": "developer-experience",
+            "label": "Developer Experience"
+          }
+        ],
+        "ecosystems": [
+          {
+            "description": "Applicable without depending on a specific framework, vendor, or runtime.",
+            "id": "technology-agnostic",
+            "label": "Technology Agnostic"
+          },
+          {
+            "description": "Web application, browser, frontend, responsive interface, and web-performance contexts.",
+            "id": "web",
+            "label": "Web"
+          },
+          {
+            "description": "GitHub repository, collaboration, profile, pull-request, and delivery contexts.",
+            "id": "github",
+            "label": "GitHub"
+          },
+          {
+            "description": "ChatGPT Apps, Apps SDK, MCP application, widget, and publication contexts.",
+            "id": "chatgpt-apps",
+            "label": "ChatGPT Apps"
+          },
+          {
+            "description": "Native AI agent orchestration, context, instruction, runtime, and operating-state contexts.",
+            "id": "ai-agent-runtime",
+            "label": "AI Agent Runtime"
+          }
+        ],
+        "lifecycle_stages": [
+          {
+            "description": "Understand the opportunity, current state, evidence, and constraints.",
+            "id": "discover",
+            "label": "Discover"
+          },
+          {
+            "description": "Turn evidence into intent, requirements, contracts, and decision boundaries.",
+            "id": "define",
+            "label": "Define"
+          },
+          {
+            "description": "Choose topology, sequence, ownership, dependencies, and verification strategy.",
+            "id": "plan",
+            "label": "Plan"
+          },
+          {
+            "description": "Shape architecture, interaction, visual direction, data, APIs, and failure handling.",
+            "id": "design",
+            "label": "Design"
+          },
+          {
+            "description": "Implement the accepted behavior and supporting artifacts.",
+            "id": "build",
+            "label": "Build"
+          },
+          {
+            "description": "Test, review, evaluate, and prove acceptance or expose gaps.",
+            "id": "verify",
+            "label": "Verify"
+          },
+          {
+            "description": "Authorize and prepare an immutable candidate for delivery.",
+            "id": "release",
+            "label": "Release"
+          },
+          {
+            "description": "Run, observe, protect, recover, and support the live system.",
+            "id": "operate",
+            "label": "Operate"
+          },
+          {
+            "description": "Capture outcomes and route verified reusable learning.",
+            "id": "learn",
+            "label": "Learn"
+          }
+        ]
+      },
+      "schema_version": 2
+    },
+    "job_profiles": {
+      "job_profiles": [
+        {
+          "capability_groups": [
+            {
+              "optional": [],
+              "purpose": "Route and establish ownership",
+              "required": [
+                "workflow-router",
+                "role-switcher",
+                "product-development-workflow",
+                "product-manager"
+              ]
+            },
+            {
+              "optional": [
+                "systems-thinking",
+                "decision-making"
+              ],
+              "purpose": "Validate value and the riskiest assumptions",
+              "required": [
+                "business-value-alignment",
+                "user-research",
+                "experiment-design"
+              ]
+            },
+            {
+              "optional": [
+                "plan",
+                "api-contract",
+                "information-architecture"
+              ],
+              "purpose": "Define requirements, release units, and delivery topology",
+              "required": [
+                "product-requirements",
+                "delivery-work-breakdown",
+                "decision-provenance",
+                "spec-workflow"
+              ]
+            }
+          ],
+          "completion_gate": "Planning is complete only when the opportunity is accepted or stopped, the next release unit has testable requirements and ownership, and implementation is not being used to resolve an untested product assumption.",
+          "expected_evidence": [
+            "Accepted problem framing and target user evidence.",
+            "Explicit value hypothesis, assumptions, risks, and decision rule.",
+            "PRD or equivalent requirements with measurable acceptance criteria.",
+            "Release-unit decomposition with dependencies, branch base, PR target, and product acceptance owner.",
+            "A clear stop, experiment, specify, or implementation decision."
+          ],
+          "id": "product-planning",
+          "label": "Product Planning",
+          "question": "Which workflow and skills should turn a product idea into a testable, accepted delivery plan?",
+          "workflow_routes": [
+            {
+              "when": "A product or opportunity starts from discovery and must continue through release and learning.",
+              "workflow": "product-development-workflow"
+            },
+            {
+              "when": "The opportunity is accepted and needs a precise specification before implementation.",
+              "workflow": "spec-workflow"
+            }
+          ]
+        },
+        {
+          "capability_groups": [
+            {
+              "optional": [
+                "decision-provenance",
+                "plan"
+              ],
+              "purpose": "Route, own, and map repository constraints",
+              "required": [
+                "implementation-context-discovery",
+                "master-engineer",
+                "production-code-quality-baseline",
+                "role-switcher",
+                "workflow-router"
+              ]
+            },
+            {
+              "optional": [
+                "domain-driven-design",
+                "ports-and-adapters",
+                "clean-architecture",
+                "solid-design",
+                "design-patterns",
+                "api-contract",
+                "data-modeling",
+                "event-driven-design",
+                "service-design"
+              ],
+              "purpose": "Design and implement the technical solution",
+              "required": [
+                "test-driven-development",
+                "clean-code"
+              ]
+            },
+            {
+              "optional": [
+                "systematic-debugging",
+                "refactoring",
+                "technical-debt-governance",
+                "web-performance"
+              ],
+              "purpose": "Verify quality through independent review and correct causal findings",
+              "required": [
+                "architecture-review",
+                "code-review-workflow",
+                "security-review",
+                "skill-eval"
+              ]
+            }
+          ],
+          "completion_gate": "Engineering work is complete only when accepted behavior is implemented, focused tests and applicable quality gates pass, material findings are resolved or explicitly blocked, and merge authorization remains distinct from implementation completion.",
+          "expected_evidence": [
+            "Verified repository conventions and an explicit reuse, extension, composition, native, or dependency decision.",
+            "An explicit production-code applicability verdict and evidence-backed conditional quality map.",
+            "Tests that prove the accepted behavior and regression boundary.",
+            "Internal code-quality evidence with named findings, behavior-preservation risk, and materially applicable SOLID or architecture-style decisions.",
+            "Implementation evidence tied to the accepted requirements and architecture boundary.",
+            "Architecture, security, and code-review findings with severity and reproducibility.",
+            "A clear merge-ready, needs-work, or blocked verdict."
+          ],
+          "id": "engineering-quality",
+          "label": "Engineering Quality",
+          "question": "Which workflows and skills should produce maintainable, well-tested, review-ready code?",
+          "workflow_routes": [
+            {
+              "when": "Any substantive production-code lifecycle needs default cross-workflow quality obligations.",
+              "workflow": "production-code-quality-baseline"
+            },
+            {
+              "when": "Build an approved capability in an existing product.",
+              "workflow": "new-feature-workflow"
+            },
+            {
+              "when": "Repair behavior that already exists but is broken or regressed.",
+              "workflow": "bugfix-workflow"
+            },
+            {
+              "when": "Issue an evidence-backed merge-readiness verdict.",
+              "workflow": "code-review-workflow"
+            }
+          ]
+        },
+        {
+          "capability_groups": [
+            {
+              "optional": [
+                "systems-thinking",
+                "ethics-responsible-ai"
+              ],
+              "purpose": "Establish authority, assets, boundaries, and threat assumptions",
+              "required": [
+                "decision-provenance",
+                "security-engineer",
+                "threat-modeling"
+              ]
+            },
+            {
+              "optional": [
+                "api-contract",
+                "ports-and-adapters",
+                "data-modeling",
+                "resilience-engineering",
+                "test-driven-development"
+              ],
+              "purpose": "Design and implement secure behavior",
+              "required": [
+                "implementation-context-discovery"
+              ]
+            },
+            {
+              "optional": [
+                "deployment-workflow",
+                "observability-design",
+                "incident-response",
+                "systematic-debugging"
+              ],
+              "purpose": "Verify independently, release safely, observe, and respond",
+              "required": [
+                "architecture-review",
+                "security-review",
+                "code-review-workflow"
+              ]
+            }
+          ],
+          "completion_gate": "Security work is complete only when material threats have verified mitigations or explicit accepted ownership, security review has a clear verdict, and release or operational risk is not inferred from code completion alone.",
+          "expected_evidence": [
+            "Protected assets, actors, trust boundaries, data flows, and abuse cases.",
+            "Threats ranked by likelihood and impact with explicit mitigations and owners.",
+            "Security requirements represented in architecture, API, data, authentication, authorization, and failure behavior.",
+            "Reproducible security-review findings and verification of the affected boundary.",
+            "Release, observability, rollback, and incident ownership for material residual risk."
+          ],
+          "id": "security-engineering",
+          "label": "Security Engineering",
+          "question": "Which workflows and skills should design, implement, review, and operate secure product behavior?",
+          "workflow_routes": [
+            {
+              "when": "Add or materially change a security-sensitive capability.",
+              "workflow": "new-feature-workflow"
+            },
+            {
+              "when": "Review a candidate change or existing implementation for security risk.",
+              "workflow": "code-review-workflow"
+            },
+            {
+              "when": "Repair a confirmed security regression or vulnerability.",
+              "workflow": "bugfix-workflow"
+            },
+            {
+              "when": "Release a security-sensitive change and verify runtime health.",
+              "workflow": "deployment-workflow"
+            }
+          ]
+        }
+      ],
+      "schema_version": 2
+    },
+    "topics": {
+      "schema_version": 2,
+      "topics": [
+        {
+          "capabilities": [
+            "workflow-router",
+            "role-switcher",
+            "product-development-workflow",
+            "spec-workflow",
+            "product-manager",
+            "business-value-alignment",
+            "user-research",
+            "experiment-design",
+            "product-requirements",
+            "delivery-work-breakdown",
+            "decision-provenance"
+          ],
+          "description": "Discover value, validate assumptions, define requirements, and create an accepted delivery plan.",
+          "id": "product-management",
+          "label": "Product Management",
+          "starting_points": [
+            "product-development-workflow",
+            "product-manager"
+          ]
+        },
+        {
+          "capabilities": [
+            "workflow-router",
+            "master-engineer",
+            "systems-thinking",
+            "architecture-review",
+            "clean-architecture",
+            "adr",
+            "api-contract",
+            "data-modeling",
+            "domain-driven-design",
+            "event-driven-design",
+            "ports-and-adapters",
+            "service-design",
+            "solid-design",
+            "design-patterns"
+          ],
+          "description": "Shape system boundaries, contracts, data, services, and reviewable architecture decisions.",
+          "id": "software-architecture",
+          "label": "Software Architecture",
+          "starting_points": [
+            "master-engineer",
+            "architecture-review"
+          ]
+        },
+        {
+          "capabilities": [
+            "new-feature-workflow",
+            "bugfix-workflow",
+            "code-review-workflow",
+            "master-engineer",
+            "implementation-context-discovery",
+            "test-driven-development",
+            "clean-code",
+            "solid-design",
+            "clean-architecture",
+            "systematic-debugging",
+            "refactoring",
+            "architecture-review",
+            "security-review",
+            "skill-eval",
+            "technical-debt-governance",
+            "web-performance"
+          ],
+          "description": "Implement accepted behavior with repository alignment, tests, debugging, and independent review.",
+          "id": "engineering-quality",
+          "label": "Engineering Quality",
+          "starting_points": [
+            "new-feature-workflow",
+            "code-review-workflow"
+          ]
+        },
+        {
+          "capabilities": [
+            "new-feature-workflow",
+            "code-review-workflow",
+            "bugfix-workflow",
+            "deployment-workflow",
+            "security-engineer",
+            "threat-modeling",
+            "security-review",
+            "architecture-review",
+            "resilience-engineering",
+            "observability-design",
+            "incident-response",
+            "decision-provenance"
+          ],
+          "description": "Model threats, implement secure boundaries, verify independently, and operate residual risk.",
+          "id": "security-engineering",
+          "label": "Security Engineering",
+          "starting_points": [
+            "security-engineer",
+            "threat-modeling"
+          ]
+        },
+        {
+          "capabilities": [
+            "redesign-workflow",
+            "design-refinement",
+            "master-design",
+            "design-review",
+            "design-system",
+            "information-architecture",
+            "ui-components",
+            "accessibility",
+            "responsiveness",
+            "design-typography",
+            "design-color",
+            "design-layout",
+            "design-interaction",
+            "visual-hierarchy",
+            "adaptive-component-design"
+          ],
+          "description": "Plan, create, refine, and verify usable visual and interaction systems.",
+          "id": "design-ui",
+          "label": "Design & UI",
+          "starting_points": [
+            "master-design",
+            "design-review"
+          ]
+        },
+        {
+          "capabilities": [
+            "workflow-router",
+            "role-switcher",
+            "task-continuity",
+            "product-development-workflow",
+            "new-feature-workflow",
+            "bugfix-workflow",
+            "code-review-workflow",
+            "deployment-workflow",
+            "spec-workflow",
+            "skill-evolution",
+            "decision-provenance",
+            "context-manager"
+          ],
+          "description": "Route work through explicit lifecycle ownership, role composition, continuity, quality gates, and learning.",
+          "id": "agent-workflows",
+          "label": "Agent Workflows",
+          "starting_points": [
+            "workflow-router",
+            "role-switcher"
+          ]
+        },
+        {
+          "capabilities": [
+            "ai-system-design",
+            "native-ai-engineer",
+            "native-ai-runtime-agent",
+            "native-ai-runtime-ops",
+            "context-engineering",
+            "context-manager",
+            "task-continuity",
+            "model-selection",
+            "prompt-engineer",
+            "prompt-optimizer",
+            "response-contract",
+            "chatgpt-app-development",
+            "project-instruction-generator",
+            "hermes-profile-bootstrap"
+          ],
+          "description": "Design models, prompts, context, continuity, runtime boundaries, and AI-native product integrations.",
+          "id": "ai-agent-systems",
+          "label": "AI & Agent Systems",
+          "starting_points": [
+            "ai-system-design",
+            "native-ai-engineer"
+          ]
+        },
+        {
+          "capabilities": [
+            "deployment-workflow",
+            "native-ai-runtime-ops",
+            "observability-design",
+            "resilience-engineering",
+            "incident-response",
+            "systematic-debugging",
+            "security-review",
+            "web-performance"
+          ],
+          "description": "Release, observe, protect, recover, and learn from production behavior.",
+          "id": "operations-reliability",
+          "label": "Operations & Reliability",
+          "starting_points": [
+            "deployment-workflow",
+            "observability-design"
+          ]
+        },
+        {
+          "capabilities": [
+            "implementation-context-discovery",
+            "task-continuity",
+            "onboarding",
+            "git-workflow",
+            "project-instruction-generator",
+            "hermes-profile-bootstrap",
+            "plan",
+            "spike",
+            "diagram-architect",
+            "workflow-router",
+            "master-engineer"
+          ],
+          "description": "Improve repository onboarding, implementation discovery, continuity, planning, tooling, and delivery ergonomics.",
+          "id": "developer-experience",
+          "label": "Developer Experience",
+          "starting_points": [
+            "implementation-context-discovery",
+            "onboarding"
+          ]
+        },
+        {
+          "capabilities": [
+            "content-strategy",
+            "copywriting",
+            "cro",
+            "design-brand",
+            "brand-identity-review",
+            "design-strategy",
+            "design-review",
+            "business-value-alignment",
+            "experiment-design"
+          ],
+          "description": "Create positioning, content, brand expression, and conversion-oriented experiences.",
+          "id": "growth-marketing",
+          "label": "Growth & Marketing",
+          "starting_points": [
+            "content-strategy",
+            "copywriting"
+          ]
+        }
+      ]
+    }
+  },
+  "inventory": {
+    "capabilities": [
+      {
+        "name": "design-interaction",
+        "path": "skills/design-interaction/SKILL.md",
+        "type": "meta-skill"
+      },
+      {
+        "name": "design-layout",
+        "path": "skills/design-layout/SKILL.md",
+        "type": "meta-skill"
+      },
+      {
+        "name": "design-strategy",
+        "path": "skills/design-strategy/SKILL.md",
+        "type": "meta-skill"
+      },
+      {
+        "name": "design-visual",
+        "path": "skills/design-visual/SKILL.md",
+        "type": "meta-skill"
+      },
+      {
+        "name": "role-switcher",
+        "path": "skills/role-switcher/SKILL.md",
+        "type": "meta-skill"
+      },
+      {
+        "name": "systems-reasoning",
+        "path": "skills/systems-reasoning/SKILL.md",
+        "type": "meta-skill"
+      },
+      {
+        "name": "workflow-router",
+        "path": "skills/workflow-router/SKILL.md",
+        "type": "meta-skill"
+      },
+      {
+        "name": "acceptance-testing",
+        "path": "skills/acceptance-testing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "accessibility",
+        "path": "skills/accessibility/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "adaptive-component-design",
+        "path": "skills/adaptive-component-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "adr",
+        "path": "skills/adr/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "ai-system-design",
+        "path": "skills/ai-system-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "api-backward-compatibility-review",
+        "path": "skills/api-backward-compatibility-review/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "api-contract",
+        "path": "skills/api-contract/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "architecture-review",
+        "path": "skills/architecture-review/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "behavior-driven-development",
+        "path": "skills/behavior-driven-development/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "brand-identity-review",
+        "path": "skills/brand-identity-review/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "business-value-alignment",
+        "path": "skills/business-value-alignment/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "chatgpt-app-development",
+        "path": "skills/chatgpt-app-development/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "clean-architecture",
+        "path": "skills/clean-architecture/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "clean-code",
+        "path": "skills/clean-code/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "collection-discovery-design",
+        "path": "skills/collection-discovery-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "component-family-design",
+        "path": "skills/component-family-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "composition",
+        "path": "skills/composition/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "content-strategy",
+        "path": "skills/content-strategy/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "context-engineering",
+        "path": "skills/context-engineering/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "context-manager",
+        "path": "skills/context-manager/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "contract-testing",
+        "path": "skills/contract-testing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "copywriting",
+        "path": "skills/copywriting/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "cro",
+        "path": "skills/cro/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "dark-light-theming",
+        "path": "skills/dark-light-theming/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "data-modeling",
+        "path": "skills/data-modeling/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "decision-making",
+        "path": "skills/decision-making/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "decision-provenance",
+        "path": "skills/decision-provenance/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "delivery-work-breakdown",
+        "path": "skills/delivery-work-breakdown/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-audit",
+        "path": "skills/design-audit/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-brand",
+        "path": "skills/design-brand/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-color",
+        "path": "skills/design-color/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-depth",
+        "path": "skills/design-depth/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-foundation",
+        "path": "skills/design-foundation/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-genre",
+        "path": "skills/design-genre/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-iconography",
+        "path": "skills/design-iconography/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-patterns",
+        "path": "skills/design-patterns/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-review",
+        "path": "skills/design-review/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-spacing",
+        "path": "skills/design-spacing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-system",
+        "path": "skills/design-system/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "design-typography",
+        "path": "skills/design-typography/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "diagram-architect",
+        "path": "skills/diagram-architect/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "domain-driven-design",
+        "path": "skills/domain-driven-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "end-to-end-testing",
+        "path": "skills/end-to-end-testing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "ethics-responsible-ai",
+        "path": "skills/ethics-responsible-ai/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "event-driven-design",
+        "path": "skills/event-driven-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "experiment-design",
+        "path": "skills/experiment-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "git-workflow",
+        "path": "skills/git-workflow/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "github-profile",
+        "path": "skills/github-profile/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-profile-bootstrap",
+        "path": "skills/hermes-profile-bootstrap/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "implementation-context-discovery",
+        "path": "skills/implementation-context-discovery/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "incident-response",
+        "path": "skills/incident-response/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "information-architecture",
+        "path": "skills/information-architecture/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "integration-testing",
+        "path": "skills/integration-testing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "language-standards",
+        "path": "skills/language-standards/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "macrostructures",
+        "path": "skills/macrostructures/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "master-design",
+        "path": "skills/master-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "master-engineer",
+        "path": "skills/master-engineer/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "micro-frontend",
+        "path": "skills/micro-frontend/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "model-selection",
+        "path": "skills/model-selection/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "motion-design",
+        "path": "skills/motion-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "native-ai-engineer",
+        "path": "skills/native-ai-engineer/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "native-ai-runtime-agent",
+        "path": "skills/native-ai-runtime-agent/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "native-ai-runtime-ops",
+        "path": "skills/native-ai-runtime-ops/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "observability-design",
+        "path": "skills/observability-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "onboarding",
+        "path": "skills/onboarding/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "plan",
+        "path": "skills/plan/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "ports-and-adapters",
+        "path": "skills/ports-and-adapters/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "product-manager",
+        "path": "skills/product-manager/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "product-requirements",
+        "path": "skills/product-requirements/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "project-instruction-generator",
+        "path": "skills/project-instruction-generator/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "prompt-engineer",
+        "path": "skills/prompt-engineer/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "prompt-optimizer",
+        "path": "skills/prompt-optimizer/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "readability",
+        "path": "skills/readability/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "refactoring",
+        "path": "skills/refactoring/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "resilience-engineering",
+        "path": "skills/resilience-engineering/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "response-contract",
+        "path": "skills/response-contract/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "responsiveness",
+        "path": "skills/responsiveness/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "rule-manager",
+        "path": "skills/rule-manager/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "security-engineer",
+        "path": "skills/security-engineer/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "security-review",
+        "path": "skills/security-review/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "service-design",
+        "path": "skills/service-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "skill-eval",
+        "path": "skills/skill-eval/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "solid-design",
+        "path": "skills/solid-design/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "spike",
+        "path": "skills/spike/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "systematic-debugging",
+        "path": "skills/systematic-debugging/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "systems-thinking",
+        "path": "skills/systems-thinking/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "task-continuity",
+        "path": "skills/task-continuity/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "technical-debt-governance",
+        "path": "skills/technical-debt-governance/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "test-driven-development",
+        "path": "skills/test-driven-development/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "test-strategy",
+        "path": "skills/test-strategy/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "threat-modeling",
+        "path": "skills/threat-modeling/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "ui-components",
+        "path": "skills/ui-components/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "unit-testing",
+        "path": "skills/unit-testing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "user-research",
+        "path": "skills/user-research/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "ux-patterns-for-developers",
+        "path": "skills/ux-patterns-for-developers/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "ux-psychology",
+        "path": "skills/ux-psychology/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "ux-ui-patterns",
+        "path": "skills/ux-ui-patterns/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "visual-hierarchy",
+        "path": "skills/visual-hierarchy/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "web-performance",
+        "path": "skills/web-performance/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "bugfix-workflow",
+        "path": "skills/bugfix-workflow/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "code-review-workflow",
+        "path": "skills/code-review-workflow/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "deployment-workflow",
+        "path": "skills/deployment-workflow/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "design-refinement",
+        "path": "skills/design-refinement/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "new-feature-workflow",
+        "path": "skills/new-feature-workflow/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "product-development-workflow",
+        "path": "skills/product-development-workflow/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "production-code-quality-baseline",
+        "path": "skills/production-code-quality-baseline/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "redesign-workflow",
+        "path": "skills/redesign-workflow/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "skill-authoring-workflow",
+        "path": "skills/skill-authoring-workflow/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "skill-doctor",
+        "path": "skills/skill-doctor/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "skill-evolution",
+        "path": "skills/skill-evolution/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "software-testing-workflow",
+        "path": "skills/software-testing-workflow/SKILL.md",
+        "type": "workflow"
+      },
+      {
+        "name": "spec-workflow",
+        "path": "skills/spec-workflow/SKILL.md",
+        "type": "workflow"
+      }
+    ],
+    "counts": {
+      "meta-skill": 7,
+      "skill": 99,
+      "total": 119,
+      "workflow": 13
+    }
+  },
+  "schema_version": 1,
+  "source": {
+    "discovery_schema_version": 2,
+    "files": {
+      "classifications": "catalog/capability-discovery/classifications.json",
+      "facets": "catalog/capability-discovery/facets.json",
+      "inventory": "docs/capability-inventory.json",
+      "job_profiles": "catalog/capability-discovery/job-profiles.json",
+      "topics": "catalog/capability-discovery/topics.json"
+    },
+    "inventory_schema_version": 1,
+    "repository": "puterakahfi/ai-native-skills",
+    "revision": "9cc6b3f8a7b8344c177f225bc4d98a29cad599b0"
+  }
+}
