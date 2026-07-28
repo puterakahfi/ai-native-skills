@@ -15,8 +15,7 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 72
-      reviewed_exemption: 17
-      unowned: 1
+      reviewed_exemption: 18
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -154,8 +153,8 @@ contract_coverage_inventory:
       covers: []
       delegates: []
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/behavior-driven-development/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: brand-identity-review
     path: skills/brand-identity-review/SKILL.md
