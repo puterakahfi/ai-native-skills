@@ -9,11 +9,18 @@ Use it before product, domain, architecture, delivery, or implementation decisio
 ```text
 workflow-router selects one primary workflow
 → systems-reasoning supplies a proportionate shared system model
+→ systems-thinking performs deep feedback-loop and emergence analysis when material
 → downstream product/domain/architecture/delivery skills retain ownership
 → mechanisms, adapters, and runtime bindings are selected only after abstraction is stable enough
 ```
 
 It does not introduce a fourth taxonomy category and does not replace a lifecycle.
+
+## Relationship to systems-thinking
+
+The existing `systems-thinking` atomic skill owns deep analysis of reinforcing and balancing loops, emergence, second-order effects, Conway's Law, Goodhart's Law, unintended consequences, and leverage points under its core contract.
+
+`systems-reasoning` owns the broader orchestration layer: establish the system of interest, boundary, actors, capability/policy/mechanism separation, invariants, uncertainty, proportional depth, and downstream handoff. It delegates deep dynamics analysis instead of duplicating that ownership.
 
 ## Canonical entry point
 
@@ -26,6 +33,7 @@ It does not introduce a fourth taxonomy category and does not replace a lifecycl
 - `skills/systems-reasoning/references/dynamics-leverage-and-tradeoffs.md`
 - `skills/systems-reasoning/references/integration-and-handoffs.md`
 - `skills/systems-reasoning/references/anti-patterns-and-counterexamples.md`
+- `skills/systems-reasoning/references/pilot-cases.md`
 
 ## Behavioral contract
 
