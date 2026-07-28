@@ -1,0 +1,131 @@
+skill_test:
+  skill: product-requirements
+  version: "1.1.0"
+  description: Verify PRD authoring, revision, and readiness-review intents resolve to product-requirements while conceptual questions and duplicate skill identities remain outside the capability boundary.
+
+  cases:
+    - id: english-create-prd-uses-product-requirements-capability
+      description: A direct English PRD request uses the stable product-requirements capability and produces the PRD artifact.
+      trigger: Create a PRD for a centralized project and task operating system.
+      must_contain:
+        - product-development-workflow
+        - product-manager
+        - product-requirements
+        - Product Requirements Document
+        - acceptance criteria
+        - PRD READINESS
+      must_not_contain:
+        - "skill: prd"
+        - create a new prd skill
+        - start implementation immediately
+        - prd_approval: VERIFIED
+      quality_gates_tested:
+        - prd_is_artifact_product_requirements_is_executor
+        - explicit_prd_authoring_routes_product_requirements
+        - agent_authored_prd_does_not_self_approve
+
+    - id: indonesian-create-prd-uses-stable-capability-identity
+      description: Indonesian PRD wording uses the same capability identity without requiring internal skill names from the user.
+      trigger: Buatkan PRD untuk aplikasi monitoring semua project dan task aktif di ekosistem saya.
+      must_contain:
+        - product-development-workflow
+        - product-manager
+        - product-requirements
+        - PRD
+        - Problem Statement
+        - Scope
+        - Acceptance Criteria
+      must_not_contain:
+        - "skill: prd"
+        - user must name product-requirements
+        - start coding
+      quality_gates_tested:
+        - natural_language_alias_resolves_without_skill_name
+        - indonesian_prd_authoring_routes_product_requirements
+        - stable_executor_identity_preserved
+
+    - id: revise-existing-prd-preserves-authority-boundary
+      description: Revising an existing PRD updates the artifact while preserving accepted decisions and approval provenance.
+      trigger: Revise this PRD so the success metrics and acceptance criteria are measurable, but do not change already approved scope without product-owner authority.
+      must_contain:
+        - product-requirements
+        - revision
+        - success metrics
+        - acceptance criteria
+        - decision-provenance
+        - approval
+      must_not_contain:
+        - create a prd skill
+        - silently remove scope
+        - revised draft is automatically approved
+      quality_gates_tested:
+        - prd_revision_routes_product_requirements
+        - accepted_scope_preserved_without_supersession
+        - readiness_is_not_approval
+
+    - id: review-prd-readiness-does-not-silently-rewrite
+      description: A readiness-review request evaluates the supplied PRD and returns a verdict without silently authoring a replacement.
+      trigger: Review this PRD for readiness. Report missing evidence and blockers, but do not rewrite it.
+      must_contain:
+        - product-requirements
+        - PRD READINESS
+        - READY
+        - NEEDS REVISION
+        - BLOCKED
+        - missing evidence
+      must_not_contain:
+        - rewritten PRD
+        - start implementation
+        - approval inferred
+      quality_gates_tested:
+        - review_intent_distinguished_from_authoring
+        - missing_evidence_remains_explicit
+        - no_silent_rewrite
+
+    - id: conceptual-prd-question-is-explanation-only
+      description: Asking what a PRD is does not activate authoring or claim an artifact was produced.
+      trigger: What is a PRD and why is it useful?
+      must_contain:
+        - explanation
+        - Product Requirements Document
+      must_not_contain:
+        - activate product-development-workflow
+        - execute product-requirements
+        - PRD READINESS
+        - artifact created
+      quality_gates_tested:
+        - concept_question_is_not_authoring_intent
+        - no_false_positive_prd_route
+
+    - id: prd-vs-rfc-comparison-is-not-authoring
+      description: Comparing document types remains explanation-only unless a concrete authoring or review request is present.
+      trigger: Compare a PRD with an RFC.
+      must_contain:
+        - PRD
+        - RFC
+        - comparison
+      must_not_contain:
+        - execute product-requirements
+        - create PRD
+        - start product-development-workflow
+      quality_gates_tested:
+        - comparison_is_not_authoring_intent
+        - no_false_positive_prd_route
+
+    - id: duplicate-prd-skill-proposal-is-rejected
+      description: Renaming or duplicating product-requirements as prd is rejected because the acronym names the artifact rather than a new capability boundary.
+      trigger: Rename the product-requirements skill to prd and keep both during migration so users can find it more easily.
+      must_contain:
+        - product-requirements
+        - PRD is the artifact
+        - duplicate ownership
+        - routing ambiguity
+        - do not create
+      must_not_contain:
+        - create skills/prd/SKILL.md
+        - two active executors
+        - rename approved
+      quality_gates_tested:
+        - artifact_alias_does_not_create_new_capability
+        - duplicate_capability_rejected
+        - stable_identity_preserved
