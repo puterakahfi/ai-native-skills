@@ -1,6 +1,10 @@
 capability_orchestration:
   version: "0.1.0"
   status: experimental
+  authority:
+    skill_composition: ai-native-skills
+    runtime_execution: native-ai-fw
+    universal_semantics: ai-native-core_after_promotion
   package_types_preserved: [skill, workflow, meta-skill]
   orchestration_roles:
     - workflow
@@ -76,13 +80,24 @@ capability_orchestration:
       activation:
         platform: chatgpt_app
       produces: [platform_constraints, authentication_boundary, distribution_requirements]
-    capability-orchestrator:
-      package_type: meta-skill
-      orchestration_role: meta
-      consumes: [workflow_selection, owner_assignment, requested_artifacts, capability_catalog]
-      produces: [execution_graph, completeness_verdict, evidence_requirements]
 
-  execution_states:
+  composition_handoff:
+    required_inputs:
+      - workflow_selection
+      - skill_load_order
+      - owner_assignment
+      - specialist_composition
+      - reviewer_composition
+      - requested_artifacts
+      - catalog_version
+    required_runtime_outputs:
+      - execution_graph
+      - completeness_verdict
+      - execution_order
+      - evidence_requirements
+    runtime_repository: native-ai-fw
+
+  runtime_execution_states:
     - DISCOVERED
     - SELECTED
     - LOADED
@@ -93,7 +108,7 @@ capability_orchestration:
     - BLOCKED
     - SKIPPED
 
-  valid_state_transitions:
+  valid_runtime_state_transitions:
     DISCOVERED: [SELECTED, SKIPPED]
     SELECTED: [LOADED, BLOCKED, SKIPPED]
     LOADED: [EXECUTING, BLOCKED]
@@ -104,7 +119,7 @@ capability_orchestration:
     BLOCKED: []
     SKIPPED: []
 
-  required_execution_evidence:
+  required_runtime_evidence:
     EXECUTED:
       - capability_source_loaded
       - required_steps_completed
