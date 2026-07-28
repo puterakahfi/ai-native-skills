@@ -115,7 +115,7 @@ contract_coverage_inventory:
     path: skills/api-backward-compatibility-review/SKILL.md
     type: skill
     patterns: []
-    version: 1.0.0
+    version: 1.0.1
     implements: null
     contract_version: null
     contract_path_exists: null
