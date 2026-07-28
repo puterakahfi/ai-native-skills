@@ -1323,9 +1323,9 @@ contract_coverage_inventory:
     path: skills/product-development-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 2.3.0
+    version: 3.0.0
     implements: contracts/workflows/product-development.contract.yaml
-    contract_version: ~0.3
+    contract_version: ~0.4
     contract_path_exists: true
     legacy_boundary:
       covers: []
