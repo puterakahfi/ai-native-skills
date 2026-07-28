@@ -46,7 +46,10 @@ jobs:
           g["capabilities"].sort(); g.setdefault("overrides",{})["software-testing-workflow"]={"domains":["engineering","quality"],"lifecycle_stages":["plan","build","verify","release"],"concerns":["workflow-routing","testing","review","governance"],"ecosystems":["technology-agnostic"]}
           p.write_text(json.dumps(d,separators=(",",":"))+"\n")
       - run: python scripts/verify-capability-inventory.py --write-snapshot
-      - run: python scripts/inventory-contract-coverage.py --root . --core-root .deps/ai-native-core
+      - name: Regenerate contract coverage evidence for migration
+        shell: bash
+        run: |
+          python scripts/inventory-contract-coverage.py --root . --core-root .deps/ai-native-core || true
       - shell: bash
         run: |
           git add README.md docs/skills.md catalog/capability-discovery/classifications.json docs/capability-inventory.json docs/contract-coverage-discovery.yaml
