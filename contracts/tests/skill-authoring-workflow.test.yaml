@@ -1,0 +1,74 @@
+skill_test:
+  skill: skill-authoring-workflow
+  version: "1.0.0"
+  description: Verify intentional skill package operations use the canonical policy-backed authoring lifecycle without taking over health, evolution, or behavioral evaluation ownership.
+  cases:
+    - id: create-new-skill-uses-authoring-lifecycle
+      description: A new reusable capability is created through the authoring lifecycle and centralized behavioral contract.
+      trigger: Create a new reusable skill for reviewing database migration safety and prepare it for this repository.
+      must_contain:
+        - CREATE
+        - contracts/skill-package-policy.yaml
+        - contracts/tests/
+        - scripts/validate-skill-packages.py
+        - skill_operation
+      must_not_contain:
+        - skills/database-migration-safety/evals
+        - merge without authorization
+      quality_gates_tested:
+        - operation_is_classified_before_changes
+        - canonical_package_policy_is_loaded
+        - centralized_behavioral_contract_is_preserved
+
+    - id: intentional-restructure-preserves-behavior
+      description: Intentional package restructuring requires behavior-preservation evidence.
+      trigger: Restructure an existing large skill into a lean SKILL.md and conditional references while preserving its accepted behavior.
+      must_contain:
+        - RESTRUCTURE
+        - behavior preservation
+        - references/
+        - related-skill regression
+        - NOT_VERIFIED
+      must_not_contain:
+        - structure proves behavior
+        - skip regression evidence
+      quality_gates_tested:
+        - restructuring_requires_behavior_preservation_evidence
+        - progressive_disclosure_preserves_behavior
+
+    - id: audit-request-delegates-to-skill-doctor
+      description: An audit with unclear repair scope belongs to skill-doctor, not authoring.
+      trigger: Audit this skill package, identify why it is unhealthy, and report findings without changing files.
+      must_contain:
+        - skill-doctor
+        - audit
+        - no modification
+      must_not_contain:
+        - CREATE
+        - start authoring immediately
+      quality_gates_tested:
+        - health_audit_is_not_authoring
+
+    - id: verified-learning-delegates-to-evolution
+      description: A verified product lesson is promoted through skill-evolution.
+      trigger: A product fix is verified and transferable. Promote the reusable reasoning into the correct shared skill.
+      must_contain:
+        - skill-evolution
+        - verified learning
+        - regression evidence
+      must_not_contain:
+        - skill-authoring-workflow owns product learning
+      quality_gates_tested:
+        - verified_learning_owner_is_preserved
+
+    - id: behavioral-evaluation-delegates-to-skill-eval
+      description: Scoring whether behavior was applied remains owned by skill-eval.
+      trigger: Evaluate whether workflow-router was actually applied in this saved agent output.
+      must_contain:
+        - skill-eval
+        - behavioral
+        - output
+      must_not_contain:
+        - package compliance proves applied behavior
+      quality_gates_tested:
+        - behavioral_evaluation_owner_is_preserved
