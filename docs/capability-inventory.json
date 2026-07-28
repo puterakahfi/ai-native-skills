@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 96,
+    "skill": 97,
     "workflow": 11,
     "meta-skill": 7,
-    "total": 114
+    "total": 115
   },
   "items": [
     {
@@ -242,6 +242,11 @@
       "name": "domain-driven-design",
       "type": "skill",
       "path": "skills/domain-driven-design/SKILL.md"
+    },
+    {
+      "name": "end-to-end-testing",
+      "type": "skill",
+      "path": "skills/end-to-end-testing/SKILL.md"
     },
     {
       "name": "ethics-responsible-ai",
