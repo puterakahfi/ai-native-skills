@@ -30,6 +30,7 @@ contract_exemption:
       - the review date is reached
   prohibited_claims:
     - core_contract_conformance
+    - behavioral_verification
     - runtime_acceptance
     - product_acceptance
     - approval_or_authorization
