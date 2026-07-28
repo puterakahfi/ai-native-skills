@@ -4,10 +4,10 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 114
+    executable_artifacts: 116
     official_types:
       meta-skill: 7
-      skill: 96
+      skill: 98
       workflow: 11
     patterns:
       domain-reviewer: 1
@@ -15,7 +15,7 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 72
-      reviewed_exemption: 16
+      reviewed_exemption: 18
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -140,6 +140,21 @@ contract_coverage_inventory:
     conformance_path: skills/architecture-review/adapter.conformance.yaml
     exemption_path: null
     classification: contract_backed_v2
+    errors: []
+  - id: behavior-driven-development
+    path: skills/behavior-driven-development/SKILL.md
+    type: skill
+    patterns: []
+    version: 0.1.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/behavior-driven-development/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: brand-identity-review
     path: skills/brand-identity-review/SKILL.md
@@ -875,6 +890,21 @@ contract_coverage_inventory:
     conformance_path: null
     exemption_path: null
     classification: legacy_contract_backed
+    errors: []
+  - id: end-to-end-testing
+    path: skills/end-to-end-testing/SKILL.md
+    type: skill
+    patterns: []
+    version: 0.1.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/end-to-end-testing/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: ethics-responsible-ai
     path: skills/ethics-responsible-ai/SKILL.md

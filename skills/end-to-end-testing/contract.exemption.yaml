@@ -1,0 +1,37 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: end-to-end-testing
+    path: skills/end-to-end-testing/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills engineering capability maintainers
+  reason: >-
+    Feature puterakahfi/ai-native-skills#164 requires a tool-agnostic
+    end-to-end-testing capability, but no accepted ai-native-core contract has
+    been verified. The executable skill may be evaluated provisionally but must
+    not claim canonical Core conformance.
+  scope:
+    - static_contract_ownership
+    - core_gap_tracking
+  review_date: '2026-08-31'
+  evidence_refs:
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#164
+    - kind: github_issue
+      ref: puterakahfi/ai-native-core#76
+    - kind: executable_source
+      ref: skills/end-to-end-testing/SKILL.md
+  revisit:
+    blocking_issue: puterakahfi/ai-native-core#76
+    triggers:
+      - an accepted canonical end-to-end-testing contract is created
+      - journey selection or evidence semantics change
+      - the review date is reached
+  prohibited_claims:
+    - core_contract_conformance
+    - behavioral_verification
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active
