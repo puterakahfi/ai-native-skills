@@ -9,17 +9,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "catalog" / "published" / "capability-catalog.json"
-INVENTORY = ROOT / "docs" / "capability-inventory.json"
-DISCOVERY = ROOT / "catalog" / "capability-discovery"
-SOURCE_FILES = {
-    "inventory": INVENTORY,
-    "facets": DISCOVERY / "facets.json",
-    "classifications": DISCOVERY / "classifications.json",
-    "topics": DISCOVERY / "topics.json",
-    "job_profiles": DISCOVERY / "job-profiles.json",
-}
+DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 VALID_TYPES = {"skill", "workflow", "meta-skill"}
 
 
@@ -27,11 +17,15 @@ class CatalogError(RuntimeError):
     pass
 
 
-def read_json(path: Path) -> dict:
+def read_json(path: Path, root: Path) -> dict:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
-        raise CatalogError(f"{path.relative_to(ROOT)} is not valid JSON: {error}") from error
+        try:
+            display = path.relative_to(root)
+        except ValueError:
+            display = path
+        raise CatalogError(f"{display} is not valid JSON: {error}") from error
 
 
 def validate_revision(revision: str) -> None:
@@ -82,9 +76,21 @@ def validate_inventory(inventory: dict) -> tuple[dict, list[dict]]:
     return counts, items
 
 
-def build_catalog(revision: str) -> dict:
+def source_files(root: Path) -> dict[str, Path]:
+    discovery = root / "catalog" / "capability-discovery"
+    return {
+        "inventory": root / "docs" / "capability-inventory.json",
+        "facets": discovery / "facets.json",
+        "classifications": discovery / "classifications.json",
+        "topics": discovery / "topics.json",
+        "job_profiles": discovery / "job-profiles.json",
+    }
+
+
+def build_catalog(revision: str, root: Path) -> dict:
     validate_revision(revision)
-    documents = {name: read_json(path) for name, path in SOURCE_FILES.items()}
+    files = source_files(root)
+    documents = {name: read_json(path, root) for name, path in files.items()}
     counts, items = validate_inventory(documents["inventory"])
 
     for name in ("facets", "classifications", "topics", "job_profiles"):
@@ -104,8 +110,8 @@ def build_catalog(revision: str) -> dict:
             "inventory_schema_version": 1,
             "discovery_schema_version": 2,
             "files": {
-                name: path.relative_to(ROOT).as_posix()
-                for name, path in SOURCE_FILES.items()
+                name: path.relative_to(root).as_posix()
+                for name, path in files.items()
             },
         },
         "inventory": {
@@ -130,33 +136,50 @@ def main() -> int:
     parser.add_argument("--source-revision")
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--root", type=Path, default=DEFAULT_ROOT, help=argparse.SUPPRESS)
+    parser.add_argument("--output", type=Path, help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.write == args.check:
         parser.error("choose exactly one of --write or --check")
 
+    root = args.root.resolve()
+    output = (
+        args.output.resolve()
+        if args.output
+        else root / "catalog" / "published" / "capability-catalog.json"
+    )
+
     try:
         if args.check:
-            if not OUTPUT.is_file():
-                raise CatalogError(f"{OUTPUT.relative_to(ROOT)} is missing")
-            current = read_json(OUTPUT)
+            if not output.is_file():
+                try:
+                    display = output.relative_to(root)
+                except ValueError:
+                    display = output
+                raise CatalogError(f"{display} is missing")
+            current = read_json(output, root)
             revision = current.get("source", {}).get("revision")
             if not isinstance(revision, str):
                 raise CatalogError("published catalog source.revision is missing")
-            expected = render(build_catalog(revision))
-            actual = OUTPUT.read_text(encoding="utf-8")
+            expected = render(build_catalog(revision, root))
+            actual = output.read_text(encoding="utf-8")
             if actual != expected:
                 raise CatalogError("published capability catalog drifted from canonical sources")
         else:
             if not args.source_revision:
                 raise CatalogError("--source-revision is required with --write")
-            OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-            OUTPUT.write_text(render(build_catalog(args.source_revision)), encoding="utf-8")
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(render(build_catalog(args.source_revision, root)), encoding="utf-8")
     except CatalogError as error:
         print(f"published catalog error: {error}", file=sys.stderr)
         return 1
 
+    try:
+        display = output.relative_to(root)
+    except ValueError:
+        display = output
     action = "verified" if args.check else "generated"
-    print(f"Published capability catalog {action}: {OUTPUT.relative_to(ROOT)}")
+    print(f"Published capability catalog {action}: {display}")
     return 0
 
 
