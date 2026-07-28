@@ -1,0 +1,73 @@
+name: Bootstrap systems-reasoning inventory
+
+on:
+  push:
+    branches:
+      - 179-feature-systems-reasoning
+    paths:
+      - .github/workflows/bootstrap-systems-reasoning-inventory.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 179-feature-systems-reasoning
+
+      - name: Update generated inventory and discovery metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          readme = Path('README.md')
+          text = readme.read_text()
+          text = re.sub(
+              r'\*\*\d+ skills · \d+ workflows · \d+ meta-skills\*\*',
+              '**92 skills · 11 workflows · 7 meta-skills**',
+              text,
+              count=1,
+          )
+          readme.write_text(text)
+
+          taxonomy = Path('docs/skills.md')
+          text = taxonomy.read_text()
+          text = re.sub(r'^- `meta-skill`: \d+$', '- `meta-skill`: 7', text, flags=re.MULTILINE)
+          text = re.sub(r'^- Total executable skills: \d+$', '- Total executable skills: 110', text, flags=re.MULTILINE)
+          marker = '| `workflow-router` | Select one primary lifecycle and applicable platform/domain/continuity overlays. |'
+          row = '| `systems-reasoning` | Establish a proportionate implementation-independent system model and hand it to the selected lifecycle. |'
+          if row not in text:
+              text = text.replace(marker, marker + '\n' + row)
+          taxonomy.write_text(text)
+
+          classifications_path = Path('catalog/capability-discovery/classifications.json')
+          data = json.loads(classifications_path.read_text())
+          target = next(group for group in data['classification_groups'] if group['id'] == 'domain-architecture')
+          if 'systems-reasoning' not in target['capabilities']:
+              target['capabilities'].append('systems-reasoning')
+              target['capabilities'].sort()
+          target.setdefault('overrides', {})['systems-reasoning'] = {
+              'domains': ['product', 'engineering', 'governance'],
+              'lifecycle_stages': ['discover', 'define', 'plan', 'design', 'verify'],
+              'concerns': ['product-strategy', 'architecture', 'governance', 'workflow-routing'],
+              'ecosystems': ['technology-agnostic'],
+          }
+          classifications_path.write_text(json.dumps(data, separators=(',', ':')) + '\n')
+          PY
+
+          python3 scripts/verify-capability-inventory.py --write-snapshot
+          python3 scripts/verify-capability-discovery.py
+
+      - name: Commit generated metadata and remove bootstrap workflow
+        run: |
+          rm .github/workflows/bootstrap-systems-reasoning-inventory.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add README.md docs/skills.md docs/capability-inventory.json catalog/capability-discovery/classifications.json .github/workflows/bootstrap-systems-reasoning-inventory.yml
+          git commit -m 'docs: register systems-reasoning capability'
+          git push origin HEAD:179-feature-systems-reasoning
