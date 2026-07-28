@@ -14,25 +14,25 @@ contract_exemption:
   scope:
   - static_contract_ownership
   - core_gap_tracking
-  - local_behavioral_validation
   review_date: '2026-10-28'
   evidence_refs:
   - kind: github_issue
     ref: puterakahfi/ai-native-skills#179
   - kind: executable_source
     ref: skills/systems-reasoning/SKILL.md
-  - kind: behavioral_contract
+  - kind: executable_source
     ref: contracts/tests/systems-reasoning.test.yaml
-  - kind: related_core_contract
+  - kind: third_party_source
     ref: ai-native-core/contracts/skills/architecture/systems-thinking.contract.yaml
   revisit:
-    blocking_issue: puterakahfi/ai-native-skills#179
+    blocking_issue: null
     triggers:
     - a systems-reasoning core contract or RFC is accepted and published
     - the foundational overlay boundary is reviewed against canonical core terminology
     - evidence shows the capability should merge into or replace systems-thinking
   prohibited_claims:
   - core_contract_conformance
+  - behavioral_verification
   - runtime_acceptance
   - product_acceptance
   - approval_or_authorization
