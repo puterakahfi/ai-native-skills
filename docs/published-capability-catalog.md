@@ -30,12 +30,12 @@ Unknown schema versions, unknown capability types, duplicate identities, invalid
 
 ## Commands
 
-Generate from an exact accepted source revision:
+Generate from the current exact checkout revision:
 
 ```bash
 python3 scripts/build-published-capability-catalog.py \
   --write \
-  --source-revision <40-character-git-sha>
+  --source-revision "$(git rev-parse HEAD)"
 ```
 
 Verify the committed artifact against canonical sources:
@@ -43,5 +43,17 @@ Verify the committed artifact against canonical sources:
 ```bash
 python3 scripts/build-published-capability-catalog.py --check
 ```
+
+Run the network-independent regression harness:
+
+```bash
+python3 scripts/test-published-capability-catalog.py
+```
+
+The harness uses temporary fixture directories and does not modify canonical inventory, discovery documents, or the committed Published Catalog. It covers deterministic generation, exact provenance, duplicate identities, count drift, canonical-path mutations, discovery-schema mutations, mutable revisions, and malformed committed artifacts.
+
+## Temporary validation policy
+
+While GitHub Actions capacity is constrained, local command output is the accepted execution evidence. Record the exact commands, revision, exit status, and output on the pull request. Commands that have not been executed remain `NOT_VERIFIED`; the absence of CI is neither a pass nor a failure.
 
 The generated document records the exact immutable revision used as its source. Generation is deterministic: the same canonical inputs and source revision produce byte-identical output.
