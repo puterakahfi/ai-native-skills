@@ -1,0 +1,15 @@
+schema_version: 1
+capability: end-to-end-testing
+classification: reviewed_exemption
+reason: Canonical Core contract is not yet verified for this capability.
+tracking_issue: puterakahfi/ai-native-core#76
+review:
+  source_issue: puterakahfi/ai-native-skills#164
+  authority: executable repository owner
+  scope: provisional skill behavior only
+  expires_on_core_decision: true
+constraints:
+  - must preserve risk-based journey selection
+  - must preserve non-browser applicability
+  - must not normalize flaky or unavailable evidence as PASS
+  - browser tools remain adapters
