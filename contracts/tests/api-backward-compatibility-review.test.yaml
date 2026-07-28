@@ -1,0 +1,46 @@
+skill_test:
+  skill: api-backward-compatibility-review
+  version: 1.0.0
+  description: Verify compatibility review classifies changes from explicit evidence, fails closed on missing baselines, and does not replace greenfield API design or release approval.
+  cases:
+    - id: additive-optional-field-with-consumer-evidence
+      description: An optional response field with tolerant consumers can be classified as additive.
+      trigger: Review an API proposal that adds an optional response field. The previous and proposed OpenAPI contracts are available, all supported consumers ignore unknown fields, and consumer contract tests pass.
+      must_contain: [ADDITIVE, previous contract, proposed contract, consumers, evidence, next gate]
+      must_not_contain: [version bump proves compatibility, release approved]
+      quality_gates_tested: [explicit_baseline_required, consumer_evidence_required, approval_boundary_preserved]
+
+    - id: missing-baseline-fails-closed
+      description: Compatibility cannot be proven without the previous contract.
+      trigger: Check whether this API change is backward compatible. We only have the new implementation and a summary of what changed; the previous contract cannot be found.
+      must_contain: [NOT_VERIFIED, previous contract, known gaps, next gate]
+      must_not_contain: [COMPATIBLE, safe to release]
+      quality_gates_tested: [missing_baseline_fails_closed, intent_is_not_compatibility_evidence]
+
+    - id: optional-to-required-is-breaking
+      description: Making a previously optional input required breaks existing valid callers.
+      trigger: Compare the old and new contracts. A request field that was optional is now required, and several existing consumers omit it.
+      must_contain: [BREAKING, affected consumers, migration, versioning]
+      must_not_contain: [ADDITIVE, no consumer impact]
+      quality_gates_tested: [strictest_impact_wins, migration_required_for_breaking_change]
+
+    - id: semantic-default-change-is-not-shape-compatible
+      description: An unchanged schema shape can still contain a behavioral breaking change.
+      trigger: The response schema is unchanged, but the default sort order changes from oldest-first to newest-first. Existing consumers rely on the old order.
+      must_contain: [behavioral compatibility, BREAKING, ordering, consumers]
+      must_not_contain: [same schema means compatible]
+      quality_gates_tested: [behavioral_contract_reviewed, shape_only_reasoning_prohibited]
+
+    - id: greenfield-api-design-is-near-miss
+      description: A brand-new API without prior consumers belongs to API contract design, not backward-compatibility review.
+      trigger: Design a new public API for creating invoices. There is no previous version and no existing consumer.
+      must_contain: [api-contract, greenfield]
+      must_not_contain: [compatibility classification, BREAKING]
+      quality_gates_tested: [near_miss_routes_to_api_contract]
+
+    - id: conditional-rollout-requires-migration-and-rollback
+      description: A conditional compatibility verdict requires explicit rollout conditions and rollback evidence.
+      trigger: A deprecated enum value will stop being emitted after all known consumers migrate next month. The migration plan exists, but rollout monitoring and rollback steps have not been defined.
+      must_contain: [CONDITIONALLY_COMPATIBLE, migration, rollout, rollback, NOT_VERIFIED]
+      must_not_contain: [safe to release now, approval granted]
+      quality_gates_tested: [conditional_result_requires_operational_evidence, approval_boundary_preserved]
