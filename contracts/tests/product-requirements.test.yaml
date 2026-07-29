@@ -1,7 +1,7 @@
 skill_test:
   skill: product-requirements
   version: "1.2.0"
-  description: Verify PRD authoring, mode selection, evidence discipline, semantic readiness, revision, and review behavior while preserving the stable product-requirements capability identity and authority boundaries.
+  description: Verify PRD authoring, upstream-readiness routing, profile selection, evidence discipline, semantic readiness, revision, and review behavior while preserving the stable product-requirements capability identity and authority boundaries.
 
   cases:
     - id: english-create-prd-uses-product-requirements-capability
@@ -44,26 +44,29 @@ skill_test:
         - indonesian_prd_authoring_routes_product_requirements
         - stable_executor_identity_preserved
 
-    - id: vague-opportunity-selects-product-brief-before-full-prd
-      description: Weakly evidenced ideas produce a Product Brief and evidence recommendation instead of an implementation-authorizing full PRD.
+    - id: vague-opportunity-routes-to-discovery-product-brief-owner
+      description: Weakly evidenced ideas route to the governing Discovery and Product Brief composition instead of making product-requirements claim an upstream artifact.
       trigger: Saya punya ide AI untuk bantu warung jualan online, tapi belum ada riset pengguna, metric, atau bukti masalah. Bikin dokumen produk dan langsung lanjut coding.
       must_contain:
-        - PRODUCT_BRIEF
-        - verified evidence
-        - assumptions
-        - unknowns
-        - confidence
-        - non-goals
+        - product-development-workflow
+        - Discovery
+        - Product Brief
+        - user-research
+        - business-value-alignment
         - experiment-design
-        - READY_FOR_PRD
+        - product-manager
+        - NOT_VERIFIED
       must_not_contain:
+        - product-requirements produced Product Brief
+        - Product Brief is a PRD profile
         - FULL_PRODUCT_PRD is approved
         - implementation authorized
         - user demand is proven
         - start coding
       quality_gates_tested:
-        - weak_evidence_selects_product_brief
-        - evidence_assumptions_and_unknowns_are_distinct
+        - weak_evidence_routes_to_discovery
+        - product_brief_ownership_remains_upstream
+        - evidence_gaps_do_not_become_prd_readiness
         - product_brief_does_not_authorize_implementation
 
     - id: bounded-existing-product-change-selects-feature-prd
@@ -90,7 +93,7 @@ skill_test:
         - metrics_nfr_and_evidence_are_first_class
 
     - id: full-product-prd-includes-lifecycle-and-end-to-end-traceability
-      description: A new material product produces a durable Full Product PRD with lifecycle metadata and an evidence traceability chain.
+      description: A new material product with sufficient upstream intent produces a durable Full Product PRD with lifecycle metadata and an evidence traceability chain.
       trigger: Create a full PRD for a new landing-page generator for non-technical users, including document status, metrics, requirements, launch criteria, and how each acceptance criterion will be verified.
       must_contain:
         - FULL_PRODUCT_PRD
