@@ -1,6 +1,6 @@
 ---
 name: product-requirements
-description: Create, revise, review, and verify Product Requirements Documents (PRDs) for AI-native product development. Use when turning discovery, feature intent, user needs, constraints, and success metrics into a testable PRD, product scope, acceptance criteria, evidence plan, and readiness verdict. Do not use for conceptual PRD explanations, technical architecture specifications, implementation planning alone, or release execution.
+description: Create, revise, review, and verify Product Requirements Documents (PRDs) for AI-native product development. Use when turning verified discovery, feature intent, user needs, constraints, and success metrics into a testable PRD, product scope, acceptance criteria, evidence plan, and readiness verdict. Do not use for conceptual PRD explanations, pre-PRD Product Brief ownership, technical architecture specifications, implementation planning alone, or release execution.
 license: MIT
 metadata:
   ai-native-skills.version: 1.2.0
@@ -13,22 +13,23 @@ metadata:
 
 # Product Requirements / PRD
 
-Turn attributable product intent and evidence into a bounded, testable product contract. `PRD` is the user-facing artifact; `product-requirements` is the single executable capability identity.
+Turn attributable product intent and sufficient upstream evidence into a bounded, testable product contract. `PRD` is the user-facing artifact; `product-requirements` is the single executable capability identity.
 
 ## Boundary and composition
 
 ```text
-product-development-workflow
+product-development-workflow Discovery
+→ Product Brief from discovery/value/research composition
 → product-manager owns intent, value, scope authority, and product decisions
 → product-requirements authors/revises/reviews the PRD artifact
 → decision-provenance verifies approval and supersession claims
 ```
 
-Do not create or prefer a second `prd` skill. Do not treat an agent-authored document as product-owner approval.
+Do not create or prefer a second `prd` skill. Do not absorb Product Brief ownership from Discovery. Do not treat an agent-authored document as product-owner approval.
 
 Use this capability for:
 
-- PRD authoring from verified discovery or feature intent;
+- PRD authoring from sufficient verified discovery or bounded feature intent;
 - PRD revision with change and authority preservation;
 - PRD readiness review;
 - requirements, metrics, scope, acceptance criteria, evidence plan, and launch-criteria definition.
@@ -36,6 +37,7 @@ Use this capability for:
 Do not use it for:
 
 - explanation-only questions such as “Apa itu PRD?”;
+- vague opportunity discovery or Product Brief production;
 - technical architecture or API specifications (`spec-workflow`, `api-contract`);
 - delivery topology or task decomposition alone (`delivery-work-breakdown`);
 - release/deployment execution;
@@ -64,7 +66,7 @@ OBSERVED_IMPLEMENTATION current system state, not automatic product approval
 
 Missing evidence is `NOT_VERIFIED`; never fill it with invented facts, metrics, deadlines, effort, demand, or approval.
 
-## Intent and PRD mode classification
+## Intent, upstream readiness, and PRD profile
 
 Classify the request before producing an artifact:
 
@@ -75,27 +77,28 @@ REVIEW       evaluate readiness without silently replacing the PRD
 EXPLAIN      conceptual answer only; do not claim an artifact was produced
 ```
 
-For `AUTHOR`, select the smallest valid mode:
+For `AUTHOR`, verify upstream readiness before selecting a PRD profile:
 
 ```text
-PRODUCT_BRIEF
-  vague or weakly evidenced opportunity before a full PRD
+vague opportunity, missing target user/problem, or materially weak discovery
+  → route to product-development-workflow Discovery
+  → produce/complete Product Brief through its governing composition
+  → do not claim a PRD artifact or implementation authority
 
 FEATURE_PRD
-  bounded change inside an existing product
+  bounded change inside an existing product with attributable parent context
 
 FULL_PRODUCT_PRD
-  new product, material MVP, or broad product contract
+  new product, material MVP, or broad product contract with sufficient upstream intent
 ```
 
-Load [prd-modes-and-lifecycle.md](references/prd-modes-and-lifecycle.md) for mode requirements, document control, status semantics, and templates.
+Load [prd-modes-and-lifecycle.md](references/prd-modes-and-lifecycle.md) for profile requirements, upstream handoff, document control, status semantics, and templates.
 
 ## Allowed outputs
 
-Depending on intent and mode, produce one or more of:
+Depending on intent and profile, produce one or more of:
 
 ```text
-Product Brief
 Feature PRD
 Full Product PRD
 requirements summary
@@ -110,23 +113,26 @@ revision change report
 PRD readiness verdict
 ```
 
+A Product Brief may be referenced as an upstream input, but is not an output of this capability.
+
 ## Authoring procedure
 
-1. **Verify the source and mode.** Identify the attributable intent, effective upstream artifacts, evidence quality, and selected PRD mode.
-2. **Frame the problem before the solution.** State the user or business outcome, affected users, current alternatives, and evidence. Move implementation ideas to constraints or downstream handoffs.
-3. **Make value explicit.** State user value, business value, confidence, and unsupported assumptions.
-4. **Define goals and non-goals.** Goals describe measurable outcomes; non-goals create explicit scope protection.
-5. **Define measurable success.** Include a primary outcome metric, relevant activation/adoption metrics, guardrails, target/threshold, measurement method, and window when known.
-6. **Bound scope.** Record scope-in and scope-out; include deferral or reconsideration triggers when useful.
-7. **Describe the product journey.** Use user stories or jobs-to-be-done to connect situation, motivation, capability, and desired progress.
-8. **Write stable requirements.** Assign IDs, state observable product behavior, and avoid technical implementation unless it is an attributable constraint.
-9. **Classify non-functional requirements.** Address relevant quality domains or record an attributable `NOT_APPLICABLE` rationale. Load [non-functional-requirements.md](references/non-functional-requirements.md).
-10. **Write acceptance criteria.** Use Given/When/Then or equivalent observable conditions and trace every criterion to requirements.
-11. **Plan evidence.** Map goals, metrics, scope, requirements, acceptance criteria, verification method, and expected evidence. Load [requirements-and-evidence-traceability.md](references/requirements-and-evidence-traceability.md).
-12. **Capture constraints, dependencies, risks, and unknowns.** Give open questions an owner or next decision when attributable; mark blockers explicitly.
-13. **Define launch criteria.** Include product acceptance, analytics, observability, support, rollout/rollback, and applicable domain review—not only code completion.
-14. **Run readiness gates.** Load [readiness-rubric.md](references/readiness-rubric.md) and return a reproducible verdict.
-15. **Route authority.** Use `decision-provenance` for claims that the PRD, scope, deferral, risk, or downstream execution is approved.
+1. **Verify the source and upstream readiness.** Identify attributable intent, effective discovery/Product Brief inputs, evidence quality, and whether PRD authoring may begin. Route weak opportunities upstream instead of manufacturing readiness.
+2. **Select the PRD profile.** Use Feature PRD for a bounded change with effective parent context; use Full Product PRD for a new product, material MVP, or broad contract.
+3. **Frame the problem before the solution.** State the user or business outcome, affected users, current alternatives, and evidence. Move implementation ideas to constraints or downstream handoffs.
+4. **Make value explicit.** State user value, business value, confidence, and unsupported assumptions.
+5. **Define goals and non-goals.** Goals describe measurable outcomes; non-goals create explicit scope protection.
+6. **Define measurable success.** Include a primary outcome metric, relevant activation/adoption metrics, guardrails, target/threshold, measurement method, and window when known.
+7. **Bound scope.** Record scope-in and scope-out; include deferral or reconsideration triggers when useful.
+8. **Describe the product journey.** Use user stories or jobs-to-be-done to connect situation, motivation, capability, and desired progress.
+9. **Write stable requirements.** Assign IDs, state observable product behavior, and avoid technical implementation unless it is an attributable constraint.
+10. **Classify non-functional requirements.** Address relevant quality domains or record an attributable `NOT_APPLICABLE` rationale. Load [non-functional-requirements.md](references/non-functional-requirements.md).
+11. **Write acceptance criteria.** Use Given/When/Then or equivalent observable conditions and trace every criterion to requirements.
+12. **Plan evidence.** Map goals, metrics, scope, requirements, acceptance criteria, verification method, and expected evidence. Load [requirements-and-evidence-traceability.md](references/requirements-and-evidence-traceability.md).
+13. **Capture constraints, dependencies, risks, and unknowns.** Give open questions an owner or next decision when attributable; mark blockers explicitly.
+14. **Define launch criteria.** Include product acceptance, analytics, observability, support, rollout/rollback, and applicable domain review—not only code completion.
+15. **Run readiness gates.** Load [readiness-rubric.md](references/readiness-rubric.md) and return a reproducible verdict.
+16. **Route authority.** Use `decision-provenance` for claims that the PRD, scope, deferral, risk, or downstream execution is approved.
 
 ## Minimum traceability contract
 
@@ -183,8 +189,9 @@ SUPERSEDED     a verified later decision or artifact replaced this version
 ## Handoffs
 
 ```text
-weak opportunity evidence
-  → user-research / experiment-design / business-value-alignment
+weak opportunity evidence or incomplete Product Brief
+  → product-development-workflow Discovery
+  → user-research / experiment-design / business-value-alignment / product-manager
 
 ready PRD, MVP scope unresolved
   → product-manager + product-development-workflow MVP Definition
@@ -201,7 +208,8 @@ acceptance evidence required
 
 ## Quality gates
 
-- Request intent and PRD mode are explicit.
+- Request intent and PRD profile are explicit.
+- Upstream discovery is sufficient for PRD authoring or the request is routed upstream without producing a false PRD.
 - Problem statement is not a disguised solution.
 - Target users and excluded users are explicit when relevant.
 - User value, business value, evidence, assumptions, unknowns, and confidence are separated.
@@ -223,7 +231,7 @@ acceptance evidence required
 ```yaml
 prd_readiness:
   artifact_ref: ""
-  mode: PRODUCT_BRIEF | FEATURE_PRD | FULL_PRODUCT_PRD
+  profile: FEATURE_PRD | FULL_PRODUCT_PRD
   verdict: READY | NEEDS_REVISION | BLOCKED
   dimensions:
     problem_and_evidence: PASS | FAIL | NOT_VERIFIED | NOT_APPLICABLE
@@ -245,9 +253,10 @@ prd_readiness:
 
 ## Hard stops
 
-Return `BLOCKED` or preserve `NOT_VERIFIED` when:
+Return `BLOCKED`, preserve `NOT_VERIFIED`, or route upstream when:
 
 - problem, target user, or attributable intent is missing;
+- discovery/Product Brief evidence is too weak to support a product contract;
 - high-risk assumptions are treated as facts;
 - scope authority or supersession is claimed without provenance;
 - measurable success cannot be defined and no evidence-gathering step is accepted;
@@ -257,7 +266,8 @@ Return `BLOCKED` or preserve `NOT_VERIFIED` when:
 
 ## Verification checklist
 
-- [ ] Intent and PRD mode are classified.
+- [ ] Intent, upstream readiness, and PRD profile are classified.
+- [ ] Weak opportunities are routed to Discovery/Product Brief ownership without producing a false PRD.
 - [ ] Evidence, inference, assumptions, unknowns, and decisions are distinct.
 - [ ] Document control and lifecycle are present when a durable PRD is requested.
 - [ ] Problem, users, value, goals, non-goals, metrics, and scope are explicit.
