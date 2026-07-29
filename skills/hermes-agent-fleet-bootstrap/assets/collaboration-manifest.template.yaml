@@ -1,0 +1,94 @@
+schema_version: 1
+collaboration_manifest:
+  fleet_id: ""
+  topology: ""
+  orchestrator_profile: ""
+
+  allowed_interaction_modes:
+    - orchestrator_invocation
+    - durable_kanban_task
+    - temporary_delegation
+    - shared_artifact_handoff
+    - review_feedback_loop
+    - human_approval
+
+  profiles: []
+
+  task_contract:
+    required_fields:
+      - task_id
+      - outcome
+      - owner_profile
+      - required_inputs
+      - expected_outputs
+      - acceptance_criteria
+      - dependencies
+      - workspace_scope
+      - allowed_tools
+      - evidence_requirements
+      - correction_route
+    task_states:
+      - PLANNED
+      - READY
+      - IN_PROGRESS
+      - BLOCKED
+      - COMPLETED
+      - FAILED
+      - CANCELLED
+      - NOT_VERIFIED
+
+  artifact_handoffs:
+    - id: ""
+      producer_profile: ""
+      consumer_profiles: []
+      artifact_type: ""
+      artifact_ref: ""
+      version: ""
+      status: DRAFT | READY_FOR_HANDOFF | ACCEPTED | REJECTED | SUPERSEDED | NOT_VERIFIED
+      source_decisions: []
+      assumptions: []
+      evidence: []
+      unresolved_risks: []
+      correction_route: ""
+
+  graph_edges:
+    - from_profile: ""
+      to_profile: ""
+      mode: orchestrator_invocation | durable_kanban_task | temporary_delegation | shared_artifact_handoff | review_feedback_loop | human_approval
+      artifact_or_task_ref: ""
+      required: true
+
+  parallel_work:
+    enabled: false
+    independence_evidence: []
+    workspace_ownership: []
+    shared_file_policy: ""
+    integration_owner: ""
+
+  review_loops:
+    - producer_profile: ""
+      reviewer_profile: ""
+      review_scope: []
+      verdicts:
+        - PASS
+        - NEEDS_WORK
+        - BLOCKED
+        - NOT_VERIFIED
+      correction_owner: ""
+      max_iterations_or_termination_rule: ""
+      independence_status: VERIFIED | LIMITED_SHARED_MODEL | LIMITED_SHARED_CONTEXT | LIMITED_SHARED_TOOLS | NOT_VERIFIED
+
+  human_approval_points:
+    - action: ""
+      authority: ""
+      required_before: ""
+      evidence_ref: ""
+
+  validation:
+    duplicate_ownership: []
+    missing_owners: []
+    cycles: []
+    uncontrolled_all_to_all: false
+    shared_workspace_conflicts: []
+    findings: []
+    verdict: PASS | NEEDS_WORK | BLOCKED | NOT_VERIFIED
