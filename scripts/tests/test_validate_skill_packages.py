@@ -86,16 +86,35 @@ class SkillPackageValidatorTests(unittest.TestCase):
         official_installer = "https://hermes-agent.nousresearch.com/install.sh"
         if old_installer not in script_text:
             self.fail("Expected legacy installer endpoint was not found in runtime script")
-        runtime_script.write_text(
-            script_text.replace(old_installer, official_installer, 1),
+        script_text = script_text.replace(old_installer, official_installer, 1)
+        script_text = script_text.replace(
+            "      --skip-browser \\\n      --branch main \\",
+            "      --skip-browser \\\n      --no-skills \\\n      --non-interactive \\\n      --branch main \\",
+            1,
+        )
+        runtime_script.write_text(script_text, encoding="utf-8")
+
+        fake_bin = repository / ".tmp/epic-260-hermes-runtime/fake-bin"
+        fake_bin.mkdir(parents=True, exist_ok=True)
+        rg = fake_bin / "rg"
+        ffmpeg = fake_bin / "ffmpeg"
+        rg.write_text("#!/usr/bin/env bash\necho 'ripgrep 14.1.0 (acceptance stub)'\n", encoding="utf-8")
+        ffmpeg.write_text(
+            "#!/usr/bin/env bash\necho 'ffmpeg version 6.1.1 acceptance-stub'\n",
             encoding="utf-8",
         )
+        rg.chmod(0o755)
+        ffmpeg.chmod(0o755)
+
+        runtime_env = os.environ.copy()
+        runtime_env["PATH"] = str(fake_bin) + os.pathsep + runtime_env.get("PATH", "")
+        runtime_env["EPIC260_OPTIONAL_DEPENDENCY_MODE"] = "VERSION_STUBS"
 
         result = subprocess.run(
             ["bash", "scripts/run-hermes-fleet-runtime-acceptance.sh"],
             cwd=repository,
             check=False,
-            env=os.environ.copy(),
+            env=runtime_env,
         )
 
         evidence = repository / ".tmp/epic-260-hermes-runtime"
@@ -104,6 +123,7 @@ class SkillPackageValidatorTests(unittest.TestCase):
             for name in [
                 "failure.txt",
                 "install.log",
+                "version.txt",
                 "skill-install.txt",
                 "profiles-list.txt",
                 "kanban-init.txt",
