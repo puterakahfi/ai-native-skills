@@ -1,10 +1,11 @@
 capability_orchestration:
-  version: "0.1.0"
+  version: "0.2.0"
   status: experimental
   authority:
     skill_composition: ai-native-skills
-    runtime_execution: native-ai-fw
+    runtime_execution: puterakahfi/ai-native-os
     universal_semantics: ai-native-core_after_promotion
+    product_policy_and_acceptance: product_repository
   package_types_preserved: [skill, workflow, meta-skill]
   orchestration_roles:
     - workflow
@@ -16,6 +17,15 @@ capability_orchestration:
     - validator
     - meta
 
+  invariants:
+    - exactly_one_primary_workflow_or_standalone_capability
+    - exactly_one_owner
+    - every_required_artifact_has_a_selected_producer
+    - reviewers_are_separate_from_capability_execution_state
+    - gate_review_approval_delivery_and_acceptance_are_linked_records
+    - missing_required_evidence_fails_closed
+    - technical_readiness_does_not_synthesize_authorization
+
   intents:
     create_product_requirements:
       lifecycle: product_definition
@@ -23,12 +33,107 @@ capability_orchestration:
       owner: product-manager
       artifacts: [product_requirements_document]
       required_executors: [product-requirements]
+
     revise_product_requirements:
       lifecycle: product_definition
       primary_workflow: product-development-workflow
       owner: product-manager
       artifacts: [product_requirements_document]
       required_executors: [product-requirements]
+
+    add_product_feature:
+      lifecycle: feature_delivery
+      primary_workflow: new-feature-workflow
+      owner: product-manager
+      artifacts:
+        - implementation_change
+        - test_evidence
+        - documentation_verdict
+        - code_review_verdict
+      required_executors: [new-feature-workflow]
+      required_specialists: [documentation-assurance]
+      required_reviewers: [architecture-review, code-review-workflow]
+
+    fix_verified_regression:
+      lifecycle: defect_correction
+      primary_workflow: bugfix-workflow
+      owner: product-manager
+      artifacts:
+        - root_cause_report
+        - implementation_change
+        - regression_test_evidence
+        - documentation_verdict
+        - code_review_verdict
+      required_executors: [bugfix-workflow]
+      required_specialists: [documentation-assurance]
+      required_reviewers: [architecture-review, code-review-workflow]
+
+    assess_documentation_impact:
+      lifecycle: documentation_assurance
+      primary_capability: documentation-assurance
+      owner: product-manager
+      artifacts:
+        - documentation_impact_report
+        - documentation_update_plan
+        - documentation_verification_report
+        - documentation_verdict
+      required_executors: [documentation-assurance]
+
+    qualify_maintenance_signal:
+      lifecycle: operate_and_maintain
+      primary_capability: maintenance-case
+      owner: product-manager
+      artifacts:
+        - maintenance_signal_assessment
+        - maintenance_routing_input
+        - maintenance_case_record
+      required_executors: [maintenance-case]
+
+    handle_active_incident:
+      lifecycle: operate_and_maintain
+      primary_capability: incident-response
+      owner: product-manager
+      artifacts:
+        - maintenance_case_record
+        - incident_timeline
+        - triage_decision
+        - mitigation_steps
+        - maintenance_outcome_record
+        - documentation_verdict
+      required_executors: [maintenance-case, incident-response]
+      required_specialists: [observability-design, documentation-assurance]
+
+    deploy_approved_candidate:
+      lifecycle: delivery
+      primary_workflow: deployment-workflow
+      owner: product-manager
+      artifacts:
+        - deployment_record
+        - environment_verification_report
+        - documentation_verdict
+      required_executors: [deployment-workflow]
+      required_specialists: [observability-design, documentation-assurance]
+
+    resume_interrupted_work:
+      lifecycle: continuity
+      primary_capability: task-continuity
+      owner: product-manager
+      artifacts: [resume_context, continuity_validation, session_handoff]
+      required_executors: [task-continuity]
+
+    validate_product_outcome:
+      lifecycle: product_validation
+      primary_workflow: product-development-workflow
+      owner: product-manager
+      artifacts: [product_validation_report, next_product_decision]
+      required_executors: [product-manager]
+
+    review_reusable_learning:
+      lifecycle: capability_learning
+      primary_workflow: skill-evolution
+      owner: product-manager
+      artifacts: [capability_evolution_verdict]
+      required_executors: [skill-evolution]
 
   contextual_overlays:
     - id: chatgpt-app-development
@@ -39,24 +144,70 @@ capability_orchestration:
         - platform_constraints
         - authentication_boundary
         - distribution_requirements
+    - id: production-code-quality-baseline
+      when:
+        production_code_change: true
+      role: overlay
+      contributes:
+        - engineering_quality_plan
+        - quality_claims
+        - required_evidence
+    - id: documentation-assurance
+      when:
+        documentation_impact: required_or_not_verified
+      role: specialist
+      contributes:
+        - documentation_impact_report
+        - documentation_verdict
+    - id: task-continuity
+      when:
+        continuity_required: true
+      role: overlay
+      contributes:
+        - continuity_validation
+        - next_eligible_action
 
   capability_manifests:
     workflow-router:
       package_type: meta-skill
       orchestration_role: meta
       produces: [workflow_selection, skill_load_order, routing_rationale]
+
     role-switcher:
       package_type: meta-skill
       orchestration_role: meta
       produces: [owner_assignment, specialist_composition, reviewer_composition]
+
     product-development-workflow:
       package_type: workflow
       orchestration_role: workflow
-      produces: [product_lifecycle_state, product_acceptance_state]
+      produces: [product_lifecycle_state, product_acceptance_state, product_validation_report]
+
+    new-feature-workflow:
+      package_type: workflow
+      orchestration_role: workflow
+      produces: [implementation_change, test_evidence, implementation_submission]
+
+    bugfix-workflow:
+      package_type: workflow
+      orchestration_role: workflow
+      produces: [root_cause_report, implementation_change, regression_test_evidence]
+
+    deployment-workflow:
+      package_type: workflow
+      orchestration_role: workflow
+      produces: [deployment_record, environment_verification_report]
+
+    skill-evolution:
+      package_type: workflow
+      orchestration_role: workflow
+      produces: [capability_evolution_verdict]
+
     product-manager:
       package_type: skill
       orchestration_role: owner
-      produces: [product_decision, product_scope, priority_decision]
+      produces: [product_decision, product_scope, priority_decision, next_product_decision]
+
     product-requirements:
       package_type: skill
       orchestration_role: executor
@@ -74,12 +225,126 @@ capability_orchestration:
         - non_goals_declared
         - acceptance_criteria_testable
         - assumptions_disclosed
+
+    documentation-assurance:
+      package_type: skill
+      pattern: facade
+      orchestration_role: specialist
+      intents: [assess_documentation_impact]
+      consumes:
+        - governing_workflow
+        - change_or_subject_ref
+        - implementation_or_action_evidence
+        - repository_or_product_context
+      produces:
+        - documentation_impact_report
+        - documentation_update_plan
+        - documentation_verification_report
+        - documentation_verdict
+      completion_evidence:
+        - governing_context_loaded
+        - every_documentation_domain_classified
+        - required_documents_mapped
+        - consistency_and_freshness_checked
+        - blocking_findings_explicit
+        - verdict_recorded
+
+    maintenance-case:
+      package_type: skill
+      pattern: facade
+      orchestration_role: specialist
+      intents: [qualify_maintenance_signal, handle_active_incident]
+      consumes:
+        - signal_description
+        - signal_source_refs
+        - observed_at
+        - affected_subjects
+        - expected_outcome
+      produces:
+        - maintenance_signal_assessment
+        - maintenance_routing_input
+        - maintenance_case_record
+        - maintenance_outcome_record
+        - maintenance_followup
+      completion_evidence:
+        - signal_identity_and_time_recorded
+        - evidence_confidence_recorded
+        - active_incident_status_explicit
+        - exactly_one_primary_route_selected
+        - actual_outcome_evidence_recorded
+        - documentation_impact_reconciled
+        - closure_and_followup_recorded
+
+    incident-response:
+      package_type: skill
+      orchestration_role: executor
+      produces: [incident_timeline, triage_decision, mitigation_steps, postmortem_document, action_items]
+
+    task-continuity:
+      package_type: skill
+      orchestration_role: overlay
+      produces: [continuity_validation, resume_context, session_handoff, next_eligible_action]
+
+    observability-design:
+      package_type: skill
+      orchestration_role: specialist
+      produces: [observability_stack_design, alert_strategy, dashboard_blueprint, slo_definitions]
+
+    architecture-review:
+      package_type: skill
+      orchestration_role: reviewer
+      produces: [architecture_review_verdict, architecture_findings]
+
+    code-review-workflow:
+      package_type: workflow
+      orchestration_role: reviewer
+      produces: [code_review_verdict, review_findings]
+
     chatgpt-app-development:
       package_type: skill
       orchestration_role: overlay
       activation:
         platform: chatgpt_app
       produces: [platform_constraints, authentication_boundary, distribution_requirements]
+
+  artifact_families:
+    product:
+      - product_brief
+      - product_requirements_document
+      - product_experience_design
+      - technical_specification
+      - delivery_plan
+      - product_acceptance_matrix
+      - product_validation_report
+    engineering:
+      - implementation_change
+      - root_cause_report
+      - test_evidence
+      - regression_test_evidence
+      - architecture_review_verdict
+      - code_review_verdict
+    documentation:
+      - documentation_impact_report
+      - documentation_update_plan
+      - documentation_verification_report
+      - documentation_verdict
+    delivery:
+      - release_package
+      - deployment_record
+      - environment_verification_report
+    maintenance:
+      - maintenance_signal_assessment
+      - maintenance_routing_input
+      - maintenance_case_record
+      - maintenance_outcome_record
+      - maintenance_followup
+      - incident_timeline
+      - postmortem_document
+    continuity_and_learning:
+      - continuity_validation
+      - session_handoff
+      - execution_receipt
+      - capability_evolution_verdict
 
   composition_handoff:
     required_inputs:
@@ -95,7 +360,11 @@ capability_orchestration:
       - completeness_verdict
       - execution_order
       - evidence_requirements
-    runtime_repository: native-ai-fw
+      - capability_execution_records
+      - linked_review_and_gate_records
+      - deterministic_handoff
+      - execution_receipt
+    runtime_repository: puterakahfi/ai-native-os
 
   runtime_execution_states:
     - DISCOVERED
@@ -103,7 +372,6 @@ capability_orchestration:
     - LOADED
     - EXECUTING
     - EXECUTED
-    - REVIEWED
     - FAILED
     - BLOCKED
     - SKIPPED
@@ -113,29 +381,84 @@ capability_orchestration:
     SELECTED: [LOADED, BLOCKED, SKIPPED]
     LOADED: [EXECUTING, BLOCKED]
     EXECUTING: [EXECUTED, FAILED, BLOCKED]
-    EXECUTED: [REVIEWED, FAILED]
-    REVIEWED: []
+    EXECUTED: []
     FAILED: []
     BLOCKED: []
     SKIPPED: []
 
+  linked_record_families:
+    - execution_run
+    - artifact_reference
+    - evidence_reference
+    - gate_result
+    - review_result
+    - approval
+    - delivery_record
+    - environment_verification
+    - product_acceptance
+    - product_validation
+
   required_runtime_evidence:
     EXECUTED:
-      - capability_source_loaded
-      - required_steps_completed
-      - observable_output_created
+      - immutable_capability_source_loaded
+      - required_procedure_steps_recorded
+      - execution_run_identity_recorded
+      - observable_output_artifact_created
       - completion_evidence_recorded
-    REVIEWED:
-      - executed_evidence_present
+      - no_blocking_execution_failure
+    REVIEW_RESULT:
+      - reviewed_subject_and_artifact_recorded
       - reviewer_identity_recorded
+      - reviewer_independence_status_recorded
       - review_findings_recorded
       - review_verdict_recorded
+    GATE_RESULT:
+      - gate_criteria_recorded
+      - evidence_references_recorded
+      - evaluator_recorded
+      - explicit_status_recorded
+
+  deterministic_handoff:
+    required_fields:
+      - request_id
+      - catalog_version
+      - primary_workflow_or_capability
+      - effective_phase
+      - owner
+      - capability_states
+      - produced_artifacts
+      - evidence_refs
+      - completed_gates
+      - blocked_gates
+      - unresolved_findings
+      - required_authority
+      - next_eligible_action
+
+  execution_receipt:
+    required_fields:
+      - outcome
+      - acceptance_result
+      - workflow_executed
+      - capabilities_actually_applied
+      - observable_outputs
+      - validation_and_gates
+      - repository_changes
+      - project_changes
+      - known_failures_or_gaps
+      - capability_evolution_verdict
+      - next_eligible_action
 
   fail_closed_requirements:
     - duplicate_capability_ids_block
     - undeclared_dependencies_block
+    - missing_required_capabilities_block
+    - missing_required_artifact_producers_block
     - only_selected_capabilities_produce_artifacts
+    - required_reviewer_absence_or_conflict_blocks
     - blocked_graphs_have_no_execution_order
+    - executed_requires_execution_evidence
+    - review_is_a_linked_record_not_execution_state
+    - missing_authorization_blocks_protected_side_effects
 
   typed_errors:
     - ROUTING_AMBIGUOUS
@@ -154,6 +477,8 @@ capability_orchestration:
     - REVIEWER_NOT_INDEPENDENT
     - SKILL_SOURCE_NOT_LOADED
     - PROCEDURE_NOT_EXECUTED
+    - EXECUTION_RUN_MISSING
     - EXPECTED_ARTIFACT_MISSING
     - COMPLETION_GATE_FAILED
     - EVIDENCE_MISSING
+    - AUTHORIZATION_MISSING
