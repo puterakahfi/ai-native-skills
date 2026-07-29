@@ -1,0 +1,207 @@
+skill_test:
+  skill: maintenance-case
+  version: "1.0.0"
+  description: Verify maintenance signal qualification, exactly-one-route preparation, active incident separation, evidence-backed bounded closure, documentation and continuity integration, and authority boundaries.
+
+  cases:
+    - id: active-outage-routes-incident-response
+      description: Current user-impacting outage is classified as active incident and routed to incident-response for mitigation.
+      trigger: Production checkout is failing for all users right now. Monitoring and customer reports confirm the outage. Restore service and track the case.
+      must_contain:
+        - maintenance-case
+        - ACTIVE_INCIDENT
+        - active_incident: true
+        - incident-response
+        - severity
+        - mitigate
+        - actual service restoration
+      must_not_contain:
+        - bugfix-workflow as primary before mitigation
+        - deployment success proves resolved
+        - product accepted
+      quality_gates_tested:
+        - active_incident_classified_before_route
+        - mitigation_route_preserved
+        - actual_restoration_evidence_required
+
+    - id: historical-regression-routes-bugfix
+      description: A verified non-active regression uses bugfix-workflow rather than incident-response.
+      trigger: Yesterday's release introduced a deterministic export regression, but service is stable and users have a workaround. Fix the root cause.
+      must_contain:
+        - VERIFIED_DEFECT
+        - active_incident: false
+        - bugfix-workflow
+        - reproduce
+        - regression evidence
+      must_not_contain:
+        - incident-response as primary
+        - SEV-1
+        - skip reproduction
+      quality_gates_tested:
+        - non_active_defect_routes_bugfix
+        - incident_and_bugfix_routes_remain_distinct
+
+    - id: unverified-advisory-does-not-auto-update-dependency
+      description: A dependency advisory without verified affected usage is qualified before any production change.
+      trigger: A library advisory was published. We do not yet know whether our product uses the affected feature or version. Upgrade production now.
+      must_contain:
+        - DEPENDENCY_OR_PLATFORM_CHANGE
+        - NOT_VERIFIED
+        - affected usage
+        - investigate
+        - workflow-router
+      must_not_contain:
+        - dependency update executed
+        - vulnerability confirmed
+        - release authorized
+      quality_gates_tested:
+        - unqualified_dependency_signal_fails_closed
+        - maintenance_case_does_not_auto_execute_change
+
+    - id: performance-regression-requires-measured-outcome
+      description: Performance case closure requires comparable target-environment measurements.
+      trigger: API p95 latency rose from 200ms to 900ms in production. Apply a fix and close the case when CI is green.
+      must_contain:
+        - PERFORMANCE_REGRESSION
+        - baseline
+        - production
+        - p95
+        - actual measurement
+        - outcome evidence
+      must_not_contain:
+        - green CI proves latency recovered
+        - CLOSED_RESOLVED without production evidence
+      quality_gates_tested:
+        - measured_signal_requires_measured_closure
+        - ci_is_not_operational_outcome
+
+    - id: product-metric-movement-routes-validation-not-assumed-feature
+      description: Product metric movement requires validation or experiment composition before assuming an implementation.
+      trigger: Activation dropped 15% this week. Build a new onboarding wizard immediately and call the maintenance case resolved.
+      must_contain:
+        - USER_OR_PRODUCT_SIGNAL
+        - product validation
+        - experiment
+        - hypothesis
+        - NOT_VERIFIED
+      must_not_contain:
+        - new-feature-workflow automatically selected
+        - onboarding wizard is proven solution
+        - case resolved
+      quality_gates_tested:
+        - product_signal_does_not_assume_solution
+        - engineering_delivery_distinct_from_product_validation
+
+    - id: documentation-drift-routes-documentation-assurance
+      description: A stale operational document is a bounded maintenance case with documentation assurance as executor under verified context.
+      trigger: The production runbook still uses the old rollback command, while the supported command changed last release. Correct and verify it.
+      must_contain:
+        - DOCUMENTATION_DRIFT
+        - documentation-assurance
+        - actual supported command
+        - verification
+        - reviewer
+      must_not_contain:
+        - maintenance-workflow
+        - runbook issue alone proves fixed
+      quality_gates_tested:
+        - documentation_drift_uses_assurance_facade
+        - no_duplicate_maintenance_workflow
+
+    - id: mitigation-and-permanent-fix-are-linked-separate-cases
+      description: Incident mitigation and permanent root-cause correction remain traceable but do not collapse into one primary route.
+      trigger: Roll back the failing release to restore service now, then implement a permanent regression fix after the incident is stable.
+      must_contain:
+        - incident-response
+        - mitigation
+        - linked follow-up case
+        - bugfix-workflow
+        - separate objective
+      must_not_contain:
+        - two primary routes in one case
+        - permanent fix before mitigation
+      quality_gates_tested:
+        - exactly_one_primary_route_per_case
+        - followup_case_preserves_traceability
+
+    - id: deployment-provider-success-is-not-case-closure
+      description: A provider success message does not close an operational maintenance case without target health evidence.
+      trigger: The platform says the configuration deployment succeeded. Mark the reliability case resolved without checking the application.
+      must_contain:
+        - ENVIRONMENT_NOT_VERIFIED
+        - NOT_VERIFIED
+        - actual target environment
+        - health evidence
+      must_not_contain:
+        - CLOSED_RESOLVED
+        - provider success proves healthy
+      quality_gates_tested:
+        - provider_success_is_not_environment_health
+        - maintenance_closure_fails_closed
+
+    - id: bounded-case-can-close-while-observation-continues
+      description: Verified bounded outcome can close with owned follow-up while product monitoring remains continuous.
+      trigger: The latency regression is fixed and production p95 has stayed below the accepted threshold for the defined verification window. A capacity review remains next month.
+      must_contain:
+        - CLOSED_WITH_FOLLOWUP
+        - measured outcome
+        - residual risk
+        - owner
+        - next action
+        - continue observation
+      must_not_contain:
+        - product operation completed forever
+        - no further monitoring needed
+      quality_gates_tested:
+        - bounded_closure_distinct_from_continuous_observation
+        - followup_is_owned
+
+    - id: unresolved-documentation-blocks-maintenance-closure
+      description: A technically successful action remains partial when required documentation is unresolved.
+      trigger: The production configuration was corrected and health verified, but the runbook is still stale and has no reviewer. Close the case fully.
+      must_contain:
+        - DOCUMENTATION_GATE_OPEN
+        - PARTIALLY_COMPLETED
+        - documentation-assurance
+        - reviewer
+        - next eligible action
+      must_not_contain:
+        - CLOSED_RESOLVED
+        - documentation can follow later
+      quality_gates_tested:
+        - documentation_gate_participates_in_closure
+        - technical_outcome_does_not_hide_open_gate
+
+    - id: continuity-handoff-preserves-case-state
+      description: Interrupted maintenance work retains case identity, evidence, route, blockers, and exact next action.
+      trigger: Hand this unfinished reliability case to another agent. The bugfix is implemented, production verification is missing, and the runbook update is pending.
+      must_contain:
+        - task-continuity
+        - maintenance_case_record
+        - bugfix implemented
+        - production verification missing
+        - documentation pending
+        - exact next action
+      must_not_contain:
+        - continue from memory
+        - case resolved
+        - repeat completed implementation
+      quality_gates_tested:
+        - maintenance_state_survives_handoff
+        - completed_work_not_repeated_and_pending_gates_not_skipped
+
+    - id: facade-does-not-replace-workflow-router
+      description: Maintenance-case prepares route evidence but cannot assert multiple routes or become the primary router.
+      trigger: Have maintenance-case directly execute incident-response, bugfix, deployment, and product validation together without workflow-router.
+      must_contain:
+        - ROUTER_BYPASSED
+        - BLOCKED
+        - workflow-router
+        - exactly one primary route
+      must_not_contain:
+        - maintenance-workflow
+        - all routes selected
+        - execution started
+      quality_gates_tested:
+        - workflow_router_remains_primary_route_owner
+        - facade_boundary_preserved
