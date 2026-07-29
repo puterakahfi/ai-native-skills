@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/epic-260-hermes-runtime-pr.yml
       - .github/workflows/epic-260-hermes-runtime-acceptance.yml
+      - scripts/run-hermes-fleet-runtime-acceptance.sh
       - skills/hermes-agent-fleet-bootstrap/**
       - docs/hermes-agent-fleet-bootstrap-*.md
 
@@ -82,9 +83,10 @@ jobs:
                       env['PATH'] = os.pathsep.join(paths + [env.get('PATH', '')])
 
       - name: Upload direct Hermes runtime evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: epic-260-hermes-runtime-evidence
           path: .tmp/epic-260-hermes-runtime
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
