@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 99,
+    "skill": 101,
     "workflow": 13,
     "meta-skill": 7,
-    "total": 119
+    "total": 121
   },
   "items": [
     {
@@ -249,6 +249,11 @@
       "path": "skills/diagram-architect/SKILL.md"
     },
     {
+      "name": "documentation-assurance",
+      "type": "skill",
+      "path": "skills/documentation-assurance/SKILL.md"
+    },
+    {
       "name": "domain-driven-design",
       "type": "skill",
       "path": "skills/domain-driven-design/SKILL.md"
@@ -317,6 +322,11 @@
       "name": "macrostructures",
       "type": "skill",
       "path": "skills/macrostructures/SKILL.md"
+    },
+    {
+      "name": "maintenance-case",
+      "type": "skill",
+      "path": "skills/maintenance-case/SKILL.md"
     },
     {
       "name": "master-design",
