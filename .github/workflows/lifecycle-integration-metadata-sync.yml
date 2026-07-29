@@ -1,0 +1,71 @@
+name: Lifecycle Integration Metadata Sync
+
+on:
+  push:
+    branches:
+      - 250-lifecycle-orchestration
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]' || !contains(github.event.head_commit.message, 'sync lifecycle integration metadata')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 250-lifecycle-orchestration
+          path: ai-native-skills
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: puterakahfi/ai-native-core
+          path: ai-native-core
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check PyYAML
+      - name: Generate contract coverage and taxonomy counts
+        run: |
+          python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          import yaml
+
+          root = Path('ai-native-skills').resolve()
+          core = Path('ai-native-core').resolve()
+          script = root / 'scripts/inventory-contract-coverage.py'
+          spec = importlib.util.spec_from_file_location('inventory_contract_coverage', script)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          document = module.build_inventory(root, core)
+          inventory = document['contract_coverage_inventory']
+          rendered = yaml.safe_dump(document, sort_keys=False, allow_unicode=True)
+          (root / 'docs/contract-coverage-discovery.yaml').write_text(rendered, encoding='utf-8')
+
+          summary = inventory['summary']
+          types = summary['official_types']
+          path = root / 'docs/skills.md'
+          text = path.read_text(encoding='utf-8')
+          import re
+          text = re.sub(r'- `skill`: \d+', f"- `skill`: {types['skill']}", text, count=1)
+          text = re.sub(r'- `workflow`: \d+', f"- `workflow`: {types['workflow']}", text, count=1)
+          text = re.sub(r'- `meta-skill`: \d+', f"- `meta-skill`: {types['meta-skill']}", text, count=1)
+          text = re.sub(r'- Total executable skills: \d+', f"- Total executable skills: {summary['executable_artifacts']}", text, count=1)
+          path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit synchronized metadata
+        working-directory: ai-native-skills
+        run: |
+          if git diff --quiet -- docs/contract-coverage-discovery.yaml docs/skills.md; then
+            echo 'Metadata already synchronized.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/contract-coverage-discovery.yaml docs/skills.md
+          git commit -m 'chore(metadata): sync lifecycle integration metadata'
+          git push origin HEAD:250-lifecycle-orchestration
