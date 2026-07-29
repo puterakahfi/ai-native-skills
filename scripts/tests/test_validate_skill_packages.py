@@ -97,6 +97,11 @@ class SkillPackageValidatorTests(unittest.TestCase):
         if original_mkdir not in script_text:
             self.fail("Expected install-directory preparation line was not found")
         script_text = script_text.replace(original_mkdir, replacement_mkdir, 1)
+
+        source_start = script_text.index("# Serve the exact PR checkout locally")
+        source_end = script_text.index("# No bot or provider secrets", source_start)
+        direct_install = '''# Install the exact PR-head skill through Hermes' supported direct-URL source.\nSKILL_SOURCE_SHA="${EPIC260_SKILL_SOURCE_SHA:-${GITHUB_SHA}}"\nSKILL_URL="https://raw.githubusercontent.com/puterakahfi/ai-native-skills/${SKILL_SOURCE_SHA}/skills/hermes-agent-fleet-bootstrap/SKILL.md"\n\nset +e\nprintf 'y\\n' | "$HERMES_BIN" -p engineering-orchestrator skills install \\\n  "$SKILL_URL" --force \\\n  > "$EVIDENCE_DIR/skill-install.txt" 2>&1\nSKILL_INSTALL_RC=$?\nrun_capture orchestrator-skills.txt "$HERMES_BIN" -p engineering-orchestrator skills list\nSKILL_LIST_RC=$?\nrun_capture orchestrator-prompt-size.json "$HERMES_BIN" -p engineering-orchestrator prompt-size --json\nPROMPT_SIZE_RC=$?\nset -e\nrecord_exit skill-install "$SKILL_INSTALL_RC"\nrecord_exit skill-list "$SKILL_LIST_RC"\nrecord_exit prompt-size "$PROMPT_SIZE_RC"\n[[ "$SKILL_INSTALL_RC" -eq 0 ]]\ngrep -q 'hermes-agent-fleet-bootstrap' "$EVIDENCE_DIR/orchestrator-skills.txt"\n\n'''
+        script_text = script_text[:source_start] + direct_install + script_text[source_end:]
         runtime_script.write_text(script_text, encoding="utf-8")
 
         fake_bin = repository / ".tmp/epic-260-hermes-runtime/fake-bin"
@@ -114,6 +119,12 @@ class SkillPackageValidatorTests(unittest.TestCase):
         runtime_env = os.environ.copy()
         runtime_env["PATH"] = str(fake_bin) + os.pathsep + runtime_env.get("PATH", "")
         runtime_env["EPIC260_OPTIONAL_DEPENDENCY_MODE"] = "VERSION_STUBS"
+        event_path = runtime_env.get("GITHUB_EVENT_PATH")
+        if event_path and Path(event_path).is_file():
+            event = json.loads(Path(event_path).read_text(encoding="utf-8"))
+            head_sha = event.get("pull_request", {}).get("head", {}).get("sha")
+            if head_sha:
+                runtime_env["EPIC260_SKILL_SOURCE_SHA"] = head_sha
 
         result = subprocess.run(
             ["bash", "scripts/run-hermes-fleet-runtime-acceptance.sh"],
@@ -130,6 +141,7 @@ class SkillPackageValidatorTests(unittest.TestCase):
                 "install.log",
                 "version.txt",
                 "skill-install.txt",
+                "orchestrator-skills.txt",
                 "profiles-list.txt",
                 "kanban-init.txt",
                 "dispatcher-dry-run.json",
