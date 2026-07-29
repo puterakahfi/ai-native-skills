@@ -423,6 +423,7 @@
         {
           "capabilities": [
             "incident-response",
+            "maintenance-case",
             "native-ai-runtime-ops",
             "observability-design",
             "resilience-engineering"
@@ -454,6 +455,29 @@
                 "learning"
               ],
               "lifecycle_stages": [
+                "operate",
+                "learn"
+              ]
+            },
+            "maintenance-case": {
+              "concerns": [
+                "workflow-routing",
+                "incident-management",
+                "reliability",
+                "documentation",
+                "governance"
+              ],
+              "domains": [
+                "product",
+                "engineering",
+                "operations"
+              ],
+              "ecosystems": [
+                "technology-agnostic"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "plan",
                 "operate",
                 "learn"
               ]
@@ -1128,6 +1152,7 @@
         {
           "capabilities": [
             "decision-provenance",
+            "documentation-assurance",
             "ethics-responsible-ai",
             "git-workflow",
             "language-standards",
@@ -1160,6 +1185,29 @@
                 "review",
                 "governance",
                 "documentation"
+              ]
+            },
+            "documentation-assurance": {
+              "concerns": [
+                "documentation",
+                "review",
+                "governance",
+                "developer-experience"
+              ],
+              "domains": [
+                "engineering",
+                "governance",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "technology-agnostic"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify",
+                "release",
+                "operate"
               ]
             },
             "ethics-responsible-ai": {
@@ -2606,6 +2654,11 @@
         "type": "skill"
       },
       {
+        "name": "documentation-assurance",
+        "path": "skills/documentation-assurance/SKILL.md",
+        "type": "skill"
+      },
+      {
         "name": "domain-driven-design",
         "path": "skills/domain-driven-design/SKILL.md",
         "type": "skill"
@@ -2673,6 +2726,11 @@
       {
         "name": "macrostructures",
         "path": "skills/macrostructures/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "maintenance-case",
+        "path": "skills/maintenance-case/SKILL.md",
         "type": "skill"
       },
       {
@@ -2963,8 +3021,8 @@
     ],
     "counts": {
       "meta-skill": 7,
-      "skill": 99,
-      "total": 119,
+      "skill": 101,
+      "total": 121,
       "workflow": 13
     }
   },
@@ -2980,6 +3038,6 @@
     },
     "inventory_schema_version": 1,
     "repository": "puterakahfi/ai-native-skills",
-    "revision": "9cc6b3f8a7b8344c177f225bc4d98a29cad599b0"
+    "revision": "a4688f4aa20fc3537c9bbeedb3060402133cf3fc"
   }
 }
