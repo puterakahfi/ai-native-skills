@@ -3,7 +3,7 @@
 Issue: `puterakahfi/ai-native-skills#247`  
 Parent epic: `puterakahfi/ai-native-skills#246`  
 Date: 2026-07-29  
-Status: `PROPOSED_FOR_OWNER_APPROVAL`
+Status: `OWNER_APPROVED`
 
 ## 1. Decision summary
 
@@ -27,7 +27,9 @@ decision:
   runtime_execution_owner: puterakahfi/ai-native-os
   product_policy_owner: product_repositories
   core_rfc_verdict: NO_CORE_CHANGE_FOR_MVP
-  review_status: LIMITED_INDEPENDENCE_OWNER_REVIEW_REQUIRED
+  owner_approval: APPROVED
+  approval_source: explicit_user_instruction_2026-07-29
+  review_status: LIMITED_INDEPENDENCE
 ```
 
 The approved implementation must not create a thirteenth linear product-development phase, a second end-to-end engineering workflow, or a competing maintenance router.
@@ -76,7 +78,7 @@ pr_target: 246-lifecycle-completion
 source_main_revision: 5cd82bb18bd20a286a1ce4a8224c8dc76e4dd7b6
 ```
 
-This workstream is an independently reviewable architecture-decision slice. It does not authorize implementation in child issues, merge to the integration branch, final merge to `main`, release, deployment, or product acceptance.
+This workstream is an independently reviewable architecture-decision slice. It authorizes downstream implementation under #248 and #249, while merge, release, deployment, and product acceptance remain separately evidenced.
 
 ## 3. Evidence inspected
 
@@ -113,8 +115,6 @@ Duplicate searches found no separate open Core RFC or competing implementation o
 
 ## 5. Decision D-1 — Preserve the twelve-phase product lifecycle
 
-### Decision
-
 `product-development-workflow` remains a twelve-phase lifecycle. No `operate_maintain` phase is added in this epic.
 
 ```text
@@ -149,20 +149,9 @@ Observe
 → continue observation
 ```
 
-### Rationale
-
-- Continuous product operation has no natural terminal point, while a product-development lifecycle and each maintenance case require bounded completion.
-- A thirteenth linear phase would make product completion ambiguous or impossible.
-- Existing workflows already own feature, bugfix, review, deployment, design, and product-validation lifecycles.
-- The missing capability is composition and evidence continuity, not another universal lifecycle.
-
-### Closure rule
-
 Continuous observation does not prevent closure of a bounded maintenance case. A case closes only when its explicit outcome, evidence, remaining gaps, owner, and next action are recorded.
 
 ## 6. Decision D-2 — Documentation assurance is a facade skill
-
-### Decision
 
 Create `documentation-assurance` in `ai-native-skills` as:
 
@@ -174,19 +163,9 @@ lifecycle_role: overlay_and_completion_gate
 core_contract_for_mvp: none
 ```
 
-### Owned scope
+It owns documentation-impact applicability classification, affected-document discovery and mapping, shared evidence and consistency rules, a normalized verdict, blocking findings, specialist selection, and receipt/handoff integration. It does not own every document's content or product-specific approval.
 
-`documentation-assurance` owns:
-
-- documentation-impact applicability classification;
-- discovery and mapping of affected documentation domains;
-- shared evidence and consistency contract;
-- normalized documentation verdict;
-- blocking findings and handoff;
-- specialist selection for affected documentation domains;
-- execution-receipt and continuity integration.
-
-Expected primary outputs:
+Expected outputs:
 
 ```text
 documentation_impact_report
@@ -203,30 +182,9 @@ DOCUMENTATION_NOT_APPLICABLE
 DOCUMENTATION_NOT_VERIFIED
 ```
 
-### Delegated scope
-
-It does not own every document's content. Content and review remain with the applicable owner, for example:
-
-- PRD and scope documentation → `product-requirements` / product owner;
-- architecture decisions → `adr` / architecture owner;
-- API and schema contracts → `api-contract` / API owner;
-- user-facing product content → product repository, content owner, or `content-strategy`;
-- developer onboarding/setup → product repository and applicable developer-experience capability;
-- operational runbook and deployment documentation → product operations owner;
-- release notes/changelog → release owner;
-- security/privacy documentation → governing security/privacy authority.
-
-### Integration boundary
-
 The facade is loaded conditionally by feature, bugfix, review, release, deployment, maintenance, and continuity compositions. It never becomes the primary product or implementation lifecycle.
 
-### Why not a documentation workflow
-
-The required value is applicability, evidence normalization, consistency, and verdict across many existing lifecycles. A new workflow would compete with those lifecycles and make documentation-only versus implementation work ambiguous.
-
 ## 7. Decision D-3 — Maintenance is normalized by a facade skill, not a new workflow
-
-### Decision
 
 Create `maintenance-case` in `ai-native-skills` as:
 
@@ -238,17 +196,7 @@ lifecycle_role: operational_case_overlay
 core_contract_for_mvp: none
 ```
 
-### Owned scope
-
-`maintenance-case` owns:
-
-- operational/product signal intake and evidence qualification;
-- confidence and active-incident classification;
-- normalized maintenance-case identity and scope;
-- signal-to-route input artifact;
-- cross-workflow evidence linkage;
-- bounded case completion and recurrence/follow-up record;
-- integration with `documentation-assurance` and `task-continuity`.
+It owns operational/product signal intake, evidence qualification, active-incident classification, normalized maintenance-case identity and scope, routing input, cross-workflow evidence linkage, bounded closure, and recurrence/follow-up. `workflow-router` still selects exactly one primary route.
 
 Expected outputs:
 
@@ -260,47 +208,11 @@ maintenance_outcome_record
 maintenance_followup
 ```
 
-### Routing boundary
-
-`maintenance-case` may recommend or prepare routing input, but `workflow-router` selects the primary route.
-
-```text
-active incident
-  → incident-response standalone capability
-
-verified non-active defect or regression
-  → bugfix-workflow
-
-approved improvement or new capability
-  → new-feature-workflow
-
-existing design deficiency
-  → design audit/refinement/redesign route
-
-release/deploy/rollback action
-  → deployment-workflow
-
-review-only request
-  → code-review-workflow or applicable domain review
-
-product-value uncertainty
-  → product-development product-validation/experiment composition
-
-documentation-only correction
-  → documentation-assurance as the executor under the applicable governing context
-```
-
-### Why not a maintenance workflow
-
-A general maintenance workflow would duplicate several accepted lifecycles and either become a shallow router or absorb incident, bugfix, deployment, security, design, and product-validation responsibilities. The correct composition is a bounded case facade plus one primary governing route.
-
 ## 8. Decision D-4 — Runtime state must preserve record-family separation
-
-### Decision
 
 Capability execution state is not the same as review, gate, approval, delivery, or product acceptance.
 
-The runtime capability-node state model for the MVP is:
+MVP capability-node states:
 
 ```text
 DISCOVERED
@@ -313,7 +225,7 @@ BLOCKED
 SKIPPED
 ```
 
-The following are linked record families, not capability-node states:
+Linked record families, not capability-node states:
 
 ```text
 review result
@@ -326,28 +238,11 @@ product acceptance
 product validation
 ```
 
-### Required correction
+WS4 must migrate the current experimental `EXECUTED → REVIEWED` transition into a linked review record or equivalent runtime projection. `ACCEPTED`, `AUTHORIZED`, `DEPLOYED`, and `VERIFIED` must not be introduced as capability execution states.
 
-The current experimental orchestration manifest models `REVIEWED` as a transition from `EXECUTED`. WS4 must migrate this into an explicit linked review record or equivalent runtime projection. It must not introduce `ACCEPTED`, `AUTHORIZED`, `DEPLOYED`, or `VERIFIED` as capability execution states.
+`EXECUTED` requires an immutable loaded capability source, recorded procedure steps, execution-run identity, observable output, completion evidence, and no blocking execution failure.
 
-### Execution evidence
-
-`EXECUTED` requires all of:
-
-- capability source loaded at an immutable revision;
-- required procedure steps recorded;
-- execution run identity;
-- observable output artifact;
-- completion evidence;
-- no blocking execution failure.
-
-Review requires a separate reviewed artifact, reviewer identity, findings, verdict, and independence status.
-
-### Authority boundary
-
-Runtime records facts and evaluated results. It never synthesizes product-owner approval, accepted risk, merge authorization, release authorization, deployment authorization, or product acceptance.
-
-## 9. Decision D-5 — Repository ownership matrix
+## 9. Repository ownership matrix
 
 | Concern | `ai-native-core` | `ai-native-skills` | `ai-native-os` runtime | Product repository |
 |---|---|---|---|---|
@@ -361,64 +256,34 @@ Runtime records facts and evaluated results. It never synthesizes product-owner 
 | Merge/release/deploy authority | Preserves distinction | Must not infer | Must not synthesize | Owns authority |
 | Real-world validation | Defines semantic distinction | Supplies reusable procedure | Supplies runtime evidence | Owns product outcome evidence |
 
-## 10. Decision D-6 — Core RFC verdict
-
-### Verdict
+## 10. Core RFC verdict
 
 ```text
 NO_CORE_CHANGE_FOR_MVP
 ```
 
-### Rationale
+The twelve-phase product lifecycle is preserved, the new facade shapes are not yet proven universal, and runtime record/persistence behavior remains runtime-owned. After #251, `skill-evolution` evaluates whether evidence justifies `NO_CHANGE`, `LOCAL_ONLY`, `IMPROVEMENT`, `RFC`, or `DEFERRED_UNVERIFIED`.
 
-1. The twelve-phase product lifecycle is preserved; canonical lifecycle meaning does not change.
-2. Documentation and maintenance capabilities have not yet passed independent real-product and real-maintenance validation.
-3. The facade shapes are executable adapter-layer decisions, not yet proven universal cross-adapter contracts.
-4. Runtime record and persistence behavior belongs in the runtime until stable semantic obligations are proven.
-5. Existing Core contracts already preserve routing, lifecycle, incident, authorization, and acceptance boundaries needed for the MVP.
-
-### Promotion rule
-
-After #251, `skill-evolution` must evaluate whether verified repeated evidence justifies:
-
-```text
-NO_CHANGE
-LOCAL_ONLY
-IMPROVEMENT
-RFC
-DEFERRED_UNVERIFIED
-```
-
-A Core RFC is eligible only when a stable universal meaning, required cross-adapter fields, quality gates, compatibility impact, and at least one real product plus one real maintenance source case are available.
-
-## 11. Decision D-7 — Delivery topology
-
-### `ai-native-skills`
+## 11. Delivery topology
 
 ```text
 main
-└── 246-lifecycle-completion                epic integration branch
-    ├── 247-lifecycle-semantics-decision    this decision slice
-    ├── 248-documentation-assurance         after #247 approval
-    ├── 249-maintenance-case-composition    after #247 approval
-    └── 250-lifecycle-orchestration         after #248 and #249
+└── 246-lifecycle-completion
+    ├── 247-lifecycle-semantics-decision
+    ├── 248-documentation-assurance
+    ├── 249-maintenance-case-composition
+    └── 250-lifecycle-orchestration
 
 final integrated PR
 246-lifecycle-completion → main
-only after #251 Product Acceptance
+after #251 Product Acceptance
 ```
 
 Child PRs target `246-lifecycle-completion`. Green child CI does not prove epic acceptance.
 
-### Cross-repository work
-
-- `ai-native-core`: no branch or issue is required for the MVP decision.
-- `ai-native-os`: #250 must create or reuse a verified runtime issue and dedicated branch after #248/#249 handoffs exist.
-- Product repository: #251 selects bounded real product and maintenance cases; product-specific branches and authority remain product-defined.
-
 ## 12. Downstream handoffs
 
-### Handoff to #248
+### #248
 
 ```yaml
 operation: CREATE
@@ -433,14 +298,9 @@ required_integrations:
   - product-development-workflow
   - deployment-workflow
   - task-continuity
-required_outputs:
-  - documentation_impact_report
-  - documentation_update_plan
-  - documentation_verification_report
-  - documentation_verdict
 ```
 
-### Handoff to #249
+### #249
 
 ```yaml
 operation: CREATE_AND_UPDATE_COMPOSITION
@@ -456,13 +316,9 @@ core_contract: none_for_mvp
 routing_owner: workflow-router
 ```
 
-### Handoff to #250
+### #250
 
 ```yaml
-skills_inputs:
-  - approved documentation-assurance manifest
-  - approved maintenance-case manifest
-  - expanded lifecycle intent/artifact registry
 runtime_requirements:
   - keep capability execution state separate from review/gate/approval/delivery
   - replace REVIEWED node transition with linked review evidence
@@ -472,71 +328,29 @@ runtime_requirements:
 core_change: prohibited_without_new_verified_rfc
 ```
 
-### Handoff to #251
-
-Validate:
-
-- one real product change;
-- one real maintenance case;
-- documentation blocking and not-applicable behavior;
-- bounded maintenance closure while observation continues;
-- runtime state and record separation;
-- no duplicate lifecycle/router ownership;
-- Core RFC promotion eligibility.
-
 ## 13. Rejected alternatives
 
-### Add phase 13: Operate and Maintain
+- Add phase 13: rejected because continuous operation has no terminal point.
+- Create `ai-native-engineering-workflow`: rejected as duplicate lifecycle ownership.
+- Create `documentation-workflow`: rejected because assurance is cross-cutting.
+- Create `maintenance-workflow`: rejected because it would duplicate routing or absorb existing lifecycles.
+- Put the full runtime state machine in Core now: rejected pending real transfer evidence.
+- Keep `REVIEWED` as capability state: rejected because review is independently evidenced.
 
-Rejected because continuous operation has no terminal point and would confuse product-lifecycle completion with perpetual observation.
-
-### Create `ai-native-engineering-workflow`
-
-Rejected because it duplicates `product-development-workflow` and the feature/bugfix/review/deployment workflows.
-
-### Create `documentation-workflow`
-
-Rejected because documentation assurance is cross-cutting and must integrate with existing lifecycles rather than replace them.
-
-### Create `maintenance-workflow`
-
-Rejected because it would either duplicate workflow-router or absorb incident, bugfix, feature, design, deployment, and validation ownership.
-
-### Put full state machine in Core now
-
-Rejected because runtime record semantics remain under active development and have not passed cross-adapter validation.
-
-### Keep `REVIEWED` as capability state
-
-Rejected because review is performed by a reviewer over an artifact/output and must remain independently evidenced from capability execution.
-
-## 14. Acceptance assessment for #247
+## 14. Acceptance assessment
 
 | Criterion | Status | Evidence / gap |
 |---|---|---|
 | One product lifecycle owner remains explicit | `PASS` | `product-development-workflow` retained. |
-| Operate-and-maintain defined as phase, loop, or hybrid | `PASS` | Recurring cross-workflow loop. |
-| Documentation assurance has one owner | `PASS` | Proposed `documentation-assurance` facade. |
-| Skills/Core/runtime/product ownership separated | `PASS` | Ownership matrix above. |
-| Runtime states have identified authority | `PASS_WITH_FLAG` | Capability states decided; WS4 migration still pending. |
+| Operate-and-maintain model explicit | `PASS` | Recurring cross-workflow loop. |
+| Documentation assurance owner explicit | `PASS` | `documentation-assurance` facade. |
+| Skills/Core/runtime/product ownership separated | `PASS` | Ownership matrix. |
+| Runtime execution/review separation | `PASS_WITH_FOLLOWUP` | #250 implementation pending. |
 | Core RFC decision explicit | `PASS` | `NO_CORE_CHANGE_FOR_MVP`. |
-| No lower-authority Core override | `PASS` | No Core edits proposed. |
-| WS2–WS5 receive executable handoffs | `PASS` | Handoffs above. |
-| Independent architecture review complete | `LIMITED` | Same execution context can perform a structured review, but owner/external approval remains required. |
+| Owner approval | `PASS` | Explicit approval on 2026-07-29. |
+| Independent external review | `LIMITED` | Same execution context; disclosed. |
 
-## 15. Approval and execution boundary
-
-This record is ready for owner and architecture review.
-
-Approval permits #248 and #249 to begin from the declared integration branch. It does not grant:
-
-- merge authorization for this PR;
-- final epic merge authorization;
-- creation of a Core RFC without new evidence;
-- runtime implementation before #248/#249 handoffs;
-- release, deployment, accepted-risk, or product-acceptance authority.
-
-## 16. Capability evolution verdict
+## 15. Capability evolution verdict
 
 ```text
 LOCAL_ONLY
