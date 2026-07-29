@@ -1,6 +1,6 @@
 ---
 name: hermes-agent-fleet-bootstrap
-description: Design, bootstrap, audit, and verify the smallest justified fleet of persistent Hermes specialist profiles. Use when a Hermes engineering setup needs one orchestrator plus bounded product, architecture, design, frontend, backend, quality, operations, security, documentation, AI-agent, or data specialists; when deciding whether requested capabilities should be profiles, skills, workflows, reviewers, delegated subagents, or product context; or when migrating existing app-based profiles into a shared specialist fleet. Do not use for ordinary single-profile creation, task-time workflow routing, product delivery itself, bot-token provisioning, destructive profile migration, or unsupported runtime claims.
+description: Design, bootstrap, audit, and verify the smallest justified fleet of persistent Hermes specialist profiles. Use when a Hermes engineering setup needs one orchestrator plus bounded specialists; when deciding whether capabilities should become profiles, skills, workflows, reviewers, delegated subagents, or product context; or when migrating existing app-based profiles into a shared specialist fleet. Do not use for ordinary single-profile creation, task-time workflow routing, product delivery itself, bot-token provisioning, destructive migration, or unsupported runtime claims.
 license: MIT
 metadata:
   ai-native-skills.version: 0.1.0
@@ -8,7 +8,7 @@ metadata:
   ai-native-skills.type: skill
   ai-native-skills.pattern: facade
   ai-native-skills.requires: "workflow-router role-switcher hermes-profile-bootstrap decision-provenance skill-eval"
-  ai-native-skills.related_skills: '["hermes-profile-bootstrap","workflow-router","role-switcher","capability-orchestration","implementation-context-discovery","product-manager","master-engineer","architecture-review","security-review","skill-eval"]'
+  ai-native-skills.related_skills: '["hermes-profile-bootstrap","workflow-router","role-switcher","implementation-context-discovery","product-manager","master-engineer","architecture-review","security-review","skill-eval"]'
   ai-native-skills.boundary.covers: '["fleet_request_normalization","multi_agent_justification","topology_selection","profile_responsibility_contracts","profile_skill_manifest_composition","gateway_and_bot_policy","collaboration_and_artifact_handoff_contracts","ownership_and_cycle_validation","non_destructive_profile_migration_planning","per_profile_bootstrap_handoffs","fleet_readiness_and_receipt"]'
   ai-native-skills.boundary.delegates: '["single_profile_materialization","task_time_primary_workflow_selection","task_time_role_assignment","product_or_repository_truth","kanban_dispatcher_execution","bot_token_or_secret_provisioning","operating_system_sandboxing","implementation_delivery","merge_release_deployment_or_product_acceptance_authorization"]'
 ---
@@ -17,38 +17,38 @@ metadata:
 
 Design the smallest effective Hermes specialist fleet, then delegate each approved profile to `hermes-profile-bootstrap` for concrete creation or audit.
 
-## Capability boundary
+## Boundary
 
 ```text
 hermes-agent-fleet-bootstrap
-  owns fleet applicability, topology, specialist boundaries,
-  shared contracts, conflict checks, migration planning,
-  profile-bootstrap handoffs, fleet verification, and readiness.
+  fleet applicability, topology, specialist contracts,
+  shared handoffs, conflict checks, migration plan,
+  profile-bootstrap handoffs, fleet verification, readiness
 
 hermes-profile-bootstrap
-  owns one concrete Hermes profile skeleton, files,
-  skill installation plan, safe defaults, and profile verification.
+  one concrete profile skeleton, skill installation plan,
+  safe defaults, and profile verification
 
 workflow-router
-  owns exactly one primary workflow for an actual task.
+  exactly one primary workflow for an actual task
 
 role-switcher
-  owns one task owner, narrow specialists, and reviewers at execution time.
+  one task owner, narrow specialists, and reviewers
 
-Hermes Kanban / dispatcher
-  owns durable work items, dependencies, worker execution, retry, and status.
+Hermes runtime
+  durable tasks, worker execution, retry, gateway, and state
 
 product repositories
-  own product truth, local policy, authorization, and acceptance.
+  product truth, policy, authorization, and acceptance
 ```
 
-This skill is a facade/composer. It performs real fleet-design and verification work, but it does not become a new engineering lifecycle or a second primary router.
+This is a facade/composer, not a new engineering lifecycle or second primary router.
 
 ## Default operating model
 
 ```text
 user
-→ one bot or front door
+→ one bot/front door
 → engineering-orchestrator profile
 → Hermes Kanban or verified durable coordination
 → headless specialist profiles as on-demand workers
@@ -56,18 +56,16 @@ user
 → orchestrator synthesis
 ```
 
-A profile is a durable agent identity and capability boundary. A bot or messaging gateway is optional. Only the orchestrator receives a bot by default.
+A profile is a durable agent identity. A bot is an optional communication surface. Only the orchestrator receives a bot by default.
 
-## When to load references
+## Load references
 
-- Load `references/topology-and-classification.md` when deciding whether multi-agent is justified, selecting topology, or classifying a requested concept.
-- Load `references/profile-archetypes.md` when proposing specialist profiles or composing responsibility-specific skill manifests.
-- Load `references/runtime-gateway-and-security.md` when defining gateways, Kanban/worker assumptions, permissions, sandbox evidence, or runtime limitations.
-- Load assets only when producing machine-readable fleet, profile, collaboration, or handoff manifests.
+- Load `references/topology-and-classification.md` for multi-agent justification, capability classification, and topology selection.
+- Load `references/profile-archetypes.md` for candidate specialist boundaries and responsibility-specific skill manifests.
+- Load `references/runtime-gateway-and-security.md` for bots, workers, permissions, sandbox evidence, and runtime limitations.
+- Load `assets/*.template.yaml` only when producing machine-readable manifests.
 
-## Required inputs
-
-Resolve or mark `NOT_VERIFIED`:
+## Required input
 
 ```yaml
 fleet_request:
@@ -87,48 +85,43 @@ fleet_request:
   write_authorization: PLAN_ONLY | AUDIT_ONLY | CREATE_OR_UPDATE
 ```
 
-Do not infer credentials, bot tokens, profile contents, product facts, filesystem isolation, runtime commands, or authorization.
+Resolve every field from evidence or mark it `NOT_VERIFIED`. Never infer credentials, profile state, runtime commands, filesystem isolation, product facts, or authorization.
 
-## Execution procedure
+## Procedure
 
-Run phases in order. A later phase may not normalize an earlier blocker into `PASS`.
+Run phases in order. A later phase cannot normalize an earlier blocker into `PASS`.
 
-### Phase 1 — Verify intent and authority
+### 1. Verify intent and authority
 
-1. Confirm the request concerns persistent Hermes profiles or an existing fleet.
-2. Distinguish plan, audit, and create/update intent.
-3. Verify target host, profile source, repository/product context, and write authority when mutation is requested.
-4. Preserve missing runtime or profile evidence as `NOT_VERIFIED`.
+- Distinguish plan, audit, and create/update intent.
+- Verify runtime host, profile source, product/repository references, and mutation authority.
+- Preserve missing evidence as `NOT_VERIFIED`.
 
-Completion: intent, evidence posture, and mutation authority are explicit.
+Gate: intent and evidence posture are explicit.
 
-### Phase 2 — Normalize requested outcomes
+### 2. Normalize requested capabilities
 
-Convert technology-shaped or lifecycle-shaped language into stable responsibilities and outputs.
-
-Examples:
+Convert implementation names into stable responsibilities.
 
 ```text
 React, Next.js, CSS, component tests
 → frontend implementation capability
 
-SOLID, DDD, patterns, architecture
-→ solution architecture and engineering-quality skills
+SOLID, DDD, patterns
+→ architecture and engineering-quality skills
 
-PRD, MVP, product metrics
+PRD, MVP, metrics
 → product-development responsibility
 
 API, service, database, SDK
 → backend/platform responsibility unless SDK has an independent lifecycle
 ```
 
-Completion: every requested concept has a stable capability description or an explicit unresolved status.
+Gate: each concept has a stable capability description or explicit unknown status.
 
-### Phase 3 — Decide whether multi-agent is justified
+### 3. Decide whether multi-agent is justified
 
-Use `references/topology-and-classification.md`.
-
-Return:
+Use `references/topology-and-classification.md` and return:
 
 ```yaml
 multi_agent_verdict:
@@ -139,13 +132,13 @@ multi_agent_verdict:
   simpler_alternative: ""
 ```
 
-Prefer one profile plus skills when responsibilities are narrow, occasional, share the same permissions and context, and do not require independent review or durable ownership.
+Prefer one profile plus focused skills for narrow, occasional work sharing the same context, tools, permissions, and outputs.
 
-Completion: multi-agent is justified by recurring responsibility and evidence, not by the number of technologies named.
+Gate: profile count is justified by durable responsibility, not technology count.
 
-### Phase 4 — Classify every requested concept
+### 4. Classify each concept
 
-Classify as exactly one primary form:
+Choose exactly one primary form:
 
 ```text
 PROFILE
@@ -158,20 +151,13 @@ PRODUCT_CONTEXT
 NOT_JUSTIFIED
 ```
 
-Rules:
+Stable recurring responsibility may become a profile. Methods and frameworks remain skills or product adapters. Ordered lifecycles remain workflows. Temporary analysis remains delegation. Product identity and accepted local facts remain product context.
 
-- Stable recurring responsibility with durable outputs may become a profile.
-- A method, framework, pattern, or tool normally remains a skill or product adapter.
-- Ordered lifecycle remains a workflow.
-- Temporary isolated analysis remains a delegated subagent.
-- Product/app identity, repository facts, and accepted local policy remain product context.
-- Independent verification responsibility may become a reviewer profile.
+Gate: no concept has duplicate primary classifications.
 
-Completion: no requested concept is duplicated across primary classifications.
+### 5. Select topology
 
-### Phase 5 — Select the simplest sufficient topology
-
-Supported topology identities:
+Supported identities:
 
 ```text
 single_profile
@@ -182,59 +168,34 @@ product_agents_with_shared_engineering_fleet
 operations_isolated_fleet
 ```
 
-The default for a durable engineering fleet is `orchestrator_with_specialists` with sparse communication.
+Use the simplest sufficient topology. Reject uncontrolled all-to-all messaging. Parallel work requires independent tasks, workspace ownership, artifact contracts, and an integration owner.
 
-Reject uncontrolled all-to-all messaging as the default. Parallel execution is allowed only for independent tasks with explicit artifact contracts and workspace ownership.
+Gate: orchestrator, interaction modes, and coordination costs are explicit.
 
-Completion: topology, orchestrator, communication modes, and coordination costs are explicit.
+### 6. Define profile contracts
 
-### Phase 6 — Define profile contracts
+Use `assets/profile-contract.template.yaml` and `references/profile-archetypes.md`.
 
-For every proposed profile, produce the shape in `assets/profile-contract.template.yaml`.
+Every profile declares mission, owned and non-owned artifacts/decisions, inputs, outputs, recurring work, skill manifest, model/tools/permissions, memory, gateway, handoffs, reviewers, and completion evidence.
 
-Each profile must declare:
+Use responsibility-specific `custom` skill manifests. Do not clone broad `engineering` or `full` presets into every worker.
 
-```text
-mission
-owns
-does_not_own
-required inputs
-required outputs
-recurring tasks
-required and optional skills
-model policy
-tool policy
-permission policy
-memory scope
-gateway policy
-collaboration modes
-handoff targets
-reviewers
-completion evidence
-```
+Gate: every durable artifact and decision has one accountable owner.
 
-Use `references/profile-archetypes.md` as candidate guidance, not as a mandatory fixed fleet.
-
-Use responsibility-specific custom skill manifests. Do not install the broad `engineering` or `full` preset into every specialist unless that breadth is itself justified.
-
-Completion: every durable artifact and decision has one accountable profile owner.
-
-### Phase 7 — Validate boundaries and safety
+### 7. Validate boundaries and safety
 
 Fail closed on:
 
-- duplicate primary artifact ownership;
-- missing owner for a required output;
+- duplicate or missing artifact owners;
 - circular required handoffs;
-- reviewer as sole implementer of the reviewed artifact;
-- multiple default gateways without independent audience or operational justification;
-- profile defined only by framework or method names;
-- product-specific facts or secrets embedded in a reusable profile;
-- live sessions, memories, cron state, runtime databases, logs, caches, tokens, or credentials in a distribution;
-- assumed OS sandbox, network isolation, or filesystem restriction without evidence;
-- privileged operations without separate permission policy and human authorization.
+- reviewer as sole implementer;
+- default bot per specialist without independent audience;
+- profiles defined only by frameworks or methods;
+- product facts, secrets, or live state in reusable distributions;
+- assumed OS, filesystem, network, or credential isolation;
+- privileged operations without bounded permissions and human approval.
 
-Reviewer independence must be reported as one of:
+Reviewer independence states:
 
 ```text
 VERIFIED
@@ -244,11 +205,11 @@ LIMITED_SHARED_TOOLS
 NOT_VERIFIED
 ```
 
-Completion: no unresolved blocking conflict is hidden.
+Gate: no blocking conflict is hidden.
 
-### Phase 8 — Define collaboration and handoffs
+### 8. Define collaboration
 
-Use only explicit interaction modes:
+Use `assets/collaboration-manifest.template.yaml` and only explicit modes:
 
 ```text
 orchestrator_invocation
@@ -259,13 +220,11 @@ review_feedback_loop
 human_approval
 ```
 
-Every artifact handoff records producer, consumer, version, evidence, assumptions, unresolved risks, and correction route. Use `assets/collaboration-manifest.template.yaml`.
+Every handoff records producer, consumer, artifact version, evidence, assumptions, risks, and correction route.
 
-Completion: required communication is sparse, directional, and auditable.
+Gate: communication is sparse, directional, and auditable.
 
-### Phase 9 — Compose profile bootstrap handoffs
-
-For each approved persistent profile, create one `hermes-profile-bootstrap` handoff:
+### 9. Compose one profile-bootstrap handoff per profile
 
 ```yaml
 profile_bootstrap_handoff:
@@ -284,13 +243,13 @@ profile_bootstrap_handoff:
   mutation_status: PLANNED | EXECUTED | BLOCKED | NOT_VERIFIED
 ```
 
-Do not copy the single-profile generation procedure into this skill. A fleet plan cannot claim that profiles were created.
+Do not copy the single-profile generation procedure. A plan cannot claim profiles were created.
 
-Completion: every proposed profile has one explicit materialization or audit handoff.
+Gate: every persistent profile has one materialization or audit handoff.
 
-### Phase 10 — Plan migration of existing profiles
+### 10. Plan migration
 
-Classify each existing profile:
+Classify existing profiles:
 
 ```text
 KEEP
@@ -303,36 +262,23 @@ DEPRECATE
 NOT_VERIFIED
 ```
 
-MVP behavior is non-destructive. Preserve live memory, sessions, credentials, gateway state, and accepted product identity. A recommendation is not an executed migration.
+MVP migration is non-destructive. Preserve live memory, sessions, credentials, gateway state, and accepted product identity.
 
-Completion: current profiles have evidence-backed recommendations and no destructive action is implicit.
+Gate: recommendations are evidence-backed and distinct from executed mutations.
 
-### Phase 11 — Dry-run, execute, or hand off
+### 11. Plan, audit, or execute
 
-- `PLAN_ONLY`: produce intended profile, file, skill, policy, gateway, and migration actions without mutation.
-- `AUDIT_ONLY`: compare current evidence against approved contracts without mutation.
-- `CREATE_OR_UPDATE`: invoke supported runtime actions only when tool availability and authorization are verified; otherwise produce an exact handoff.
+- `PLAN_ONLY`: list intended profiles, files, skills, policies, gateways, and migration actions without mutation.
+- `AUDIT_ONLY`: compare observed profiles against approved contracts without mutation.
+- `CREATE_OR_UPDATE`: execute only with verified runtime tools and authority; otherwise emit an exact handoff.
 
-Completion: actual execution state is distinct from planned state.
+Gate: planned and executed states remain separate.
 
-### Phase 12 — Verify the fleet
+### 12. Verify fleet readiness
 
-Use `assets/fleet-manifest.template.yaml` and verify:
+Use `assets/fleet-manifest.template.yaml` and verify topology, unique identifiers, artifact ownership, custom skill manifests, profile-bootstrap handoffs, gateway policy, collaboration cycles, reviewer independence, safety exclusions, permissions, runtime assumptions, migration safety, and deterministic inputs.
 
-- selected topology and one orchestration owner;
-- unique profile identifiers;
-- one owner per durable artifact;
-- responsibility-specific skill manifests;
-- per-profile bootstrap handoffs;
-- gateway policy;
-- collaboration graph and cycle checks;
-- reviewer independence status;
-- safety exclusions and permission boundaries;
-- runtime evidence versus assumptions;
-- migration non-destructiveness;
-- deterministic output inputs and catalog version.
-
-Return:
+Verdicts:
 
 ```text
 READY
@@ -342,7 +288,7 @@ BLOCKED
 NOT_VERIFIED
 ```
 
-`READY` means the planned or audited fleet contract passes applicable gates. It does not mean product work, profile runtime execution, merge, release, deployment, or product acceptance has occurred.
+`READY` covers the fleet contract only. It does not prove product work, runtime execution, merge, release, deployment, or product acceptance.
 
 ## Allowed outputs
 
@@ -365,32 +311,22 @@ execution_receipt
 ## Quality gates
 
 - Multi-agent is explicitly justified or rejected.
-- The simplest sufficient topology is selected.
-- Exactly one default orchestration owner exists unless an exception is justified.
-- Only the orchestrator receives a default bot/gateway.
-- Each profile owns a stable recurring responsibility rather than a framework name.
-- Each durable artifact and decision has one accountable owner.
-- Specialist skill manifests are responsibility-specific.
+- The smallest sufficient topology is selected.
+- One default orchestration owner exists unless an exception is justified.
+- Only the orchestrator receives a default bot.
+- Profiles own stable responsibilities, not framework names.
+- Every durable artifact has one owner.
+- Skill manifests are responsibility-specific.
 - `hermes-profile-bootstrap` remains the per-profile executor.
 - Collaboration is sparse and handoffs are structured.
-- Reviewer independence is evidenced or limited honestly.
-- Product facts and live runtime state remain outside reusable distributions.
-- Profile isolation is not misrepresented as OS sandboxing.
-- Planned, executed, reviewed, approved, delivered, and accepted states remain distinct.
-- Missing runtime evidence remains `NOT_VERIFIED`.
+- Review independence is evidenced or limited honestly.
+- Product facts and live state remain outside distributions.
+- Profile isolation is not represented as OS sandboxing.
+- Plan, execution, review, approval, delivery, and acceptance remain distinct.
 
 ## Hard stops
 
-Return `BLOCKED`, `NOT_VERIFIED`, or `READY_WITH_LIMITATIONS` when:
-
-- current profiles cannot be inspected but migration or overwrite is requested;
-- duplicate ownership or required handoff cycles remain;
-- required capability IDs cannot be resolved from verified catalogs;
-- reviewer independence is required but cannot be established;
-- runtime commands, Kanban, dispatcher, profile addressing, or gateway behavior are assumed rather than verified;
-- secret-free distribution cannot be proven;
-- write authorization or product/repository authority is missing;
-- a privileged profile lacks bounded permissions and human authorization.
+Return `BLOCKED`, `NOT_VERIFIED`, or `READY_WITH_LIMITATIONS` when current profiles cannot be inspected for requested migration; duplicate ownership or cycles remain; required skills cannot be resolved; reviewer independence is required but unavailable; runtime behavior is assumed; secret-free output cannot be proven; authority is missing; or a privileged profile lacks bounded permissions and human approval.
 
 ## Receipt
 
