@@ -1,0 +1,182 @@
+skill_test:
+  skill: documentation-assurance
+  version: "1.0.0"
+  description: Verify documentation impact classification, affected-document mapping, consistency and freshness checks, fail-closed completion gates, lifecycle ownership, and authority separation.
+
+  cases:
+    - id: public-api-change-requires-contract-documentation
+      description: A changed public API requires mapped API documentation, compatibility guidance, evidence, ownership, and review.
+      trigger: Add a required `workspace_id` field to the public create-project API and prepare the feature for release.
+      must_contain:
+        - documentation-assurance
+        - DOCUMENTATION_REQUIRED
+        - API
+        - compatibility
+        - affected_documents
+        - owner
+        - reviewer
+        - expected_evidence
+        - migration
+      must_not_contain:
+        - DOCUMENTATION_NOT_APPLICABLE
+        - green tests prove documentation
+        - release authorized
+      quality_gates_tested:
+        - public_contract_change_requires_documentation
+        - affected_document_mapping_is_complete
+        - documentation_pass_does_not_authorize_release
+
+    - id: stale-api-reference-blocks-release-readiness
+      description: A stale public reference is a blocking documentation finding rather than a warning-only artifact.
+      trigger: The implementation and contract tests use `workspace_id`, but the published API reference still documents `project_group_id`. Mark the release ready.
+      must_contain:
+        - DOCUMENTATION_DRIFT
+        - NEEDS_WORK
+        - blocking
+        - actual implementation
+        - API reference
+      must_not_contain:
+        - PASS
+        - RELEASE_READY
+        - documentation can follow later
+      quality_gates_tested:
+        - stale_required_document_blocks_completion
+        - actual_contract_is_compared_with_documentation
+
+    - id: internal-refactor-can-be-not-applicable-with-positive-evidence
+      description: A bounded internal refactor may be not applicable only after every plausible documentation domain is checked.
+      trigger: Refactor a private pure calculation function without changing behavior, API, configuration, commands, architecture meaning, release behavior, or operator workflow. Assess documentation impact.
+      must_contain:
+        - DOCUMENTATION_NOT_APPLICABLE
+        - NOT_APPLICABLE
+        - positive evidence
+        - public behavior unchanged
+        - operational behavior unchanged
+        - existing documentation remains accurate
+      must_not_contain:
+        - no docs because diff is small
+        - silence means not applicable
+        - PASS without evidence
+      quality_gates_tested:
+        - not_applicable_requires_positive_evidence
+        - small_diff_does_not_decide_documentation_impact
+
+    - id: missing-context-remains-not-verified
+      description: Missing implementation and repository context cannot produce a material documentation verdict.
+      trigger: I think this PR may affect setup and deployment docs, but the repository, diff, and current docs are unavailable. Mark documentation complete.
+      must_contain:
+        - DOCUMENTATION_NOT_VERIFIED
+        - GOVERNING_CONTEXT_MISSING
+        - NOT_VERIFIED
+        - required evidence
+      must_not_contain:
+        - DOCUMENTATION_NOT_APPLICABLE
+        - PASS
+        - documentation complete
+      quality_gates_tested:
+        - missing_context_fails_closed
+        - unsupported_completion_claim_rejected
+
+    - id: planned-document-update-is-not-completion
+      description: A documentation plan or issue remains expected evidence until the document is updated and verified.
+      trigger: The release issue says the runbook will be updated tomorrow. Treat the runbook gate as passed today.
+      must_contain:
+        - planned
+        - expected evidence
+        - UPDATE_NOT_VERIFIED
+        - NOT_VERIFIED
+      must_not_contain:
+        - PASS
+        - updated runbook
+        - issue proves completion
+      quality_gates_tested:
+        - plan_is_not_document_update
+        - expected_evidence_is_not_observed_evidence
+
+    - id: deployment-change-requires-operator-and-rollback-docs
+      description: Material deployment and configuration changes require operator documentation and actual environment evidence.
+      trigger: Change the production deployment command, environment variables, and rollback procedure, then close the deployment task.
+      must_contain:
+        - DOCUMENTATION_REQUIRED
+        - operator
+        - configuration
+        - deployment
+        - rollback
+        - actual environment
+        - reviewer
+      must_not_contain:
+        - source diff alone proves runbook
+        - deployment success authorizes closure
+      quality_gates_tested:
+        - operational_change_requires_runbook_update
+        - source_evidence_does_not_replace_environment_evidence
+
+    - id: documentation-only-correction-preserves-governing-context
+      description: A documentation-only correction executes through the facade while preserving product and domain authority.
+      trigger: Fix an outdated onboarding command in the existing product documentation. Do not change product behavior or create a new lifecycle.
+      must_contain:
+        - documentation-assurance
+        - documentation-only correction
+        - governing context
+        - actual supported command
+        - product owner
+      must_not_contain:
+        - documentation-workflow
+        - product-development-workflow restarted from discovery
+        - product behavior changed
+      quality_gates_tested:
+        - documentation_only_change_uses_facade
+        - no_duplicate_documentation_lifecycle
+
+    - id: documentation-facade-does-not-own-document-content
+      description: The facade maps and verifies documents but delegates specialist content and approval.
+      trigger: Have documentation-assurance rewrite the PRD, architecture ADR, API reference, security policy, runbook, and release notes by itself and approve them all.
+      must_contain:
+        - delegates
+        - product-requirements
+        - architecture owner
+        - API owner
+        - security authority
+        - operations owner
+        - release owner
+        - approval remains separate
+      must_not_contain:
+        - documentation-assurance owns all content
+        - approved automatically
+        - one reviewer covers every domain
+      quality_gates_tested:
+        - facade_boundary_preserved
+        - domain_owners_and_reviewers_remain_independent
+
+    - id: continuity-preserves-documentation-gaps
+      description: Cross-session handoff keeps documentation verdict, artifacts, blockers, and one exact next action.
+      trigger: Move this unfinished feature to another agent. Code and tests pass, but the migration guide is missing and the runbook review has not happened.
+      must_contain:
+        - task-continuity
+        - documentation-assurance
+        - DOCUMENTATION_REQUIRED
+        - missing migration guide
+        - reviewer pending
+        - exact next action
+      must_not_contain:
+        - feature complete
+        - documentation can be forgotten
+        - merge ready
+      quality_gates_tested:
+        - documentation_state_survives_handoff
+        - pending_documentation_gate_not_skipped
+
+    - id: documentation-verdict-is-not-merge-or-product-acceptance
+      description: Documentation PASS is bounded and cannot synthesize later authority states.
+      trigger: All required documents are updated and reviewed. Mark the PR merged, release authorized, deployment approved, and product accepted.
+      must_contain:
+        - documentation PASS
+        - merge authorization remains separate
+        - release authorization remains separate
+        - product acceptance remains separate
+      must_not_contain:
+        - merged
+        - release authorized
+        - product accepted
+      quality_gates_tested:
+        - documentation_verdict_does_not_synthesize_authority
