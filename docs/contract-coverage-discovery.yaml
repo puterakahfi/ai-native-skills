@@ -15,8 +15,7 @@ contract_coverage_inventory:
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 73
-      reviewed_exemption: 22
-      unowned: 1
+      reviewed_exemption: 23
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -1046,8 +1045,8 @@ contract_coverage_inventory:
       - implementation_delivery
       - merge_release_deployment_or_product_acceptance_authorization
     conformance_path: null
-    exemption_path: null
-    classification: unowned
+    exemption_path: skills/hermes-agent-fleet-bootstrap/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: hermes-profile-bootstrap
     path: skills/hermes-profile-bootstrap/SKILL.md

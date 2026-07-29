@@ -80,52 +80,6 @@ jobs:
           taxonomy.write_text(taxonomy_text, encoding="utf-8")
       - name: Regenerate capability inventory
         run: python scripts/verify-capability-inventory.py --write-snapshot
-      - name: Register fleet capability for Epic 260
-        shell: python
-        run: |
-          import json
-          from pathlib import Path
-
-          capability = "hermes-agent-fleet-bootstrap"
-          classifications_path = Path("catalog/capability-discovery/classifications.json")
-          classifications = json.loads(classifications_path.read_text(encoding="utf-8"))
-          group = next(group for group in classifications["classification_groups"] if group["id"] == "ai-agent-systems")
-          if capability not in group["capabilities"]:
-              group["capabilities"].append(capability)
-              group["capabilities"].sort()
-          group.setdefault("overrides", {})[capability] = {
-              "domains": ["ai-systems", "developer-experience", "governance"],
-              "lifecycle_stages": ["plan", "build", "verify"],
-              "concerns": ["workflow-routing", "implementation", "context", "developer-experience", "governance"],
-              "ecosystems": ["ai-agent-runtime"],
-          }
-          classifications_path.write_text(json.dumps(classifications, separators=(",", ":")) + "\n", encoding="utf-8")
-
-          topics_path = Path("catalog/capability-discovery/topics.json")
-          topics = json.loads(topics_path.read_text(encoding="utf-8"))
-          for topic in topics["topics"]:
-              if topic["id"] in {"agent-workflows", "ai-agent-systems", "developer-experience"} and capability not in topic["capabilities"]:
-                  topic["capabilities"].append(capability)
-          topics_path.write_text(json.dumps(topics, separators=(",", ":")) + "\n", encoding="utf-8")
-
-          skill_path = Path("skills/hermes-agent-fleet-bootstrap/SKILL.md")
-          skill = skill_path.read_text(encoding="utf-8")
-          bullet = "- Load `references/catalog-migration-and-idempotency.md` for capability resolution, existing-profile audit, migration planning, dry-run, and idempotency checks.\n"
-          anchor = "- Load `references/runtime-gateway-and-security.md` for bots, workers, permissions, sandbox evidence, and runtime limitations.\n"
-          if bullet not in skill:
-              if anchor not in skill:
-                  raise SystemExit("fleet bootstrap reference anchor not found")
-              skill = skill.replace(anchor, anchor + bullet, 1)
-              skill_path.write_text(skill, encoding="utf-8")
-
-          temporary = Path(".github/workflows/epic-260-register-hermes-fleet-capability.yml")
-          if temporary.exists():
-              temporary.unlink()
-      - name: Verify capability discovery and build published catalog
-        run: |
-          python3 scripts/verify-capability-discovery.py
-          python3 scripts/build-published-capability-catalog.py
-          python3 -m unittest scripts/tests/test_build_published_capability_catalog.py
       - name: Regenerate contract coverage evidence
         run: >-
           python scripts/inventory-contract-coverage.py
@@ -135,17 +89,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add README.md \
-                  docs/skills.md \
-                  docs/capability-inventory.json \
-                  docs/contract-coverage-discovery.yaml \
-                  catalog/capability-discovery/classifications.json \
-                  catalog/capability-discovery/topics.json \
-                  catalog/published/capability-catalog.json \
-                  skills/hermes-agent-fleet-bootstrap/SKILL.md \
-                  .github/workflows/epic-260-register-hermes-fleet-capability.yml
+          git add README.md docs/skills.md docs/capability-inventory.json docs/contract-coverage-discovery.yaml
           if git diff --cached --quiet; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(metadata): register Hermes fleet bootstrap capability"
+          git commit -m "chore(metadata): sync generated capability evidence"
           git push origin "HEAD:${GITHUB_REF_NAME}"
