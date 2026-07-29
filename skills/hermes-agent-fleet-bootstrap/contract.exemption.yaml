@@ -1,0 +1,33 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: hermes-agent-fleet-bootstrap
+    path: skills/hermes-agent-fleet-bootstrap/SKILL.md
+    type: skill
+  classification: provider_specific
+  owner: native-ai-engineer
+  reason: Hermes fleet composition, profile materialization handoffs, gateway policy, and runtime worker assumptions are provider-specific MVP behavior without verified cross-runtime semantics.
+  scope:
+    - static_contract_ownership
+    - provider_specific_execution
+  review_date: 2027-01-29
+  evidence_refs:
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#260
+    - kind: executable_source
+      ref: skills/hermes-agent-fleet-bootstrap/SKILL.md
+    - kind: provider_boundary
+      ref: docs/hermes-agent-fleet-bootstrap-architecture-decision-2026-07-29.md
+  revisit:
+    blocking_issue: null
+    triggers:
+      - Real Hermes acceptance in issue 265 exposes stable runtime-agnostic obligations.
+      - A second runtime adapter demonstrates transferable fleet bootstrap semantics.
+      - Skill evolution classifies the boundary as an RFC candidate.
+  prohibited_claims:
+    - core_contract_conformance
+    - behavioral_verification
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active
