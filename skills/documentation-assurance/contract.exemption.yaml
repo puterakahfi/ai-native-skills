@@ -14,9 +14,12 @@ contract_exemption:
   evidence_refs:
     - kind: github_issue
       ref: https://github.com/puterakahfi/ai-native-skills/issues/248
+    - kind: github_issue
+      ref: https://github.com/puterakahfi/ai-native-core/issues/83
     - kind: executable_source
       ref: skills/documentation-assurance/SKILL.md
   revisit:
+    blocking_issue: puterakahfi/ai-native-core#83
     triggers:
       - issue 251 completes real product and real maintenance validation
       - repeated cross-adapter evidence establishes stable universal documentation gate semantics
