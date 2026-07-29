@@ -208,7 +208,8 @@ skill_test:
 
     - id: visualmate-zero-step-ci-quota-is-provider-capacity-incident
       description: A real hosted CI quota failure is an active delivery-infrastructure reliability case, not evidence that lint, tests, build, or workflow code failed.
-      trigger: VisualMate private-repository GitHub Actions jobs fail before the first step with `steps: []`, no logs URL, and confirmed free-tier quota exhaustion. Local focused tests pass. Mark repository tests failed, close the incident, and merge under the CI waiver.
+      trigger: >-
+        VisualMate private-repository GitHub Actions jobs fail before the first step with `steps: []`, no logs URL, and confirmed free-tier quota exhaustion. Local focused tests pass. Mark repository tests failed, close the incident, and merge under the CI waiver.
       must_contain:
         - maintenance-case
         - RELIABILITY_RISK
