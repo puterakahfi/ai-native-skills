@@ -80,14 +80,34 @@ class SkillPackageValidatorTests(unittest.TestCase):
             self.skipTest("Epic #260 Hermes runtime hook is branch-scoped")
 
         repository = Path(__file__).resolve().parents[2]
-        subprocess.run(
+        result = subprocess.run(
             ["bash", "scripts/run-hermes-fleet-runtime-acceptance.sh"],
             cwd=repository,
-            check=True,
+            check=False,
             env=os.environ.copy(),
         )
 
-        receipt_path = repository / ".tmp/epic-260-hermes-runtime/runtime-receipt.json"
+        evidence = repository / ".tmp/epic-260-hermes-runtime"
+        if result.returncode != 0:
+            print(f"EPIC260_HERMES_RUNTIME_EXIT={result.returncode}")
+            for name in [
+                "failure.txt",
+                "install.log",
+                "skill-install.txt",
+                "profiles-list.txt",
+                "kanban-init.txt",
+                "dispatcher-dry-run.json",
+                "dispatcher-attempt.json",
+            ]:
+                path = evidence / name
+                if not path.is_file():
+                    continue
+                print(f"--- EPIC260_EVIDENCE:{name} ---")
+                text = path.read_text(encoding="utf-8", errors="replace")
+                print(text[-12000:])
+            self.fail(f"Hermes runtime acceptance failed with exit {result.returncode}")
+
+        receipt_path = evidence / "runtime-receipt.json"
         self.assertTrue(receipt_path.is_file(), "Hermes runtime receipt was not produced")
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         self.assertEqual(receipt["acceptance_result"], "PASS_WITH_LIMITATIONS")
