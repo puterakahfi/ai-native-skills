@@ -4,18 +4,18 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 121
+    executable_artifacts: 122
     official_types:
       meta-skill: 7
-      skill: 101
+      skill: 102
       workflow: 13
     patterns:
       domain-reviewer: 1
-      facade: 3
+      facade: 4
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 73
-      reviewed_exemption: 22
+      reviewed_exemption: 23
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -1010,6 +1010,42 @@ contract_coverage_inventory:
       delegates: []
     conformance_path: null
     exemption_path: skills/github-profile/contract.exemption.yaml
+    classification: reviewed_exemption
+    errors: []
+  - id: hermes-agent-fleet-bootstrap
+    path: skills/hermes-agent-fleet-bootstrap/SKILL.md
+    type: skill
+    patterns:
+    - facade
+    version: 0.1.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers:
+      - fleet_request_normalization
+      - multi_agent_justification
+      - topology_selection
+      - profile_responsibility_contracts
+      - profile_skill_manifest_composition
+      - gateway_and_bot_policy
+      - collaboration_and_artifact_handoff_contracts
+      - ownership_and_cycle_validation
+      - non_destructive_profile_migration_planning
+      - per_profile_bootstrap_handoffs
+      - fleet_readiness_and_receipt
+      delegates:
+      - single_profile_materialization
+      - task_time_primary_workflow_selection
+      - task_time_role_assignment
+      - product_or_repository_truth
+      - kanban_dispatcher_execution
+      - bot_token_or_secret_provisioning
+      - operating_system_sandboxing
+      - implementation_delivery
+      - merge_release_deployment_or_product_acceptance_authorization
+    conformance_path: null
+    exemption_path: skills/hermes-agent-fleet-bootstrap/contract.exemption.yaml
     classification: reviewed_exemption
     errors: []
   - id: hermes-profile-bootstrap

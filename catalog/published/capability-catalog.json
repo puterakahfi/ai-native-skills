@@ -963,6 +963,7 @@
             "chatgpt-app-development",
             "context-engineering",
             "context-manager",
+            "hermes-agent-fleet-bootstrap",
             "hermes-profile-bootstrap",
             "model-selection",
             "native-ai-engineer",
@@ -1031,6 +1032,28 @@
               ],
               "ecosystems": [
                 "ai-agent-runtime"
+              ]
+            },
+            "hermes-agent-fleet-bootstrap": {
+              "concerns": [
+                "workflow-routing",
+                "implementation",
+                "context",
+                "developer-experience",
+                "governance"
+              ],
+              "domains": [
+                "ai-systems",
+                "developer-experience",
+                "governance"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify"
               ]
             },
             "hermes-profile-bootstrap": {
@@ -2312,7 +2335,8 @@
             "spec-workflow",
             "skill-evolution",
             "decision-provenance",
-            "context-manager"
+            "context-manager",
+            "hermes-agent-fleet-bootstrap"
           ],
           "description": "Route work through explicit lifecycle ownership, role composition, continuity, quality gates, and learning.",
           "id": "agent-workflows",
@@ -2337,7 +2361,8 @@
             "response-contract",
             "chatgpt-app-development",
             "project-instruction-generator",
-            "hermes-profile-bootstrap"
+            "hermes-profile-bootstrap",
+            "hermes-agent-fleet-bootstrap"
           ],
           "description": "Design models, prompts, context, continuity, runtime boundaries, and AI-native product integrations.",
           "id": "ai-agent-systems",
@@ -2378,7 +2403,8 @@
             "spike",
             "diagram-architect",
             "workflow-router",
-            "master-engineer"
+            "master-engineer",
+            "hermes-agent-fleet-bootstrap"
           ],
           "description": "Improve repository onboarding, implementation discovery, continuity, planning, tooling, and delivery ergonomics.",
           "id": "developer-experience",
@@ -2691,6 +2717,11 @@
       {
         "name": "github-profile",
         "path": "skills/github-profile/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-agent-fleet-bootstrap",
+        "path": "skills/hermes-agent-fleet-bootstrap/SKILL.md",
         "type": "skill"
       },
       {
@@ -3021,8 +3052,8 @@
     ],
     "counts": {
       "meta-skill": 7,
-      "skill": 101,
-      "total": 121,
+      "skill": 102,
+      "total": 122,
       "workflow": 13
     }
   },
@@ -3038,6 +3069,6 @@
     },
     "inventory_schema_version": 1,
     "repository": "puterakahfi/ai-native-skills",
-    "revision": "a4688f4aa20fc3537c9bbeedb3060402133cf3fc"
+    "revision": "b5d897c6ddeb2e1533f9753089654579a23ac9cf"
   }
 }

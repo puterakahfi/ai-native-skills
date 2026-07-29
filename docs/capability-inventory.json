@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 101,
+    "skill": 102,
     "workflow": 13,
     "meta-skill": 7,
-    "total": 121
+    "total": 122
   },
   "items": [
     {
@@ -287,6 +287,11 @@
       "name": "github-profile",
       "type": "skill",
       "path": "skills/github-profile/SKILL.md"
+    },
+    {
+      "name": "hermes-agent-fleet-bootstrap",
+      "type": "skill",
+      "path": "skills/hermes-agent-fleet-bootstrap/SKILL.md"
     },
     {
       "name": "hermes-profile-bootstrap",

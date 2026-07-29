@@ -63,6 +63,7 @@ A profile is a durable agent identity. A bot is an optional communication surfac
 - Load `references/topology-and-classification.md` for multi-agent justification, capability classification, and topology selection.
 - Load `references/profile-archetypes.md` for candidate specialist boundaries and responsibility-specific skill manifests.
 - Load `references/runtime-gateway-and-security.md` for bots, workers, permissions, sandbox evidence, and runtime limitations.
+- Load `references/catalog-migration-and-idempotency.md` for capability resolution, existing-profile audit, migration planning, dry-run, and idempotency checks.
 - Load `assets/*.template.yaml` only when producing machine-readable manifests.
 
 ## Required input
