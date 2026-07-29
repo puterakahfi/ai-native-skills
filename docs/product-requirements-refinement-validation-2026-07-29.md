@@ -2,7 +2,7 @@
 
 ## Scope
 
-This record validates the adapter-level refinement tracked by issue #244.
+This record validates the adapter-level refinement tracked by issue #244 and draft pull request #245.
 
 ```yaml
 repository: puterakahfi/ai-native-skills
@@ -12,6 +12,7 @@ operation: UPDATE
 adapter_version: 1.2.0
 core_contract: product-requirements@~0.2
 primary_workflow: skill-authoring-workflow
+validation_evidence_head: 12b1fb0d7b3aa62c32cb96eadbcb0201b743cbcc
 ```
 
 This record does not change canonical Core ownership and does not claim merge, product approval, release readiness, or real-user product validation.
@@ -20,14 +21,34 @@ This record does not change canonical Core ownership and does not claim merge, p
 
 The refined capability adds:
 
-- Product Brief, Feature PRD, and Full Product PRD mode classification;
+- explicit upstream-readiness routing to Discovery/Product Brief ownership;
+- Feature PRD and Full Product PRD profile selection;
 - evidence, inference, assumption, unknown, decision, and implementation-state separation;
 - document lifecycle and provenance semantics;
 - stable requirement and acceptance-criterion traceability;
 - analytics and verification evidence planning;
 - conditional non-functional-requirement applicability;
 - deterministic PRD readiness dimensions and blocking rules;
-- centralized positive, negative, near-miss, revision, review, and handoff fixtures.
+- centralized positive, negative, near-miss, revision, review, upstream-handoff, and downstream-handoff fixtures.
+
+## Boundary correction found during self-review
+
+The initial epic draft treated Product Brief as a PRD mode. Review against the canonical contract and product-development phase ordering showed that this would duplicate Discovery ownership.
+
+```yaml
+corrected_boundary:
+  product_brief:
+    owner: product-development-workflow Discovery composition
+    status: upstream input to PRD
+  product_requirements:
+    profiles:
+      - FEATURE_PRD
+      - FULL_PRODUCT_PRD
+    does_not_output:
+      - Product Brief
+```
+
+The skill, reference, readiness rubric, tests, and epic decision record were corrected before acceptance. This is an observed self-review finding and fix, not a silent scope change.
 
 ## Realistic transfer case — LandingMate
 
@@ -51,16 +72,20 @@ success_metric_target: NOT_VERIFIED
 approval_source: user product intent only
 ```
 
-### Mode selection
+### Upstream and profile classification
 
 ```yaml
 intent: AUTHOR
-mode: FULL_PRODUCT_PRD
+upstream_readiness: LIMITED
+profile: FULL_PRODUCT_PRD
 reason: >-
   LandingMate is a new product/material MVP rather than a bounded change to an
-  effective existing product. The concept has sufficient intent for a PRD draft,
-  but weak user and market evidence prevents an approved implementation claim.
+  effective existing product. The supplied intent, problem, and target user support
+  a draft Full Product PRD, while missing research, metric targets, and platform/cost
+  evidence remain explicit blockers to READY/APPROVED downstream execution.
 ```
+
+A weaker request without problem or target-user context would route to Discovery/Product Brief instead of producing a PRD.
 
 ### Evidence classification
 
@@ -132,7 +157,7 @@ Observed: NOT_RUN.
 
 ```yaml
 prd_readiness:
-  mode: FULL_PRODUCT_PRD
+  profile: FULL_PRODUCT_PRD
   verdict: BLOCKED
   dimensions:
     problem_and_evidence: NOT_VERIFIED
@@ -165,7 +190,8 @@ prd_readiness:
 transfer_validation:
   capability_application: APPLIED
   semantic_improvement:
-    mode_selection: OBSERVED
+    upstream_boundary: OBSERVED
+    profile_selection: OBSERVED
     evidence_discipline: OBSERVED
     traceability: OBSERVED
     nfr_applicability: OBSERVED
@@ -174,9 +200,64 @@ transfer_validation:
   interpretation: >-
     The refined procedure materially changes the PRD result by preserving weak
     evidence and unresolved product/platform boundaries instead of inventing
-    targets or authorizing implementation. This is a reviewed transfer example,
+    targets or authorizing implementation. It also prevents product-requirements
+    from taking over Product Brief ownership. This is a reviewed transfer example,
     not live runtime or real-user success proof.
 ```
+
+## Acceptance reconciliation
+
+| Criterion | Result | Evidence |
+|---|---|---|
+| AC-1 Upstream/profile classification | PASS | Skill procedure and centralized weak-opportunity, Feature PRD, and Full Product PRD fixtures |
+| AC-2 Evidence discipline | PASS | Evidence classes, hard stops, LandingMate transfer classification |
+| AC-3 Lifecycle and provenance | PASS | Document control, status/supersession guidance, revision fixture |
+| AC-4 Testable product contract | PASS | Stable IDs, metrics, scope, requirements, acceptance procedure and fixtures |
+| AC-5 NFR applicability | PASS | Conditional NFR reference and omission negative fixture |
+| AC-6 Traceability and evidence plan | PASS | Dedicated reference, full-PRD fixture, transfer traceability slice |
+| AC-7 Revision safety | PASS | Added/changed/removed/deferred procedure and authority regression fixture |
+| AC-8 Review safety | PASS | Deterministic readiness rubric and no-silent-rewrite fixture |
+| AC-9 Correct handoffs | PASS | Discovery/Product Brief upstream and spec/delivery downstream handoff fixtures |
+| AC-10 Regression and conformance | PASS | Six required GitHub Actions workflows succeeded on evidence head |
+| AC-11 Realistic transfer case | PASS | LandingMate transfer record preserves unsupported evidence as `NOT_VERIFIED` |
+
+## Automated validation evidence
+
+All pull-request workflows completed successfully on `12b1fb0d7b3aa62c32cb96eadbcb0201b743cbcc`:
+
+```yaml
+validation:
+  skill_package_validation: PASS
+  skill_pack_contracts: PASS
+  skill_and_gate_contracts: PASS
+  contract_coverage: PASS
+  capability_inventory: PASS
+  published_capability_catalog: PASS
+```
+
+Initial failures were inspected and corrected:
+
+```yaml
+fixed_failures:
+  - fixture YAML parse failure caused by an unquoted colon-bearing trigger
+  - stale contract-coverage inventory after adapter version bump
+```
+
+No failure was hidden or reclassified as PASS without a succeeding rerun.
+
+## Review result
+
+```yaml
+review:
+  contract_boundary_review: PASS
+  architecture_ownership_review: PASS_AFTER_CORRECTION
+  qa_and_eval_review: PASS
+  documentation_review: PASS
+  human_or_external_reviewer_approval: NOT_VERIFIED
+  merge_authorization: NOT_VERIFIED
+```
+
+The architecture review correction preserved Product Brief ownership in Discovery. The canonical `product-manager` overlap remains a separate Core-level finding and was not silently changed.
 
 ## Capability evolution
 
@@ -186,8 +267,8 @@ product_requirements_refinement:
   target: ai-native-skills
   rationale: >-
     The existing capability remains valid, but its reusable executable methodology,
-    mode classification, evidence discipline, NFR guidance, traceability, and
-    semantic regression coverage were insufficient.
+    upstream-readiness routing, profile selection, evidence discipline, NFR guidance,
+    traceability, and semantic regression coverage were insufficient.
 
 product_manager_prd_ownership_overlap:
   verdict: RFC
@@ -199,16 +280,13 @@ product_manager_prd_ownership_overlap:
     implemented by this adapter patch.
 ```
 
-## Validation status
+## Final adapter verdict
 
 ```yaml
-validation:
-  package_compliance: NOT_RUN
-  behavioral_contract_validation: NOT_RUN
-  core_adapter_conformance: NOT_RUN
-  catalog_and_inventory: NOT_RUN
-  pull_request_ci: NOT_RUN
-  independent_review: NOT_VERIFIED
+adapter_acceptance: PASS
+pull_request_state: DRAFT_PENDING_FINAL_REVIEW_TRANSITION
+merge_state: NOT_AUTHORIZED
+real_product_validation: NOT_VERIFIED
 ```
 
-These statuses must be updated from inspectable command or CI evidence before the epic can claim completion.
+The adapter implementation and automated gates are complete. Pull-request readiness and merge remain separate authorization states.
