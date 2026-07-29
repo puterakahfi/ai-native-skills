@@ -27,16 +27,28 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-      - name: Generate canonical inventory snapshot
-        run: python3 scripts/verify-capability-inventory.py --write-snapshot
-      - name: Commit snapshot when changed
+      - name: Synchronize documented counts and canonical inventory snapshot
         run: |
-          if git diff --quiet -- docs/capability-inventory.json; then
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('README.md')
+          text = path.read_text(encoding='utf-8')
+          old = '**99 skills · 13 workflows · 7 meta-skills**'
+          new = '**101 skills · 13 workflows · 7 meta-skills**'
+          if old in text:
+            path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          elif new not in text:
+            raise SystemExit('README inventory summary did not match expected old or new value')
+          PY
+          python3 scripts/verify-capability-inventory.py --write-snapshot
+      - name: Commit generated metadata when changed
+        run: |
+          if git diff --quiet -- README.md docs/capability-inventory.json; then
             echo 'Capability inventory already synchronized.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/capability-inventory.json
+          git add README.md docs/capability-inventory.json
           git commit -m 'chore(inventory): sync capability inventory snapshot'
           git push origin HEAD:${{ github.head_ref }}
