@@ -4,18 +4,18 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 119
+    executable_artifacts: 120
     official_types:
       meta-skill: 7
-      skill: 99
+      skill: 100
       workflow: 13
     patterns:
       domain-reviewer: 1
-      facade: 1
+      facade: 2
     coverage:
       contract_backed_v2: 26
       legacy_contract_backed: 73
-      reviewed_exemption: 20
+      reviewed_exemption: 21
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -890,6 +890,22 @@ contract_coverage_inventory:
     conformance_path: null
     exemption_path: null
     classification: legacy_contract_backed
+    errors: []
+  - id: documentation-assurance
+    path: skills/documentation-assurance/SKILL.md
+    type: skill
+    patterns:
+    - facade
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/documentation-assurance/contract.exemption.yaml
+    classification: reviewed_exemption
     errors: []
   - id: domain-driven-design
     path: skills/domain-driven-design/SKILL.md
