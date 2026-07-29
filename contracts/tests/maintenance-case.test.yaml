@@ -10,7 +10,7 @@ skill_test:
       must_contain:
         - maintenance-case
         - ACTIVE_INCIDENT
-        - active_incident: true
+        - "active_incident: true"
         - incident-response
         - severity
         - mitigate
@@ -29,7 +29,7 @@ skill_test:
       trigger: Yesterday's release introduced a deterministic export regression, but service is stable and users have a workaround. Fix the root cause.
       must_contain:
         - VERIFIED_DEFECT
-        - active_incident: false
+        - "active_incident: false"
         - bugfix-workflow
         - reproduce
         - regression evidence
