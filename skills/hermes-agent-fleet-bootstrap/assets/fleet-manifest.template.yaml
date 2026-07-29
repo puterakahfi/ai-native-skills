@@ -8,9 +8,12 @@ fleet_manifest:
   source:
     request_ref: ""
     product_or_repository_refs: []
+    capability_inventory_ref: ""
     capability_catalog_ref: ""
     capability_catalog_version: ""
+    job_profiles_ref: ""
     architecture_decision_ref: ""
+    behavioral_contract_ref: contracts/tests/hermes-agent-fleet-bootstrap.test.yaml
 
   request_mode: PLAN_ONLY | AUDIT_ONLY | CREATE_OR_UPDATE
 
@@ -74,6 +77,13 @@ fleet_manifest:
   profile_bootstrap_handoffs: []
   migration_plan_ref: ""
 
+  catalog_sync:
+    inventory_contains_capability: PASS | FAIL | NOT_VERIFIED
+    classification_contains_capability: PASS | FAIL | NOT_VERIFIED
+    topic_references_valid: PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+    job_profile_references_valid: PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+    published_catalog_current: PASS | FAIL | NOT_VERIFIED
+
   verification:
     checks: []
     blockers: []
@@ -81,6 +91,8 @@ fleet_manifest:
     runtime_assumptions: []
     runtime_evidence: []
     deterministic_input_hash: ""
+    behavioral_cases_executed: []
+    behavioral_failures: []
 
   readiness:
     verdict: READY | READY_WITH_LIMITATIONS | NEEDS_WORK | BLOCKED | NOT_VERIFIED
