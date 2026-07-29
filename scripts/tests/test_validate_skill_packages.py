@@ -92,6 +92,11 @@ class SkillPackageValidatorTests(unittest.TestCase):
             "      --skip-browser \\\n      --no-skills \\\n      --non-interactive \\\n      --branch main \\",
             1,
         )
+        original_mkdir = 'mkdir -p "$HERMES_HOME" "$HERMES_INSTALL_DIR" "$EVIDENCE_DIR"'
+        replacement_mkdir = 'mkdir -p "$HERMES_HOME" "$EVIDENCE_DIR"'
+        if original_mkdir not in script_text:
+            self.fail("Expected install-directory preparation line was not found")
+        script_text = script_text.replace(original_mkdir, replacement_mkdir, 1)
         runtime_script.write_text(script_text, encoding="utf-8")
 
         fake_bin = repository / ".tmp/epic-260-hermes-runtime/fake-bin"
