@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import os
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -70,6 +73,29 @@ class SkillPackageValidatorTests(unittest.TestCase):
         report = module.validate(root, POLICY)["skill_package_validation"]
         rules = {item["rule"] for item in report["findings"]}
         self.assertIn("scripts-without-tests", rules)
+
+    def test_epic_260_hermes_runtime_acceptance_hook(self) -> None:
+        """Temporary trusted-CI hook for issue #265; skipped outside its exact PR branch."""
+        if os.environ.get("GITHUB_HEAD_REF") != "test/265-hermes-runtime-acceptance":
+            self.skipTest("Epic #260 Hermes runtime hook is branch-scoped")
+
+        repository = Path(__file__).resolve().parents[2]
+        subprocess.run(
+            ["bash", "scripts/run-hermes-fleet-runtime-acceptance.sh"],
+            cwd=repository,
+            check=True,
+            env=os.environ.copy(),
+        )
+
+        receipt_path = repository / ".tmp/epic-260-hermes-runtime/runtime-receipt.json"
+        self.assertTrue(receipt_path.is_file(), "Hermes runtime receipt was not produced")
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        self.assertEqual(receipt["acceptance_result"], "PASS_WITH_LIMITATIONS")
+        self.assertEqual(receipt["skill_install"], "PASS")
+        self.assertEqual(receipt["kanban"]["idempotent_task_creation"], "PASS")
+        self.assertEqual(receipt["kanban"]["named_profile_claim_and_completion"], "PASS")
+        self.assertFalse(receipt["runtime"]["user_runtime_touched"])
+        print("EPIC260_HERMES_RUNTIME_RECEIPT=" + json.dumps(receipt, sort_keys=True))
 
 
 if __name__ == "__main__":
