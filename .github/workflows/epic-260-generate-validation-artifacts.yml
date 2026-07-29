@@ -14,16 +14,19 @@ on:
       - docs/contract-coverage-discovery.yaml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - uses: actions/setup-python@v5
         with:
@@ -134,26 +137,27 @@ jobs:
           python3 scripts/inventory-contract-coverage.py --root . --core-root .deps/ai-native-core
           python3 scripts/validate-contract-coverage.py --root . --core-root .deps/ai-native-core
 
-      - name: Stage verified files
+      - name: Commit verified artifacts and remove temporary workflows
+        shell: bash
         run: |
-          mkdir -p /tmp/epic-260-artifacts
-          while read -r path; do
-            mkdir -p "/tmp/epic-260-artifacts/$(dirname "$path")"
-            cp "$path" "/tmp/epic-260-artifacts/$path"
-          done <<'EOF'
-          README.md
-          docs/skills.md
-          docs/capability-inventory.json
-          docs/contract-coverage-discovery.yaml
-          catalog/capability-discovery/classifications.json
-          catalog/capability-discovery/topics.json
-          catalog/published/capability-catalog.json
-          skills/hermes-agent-fleet-bootstrap/SKILL.md
-          contracts/tests/hermes-agent-fleet-bootstrap.test.yaml
-          EOF
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: epic-260-verified-artifacts
-          path: /tmp/epic-260-artifacts
-          if-no-files-found: error
+          set -euo pipefail
+          git fetch origin 260-hermes-agent-fleet-bootstrap
+          git checkout origin/260-hermes-agent-fleet-bootstrap -- .github/workflows/sync-generated-capability-metadata.yml
+          git rm -f .github/workflows/epic-260-generate-validation-artifacts.yml
+          if test -f .github/workflows/epic-260-register-hermes-fleet-capability.yml; then
+            git rm -f .github/workflows/epic-260-register-hermes-fleet-capability.yml
+          fi
+          git add README.md \
+                  docs/skills.md \
+                  docs/capability-inventory.json \
+                  docs/contract-coverage-discovery.yaml \
+                  catalog/capability-discovery/classifications.json \
+                  catalog/capability-discovery/topics.json \
+                  catalog/published/capability-catalog.json \
+                  skills/hermes-agent-fleet-bootstrap/SKILL.md \
+                  contracts/tests/hermes-agent-fleet-bootstrap.test.yaml \
+                  .github/workflows/sync-generated-capability-metadata.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "test(hermes): commit verified fleet bootstrap artifacts"
+          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
