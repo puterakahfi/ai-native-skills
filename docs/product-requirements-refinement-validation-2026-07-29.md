@@ -2,7 +2,7 @@
 
 ## Scope
 
-This record validates the adapter-level refinement tracked by issue #244 and draft pull request #245.
+This record validates the adapter-level refinement tracked by issue #244 and pull request #245.
 
 ```yaml
 repository: puterakahfi/ai-native-skills
@@ -12,7 +12,7 @@ operation: UPDATE
 adapter_version: 1.2.0
 core_contract: product-requirements@~0.2
 primary_workflow: skill-authoring-workflow
-validation_evidence_head: 12b1fb0d7b3aa62c32cb96eadbcb0201b743cbcc
+validation_evidence_head: b887a5d3a250fb0eae5a1184fa4f601717a74ab9
 ```
 
 This record does not change canonical Core ownership and does not claim merge, product approval, release readiness, or real-user product validation.
@@ -223,7 +223,7 @@ transfer_validation:
 
 ## Automated validation evidence
 
-All pull-request workflows completed successfully on `12b1fb0d7b3aa62c32cb96eadbcb0201b743cbcc`:
+All pull-request workflows completed successfully on `b887a5d3a250fb0eae5a1184fa4f601717a74ab9`:
 
 ```yaml
 validation:
@@ -284,7 +284,7 @@ product_manager_prd_ownership_overlap:
 
 ```yaml
 adapter_acceptance: PASS
-pull_request_state: DRAFT_PENDING_FINAL_REVIEW_TRANSITION
+pull_request_state: READY_FOR_OWNER_REVIEW
 merge_state: NOT_AUTHORIZED
 real_product_validation: NOT_VERIFIED
 ```
