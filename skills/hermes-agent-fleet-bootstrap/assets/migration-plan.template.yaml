@@ -1,0 +1,46 @@
+schema_version: 1
+migration_plan:
+  fleet_id: ""
+  mode: PLAN_ONLY
+  source_revision: ""
+  target_revision: ""
+
+  existing_profiles:
+    - profile_id: ""
+      audit_ref: ""
+      evidence_status: VERIFIED | PARTIAL | NOT_VERIFIED
+      current_responsibility: ""
+      target_responsibility: ""
+      decision: KEEP | KEEP_AS_PRODUCT_AGENT | CONVERT_TO_SPECIALIST | MERGE | SPLIT | REGENERATE | DEPRECATE | NOT_VERIFIED
+      rationale: []
+      live_state_policy: PRESERVE
+      credential_policy: PRESERVE_REFERENCE_ONLY
+      gateway_policy: PRESERVE | CHANGE_RECOMMENDATION | NOT_VERIFIED
+      profile_bootstrap_handoff_ref: ""
+      manual_approval_required: true
+      blockers: []
+
+  new_profiles: []
+  merge_recommendations: []
+  split_recommendations: []
+  deprecation_recommendations: []
+
+  prohibited_automatic_actions:
+    - delete_profile
+    - move_or_copy_live_sessions
+    - move_or_copy_memories
+    - move_or_copy_cron_state
+    - move_or_copy_runtime_database
+    - copy_credentials_or_tokens
+    - replace_gateway_token
+    - grant_production_access
+
+  safety:
+    destructive_mutation: false
+    live_state_preserved: PASS | FAIL | NOT_VERIFIED
+    secrets_preserved_locally: PASS | FAIL | NOT_VERIFIED
+    owner_authorization: VERIFIED | ROUTE_FOR_APPROVAL | NOT_VERIFIED
+
+  findings: []
+  blockers: []
+  next_action: ""

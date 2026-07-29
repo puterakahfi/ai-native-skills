@@ -1,0 +1,32 @@
+schema_version: 1
+capability_resolution:
+  fleet_id: ""
+  source:
+    inventory_ref: ""
+    classifications_ref: ""
+    topics_ref: ""
+    job_profiles_ref: ""
+    repository_revision: ""
+
+  requested_responsibilities:
+    - responsibility: ""
+      profile_candidate: ""
+      required_outputs: []
+      applicable_workflows: []
+      candidate_capability_ids: []
+      selected_required: []
+      selected_optional: []
+      rejected:
+        - capability_id: ""
+          reason: ""
+      unresolved: []
+      rationale: []
+
+  validation:
+    stale_ids: []
+    missing_ids: []
+    duplicate_assignments: []
+    broad_preset_rejected: true
+    catalog_authority_preserved: true
+    hermes_archetypes_are_local_templates: true
+    verdict: PASS | NEEDS_WORK | BLOCKED | NOT_VERIFIED
