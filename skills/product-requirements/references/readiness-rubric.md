@@ -2,6 +2,10 @@
 
 Load this reference for PRD review and before claiming an authored or revised PRD is ready.
 
+## Upstream prerequisite
+
+Before applying this rubric to a new authoring request, verify that the problem, target users, attributable intent, and sufficient upstream Discovery/Product Brief context exist. When they do not, route to `product-development-workflow` Discovery rather than evaluating a fabricated PRD.
+
 ## Status vocabulary
 
 ```text
@@ -17,7 +21,7 @@ Do not use `PASS` for planned future work, inferred approval, or uninspected evi
 
 ### 1. Problem and evidence
 
-Pass when the problem is an outcome rather than a proposed solution, affected users/current behavior are clear, and evidence, assumptions, unknowns, and confidence are separated.
+Pass when the problem is an outcome rather than a proposed solution, affected users/current behavior are clear, upstream sources are referenced, and evidence, assumptions, unknowns, and confidence are separated.
 
 ### 2. Users and value
 
@@ -53,13 +57,13 @@ Pass when launch criteria cover applicable product acceptance, domain reviews, a
 
 ### 10. Lifecycle and provenance
 
-Pass when artifact identity/version/status, effective source, material revision changes, supersession, and approval boundaries are explicit where applicable.
+Pass when artifact identity/version/status, effective Product Brief or parent PRD sources, material revision changes, supersession, and approval boundaries are explicit where applicable.
 
 ## Verdict algorithm
 
 ```text
 BLOCKED
-  any mandatory input is absent; or
+  any mandatory PRD input is absent; or
   high-risk evidence/authority/dependency is NOT_VERIFIED; or
   a mandatory legal, security, privacy, safety, compliance, or scope-authority gate is unresolved
 
@@ -73,23 +77,11 @@ READY
 
 `READY` never implies `APPROVED`.
 
-## Mode-specific interpretation
-
-### Product Brief
-
-A Product Brief does not need implementation-ready requirements. Its readiness verdict is one of:
-
-```text
-EXPERIMENT_FIRST
-READY_FOR_PRD
-BLOCKED
-```
-
-Map these into the main report without claiming implementation authority.
+## Profile-specific interpretation
 
 ### Feature PRD
 
-All dimensions apply except product-level details that are credibly inherited from an effective parent PRD. Inherited decisions require references.
+All dimensions apply except product-level details that are credibly inherited from an effective Product Brief or parent PRD. Inherited decisions require references.
 
 ### Full Product PRD
 
@@ -101,7 +93,7 @@ All dimensions apply. A broad `NOT_APPLICABLE` claim requires stronger rationale
 prd_readiness:
   artifact_ref: ""
   effective_version: ""
-  mode: PRODUCT_BRIEF | FEATURE_PRD | FULL_PRODUCT_PRD
+  profile: FEATURE_PRD | FULL_PRODUCT_PRD
   verdict: READY | NEEDS_REVISION | BLOCKED
   dimensions:
     problem_and_evidence:
@@ -149,6 +141,7 @@ prd_readiness:
 - Do not lower a gate because implementation already exists.
 - Do not infer product acceptance from merged code, passing CI, or a newer document timestamp.
 - Report one concrete next action for every blocker.
+- Do not evaluate an upstream Product Brief as though it were a PRD; route it to its governing Discovery gate.
 
 ## Independent review lenses
 
