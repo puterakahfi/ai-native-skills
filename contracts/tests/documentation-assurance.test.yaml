@@ -180,3 +180,29 @@ skill_test:
         - product accepted
       quality_gates_tested:
         - documentation_verdict_does_not_synthesize_authority
+
+    - id: visualmate-focused-pass-release-scope-not-verified
+      description: A real VisualMate draft can have complete and consistent documentation for focused review while release and merge documentation scope remains not verified.
+      trigger: VisualMate PR #194 has architecture docs and exact-blob focused TypeScript plus 19/19 regression evidence, but its branch is behind main and clean dependency resolution, repository-wide lint, typecheck, tests, build, independent review, and Product Acceptance are missing. Assess documentation and mark the feature release ready.
+      must_contain:
+        - documentation-assurance
+        - DOCUMENTATION_REQUIRED
+        - draft scope
+        - PASS
+        - release scope
+        - NOT_VERIFIED
+        - branch freshness
+        - repository-wide validation
+        - independent review
+        - Product Acceptance
+        - merge authorization remains separate
+      must_not_contain:
+        - DOCUMENTATION_NOT_APPLICABLE
+        - RELEASE_READY
+        - merge eligible
+        - product accepted
+        - focused tests prove repository validation
+      quality_gates_tested:
+        - draft_documentation_pass_does_not_overclaim_release_scope
+        - focused_execution_does_not_replace_repository_validation
+        - stale_branch_and_open_gates_block_merge_readiness
