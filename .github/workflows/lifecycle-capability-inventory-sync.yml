@@ -1,0 +1,34 @@
+name: Lifecycle Capability Inventory Sync
+
+on:
+  push:
+    branches:
+      - 246-lifecycle-completion
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]' || !contains(github.event.head_commit.message, 'sync capability inventory snapshot')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 246-lifecycle-completion
+          fetch-depth: 0
+      - name: Generate canonical capability inventory
+        run: python3 scripts/verify-capability-inventory.py --write-snapshot
+      - name: Commit generated snapshot
+        run: |
+          if git diff --quiet -- docs/capability-inventory.json; then
+            echo 'Capability inventory already synchronized.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/capability-inventory.json
+          git commit -m 'chore(inventory): sync capability inventory snapshot'
+          git push origin HEAD:246-lifecycle-completion
