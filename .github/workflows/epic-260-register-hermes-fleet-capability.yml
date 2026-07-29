@@ -1,5 +1,6 @@
 name: Register Hermes Fleet Capability
 
+# One-shot migration: this second push triggers the workflow after the definition exists on the branch.
 on:
   push:
     branches:
