@@ -1,6 +1,9 @@
 name: Append VisualMate Lifecycle Transfer Evals
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - 258-visualmate-lifecycle-transfer-evals
