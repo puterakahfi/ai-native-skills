@@ -10,7 +10,7 @@ contract_exemption:
   scope:
     - static_contract_ownership
     - provider_specific_execution
-  review_date: 2027-01-29
+  review_date: "2027-01-29"
   evidence_refs:
     - kind: github_issue
       ref: puterakahfi/ai-native-skills#260
