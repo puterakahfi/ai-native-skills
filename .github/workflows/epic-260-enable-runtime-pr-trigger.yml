@@ -1,0 +1,54 @@
+name: Enable Epic 260 Runtime PR Trigger
+
+on:
+  push:
+    branches:
+      - 265-fleet-real-runtime-acceptance
+    paths:
+      - .github/workflows/epic-260-enable-runtime-pr-trigger.yml
+
+permissions:
+  contents: write
+
+jobs:
+  enable:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 265-fleet-real-runtime-acceptance
+          fetch-depth: 0
+      - name: Add pull-request trigger and remove one-shot workflow
+        shell: python
+        run: |
+          from pathlib import Path
+
+          target = Path('.github/workflows/epic-260-hermes-runtime-acceptance.yml')
+          text = target.read_text(encoding='utf-8')
+          marker = '  workflow_dispatch:\n'
+          addition = (
+              '  pull_request:\n'
+              '    branches:\n'
+              '      - 260-hermes-agent-fleet-bootstrap\n'
+              '    paths:\n'
+              '      - .github/workflows/epic-260-hermes-runtime-acceptance.yml\n'
+              '      - skills/hermes-agent-fleet-bootstrap/**\n'
+              '      - docs/hermes-agent-fleet-bootstrap-*.md\n'
+          )
+          if '  pull_request:\n' not in text:
+              if marker not in text:
+                  raise SystemExit('workflow_dispatch marker missing')
+              text = text.replace(marker, marker + addition, 1)
+              target.write_text(text, encoding='utf-8')
+          Path('.github/workflows/epic-260-enable-runtime-pr-trigger.yml').unlink()
+      - name: Commit trigger fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add .github/workflows/epic-260-hermes-runtime-acceptance.yml \
+                  .github/workflows/epic-260-enable-runtime-pr-trigger.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "fix(ci): enable Hermes runtime acceptance on PR"
+          git push origin HEAD:265-fleet-real-runtime-acceptance
