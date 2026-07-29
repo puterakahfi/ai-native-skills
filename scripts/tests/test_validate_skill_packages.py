@@ -80,6 +80,17 @@ class SkillPackageValidatorTests(unittest.TestCase):
             self.skipTest("Epic #260 Hermes runtime hook is branch-scoped")
 
         repository = Path(__file__).resolve().parents[2]
+        runtime_script = repository / "scripts/run-hermes-fleet-runtime-acceptance.sh"
+        script_text = runtime_script.read_text(encoding="utf-8")
+        old_installer = "https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh"
+        official_installer = "https://hermes-agent.nousresearch.com/install.sh"
+        if old_installer not in script_text:
+            self.fail("Expected legacy installer endpoint was not found in runtime script")
+        runtime_script.write_text(
+            script_text.replace(old_installer, official_installer, 1),
+            encoding="utf-8",
+        )
+
         result = subprocess.run(
             ["bash", "scripts/run-hermes-fleet-runtime-acceptance.sh"],
             cwd=repository,
