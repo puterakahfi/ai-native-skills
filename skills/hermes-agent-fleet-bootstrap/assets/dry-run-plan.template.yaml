@@ -1,0 +1,58 @@
+schema_version: 1
+dry_run_plan:
+  fleet_id: ""
+  request_revision: ""
+  capability_catalog_revision: ""
+  observed_fleet_revision: ""
+  runtime_target: hermes
+  runtime_execution: NOT_RUN
+
+  intended_actions:
+    profiles:
+      create: []
+      audit: []
+      update: []
+      no_change: []
+      deprecate_recommendations: []
+    files:
+      create: []
+      update: []
+      preserve: []
+      prohibited: []
+    skills:
+      install: []
+      remove_recommendations: []
+      unresolved: []
+    gateways:
+      create_or_configure: []
+      preserve: []
+      dedicated_exceptions: []
+    permissions:
+      changes: []
+      manual_approval_required: []
+    migration: []
+    runtime_commands: []
+
+  idempotency_comparison:
+    requested_revision: ""
+    observed_revision: ""
+    equivalent: true | false | NOT_VERIFIED
+    no_change_profiles: []
+    create_profiles: []
+    update_profiles: []
+    skill_drift: []
+    policy_drift: []
+    gateway_drift: []
+    collaboration_drift: []
+    prohibited_state_differences: []
+
+  safety:
+    writes_performed: false
+    secret_material_in_output: false
+    live_state_in_output: false
+    destructive_actions: false
+
+  blockers: []
+  warnings: []
+  evidence_needed_for_execution: []
+  next_action: ""
