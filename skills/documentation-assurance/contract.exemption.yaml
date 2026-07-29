@@ -1,0 +1,30 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: documentation-assurance
+    path: skills/documentation-assurance/SKILL.md
+    type: skill
+  classification: core_gap
+  owner: ai-native-skills-maintainers
+  reason: Documentation assurance is an approved adapter-layer facade for lifecycle completion gates, but its universal cross-adapter semantics are intentionally deferred until real product and maintenance validation under epic 246.
+  scope:
+    - static_contract_ownership
+    - core_gap_tracking
+  review_date: '2026-10-29'
+  evidence_refs:
+    - kind: github_issue
+      ref: https://github.com/puterakahfi/ai-native-skills/issues/248
+    - kind: executable_source
+      ref: skills/documentation-assurance/SKILL.md
+  revisit:
+    triggers:
+      - issue 251 completes real product and real maintenance validation
+      - repeated cross-adapter evidence establishes stable universal documentation gate semantics
+      - skill-evolution recommends a Core RFC with compatibility analysis
+  prohibited_claims:
+    - core_contract_conformance
+    - behavioral_verification
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active
