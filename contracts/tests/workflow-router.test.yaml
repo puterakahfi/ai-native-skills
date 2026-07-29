@@ -1,7 +1,7 @@
 skill_test:
   skill: workflow-router
-  version: 1.8.0
-  description: Verify lifecycle selection remains primary while platform, delivery, continuity, design, skill-lifecycle, and artifact-composition overlays load the correct capabilities.
+  version: 1.9.0
+  description: Verify lifecycle selection remains primary while platform, delivery, continuity, design, maintenance-signal, documentation, skill-lifecycle, and artifact-composition overlays load the correct capabilities.
   cases:
     - id: chatgpt-app-from-zero-routes-product-workflow-plus-specialist
       description: A ChatGPT App product from zero uses the existing product lifecycle plus the platform specialist.
@@ -164,3 +164,45 @@ skill_test:
       must_contain: [invalid, owner, executor, artifact producer, dependency, completion gate]
       must_not_contain: [routing complete, complete composition]
       quality_gates_tested: [structured_composition_required]
+
+    - id: qualified-active-outage-routes-incident-response
+      description: A current verified outage routes to incident-response after maintenance-case qualification.
+      trigger: Production checkout is failing for all users right now, confirmed by monitoring and customer reports. Restore service.
+      must_contain: [maintenance-case, ACTIVE_INCIDENT, incident-response, exactly one primary route, mitigate]
+      must_not_contain: [maintenance-workflow, bugfix-workflow as primary before mitigation, start permanent fix first]
+      quality_gates_tested: [maintenance_signal_qualified_before_route, active_incident_routes_incident_response, no_duplicate_maintenance_workflow]
+
+    - id: non-active-regression-routes-bugfix-not-incident
+      description: A stable service with a verified regression uses bugfix-workflow.
+      trigger: Export is deterministically broken after yesterday's release, but the service is stable and a workaround exists. Fix it.
+      must_contain: [maintenance-case, active incident false, bugfix-workflow, reproduce]
+      must_not_contain: [incident-response as primary, multiple primary routes]
+      quality_gates_tested: [incident_and_bugfix_routes_distinct, exactly_one_primary_route]
+
+    - id: unqualified-dependency-advisory-blocks-auto-change
+      description: An advisory without verified affected usage does not trigger an automatic production dependency update.
+      trigger: A package advisory appeared, but we have not verified our version or affected code path. Upgrade production immediately.
+      must_contain: [maintenance-case, NOT_VERIFIED, affected usage, workflow-router, further investigation]
+      must_not_contain: [dependency update executed, vulnerability confirmed, release authorized]
+      quality_gates_tested: [unqualified_signal_fails_closed, router_does_not_infer_affected_usage]
+
+    - id: product-metric-drop-routes-validation-or-experiment
+      description: Product metric movement does not assume a feature solution.
+      trigger: Activation dropped 15%. Build a new onboarding wizard immediately and mark the issue solved.
+      must_contain: [maintenance-case, product-development-workflow, Product Validation, experiment, hypothesis]
+      must_not_contain: [new-feature-workflow automatically selected, onboarding wizard proven solution, issue resolved]
+      quality_gates_tested: [product_signal_routes_validation, solution_not_assumed]
+
+    - id: documentation-drift-routes-assurance-capability
+      description: A stale runbook under verified product context routes to documentation-assurance without a new documentation workflow.
+      trigger: The rollback runbook uses a command that is no longer supported. Correct and verify the document only.
+      must_contain: [maintenance-case, documentation-assurance, documentation-only correction, governing context]
+      must_not_contain: [documentation-workflow, maintenance-workflow, product-development-workflow restarted]
+      quality_gates_tested: [documentation_only_route_uses_facade, no_duplicate_lifecycle]
+
+    - id: incident-mitigation-and-fix-become-linked-cases
+      description: Immediate restoration and permanent correction use separate linked cases with one route each.
+      trigger: Roll back the failing release now, then implement a permanent regression fix once service is stable.
+      must_contain: [incident-response, mitigation, linked follow-up case, bugfix-workflow, separate objective]
+      must_not_contain: [two primary routes in one case, permanent fix before mitigation]
+      quality_gates_tested: [one_primary_route_per_case, linked_followup_preserves_traceability]

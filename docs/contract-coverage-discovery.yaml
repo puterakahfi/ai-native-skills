@@ -1140,6 +1140,22 @@ contract_coverage_inventory:
     exemption_path: null
     classification: legacy_contract_backed
     errors: []
+  - id: maintenance-case
+    path: skills/maintenance-case/SKILL.md
+    type: skill
+    patterns:
+    - facade
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers: []
+      delegates: []
+    conformance_path: null
+    exemption_path: skills/maintenance-case/contract.exemption.yaml
+    classification: reviewed_exemption
+    errors: []
   - id: master-design
     path: skills/master-design/SKILL.md
     type: skill
@@ -2037,7 +2053,7 @@ contract_coverage_inventory:
     path: skills/workflow-router/SKILL.md
     type: meta-skill
     patterns: []
-    version: 1.8.0
+    version: 1.9.0
     implements: contracts/skills/meta/workflow-router.contract.yaml
     contract_version: ~0.2
     contract_path_exists: true
