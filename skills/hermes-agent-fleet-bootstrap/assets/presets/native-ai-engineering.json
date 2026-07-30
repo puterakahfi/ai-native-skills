@@ -1,6 +1,6 @@
 {
   "id": "native-ai-engineering",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "topology": "orchestrator_with_specialists",
   "orchestrator": "engineering-orchestrator",
   "kanban": {
@@ -16,7 +16,12 @@
         "hermes-profile-bootstrap",
         "workflow-router",
         "role-switcher",
+        "systems-reasoning",
         "decision-provenance",
+        "context-manager",
+        "task-continuity",
+        "delivery-work-breakdown",
+        "capability-orchestration",
         "skill-eval"
       ]
     },
@@ -28,6 +33,10 @@
         "product-development-workflow",
         "product-manager",
         "product-requirements",
+        "business-value-alignment",
+        "user-research",
+        "experiment-design",
+        "delivery-work-breakdown",
         "acceptance-testing",
         "decision-provenance"
       ]
@@ -37,8 +46,24 @@
       "description": "Owns solution boundaries, domain and integration architecture, technical specifications, non-functional requirements, architecture decisions, and implementation guidance without acting as the primary feature implementer.",
       "gateway": "none",
       "skills": [
+        "implementation-context-discovery",
         "systems-reasoning",
+        "systems-thinking",
         "master-engineer",
+        "spec-workflow",
+        "domain-driven-design",
+        "ports-and-adapters",
+        "clean-architecture",
+        "solid-design",
+        "design-patterns",
+        "api-contract",
+        "data-modeling",
+        "adr",
+        "event-driven-design",
+        "service-design",
+        "threat-modeling",
+        "resilience-engineering",
+        "observability-design",
         "architecture-review",
         "decision-provenance"
       ]
@@ -49,9 +74,19 @@
       "gateway": "none",
       "skills": [
         "master-design",
-        "ux-ui-patterns",
+        "design-review",
         "design-system",
+        "information-architecture",
         "accessibility",
+        "responsiveness",
+        "ui-components",
+        "ux-ui-patterns",
+        "visual-hierarchy",
+        "composition",
+        "readability",
+        "design-interaction",
+        "adaptive-component-design",
+        "content-strategy",
         "decision-provenance"
       ]
     },
@@ -60,9 +95,22 @@
       "description": "Owns frontend architecture and implementation, component behavior, state and API integration, accessibility implementation, responsive behavior, frontend tests, and implementation evidence.",
       "gateway": "none",
       "skills": [
-        "master-engineer",
         "implementation-context-discovery",
+        "master-engineer",
         "new-feature-workflow",
+        "bugfix-workflow",
+        "production-code-quality-baseline",
+        "test-driven-development",
+        "clean-code",
+        "solid-design",
+        "refactoring",
+        "systematic-debugging",
+        "ui-components",
+        "design-system",
+        "ux-patterns-for-developers",
+        "accessibility",
+        "responsiveness",
+        "web-performance",
         "git-workflow"
       ]
     },
@@ -71,20 +119,44 @@
       "description": "Owns backend services, APIs, domain and application implementation, persistence, integrations, background work, automated tests, and implementation evidence within approved architecture.",
       "gateway": "none",
       "skills": [
-        "master-engineer",
         "implementation-context-discovery",
+        "master-engineer",
         "new-feature-workflow",
+        "bugfix-workflow",
+        "production-code-quality-baseline",
+        "test-driven-development",
+        "clean-code",
+        "solid-design",
+        "clean-architecture",
+        "domain-driven-design",
+        "ports-and-adapters",
+        "design-patterns",
+        "api-contract",
+        "data-modeling",
+        "service-design",
+        "event-driven-design",
+        "systematic-debugging",
+        "refactoring",
+        "observability-design",
+        "resilience-engineering",
         "git-workflow"
       ]
     },
     {
       "id": "quality-review",
-      "description": "Independently verifies acceptance criteria, architecture conformance, security findings, regressions, tests, and readiness without serving as the primary implementer.",
+      "description": "Independently verifies acceptance criteria, architecture conformance, security findings, regressions, tests, design quality, and readiness without serving as the primary implementer.",
       "gateway": "none",
       "skills": [
         "acceptance-testing",
+        "software-testing-workflow",
+        "code-review-workflow",
         "architecture-review",
         "security-review",
+        "design-review",
+        "threat-modeling",
+        "accessibility",
+        "web-performance",
+        "decision-provenance",
         "skill-eval"
       ]
     }
