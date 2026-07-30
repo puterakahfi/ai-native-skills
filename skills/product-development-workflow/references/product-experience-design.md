@@ -13,7 +13,7 @@ systems-reasoning → proportionate system and journey model when consequences c
 systems-thinking → deep loops, delays, Goodhart, emergence, and second-order analysis when material
 information-architecture → structure and navigation
 master-design → coherent experience and visual direction
- design-foundation → tokens, states, responsive and accessibility foundations
+design-foundation → tokens, states, responsive and accessibility foundations
 accessibility → inclusive interaction requirements
 decision-provenance → approved locks, exceptions, and not-applicable claims
 design-review → independent downstream acceptance, not upfront authorship
