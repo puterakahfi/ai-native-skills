@@ -21,7 +21,6 @@
         "context-manager",
         "task-continuity",
         "delivery-work-breakdown",
-        "capability-orchestration",
         "skill-eval"
       ]
     },
