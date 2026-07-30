@@ -119,7 +119,13 @@ def sanitize_policy(source: Any, target: Any) -> Any:
                 result[key] = copy.deepcopy(target_value)
         return result
     if isinstance(source, list):
-        return [sanitize_policy(item, None) for item in source]
+        target_list = target if isinstance(target, list) else []
+        return [
+            sanitize_policy(
+                item, target_list[index] if index < len(target_list) else None
+            )
+            for index, item in enumerate(source)
+        ]
     return copy.deepcopy(source)
 
 
@@ -260,7 +266,7 @@ def execute(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
     source_config = load_yaml_mapping(source_config_path, "source profile config")
     validate_source_model(source_config)
 
-    source_policy = canonical_policy(source_config)
+    source_policy = canonical_policy(policy_from_config(source_config, {}))
     source_digest = digest(source_policy)
     timestamp = started.strftime("%Y%m%d-%H%M%S")
     actions: list[dict[str, Any]] = []
@@ -277,8 +283,10 @@ def execute(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
             target_config_path, "target profile config", missing_ok=True
         )
         updated = policy_from_config(source_config, target_config)
-        before_digest = digest(canonical_policy(target_config))
-        after_digest = digest(canonical_policy(updated))
+        before_digest = digest(
+            canonical_policy(policy_from_config(target_config, {}))
+        )
+        after_digest = digest(canonical_policy(policy_from_config(updated, {})))
         changed = updated != target_config
         action: dict[str, Any] = {
             "profile": profile_id,
