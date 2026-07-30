@@ -1809,7 +1809,7 @@ contract_coverage_inventory:
     path: skills/systems-reasoning/SKILL.md
     type: meta-skill
     patterns: []
-    version: 0.1.0
+    version: 0.2.0
     implements: null
     contract_version: null
     contract_path_exists: null
