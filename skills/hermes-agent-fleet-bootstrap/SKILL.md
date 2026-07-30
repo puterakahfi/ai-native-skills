@@ -3,13 +3,13 @@ name: hermes-agent-fleet-bootstrap
 description: Design, bootstrap, audit, and verify the smallest justified fleet of persistent Hermes specialist profiles. Use when a Hermes engineering setup needs one orchestrator plus bounded specialists; when deciding whether capabilities should become profiles, skills, workflows, reviewers, delegated subagents, or product context; or when migrating existing app-based profiles into a shared specialist fleet. Do not use for ordinary single-profile creation, task-time workflow routing, product delivery itself, bot-token provisioning, destructive migration, or unsupported runtime claims.
 license: MIT
 metadata:
-  ai-native-skills.version: 0.1.0
+  ai-native-skills.version: 0.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.pattern: facade
   ai-native-skills.requires: "workflow-router role-switcher hermes-profile-bootstrap decision-provenance skill-eval"
   ai-native-skills.related_skills: '["hermes-profile-bootstrap","workflow-router","role-switcher","implementation-context-discovery","product-manager","master-engineer","architecture-review","security-review","skill-eval"]'
-  ai-native-skills.boundary.covers: '["fleet_request_normalization","multi_agent_justification","topology_selection","profile_responsibility_contracts","profile_skill_manifest_composition","gateway_and_bot_policy","collaboration_and_artifact_handoff_contracts","ownership_and_cycle_validation","non_destructive_profile_migration_planning","per_profile_bootstrap_handoffs","fleet_readiness_and_receipt"]'
+  ai-native-skills.boundary.covers: '["fleet_request_normalization","multi_agent_justification","topology_selection","profile_responsibility_contracts","profile_skill_manifest_composition","gateway_and_bot_policy","collaboration_and_artifact_handoff_contracts","ownership_and_cycle_validation","non_destructive_profile_migration_planning","per_profile_bootstrap_handoffs","deterministic_preset_execution","fleet_readiness_and_receipt"]'
   ai-native-skills.boundary.delegates: '["single_profile_materialization","task_time_primary_workflow_selection","task_time_role_assignment","product_or_repository_truth","kanban_dispatcher_execution","bot_token_or_secret_provisioning","operating_system_sandboxing","implementation_delivery","merge_release_deployment_or_product_acceptance_authorization"]'
 ---
 
@@ -23,7 +23,8 @@ Design the smallest effective Hermes specialist fleet, then delegate each approv
 hermes-agent-fleet-bootstrap
   fleet applicability, topology, specialist contracts,
   shared handoffs, conflict checks, migration plan,
-  profile-bootstrap handoffs, fleet verification, readiness
+  profile-bootstrap handoffs, deterministic preset execution,
+  fleet verification, readiness
 
 hermes-profile-bootstrap
   one concrete profile skeleton, skill installation plan,
@@ -58,13 +59,43 @@ user
 
 A profile is a durable agent identity. A bot is an optional communication surface. Only the orchestrator receives a bot by default.
 
+## One-command execution
+
+After topology, profile boundaries, and the selected preset are approved, use the deterministic executor instead of manually creating each profile:
+
+```bash
+bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
+  bootstrap native-ai-engineering --apply
+```
+
+Without `--apply`, the command is plan-only:
+
+```bash
+bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
+  bootstrap native-ai-engineering
+```
+
+The executor applies an approved preset. It does not invent topology through an LLM, start a messaging gateway, provision credentials, delete profiles, or modify memory, sessions, cron state, provider configuration, or product truth.
+
+Supported deterministic operations:
+
+```text
+bootstrap  create missing profiles, synchronize managed skills, initialize Kanban
+reconcile  compare and synchronize an approved preset idempotently
+audit      inspect conformance without runtime mutation
+```
+
+Load `references/one-command-cli.md` for commands, flags, exit codes, side effects, and idempotency behavior.
+
 ## Load references
 
 - Load `references/topology-and-classification.md` for multi-agent justification, capability classification, and topology selection.
 - Load `references/profile-archetypes.md` for candidate specialist boundaries and responsibility-specific skill manifests.
 - Load `references/runtime-gateway-and-security.md` for bots, workers, permissions, sandbox evidence, and runtime limitations.
 - Load `references/catalog-migration-and-idempotency.md` for capability resolution, existing-profile audit, migration planning, dry-run, and idempotency checks.
+- Load `references/one-command-cli.md` before executing or documenting deterministic preset bootstrap.
 - Load `assets/*.template.yaml` only when producing machine-readable manifests.
+- Load `assets/presets/*.json` only after the requested preset and mutation authority are explicit.
 
 ## Required input
 
@@ -269,15 +300,16 @@ Gate: recommendations are evidence-backed and distinct from executed mutations.
 
 ### 11. Plan, audit, or execute
 
-- `PLAN_ONLY`: list intended profiles, files, skills, policies, gateways, and migration actions without mutation.
-- `AUDIT_ONLY`: compare observed profiles against approved contracts without mutation.
-- `CREATE_OR_UPDATE`: execute only with verified runtime tools and authority; otherwise emit an exact handoff.
+- `PLAN_ONLY`: list intended profiles, files, skills, policies, gateways, and migration actions without profile or Kanban mutation.
+- `AUDIT_ONLY`: compare observed profiles against approved contracts without runtime mutation.
+- `CREATE_OR_UPDATE`: execute only with verified runtime tools, an approved preset, and mutation authority; otherwise emit an exact handoff.
+- Use `scripts/hermes-fleet` for deterministic approved-preset execution. Do not use it to bypass multi-agent justification, profile contracts, safety review, or authorization.
 
-Gate: planned and executed states remain separate.
+Gate: planned and executed states remain separate, and the selected preset is explicit.
 
 ### 12. Verify fleet readiness
 
-Use `assets/fleet-manifest.template.yaml` and verify topology, unique identifiers, artifact ownership, custom skill manifests, profile-bootstrap handoffs, gateway policy, collaboration cycles, reviewer independence, safety exclusions, permissions, runtime assumptions, migration safety, and deterministic inputs.
+Use `assets/fleet-manifest.template.yaml` and verify topology, unique identifiers, artifact ownership, custom skill manifests, profile-bootstrap handoffs, gateway policy, collaboration cycles, reviewer independence, safety exclusions, permissions, runtime assumptions, migration safety, deterministic inputs, executable receipt, and idempotent replay.
 
 Verdicts:
 
@@ -319,6 +351,9 @@ execution_receipt
 - Every durable artifact has one owner.
 - Skill manifests are responsibility-specific.
 - `hermes-profile-bootstrap` remains the per-profile executor.
+- Deterministic execution uses an approved, versioned preset.
+- Plan-only, audit, and apply states remain distinguishable in the receipt.
+- Repeated apply is idempotent and preserves unmanaged profile state.
 - Collaboration is sparse and handoffs are structured.
 - Review independence is evidenced or limited honestly.
 - Product facts and live state remain outside distributions.
@@ -327,7 +362,7 @@ execution_receipt
 
 ## Hard stops
 
-Return `BLOCKED`, `NOT_VERIFIED`, or `READY_WITH_LIMITATIONS` when current profiles cannot be inspected for requested migration; duplicate ownership or cycles remain; required skills cannot be resolved; reviewer independence is required but unavailable; runtime behavior is assumed; secret-free output cannot be proven; authority is missing; or a privileged profile lacks bounded permissions and human approval.
+Return `BLOCKED`, `NOT_VERIFIED`, or `READY_WITH_LIMITATIONS` when current profiles cannot be inspected for requested migration; duplicate ownership or cycles remain; required skills cannot be resolved; reviewer independence is required but unavailable; runtime behavior is assumed; secret-free output cannot be proven; authority is missing; an approved preset is unavailable; Hermes preflight fails; or a privileged profile lacks bounded permissions and human approval.
 
 ## Receipt
 
@@ -336,12 +371,15 @@ fleet_bootstrap_receipt:
   request_mode: PLAN_ONLY | AUDIT_ONLY | CREATE_OR_UPDATE
   multi_agent_verdict: ""
   topology: ""
+  preset_id: ""
+  preset_version: ""
   profiles_proposed: []
   profiles_created_or_updated: []
   profiles_audited: []
   profile_bootstrap_handoffs: []
   gateways_planned_or_verified: []
   validations_executed: []
+  actions: []
   findings: []
   readiness: READY | READY_WITH_LIMITATIONS | NEEDS_WORK | BLOCKED | NOT_VERIFIED
   runtime_execution: EXECUTED | PARTIAL | NOT_RUN | BLOCKED | NOT_VERIFIED
