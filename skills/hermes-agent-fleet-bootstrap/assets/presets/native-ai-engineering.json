@@ -1,0 +1,92 @@
+{
+  "id": "native-ai-engineering",
+  "version": "1.0.1",
+  "topology": "orchestrator_with_specialists",
+  "orchestrator": "engineering-orchestrator",
+  "kanban": {
+    "initialize": true
+  },
+  "profiles": [
+    {
+      "id": "engineering-orchestrator",
+      "description": "Coordinates Native AI Engineering work, selects one primary workflow, creates durable Kanban tasks, routes bounded work to specialists, verifies handoffs, and synthesizes evidence without becoming the primary implementer or reviewer.",
+      "gateway": "eligible",
+      "skills": [
+        "hermes-agent-fleet-bootstrap",
+        "hermes-profile-bootstrap",
+        "workflow-router",
+        "role-switcher",
+        "decision-provenance",
+        "skill-eval"
+      ]
+    },
+    {
+      "id": "product-development",
+      "description": "Owns product intent, user problems, product briefs, PRDs, MVP scope, success criteria, and product acceptance while excluding technical architecture and implementation ownership.",
+      "gateway": "none",
+      "skills": [
+        "product-development-workflow",
+        "product-manager",
+        "product-requirements",
+        "acceptance-testing",
+        "decision-provenance"
+      ]
+    },
+    {
+      "id": "solution-architecture",
+      "description": "Owns solution boundaries, domain and integration architecture, technical specifications, non-functional requirements, architecture decisions, and implementation guidance without acting as the primary feature implementer.",
+      "gateway": "none",
+      "skills": [
+        "systems-reasoning",
+        "master-engineer",
+        "architecture-review",
+        "decision-provenance"
+      ]
+    },
+    {
+      "id": "product-design",
+      "description": "Owns product experience, user flows, interaction behavior, design-system decisions, responsive intent, accessibility intent, and design acceptance without owning frontend implementation.",
+      "gateway": "none",
+      "skills": [
+        "master-design",
+        "ux-ui-patterns",
+        "design-system",
+        "accessibility",
+        "decision-provenance"
+      ]
+    },
+    {
+      "id": "frontend-engineering",
+      "description": "Owns frontend architecture and implementation, component behavior, state and API integration, accessibility implementation, responsive behavior, frontend tests, and implementation evidence.",
+      "gateway": "none",
+      "skills": [
+        "master-engineer",
+        "implementation-context-discovery",
+        "new-feature-workflow",
+        "git-workflow"
+      ]
+    },
+    {
+      "id": "backend-platform",
+      "description": "Owns backend services, APIs, domain and application implementation, persistence, integrations, background work, automated tests, and implementation evidence within approved architecture.",
+      "gateway": "none",
+      "skills": [
+        "master-engineer",
+        "implementation-context-discovery",
+        "new-feature-workflow",
+        "git-workflow"
+      ]
+    },
+    {
+      "id": "quality-review",
+      "description": "Independently verifies acceptance criteria, architecture conformance, security findings, regressions, tests, and readiness without serving as the primary implementer.",
+      "gateway": "none",
+      "skills": [
+        "acceptance-testing",
+        "architecture-review",
+        "security-review",
+        "skill-eval"
+      ]
+    }
+  ]
+}

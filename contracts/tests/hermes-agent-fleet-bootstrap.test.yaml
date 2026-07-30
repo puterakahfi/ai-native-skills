@@ -1,6 +1,6 @@
 skill_test:
   skill: hermes-agent-fleet-bootstrap
-  version: 0.1.0
+  version: 0.2.0
   description: Verify Hermes fleet bootstrap selects the smallest justified specialist topology, preserves profile and authority boundaries, composes single-profile bootstrap handoffs, and fails closed on unsafe or ambiguous fleet designs.
   cases:
 
