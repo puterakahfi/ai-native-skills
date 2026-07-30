@@ -136,8 +136,8 @@ skill_test:
     - evidence gap
     - truth
     must_not_contain:
-    - 10,000+ users
-    - fake dashboard
+    - claim 10,000+ users
+    - fabricate a dashboard
     quality_gates_tested:
     - invented_proof_is_forbidden
     - real_product_content_controls_visual_direction
@@ -166,9 +166,9 @@ skill_test:
     - hero is optional
     - evidence plan
     must_not_contain:
-    - required landing-page structure
-    - every landing page needs a hero
-    - invent testimonials
+    - use the prescribed sequence immediately
+    - hero is mandatory for every landing page
+    - fabricate testimonials
     - systems-reasoning selects the layout
     quality_gates_tested:
     - systemic_context_precedes_structural_direction_lock_when_material
@@ -189,8 +189,8 @@ skill_test:
     - counter-metrics
     - direction candidates
     must_not_contain:
-    - CTA clicks prove success
-    - unsupported claims are acceptable
+    - optimize only CTA clicks
+    - unsupported claims may be used
     - master-design owns deep Goodhart analysis
     quality_gates_tested:
     - design_consumes_metric_system_risk_without_taking_systems_ownership
@@ -210,9 +210,9 @@ skill_test:
     - maintenance
     - NOT_VERIFIED
     must_not_contain:
-    - assume no reusable components exist
-    - one-off is automatically correct
-    - start coding before discovery
+    - there are no reusable components
+    - one-off system approved
+    - start coding without implementation-context-discovery
     quality_gates_tested:
     - repeated_design_system_consequences_are_evaluated
     - repository_facts_require_implementation_context_evidence
@@ -229,10 +229,10 @@ skill_test:
     - REDUCED
     - NOT_APPLICABLE
     must_not_contain:
-    - DEEP
-    - feedback-loop map required
-    - journey redesign required
-    - stakeholder model required
+    - classify as DEEP
+    - produce a feedback-loop map
+    - reopen the full journey
+    - produce a stakeholder model
     quality_gates_tested:
     - bounded_design_correction_is_not_overmodeled
     - systemic_design_reasoning_is_proportionate
