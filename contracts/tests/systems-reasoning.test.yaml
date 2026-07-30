@@ -217,8 +217,8 @@ skill_test:
     description: A known narrow visual correction remains on the fast path without ceremonial systems analysis.
     trigger: Fix the known mobile text overflow in one accepted component without changing content, behavior, routes, metrics, shared contracts, or design-system ownership.
     must_contain:
-    - NOT_APPLICABLE
-    - REDUCED
+    - systemic_design_applicability
+    - REDUCED or NOT_APPLICABLE
     - bounded
     - preserve the narrow route
     must_not_contain:
