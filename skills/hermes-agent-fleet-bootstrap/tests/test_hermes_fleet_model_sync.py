@@ -5,7 +5,6 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest import mock
 
 import yaml
 
@@ -172,6 +171,36 @@ class ModelPolicySyncTests(unittest.TestCase):
             updated["auxiliary"]["vision"]["api_key"], "TARGET_VISION_SECRET"
         )
         self.assertNotIn("model", updated["auxiliary"]["vision"])
+
+    def test_target_secret_in_managed_list_is_preserved_by_position(self) -> None:
+        source = self.read_config("engineering-orchestrator")
+        source["fallback_providers"] = [
+            {"provider": "openai-codex", "api_key": "SOURCE_LIST_SECRET"}
+        ]
+        self.write_config("engineering-orchestrator", source)
+        backend = self.read_config("backend-platform")
+        backend["fallback_providers"] = [
+            {"provider": "openrouter", "api_key": "TARGET_LIST_SECRET"}
+        ]
+        self.write_config("backend-platform", backend)
+        MODULE.execute(self.args(apply=True))
+        updated = self.read_config("backend-platform")
+        self.assertEqual(
+            updated["fallback_providers"][0]["api_key"], "TARGET_LIST_SECRET"
+        )
+        self.assertNotIn("SOURCE_LIST_SECRET", json.dumps(updated))
+
+    def test_receipt_digests_do_not_change_when_only_source_secret_changes(self) -> None:
+        _, first = MODULE.execute(self.args())
+        source = self.read_config("engineering-orchestrator")
+        source["model"]["api_key"] = "DIFFERENT_SOURCE_SECRET"
+        self.write_config("engineering-orchestrator", source)
+        _, second = MODULE.execute(self.args())
+        self.assertEqual(first["source_policy_digest"], second["source_policy_digest"])
+        self.assertEqual(
+            [action["after_digest"] for action in first["actions"]],
+            [action["after_digest"] for action in second["actions"]],
+        )
 
     def test_source_override_must_belong_to_preset(self) -> None:
         with self.assertRaisesRegex(MODULE.SyncError, "not present"):
