@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -43,6 +44,17 @@ class FleetError(RuntimeError):
     pass
 
 
+SAFE_IDENTIFIER = re.compile(r"^[a-z0-9][a-z0-9._-]{0,127}$")
+
+
+def validate_identifier(value: Any, label: str) -> str:
+    if not isinstance(value, str) or not SAFE_IDENTIFIER.fullmatch(value):
+        raise FleetError(
+            f"Unsafe {label}: {value!r}; use lowercase letters, digits, dot, underscore, or hyphen"
+        )
+    return value
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -64,6 +76,8 @@ def validate_preset(data: dict[str, Any]) -> None:
     missing = sorted(required - data.keys())
     if missing:
         raise FleetError(f"Preset missing required fields: {', '.join(missing)}")
+    validate_identifier(data["id"], "preset id")
+    validate_identifier(data["orchestrator"], "orchestrator id")
     profiles = data.get("profiles")
     if not isinstance(profiles, list) or not profiles:
         raise FleetError("Preset profiles must be a non-empty list")
@@ -78,6 +92,13 @@ def validate_preset(data: dict[str, Any]) -> None:
             isinstance(item, str) and item for item in profile["skills"]
         ):
             raise FleetError(f"Profile skills must be string list: {profile['id']}")
+        validate_identifier(profile["id"], "profile id")
+        if profile["gateway"] not in {"eligible", "none"}:
+            raise FleetError(
+                f"Unsupported gateway policy for {profile['id']}: {profile['gateway']!r}"
+            )
+        for skill in profile["skills"]:
+            validate_identifier(skill, "skill id")
         ids.append(profile["id"])
     if len(ids) != len(set(ids)):
         raise FleetError("Profile IDs must be unique")
@@ -93,15 +114,23 @@ def validate_preset(data: dict[str, Any]) -> None:
 
 def directory_digest(path: Path) -> str:
     digest = hashlib.sha256()
+    if path.is_symlink():
+        raise FleetError(f"Symlinked managed path is not allowed: {path}")
     if not path.exists():
         return "MISSING"
-    for file_path in sorted(p for p in path.rglob("*") if p.is_file()):
-        rel = file_path.relative_to(path).as_posix()
-        if any(part in {"__pycache__", ".git"} for part in file_path.parts):
+    if not path.is_dir():
+        raise FleetError(f"Managed path must be a directory: {path}")
+    for candidate in sorted(path.rglob("*")):
+        if candidate.is_symlink():
+            raise FleetError(f"Symlink inside managed skill source is not allowed: {candidate}")
+        if not candidate.is_file():
+            continue
+        rel = candidate.relative_to(path).as_posix()
+        if any(part in {"__pycache__", ".git"} for part in candidate.parts):
             continue
         digest.update(rel.encode("utf-8"))
         digest.update(b"\0")
-        digest.update(file_path.read_bytes())
+        digest.update(candidate.read_bytes())
         digest.update(b"\0")
     return digest.hexdigest()
 
@@ -177,9 +206,17 @@ def plan_actions(
 ) -> tuple[list[Action], list[str]]:
     actions: list[Action] = []
     findings: list[str] = []
+    profiles_root = hermes_home / "profiles"
+    if profiles_root.is_symlink():
+        raise FleetError(f"Symlinked Hermes profiles root is not allowed: {profiles_root}")
     for profile in preset["profiles"]:
         profile_id = profile["id"]
-        profile_dir = hermes_home / "profiles" / profile_id
+        profile_dir = profiles_root / profile_id
+        if profile_dir.is_symlink():
+            raise FleetError(f"Symlinked Hermes profile directory is not allowed: {profile_dir}")
+        profile_skills_dir = profile_dir / "skills"
+        if profile_skills_dir.is_symlink():
+            raise FleetError(f"Symlinked profile skills directory is not allowed: {profile_skills_dir}")
         if profile_dir.exists():
             actions.append(Action("profile", profile_id, "SKIP_EXISTS", "Existing profile preserved"))
         else:
@@ -189,7 +226,18 @@ def plan_actions(
                 findings.append(f"missing_profile:{profile_id}")
         for skill in profile["skills"]:
             source = skills_root / skill
-            target = profile_dir / "skills" / skill
+            target = profile_skills_dir / skill
+            if source.exists() and not (source / "SKILL.md").is_file():
+                actions.append(
+                    Action(
+                        "skill",
+                        f"{profile_id}:{skill}",
+                        "BLOCKED_INVALID_SOURCE",
+                        "Skill source is missing SKILL.md",
+                    )
+                )
+                findings.append(f"invalid_skill_source:{skill}")
+                continue
             source_hash = directory_digest(source)
             target_hash = directory_digest(target)
             if source_hash == "MISSING":

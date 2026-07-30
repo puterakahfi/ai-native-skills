@@ -58,6 +58,8 @@ quality-review
 
 Only `engineering-orchestrator` is marked gateway-eligible. The CLI does not start a gateway or provision bot tokens.
 
+Custom preset, profile, and skill identifiers are restricted to lowercase letters, digits, dot, underscore, and hyphen. Path traversal, symlinked profile roots, and symlinked managed skill sources fail closed before mutation.
+
 ## Side effects
 
 With `--apply`, the CLI may:
