@@ -1017,7 +1017,7 @@ contract_coverage_inventory:
     type: skill
     patterns:
     - facade
-    version: 0.1.0
+    version: 0.2.0
     implements: null
     contract_version: null
     contract_path_exists: null
@@ -1033,6 +1033,7 @@ contract_coverage_inventory:
       - ownership_and_cycle_validation
       - non_destructive_profile_migration_planning
       - per_profile_bootstrap_handoffs
+      - deterministic_preset_execution
       - fleet_readiness_and_receipt
       delegates:
       - single_profile_materialization
