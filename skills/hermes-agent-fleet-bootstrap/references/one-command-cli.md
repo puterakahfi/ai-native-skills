@@ -1,50 +1,67 @@
-# One-command Hermes fleet CLI
+# One-command Hermes fleet execution
 
-Use this deterministic executor after the fleet topology and specialist contracts are approved. Run repository-relative examples from the `ai-native-skills` repository root so the preset can resolve the local capability catalog.
+Use this deterministic executor after the fleet topology and specialist contracts are approved.
 
-## Primary command
+## Primary user interface
 
-From the `ai-native-skills` repository root:
+The installed Hermes skill slash command is the normal entrypoint. Users should not need to know where the skill package is stored.
+
+```text
+# Preview without mutation
+/hermes-agent-fleet-bootstrap bootstrap native-ai-engineering
+
+# Create missing profiles, synchronize managed skills, and initialize Kanban
+/hermes-agent-fleet-bootstrap bootstrap native-ai-engineering --apply
+
+# Read-only conformance audit
+/hermes-agent-fleet-bootstrap audit native-ai-engineering
+
+# Preview reconciliation after skill catalog changes
+/hermes-agent-fleet-bootstrap reconcile native-ai-engineering
+
+# Apply reconciliation
+/hermes-agent-fleet-bootstrap reconcile native-ai-engineering --apply
+```
+
+The skill interprets the invocation as:
+
+```text
+/hermes-agent-fleet-bootstrap <operation> <preset> [--apply] [supported executor flags]
+```
+
+It then executes the bundled runner through the standard skill directory variable:
+
+```bash
+bash "${HERMES_SKILL_DIR}/scripts/hermes-fleet" \
+  <operation> <preset> [--apply] [supported executor flags]
+```
+
+The agent must use the terminal tool, preserve the executor exit code, and return the generated receipt. It must not manually reproduce the runner's profile, skill, Kanban, audit, or receipt operations.
+
+Without `--apply`, `bootstrap` and `reconcile` are plan-only and do not create profiles, install skills, or initialize Kanban. `audit` is always read-only.
+
+## Low-level interface
+
+Direct repository-relative execution remains available for CI, debugging, recovery, and development before the skill has been installed:
 
 ```bash
 bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
   bootstrap native-ai-engineering --apply
 ```
 
-Without `--apply`, the command is plan-only and does not create profiles, install skills, or initialize Kanban:
-
-```bash
-bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
-  bootstrap native-ai-engineering
-```
+This is not the primary user-facing invocation because it requires knowledge of the repository checkout path.
 
 ## Operations
 
-```bash
-# Preview a bootstrap
-bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
-  bootstrap native-ai-engineering
-
-# Create missing profiles, synchronize managed skills, and initialize Kanban
-bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
-  bootstrap native-ai-engineering --apply
-
-# Read-only conformance audit
-bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
-  audit native-ai-engineering
-
-# Preview reconciliation after skill catalog changes
-bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
-  reconcile native-ai-engineering
-
-# Apply reconciliation
-bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
-  reconcile native-ai-engineering --apply
+```text
+bootstrap  create missing profiles, synchronize managed skills, initialize Kanban
+reconcile  compare and synchronize an approved preset idempotently
+audit      inspect conformance without runtime mutation
 ```
 
 ## Deterministic boundary
 
-The CLI does not invent a topology through an LLM. It executes an approved preset. The `native-ai-engineering` preset creates or audits:
+The executor does not invent a topology through an LLM. It executes an approved preset. The `native-ai-engineering` preset creates or audits:
 
 ```text
 engineering-orchestrator
@@ -56,13 +73,13 @@ backend-platform
 quality-review
 ```
 
-Only `engineering-orchestrator` is marked gateway-eligible. The CLI does not start a gateway or provision bot tokens.
+Only `engineering-orchestrator` is marked gateway-eligible. The executor does not start a gateway or provision bot tokens.
 
 Custom preset, profile, and skill identifiers are restricted to lowercase letters, digits, dot, underscore, and hyphen. Path traversal, symlinked profile roots, and symlinked managed skill sources fail closed before mutation.
 
 ## Side effects
 
-With `--apply`, the CLI may:
+With `--apply`, the executor may:
 
 - run `hermes --version`;
 - run `hermes profile create ... --no-skills --no-alias` for missing profiles;
@@ -83,7 +100,7 @@ Plan-only and audit receipts default to:
 ```text
 0  plan valid, apply succeeded, or audit passed
 2  audit found drift or missing fleet state
-3  preset/preflight failure, missing skill source, or missing Hermes
+3  preset/preflight failure, missing skill source, missing runner, or missing Hermes
 4  execution or receipt-write failure
 ```
 
