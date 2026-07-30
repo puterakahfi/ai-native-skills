@@ -1,6 +1,6 @@
 {
   "id": "native-ai-engineering",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "topology": "orchestrator_with_specialists",
   "orchestrator": "engineering-orchestrator",
   "kanban": {
@@ -28,7 +28,7 @@
         "product-development-workflow",
         "product-manager",
         "product-requirements",
-        "product-acceptance",
+        "acceptance-testing",
         "decision-provenance"
       ]
     },
@@ -48,8 +48,10 @@
       "description": "Owns product experience, user flows, interaction behavior, design-system decisions, responsive intent, accessibility intent, and design acceptance without owning frontend implementation.",
       "gateway": "none",
       "skills": [
-        "product-experience-design",
         "master-design",
+        "ux-ui-patterns",
+        "design-system",
+        "accessibility",
         "decision-provenance"
       ]
     },
@@ -80,7 +82,7 @@
       "description": "Independently verifies acceptance criteria, architecture conformance, security findings, regressions, tests, and readiness without serving as the primary implementer.",
       "gateway": "none",
       "skills": [
-        "product-acceptance",
+        "acceptance-testing",
         "architecture-review",
         "security-review",
         "skill-eval"
