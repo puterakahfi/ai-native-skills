@@ -59,23 +59,34 @@ user
 
 A profile is a durable agent identity. A bot is an optional communication surface. Only the orchestrator receives a bot by default.
 
-## One-command execution
+## Primary invocation
 
-After topology, profile boundaries, and the selected preset are approved, use the deterministic executor instead of manually creating each profile:
+The normal user interface is the installed Hermes skill slash command. Users should not need to know the repository checkout path.
 
-```bash
-bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
-  bootstrap native-ai-engineering --apply
+```text
+/hermes-agent-fleet-bootstrap bootstrap native-ai-engineering
+/hermes-agent-fleet-bootstrap bootstrap native-ai-engineering --apply
+/hermes-agent-fleet-bootstrap audit native-ai-engineering
+/hermes-agent-fleet-bootstrap reconcile native-ai-engineering
+/hermes-agent-fleet-bootstrap reconcile native-ai-engineering --apply
 ```
 
-Without `--apply`, the command is plan-only:
+Interpret the arguments as:
 
-```bash
-bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
-  bootstrap native-ai-engineering
+```text
+/hermes-agent-fleet-bootstrap <operation> <preset> [--apply] [supported executor flags]
 ```
 
-The executor applies an approved preset. It does not invent topology through an LLM, start a messaging gateway, provision credentials, delete profiles, or modify memory, sessions, cron state, provider configuration, or product truth.
+After intent, authority, topology, profile boundaries, and preset approval are verified, execute the bundled deterministic runner through the standard skill directory variable:
+
+```bash
+bash "${HERMES_SKILL_DIR}/scripts/hermes-fleet" \
+  <operation> <preset> [--apply] [supported executor flags]
+```
+
+Do not manually reproduce profile creation, skill synchronization, Kanban initialization, audit, or receipt-writing steps when the bundled runner is available. Run the executor through the terminal tool, preserve its exit code, and return the generated receipt and limitations.
+
+Without `--apply`, `bootstrap` and `reconcile` are plan-only. `audit` is always read-only. `--apply` is valid only after explicit create/update authority is verified.
 
 Supported deterministic operations:
 
@@ -85,7 +96,16 @@ reconcile  compare and synchronize an approved preset idempotently
 audit      inspect conformance without runtime mutation
 ```
 
-Load `references/one-command-cli.md` for commands, flags, exit codes, side effects, and idempotency behavior.
+The executor applies an approved preset. It does not invent topology through an LLM, start a messaging gateway, provision credentials, delete profiles, or modify memory, sessions, cron state, provider configuration, or product truth.
+
+Direct repository-relative execution is a low-level CI, debugging, or recovery interface only:
+
+```bash
+bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
+  bootstrap native-ai-engineering --apply
+```
+
+Load `references/one-command-cli.md` for invocation semantics, flags, exit codes, side effects, and idempotency behavior.
 
 ## Load references
 
@@ -303,9 +323,10 @@ Gate: recommendations are evidence-backed and distinct from executed mutations.
 - `PLAN_ONLY`: list intended profiles, files, skills, policies, gateways, and migration actions without profile or Kanban mutation.
 - `AUDIT_ONLY`: compare observed profiles against approved contracts without runtime mutation.
 - `CREATE_OR_UPDATE`: execute only with verified runtime tools, an approved preset, and mutation authority; otherwise emit an exact handoff.
-- Use `scripts/hermes-fleet` for deterministic approved-preset execution. Do not use it to bypass multi-agent justification, profile contracts, safety review, or authorization.
+- For standard skill invocation, run `bash "${HERMES_SKILL_DIR}/scripts/hermes-fleet" <operation> <preset> [--apply] [supported executor flags]` through the terminal tool.
+- Use the bundled executor for deterministic approved-preset execution. Do not manually reproduce its mutations and do not use it to bypass multi-agent justification, profile contracts, safety review, or authorization.
 
-Gate: planned and executed states remain separate, and the selected preset is explicit.
+Gate: planned and executed states remain separate, the selected preset is explicit, and the executor receipt is preserved.
 
 ### 12. Verify fleet readiness
 
@@ -351,7 +372,8 @@ execution_receipt
 - Every durable artifact has one owner.
 - Skill manifests are responsibility-specific.
 - `hermes-profile-bootstrap` remains the per-profile executor.
-- Deterministic execution uses an approved, versioned preset.
+- Standard user invocation does not depend on a repository-relative path.
+- Deterministic execution resolves the runner through `${HERMES_SKILL_DIR}` and uses an approved, versioned preset.
 - Plan-only, audit, and apply states remain distinguishable in the receipt.
 - Repeated apply is idempotent and preserves unmanaged profile state.
 - Collaboration is sparse and handoffs are structured.
@@ -362,7 +384,7 @@ execution_receipt
 
 ## Hard stops
 
-Return `BLOCKED`, `NOT_VERIFIED`, or `READY_WITH_LIMITATIONS` when current profiles cannot be inspected for requested migration; duplicate ownership or cycles remain; required skills cannot be resolved; reviewer independence is required but unavailable; runtime behavior is assumed; secret-free output cannot be proven; authority is missing; an approved preset is unavailable; Hermes preflight fails; or a privileged profile lacks bounded permissions and human approval.
+Return `BLOCKED`, `NOT_VERIFIED`, or `READY_WITH_LIMITATIONS` when current profiles cannot be inspected for requested migration; duplicate ownership or cycles remain; required skills cannot be resolved; reviewer independence is required but unavailable; runtime behavior is assumed; secret-free output cannot be proven; authority is missing; an approved preset is unavailable; Hermes preflight fails; the bundled executor cannot be resolved through `${HERMES_SKILL_DIR}`; or a privileged profile lacks bounded permissions and human approval.
 
 ## Receipt
 
