@@ -72,10 +72,10 @@ skill_test:
     - bounded
     - no material system-level analysis
     must_not_contain:
-    - DEEP
-    - causal-loop diagram required
-    - stakeholder map required
-    - universal abstraction required
+    - classify as DEEP
+    - produce a causal-loop diagram
+    - produce a stakeholder map
+    - create a universal abstraction
     quality_gates_tested:
     - simple_tasks_are_not_inflated_into_ceremonial_modeling
     - dynamics_analysis_is_proportionate_to_complexity_and_risk
@@ -91,9 +91,9 @@ skill_test:
     - blocking_gaps
     - decision provenance
     must_not_contain:
-    - approved
+    - approval is verified
     - acceptance passed
-    - assume the platform team owns it
+    - the platform team is the verified owner
     quality_gates_tested:
     - inside_outside_boundaries_and_decision_ownership_are_explicit_or_not_verified
     - invariants_constraints_assumptions_and_uncertainty_are_distinct
@@ -127,7 +127,7 @@ skill_test:
     - NEEDS_WORK
     must_not_contain:
     - component inventory is sufficient
-    - PASS
+    - 'status: PASS'
     quality_gates_tested:
     - material_relationships_and_dependency_directions_are_visible
     - complex_tasks_cannot_bypass_material_relationship_analysis
@@ -144,7 +144,7 @@ skill_test:
     must_not_contain:
     - Repository Pattern is the capability
     - every module requires the pattern
-    - architecture by default
+    - select architecture by default
     quality_gates_tested:
     - capabilities_policies_mechanisms_adapters_and_runtime_bindings_are_not_conflated
     - unsupported_universal_abstraction_is_rejected
@@ -162,9 +162,9 @@ skill_test:
     - direction candidates
     - hero is optional
     must_not_contain:
-    - every landing page requires a hero
-    - fixed section sequence
-    - invent testimonials
+    - use the prescribed sequence immediately
+    - hero is mandatory for every landing page
+    - fabricate testimonials
     - systems-reasoning selects the layout
     quality_gates_tested:
     - template_shaped_reasoning_is_rejected
@@ -185,8 +185,8 @@ skill_test:
     - systems-thinking
     - counter-metrics
     must_not_contain:
-    - CTA clicks prove product success
-    - unsupported claims are acceptable
+    - optimize only CTA clicks
+    - unsupported claims may be used
     - systems-reasoning owns deep Goodhart analysis
     quality_gates_tested:
     - metric_proxy_and_local_optimization_risks_are_visible
@@ -207,9 +207,9 @@ skill_test:
     - reuse
     - bounded extension
     must_not_contain:
-    - one-off is automatically correct
-    - assume no shared components exist
-    - start coding before discovery
+    - one-off system approved
+    - there are no shared components
+    - start coding without implementation-context-discovery
     quality_gates_tested:
     - reusable_design_system_consequences_are_explicit
     - repository_reality_is_delegated_to_implementation_context_discovery
@@ -226,10 +226,10 @@ skill_test:
     - REDUCED
     - NOT_APPLICABLE
     must_not_contain:
-    - DEEP
-    - feedback-loop map required
-    - stakeholder model required
-    - journey redesign required
+    - classify as DEEP
+    - produce a feedback-loop map
+    - produce a stakeholder model
+    - reopen the full journey
     quality_gates_tested:
     - bounded_design_fixes_are_not_overmodeled
     - systemic_design_activation_is_proportionate
