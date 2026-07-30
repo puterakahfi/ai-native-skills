@@ -186,3 +186,25 @@ skill_test:
     quality_gates_tested:
       - default_gateway_is_orchestrator_only
       - dedicated_bots_require_justification
+
+  - id: office-products-use-product-neutral-local-fleet
+    description: An office environment with unrelated company products uses its own product-neutral engineering fleet without inheriting personal product identity.
+    trigger: On my office laptop, bootstrap one shared Hermes engineering fleet for customer-portal, finance-dashboard, internal-admin, and inventory-service. These are company products and are unrelated to VisualMate or my personal profiles. Do not create one product profile per repository unless durable product context is justified.
+    must_contain:
+      - product-neutral
+      - engineering-orchestrator
+      - bounded product context
+      - product profile is optional
+      - separate HERMES_HOME
+      - office
+      - trust environment
+    must_not_contain:
+      - route through visualmate
+      - VisualMate is required
+      - copy personal memories
+      - one product profile per repository
+    quality_gates_tested:
+      - fleet_is_not_coupled_to_example_products
+      - product_profiles_require_persistence_justification
+      - personal_and_office_contexts_are_separated
+      - repositories_can_use_bounded_task_context_without_product_profiles
