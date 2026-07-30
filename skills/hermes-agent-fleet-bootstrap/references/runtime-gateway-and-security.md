@@ -1,0 +1,212 @@
+# Runtime, Gateway, and Security Reference
+
+Load this reference when defining bots, messaging gateways, Kanban workers, permissions, sandboxing, credentials, or runtime verification.
+
+## Runtime identities
+
+```text
+Hermes profile
+  durable identity, configuration, SOUL, skills, memory, sessions, and local runtime state
+
+bot or messaging gateway
+  optional user-facing communication surface for one profile
+
+worker process
+  bounded execution of a selected profile for assigned work
+
+Kanban or durable work item
+  shared coordination state, dependencies, status, comments, retries, and handoffs
+```
+
+Do not collapse these concepts. A persistent profile does not require a dedicated bot, and a bot does not prove a multi-agent runtime exists behind it.
+
+## Default gateway policy
+
+```yaml
+gateway_policy:
+  default_front_door:
+    profile: engineering-orchestrator
+    mode: messaging_front_door
+  specialist_default:
+    mode: none
+    execution: kanban_or_verified_on_demand_worker
+```
+
+A dedicated specialist bot is justified only when the profile has an independent audience, product-facing identity, direct operational responsibility, separate tenant, or explicit security boundary.
+
+Record:
+
+```yaml
+gateway_record:
+  profile_id: ""
+  mode: none | messaging_front_door | dedicated
+  channel: telegram | discord | cli | desktop | other | NOT_VERIFIED
+  audience: []
+  token_reference: ""
+  token_in_distribution: false
+  routing_rule: ""
+  runtime_evidence: []
+```
+
+Never include tokens or credentials in reusable profile distributions.
+
+## Durable work model
+
+The preferred engineering model is:
+
+```text
+orchestrator receives outcome
+→ creates or routes durable work items
+→ assigns selected specialist profile
+→ specialist consumes bounded task and relevant artifacts
+→ specialist records output, evidence, risks, and next handoff
+→ reviewer evaluates independently
+→ orchestrator synthesizes actual state
+```
+
+The fleet skill defines this contract. It does not implement or claim Kanban, dispatcher, worker spawning, retry, or persistence behavior unless the actual Hermes runtime is observed.
+
+## Runtime verification checklist
+
+Verify against the selected Hermes installation:
+
+- installed Hermes version or revision;
+- profile create/show/list commands;
+- profile directory location;
+- gateway start/stop/status behavior;
+- channel-specific routing and token rules;
+- Kanban availability and board location;
+- dispatcher or worker-lane availability;
+- profile addressing and task assignment;
+- worker process lifecycle;
+- retry, failure, cancellation, and resume behavior;
+- shared artifact or workspace behavior;
+- concurrent write and repository collision controls;
+- logs, receipts, and evidence locations.
+
+If any required behavior cannot be observed, report it as `NOT_VERIFIED` or `BLOCKED`. Documentation or architecture assumptions are not runtime proof.
+
+## Profile isolation is not sandbox proof
+
+Separate Hermes profile directories may isolate application state, but do not automatically prove:
+
+- separate operating-system users;
+- filesystem restrictions;
+- process isolation;
+- network restrictions;
+- secret-store separation;
+- repository write boundaries;
+- cloud-account or environment separation;
+- production blast-radius controls.
+
+Every profile contract should record:
+
+```yaml
+permission_policy:
+  filesystem:
+    allowed_paths: []
+    denied_paths: []
+    evidence: []
+  repositories:
+    read: []
+    write: []
+    evidence: []
+  network:
+    allowed_destinations: []
+    evidence: []
+  credentials:
+    references: []
+    storage: ""
+    evidence: []
+  environments:
+    allowed: []
+    production_access: false
+    evidence: []
+  sandbox:
+    type: none | os_user | container | vm | runtime_backend | other | NOT_VERIFIED
+    evidence: []
+```
+
+Missing isolation evidence must not be inferred from profile naming.
+
+## Privileged operations profiles
+
+A `platform-operations` or equivalent profile requires:
+
+- separate credentials or scoped identity;
+- explicit allowed environments;
+- least-privilege tools;
+- command and mutation logging;
+- rollback procedure;
+- health-verification procedure;
+- human approval for production and irreversible actions;
+- incident ownership and escalation path;
+- blast-radius and sandbox evidence.
+
+Runtime completion does not grant release, deployment, or risk acceptance authority.
+
+## Reviewer independence
+
+Record actual shared resources:
+
+```yaml
+review_independence:
+  reviewer_profile: ""
+  implementer_profiles: []
+  same_model: true | false | NOT_VERIFIED
+  shared_context: true | false | NOT_VERIFIED
+  shared_tools: true | false | NOT_VERIFIED
+  shared_permissions: true | false | NOT_VERIFIED
+  prior_implementation_participation: true | false | NOT_VERIFIED
+  status: VERIFIED | LIMITED_SHARED_MODEL | LIMITED_SHARED_CONTEXT | LIMITED_SHARED_TOOLS | NOT_VERIFIED
+  limitations: []
+```
+
+Separate profile names alone do not establish independence. A limited review may still produce useful findings, but must not be represented as fully independent acceptance.
+
+## Product-facing bot exceptions
+
+Product profiles such as `visualmate` may keep dedicated bots when they serve direct users. They should not automatically receive repository write, production access, or the full engineering skill suite.
+
+Example:
+
+```text
+@visualmate_bot
+→ customer-facing creative product agent
+→ submits a bounded engineering request
+→ shared engineering bot/orchestrator coordinates specialists
+→ VisualMate product authority accepts the result
+```
+
+## Prohibited distribution content
+
+Never include:
+
+```text
+.env
+.env.*
+auth.json
+state.db
+state.db-wal
+state.db-shm
+sessions/
+memories/
+cron/
+logs/
+cache/
+secrets/
+tokens/
+credentials/
+```
+
+A live Hermes profile may contain runtime-managed state locally. That state is not part of the reusable profile distribution and must not be copied during bootstrap or migration.
+
+## Fail-closed conditions
+
+- Bot or gateway tokens are requested for committed output.
+- Two profiles are configured to share a token without verified runtime support and policy.
+- Production access is granted without explicit authorization.
+- Filesystem or repository scope is implied but not evidenced.
+- Runtime worker behavior is claimed without execution evidence.
+- Reviewer independence is inferred from profile names.
+- Existing live profile state would be overwritten or copied destructively.

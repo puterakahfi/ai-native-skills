@@ -1,0 +1,120 @@
+schema_version: 1
+profile_contract:
+  id: ""
+  display_name: ""
+  runtime_target: hermes
+  status: PROPOSED | APPROVED | MATERIALIZED | AUDITED | BLOCKED | NOT_VERIFIED
+
+  mission: ""
+  responsibility_class: orchestrator | product | architecture | design | frontend | backend_platform | reviewer | operations | documentation | security | ai_agent | data | product_facing | custom
+
+  owns:
+    artifacts: []
+    decisions: []
+    recurring_tasks: []
+
+  does_not_own:
+    artifacts: []
+    decisions: []
+    authorities: []
+
+  required_inputs: []
+  required_outputs: []
+
+  capability_manifest:
+    source_catalog: ""
+    catalog_version: ""
+    preset: custom
+    required_skills: []
+    optional_skills: []
+    unresolved_capabilities: []
+
+  model_policy:
+    provider: ""
+    model: ""
+    rationale: ""
+    constraints: []
+    status: VERIFIED | NOT_VERIFIED
+
+  tool_policy:
+    allowed: []
+    denied: []
+    write_tools: []
+    privileged_tools: []
+    status: VERIFIED | NOT_VERIFIED
+
+  permission_policy:
+    filesystem:
+      allowed_paths: []
+      denied_paths: []
+      evidence: []
+    repositories:
+      read: []
+      write: []
+      evidence: []
+    network:
+      allowed_destinations: []
+      evidence: []
+    credentials:
+      references: []
+      storage: ""
+      evidence: []
+    environments:
+      allowed: []
+      production_access: false
+      evidence: []
+    sandbox:
+      type: none | os_user | container | vm | runtime_backend | other | NOT_VERIFIED
+      evidence: []
+
+  memory_scope:
+    allowed: []
+    prohibited: []
+    product_context_reference: ""
+
+  gateway_policy:
+    mode: none | orchestrator_only | dedicated
+    channel: telegram | discord | cli | desktop | other | NOT_VERIFIED
+    audience: []
+    token_reference: ""
+    token_in_distribution: false
+    justification: ""
+    evidence: []
+
+  collaboration:
+    accepted_modes:
+      - orchestrator_invocation
+      - durable_kanban_task
+      - temporary_delegation
+      - shared_artifact_handoff
+      - review_feedback_loop
+      - human_approval
+    handoff_targets: []
+    receives_from: []
+    parallel_workspace_policy: ""
+
+  review_policy:
+    reviewers: []
+    required_independence: true
+    independence_status: VERIFIED | LIMITED_SHARED_MODEL | LIMITED_SHARED_CONTEXT | LIMITED_SHARED_TOOLS | NOT_VERIFIED
+    limitations: []
+
+  completion_evidence: []
+
+  profile_bootstrap_handoff:
+    capability: hermes-profile-bootstrap
+    runtime_target: hermes
+    profile_name: ""
+    preset: custom
+    skill_catalog_source: ""
+    skills_required: []
+    skills_optional: []
+    model_policy: {}
+    toolset_policy: {}
+    verification_policy: {}
+    safety_constraints: []
+    product_context_reference: ""
+    mutation_status: PLANNED | EXECUTED | BLOCKED | NOT_VERIFIED
+
+  findings: []
+  known_gaps: []

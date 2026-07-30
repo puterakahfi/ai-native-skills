@@ -1,0 +1,108 @@
+schema_version: 1
+fleet_manifest:
+  id: ""
+  runtime_target: hermes
+  status: PROPOSED | APPROVED | MATERIALIZED | AUDITED | BLOCKED | NOT_VERIFIED
+  version: "0.1.0"
+
+  source:
+    request_ref: ""
+    product_or_repository_refs: []
+    capability_inventory_ref: ""
+    capability_catalog_ref: ""
+    capability_catalog_version: ""
+    job_profiles_ref: ""
+    architecture_decision_ref: ""
+    behavioral_contract_ref: contracts/tests/hermes-agent-fleet-bootstrap.test.yaml
+
+  request_mode: PLAN_ONLY | AUDIT_ONLY | CREATE_OR_UPDATE
+
+  multi_agent_verdict:
+    status: JUSTIFIED | NOT_JUSTIFIED | LIMITED | NOT_VERIFIED
+    reasons: []
+    expected_benefits: []
+    coordination_costs: []
+    simpler_alternative: ""
+
+  topology:
+    pattern: single_profile | orchestrator_with_specialists | reviewer_loop | parallel_specialists | product_agents_with_shared_engineering_fleet | operations_isolated_fleet
+    orchestrator: ""
+    exception_to_single_orchestrator: ""
+    communication_policy: sparse_and_artifact_driven
+    parallelism_policy: ""
+
+  gateways:
+    default_front_door:
+      profile_id: ""
+      mode: messaging_front_door | none
+      channel: telegram | discord | cli | desktop | other | NOT_VERIFIED
+      evidence: []
+    dedicated_exceptions: []
+    default_specialist_mode: none
+
+  profiles: []
+  product_facing_profiles: []
+  optional_profiles: []
+
+  artifact_ownership:
+    artifacts: []
+    duplicate_owners: []
+    missing_owners: []
+
+  collaboration:
+    manifest_ref: ""
+    allowed_modes:
+      - orchestrator_invocation
+      - durable_kanban_task
+      - temporary_delegation
+      - shared_artifact_handoff
+      - review_feedback_loop
+      - human_approval
+    graph_edges: []
+    cycles: []
+    uncontrolled_all_to_all: false
+
+  review_independence:
+    required_reviewers: []
+    assessments: []
+    overall_status: VERIFIED | LIMITED_SHARED_MODEL | LIMITED_SHARED_CONTEXT | LIMITED_SHARED_TOOLS | NOT_VERIFIED
+
+  security:
+    secret_free_distribution: PASS | FAIL | NOT_VERIFIED
+    live_state_excluded: PASS | FAIL | NOT_VERIFIED
+    profile_isolation_evidence: []
+    privileged_profiles: []
+    human_approval_points: []
+
+  profile_bootstrap_handoffs: []
+  migration_plan_ref: ""
+
+  catalog_sync:
+    inventory_contains_capability: PASS | FAIL | NOT_VERIFIED
+    classification_contains_capability: PASS | FAIL | NOT_VERIFIED
+    topic_references_valid: PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+    job_profile_references_valid: PASS | FAIL | NOT_APPLICABLE | NOT_VERIFIED
+    published_catalog_current: PASS | FAIL | NOT_VERIFIED
+
+  verification:
+    checks: []
+    blockers: []
+    warnings: []
+    runtime_assumptions: []
+    runtime_evidence: []
+    deterministic_input_hash: ""
+    behavioral_cases_executed: []
+    behavioral_failures: []
+
+  readiness:
+    verdict: READY | READY_WITH_LIMITATIONS | NEEDS_WORK | BLOCKED | NOT_VERIFIED
+    rationale: []
+    limitations: []
+    next_action: ""
+
+  authority:
+    product_approval: VERIFIED | ROUTE_FOR_APPROVAL | NOT_VERIFIED
+    profile_write_authorization: VERIFIED | NOT_VERIFIED
+    merge_release_deploy_authorization: NOT_GRANTED | VERIFIED
+
+  receipt_ref: ""
