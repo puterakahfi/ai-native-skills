@@ -1,6 +1,6 @@
 # One-command Hermes fleet CLI
 
-Use this deterministic executor after the fleet topology and specialist contracts are approved.
+Use this deterministic executor after the fleet topology and specialist contracts are approved. Run repository-relative examples from the `ai-native-skills` repository root so the preset can resolve the local capability catalog.
 
 ## Primary command
 
