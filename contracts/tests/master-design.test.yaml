@@ -222,8 +222,8 @@ skill_test:
     description: A known bounded visual correction does not trigger deep systemic redesign ceremony.
     trigger: Fix the known mobile text overflow in one accepted component. Content, behavior, routes, metrics, shared contracts, and design-system ownership remain unchanged.
     must_contain:
-    - NOT_APPLICABLE
-    - REDUCED
+    - systemic_design_applicability
+    - REDUCED or NOT_APPLICABLE
     - bounded
     - preserve the narrow route
     must_not_contain:
