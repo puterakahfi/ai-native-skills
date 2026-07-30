@@ -223,9 +223,11 @@ skill_test:
     trigger: Fix the known mobile text overflow in one accepted component. Content, behavior, routes, metrics, shared contracts, and design-system ownership remain unchanged.
     must_contain:
     - systemic_design_applicability
-    - REDUCED or NOT_APPLICABLE
     - bounded
     - preserve the narrow route
+    must_contain_one_of:
+    - REDUCED
+    - NOT_APPLICABLE
     must_not_contain:
     - DEEP
     - feedback-loop map required
