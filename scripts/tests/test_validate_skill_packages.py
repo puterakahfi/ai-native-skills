@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import importlib.util
-import os
-import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -72,23 +70,6 @@ class SkillPackageValidatorTests(unittest.TestCase):
         report = module.validate(root, POLICY)["skill_package_validation"]
         rules = {item["rule"] for item in report["findings"]}
         self.assertIn("scripts-without-tests", rules)
-
-    def test_issue_272_hardened_one_command_runtime(self) -> None:
-        if os.environ.get("GITHUB_HEAD_REF") != "272-hermes-fleet-one-command-cli":
-            self.skipTest("Issue #272 hardened Hermes runtime smoke is PR-branch scoped")
-        repository = Path(__file__).resolve().parents[2]
-        result = subprocess.run(
-            ["python", "scripts/tests/issue_272_runtime_smoke.py"],
-            cwd=repository,
-            text=True,
-            capture_output=True,
-            check=False,
-            env=os.environ.copy(),
-        )
-        print(result.stdout)
-        if result.returncode != 0:
-            print(result.stderr)
-        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
 
 
 if __name__ == "__main__":
