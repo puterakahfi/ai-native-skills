@@ -242,6 +242,39 @@ raise SystemExit(0)
         ]
         self.assertEqual(missing, [], f"Preset references missing skills: {missing}")
 
+    def test_preset_rejects_path_traversal_identifier(self) -> None:
+        malicious = {
+            "id": "test-fleet",
+            "version": "1.0.0",
+            "topology": "orchestrator_with_specialists",
+            "orchestrator": "../escape",
+            "profiles": [
+                {
+                    "id": "../escape",
+                    "description": "Unsafe profile.",
+                    "gateway": "eligible",
+                    "skills": ["fleet-skill"],
+                }
+            ],
+        }
+        with self.assertRaises(module.FleetError):
+            module.validate_preset(malicious)
+
+    def test_symlink_skill_source_is_rejected_before_mutation(self) -> None:
+        source = self.skills / "review-skill"
+        external = self.tmp / "external-review-skill"
+        source.rename(external)
+        try:
+            source.symlink_to(external, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest("Symlinks are unavailable on this platform")
+        code = self.run_cli("--apply")
+        self.assertEqual(code, module.EXIT_PREFLIGHT)
+        self.assertFalse((self.home / "profiles").exists())
+        receipt = json.loads(self.receipt.read_text(encoding="utf-8"))
+        self.assertEqual(receipt["readiness"], "BLOCKED")
+        self.assertTrue(any("Symlink" in item for item in receipt["findings"]))
+
     def test_profile_command_failure_is_reported(self) -> None:
         self.write_fake_hermes(fail_profile=True)
         code = self.run_cli("--apply")
