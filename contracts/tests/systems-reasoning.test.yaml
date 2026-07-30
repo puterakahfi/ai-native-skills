@@ -201,9 +201,11 @@ skill_test:
     - component family
     - parallel system risk
     - maintenance ownership
-    - reuse or bounded extension
     - implementation-context-discovery
     - NOT_VERIFIED
+    must_contain_one_of:
+    - reuse
+    - bounded extension
     must_not_contain:
     - one-off is automatically correct
     - assume no shared components exist
@@ -218,9 +220,11 @@ skill_test:
     trigger: Fix the known mobile text overflow in one accepted component without changing content, behavior, routes, metrics, shared contracts, or design-system ownership.
     must_contain:
     - systemic_design_applicability
-    - REDUCED or NOT_APPLICABLE
     - bounded
     - preserve the narrow route
+    must_contain_one_of:
+    - REDUCED
+    - NOT_APPLICABLE
     must_not_contain:
     - DEEP
     - feedback-loop map required
