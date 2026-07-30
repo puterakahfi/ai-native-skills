@@ -14,7 +14,7 @@ Run this before deciding whether to use `redesign-workflow`, `design-refinement`
 | User says “something feels off” but cannot name it | quick audit + `user-feedback-parser.md` → then route | Qualitative feedback needs classification. |
 | User asks to change style/genre/macrostructure | `redesign-workflow` | Style/macro changes reopen direction. |
 | User asks to make current direction cleaner/quieter/more integrated | `design-refinement` | Direction stays; gates improve. |
-| User asks for deploy/commit readiness | `redesign-workflow` Phase 5/7 verification | Full review/deploy gates apply. |
+| User asks for deploy/commit readiness | `redesign-workflow` verification phases | Full evidence and delivery gates apply. |
 
 ## Decision output
 
@@ -27,6 +27,39 @@ Route decision:
   Locked layers: [approved layers to preserve]
   Open layers: [layers allowed to change]
 ```
+
+## Systemic-design classification for broad redesign
+
+After routing to `redesign-workflow` and before structural direction lock, `master-design` must classify:
+
+```yaml
+systemic_design_applicability:
+  status: REQUIRED | REDUCED | NOT_APPLICABLE | NOT_VERIFIED
+  rationale: string
+  activation_signals: []
+  omitted_analysis_risk: []
+```
+
+Use `REQUIRED` or `REDUCED` when the redesign has material cross-journey, cross-route, metric, positioning, information-architecture, proof, reusable page-shell, component-family, design-system, or second-order consequences.
+
+When applicable:
+
+```text
+redesign-workflow remains the one primary lifecycle
+→ systems-reasoning creates the bounded system-to-design handoff
+→ systems-thinking owns deep loops, delays, Goodhart, emergence,
+  second-order effects, unintended consequences, and leverage analysis
+  only when material
+→ master-design compares and selects the design direction
+→ design specialists resolve narrow concerns
+→ design-review controls acceptance
+```
+
+The system handoff must be available before a broad layout or visual direction is locked. It can constrain candidate evaluation, but it must not select the hero, page recipe, macrostructure, component, or visual genre.
+
+A landing page may correctly use a conventional hero and section sequence. It may also be document-led, workbench-led, interactive, catalogue-led, manifesto-led, or another product-specific structure. Artifact names and familiar patterns are signals, not automatic layouts.
+
+Use `NOT_APPLICABLE` or `REDUCED` for a bounded accepted correction with no material change to content, behavior, route, metric, shared contract, or design-system ownership. Preserve `design-refinement`; do not inflate it into redesign merely to run systems analysis.
 
 ## Layer preservation hard rule
 
