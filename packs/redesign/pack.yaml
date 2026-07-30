@@ -1,9 +1,9 @@
 skill_pack:
   schema_version: "1.0"
   id: redesign
-  version: "1.2.0"
+  version: "1.3.0"
   repository: puterakahfi/ai-native-skills
-  description: Complete dependency bundle for delegated redesign with component-family consistency and repository implementation-context preservation.
+  description: Complete dependency bundle for delegated redesign with proportional systems reasoning, component-family consistency, and repository implementation-context preservation.
   entrypoints:
     - redesign-workflow
 
@@ -25,6 +25,16 @@ skill_pack:
       classification: required
       concern: design-ownership
       reason: Own comparative direction and final design decisions.
+    - name: systems-reasoning
+      classification: conditional
+      concern: system-model
+      when: Direction or structure has material cross-journey, metric, reusable-system, positioning, information-architecture, proof, or second-order consequences.
+      reason: Establish a proportionate system model and bounded design handoff before structural direction lock without taking design ownership.
+    - name: systems-thinking
+      classification: conditional
+      concern: system-dynamics
+      when: Systems reasoning identifies material feedback loops, delays, emergence, Goodhart risk, Conway alignment, second-order effects, unintended consequences, or leverage analysis.
+      reason: Own deep system-dynamics analysis while preserving redesign and master-design lifecycle ownership.
     - name: master-engineer
       classification: conditional
       concern: implementation
@@ -235,7 +245,7 @@ skill_pack:
         - required
         - port
     complete:
-      description: Full documented Redesign Pack with all local contextual adapters, component-family consistency, repository implementation-context capability, architecture review, and the available brand-identity reviewer.
+      description: Full documented Redesign Pack with proportional system-modeling capabilities, all local contextual adapters, component-family consistency, repository implementation-context capability, architecture review, and the available brand-identity reviewer.
       include_classifications:
         - required
         - conditional
