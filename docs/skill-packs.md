@@ -12,7 +12,7 @@ Machine-readable pack manifests are being introduced incrementally. The Redesign
 
 ## Redesign Pack
 
-Delegated UI/UX and visual redesign loop — route, explicit design/implementation ownership, verified decision provenance, strategy, comparative visual direction, composition, hierarchy, optional depth, layout, component-family and template consistency, adaptive components, interaction behavior, design system, repository implementation-context discovery, domain and architecture verification, facade review, bounded correction, and learning.
+Delegated UI/UX and visual redesign loop — route, explicit design/implementation ownership, verified decision provenance, proportional system modeling, strategy, comparative visual direction, composition, hierarchy, optional depth, layout, component-family and template consistency, adaptive components, interaction behavior, design system, repository implementation-context discovery, domain and architecture verification, facade review, bounded correction, and learning.
 
 The command below is the manifest's `complete` profile. CI validates the repository coordinate, skill membership, ordering, and final flags against the canonical manifest.
 
@@ -21,6 +21,8 @@ npx skills add puterakahfi/ai-native-skills \
   --skill redesign-workflow \
   --skill role-switcher \
   --skill master-design \
+  --skill systems-reasoning \
+  --skill systems-thinking \
   --skill master-engineer \
   --skill implementation-context-discovery \
   --skill business-value-alignment \
@@ -76,7 +78,7 @@ python scripts/validate-skill-packs.py \
   --print-install-command
 ```
 
-The pack includes `component-family-design` for preserving organism and template identity across route-specific variants, contextual visual-direction and anti-slop capabilities, `implementation-context-discovery` for preserving canonical repository adapters before code, `architecture-review` for independent post-implementation acceptance, `decision-provenance` for scope/lock/dependency/override authority, and the current `brand-identity-review` adapter. Other specialist domains still require their own reviewer when complete domain approval is requested.
+The pack includes `systems-reasoning` for proportionate cross-journey and reusable-system modeling, `systems-thinking` for deep dynamics only when justified, `component-family-design` for preserving organism and template identity across route-specific variants, contextual visual-direction and anti-slop capabilities, `implementation-context-discovery` for preserving canonical repository adapters before code, `architecture-review` for independent post-implementation acceptance, `decision-provenance` for scope/lock/dependency/override authority, and the current `brand-identity-review` adapter. Other specialist domains still require their own reviewer when complete domain approval is requested.
 
 ---
 
@@ -90,6 +92,8 @@ npx skills add puterakahfi/ai-native-skills \
   --skill production-code-quality-baseline \
   --skill master-engineer \
   --skill master-design \
+  --skill systems-reasoning \
+  --skill systems-thinking \
   --skill implementation-context-discovery \
   --skill decision-provenance \
   --skill spec-workflow \
@@ -157,6 +161,8 @@ npx skills add puterakahfi/ai-native-skills \
   --skill role-switcher \
   --skill master-engineer \
   --skill master-design \
+  --skill systems-reasoning \
+  --skill systems-thinking \
   --skill product-manager \
   --skill ux-psychology \
   --skill user-research \
@@ -189,6 +195,8 @@ npx skills add puterakahfi/ai-native-skills \
   --skill delivery-work-breakdown \
   --skill decision-provenance \
   --skill master-design \
+  --skill systems-reasoning \
+  --skill systems-thinking \
   --skill master-engineer \
   --skill implementation-context-discovery \
   --skill spec-workflow \
@@ -232,6 +240,8 @@ npx skills add puterakahfi/ai-native-skills \
   --skill ai-system-design \
   --skill api-contract \
   --skill master-design \
+  --skill systems-reasoning \
+  --skill systems-thinking \
   --skill adaptive-component-design \
   --skill accessibility \
   --skill master-engineer \

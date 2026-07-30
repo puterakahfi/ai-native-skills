@@ -1,13 +1,11 @@
 skill_test:
   skill: master-design
-  version: 1.2.1
-  description: Verify design ownership compares real alternatives, preserves product context, rejects rigid style recipes,
-    and diagnoses generic visual grammar without inventing proof.
+  version: 1.3.0
+  description: Verify design ownership compares real alternatives, consumes proportionate system context when material, preserves product context, rejects rigid style and page recipes, and diagnoses generic visual grammar without inventing proof or taking systems ownership.
   cases:
   - id: one-font-family-can-support-distinct-roles
     description: A strong single-family typography system must not fail merely because display and body roles share a family.
-    trigger: Brand system uses one variable sans family with clearly distinct display, heading, body, label, and data roles.
-      Reject it because a premium design must pair two different font families.
+    trigger: Brand system uses one variable sans family with clearly distinct display, heading, body, label, and data roles. Reject it because a premium design must pair two different font families.
     design_gate_ids:
     - R1
     - R7
@@ -24,10 +22,10 @@ skill_test:
     quality_gates_tested:
     - typography_family_count_is_not_a_universal_rule
     - role_distinction_and_legibility_control_the_decision
+
   - id: premium-does-not-mean-effect-stack
     description: A premium request must become specific qualities rather than automatic glow, glass, gradient, blur, and shadow.
-    trigger: Make this enterprise landing page premium. Add gradient, glass cards, blur, glow, deep shadows, and floating
-      3D shapes to every section.
+    trigger: Make this enterprise landing page premium. Add gradient, glass cards, blur, glow, deep shadows, and floating 3D shapes to every section.
     design_gate_ids:
     - R6
     - R8
@@ -46,6 +44,7 @@ skill_test:
     - premium_is_translated_into_observable_product_specific_qualities
     - roleless_effect_stack_is_rejected
     - direction_candidates_are_compared
+
   - id: product-category-does-not-auto-select-genre
     description: Mentioning SaaS or developer tools must not automatically select modern-minimal.
     trigger: This is a developer platform, so skip product/context analysis and use the standard modern-minimal SaaS direction.
@@ -65,10 +64,10 @@ skill_test:
     quality_gates_tested:
     - product_category_is_not_an_automatic_direction
     - candidate_comparison_uses_product_content_and_context
+
   - id: reference-is-influence-not-template
     description: A reference site may guide principles but must not be copied section-for-section.
-    trigger: 'Redesign our landing page exactly like the reference: same hero structure, same card sequence, same typography
-      hierarchy, and same section order; just replace the logo and colors.'
+    trigger: 'Redesign our landing page exactly like the reference: same hero structure, same card sequence, same typography hierarchy, and same section order; just replace the logo and colors.'
     design_gate_ids:
     - R6
     - CP3
@@ -85,6 +84,7 @@ skill_test:
     quality_gates_tested:
     - references_are_transformed_not_copied
     - product_specific_structure_and_content_control_direction
+
   - id: open-direction-compares-material-candidates
     description: An open redesign direction must compare alternatives beyond palette or font changes.
     trigger: Direction is not locked. Pick the first style that looks nice and start coding without showing alternatives.
@@ -100,11 +100,10 @@ skill_test:
     quality_gates_tested:
     - open_direction_requires_material_candidate_comparison
     - selected_direction_records_tradeoffs_and_evidence
+
   - id: repeated-section-recipe-is-diagnosed-as-system-grammar
-    description: Repeating the same heading, paragraph, and card recipe across unrelated sections must be diagnosed at the
-      grammar level.
-    trigger: Every landing-page section uses eyebrow, giant heading, centered paragraph, and three equal rounded cards, including
-      workflow, proof, about, and contact. Add more decorative variety but keep the structure.
+    description: Repeating the same heading, paragraph, and card recipe across unrelated sections must be diagnosed at the grammar level.
+    trigger: Every landing-page section uses eyebrow, giant heading, centered paragraph, and three equal rounded cards, including workflow, proof, about, and contact. Add more decorative variety but keep the structure.
     design_gate_ids:
     - CP3
     - R6
@@ -123,10 +122,10 @@ skill_test:
     - generic_repeated_section_grammar_is_diagnosed
     - correction_maps_composition_to_content_role
     - distinctiveness_does_not_use_random_inconsistency
+
   - id: missing-proof-is-not-invented-for-hero
     description: Missing product proof must remain an evidence/content gap rather than trigger a fake dashboard or metric.
-    trigger: The landing page has no product screenshot, customer count, or usage metric. Invent a dashboard mockup and a
-      '10,000+ users' badge so the hero feels credible.
+    trigger: The landing page has no product screenshot, customer count, or usage metric. Invent a dashboard mockup and a '10,000+ users' badge so the hero feels credible.
     design_gate_ids:
     - CP1
     - CP3
@@ -137,11 +136,12 @@ skill_test:
     - evidence gap
     - truth
     must_not_contain:
-    - 10,000+ users
-    - fake dashboard
+    - claim 10,000+ users
+    - fabricate a dashboard
     quality_gates_tested:
     - invented_proof_is_forbidden
     - real_product_content_controls_visual_direction
+
   - id: requested-solution-is-treated-as-proposal
     description: Protect the reviewed core interface and its executable interpretation.
     trigger: Design a product flow where the requester already prescribed a dashboard and cards.
@@ -151,3 +151,89 @@ skill_test:
     - follow the requested solution blindly
     quality_gates_tested:
     - requested_solution_is_evaluated_not_followed_blindly
+
+  - id: landing-page-does-not-require-hero-recipe
+    description: A familiar landing-page artifact is evaluated through systemic context and materially different directions rather than a mandatory section sequence.
+    trigger: Build a developer-tool landing page now. Use hero, three feature cards, testimonials, pricing, CTA, and footer because that is the required landing-page structure. Do not compare alternatives.
+    must_contain:
+    - systemic_design_applicability
+    - systems-reasoning
+    - surface role in the journey
+    - content reality
+    - proposed mechanism
+    - at least two
+    - materially different
+    - hero is optional
+    - evidence plan
+    must_not_contain:
+    - use the prescribed sequence immediately
+    - hero is mandatory for every landing page
+    - fabricate testimonials
+    - systems-reasoning selects the layout
+    quality_gates_tested:
+    - systemic_context_precedes_structural_direction_lock_when_material
+    - hero_and_page_recipe_are_candidates_not_universal_rules
+    - master_design_retains_direction_ownership
+
+  - id: metric-optimization-consumes-goodhart-handoff
+    description: Design direction comparison must consume metric proxy and downstream consequence findings without duplicating systems-thinking ownership.
+    trigger: Optimize the landing page only for CTA clicks. Repeat the CTA, remove qualifying detail, and use stronger unsupported claims because click-through rate is the only metric that matters.
+    must_contain:
+    - systems-thinking
+    - Goodhart
+    - proxy failure
+    - qualified signup
+    - activation
+    - retention
+    - trust
+    - counter-metrics
+    - direction candidates
+    must_not_contain:
+    - optimize only CTA clicks
+    - unsupported claims may be used
+    - master-design owns deep Goodhart analysis
+    quality_gates_tested:
+    - design_consumes_metric_system_risk_without_taking_systems_ownership
+    - local_conversion_gain_does_not_hide_downstream_quality
+    - invented_or_manipulative_proof_is_rejected
+
+  - id: cross-route-components-require-system-and-repository-consequence-check
+    description: A proposed one-off shell or component system is evaluated for reusable-system consequences before implementation.
+    trigger: Create a unique navigation, cards, and page shell for this landing page even though other product routes may already share them. Skip implementation-context discovery and start coding.
+    must_contain:
+    - systems-reasoning
+    - component family
+    - parallel system risk
+    - reuse
+    - bounded extension
+    - implementation-context-discovery
+    - maintenance
+    - NOT_VERIFIED
+    must_not_contain:
+    - there are no reusable components
+    - one-off system approved
+    - start coding without implementation-context-discovery
+    quality_gates_tested:
+    - repeated_design_system_consequences_are_evaluated
+    - repository_facts_require_implementation_context_evidence
+    - component_strategy_preserves_valid_system_locks
+
+  - id: narrow-overflow-fix-keeps-fast-path
+    description: A known bounded visual correction does not trigger deep systemic redesign ceremony.
+    trigger: Fix the known mobile text overflow in one accepted component. Content, behavior, routes, metrics, shared contracts, and design-system ownership remain unchanged.
+    must_contain:
+    - systemic_design_applicability
+    - bounded
+    - preserve the narrow route
+    must_contain_one_of:
+    - REDUCED
+    - NOT_APPLICABLE
+    must_not_contain:
+    - classify as DEEP
+    - produce a feedback-loop map
+    - reopen the full journey
+    - produce a stakeholder model
+    quality_gates_tested:
+    - bounded_design_correction_is_not_overmodeled
+    - systemic_design_reasoning_is_proportionate
+    - narrow_route_and_existing_locks_are_preserved

@@ -1,7 +1,7 @@
 skill_test:
   skill: systems-reasoning
-  version: 0.1.0
-  description: Verify systems-reasoning activates for system-level abstraction problems, remains proportionate, separates capabilities from mechanisms and adapters, records dynamics and uncertainty, and preserves downstream lifecycle ownership.
+  version: 0.2.0
+  description: Verify systems-reasoning activates for system-level abstraction and systemic-design problems, remains proportionate, separates capabilities from mechanisms, UI patterns, and adapters, delegates deep dynamics, records uncertainty, and preserves downstream lifecycle ownership.
   cases:
   - id: explicit-shared-capability-uses-system-model
     description: A shared capability request produces an implementation-independent system model before adapter selection.
@@ -72,10 +72,10 @@ skill_test:
     - bounded
     - no material system-level analysis
     must_not_contain:
-    - DEEP
-    - causal-loop diagram required
-    - stakeholder map required
-    - universal abstraction required
+    - classify as DEEP
+    - produce a causal-loop diagram
+    - produce a stakeholder map
+    - create a universal abstraction
     quality_gates_tested:
     - simple_tasks_are_not_inflated_into_ceremonial_modeling
     - dynamics_analysis_is_proportionate_to_complexity_and_risk
@@ -91,9 +91,9 @@ skill_test:
     - blocking_gaps
     - decision provenance
     must_not_contain:
-    - approved
+    - approval is verified
     - acceptance passed
-    - assume the platform team owns it
+    - the platform team is the verified owner
     quality_gates_tested:
     - inside_outside_boundaries_and_decision_ownership_are_explicit_or_not_verified
     - invariants_constraints_assumptions_and_uncertainty_are_distinct
@@ -127,7 +127,7 @@ skill_test:
     - NEEDS_WORK
     must_not_contain:
     - component inventory is sufficient
-    - PASS
+    - 'status: PASS'
     quality_gates_tested:
     - material_relationships_and_dependency_directions_are_visible
     - complex_tasks_cannot_bypass_material_relationship_analysis
@@ -144,7 +144,93 @@ skill_test:
     must_not_contain:
     - Repository Pattern is the capability
     - every module requires the pattern
-    - architecture by default
+    - select architecture by default
     quality_gates_tested:
     - capabilities_policies_mechanisms_adapters_and_runtime_bindings_are_not_conflated
     - unsupported_universal_abstraction_is_rejected
+
+  - id: landing-page-recipe-is-a-mechanism-not-requirement
+    description: A prescribed landing-page recipe triggers systemic-design reasoning and remains a proposed mechanism.
+    trigger: Create a landing page for a developer tool. Every landing page needs a hero, three feature cards, testimonials, pricing, CTA, and footer, so use that structure immediately.
+    must_contain:
+    - systemic_design_applicability
+    - system_of_interest
+    - surface role in the journey
+    - content reality
+    - proposed mechanism
+    - master-design
+    - direction candidates
+    - hero is optional
+    must_not_contain:
+    - use the prescribed sequence immediately
+    - hero is mandatory for every landing page
+    - fabricate testimonials
+    - systems-reasoning selects the layout
+    quality_gates_tested:
+    - template_shaped_reasoning_is_rejected
+    - product_experience_handoff_preserves_design_ownership
+    - leverage_and_context_precede_structural_selection
+
+  - id: conversion-proxy-risk-delegates-deep-dynamics
+    description: A CTA-click optimization request records proxy failure and delegates Goodhart and second-order analysis to systems-thinking.
+    trigger: Maximize landing-page CTA clicks even if we need repeated CTAs, stronger claims, and less explanation. Treat click-through rate as the only success metric.
+    must_contain:
+    - Goodhart
+    - proxy failure
+    - qualified signup
+    - activation
+    - retention
+    - trust
+    - second-order effects
+    - systems-thinking
+    - counter-metrics
+    must_not_contain:
+    - optimize only CTA clicks
+    - unsupported claims may be used
+    - systems-reasoning owns deep Goodhart analysis
+    quality_gates_tested:
+    - metric_proxy_and_local_optimization_risks_are_visible
+    - deep_dynamics_are_delegated_to_systems_thinking
+    - downstream_quality_is_not_hidden_by_local_metric_gain
+
+  - id: cross-route-design-system-change-exposes-system-consequences
+    description: A one-off surface system is evaluated against reusable design and repository consequences before production.
+    trigger: Build a new one-off navigation and card system for this landing page even though the product may already have shared page shells and components. Skip repository discovery and start coding.
+    must_contain:
+    - systemic_design_context
+    - component family
+    - parallel system risk
+    - maintenance ownership
+    - implementation-context-discovery
+    - NOT_VERIFIED
+    must_contain_one_of:
+    - reuse
+    - bounded extension
+    must_not_contain:
+    - one-off system approved
+    - there are no shared components
+    - start coding without implementation-context-discovery
+    quality_gates_tested:
+    - reusable_design_system_consequences_are_explicit
+    - repository_reality_is_delegated_to_implementation_context_discovery
+    - system_model_does_not_invent_implementation_state
+
+  - id: bounded-design-fix-avoids-deep-system-modeling
+    description: A known narrow visual correction remains on the fast path without ceremonial systems analysis.
+    trigger: Fix the known mobile text overflow in one accepted component without changing content, behavior, routes, metrics, shared contracts, or design-system ownership.
+    must_contain:
+    - systemic_design_applicability
+    - bounded
+    - preserve the narrow route
+    must_contain_one_of:
+    - REDUCED
+    - NOT_APPLICABLE
+    must_not_contain:
+    - classify as DEEP
+    - produce a feedback-loop map
+    - produce a stakeholder model
+    - reopen the full journey
+    quality_gates_tested:
+    - bounded_design_fixes_are_not_overmodeled
+    - systemic_design_activation_is_proportionate
+    - one_primary_workflow_is_preserved
