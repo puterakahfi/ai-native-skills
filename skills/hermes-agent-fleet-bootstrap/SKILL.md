@@ -86,6 +86,18 @@ worker_mode: headless_on_demand
 
 A profile is a durable runtime identity. A bot is an optional communication surface. Product and repository identities remain task context rather than reusable fleet profile names.
 
+## Product and environment boundary
+
+The fleet is product-neutral and local to a verified trust environment. It is not tied to VisualMate, pkahfi, an employer, a repository, a client, or any other named product.
+
+A product or repository does not automatically require a persistent product profile. Small or occasional work may pass bounded product and repository context directly to `engineering-orchestrator`. Create a durable product or domain profile only when recurring product intent, terminology, accepted decisions, stakeholders, approval flow, or product-facing interaction justify persistent context.
+
+Product profiles remain product-context custodians and product-facing authorities. They do not automatically receive the full engineering skill suite or own architecture, frontend, backend, testing, security review, or deployment.
+
+Personal, office, client, tenant, and confidentiality environments must not silently share profiles, memory, sessions, credentials, Kanban state, or product context. Prefer separate hosts or separate `HERMES_HOME` roots. Separate Hermes homes isolate Hermes-managed application state but do not prove operating-system or credential sandboxing.
+
+Load `references/product-context-and-environments.md` before deciding product-profile granularity, sharing one fleet across products, or separating personal and office environments.
+
 ## Primary invocation
 
 The installed Hermes slash command is the normal user interface:
@@ -137,14 +149,16 @@ The executors do not invent topology, provision credentials, start gateways, del
 
 ## Load references
 
-- Load `references/topology-and-classification.md` for multi-agent justification and topology selection.
-- Load `references/profile-archetypes.md` for the approved agent identity and responsibility contracts.
-- Load `references/runtime-gateway-and-security.md` for the `agent-orchestrator` front door, headless worker policy, permissions, and runtime limitations.
-- Load `references/catalog-migration-and-idempotency.md` for capability resolution, migration planning, and safety boundaries.
+- Load `references/topology-and-classification.md` for multi-agent justification, capability classification, and topology selection.
+- Load `references/profile-archetypes.md` for the approved agent identity, responsibility contracts, and candidate specialist boundaries.
+- Load `references/runtime-gateway-and-security.md` for the `agent-orchestrator` front door, headless worker policy, permissions, sandbox evidence, and runtime limitations.
+- Load `references/product-context-and-environments.md` for product-neutral fleets, optional product profiles, domain profiles, and personal/office trust separation.
+- Load `references/catalog-migration-and-idempotency.md` for capability resolution, existing-profile audit, migration planning, dry-run, and idempotency checks.
 - Load `references/one-command-cli.md` before deterministic bootstrap, reconcile, or audit execution.
 - Load `references/model-policy-sync.md` before model-policy synchronization.
 - Load `assets/profile-identity-maps/native-ai-engineering-v1-to-v2.json` when planning legacy identity migration.
-- Load `assets/presets/native-ai-engineering.json` only after the selected preset and mutation authority are explicit.
+- Load `assets/*.template.yaml` only when producing machine-readable manifests.
+- Load `assets/presets/native-ai-engineering.json` and other `assets/presets/*.json` only after the selected preset and mutation authority are explicit.
 
 ## Required input
 
@@ -282,7 +296,8 @@ Fail closed on:
 - default gateway per specialist without an independent audience;
 - profiles defined by frameworks, methods, products, or repositories;
 - product facts, secrets, or live state in reusable distributions;
-- assumed filesystem, process, network, or credential isolation;
+- personal, office, client, tenant, or confidentiality contexts sharing one fleet without verified trust boundaries;
+- assumed OS, filesystem, process, network, or credential isolation;
 - privileged operations without bounded permissions and human approval.
 
 Reviewer independence states:
@@ -402,8 +417,11 @@ Verify:
 - observed identity state;
 - plan/apply distinction and idempotency;
 - secret and live-state exclusions;
+- product/environment trust boundaries;
 - runtime limitations;
 - receipt completeness.
+
+Use `assets/fleet-manifest.template.yaml` to record topology, unique identifiers, artifact ownership, custom skill manifests, profile-bootstrap handoffs, gateway policy, collaboration cycles, reviewer independence, safety exclusions, permissions, product/environment trust boundaries, runtime assumptions, migration safety, deterministic inputs, executable receipt, and idempotent replay.
 
 Verdicts:
 
@@ -440,10 +458,13 @@ execution_receipt
 
 - Multi-agent is explicitly justified or rejected.
 - The smallest sufficient topology is selected.
-- One orchestration owner exists unless an exception is justified.
+- One default orchestration owner exists unless an exception is justified.
 - Only `agent-orchestrator` receives the default gateway.
 - Specialists remain headless by default.
 - Profiles own stable responsibilities, not framework, method, product, or repository names.
+- A product or repository does not automatically require a product profile.
+- A shared fleet is product-neutral and scoped to one verified trust environment.
+- Personal, office, client, tenant, and confidentiality boundaries are separated or explicitly evidenced.
 - Every durable artifact has one accountable owner.
 - Skill manifests are responsibility-specific and catalog-resolvable.
 - `agent-review` has no primary feature or bugfix implementation ownership.
@@ -468,10 +489,11 @@ Return `BLOCKED`, `NOT_VERIFIED`, or `READY_WITH_LIMITATIONS` when:
 - reviewer independence is required but unavailable;
 - runtime behavior is assumed rather than observed;
 - secret-free output cannot be proven;
+- product/environment trust boundaries are missing;
 - authority is missing;
 - an approved preset is unavailable;
 - Hermes preflight fails;
-- the bundled executor cannot be resolved;
+- the bundled executor cannot be resolved through `${HERMES_SKILL_DIR}`;
 - a privileged profile lacks bounded permissions and human approval.
 
 ## Receipt
