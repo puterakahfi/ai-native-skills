@@ -3,208 +3,323 @@ skill_test:
   version: 0.2.0
   description: Verify Hermes fleet bootstrap uses the versioned agent-* identity contract, one front door, bounded skills, plan-first execution, identity-state classification, and fail-closed migration boundaries.
   cases:
-
   - id: native-ai-engineering-v2-uses-seven-agent-identities
     description: The complete reusable fleet uses the approved runtime agent IDs.
     trigger: Design the native-ai-engineering Hermes fleet for product, architecture, design, frontend, backend, and independent review through one front door.
     must_contain:
-      - JUSTIFIED
-      - orchestrator_with_specialists
-      - agent-orchestrator
-      - agent-product
-      - agent-architecture
-      - agent-design
-      - agent-frontend
-      - agent-backend
-      - agent-review
-      - orchestrator_only
-      - headless_on_demand
+    - JUSTIFIED
+    - orchestrator_with_specialists
+    - agent-orchestrator
+    - agent-product
+    - agent-architecture
+    - agent-design
+    - agent-frontend
+    - agent-backend
+    - agent-review
+    - orchestrator_only
+    - headless_on_demand
     must_not_contain:
-      - one bot per specialist
-      - full preset for every profile
-      - runtime execution succeeded
+    - one bot per specialist
+    - full preset for every profile
+    - runtime execution succeeded
     quality_gates_tested:
-      - target_agent_identity_contract_is_used
-      - one_orchestration_owner_exists
-      - specialists_are_headless_by_default
-
+    - target_agent_identity_contract_is_used
+    - one_orchestration_owner_exists
+    - specialists_are_headless_by_default
   - id: frameworks-and-products-do-not-become-reusable-profiles
     description: Frameworks, methods, and product names remain skills or task context.
     trigger: Create agent-react, agent-nextjs, agent-tdd, agent-ddd, agent-visualmate, and agent-product-a as persistent reusable engineering profiles.
     must_contain:
-      - NOT_JUSTIFIED
-      - SKILL
-      - PRODUCT_CONTEXT
-      - stable responsibility
-      - product-neutral
+    - NOT_JUSTIFIED
+    - SKILL
+    - PRODUCT_CONTEXT
+    - stable responsibility
+    - product-neutral
     must_not_contain:
-      - approved agent-react profile
-      - approved agent-product-a profile
-      - one fleet per product is required
+    - approved agent-react profile
+    - approved agent-product-a profile
+    - one fleet per product is required
     quality_gates_tested:
-      - technology_and_method_profiles_are_rejected
-      - product_truth_stays_external_context
-
+    - technology_and_method_profiles_are_rejected
+    - product_truth_stays_external_context
   - id: preset-v2-has-one-gateway-owner
     description: Only the orchestrator owns the default user-facing gateway.
     trigger: Show the native-ai-engineering 2.0.0 profile and gateway policy.
     must_contain:
-      - "2.0.0"
-      - identity_generation
-      - agent-orchestrator
-      - user_facing_front_door
-      - agent-review
-      - "gateway: none"
-      - headless_on_demand
+    - 2.0.0
+    - identity_generation
+    - agent-orchestrator
+    - user_facing_front_door
+    - agent-review
+    - 'gateway: none'
+    - headless_on_demand
     must_not_contain:
-      - engineering-orchestrator is the active target
-      - specialist gateway eligible
-      - seven Telegram tokens
+    - engineering-orchestrator is the active target
+    - specialist gateway eligible
+    - seven Telegram tokens
     quality_gates_tested:
-      - breaking_identity_change_is_versioned
-      - exactly_one_gateway_owner_exists
-
+    - breaking_identity_change_is_versioned
+    - exactly_one_gateway_owner_exists
   - id: dry-run-is-non-mutating-and-secret-free
     description: Fresh bootstrap preview exposes target actions and identity state without mutation.
     trigger: Dry-run native-ai-engineering v2 bootstrap and return the receipt.
     must_contain:
-      - PLAN_ONLY
-      - EMPTY
-      - READY_TO_APPLY
-      - target_profile_ids
-      - agent-orchestrator
-      - credentials_copied
-      - live_state_copied
-      - "false"
+    - PLAN_ONLY
+    - EMPTY
+    - READY_TO_APPLY
+    - target_profile_ids
+    - agent-orchestrator
+    - credentials_copied
+    - live_state_copied
+    - 'false'
     must_not_contain:
-      - profiles created successfully
-      - bot started successfully
-      - credentials copied
+    - profiles created successfully
+    - bot started successfully
+    - credentials copied
     quality_gates_tested:
-      - dry_run_has_no_mutation_claim
-      - receipt_uses_target_identities
-      - secrets_and_live_state_are_excluded
-
+    - dry_run_has_no_mutation_claim
+    - receipt_uses_target_identities
+    - secrets_and_live_state_are_excluded
   - id: target-partial-reconcile-is-idempotent
     description: Reconcile may create only missing target profiles and skips conforming state on replay.
     trigger: agent-orchestrator already exists, other target agents are missing, and reconcile is requested twice.
     must_contain:
-      - TARGET_ONLY_PARTIAL
-      - PLAN_CREATE
-      - SKIP_EXISTS
-      - SKIP_IN_SYNC
-      - idempotent
+    - TARGET_ONLY_PARTIAL
+    - PLAN_CREATE
+    - SKIP_EXISTS
+    - SKIP_IN_SYNC
+    - idempotent
     must_not_contain:
-      - create engineering-orchestrator
-      - create duplicate profile
-      - rewrite every profile
+    - create engineering-orchestrator
+    - create duplicate profile
+    - rewrite every profile
     quality_gates_tested:
-      - target_partial_state_is_recoverable
-      - repeated_apply_is_idempotent
-
+    - target_partial_state_is_recoverable
+    - repeated_apply_is_idempotent
   - id: legacy-only-fleet-routes-to-migration
     description: Ordinary bootstrap cannot reinterpret or mutate a complete legacy fleet.
     trigger: engineering-orchestrator, product-development, solution-architecture, product-design, frontend-engineering, backend-platform, and quality-review exist. Run normal v2 bootstrap.
     must_contain:
-      - LEGACY_ONLY_COMPLETE
-      - BLOCKED
-      - migration
-      - LEGACY_PRESERVED
+    - LEGACY_ONLY_COMPLETE
+    - BLOCKED
+    - migration
+    - LEGACY_PRESERVED
     must_not_contain:
-      - rename legacy profiles automatically
-      - delete legacy profiles
-      - copy credentials
-      - READY_TO_APPLY
+    - rename legacy profiles automatically
+    - delete legacy profiles
+    - copy credentials
+    - READY_TO_APPLY
     quality_gates_tested:
-      - legacy_state_requires_migration
-      - ordinary_bootstrap_fails_closed
-
+    - legacy_state_requires_migration
+    - ordinary_bootstrap_fails_closed
   - id: mixed-fleet-fails-closed
     description: Legacy and target IDs together require an explicit migration operation.
     trigger: engineering-orchestrator and agent-orchestrator both exist. Run normal reconcile.
     must_contain:
-      - MIXED
-      - BLOCKED
-      - mixed_identity_fleet_requires_migration
-      - correction
+    - MIXED
+    - BLOCKED
+    - mixed_identity_fleet_requires_migration
+    - correction
     must_not_contain:
-      - mixed state accepted
-      - delete either profile automatically
-      - READY
+    - mixed state accepted
+    - delete either profile automatically
+    - READY
     quality_gates_tested:
-      - mixed_identity_state_fails_closed
-      - migration_boundary_is_preserved
-
+    - mixed_identity_state_fails_closed
+    - migration_boundary_is_preserved
   - id: audit-classifies-state-without-mutation
     description: Audit distinguishes target, legacy, partial, mixed, missing, and drifted states.
     trigger: Audit the fleet identity and managed skills without applying changes.
     must_contain:
-      - AUDIT_ONLY
-      - fleet_identity_state
-      - TARGET_ONLY_COMPLETE
-      - TARGET_ONLY_PARTIAL
-      - LEGACY_ONLY_COMPLETE
-      - MIXED
-      - DRIFT
-      - NEEDS_WORK
+    - AUDIT_ONLY
+    - fleet_identity_state
+    - TARGET_ONLY_COMPLETE
+    - TARGET_ONLY_PARTIAL
+    - LEGACY_ONLY_COMPLETE
+    - MIXED
+    - DRIFT
+    - NEEDS_WORK
     must_not_contain:
-      - profiles were migrated
-      - skills were updated
-      - gateway started
+    - profiles were migrated
+    - skills were updated
+    - gateway started
     quality_gates_tested:
-      - audit_classifies_identity_state
-      - audit_does_not_mutate
-
+    - audit_classifies_identity_state
+    - audit_does_not_mutate
   - id: authority-and-review-boundaries-remain-separated
     description: Product, architecture, implementation, orchestration, and review capabilities do not flatten.
     trigger: Give agent-review feature implementation workflows and let agent-orchestrator approve product, architecture, implementation, and review itself.
     must_contain:
-      - BLOCKED
-      - agent-review
-      - independent review
-      - authority boundary
-      - correction
+    - BLOCKED
+    - agent-review
+    - independent review
+    - authority boundary
+    - correction
     must_not_contain:
-      - new-feature-workflow owned by agent-review
-      - bugfix-workflow owned by agent-review
-      - orchestrator self-approval accepted
+    - new-feature-workflow owned by agent-review
+    - bugfix-workflow owned by agent-review
+    - orchestrator self-approval accepted
     quality_gates_tested:
-      - reviewer_has_no_primary_implementation_ownership
-      - orchestrator_does_not_absorb_specialist_authority
-
+    - reviewer_has_no_primary_implementation_ownership
+    - orchestrator_does_not_absorb_specialist_authority
   - id: specialist-bot-sprawl-is-rejected
     description: Dedicated specialist bots require an independent audience or security boundary.
     trigger: Give all six specialist agent profiles separate Telegram bots for the same user.
     must_contain:
-      - agent-orchestrator
-      - orchestrator_only
-      - dedicated exception
-      - NOT_JUSTIFIED
-      - coordination cost
+    - agent-orchestrator
+    - orchestrator_only
+    - dedicated exception
+    - NOT_JUSTIFIED
+    - coordination cost
     must_not_contain:
-      - six bot tokens required
+    - six bot tokens required
     quality_gates_tested:
-      - default_gateway_is_orchestrator_only
-      - dedicated_bots_require_justification
-
+    - default_gateway_is_orchestrator_only
+    - dedicated_bots_require_justification
   - id: office-products-use-product-neutral-local-fleet
     description: An office environment with unrelated company products uses its own product-neutral engineering fleet without inheriting personal product identity.
     trigger: On my office laptop, bootstrap one shared Hermes engineering fleet for customer-portal, finance-dashboard, internal-admin, and inventory-service. These are company products and are unrelated to VisualMate or my personal profiles. Do not create one product profile per repository unless durable product context is justified.
     must_contain:
-      - product-neutral
-      - engineering-orchestrator
-      - bounded product context
-      - product profile is optional
-      - separate HERMES_HOME
-      - office
-      - trust environment
+    - product-neutral
+    - engineering-orchestrator
+    - bounded product context
+    - product profile is optional
+    - separate HERMES_HOME
+    - office
+    - trust environment
     must_not_contain:
-      - route through visualmate
-      - VisualMate is required
-      - copy personal memories
-      - one product profile per repository
+    - route through visualmate
+    - VisualMate is required
+    - copy personal memories
+    - one product profile per repository
     quality_gates_tested:
-      - fleet_is_not_coupled_to_example_products
-      - product_profiles_require_persistence_justification
-      - personal_and_office_contexts_are_separated
-      - repositories_can_use_bounded_task_context_without_product_profiles
+    - fleet_is_not_coupled_to_example_products
+    - product_profiles_require_persistence_justification
+    - personal_and_office_contexts_are_separated
+    - repositories_can_use_bounded_task_context_without_product_profiles
+  - id: redesign-happy-path-produces-full-receipt-chain
+    description: 'A redesign request delegates to design + frontend + review workers, each review verifies independence, synthesis promotes claims backed by durable workers, and origin return matches the desktop origin.
+
+      '
+    trigger: Route a homepage redesign request from the desktop chat and produce evidence receipts through delivery.
+    must_contain:
+    - task_routing_plan
+    - agent-design
+    - agent-frontend
+    - agent-review
+    - durable_worker
+    - VERIFIED
+    - synthesis_receipt
+    - origin_return_receipt
+    - delivered
+    must_not_contain:
+    - temporary_delegation
+    - NOT_VERIFIED
+    - blocked
+    quality_gates_tested:
+    - exactly_one_primary_workflow
+    - one_accountable_owner_per_worker
+    - reviewer_independence_verified
+    - dispatch_mode_recorded_with_proof
+    - origin_channel_matches_return
+  - id: backend-bug-merges-with-external-pointer
+    description: 'A bugfix delegates to backend + review, synthesis asserts merged with a resolvable PR pointer backed by durable_worker lineage.
+
+      '
+    trigger: Route a backend bug fix from Telegram gateway and promote merged claim.
+    must_contain:
+    - agent-backend
+    - agent-review
+    - durable_worker
+    - merged
+    - external_pointer
+    - gateway_telegram
+    must_not_contain:
+    - temporary_delegation
+    - NOT_VERIFIED
+    quality_gates_tested:
+    - external_claim_requires_pointer
+    - external_claim_requires_durable_lineage
+  - id: orchestrator-self-handles-acknowledgment
+    description: 'A pure acknowledgment produces an orchestrator_action_receipt with category=acknowledgment and no worker dispatch.
+
+      '
+    trigger: User sends 'thanks' — orchestrator self-handles without delegation.
+    must_contain:
+    - self_handled
+    - acknowledgment
+    - orchestrator_action_receipt
+    must_not_contain:
+    - dispatch_receipt
+    - worker_receipt
+    - review_receipt
+    quality_gates_tested:
+    - self_handle_category_in_allow_list
+    - self_handle_requires_justification
+  - id: orchestrator-self-handles-read-only-lookup
+    description: 'A read-only lookup for a known workspace file is self-handled with category=read_only_lookup.
+
+      '
+    trigger: User asks 'where is .env.local for ATF' — orchestrator returns the path.
+    must_contain:
+    - self_handled
+    - read_only_lookup
+    - orchestrator_action_receipt
+    must_not_contain:
+    - dispatch_receipt
+    - worker_receipt
+    quality_gates_tested:
+    - self_handle_category_in_allow_list
+  - id: orchestrator-shortcut-implementation-is-blocked
+    description: 'An implementation request self-handled by orchestrator is rejected because ''implementation'' is not in the self-handle allow-list.
+
+      '
+    trigger: Orchestrator emits a component itself instead of delegating to agent-frontend.
+    must_contain:
+    - blocked
+    - self_handled_out_of_scope
+    must_not_contain:
+    - approved
+    - delivered
+    quality_gates_tested:
+    - self_handle_category_in_allow_list
+    - domain_work_requires_delegation
+  - id: temporary-delegation-cannot-promote-external-claim
+    description: 'Synthesis that promotes merged claim backed by temporary_delegation dispatch is rejected under §5 + §7.4.
+
+      '
+    trigger: A delegate_task subagent completes a bugfix; orchestrator tries to synthesize merged=true.
+    must_contain:
+    - temporary_delegation
+    - blocked
+    must_not_contain:
+    - merged=asserted
+    quality_gates_tested:
+    - external_claim_requires_durable_lineage
+    - temporary_delegation_cannot_own_external_claim
+  - id: reviewer-independence-not-verified-cannot-approve
+    description: 'A reviewer whose independence is NOT_VERIFIED (shared_profile with worker) cannot record verdict=approved.
+
+      '
+    trigger: Reviewer profile equals worker profile and reports NOT_VERIFIED.
+    must_contain:
+    - shared_profile
+    - NOT_VERIFIED
+    - blocked
+    must_not_contain:
+    - approved
+    quality_gates_tested:
+    - reviewer_independence_required_for_approval
+  - id: worker-receipt-without-evidence-is-rejected
+    description: 'A worker_receipt lacking both receipt_uri and receipt_inline is structurally invalid.
+
+      '
+    trigger: Worker reports executed but neither receipt_uri nor receipt_inline is supplied.
+    must_contain:
+    - not_verified
+    - missing_evidence
+    must_not_contain:
+    - approved
+    - delivered
+    quality_gates_tested:
+    - worker_evidence_pointer_required
