@@ -33,7 +33,10 @@
         "context-manager",
         "task-continuity",
         "delivery-work-breakdown",
-        "skill-eval"
+        "skill-eval",
+        "hermes-auto-routing-planner",
+        "hermes-auto-routing-dispatch",
+        "hermes-auto-routing-review-synthesis"
       ]
     },
     {

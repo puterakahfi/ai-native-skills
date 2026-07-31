@@ -136,9 +136,26 @@ audit        classify identity state and inspect conformance without runtime mut
 sync-models  synchronize non-secret model policy from the preset orchestrator to target profiles
 ```
 
+## Catalog-backed symlink model
+
+Managed fleet skills are projected as symlinks to a fixed catalog clone:
+
+```text
+~/.hermes/ai-native-skills/skills/<skill-id>
+→ ~/.hermes/profiles/<profile-id>/skills/<skill-id>
+```
+
+This makes the update mechanism explicit and machine-independent:
+
+```bash
+cd ~/.hermes/ai-native-skills && git pull
+```
+
+All managed profile skills then observe the new catalog content immediately. Profile-local skills that are not listed in the fleet preset remain real directories and are preserved.
+
 ## Deterministic and safety boundary
 
-The executors apply approved presets; they do not invent topology through an LLM. Custom preset, profile, and skill identifiers are restricted to lowercase letters, digits, dot, underscore, and hyphen. Unsafe identifiers, overlapping target and legacy IDs, duplicate skills, malformed semantic versions, invalid gateway ownership, invalid worker modes, path traversal, and symlinked managed paths fail closed.
+The executors apply approved presets; they do not invent topology through an LLM. Custom preset, profile, and skill identifiers are restricted to lowercase letters, digits, dot, underscore, and hyphen. Unsafe identifiers, overlapping target and legacy IDs, duplicate skills, malformed semantic versions, invalid gateway ownership, invalid worker modes, path traversal, invalid skill sources, and profile-root symlinks fail closed. Managed skill entries are the one intentional symlink boundary: each must resolve to the approved catalog skill source.
 
 The executor does not:
 
@@ -154,7 +171,7 @@ With `--apply`, fleet bootstrap or reconcile may:
 
 - run `hermes --version`;
 - run `hermes profile create ... --no-skills --no-alias` for missing target profiles;
-- copy approved skill packages into profile-local `skills/` directories;
+- create or update approved skill symlinks in profile-local `skills/` directories;
 - run `hermes kanban init`;
 - write a secret-free receipt under `$HERMES_HOME/fleet-bootstrap/<preset>/last-receipt.json`.
 

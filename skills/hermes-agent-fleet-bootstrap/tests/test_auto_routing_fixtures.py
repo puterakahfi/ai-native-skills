@@ -1,8 +1,10 @@
-"""Fixture validation for auto-routing receipts (Slice 1 of Epic #304).
+"""Fixture validation for auto-routing receipts (Epic #304).
 
-Positive fixtures MUST validate against every relevant schema. Negative
-fixtures MUST be rejected by at least one schema — this is the invariant
-enforcement mechanism.
+Positive fixtures MUST validate against every relevant schema. Negative fixtures
+may be either schema-negative (invalid receipt shape) or behavior-negative
+(schema-valid evidence for a blocked/not-verified outcome). The latter became
+intentional after the #304 runtime acceptance slice: many failure scenarios are
+valid receipts whose semantics are blocked.
 """
 from __future__ import annotations
 
@@ -83,7 +85,33 @@ class AutoRoutingFixtureTests(unittest.TestCase):
             with self.subTest(fixture=path.name):
                 doc = yaml.safe_load(path.read_text())
                 errors = _validation_errors(doc)
-                self.assertNotEqual(errors, [], "negative fixture unexpectedly passed all schemas")
+                if errors:
+                    continue
+                expected = doc.get("expected_behavior") or {}
+                blocked_statuses = {
+                    "blocked",
+                    "not_verified",
+                    "needs_work",
+                    "ready_with_limitations",
+                }
+                semantic_statuses = [
+                    str(expected.get("verdict", "")).lower(),
+                    str(expected.get("status", "")).lower(),
+                    str(doc.get("planner_output", {}).get("status", "")).lower(),
+                    *[
+                        str(receipt.get("status", "")).lower()
+                        for receipt in doc.get("dispatch_receipts", []) or []
+                    ],
+                ]
+                self.assertTrue(
+                    any(status in blocked_statuses for status in semantic_statuses)
+                    or bool(doc.get("violation"))
+                    or bool(doc.get("dispatch_notes", {}).get("blocking_reason"))
+                    or bool(doc.get("synthesis_notes", {}).get("violation"))
+                    or bool(doc.get("synthesis_violation"))
+                    or bool(doc.get("schema_notes", {}).get("this_fixture_is_behavioral")),
+                    "negative fixture must be schema-invalid or explicitly semantic-negative",
+                )
 
 
 if __name__ == "__main__":
