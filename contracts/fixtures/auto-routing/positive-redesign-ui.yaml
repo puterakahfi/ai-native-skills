@@ -1,0 +1,219 @@
+# Positive fixture — redesign UI happy path
+# Illustrates: STAR topology, 3 specialist workers, 3 independent reviews,
+# synthesis promoting internal claims + delivered (external via desktop artifact).
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-redesign-homepage-001
+  created_at: "2026-07-31T10:00:00Z"
+  origin:
+    channel: desktop
+    session_id: sess-abc-123
+    thread_id: thread-42
+    user_ref: kahfi
+  orchestrator_action:
+    kind: delegated_to_specialist
+  primary_workflow: redesign-workflow
+  workers:
+    - worker_id: worker-design-01
+      profile: agent-design
+      responsibility: Produce dark-mode style guide and component variants aligned with Vercel/Linear reference systems.
+      inputs: ["current-homepage-screenshots", "brand-tokens.json"]
+      expected_outputs: ["design-tokens.dark.json", "component-inventory.md"]
+    - worker_id: worker-frontend-01
+      profile: agent-frontend
+      responsibility: Implement React components from design tokens.
+      depends_on: ["worker-design-01"]
+      inputs: ["design-tokens.dark.json", "component-inventory.md"]
+      expected_outputs: ["src/components/homepage/*.tsx"]
+    - worker_id: worker-review-quality-01
+      profile: agent-review
+      responsibility: Verify implementation matches design intent, meets accessibility AA, hits Core Web Vitals.
+      depends_on: ["worker-frontend-01"]
+      inputs: ["design-tokens.dark.json", "src/components/homepage/*.tsx"]
+      expected_outputs: ["review-report.md"]
+  reviewers:
+    - reviewer_id: reviewer-design-fidelity
+      profile: agent-orchestrator
+      scope: ["design-fidelity", "token-adherence"]
+      independence_target: VERIFIED
+      reviews_worker_ids: ["worker-design-01"]
+    - reviewer_id: reviewer-frontend-quality
+      profile: agent-review
+      scope: ["accessibility", "web-performance", "type-safety"]
+      independence_target: VERIFIED
+      reviews_worker_ids: ["worker-frontend-01"]
+    - reviewer_id: reviewer-report-verifier
+      profile: agent-orchestrator
+      scope: ["report-completeness"]
+      independence_target: VERIFIED
+      reviews_worker_ids: ["worker-review-quality-01"]
+  review_policy:
+    allow_limited_independence: false
+    require_reviewer_per_worker: true
+  status: delivered
+
+dispatch_receipts:
+  - schema_version: "1.0"
+    receipt_id: dispatch-design-01
+    plan_id: plan-redesign-homepage-001
+    worker_id: worker-design-01
+    dispatched_at: "2026-07-31T10:01:00Z"
+    status: dispatched
+    dispatch_mode:
+      kind: durable_worker
+      proof:
+        profile_id: agent-design
+        worker_session_id: agent-design-sess-2026-07-31-001
+        kanban_card_uri: "kanban://board/atf/card-design-42"
+  - schema_version: "1.0"
+    receipt_id: dispatch-frontend-01
+    plan_id: plan-redesign-homepage-001
+    worker_id: worker-frontend-01
+    dispatched_at: "2026-07-31T10:30:00Z"
+    status: dispatched
+    dispatch_mode:
+      kind: durable_worker
+      proof:
+        profile_id: agent-frontend
+        worker_session_id: agent-frontend-sess-2026-07-31-001
+        kanban_card_uri: "kanban://board/atf/card-frontend-43"
+  - schema_version: "1.0"
+    receipt_id: dispatch-review-quality-01
+    plan_id: plan-redesign-homepage-001
+    worker_id: worker-review-quality-01
+    dispatched_at: "2026-07-31T11:15:00Z"
+    status: dispatched
+    dispatch_mode:
+      kind: durable_worker
+      proof:
+        profile_id: agent-review
+        worker_session_id: agent-review-sess-2026-07-31-001
+
+worker_receipts:
+  - schema_version: "1.0"
+    receipt_id: worker-receipt-design-01
+    plan_id: plan-redesign-homepage-001
+    worker_id: worker-design-01
+    profile: agent-design
+    status: executed
+    started_at: "2026-07-31T10:01:15Z"
+    completed_at: "2026-07-31T10:28:00Z"
+    retries: 0
+    evidence:
+      evidence_type: artifact
+      receipt_uri: "kanban://board/atf/card-design-42/artifacts"
+      artifacts: ["design-tokens.dark.json", "component-inventory.md"]
+  - schema_version: "1.0"
+    receipt_id: worker-receipt-frontend-01
+    plan_id: plan-redesign-homepage-001
+    worker_id: worker-frontend-01
+    profile: agent-frontend
+    status: executed
+    started_at: "2026-07-31T10:30:15Z"
+    completed_at: "2026-07-31T11:12:00Z"
+    retries: 0
+    evidence:
+      evidence_type: diff
+      receipt_uri: "session://agent-frontend-sess-2026-07-31-001/artifacts/pr-diff"
+      artifacts: ["src/components/homepage/Hero.tsx", "src/components/homepage/Nav.tsx"]
+  - schema_version: "1.0"
+    receipt_id: worker-receipt-review-quality-01
+    plan_id: plan-redesign-homepage-001
+    worker_id: worker-review-quality-01
+    profile: agent-review
+    status: executed
+    started_at: "2026-07-31T11:15:15Z"
+    completed_at: "2026-07-31T11:40:00Z"
+    retries: 0
+    evidence:
+      evidence_type: summary
+      receipt_uri: "session://agent-review-sess-2026-07-31-001/artifacts/review-report.md"
+
+review_receipts:
+  - schema_version: "1.0"
+    receipt_id: review-receipt-design-01
+    plan_id: plan-redesign-homepage-001
+    worker_receipt_id: worker-receipt-design-01
+    reviewer_profile: agent-orchestrator
+    reviewed_at: "2026-07-31T10:29:00Z"
+    independence:
+      verdict: VERIFIED
+      compromises: []
+    findings:
+      - severity: info
+        message: "Token contrast ratios all pass WCAG AA."
+    verdict: approved
+  - schema_version: "1.0"
+    receipt_id: review-receipt-frontend-01
+    plan_id: plan-redesign-homepage-001
+    worker_receipt_id: worker-receipt-frontend-01
+    reviewer_profile: agent-review
+    reviewed_at: "2026-07-31T11:14:00Z"
+    independence:
+      verdict: VERIFIED
+      compromises: []
+    findings:
+      - severity: info
+        message: "LCP 1.8s, CLS 0.02, a11y axe 0 issues."
+    verdict: approved
+  - schema_version: "1.0"
+    receipt_id: review-receipt-report-verifier-01
+    plan_id: plan-redesign-homepage-001
+    worker_receipt_id: worker-receipt-review-quality-01
+    reviewer_profile: agent-orchestrator
+    reviewed_at: "2026-07-31T11:41:00Z"
+    independence:
+      verdict: VERIFIED
+      compromises: []
+    verdict: approved
+
+synthesis_receipt:
+  schema_version: "1.0"
+  receipt_id: synthesis-redesign-01
+  plan_id: plan-redesign-homepage-001
+  synthesized_at: "2026-07-31T11:42:00Z"
+  worker_receipt_ids:
+    - worker-receipt-design-01
+    - worker-receipt-frontend-01
+    - worker-receipt-review-quality-01
+  review_receipt_ids:
+    - review-receipt-design-01
+    - review-receipt-frontend-01
+    - review-receipt-report-verifier-01
+  final_status: delivered
+  promoted_claims:
+    implemented:
+      asserted: true
+      supporting_receipt_ids: ["worker-receipt-frontend-01"]
+    verified:
+      asserted: true
+      supporting_receipt_ids: ["worker-receipt-review-quality-01"]
+    reviewed:
+      asserted: true
+      supporting_receipt_ids:
+        - review-receipt-design-01
+        - review-receipt-frontend-01
+        - review-receipt-report-verifier-01
+    approved:
+      asserted: true
+      supporting_receipt_ids: ["review-receipt-report-verifier-01"]
+    delivered:
+      asserted: true
+      supporting_receipt_ids: ["worker-receipt-review-quality-01"]
+      external_pointer: "desktop://sess-abc-123/thread-42/artifact/redesign-summary"
+      dispatch_mode_lineage: durable_worker
+
+origin_return_receipt:
+  schema_version: "1.0"
+  receipt_id: origin-return-redesign-01
+  plan_id: plan-redesign-homepage-001
+  origin:
+    channel: desktop
+    session_id: sess-abc-123
+    thread_id: thread-42
+    user_ref: kahfi
+  delivery_channel: desktop
+  delivered_at: "2026-07-31T11:43:00Z"
+  artifact_uri: "desktop://sess-abc-123/thread-42/artifact/redesign-summary"
+  status: delivered

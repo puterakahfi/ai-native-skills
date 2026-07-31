@@ -1,0 +1,37 @@
+# Negative fixture — worker_receipt without receipt_uri or receipt_inline.
+# Violates: §7.6 (evidence pointer mandatory).
+# Expected failure: worker-receipt schema oneOf on evidence.
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-missing-evidence-001
+  created_at: "2026-07-31T17:00:00Z"
+  origin:
+    channel: cli
+    session_id: cli-sess-1
+  orchestrator_action:
+    kind: delegated_to_specialist
+  primary_workflow: bugfix-workflow
+  workers:
+    - worker_id: worker-me-01
+      profile: agent-backend
+      responsibility: Fix logging output.
+  status: not_verified
+
+worker_receipts:
+  - schema_version: "1.0"
+    receipt_id: worker-receipt-me-01
+    plan_id: plan-missing-evidence-001
+    worker_id: worker-me-01
+    profile: agent-backend
+    status: executed
+    started_at: "2026-07-31T17:01:00Z"
+    completed_at: "2026-07-31T17:05:00Z"
+    evidence:
+      evidence_type: summary
+      # NEITHER receipt_uri NOR receipt_inline → oneOf rejects.
+      artifacts: []
+
+expected_failure:
+  schema: worker-receipt
+  reason: "evidence must contain receipt_uri or receipt_inline (§7.6)."

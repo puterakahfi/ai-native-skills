@@ -103,3 +103,15 @@ definitions:
           Auditor hint — external claims backed only by temporary_delegation
           MUST NOT be asserted true (§5, §7.4).
       note: { type: string }
+    allOf:
+      - description: >
+          §5 + §7.4 — asserted external claim requires durable_worker lineage.
+          temporary_delegation lineage with asserted=true is forbidden.
+        if:
+          properties:
+            dispatch_mode_lineage: { const: temporary_delegation }
+            asserted: { const: true }
+          required: [dispatch_mode_lineage, asserted]
+        then:
+          properties:
+            asserted: { const: false }

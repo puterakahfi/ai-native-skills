@@ -1,0 +1,117 @@
+# Positive fixture — backend bugfix, minimal 2-worker path.
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-backend-bug-002
+  created_at: "2026-07-31T12:00:00Z"
+  origin:
+    channel: gateway_telegram
+    session_id: tg-sess-9910
+    thread_id: tg-thread-fsdb-alerts
+    user_ref: kahfi
+  orchestrator_action:
+    kind: delegated_to_specialist
+  primary_workflow: bugfix-workflow
+  workers:
+    - worker_id: worker-backend-01
+      profile: agent-backend
+      responsibility: Reproduce and fix null pointer in POST /orders when items[] is empty.
+      inputs: ["error-log-2026-07-30.log", "src/api/orders.ts"]
+      expected_outputs: ["src/api/orders.ts patch", "tests/orders.spec.ts"]
+    - worker_id: worker-review-01
+      profile: agent-review
+      responsibility: Verify fix is root-cause, includes regression test, meets security review.
+      depends_on: ["worker-backend-01"]
+      inputs: ["worker-receipt-backend-01"]
+      expected_outputs: ["review-report.md"]
+  reviewers:
+    - reviewer_id: reviewer-backend-quality
+      profile: agent-review
+      scope: ["root-cause", "regression-coverage", "security"]
+      independence_target: VERIFIED
+      reviews_worker_ids: ["worker-backend-01"]
+  review_policy:
+    allow_limited_independence: false
+    require_reviewer_per_worker: true
+  status: merged
+
+dispatch_receipts:
+  - schema_version: "1.0"
+    receipt_id: dispatch-backend-01
+    plan_id: plan-backend-bug-002
+    worker_id: worker-backend-01
+    dispatched_at: "2026-07-31T12:01:00Z"
+    status: dispatched
+    dispatch_mode:
+      kind: durable_worker
+      proof:
+        profile_id: agent-backend
+        worker_session_id: agent-backend-sess-2026-07-31-002
+
+worker_receipts:
+  - schema_version: "1.0"
+    receipt_id: worker-receipt-backend-01
+    plan_id: plan-backend-bug-002
+    worker_id: worker-backend-01
+    profile: agent-backend
+    status: executed
+    started_at: "2026-07-31T12:01:15Z"
+    completed_at: "2026-07-31T12:35:00Z"
+    retries: 0
+    evidence:
+      evidence_type: diff
+      receipt_uri: "https://github.com/puterakahfi/arbiter/pull/1234"
+      artifacts: ["src/api/orders.ts", "tests/orders.spec.ts"]
+
+review_receipts:
+  - schema_version: "1.0"
+    receipt_id: review-receipt-backend-01
+    plan_id: plan-backend-bug-002
+    worker_receipt_id: worker-receipt-backend-01
+    reviewer_profile: agent-review
+    reviewed_at: "2026-07-31T12:45:00Z"
+    independence:
+      verdict: VERIFIED
+      compromises: []
+    findings:
+      - severity: info
+        message: "Root cause identified in items[] parser. Regression test covers empty + null + malformed inputs."
+    verdict: approved
+
+synthesis_receipt:
+  schema_version: "1.0"
+  receipt_id: synthesis-backend-bug-01
+  plan_id: plan-backend-bug-002
+  synthesized_at: "2026-07-31T12:46:00Z"
+  worker_receipt_ids: ["worker-receipt-backend-01"]
+  review_receipt_ids: ["review-receipt-backend-01"]
+  final_status: merged
+  promoted_claims:
+    implemented:
+      asserted: true
+      supporting_receipt_ids: ["worker-receipt-backend-01"]
+    reviewed:
+      asserted: true
+      supporting_receipt_ids: ["review-receipt-backend-01"]
+    approved:
+      asserted: true
+      supporting_receipt_ids: ["review-receipt-backend-01"]
+    merged:
+      asserted: true
+      supporting_receipt_ids: ["worker-receipt-backend-01"]
+      external_pointer: "https://github.com/puterakahfi/arbiter/pull/1234"
+      dispatch_mode_lineage: durable_worker
+
+origin_return_receipt:
+  schema_version: "1.0"
+  receipt_id: origin-return-backend-bug-01
+  plan_id: plan-backend-bug-002
+  origin:
+    channel: gateway_telegram
+    session_id: tg-sess-9910
+    thread_id: tg-thread-fsdb-alerts
+    user_ref: kahfi
+  delivery_channel: gateway_telegram
+  delivered_at: "2026-07-31T12:47:00Z"
+  artifact_uri: "https://github.com/puterakahfi/arbiter/pull/1234"
+  status: delivered

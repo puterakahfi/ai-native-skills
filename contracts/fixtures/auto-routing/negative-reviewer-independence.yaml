@@ -1,0 +1,50 @@
+# Negative fixture — reviewer's independence verdict NOT_VERIFIED yet verdict=approved.
+# Violates: §6 + §7.3 (approved forbidden when NOT_VERIFIED).
+# Expected failure: review-receipt schema allOf clause.
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-review-independence-001
+  created_at: "2026-07-31T16:00:00Z"
+  origin:
+    channel: desktop
+    session_id: sess-ri-1
+  orchestrator_action:
+    kind: delegated_to_specialist
+  primary_workflow: code-review-workflow
+  workers:
+    - worker_id: worker-ri-01
+      profile: agent-backend
+      responsibility: Refactor auth middleware.
+  status: blocked
+
+worker_receipts:
+  - schema_version: "1.0"
+    receipt_id: worker-receipt-ri-01
+    plan_id: plan-review-independence-001
+    worker_id: worker-ri-01
+    profile: agent-backend
+    status: executed
+    started_at: "2026-07-31T16:01:00Z"
+    completed_at: "2026-07-31T16:10:00Z"
+    evidence:
+      evidence_type: diff
+      receipt_uri: "session://agent-backend-sess-ri-1/artifacts/diff"
+
+review_receipts:
+  - schema_version: "1.0"
+    receipt_id: review-receipt-ri-01
+    plan_id: plan-review-independence-001
+    worker_receipt_id: worker-receipt-ri-01
+    # NOTE: reviewer profile == worker profile → shared_profile MUST be in compromises.
+    reviewer_profile: agent-backend
+    reviewed_at: "2026-07-31T16:15:00Z"
+    independence:
+      verdict: NOT_VERIFIED
+      compromises: [shared_profile]
+    # Approved despite NOT_VERIFIED → schema allOf rejects.
+    verdict: approved
+
+expected_failure:
+  schema: review-receipt
+  reason: "NOT_VERIFIED independence forbids verdict=approved (§6)."
