@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 102,
+    "skill": 103,
     "workflow": 13,
     "meta-skill": 7,
-    "total": 122
+    "total": 123
   },
   "items": [
     {
@@ -292,6 +292,11 @@
       "name": "hermes-agent-fleet-bootstrap",
       "type": "skill",
       "path": "skills/hermes-agent-fleet-bootstrap/SKILL.md"
+    },
+    {
+      "name": "hermes-auto-routing-planner",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-planner/SKILL.md"
     },
     {
       "name": "hermes-profile-bootstrap",
