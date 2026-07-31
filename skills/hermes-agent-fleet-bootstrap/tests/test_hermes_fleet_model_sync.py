@@ -9,8 +9,8 @@ from pathlib import Path
 import yaml
 
 PACKAGE = Path(__file__).resolve().parents[1]
-RUNNER = PACKAGE / "scripts" / "hermes_fleet_model_sync.py"
-SPEC = importlib.util.spec_from_file_location("hermes_fleet_model_sync", RUNNER)
+RUNNER = PACKAGE / "scripts" / "hermes_fleet_model_sync_v2.py"
+SPEC = importlib.util.spec_from_file_location("hermes_fleet_model_sync_v2", RUNNER)
 assert SPEC and SPEC.loader
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
@@ -24,6 +24,11 @@ class ModelPolicySyncTests(unittest.TestCase):
         self.preset = self.root / "fleet.json"
         self.receipt = self.root / "receipt.json"
         self.profile_ids = [
+            "agent-orchestrator",
+            "agent-backend",
+            "agent-review",
+        ]
+        self.legacy_ids = [
             "engineering-orchestrator",
             "backend-platform",
             "quality-review",
@@ -32,8 +37,10 @@ class ModelPolicySyncTests(unittest.TestCase):
             json.dumps(
                 {
                     "id": "test-fleet",
-                    "version": "1.0.0",
-                    "orchestrator": "engineering-orchestrator",
+                    "version": "2.0.0",
+                    "identity_generation": 2,
+                    "orchestrator": "agent-orchestrator",
+                    "legacy_profile_ids": self.legacy_ids,
                     "profiles": [{"id": profile} for profile in self.profile_ids],
                 }
             ),
@@ -42,7 +49,7 @@ class ModelPolicySyncTests(unittest.TestCase):
         for profile in self.profile_ids:
             (self.hermes_home / "profiles" / profile).mkdir(parents=True)
         self.write_config(
-            "engineering-orchestrator",
+            "agent-orchestrator",
             {
                 "model": {
                     "provider": "openai-codex",
@@ -62,7 +69,7 @@ class ModelPolicySyncTests(unittest.TestCase):
             },
         )
         self.write_config(
-            "backend-platform",
+            "agent-backend",
             {
                 "model": {
                     "provider": "openrouter",
@@ -74,7 +81,7 @@ class ModelPolicySyncTests(unittest.TestCase):
             },
         )
         self.write_config(
-            "quality-review",
+            "agent-review",
             {
                 "model": {"provider": "openrouter", "default": "old"},
                 "terminal": {"cwd": "/review"},
@@ -93,7 +100,7 @@ class ModelPolicySyncTests(unittest.TestCase):
         return yaml.safe_load(path.read_text(encoding="utf-8"))
 
     def args(self, *, apply: bool = False, source_profile: str | None = None):
-        return MODULE.argparse.Namespace(
+        return MODULE.base.argparse.Namespace(
             preset="test-fleet",
             apply=apply,
             preset_file=self.preset,
@@ -103,21 +110,25 @@ class ModelPolicySyncTests(unittest.TestCase):
             json_output=True,
         )
 
-    def test_plan_is_non_mutating_and_preset_driven(self) -> None:
-        before = self.read_config("backend-platform")
+    def test_plan_is_non_mutating_preset_driven_and_v2_identified(self) -> None:
+        before = self.read_config("agent-backend")
         code, receipt = MODULE.execute(self.args())
         self.assertEqual(code, 0)
-        self.assertEqual(self.read_config("backend-platform"), before)
+        self.assertEqual(self.read_config("agent-backend"), before)
+        self.assertEqual(receipt["source_profile"], "agent-orchestrator")
+        self.assertEqual(receipt["identity_generation"], 2)
+        self.assertEqual(receipt["identity_state"], "TARGET_ONLY_COMPLETE")
+        self.assertEqual(receipt["legacy_profile_ids_present"], [])
         self.assertEqual(
             [action["profile"] for action in receipt["actions"]],
-            ["backend-platform", "quality-review"],
+            ["agent-backend", "agent-review"],
         )
         self.assertTrue(all(a["status"] == "PLAN_UPDATE" for a in receipt["actions"]))
 
     def test_apply_syncs_policy_preserves_unmanaged_config_and_target_secrets(self) -> None:
         code, receipt = MODULE.execute(self.args(apply=True))
         self.assertEqual(code, 0)
-        backend = self.read_config("backend-platform")
+        backend = self.read_config("agent-backend")
         self.assertEqual(backend["model"]["provider"], "openai-codex")
         self.assertEqual(backend["model"]["default"], "gpt-5.2-codex")
         self.assertEqual(backend["model"]["openai_runtime"], "codex_app_server")
@@ -128,7 +139,7 @@ class ModelPolicySyncTests(unittest.TestCase):
         self.assertEqual(backend["skills"]["disabled"], ["example"])
         self.assertFalse(receipt["credentials_copied"])
         backups = list(
-            (self.hermes_home / "profiles" / "backend-platform").glob(
+            (self.hermes_home / "profiles" / "agent-backend").glob(
                 "config.yaml.bak.model-sync.*"
             )
         )
@@ -138,7 +149,7 @@ class ModelPolicySyncTests(unittest.TestCase):
         MODULE.execute(self.args(apply=True))
         backup_count = len(
             list(
-                (self.hermes_home / "profiles" / "backend-platform").glob(
+                (self.hermes_home / "profiles" / "agent-backend").glob(
                     "config.yaml.bak.model-sync.*"
                 )
             )
@@ -148,7 +159,7 @@ class ModelPolicySyncTests(unittest.TestCase):
         self.assertEqual(
             len(
                 list(
-                    (self.hermes_home / "profiles" / "backend-platform").glob(
+                    (self.hermes_home / "profiles" / "agent-backend").glob(
                         "config.yaml.bak.model-sync.*"
                     )
                 )
@@ -157,44 +168,40 @@ class ModelPolicySyncTests(unittest.TestCase):
         )
 
     def test_target_nested_secret_is_preserved_when_source_section_is_absent(self) -> None:
-        source = self.read_config("engineering-orchestrator")
+        source = self.read_config("agent-orchestrator")
         source.pop("auxiliary")
-        self.write_config("engineering-orchestrator", source)
-        backend = self.read_config("backend-platform")
+        self.write_config("agent-orchestrator", source)
+        backend = self.read_config("agent-backend")
         backend["auxiliary"] = {
             "vision": {"api_key": "TARGET_VISION_SECRET", "model": "old"}
         }
-        self.write_config("backend-platform", backend)
+        self.write_config("agent-backend", backend)
         MODULE.execute(self.args(apply=True))
-        updated = self.read_config("backend-platform")
-        self.assertEqual(
-            updated["auxiliary"]["vision"]["api_key"], "TARGET_VISION_SECRET"
-        )
+        updated = self.read_config("agent-backend")
+        self.assertEqual(updated["auxiliary"]["vision"]["api_key"], "TARGET_VISION_SECRET")
         self.assertNotIn("model", updated["auxiliary"]["vision"])
 
     def test_target_secret_in_managed_list_is_preserved_by_position(self) -> None:
-        source = self.read_config("engineering-orchestrator")
+        source = self.read_config("agent-orchestrator")
         source["fallback_providers"] = [
             {"provider": "openai-codex", "api_key": "SOURCE_LIST_SECRET"}
         ]
-        self.write_config("engineering-orchestrator", source)
-        backend = self.read_config("backend-platform")
+        self.write_config("agent-orchestrator", source)
+        backend = self.read_config("agent-backend")
         backend["fallback_providers"] = [
             {"provider": "openrouter", "api_key": "TARGET_LIST_SECRET"}
         ]
-        self.write_config("backend-platform", backend)
+        self.write_config("agent-backend", backend)
         MODULE.execute(self.args(apply=True))
-        updated = self.read_config("backend-platform")
-        self.assertEqual(
-            updated["fallback_providers"][0]["api_key"], "TARGET_LIST_SECRET"
-        )
+        updated = self.read_config("agent-backend")
+        self.assertEqual(updated["fallback_providers"][0]["api_key"], "TARGET_LIST_SECRET")
         self.assertNotIn("SOURCE_LIST_SECRET", json.dumps(updated))
 
     def test_receipt_digests_do_not_change_when_only_source_secret_changes(self) -> None:
         _, first = MODULE.execute(self.args())
-        source = self.read_config("engineering-orchestrator")
+        source = self.read_config("agent-orchestrator")
         source["model"]["api_key"] = "DIFFERENT_SOURCE_SECRET"
-        self.write_config("engineering-orchestrator", source)
+        self.write_config("agent-orchestrator", source)
         _, second = MODULE.execute(self.args())
         self.assertEqual(first["source_policy_digest"], second["source_policy_digest"])
         self.assertEqual(
@@ -206,24 +213,29 @@ class ModelPolicySyncTests(unittest.TestCase):
         with self.assertRaisesRegex(MODULE.SyncError, "not present"):
             MODULE.execute(self.args(source_profile="outside-profile"))
 
-    def test_missing_target_profile_fails_closed(self) -> None:
-        missing = self.hermes_home / "profiles" / "quality-review"
+    def test_missing_target_profile_fails_before_policy_sync(self) -> None:
+        missing = self.hermes_home / "profiles" / "agent-review"
         (missing / "config.yaml").unlink()
         missing.rmdir()
-        with self.assertRaisesRegex(MODULE.SyncError, "Missing target profile"):
+        with self.assertRaisesRegex(MODULE.SyncError, "Target agent profiles are incomplete"):
+            MODULE.execute(self.args())
+
+    def test_legacy_profile_presence_requires_migration_first(self) -> None:
+        (self.hermes_home / "profiles" / "engineering-orchestrator").mkdir()
+        with self.assertRaisesRegex(MODULE.SyncError, "run fleet migration"):
             MODULE.execute(self.args())
 
     def test_symlinked_target_config_fails_closed(self) -> None:
-        target = self.hermes_home / "profiles" / "quality-review" / "config.yaml"
+        target = self.hermes_home / "profiles" / "agent-review" / "config.yaml"
         target.unlink()
         target.symlink_to(
-            self.hermes_home / "profiles" / "backend-platform" / "config.yaml"
+            self.hermes_home / "profiles" / "agent-backend" / "config.yaml"
         )
         with self.assertRaisesRegex(MODULE.SyncError, "Symlinked target profile config"):
             MODULE.execute(self.args())
 
     def test_unconfigured_source_model_blocks(self) -> None:
-        self.write_config("engineering-orchestrator", {"model": ""})
+        self.write_config("agent-orchestrator", {"model": ""})
         with self.assertRaisesRegex(MODULE.SyncError, "not configured"):
             MODULE.execute(self.args())
 

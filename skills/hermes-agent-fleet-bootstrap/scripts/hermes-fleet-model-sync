@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-RUNNER="$SCRIPT_DIR/hermes_fleet_model_sync.py"
+RUNNER="$SCRIPT_DIR/hermes_fleet_model_sync_v2.py"
 
 if [[ ! -f "$RUNNER" ]]; then
   echo "ERROR: model-sync runner is missing: $RUNNER" >&2
