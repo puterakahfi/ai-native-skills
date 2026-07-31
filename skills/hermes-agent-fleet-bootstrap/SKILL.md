@@ -3,7 +3,7 @@ name: hermes-agent-fleet-bootstrap
 description: Design, bootstrap, audit, reconcile, and verify the smallest justified fleet of persistent Hermes agents. Use when a Hermes setup needs one orchestrator plus bounded product, architecture, design, implementation, or review specialists; when deciding whether a capability should be a profile, skill, workflow, reviewer, delegated subagent, or product context; or when planning a non-destructive migration from legacy profiles. Do not use for ordinary single-profile creation, task-time product delivery, secret provisioning, destructive migration, or unsupported runtime claims.
 license: MIT
 metadata:
-  ai-native-skills.version: 0.3.0
+  ai-native-skills.version: 0.2.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.pattern: facade
