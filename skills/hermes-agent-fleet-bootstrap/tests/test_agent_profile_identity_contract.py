@@ -12,7 +12,9 @@ TEST_FILE = Path(__file__).resolve()
 PACKAGE_ROOT = TEST_FILE.parents[1]
 SKILLS_ROOT = TEST_FILE.parents[2]
 REPOSITORY_ROOT = TEST_FILE.parents[3]
+CATALOG_ROOT = REPOSITORY_ROOT / "catalog"
 REFERENCE_PATH = PACKAGE_ROOT / "references" / "profile-archetypes.md"
+PRESET_PATH = PACKAGE_ROOT / "assets" / "presets" / "native-ai-engineering.json"
 MAPPING_PATH = (
     PACKAGE_ROOT
     / "assets"
@@ -83,8 +85,17 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.reference = REFERENCE_PATH.read_text(encoding="utf-8")
         cls.mapping = json.loads(MAPPING_PATH.read_text(encoding="utf-8"))
+        cls.preset = json.loads(PRESET_PATH.read_text(encoding="utf-8"))
         cls.inventory = json.loads(INVENTORY_PATH.read_text(encoding="utf-8"))
         cls.catalog_names = {item["name"] for item in cls.inventory["items"]}
+        cls.catalog_capabilities = {
+            manifest.parent.name for manifest in CATALOG_ROOT.glob("*/manifest.yaml")
+        }
+        cls.active_preset_skills = {
+            skill
+            for profile in cls.preset["profiles"]
+            for skill in profile["skills"]
+        }
         cls.contracts = parse_default_contracts(cls.reference)
         cls.mappings = cls.mapping["mappings"]
 
@@ -99,7 +110,10 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
         self.assertEqual(self.mapping["fleet"], "native-ai-engineering")
         self.assertEqual(self.mapping["from_preset_major"], 1)
         self.assertEqual(self.mapping["to_preset_major"], 2)
-        self.assertEqual(self.mapping["status"], "CONTRACT_ONLY")
+        self.assertEqual(self.mapping["status"], "EXECUTABLE_NATIVE_RENAME")
+        self.assertEqual(
+            self.mapping["migration_strategy"], "NATIVE_IN_PLACE_RENAME"
+        )
 
     def test_legacy_mapping_is_complete_unique_and_one_to_one(self) -> None:
         legacy = [item["legacy_profile"] for item in self.mappings]
@@ -241,20 +255,40 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
                 f"{profile_id} must not absorb orchestrator-only capabilities",
             )
 
-    def test_all_contract_skills_resolve_and_manifests_remain_curated(self) -> None:
+    def test_contract_capabilities_resolve_and_active_manifests_remain_curated(self) -> None:
         catalog_size = len(self.catalog_names)
         for profile_id, contract in self.contracts.items():
-            skills = contract["skills_required"] + contract["skills_optional"]
-            self.assertEqual(len(skills), len(set(skills)), profile_id)
-            self.assertLess(len(skills), catalog_size / 2, profile_id)
-            missing_catalog = sorted(set(skills) - self.catalog_names)
-            missing_package = sorted(
+            required = set(contract["skills_required"])
+            optional = set(contract["skills_optional"])
+            capabilities = contract["skills_required"] + contract["skills_optional"]
+            self.assertEqual(len(capabilities), len(set(capabilities)), profile_id)
+            self.assertLess(len(capabilities), catalog_size / 2, profile_id)
+
+            missing_required_catalog = sorted(required - self.catalog_names)
+            missing_required_package = sorted(
                 skill
-                for skill in skills
+                for skill in required
                 if not (SKILLS_ROOT / skill / "SKILL.md").is_file()
             )
-            self.assertEqual(missing_catalog, [], profile_id)
-            self.assertEqual(missing_package, [], profile_id)
+            unresolved_optional = sorted(
+                optional - self.catalog_names - self.catalog_capabilities
+            )
+            optional_skill_packages_missing = sorted(
+                skill
+                for skill in optional
+                if skill not in self.catalog_capabilities
+                and not (SKILLS_ROOT / skill / "SKILL.md").is_file()
+            )
+            catalog_only_optional = optional & self.catalog_capabilities - self.catalog_names
+
+            self.assertEqual(missing_required_catalog, [], profile_id)
+            self.assertEqual(missing_required_package, [], profile_id)
+            self.assertEqual(unresolved_optional, [], profile_id)
+            self.assertEqual(optional_skill_packages_missing, [], profile_id)
+            self.assertTrue(
+                catalog_only_optional.isdisjoint(self.active_preset_skills),
+                f"{profile_id} catalog-only capabilities must not be materialized as skills",
+            )
 
     def test_product_framework_and_method_names_are_negative_examples(self) -> None:
         invalid = set(self.mapping["naming_contract"]["invalid_examples"])
@@ -276,9 +310,15 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
         self.assertIn("repository: ~/projects/product-a", self.reference)
 
     def test_migration_contract_prohibits_secret_and_live_state_copy(self) -> None:
-        self.assertEqual(self.mapping["legacy_retirement"], "NOT_AUTHORIZED")
+        self.assertEqual(
+            self.mapping["legacy_retirement"],
+            "NOT_REQUIRED_AFTER_SUCCESSFUL_RENAME",
+        )
         self.assertEqual(
             self.mapping["automatic_live_state_copy"], "PROHIBITED"
+        )
+        self.assertEqual(
+            self.mapping["native_in_place_state_preservation"], "REQUIRED"
         )
         prohibited = set(self.mapping["prohibited_automatic_copy"])
         self.assertTrue(
@@ -302,7 +342,10 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
             for item in self.mappings
             if item["target_profile"] == "agent-orchestrator"
         )
-        self.assertEqual(orchestrator_mapping["gateway_transition"], "MANUAL_REBIND")
+        self.assertEqual(
+            orchestrator_mapping["gateway_transition"],
+            "PRESERVE_STOPPED_IN_PLACE",
+        )
 
 
 if __name__ == "__main__":

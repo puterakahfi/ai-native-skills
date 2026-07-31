@@ -6,6 +6,7 @@ import importlib.util
 import io
 import json
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -17,6 +18,7 @@ RUNNER = ROOT / "scripts" / "hermes_fleet_migrate.py"
 SPEC = importlib.util.spec_from_file_location("hermes_fleet_migrate", RUNNER)
 assert SPEC and SPEC.loader
 migration = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = migration
 SPEC.loader.exec_module(migration)
 
 
