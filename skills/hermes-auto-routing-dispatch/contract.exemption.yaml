@@ -1,0 +1,31 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: hermes-auto-routing-dispatch
+    path: skills/hermes-auto-routing-dispatch/SKILL.md
+    type: skill
+  classification: provider_specific
+  owner: puterakahfi
+  reason: >
+    Hermes Kanban-based durable worker dispatch and temporary delegation subprocess are Hermes-runtime-specific primitives. The implements field references JSON schema validators (not cross-runtime contracts). No transferable runtime-agnostic contract exists yet.
+  scope:
+    - provider_specific_execution
+    - runtime_schema_reference
+  review_date: "2027-01-31"
+  evidence_refs:
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#308
+    - kind: executable_source
+      ref: skills/hermes-auto-routing-dispatch/SKILL.md
+  revisit:
+    blocking_issue: null
+    triggers:
+      - A second runtime adapter implements equivalent durable dispatch semantics.
+      - Kanban-independent dispatch contract is defined in ai-native-core.
+  prohibited_claims:
+    - core_contract_conformance
+    - behavioral_verification
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active
