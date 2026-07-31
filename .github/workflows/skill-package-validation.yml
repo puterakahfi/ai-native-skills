@@ -44,6 +44,8 @@ jobs:
         run: python -m py_compile scripts/validate-skill-packages.py scripts/tests/test_validate_skill_packages.py
       - name: Run validator tests
         run: python -m unittest scripts/tests/test_validate_skill_packages.py
+      - name: Run Hermes fleet package tests
+        run: python -m unittest discover -s skills/hermes-agent-fleet-bootstrap/tests -p "test_*.py"
       - name: Validate packages and generate inventory
         run: python scripts/validate-skill-packages.py --report-json .tmp/skill-package-validation/report.json
       - name: Publish summary
