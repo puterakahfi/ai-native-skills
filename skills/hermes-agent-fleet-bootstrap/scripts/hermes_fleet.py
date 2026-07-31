@@ -225,6 +225,54 @@ def default_preset_path(name: str) -> Path:
     return Path(__file__).resolve().parents[1] / "assets" / "presets" / f"{name}.json"
 
 
+def _resolve_hermes_home() -> Path:
+    """F7 fix: detect real user's ~/.hermes when running inside an agent sandbox.
+
+    An agent sandbox sets HOME to a profile-scoped path like
+    /home/<user>/.hermes/profiles/<profile>/home, so Path("~/.hermes").expanduser()
+    would resolve to the sandbox's .hermes, not the real one.
+
+    Resolution order:
+    1. HERMES_REAL_HOME env var (explicitly set by caller)
+    2. HERMES_HOME env var (standard Hermes convention)
+    3. Walk up from CWD to find a real ~/.hermes anchor via LOGNAME/USER
+    4. Fallback: ~/.hermes (may be sandboxed — logs a warning)
+    """
+    # 1. Explicit override
+    if real_home := os.environ.get("HERMES_REAL_HOME"):
+        return Path(real_home).expanduser()
+
+    # 2. Standard HERMES_HOME
+    if hermes_home := os.environ.get("HERMES_HOME"):
+        resolved = Path(hermes_home).expanduser()
+        # Warn if it looks sandboxed (contains /profiles/ in path)
+        if "/profiles/" in str(resolved):
+            print(
+                f"[hermes-fleet WARNING] HERMES_HOME={resolved} looks sandboxed "
+                f"(contains /profiles/). Pass --hermes-home or set HERMES_REAL_HOME "
+                f"to point to the real ~/.hermes.",
+                file=__import__("sys").stderr,
+            )
+        return resolved
+
+    # 3. Derive from LOGNAME/USER to get real home
+    for env_var in ("LOGNAME", "USER"):
+        if username := os.environ.get(env_var):
+            candidate = Path(f"/home/{username}/.hermes")
+            if candidate.exists():
+                return candidate
+
+    # 4. Fallback
+    fallback = Path("~/.hermes").expanduser()
+    if "/profiles/" in str(fallback):
+        print(
+            f"[hermes-fleet WARNING] Resolved hermes-home={fallback} looks sandboxed. "
+            f"Pass --hermes-home explicitly.",
+            file=__import__("sys").stderr,
+        )
+    return fallback
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="hermes-fleet")
     parser.add_argument("operation", choices=["bootstrap", "audit", "reconcile"])
@@ -235,7 +283,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--hermes-home",
         type=Path,
-        default=Path(os.environ.get("HERMES_HOME", "~/.hermes")).expanduser(),
+        default=_resolve_hermes_home(),
     )
     parser.add_argument("--hermes-bin", default="hermes")
     parser.add_argument("--receipt", type=Path)
