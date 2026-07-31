@@ -1,0 +1,29 @@
+# Positive fixture — temporary_delegation dispatch
+# Illustrates: worker dispatched via hermes -p subprocess fallback.
+# Non-durable: synthesis must NOT promote to merged/accepted.
+
+plan_id: plan-darkmode-toggle-001
+
+dispatch_receipts:
+  - schema_version: "1.0"
+    receipt_id: dispatch-worker-design-01-temp
+    plan_id: plan-darkmode-toggle-001
+    worker_id: worker-design-01
+    dispatched_at: "2026-07-31T10:01:00Z"
+    status: dispatched
+    dispatch_mode:
+      kind: temporary_delegation
+      proof:
+        delegate_task_id: "delegate-20260731-100100-xyz"
+        parent_session_id: "20260731_100000_orchestrator"
+        max_turns: 20
+
+dispatch_notes:
+  mode: temporary_delegation
+  non_durable: true
+  synthesis_restriction: >
+    temporary_delegation receipts MUST NOT be promoted to merged or accepted
+    at synthesis. External claims require durable_worker evidence.
+    Downgrade to not_verified for any external claim backed only by this receipt.
+  resume_safe: false
+  durable_acceptance_eligible: false
