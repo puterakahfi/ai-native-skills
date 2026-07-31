@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+RUNNER="$SCRIPT_DIR/hermes_fleet_model_sync_v2.py"
+
+if [[ ! -f "$RUNNER" ]]; then
+  echo "ERROR: model-sync runner is missing: $RUNNER" >&2
+  exit 3
+fi
+
+candidates=()
+if [[ -n "${HERMES_PYTHON:-}" ]]; then
+  candidates+=("$HERMES_PYTHON")
+fi
+candidates+=("python3")
+
+if command -v hermes >/dev/null 2>&1; then
+  hermes_path="$(command -v hermes)"
+  if resolved="$(readlink -f "$hermes_path" 2>/dev/null)"; then
+    shebang="$(head -n 1 "$resolved" 2>/dev/null || true)"
+    if [[ "$shebang" == '#!'*python* ]]; then
+      candidates+=("${shebang#\#!}")
+    fi
+    candidates+=("$(dirname "$resolved")/python")
+  fi
+fi
+
+candidates+=("${HERMES_REAL_HOME:-$HOME}/.hermes/hermes-agent/venv/bin/python")
+
+for candidate in "${candidates[@]}"; do
+  [[ -n "$candidate" ]] || continue
+  if command -v "$candidate" >/dev/null 2>&1 || [[ -x "$candidate" ]]; then
+    if "$candidate" -c 'import yaml' >/dev/null 2>&1; then
+      exec "$candidate" "$RUNNER" "$@"
+    fi
+  fi
+done
+
+echo "ERROR: no Python interpreter with PyYAML was found." >&2
+echo "Run this through an installed Hermes environment or set HERMES_PYTHON." >&2
+exit 3

@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.1",
+  "fleet": "native-ai-engineering",
+  "status": "EXECUTABLE_NATIVE_RENAME",
+  "from_preset_major": 1,
+  "to_preset_major": 2,
+  "migration_strategy": "NATIVE_IN_PLACE_RENAME",
+  "naming_contract": {
+    "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+    "form": "agent-<stable-responsibility-domain>",
+    "requirements": [
+      "lowercase safe identifier",
+      "stable responsibility rather than framework or method",
+      "product-neutral and repository-neutral within the reusable fleet",
+      "unique within the selected fleet"
+    ],
+    "invalid_examples": [
+      "agent-react",
+      "agent-nextjs",
+      "agent-tailwind",
+      "agent-tdd",
+      "agent-ddd",
+      "agent-solid",
+      "agent-visualmate",
+      "agent-product-a"
+    ]
+  },
+  "default_gateway_profile": "agent-orchestrator",
+  "legacy_retirement": "NOT_REQUIRED_AFTER_SUCCESSFUL_RENAME",
+  "automatic_live_state_copy": "PROHIBITED",
+  "native_in_place_state_preservation": "REQUIRED",
+  "prohibited_automatic_copy": [
+    ".env",
+    "auth.json",
+    "api_keys",
+    "oauth_tokens",
+    "telegram_tokens",
+    "passwords",
+    "credentials",
+    "memory",
+    "sessions",
+    "cron_state",
+    "kanban_databases",
+    "runtime_databases",
+    "gateway_state",
+    "caches",
+    "logs"
+  ],
+  "mappings": [
+    {
+      "legacy_profile": "engineering-orchestrator",
+      "target_profile": "agent-orchestrator",
+      "responsibility_domain": "orchestration",
+      "gateway_policy": "orchestrator_only",
+      "gateway_transition": "PRESERVE_STOPPED_IN_PLACE"
+    },
+    {
+      "legacy_profile": "product-development",
+      "target_profile": "agent-product",
+      "responsibility_domain": "product",
+      "gateway_policy": "none",
+      "gateway_transition": "PRESERVE_DISABLED_IN_PLACE"
+    },
+    {
+      "legacy_profile": "solution-architecture",
+      "target_profile": "agent-architecture",
+      "responsibility_domain": "architecture",
+      "gateway_policy": "none",
+      "gateway_transition": "PRESERVE_DISABLED_IN_PLACE"
+    },
+    {
+      "legacy_profile": "product-design",
+      "target_profile": "agent-design",
+      "responsibility_domain": "design",
+      "gateway_policy": "none",
+      "gateway_transition": "PRESERVE_DISABLED_IN_PLACE"
+    },
+    {
+      "legacy_profile": "frontend-engineering",
+      "target_profile": "agent-frontend",
+      "responsibility_domain": "frontend",
+      "gateway_policy": "none",
+      "gateway_transition": "PRESERVE_DISABLED_IN_PLACE"
+    },
+    {
+      "legacy_profile": "backend-platform",
+      "target_profile": "agent-backend",
+      "responsibility_domain": "backend",
+      "gateway_policy": "none",
+      "gateway_transition": "PRESERVE_DISABLED_IN_PLACE"
+    },
+    {
+      "legacy_profile": "quality-review",
+      "target_profile": "agent-review",
+      "responsibility_domain": "review",
+      "gateway_policy": "none",
+      "gateway_transition": "PRESERVE_DISABLED_IN_PLACE"
+    }
+  ]
+}

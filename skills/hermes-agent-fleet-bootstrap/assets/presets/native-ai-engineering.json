@@ -1,16 +1,28 @@
 {
   "id": "native-ai-engineering",
-  "version": "1.1.0",
+  "version": "2.0.0",
+  "identity_generation": 2,
   "topology": "orchestrator_with_specialists",
-  "orchestrator": "engineering-orchestrator",
+  "orchestrator": "agent-orchestrator",
+  "legacy_profile_ids": [
+    "engineering-orchestrator",
+    "product-development",
+    "solution-architecture",
+    "product-design",
+    "frontend-engineering",
+    "backend-platform",
+    "quality-review"
+  ],
+  "mixed_identity_policy": "block_outside_migration",
   "kanban": {
     "initialize": true
   },
   "profiles": [
     {
-      "id": "engineering-orchestrator",
-      "description": "Coordinates Native AI Engineering work, selects one primary workflow, creates durable Kanban tasks, routes bounded work to specialists, verifies handoffs, and synthesizes evidence without becoming the primary implementer or reviewer.",
+      "id": "agent-orchestrator",
+      "description": "Coordinates Native AI Engineering outcomes through one primary workflow, durable work decomposition, bounded specialist routing, evidence synthesis, and response return without becoming the product approver, primary implementer, independent reviewer, or merge authority.",
       "gateway": "eligible",
+      "worker_mode": "user_facing_front_door",
       "skills": [
         "hermes-agent-fleet-bootstrap",
         "hermes-profile-bootstrap",
@@ -25,9 +37,10 @@
       ]
     },
     {
-      "id": "product-development",
-      "description": "Owns product intent, user problems, product briefs, PRDs, MVP scope, success criteria, and product acceptance while excluding technical architecture and implementation ownership.",
+      "id": "agent-product",
+      "description": "Owns attributable product intent, user problems, product briefs, PRDs, MVP scope, success criteria, and product acceptance while excluding technical architecture and implementation ownership.",
       "gateway": "none",
+      "worker_mode": "headless_on_demand",
       "skills": [
         "product-development-workflow",
         "product-manager",
@@ -41,9 +54,10 @@
       ]
     },
     {
-      "id": "solution-architecture",
-      "description": "Owns solution boundaries, domain and integration architecture, technical specifications, non-functional requirements, architecture decisions, and implementation guidance without acting as the primary feature implementer.",
+      "id": "agent-architecture",
+      "description": "Owns solution boundaries, domain and integration architecture, technical specifications, non-functional requirements, architecture decisions, and implementation guidance without acting as the primary feature implementer or self-approver.",
       "gateway": "none",
+      "worker_mode": "headless_on_demand",
       "skills": [
         "implementation-context-discovery",
         "systems-reasoning",
@@ -68,9 +82,10 @@
       ]
     },
     {
-      "id": "product-design",
-      "description": "Owns product experience, user flows, interaction behavior, design-system decisions, responsive intent, accessibility intent, and design acceptance without owning frontend implementation.",
+      "id": "agent-design",
+      "description": "Owns product experience, user flows, interaction behavior, design-system decisions, responsive and accessibility intent, and design acceptance without owning frontend implementation or self-approval.",
       "gateway": "none",
+      "worker_mode": "headless_on_demand",
       "skills": [
         "master-design",
         "design-review",
@@ -90,9 +105,10 @@
       ]
     },
     {
-      "id": "frontend-engineering",
-      "description": "Owns frontend architecture and implementation, component behavior, state and API integration, accessibility implementation, responsive behavior, frontend tests, and implementation evidence.",
+      "id": "agent-frontend",
+      "description": "Owns frontend architecture and implementation, component behavior, state and API integration, accessibility and responsive behavior, frontend tests, performance checks, and implementation evidence within approved product, design, and architecture boundaries.",
       "gateway": "none",
+      "worker_mode": "headless_on_demand",
       "skills": [
         "implementation-context-discovery",
         "master-engineer",
@@ -114,9 +130,10 @@
       ]
     },
     {
-      "id": "backend-platform",
-      "description": "Owns backend services, APIs, domain and application implementation, persistence, integrations, background work, automated tests, and implementation evidence within approved architecture.",
+      "id": "agent-backend",
+      "description": "Owns backend services, APIs, domain and application implementation, persistence, integrations, background work, automated tests, observability, and implementation evidence within approved product and architecture boundaries.",
       "gateway": "none",
+      "worker_mode": "headless_on_demand",
       "skills": [
         "implementation-context-discovery",
         "master-engineer",
@@ -142,9 +159,10 @@
       ]
     },
     {
-      "id": "quality-review",
-      "description": "Independently verifies acceptance criteria, architecture conformance, security findings, regressions, tests, design quality, and readiness without serving as the primary implementer.",
+      "id": "agent-review",
+      "description": "Independently verifies acceptance criteria, architecture conformance, security findings, regressions, tests, design quality, and readiness without serving as the primary implementer or accepting product, release, or deployment risk.",
       "gateway": "none",
+      "worker_mode": "headless_on_demand",
       "skills": [
         "acceptance-testing",
         "software-testing-workflow",

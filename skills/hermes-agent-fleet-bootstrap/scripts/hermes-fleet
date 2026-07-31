@@ -1,4 +1,20 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+case "${1:-}" in
+  sync-models)
+    shift
+    exec bash "$SCRIPT_DIR/hermes-fleet-model-sync" "$@"
+    ;;
+  migrate)
+    shift
+    exec bash "$SCRIPT_DIR/hermes-fleet-migrate" "$@"
+    ;;
+  validate-runtime)
+    shift
+    exec bash "$SCRIPT_DIR/hermes-fleet-runtime-acceptance" "$@"
+    ;;
+esac
+
 exec python3 "$SCRIPT_DIR/hermes_fleet.py" "$@"
