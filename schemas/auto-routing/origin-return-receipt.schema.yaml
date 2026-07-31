@@ -47,7 +47,7 @@ properties:
     minLength: 1
   status:
     type: string
-    enum: [delivered, blocked, cancelled, not_verified]
+    enum: [delivered, reviewed, changes_requested, blocked, cancelled, not_verified]
 allOf:
   - description: Delivery channel MUST match origin channel.
     if:
