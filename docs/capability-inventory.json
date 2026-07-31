@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 102,
+    "skill": 106,
     "workflow": 13,
     "meta-skill": 7,
-    "total": 122
+    "total": 126
   },
   "items": [
     {
@@ -294,6 +294,21 @@
       "path": "skills/hermes-agent-fleet-bootstrap/SKILL.md"
     },
     {
+      "name": "hermes-auto-routing-dispatch",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-dispatch/SKILL.md"
+    },
+    {
+      "name": "hermes-auto-routing-planner",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-planner/SKILL.md"
+    },
+    {
+      "name": "hermes-auto-routing-review-synthesis",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-review-synthesis/SKILL.md"
+    },
+    {
       "name": "hermes-profile-bootstrap",
       "type": "skill",
       "path": "skills/hermes-profile-bootstrap/SKILL.md"
@@ -392,6 +407,11 @@
       "name": "ports-and-adapters",
       "type": "skill",
       "path": "skills/ports-and-adapters/SKILL.md"
+    },
+    {
+      "name": "product-intake",
+      "type": "skill",
+      "path": "skills/product-intake/SKILL.md"
     },
     {
       "name": "product-manager",
