@@ -23,6 +23,21 @@ Orchestrator scope is limited to:
 - config.yaml agent-orchestrator: max_turns raised from 30 to 60
 - workflow-router: enforce dispatch for single_task non-hotfix (pending)
 
+## How to apply on a new machine
+
+Via Hermes chat (agent-orchestrator profile):
+```
+/hermes-agent-fleet-bootstrap bootstrap native-ai-engineering --apply
+```
+
+Or via terminal (full path to script):
+```bash
+bash "/home/<user>/.hermes/profiles/agent-orchestrator/skills/hermes-agent-fleet-bootstrap/scripts/hermes_fleet.py" \
+  bootstrap native-ai-engineering --apply
+```
+
+Note: `hermes-fleet` is NOT a standalone CLI command — it runs through the skill script.
+
 ## Consequences
 
 - Specialist agents receive bounded context (component + entry point + acceptance criteria)

@@ -1,6 +1,6 @@
 {
   "id": "native-ai-engineering",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "identity_generation": 2,
   "topology": "orchestrator_with_specialists",
   "orchestrator": "agent-orchestrator",
@@ -34,7 +34,9 @@
         "task-continuity",
         "delivery-work-breakdown",
         "skill-eval"
-      ]
+      ],
+      "soul": "souls/agent-orchestrator.md",
+      "config": "configs/agent-orchestrator.yaml"
     },
     {
       "id": "agent-product",
@@ -51,7 +53,9 @@
         "delivery-work-breakdown",
         "acceptance-testing",
         "decision-provenance"
-      ]
+      ],
+      "soul": "souls/agent-product.md",
+      "config": "configs/agent-product.yaml"
     },
     {
       "id": "agent-architecture",
@@ -79,7 +83,9 @@
         "observability-design",
         "architecture-review",
         "decision-provenance"
-      ]
+      ],
+      "soul": "souls/agent-architecture.md",
+      "config": "configs/agent-architecture.yaml"
     },
     {
       "id": "agent-design",
@@ -102,7 +108,9 @@
         "adaptive-component-design",
         "content-strategy",
         "decision-provenance"
-      ]
+      ],
+      "soul": "souls/agent-design.md",
+      "config": "configs/agent-design.yaml"
     },
     {
       "id": "agent-frontend",
@@ -127,7 +135,9 @@
         "responsiveness",
         "web-performance",
         "git-workflow"
-      ]
+      ],
+      "soul": "souls/agent-frontend.md",
+      "config": "configs/agent-frontend.yaml"
     },
     {
       "id": "agent-backend",
@@ -156,7 +166,9 @@
         "observability-design",
         "resilience-engineering",
         "git-workflow"
-      ]
+      ],
+      "soul": "souls/agent-backend.md",
+      "config": "configs/agent-backend.yaml"
     },
     {
       "id": "agent-review",
@@ -175,7 +187,9 @@
         "web-performance",
         "decision-provenance",
         "skill-eval"
-      ]
+      ],
+      "soul": "souls/agent-review.md",
+      "config": "configs/agent-review.yaml"
     }
   ]
 }
