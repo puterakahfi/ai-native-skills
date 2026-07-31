@@ -1,0 +1,30 @@
+# Negative fixture — dispatch blocked
+# Illustrates: worker dispatch blocked because upstream depends_on
+# worker did not complete successfully.
+
+plan_id: plan-darkmode-toggle-001
+
+dispatch_receipts:
+  - schema_version: "1.0"
+    receipt_id: dispatch-worker-design-01-blocked
+    plan_id: plan-darkmode-toggle-001
+    worker_id: worker-design-01
+    dispatched_at: "2026-07-31T10:01:00Z"
+    status: blocked
+    dispatch_mode:
+      kind: temporary_delegation
+      proof:
+        delegate_task_id: "delegate-20260731-100100-fail"
+        parent_session_id: "20260731_100000_orchestrator"
+
+dispatch_notes:
+  blocking_reason: >
+    agent-design subprocess exited with non-zero status. Worker receipt
+    not produced. worker-frontend-01 cannot be dispatched until
+    worker-design-01 completes successfully (depends_on constraint).
+    Error: hermes -p agent-design timed out after 180s with no output.
+  blocked_downstream:
+    - worker-frontend-01
+    - worker-review-01
+  actionable_error: "Re-dispatch worker-design-01 with increased timeout or check agent-design profile availability."
+  resume_action: "Fix blocker, then re-dispatch worker-design-01 only. Do not re-dispatch completed workers."

@@ -1,0 +1,36 @@
+# Negative fixture — over-dispatch: all 7 profiles invoked for a narrow task
+# Illustrates: planner must NOT invoke every specialist when only 1-2 are needed.
+# Request: "Fix typo in README.md" — this is a single-worker task (agent-backend or self-handled).
+
+request_context:
+  user_request: "Fix typo in README.md line 42: 'recieve' → 'receive'"
+
+bad_plan:
+  plan_id: plan-bad-over-dispatch-001
+  workers:
+    - worker_id: worker-product-01
+      profile: agent-product
+      responsibility: "Define requirements for typo fix"
+    - worker_id: worker-arch-01
+      profile: agent-architecture
+      responsibility: "Design architecture for typo fix"
+    - worker_id: worker-design-01
+      profile: agent-design
+      responsibility: "Design tokens for typo fix"
+    - worker_id: worker-frontend-01
+      profile: agent-frontend
+      responsibility: "Frontend implementation of typo fix"
+    - worker_id: worker-backend-01
+      profile: agent-backend
+      responsibility: "Backend implementation of typo fix"
+
+violation:
+  rule: "§7.1 + planner AC-5 — not every task invokes every specialist"
+  correct_action: >
+    For a simple text fix, either self-handle (read_only_lookup + write) or
+    dispatch a single worker (agent-backend for file edit) with agent-review
+    as optional reviewer. Never spin up all 7 profiles for a 1-line change.
+
+expected_behavior:
+  verdict: blocked
+  reason: "Over-dispatch detected — 5 workers for a single-line text fix violates least-privilege routing"

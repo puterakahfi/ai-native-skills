@@ -41,7 +41,7 @@ plan:
     - reviewer_id: reviewer-frontend-quality
       profile: agent-review
       scope: ["accessibility", "web-performance", "type-safety"]
-      independence_target: VERIFIED
+      independence_target: LIMITED
       reviews_worker_ids: ["worker-frontend-01"]
     - reviewer_id: reviewer-report-verifier
       profile: agent-orchestrator

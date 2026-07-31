@@ -1,0 +1,17 @@
+# Negative fixture — unsupported completion claim
+# Synthesis attempts to assert "merged" from temporary_delegation evidence only
+# This MUST be rejected — temporary_delegation cannot back external claims
+
+plan_id: plan-darkmode-toggle-001
+
+synthesis_violation:
+  attempted_claim: merged
+  evidence_lineage: temporary_delegation
+  violation: >
+    §5 + §7.4 — asserted=true on "merged" claim backed only by temporary_delegation.
+    temporary_delegation receipts MUST NOT be promoted to merged or accepted.
+    external_pointer is also missing (no PR URL provided).
+  correct_action: >
+    Set asserted=false for "merged" claim.
+    Add to unresolved_claims with reason: "requires durable_worker evidence + PR URL".
+    Only assert merged after human PR merge with durable_worker dispatch lineage.
