@@ -21,6 +21,9 @@ EXIT_NEEDS_WORK = 2
 EXIT_PREFLIGHT = 3
 EXIT_EXECUTION = 4
 
+SAFE_IDENTIFIER = re.compile(r"^[a-z0-9][a-z0-9._-]{0,127}$")
+SEMVER = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
+
 
 @dataclass
 class Action:
@@ -42,9 +45,6 @@ class Action:
 
 class FleetError(RuntimeError):
     pass
-
-
-SAFE_IDENTIFIER = re.compile(r"^[a-z0-9][a-z0-9._-]{0,127}$")
 
 
 def validate_identifier(value: Any, label: str) -> str:
@@ -76,11 +76,20 @@ def validate_preset(data: dict[str, Any]) -> None:
     missing = sorted(required - data.keys())
     if missing:
         raise FleetError(f"Preset missing required fields: {', '.join(missing)}")
+
     validate_identifier(data["id"], "preset id")
     validate_identifier(data["orchestrator"], "orchestrator id")
+    if not isinstance(data["version"], str) or not SEMVER.fullmatch(data["version"]):
+        raise FleetError(f"Preset version must be semantic version x.y.z: {data['version']!r}")
+
+    generation = data.get("identity_generation", 1)
+    if not isinstance(generation, int) or generation < 1:
+        raise FleetError("identity_generation must be a positive integer")
+
     profiles = data.get("profiles")
     if not isinstance(profiles, list) or not profiles:
         raise FleetError("Preset profiles must be a non-empty list")
+
     ids: list[str] = []
     for profile in profiles:
         if not isinstance(profile, dict):
@@ -88,6 +97,8 @@ def validate_preset(data: dict[str, Any]) -> None:
         for key in ("id", "description", "gateway", "skills"):
             if key not in profile:
                 raise FleetError(f"Profile missing {key}: {profile}")
+        if not isinstance(profile["description"], str) or not profile["description"].strip():
+            raise FleetError(f"Profile description must be non-empty: {profile.get('id')}")
         if not isinstance(profile["skills"], list) or not all(
             isinstance(item, str) and item for item in profile["skills"]
         ):
@@ -97,18 +108,50 @@ def validate_preset(data: dict[str, Any]) -> None:
             raise FleetError(
                 f"Unsupported gateway policy for {profile['id']}: {profile['gateway']!r}"
             )
+        worker_mode = profile.get("worker_mode")
+        if worker_mode is not None and worker_mode not in {
+            "user_facing_front_door",
+            "headless_on_demand",
+        }:
+            raise FleetError(
+                f"Unsupported worker_mode for {profile['id']}: {worker_mode!r}"
+            )
         for skill in profile["skills"]:
             validate_identifier(skill, "skill id")
+        if len(profile["skills"]) != len(set(profile["skills"])):
+            raise FleetError(f"Profile contains duplicate skill IDs: {profile['id']}")
         ids.append(profile["id"])
+
     if len(ids) != len(set(ids)):
         raise FleetError("Profile IDs must be unique")
+
     orchestrator = data["orchestrator"]
     if orchestrator not in ids:
         raise FleetError("Orchestrator must reference a declared profile")
+
     gateway_profiles = [p["id"] for p in profiles if p["gateway"] == "eligible"]
     if gateway_profiles != [orchestrator]:
         raise FleetError(
             "Exactly the orchestrator must be gateway-eligible; specialists must use gateway=none"
+        )
+
+    legacy_ids = data.get("legacy_profile_ids", [])
+    if not isinstance(legacy_ids, list) or not all(
+        isinstance(item, str) and item for item in legacy_ids
+    ):
+        raise FleetError("legacy_profile_ids must be a string list")
+    for profile_id in legacy_ids:
+        validate_identifier(profile_id, "legacy profile id")
+    if len(legacy_ids) != len(set(legacy_ids)):
+        raise FleetError("Legacy profile IDs must be unique")
+    overlap = sorted(set(ids) & set(legacy_ids))
+    if overlap:
+        raise FleetError(
+            f"Target and legacy profile IDs must not overlap: {', '.join(overlap)}"
+        )
+    if legacy_ids and data.get("mixed_identity_policy") != "block_outside_migration":
+        raise FleetError(
+            "Versioned identity transitions must use mixed_identity_policy=block_outside_migration"
         )
 
 
@@ -125,9 +168,9 @@ def directory_digest(path: Path) -> str:
             raise FleetError(f"Symlink inside managed skill source is not allowed: {candidate}")
         if not candidate.is_file():
             continue
-        rel = candidate.relative_to(path).as_posix()
         if any(part in {"__pycache__", ".git"} for part in candidate.parts):
             continue
+        rel = candidate.relative_to(path).as_posix()
         digest.update(rel.encode("utf-8"))
         digest.update(b"\0")
         digest.update(candidate.read_bytes())
@@ -201,14 +244,110 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def classify_identity_state(
+    preset: dict[str, Any], profiles_root: Path
+) -> dict[str, Any]:
+    target_ids = [profile["id"] for profile in preset["profiles"]]
+    legacy_ids = list(preset.get("legacy_profile_ids", []))
+
+    target_present = [profile_id for profile_id in target_ids if (profiles_root / profile_id).exists()]
+    legacy_present = [profile_id for profile_id in legacy_ids if (profiles_root / profile_id).exists()]
+    target_missing = [profile_id for profile_id in target_ids if profile_id not in target_present]
+    legacy_missing = [profile_id for profile_id in legacy_ids if profile_id not in legacy_present]
+
+    if not legacy_ids:
+        state = "UNVERSIONED"
+    elif not target_present and not legacy_present:
+        state = "EMPTY"
+    elif target_present and legacy_present:
+        state = "MIXED"
+    elif legacy_present:
+        state = (
+            "LEGACY_ONLY_COMPLETE"
+            if len(legacy_present) == len(legacy_ids)
+            else "LEGACY_ONLY_PARTIAL"
+        )
+    else:
+        state = (
+            "TARGET_ONLY_COMPLETE"
+            if len(target_present) == len(target_ids)
+            else "TARGET_ONLY_PARTIAL"
+        )
+
+    return {
+        "state": state,
+        "target_profile_ids": target_ids,
+        "target_profiles_present": target_present,
+        "target_profiles_missing": target_missing,
+        "legacy_profile_ids": legacy_ids,
+        "legacy_profiles_present": legacy_present,
+        "legacy_profiles_missing": legacy_missing,
+    }
+
+
+def identity_action(
+    preset: dict[str, Any], identity: dict[str, Any], operation: str
+) -> tuple[Action, list[str], bool]:
+    state = identity["state"]
+    findings: list[str] = []
+    blocked = False
+
+    if state == "EMPTY":
+        status = "READY_FRESH_BOOTSTRAP"
+    elif state == "TARGET_ONLY_COMPLETE":
+        status = "TARGET_ONLY"
+    elif state == "TARGET_ONLY_PARTIAL":
+        status = "TARGET_PARTIAL"
+        if operation == "audit":
+            findings.append("target_fleet_partial")
+    elif state == "LEGACY_ONLY_COMPLETE":
+        status = "LEGACY_ONLY"
+        findings.append("legacy_fleet_requires_migration")
+        blocked = operation != "audit"
+    elif state == "LEGACY_ONLY_PARTIAL":
+        status = "LEGACY_PARTIAL"
+        findings.append("legacy_fleet_partial_requires_migration")
+        blocked = operation != "audit"
+    elif state == "MIXED":
+        status = "MIXED_IDENTITIES"
+        findings.append("mixed_identity_fleet_requires_migration")
+        blocked = operation != "audit"
+    else:
+        status = state
+
+    if blocked:
+        status = "BLOCKED_" + status
+
+    detail = json.dumps(
+        {
+            "target_present": identity["target_profiles_present"],
+            "target_missing": identity["target_profiles_missing"],
+            "legacy_present": identity["legacy_profiles_present"],
+        },
+        sort_keys=True,
+    )
+    return Action("identity", preset["id"], status, detail), findings, blocked
+
+
 def plan_actions(
     preset: dict[str, Any], skills_root: Path, hermes_home: Path, operation: str
-) -> tuple[list[Action], list[str]]:
+) -> tuple[list[Action], list[str], dict[str, Any]]:
     actions: list[Action] = []
     findings: list[str] = []
     profiles_root = hermes_home / "profiles"
     if profiles_root.is_symlink():
         raise FleetError(f"Symlinked Hermes profiles root is not allowed: {profiles_root}")
+
+    identity = classify_identity_state(preset, profiles_root)
+    state_action, state_findings, blocked_identity = identity_action(
+        preset, identity, operation
+    )
+    actions.append(state_action)
+    findings.extend(state_findings)
+
+    if blocked_identity:
+        return actions, findings, identity
+
     for profile in preset["profiles"]:
         profile_id = profile["id"]
         profile_dir = profiles_root / profile_id
@@ -217,6 +356,7 @@ def plan_actions(
         profile_skills_dir = profile_dir / "skills"
         if profile_skills_dir.is_symlink():
             raise FleetError(f"Symlinked profile skills directory is not allowed: {profile_skills_dir}")
+
         if profile_dir.exists():
             actions.append(Action("profile", profile_id, "SKIP_EXISTS", "Existing profile preserved"))
         else:
@@ -224,6 +364,7 @@ def plan_actions(
             actions.append(Action("profile", profile_id, status, "Profile directory absent"))
             if operation == "audit":
                 findings.append(f"missing_profile:{profile_id}")
+
         for skill in profile["skills"]:
             source = skills_root / skill
             target = profile_skills_dir / skill
@@ -255,6 +396,7 @@ def plan_actions(
                 actions.append(Action("skill", f"{profile_id}:{skill}", status))
                 if operation == "audit":
                     findings.append(f"skill_drift:{profile_id}:{skill}")
+
     if preset.get("kanban", {}).get("initialize", False):
         db_candidates = [hermes_home / "kanban.db", hermes_home / "kanban" / "kanban.db"]
         if any(path.exists() for path in db_candidates):
@@ -264,7 +406,7 @@ def plan_actions(
             actions.append(Action("kanban", preset["id"], status))
             if operation == "audit":
                 findings.append("kanban_not_verified")
-    return actions, findings
+    return actions, findings, identity
 
 
 def execute(
@@ -310,7 +452,9 @@ def execute(
             if not profile_dir.exists():
                 action.status = "FAILED_VERIFY"
                 receipt["readiness"] = "BLOCKED"
-                receipt["findings"].append(f"profile_directory_missing_after_create:{profile['id']}")
+                receipt["findings"].append(
+                    f"profile_directory_missing_after_create:{profile['id']}"
+                )
                 return EXIT_EXECUTION
 
     for action in actions:
@@ -356,6 +500,8 @@ def execute(
 def render_human(receipt: dict[str, Any]) -> str:
     lines = [
         f"Hermes fleet: {receipt['fleet_id']}",
+        f"Preset version: {receipt['preset_version']}",
+        f"Identity state: {receipt['fleet_identity_state']}",
         f"Operation: {receipt['operation']}",
         f"Mode: {receipt['mode']}",
         "",
@@ -368,6 +514,9 @@ def render_human(receipt: dict[str, Any]) -> str:
         "SKIP_EXISTS",
         "SKIP_IN_SYNC",
         "SKIP_INITIALIZED",
+        "READY_FRESH_BOOTSTRAP",
+        "TARGET_ONLY",
+        "TARGET_PARTIAL",
     }
     for action in receipt["actions"]:
         marker = "✓" if action["status"] in success_statuses else "•"
@@ -390,17 +539,26 @@ def main(argv: Iterable[str] | None = None) -> int:
     if args.operation == "audit" and args.apply:
         print("ERROR: audit is always read-only; remove --apply", file=sys.stderr)
         return EXIT_PREFLIGHT
+
     preset_path = args.preset_file or default_preset_path(args.preset)
     default_receipt_root = (
         args.hermes_home / "fleet-bootstrap"
         if args.apply
         else Path.cwd() / ".evidence" / "hermes-fleet"
     )
-    receipt_path = args.receipt or (default_receipt_root / args.preset / "last-receipt.json")
+    receipt_path = args.receipt or (
+        default_receipt_root / args.preset / "last-receipt.json"
+    )
     receipt: dict[str, Any] = {
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "generated_at": utc_now(),
         "fleet_id": args.preset,
+        "preset_version": "NOT_VERIFIED",
+        "identity_generation": "NOT_VERIFIED",
+        "orchestrator_profile": "NOT_VERIFIED",
+        "target_profile_ids": [],
+        "fleet_identity_state": "NOT_VERIFIED",
+        "legacy_profiles_present": [],
         "operation": args.operation,
         "mode": "APPLY" if args.apply else "PLAN_ONLY",
         "preset_path": str(preset_path),
@@ -408,6 +566,8 @@ def main(argv: Iterable[str] | None = None) -> int:
         "hermes_home": str(args.hermes_home),
         "hermes_version": "NOT_VERIFIED",
         "gateway_policy": "ORCHESTRATOR_ELIGIBLE_SPECIALISTS_NONE",
+        "credentials_copied": False,
+        "live_state_copied": False,
         "actions": [],
         "findings": [],
         "readiness": "NOT_VERIFIED",
@@ -422,13 +582,21 @@ def main(argv: Iterable[str] | None = None) -> int:
             raise FleetError(
                 f"Preset ID mismatch: requested {args.preset}, file declares {preset['id']}"
             )
-        actions, findings = plan_actions(
+
+        receipt["preset_version"] = preset["version"]
+        receipt["identity_generation"] = preset.get("identity_generation", 1)
+        receipt["orchestrator_profile"] = preset["orchestrator"]
+        receipt["target_profile_ids"] = [profile["id"] for profile in preset["profiles"]]
+
+        actions, findings, identity = plan_actions(
             preset, args.skills_root.resolve(), args.hermes_home.resolve(), args.operation
         )
+        receipt["fleet_identity_state"] = identity["state"]
+        receipt["legacy_profiles_present"] = identity["legacy_profiles_present"]
         receipt["findings"].extend(findings)
         receipt["actions"] = [action.as_dict() for action in actions]
 
-        blocked = [a for a in actions if a.status.startswith("BLOCKED")]
+        blocked = [action for action in actions if action.status.startswith("BLOCKED")]
         if blocked:
             receipt["readiness"] = "BLOCKED"
             exit_code = EXIT_PREFLIGHT
@@ -453,7 +621,9 @@ def main(argv: Iterable[str] | None = None) -> int:
                     receipt["readiness"] = "BLOCKED"
                     exit_code = EXIT_PREFLIGHT
                 else:
-                    receipt["hermes_version"] = version.stdout.strip() or version.stderr.strip()
+                    receipt["hermes_version"] = (
+                        version.stdout.strip() or version.stderr.strip()
+                    )
                     exit_code = execute(args, preset, actions, hermes_binary, receipt)
                     receipt["actions"] = [action.as_dict() for action in actions]
     except FleetError as exc:
@@ -461,14 +631,17 @@ def main(argv: Iterable[str] | None = None) -> int:
         receipt["readiness"] = "BLOCKED"
         exit_code = EXIT_PREFLIGHT
     except Exception as exc:
-        receipt["findings"].append(f"unexpected_error:{type(exc).__name__}:{exc}")
+        receipt["findings"].append(
+            f"unexpected_error:{type(exc).__name__}:{exc}"
+        )
         receipt["readiness"] = "BLOCKED"
         exit_code = EXIT_EXECUTION
 
     try:
         receipt_path.parent.mkdir(parents=True, exist_ok=True)
         receipt_path.write_text(
-            json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
         )
     except OSError as exc:
         print(f"ERROR: could not write receipt: {exc}", file=sys.stderr)
