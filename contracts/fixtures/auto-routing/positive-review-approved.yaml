@@ -1,0 +1,65 @@
+# Positive fixture — review approved, VERIFIED independence
+# agent-review reviews agent-frontend worker output → different profiles → VERIFIED
+# synthesis: final_status=approved, implemented+reviewed+approved all asserted
+
+plan_id: plan-darkmode-toggle-001
+
+review_receipts:
+  - schema_version: "1.0"
+    receipt_id: review-receipt-frontend-01
+    plan_id: plan-darkmode-toggle-001
+    worker_receipt_id: worker-receipt-frontend-01
+    reviewer_profile: agent-review
+    independence:
+      verdict: VERIFIED
+      compromises: []
+    reviewed_at: "2026-07-31T11:00:00Z"
+    verdict: approved
+    findings:
+      - severity: info
+        message: "DarkModeToggle.tsx:45 — aria-label uses static string, consider i18n prop for future"
+        evidence: "Accept aria-label as optional prop with default fallback"
+
+synthesis_receipt:
+  schema_version: "1.0"
+  receipt_id: synthesis-plan-darkmode-toggle-001-01
+  plan_id: plan-darkmode-toggle-001
+  synthesized_at: "2026-07-31T11:05:00Z"
+  worker_receipt_ids:
+    - worker-receipt-design-01
+    - worker-receipt-frontend-01
+  review_receipt_ids:
+    - review-receipt-frontend-01
+  final_status: approved
+  promoted_claims:
+    implemented:
+      asserted: true
+      supporting_receipt_ids: [worker-receipt-frontend-01]
+    verified:
+      asserted: true
+      supporting_receipt_ids: [worker-receipt-frontend-01]
+      note: "tsc --strict exit 0 confirmed in worker receipt"
+    reviewed:
+      asserted: true
+      supporting_receipt_ids: [review-receipt-frontend-01]
+    approved:
+      asserted: true
+      supporting_receipt_ids: [review-receipt-frontend-01]
+  unresolved_claims:
+    - claim: "merged to main"
+      reason: "requires human PR approval — external action outside fleet scope"
+    - claim: "accepted by product owner"
+      reason: "requires explicit product-owner sign-off — not in fleet scope"
+
+origin_return_receipt:
+  schema_version: "1.0"
+  receipt_id: origin-return-plan-darkmode-toggle-001-01
+  plan_id: plan-darkmode-toggle-001
+  origin:
+    channel: desktop
+    session_id: "20260731_100000_orchestrator"
+    user_ref: kahfi
+  delivery_channel: desktop
+  delivered_at: "2026-07-31T11:06:00Z"
+  artifact_uri: "/tmp/DarkModeToggle.tsx"
+  status: delivered
