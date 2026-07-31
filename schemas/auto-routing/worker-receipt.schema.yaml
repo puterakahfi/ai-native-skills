@@ -1,0 +1,75 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: https://ai-native-skills/schemas/auto-routing/worker-receipt.schema.yaml
+title: WorkerReceipt
+description: >
+  Specialist worker's completion record. Evidence pointer is mandatory
+  (either receipt_uri or receipt_inline). Enforces §7.6.
+type: object
+additionalProperties: false
+required:
+  - schema_version
+  - receipt_id
+  - plan_id
+  - worker_id
+  - profile
+  - status
+  - started_at
+  - completed_at
+  - evidence
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  receipt_id:
+    type: string
+    pattern: "^worker-receipt-[A-Za-z0-9_-]+$"
+  plan_id:
+    type: string
+    pattern: "^plan-[A-Za-z0-9_-]+$"
+  worker_id:
+    type: string
+    pattern: "^worker-[A-Za-z0-9_-]+$"
+  profile:
+    type: string
+    pattern: "^agent-[a-z][a-z0-9-]*$"
+  status:
+    type: string
+    enum: [executed, blocked, cancelled, not_verified]
+  started_at:
+    type: string
+    format: date-time
+  completed_at:
+    type: string
+    format: date-time
+  retries:
+    type: integer
+    minimum: 0
+    default: 0
+  failures:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [message]
+      properties:
+        message: { type: string }
+        evidence: { type: string }
+  evidence:
+    type: object
+    additionalProperties: false
+    properties:
+      evidence_type:
+        type: string
+        enum: [artifact, log, diff, summary, external]
+      receipt_uri:
+        type: string
+        description: Resolvable pointer (kanban://, file://, https://, session://).
+      receipt_inline:
+        type: string
+        description: Bounded inline content (bytes limit enforced elsewhere).
+      artifacts:
+        type: array
+        items: { type: string }
+    oneOf:
+      - required: [receipt_uri]
+      - required: [receipt_inline]

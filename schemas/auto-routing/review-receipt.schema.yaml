@@ -1,0 +1,86 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: https://ai-native-skills/schemas/auto-routing/review-receipt.schema.yaml
+title: ReviewReceipt
+description: >
+  Independent reviewer's verdict on a worker receipt. Independence is
+  structured (verdict + compromises). Enforces §6 and §7.3.
+type: object
+additionalProperties: false
+required:
+  - schema_version
+  - receipt_id
+  - plan_id
+  - worker_receipt_id
+  - reviewer_profile
+  - independence
+  - verdict
+  - reviewed_at
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  receipt_id:
+    type: string
+    pattern: "^review-receipt-[A-Za-z0-9_-]+$"
+  plan_id:
+    type: string
+    pattern: "^plan-[A-Za-z0-9_-]+$"
+  worker_receipt_id:
+    type: string
+    pattern: "^worker-receipt-[A-Za-z0-9_-]+$"
+  reviewer_profile:
+    type: string
+    pattern: "^agent-[a-z][a-z0-9-]*$"
+  reviewed_at:
+    type: string
+    format: date-time
+  independence:
+    type: object
+    additionalProperties: false
+    required: [verdict, compromises]
+    properties:
+      verdict:
+        type: string
+        enum: [VERIFIED, LIMITED, NOT_VERIFIED]
+      compromises:
+        type: array
+        items:
+          type: string
+          enum: [shared_model, shared_context, shared_tools, shared_repo_access, shared_profile]
+    allOf:
+      - if:
+          properties: { verdict: { const: VERIFIED } }
+        then:
+          properties: { compromises: { maxItems: 0 } }
+      - if:
+          properties: { verdict: { const: LIMITED } }
+        then:
+          properties: { compromises: { minItems: 1 } }
+  findings:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [severity, message]
+      properties:
+        severity:
+          type: string
+          enum: [info, warning, error, blocker]
+        message: { type: string }
+        evidence: { type: string }
+  verdict:
+    type: string
+    enum: [approved, changes_requested, blocked]
+  not_upgraded_claims:
+    type: array
+    items: { type: string }
+allOf:
+  - description: >
+      NOT_VERIFIED independence forbids approved verdict.
+    if:
+      properties:
+        independence:
+          properties: { verdict: { const: NOT_VERIFIED } }
+    then:
+      properties:
+        verdict: { not: { const: approved } }

@@ -1,0 +1,60 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: https://ai-native-skills/schemas/auto-routing/origin-return-receipt.schema.yaml
+title: OriginReturnReceipt
+description: >
+  Evidence that the synthesised artifact was returned to the same origin
+  channel the plan came from. Enforces §7.5.
+type: object
+additionalProperties: false
+required:
+  - schema_version
+  - receipt_id
+  - plan_id
+  - origin
+  - delivery_channel
+  - delivered_at
+  - artifact_uri
+  - status
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  receipt_id:
+    type: string
+    pattern: "^origin-return-[A-Za-z0-9_-]+$"
+  plan_id:
+    type: string
+    pattern: "^plan-[A-Za-z0-9_-]+$"
+  origin:
+    type: object
+    additionalProperties: false
+    required: [channel]
+    properties:
+      channel:
+        type: string
+        enum: [desktop, gateway_telegram, gateway_slack, cli, cron]
+      session_id: { type: string }
+      thread_id: { type: string }
+      user_ref: { type: string }
+  delivery_channel:
+    type: string
+    enum: [desktop, gateway_telegram, gateway_slack, cli, cron]
+  delivered_at:
+    type: string
+    format: date-time
+  artifact_uri:
+    type: string
+    minLength: 1
+  status:
+    type: string
+    enum: [delivered, blocked, cancelled, not_verified]
+allOf:
+  - description: Delivery channel MUST match origin channel.
+    if:
+      properties:
+        origin:
+          properties: { channel: { type: string } }
+    then:
+      properties:
+        delivery_channel:
+          type: string
