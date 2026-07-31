@@ -453,6 +453,38 @@ def plan_actions(
             if operation == "audit":
                 findings.append(f"missing_profile:{profile_id}")
 
+        # Soul sync planning
+        soul_rel = profile.get("soul")
+        if soul_rel:
+            soul_source = skills_root.parent / soul_rel
+            soul_target = profile_dir / "SOUL.md"
+            if not soul_source.exists():
+                actions.append(Action("soul", profile_id, "BLOCKED_SOURCE_MISSING", f"Soul source missing: {soul_rel}"))
+                findings.append(f"missing_soul_source:{profile_id}")
+            elif soul_target.exists():
+                actions.append(Action("soul", profile_id, "SKIP_EXISTS", "SOUL.md already present (use --force to overwrite)"))
+            else:
+                status = "PLAN_SYNC" if operation != "audit" else "MISSING"
+                actions.append(Action("soul", profile_id, status, f"Source: {soul_rel}"))
+                if operation == "audit":
+                    findings.append(f"missing_soul:{profile_id}")
+
+        # Config sync planning
+        config_rel = profile.get("config")
+        if config_rel:
+            config_source = skills_root.parent / config_rel
+            config_target = profile_dir / "config.yaml"
+            if not config_source.exists():
+                actions.append(Action("config", profile_id, "BLOCKED_SOURCE_MISSING", f"Config source missing: {config_rel}"))
+                findings.append(f"missing_config_source:{profile_id}")
+            elif config_target.exists():
+                actions.append(Action("config", profile_id, "SKIP_EXISTS", "config.yaml already present (use --force to overwrite)"))
+            else:
+                status = "PLAN_SYNC" if operation != "audit" else "MISSING"
+                actions.append(Action("config", profile_id, status, f"Source: {config_rel}"))
+                if operation == "audit":
+                    findings.append(f"missing_config:{profile_id}")
+
         for skill in profile["skills"]:
             source = skills_root / skill
             target = profile_skills_dir / skill
@@ -565,6 +597,40 @@ def execute(
             receipt["readiness"] = "BLOCKED"
             receipt["findings"].append(f"skill_symlink_mismatch:{profile_id}:{skill}")
             return EXIT_EXECUTION
+
+    for action in actions:
+        if action.kind == "soul" and action.status == "PLAN_SYNC":
+            profile_id = action.target
+            profile = profile_by_id[profile_id]
+            soul_source = args.skills_root.parent / profile["soul"]
+            soul_target = args.hermes_home / "profiles" / profile_id / "SOUL.md"
+            try:
+                import shutil
+                shutil.copy2(soul_source, soul_target)
+                action.status = "SYNCED"
+            except Exception as exc:
+                action.status = "FAILED"
+                action.detail = str(exc)
+                receipt["readiness"] = "BLOCKED"
+                receipt["findings"].append(f"soul_sync_failed:{profile_id}")
+                return EXIT_EXECUTION
+
+    for action in actions:
+        if action.kind == "config" and action.status == "PLAN_SYNC":
+            profile_id = action.target
+            profile = profile_by_id[profile_id]
+            config_source = args.skills_root.parent / profile["config"]
+            config_target = args.hermes_home / "profiles" / profile_id / "config.yaml"
+            try:
+                import shutil
+                shutil.copy2(config_source, config_target)
+                action.status = "SYNCED"
+            except Exception as exc:
+                action.status = "FAILED"
+                action.detail = str(exc)
+                receipt["readiness"] = "BLOCKED"
+                receipt["findings"].append(f"config_sync_failed:{profile_id}")
+                return EXIT_EXECUTION
 
     if not args.skip_kanban:
         for action in actions:
