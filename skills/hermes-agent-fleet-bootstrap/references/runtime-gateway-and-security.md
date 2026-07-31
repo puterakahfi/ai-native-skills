@@ -22,17 +22,29 @@ Do not collapse these concepts. A persistent profile does not require a dedicate
 
 ## Default gateway policy
 
+The `native-ai-engineering` v2 target is:
+
 ```yaml
 gateway_policy:
   default_front_door:
-    profile: engineering-orchestrator
+    profile: agent-orchestrator
     mode: messaging_front_door
   specialist_default:
+    profiles:
+      - agent-product
+      - agent-architecture
+      - agent-design
+      - agent-frontend
+      - agent-backend
+      - agent-review
     mode: none
+    worker_mode: headless_on_demand
     execution: kanban_or_verified_on_demand_worker
 ```
 
-A dedicated specialist bot is justified only when the profile has an independent audience, product-facing identity, direct operational responsibility, separate tenant, or explicit security boundary.
+Only `agent-orchestrator` is gateway-eligible by default. A specialist bot is justified only when the profile has an independent audience, product-facing identity, direct operational responsibility, separate tenant, or explicit security boundary.
+
+A Telegram display name may differ from the internal profile ID. Runtime routing, receipts, and worker evidence must still identify `agent-orchestrator` and the actual selected specialist profile IDs.
 
 Record:
 
@@ -48,20 +60,37 @@ gateway_record:
   runtime_evidence: []
 ```
 
-Never include tokens or credentials in reusable profile distributions.
+Never include tokens or credentials in reusable profile distributions or receipts.
+
+## Legacy gateway transition
+
+The legacy gateway profile is `engineering-orchestrator`; the target is `agent-orchestrator`.
+
+Ordinary bootstrap, reconcile, audit, and model-policy synchronization do not move gateway ownership. Migration must return:
+
+```yaml
+gateway_transition:
+  legacy_profile: engineering-orchestrator
+  target_profile: agent-orchestrator
+  action: MANUAL_REBIND
+  token_copied: false
+  gateway_started: false
+```
+
+Do not run legacy and target gateways concurrently with the same Telegram token. Stop and verify the legacy gateway before manually configuring or starting the target gateway. Never claim the gateway moved or started without direct runtime evidence.
 
 ## Durable work model
 
-The preferred engineering model is:
-
 ```text
-orchestrator receives outcome
+agent-orchestrator receives outcome
+→ selects exactly one primary workflow
 → creates or routes durable work items
-→ assigns selected specialist profile
-→ specialist consumes bounded task and relevant artifacts
-→ specialist records output, evidence, risks, and next handoff
-→ reviewer evaluates independently
-→ orchestrator synthesizes actual state
+→ assigns the smallest relevant agent-* specialist set
+→ specialists consume bounded tasks and artifacts
+→ specialists record outputs, evidence, risks, and handoffs
+→ agent-review evaluates independently when required
+→ agent-orchestrator synthesizes actual state
+→ response returns through the originating gateway
 ```
 
 The fleet skill defines this contract. It does not implement or claim Kanban, dispatcher, worker spawning, retry, or persistence behavior unless the actual Hermes runtime is observed.
@@ -84,7 +113,7 @@ Verify against the selected Hermes installation:
 - concurrent write and repository collision controls;
 - logs, receipts, and evidence locations.
 
-If any required behavior cannot be observed, report it as `NOT_VERIFIED` or `BLOCKED`. Documentation or architecture assumptions are not runtime proof.
+If any required behavior cannot be observed, report it as `NOT_VERIFIED` or `BLOCKED`. Preset installation or documentation is not runtime proof.
 
 ## Profile isolation is not sandbox proof
 
@@ -131,7 +160,7 @@ Missing isolation evidence must not be inferred from profile naming.
 
 ## Privileged operations profiles
 
-A `platform-operations` or equivalent profile requires:
+An `agent-operations` or equivalent profile requires:
 
 - separate credentials or scoped identity;
 - explicit allowed environments;
@@ -151,7 +180,7 @@ Record actual shared resources:
 
 ```yaml
 review_independence:
-  reviewer_profile: ""
+  reviewer_profile: agent-review
   implementer_profiles: []
   same_model: true | false | NOT_VERIFIED
   shared_context: true | false | NOT_VERIFIED
@@ -166,17 +195,19 @@ Separate profile names alone do not establish independence. A limited review may
 
 ## Product-facing bot exceptions
 
-Product profiles such as `visualmate` may keep dedicated bots when they serve direct users. They should not automatically receive repository write, production access, or the full engineering skill suite.
+Product profiles such as `visualmate` may keep dedicated bots when they serve direct users. They remain outside the reusable `native-ai-engineering` agent-* fleet unless they own a distinct audience, personality, durable product memory, stakeholder relationship, or acceptance responsibility.
 
 Example:
 
 ```text
 @visualmate_bot
-→ customer-facing creative product agent
+→ customer-facing product agent
 → submits a bounded engineering request
-→ shared engineering bot/orchestrator coordinates specialists
-→ VisualMate product authority accepts the result
+→ agent-orchestrator coordinates the shared engineering fleet
+→ product authority accepts or rejects the result
 ```
+
+Product-facing profiles should not automatically receive repository write, production access, or the full engineering skill suite.
 
 ## Prohibited distribution content
 
@@ -199,12 +230,14 @@ tokens/
 credentials/
 ```
 
-A live Hermes profile may contain runtime-managed state locally. That state is not part of the reusable profile distribution and must not be copied during bootstrap or migration.
+A live Hermes profile may contain runtime-managed state locally. That state is not part of the reusable profile distribution and must not be copied during bootstrap, model synchronization, or migration.
 
 ## Fail-closed conditions
 
 - Bot or gateway tokens are requested for committed output.
 - Two profiles are configured to share a token without verified runtime support and policy.
+- Legacy and target gateways would run concurrently with the same token.
+- A specialist receives a default gateway without a dedicated-audience exception.
 - Production access is granted without explicit authorization.
 - Filesystem or repository scope is implied but not evidenced.
 - Runtime worker behavior is claimed without execution evidence.

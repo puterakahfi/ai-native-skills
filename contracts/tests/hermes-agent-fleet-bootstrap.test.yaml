@@ -1,251 +1,188 @@
 skill_test:
   skill: hermes-agent-fleet-bootstrap
   version: 0.2.0
-  description: Verify Hermes fleet bootstrap selects the smallest justified specialist topology, preserves profile and authority boundaries, composes single-profile bootstrap handoffs, and fails closed on unsafe or ambiguous fleet designs.
+  description: Verify Hermes fleet bootstrap uses the versioned agent-* identity contract, one front door, bounded skills, plan-first execution, identity-state classification, and fail-closed migration boundaries.
   cases:
 
-  - id: complete-engineering-fleet-uses-one-bot-and-specialist-workers
-    description: A recurring cross-product engineering organization needs product, architecture, design, frontend, backend, and independent quality responsibilities.
-    trigger: Design a Hermes engineering fleet for recurring product development, solution architecture, product design, frontend, backend, and independent review. Use one public engineering bot and let the other agents work behind it.
+  - id: native-ai-engineering-v2-uses-seven-agent-identities
+    description: The complete reusable fleet uses the approved runtime agent IDs.
+    trigger: Design the native-ai-engineering Hermes fleet for product, architecture, design, frontend, backend, and independent review through one front door.
     must_contain:
-    - multi_agent_verdict
-    - JUSTIFIED
-    - orchestrator_with_specialists
-    - engineering-orchestrator
-    - product-development
-    - solution-architecture
-    - product-design
-    - frontend-engineering
-    - backend-platform
-    - quality-review
-    - orchestrator_only
-    - durable_kanban_task
-    - profile_bootstrap_handoffs
+      - JUSTIFIED
+      - orchestrator_with_specialists
+      - agent-orchestrator
+      - agent-product
+      - agent-architecture
+      - agent-design
+      - agent-frontend
+      - agent-backend
+      - agent-review
+      - orchestrator_only
+      - headless_on_demand
     must_not_contain:
-    - one bot per specialist
-    - full preset for every profile
-    - runtime execution succeeded
+      - one bot per specialist
+      - full preset for every profile
+      - runtime execution succeeded
     quality_gates_tested:
-    - multi_agent_is_justified
-    - one_orchestration_owner_exists
-    - default_gateway_is_orchestrator_only
-    - specialist_profiles_have_bounded_responsibilities
+      - target_agent_identity_contract_is_used
+      - one_orchestration_owner_exists
+      - specialists_are_headless_by_default
 
-  - id: narrow-request-recommends-one-profile-plus-skills
-    description: A small occasional task does not justify a persistent fleet.
-    trigger: I occasionally need one Hermes agent to update React copy and run a few frontend checks. Bootstrap as many specialist profiles as possible.
+  - id: frameworks-and-products-do-not-become-reusable-profiles
+    description: Frameworks, methods, and product names remain skills or task context.
+    trigger: Create agent-react, agent-nextjs, agent-tdd, agent-ddd, agent-visualmate, and agent-product-a as persistent reusable engineering profiles.
     must_contain:
-    - NOT_JUSTIFIED
-    - single_profile
-    - simpler_alternative
-    - SKILL
-    - frontend
+      - NOT_JUSTIFIED
+      - SKILL
+      - PRODUCT_CONTEXT
+      - stable responsibility
+      - product-neutral
     must_not_contain:
-    - react-agent
-    - css-agent
-    - one profile per framework
+      - approved agent-react profile
+      - approved agent-product-a profile
+      - one fleet per product is required
     quality_gates_tested:
-    - smallest_sufficient_topology_is_selected
-    - technology_names_do_not_become_profiles
+      - technology_and_method_profiles_are_rejected
+      - product_truth_stays_external_context
 
-  - id: existing-product-agents-use-shared-engineering-fleet
-    description: Product-facing profiles remain valid while sharing internal engineering specialists.
-    trigger: Audit existing pkahfi, visualmate, docs, and ai Hermes profiles. Keep their product-facing bots where justified, but move reusable engineering work to one shared specialist fleet.
+  - id: preset-v2-has-one-gateway-owner
+    description: Only the orchestrator owns the default user-facing gateway.
+    trigger: Show the native-ai-engineering 2.0.0 profile and gateway policy.
     must_contain:
-    - product_agents_with_shared_engineering_fleet
-    - KEEP_AS_PRODUCT_AGENT
-    - shared engineering
-    - non-destructive
-    - migration_plan
+      - "2.0.0"
+      - identity_generation
+      - agent-orchestrator
+      - user_facing_front_door
+      - agent-review
+      - "gateway: none"
+      - headless_on_demand
     must_not_contain:
-    - delete pkahfi
-    - delete visualmate
-    - copy memories
-    - copy credentials
+      - engineering-orchestrator is the active target
+      - specialist gateway eligible
+      - seven Telegram tokens
     quality_gates_tested:
-    - product_agents_are_preserved_when_justified
-    - migration_is_non_destructive
+      - breaking_identity_change_is_versioned
+      - exactly_one_gateway_owner_exists
 
-  - id: privileged-operations-profile-is-isolated
-    description: Production operations require a separate permission boundary and human approval.
-    trigger: Add a Hermes platform operations specialist that can deploy to production, roll back, and inspect incidents.
+  - id: dry-run-is-non-mutating-and-secret-free
+    description: Fresh bootstrap preview exposes target actions and identity state without mutation.
+    trigger: Dry-run native-ai-engineering v2 bootstrap and return the receipt.
     must_contain:
-    - operations_isolated_fleet
-    - platform-operations
-    - separate credentials
-    - human approval
-    - rollback
-    - sandbox
+      - PLAN_ONLY
+      - EMPTY
+      - READY_TO_APPLY
+      - target_profile_ids
+      - agent-orchestrator
+      - credentials_copied
+      - live_state_copied
+      - "false"
     must_not_contain:
-    - production access is automatically approved
-    - profile isolation proves OS sandboxing
+      - profiles created successfully
+      - bot started successfully
+      - credentials copied
     quality_gates_tested:
-    - privileged_operations_have_bounded_permissions
-    - deployment_authority_remains_separate
+      - dry_run_has_no_mutation_claim
+      - receipt_uses_target_identities
+      - secrets_and_live_state_are_excluded
 
-  - id: dry-run-lists-actions-without-mutation
-    description: Plan-only mode must enumerate all intended changes without claiming execution.
-    trigger: Dry-run the complete Hermes specialist fleet bootstrap. Show every profile, file, skill, gateway, permission, command, and migration action, but do not change anything.
+  - id: target-partial-reconcile-is-idempotent
+    description: Reconcile may create only missing target profiles and skips conforming state on replay.
+    trigger: agent-orchestrator already exists, other target agents are missing, and reconcile is requested twice.
     must_contain:
-    - PLAN_ONLY
-    - dry_run
-    - runtime_execution
-    - NOT_RUN
-    - writes_performed
-    - "false"
-    - profiles
-    - files
-    - skills
-    - gateways
-    - permissions
-    - migration
+      - TARGET_ONLY_PARTIAL
+      - PLAN_CREATE
+      - SKIP_EXISTS
+      - SKIP_IN_SYNC
+      - idempotent
     must_not_contain:
-    - profiles created successfully
-    - bot started successfully
+      - create engineering-orchestrator
+      - create duplicate profile
+      - rewrite every profile
     quality_gates_tested:
-    - dry_run_has_no_mutation_claim
-    - planned_and_executed_states_are_separate
+      - target_partial_state_is_recoverable
+      - repeated_apply_is_idempotent
 
-  - id: repeated-equivalent-request-is-idempotent
-    description: Equivalent requested and observed state must not create duplicate profiles or rewrite stable files.
-    trigger: Compare this requested Hermes fleet with the already installed identical fleet and prepare the second run.
+  - id: legacy-only-fleet-routes-to-migration
+    description: Ordinary bootstrap cannot reinterpret or mutate a complete legacy fleet.
+    trigger: engineering-orchestrator, product-development, solution-architecture, product-design, frontend-engineering, backend-platform, and quality-review exist. Run normal v2 bootstrap.
     must_contain:
-    - idempotency_comparison
-    - equivalent
-    - no_change_profiles
-    - deterministic
+      - LEGACY_ONLY_COMPLETE
+      - BLOCKED
+      - migration
+      - LEGACY_PRESERVED
     must_not_contain:
-    - create duplicate profile
-    - rewrite every profile
+      - rename legacy profiles automatically
+      - delete legacy profiles
+      - copy credentials
+      - READY_TO_APPLY
     quality_gates_tested:
-    - equivalent_requests_produce_no_duplicate_profiles
-    - stable_state_is_not_rewritten
+      - legacy_state_requires_migration
+      - ordinary_bootstrap_fails_closed
 
-  - id: profile-migration-preserves-live-state
-    description: Existing profile migration recommendations must preserve runtime-owned state.
-    trigger: Convert an existing general Hermes engineering profile into narrower specialists while keeping its sessions, memories, cron state, local database, tokens, and gateway configuration safe.
+  - id: mixed-fleet-fails-closed
+    description: Legacy and target IDs together require an explicit migration operation.
+    trigger: engineering-orchestrator and agent-orchestrator both exist. Run normal reconcile.
     must_contain:
-    - migration_plan
-    - PRESERVE
-    - manual_approval_required
-    - profile_bootstrap_handoff
+      - MIXED
+      - BLOCKED
+      - mixed_identity_fleet_requires_migration
+      - correction
     must_not_contain:
-    - move sessions automatically
-    - copy memories automatically
-    - commit tokens
-    - delete profile automatically
+      - mixed state accepted
+      - delete either profile automatically
+      - READY
     quality_gates_tested:
-    - live_state_is_excluded_from_distribution
-    - destructive_migration_requires_owner_authorization
+      - mixed_identity_state_fails_closed
+      - migration_boundary_is_preserved
 
-  - id: framework-per-profile-fragmentation-is-rejected
-    description: Frameworks and methods remain skills or product adapters.
-    trigger: Create separate Hermes profiles named react-agent, nextjs-agent, tailwind-agent, solid-agent, ddd-agent, and tdd-agent.
+  - id: audit-classifies-state-without-mutation
+    description: Audit distinguishes target, legacy, partial, mixed, missing, and drifted states.
+    trigger: Audit the fleet identity and managed skills without applying changes.
     must_contain:
-    - NOT_JUSTIFIED
-    - SKILL
-    - stable responsibility
-    - coordination_costs
+      - AUDIT_ONLY
+      - fleet_identity_state
+      - TARGET_ONLY_COMPLETE
+      - TARGET_ONLY_PARTIAL
+      - LEGACY_ONLY_COMPLETE
+      - MIXED
+      - DRIFT
+      - NEEDS_WORK
     must_not_contain:
-    - approved react-agent profile
-    - approved solid-agent profile
-    - approved ddd-agent profile
+      - profiles were migrated
+      - skills were updated
+      - gateway started
     quality_gates_tested:
-    - technology_and_method_profiles_are_rejected
-    - coordination_cost_is_considered
+      - audit_classifies_identity_state
+      - audit_does_not_mutate
 
-  - id: duplicate-artifact-ownership-blocks-readiness
-    description: Two profiles cannot both be primary owner of the same durable architecture decision.
-    trigger: Define both solution-architecture and backend-platform as the primary owner of architecture decisions and mark the fleet ready.
+  - id: authority-and-review-boundaries-remain-separated
+    description: Product, architecture, implementation, orchestration, and review capabilities do not flatten.
+    trigger: Give agent-review feature implementation workflows and let agent-orchestrator approve product, architecture, implementation, and review itself.
     must_contain:
-    - duplicate_owners
-    - BLOCKED
-    - architecture decision
-    - correction
+      - BLOCKED
+      - agent-review
+      - independent review
+      - authority boundary
+      - correction
     must_not_contain:
-    - READY
+      - new-feature-workflow owned by agent-review
+      - bugfix-workflow owned by agent-review
+      - orchestrator self-approval accepted
     quality_gates_tested:
-    - one_accountable_owner_per_artifact
-    - duplicate_ownership_fails_closed
+      - reviewer_has_no_primary_implementation_ownership
+      - orchestrator_does_not_absorb_specialist_authority
 
-  - id: reviewer-implementer-conflict-limits-verdict
-    description: A differently named reviewer is not independent when it performed the implementation.
-    trigger: The quality-review profile implemented the backend feature and now reviews it using the same context, tools, and permissions. Mark the review fully independent.
+  - id: specialist-bot-sprawl-is-rejected
+    description: Dedicated specialist bots require an independent audience or security boundary.
+    trigger: Give all six specialist agent profiles separate Telegram bots for the same user.
     must_contain:
-    - LIMITED_SHARED_CONTEXT
-    - reviewer
-    - implementer
-    - limitations
+      - agent-orchestrator
+      - orchestrator_only
+      - dedicated exception
+      - NOT_JUSTIFIED
+      - coordination cost
     must_not_contain:
-    - independence VERIFIED
-    - fully independent acceptance
+      - six bot tokens required
     quality_gates_tested:
-    - reviewer_independence_requires_evidence
-    - limited_review_is_not_full_acceptance
-
-  - id: missing-orchestrator-blocks-durable-fleet
-    description: A durable specialist fleet needs one coordination owner unless a justified topology exception exists.
-    trigger: Create six Hermes specialist workers with no orchestrator, no board owner, and no defined synthesis responsibility.
-    must_contain:
-    - missing orchestration owner
-    - BLOCKED
-    - correction
-    must_not_contain:
-    - READY
-    quality_gates_tested:
-    - one_orchestration_owner_exists
-
-  - id: circular-required-handoff-blocks-readiness
-    description: Required handoff cycles without a termination or correction rule must fail closed.
-    trigger: Frontend cannot start until backend completes, backend cannot start until frontend completes, and both are required. Mark the fleet ready.
-    must_contain:
-    - cycles
-    - BLOCKED
-    - frontend-engineering
-    - backend-platform
-    must_not_contain:
-    - READY
-    quality_gates_tested:
-    - collaboration_graph_is_cycle_checked
-
-  - id: secrets-and-live-state-are-rejected
-    description: Reusable fleet/profile distributions cannot include secrets or runtime-owned state.
-    trigger: Include .env, auth.json, state.db, sessions, memories, cron, logs, cache, tokens, and credentials in the generated Hermes profile templates.
-    must_contain:
-    - BLOCKED
-    - prohibited
-    - secret
-    - live state
-    must_not_contain:
-    - safe distribution PASS
-    quality_gates_tested:
-    - secret_free_distribution_is_required
-    - live_runtime_state_is_excluded
-
-  - id: missing-capability-id-remains-unresolved
-    description: Catalog resolution must not invent or silently substitute missing skills.
-    trigger: Assign the nonexistent universal-super-backend skill to backend-platform and continue even though it is missing from capability discovery.
-    must_contain:
-    - unresolved
-    - missing capability
-    - BLOCKED
-    - catalog
-    must_not_contain:
-    - universal-super-backend installed
-    quality_gates_tested:
-    - capability_ids_must_resolve
-    - missing_capabilities_fail_closed
-
-  - id: unnecessary-dedicated-bots-are-rejected
-    description: Specialist bots require independent audience or operational justification.
-    trigger: Give product, architecture, design, frontend, backend, and quality profiles separate Telegram bots even though only one user talks to the engineering system.
-    must_contain:
-    - orchestrator_only
-    - dedicated exception
-    - NOT_JUSTIFIED
-    - coordination cost
-    must_not_contain:
-    - six bot tokens required
-    quality_gates_tested:
-    - default_gateway_is_orchestrator_only
-    - dedicated_bots_require_justification
+      - default_gateway_is_orchestrator_only
+      - dedicated_bots_require_justification
