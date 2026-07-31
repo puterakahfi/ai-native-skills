@@ -1,0 +1,818 @@
+{
+  "actions": [
+    {
+      "command": [],
+      "detail": "{\"legacy_present\": [], \"target_missing\": [\"agent-orchestrator\", \"agent-product\", \"agent-architecture\", \"agent-design\", \"agent-frontend\", \"agent-backend\", \"agent-review\"], \"target_present\": []}",
+      "kind": "identity",
+      "status": "READY_FRESH_BOOTSTRAP",
+      "target": "native-ai-engineering"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-orchestrator"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:hermes-agent-fleet-bootstrap"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:hermes-profile-bootstrap"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:workflow-router"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:role-switcher"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:systems-reasoning"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:context-manager"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:task-continuity"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:delivery-work-breakdown"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:skill-eval"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-product"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:product-development-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:product-manager"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:product-requirements"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:business-value-alignment"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:user-research"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:experiment-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:delivery-work-breakdown"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:acceptance-testing"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-product:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-architecture"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:implementation-context-discovery"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:systems-reasoning"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:systems-thinking"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:master-engineer"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:spec-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:domain-driven-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:ports-and-adapters"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:clean-architecture"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:solid-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:design-patterns"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:api-contract"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:data-modeling"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:adr"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:event-driven-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:service-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:threat-modeling"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:resilience-engineering"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:observability-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:architecture-review"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-architecture:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:master-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:design-review"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:design-system"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:information-architecture"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:accessibility"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:responsiveness"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:ui-components"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:ux-ui-patterns"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:visual-hierarchy"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:composition"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:readability"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:design-interaction"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:adaptive-component-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:content-strategy"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-design:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-frontend"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:implementation-context-discovery"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:master-engineer"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:new-feature-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:bugfix-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:production-code-quality-baseline"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:test-driven-development"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:clean-code"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:solid-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:refactoring"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:systematic-debugging"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:ui-components"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:design-system"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:ux-patterns-for-developers"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:accessibility"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:responsiveness"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:web-performance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-frontend:git-workflow"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-backend"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:implementation-context-discovery"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:master-engineer"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:new-feature-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:bugfix-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:production-code-quality-baseline"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:test-driven-development"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:clean-code"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:solid-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:clean-architecture"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:domain-driven-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:ports-and-adapters"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:design-patterns"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:api-contract"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:data-modeling"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:service-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:event-driven-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:systematic-debugging"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:refactoring"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:observability-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:resilience-engineering"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-backend:git-workflow"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-review"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:acceptance-testing"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:software-testing-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:code-review-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:architecture-review"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:security-review"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:design-review"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:threat-modeling"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:accessibility"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:web-performance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-review:skill-eval"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "kanban",
+      "status": "PLAN_INIT",
+      "target": "native-ai-engineering"
+    }
+  ],
+  "credentials_copied": false,
+  "findings": [],
+  "fleet_id": "native-ai-engineering",
+  "fleet_identity_state": "EMPTY",
+  "gateway_policy": "ORCHESTRATOR_ELIGIBLE_SPECIALISTS_NONE",
+  "generated_at": "2026-07-31T12:46:52.573038+00:00",
+  "hermes_home": "/home/puterakahfi",
+  "hermes_version": "NOT_VERIFIED",
+  "identity_generation": 2,
+  "legacy_profiles_present": [],
+  "live_state_copied": false,
+  "mode": "PLAN_ONLY",
+  "operation": "reconcile",
+  "orchestrator_profile": "agent-orchestrator",
+  "preset_path": "/home/puterakahfi/.hermes/ai-native-skills/skills/hermes-agent-fleet-bootstrap/assets/presets/native-ai-engineering.json",
+  "preset_version": "2.0.0",
+  "readiness": "READY_TO_APPLY",
+  "receipt_path": "/data/www/ai-native-skills/.evidence/hermes-fleet/native-ai-engineering/last-receipt.json",
+  "runtime_execution": "NOT_RUN",
+  "schema_version": "2.0.0",
+  "skills_root": "/home/puterakahfi/.hermes/ai-native-skills/skills",
+  "target_profile_ids": [
+    "agent-orchestrator",
+    "agent-product",
+    "agent-architecture",
+    "agent-design",
+    "agent-frontend",
+    "agent-backend",
+    "agent-review"
+  ]
+}
