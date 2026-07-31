@@ -28,15 +28,18 @@ class StandardSkillInvocationTests(unittest.TestCase):
         self.assertIn(expected, self.skill_text)
         self.assertIn(expected, self.reference_text)
 
-    def test_primary_section_precedes_low_level_repository_command(self) -> None:
-        slash = self.skill_text.index(
-            "/hermes-agent-fleet-bootstrap bootstrap native-ai-engineering"
+    def test_primary_sections_precede_runner_and_low_level_reference(self) -> None:
+        slash = "/hermes-agent-fleet-bootstrap bootstrap native-ai-engineering"
+        installed_runner = 'bash "${HERMES_SKILL_DIR}/scripts/hermes-fleet"'
+        repository_runner = "bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet"
+
+        self.assertLess(self.skill_text.index(slash), self.skill_text.index(installed_runner))
+        self.assertLess(
+            self.reference_text.index(slash),
+            self.reference_text.index(repository_runner),
         )
-        repository_relative = self.skill_text.index(
-            "bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet"
-        )
-        self.assertLess(slash, repository_relative)
-        self.assertIn("low-level CI, debugging, or recovery", self.skill_text)
+        self.assertNotIn(repository_runner, self.skill_text)
+        self.assertIn("CI, debugging, recovery, and development", self.reference_text)
 
     def test_all_supported_operations_have_standard_examples(self) -> None:
         examples = [
