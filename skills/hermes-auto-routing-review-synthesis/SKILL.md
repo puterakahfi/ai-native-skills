@@ -1,6 +1,6 @@
 ---
 name: hermes-auto-routing-review-synthesis
-description: Use when agent-orchestrator needs to run the review loop and synthesize worker+review receipts into a final verdict. Dispatches reviewer profiles, records review_receipt per reviewer (independence VERIFIED/LIMITED/NOT_VERIFIED), synthesizes promoted claims, emits synthesis_receipt + origin_return_receipt. Never upgrades unsupported claims. State ladder: executed→reviewed→approved→delivered→merged→accepted — no skipping.
+description: "Use when agent-orchestrator needs to run the review loop and synthesize worker+review receipts into a final verdict. Dispatches reviewer profiles, records review_receipt per reviewer (independence VERIFIED/LIMITED/NOT_VERIFIED), synthesizes promoted claims, emits synthesis_receipt + origin_return_receipt. Never upgrades unsupported claims. State ladder: executed->reviewed->approved->delivered->merged->accepted, no skipping."
 license: MIT
 metadata:
   ai-native-skills.version: 1.0.0
