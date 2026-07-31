@@ -1,0 +1,11 @@
+# agent-orchestrator profile config
+agent:
+  max_turns: 60
+  verbose: false
+  reasoning_effort: medium
+terminal:
+  timeout: 180
+compression:
+  enabled: true
+  threshold: 0.5
+  target_ratio: 0.2
