@@ -33,8 +33,9 @@ class RuntimeAcceptanceInvocationTests(unittest.TestCase):
             text,
         )
         self.assertIn("PASS_WITH_LIMITATIONS", text)
-        self.assertIn("live_telegram_round_trip_not_verified", text)
-        self.assertIn("provider_backed_specialist_execution_not_verified", text)
+        self.assertIn("live Telegram round trip", text)
+        self.assertIn("provider-backed specialist execution", text)
+        self.assertIn("It must not be called a live gateway PASS", text)
 
     def test_runner_rejects_secret_fields(self) -> None:
         text = ACCEPTANCE_RUNNER.read_text(encoding="utf-8")
