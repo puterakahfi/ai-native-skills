@@ -1,6 +1,6 @@
 skill_test:
   skill: hermes-agent-fleet-bootstrap
-  version: 0.3.0
+  version: 0.2.0
   description: Verify Hermes fleet bootstrap uses the versioned agent-* identity contract, one front door, bounded skills, plan-first execution, identity-state classification, and fail-closed migration boundaries.
   cases:
 
