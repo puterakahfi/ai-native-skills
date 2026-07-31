@@ -1,0 +1,39 @@
+# Positive fixture — durable_worker dispatch
+# Illustrates: two workers dispatched via durable profile sessions,
+# depends_on ordering respected (design before frontend).
+
+plan_id: plan-darkmode-toggle-001
+
+dispatch_receipts:
+  - schema_version: "1.0"
+    receipt_id: dispatch-worker-design-01
+    plan_id: plan-darkmode-toggle-001
+    worker_id: worker-design-01
+    dispatched_at: "2026-07-31T10:01:00Z"
+    status: dispatched
+    dispatch_mode:
+      kind: durable_worker
+      proof:
+        profile_id: agent-design
+        worker_session_id: "20260731_100100_abc123"
+        kanban_card_uri: "kanban://board/native-ai/card-design-01"
+
+  - schema_version: "1.0"
+    receipt_id: dispatch-worker-frontend-01
+    plan_id: plan-darkmode-toggle-001
+    worker_id: worker-frontend-01
+    dispatched_at: "2026-07-31T10:30:00Z"
+    status: dispatched
+    dispatch_mode:
+      kind: durable_worker
+      proof:
+        profile_id: agent-frontend
+        worker_session_id: "20260731_103000_def456"
+        kanban_card_uri: "kanban://board/native-ai/card-frontend-01"
+
+dispatch_notes:
+  mode: durable_worker
+  depends_on_respected: true
+  worker_frontend_dispatched_after: dispatch-worker-design-01
+  resume_safe: true
+  durable_acceptance_eligible: true
