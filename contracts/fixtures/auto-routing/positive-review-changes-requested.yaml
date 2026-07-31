@@ -1,0 +1,68 @@
+# Positive fixture — review changes_requested, LIMITED independence
+# agent-review is both worker and reviewer in same plan → LIMITED independence
+# synthesis: final_status=reviewed (not approved — changes required)
+
+plan_id: plan-darkmode-toggle-001
+
+review_receipts:
+  - schema_version: "1.0"
+    receipt_id: review-receipt-frontend-02
+    plan_id: plan-darkmode-toggle-001
+    worker_receipt_id: worker-receipt-frontend-01
+    reviewer_profile: agent-review
+    independence:
+      verdict: LIMITED
+      compromises:
+        - shared_profile
+    reviewed_at: "2026-07-31T11:00:00Z"
+    verdict: changes_requested
+    findings:
+      - severity: error
+        message: "DarkModeToggle.tsx:89 — Space key double-fires toggle (onClick+onKeyDown both call toggle)"
+        evidence: "Remove onKeyDown handler; button onClick already handles Space/Enter natively"
+      - severity: error
+        message: "DarkModeToggle.tsx:124 — hardcoded hex #2563EB bypasses design token system"
+        evidence: "Replace with var(--color-interactive-focus-ring) token"
+
+synthesis_receipt:
+  schema_version: "1.0"
+  receipt_id: synthesis-plan-darkmode-toggle-001-02
+  plan_id: plan-darkmode-toggle-001
+  synthesized_at: "2026-07-31T11:05:00Z"
+  worker_receipt_ids:
+    - worker-receipt-frontend-01
+  review_receipt_ids:
+    - review-receipt-frontend-02
+  final_status: reviewed
+  promoted_claims:
+    implemented:
+      asserted: true
+      supporting_receipt_ids: [worker-receipt-frontend-01]
+    reviewed:
+      asserted: true
+      supporting_receipt_ids: [review-receipt-frontend-02]
+      note: "independence LIMITED — agent-review also appeared as worker in this plan"
+    approved:
+      asserted: false
+      supporting_receipt_ids: [review-receipt-frontend-02]
+      note: "verdict=changes_requested, 2 errors unresolved — cannot assert approved"
+  unresolved_claims:
+    - claim: "approved"
+      reason: "2 error-severity findings unresolved: F-01 (Space double-fire), F-02 (hardcoded hex)"
+    - claim: "merged to main"
+      reason: "requires approval first — external action outside fleet scope"
+
+origin_return_receipt:
+  schema_version: "1.0"
+  receipt_id: origin-return-plan-darkmode-toggle-001-02
+  plan_id: plan-darkmode-toggle-001
+  origin:
+    channel: desktop
+    session_id: "20260731_100000_orchestrator"
+    user_ref: kahfi
+  delivery_channel: desktop
+  delivered_at: "2026-07-31T11:06:00Z"
+  artifact_uri: "/tmp/DarkModeToggle.tsx"
+  status: not_verified
+  # NOTE: status=not_verified used as workaround for missing "reviewed"/"changes_requested"
+  # in origin-return-receipt status enum. Tracked in #312.

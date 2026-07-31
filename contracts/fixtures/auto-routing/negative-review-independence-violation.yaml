@@ -1,0 +1,32 @@
+# Negative fixture — reviewer-as-implementer independence violation
+# agent-frontend is both the worker AND the reviewer → NOT_VERIFIED
+# Synthesis must not assert approved or reviewed with credible independence
+
+plan_id: plan-darkmode-toggle-001
+
+review_receipts:
+  - schema_version: "1.0"
+    receipt_id: review-receipt-violation-01
+    plan_id: plan-darkmode-toggle-001
+    worker_receipt_id: worker-receipt-frontend-01
+    reviewer_profile: agent-frontend
+    independence:
+      verdict: NOT_VERIFIED
+      compromises:
+        - shared_profile
+    reviewed_at: "2026-07-31T11:00:00Z"
+    verdict: changes_requested
+    findings: []
+    # NOTE: verdict=approved with NOT_VERIFIED independence is rejected by schema (allOf constraint)
+    # This fixture uses changes_requested (schema-valid) to test synthesis blocking behavior
+
+synthesis_notes:
+  violation: independence_not_verified
+  blocked_claims:
+    - claim: approved
+      reason: "review_receipt independence=NOT_VERIFIED — cannot assert approved"
+    - claim: reviewed
+      reason: "independence NOT_VERIFIED with no justification — review evidence not credible"
+  required_action: >
+    Assign a different profile as reviewer (e.g. agent-review ≠ agent-frontend)
+    to achieve VERIFIED independence before synthesis can proceed.
