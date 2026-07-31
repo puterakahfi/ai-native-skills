@@ -54,7 +54,7 @@ skill_test:
       - agent-orchestrator
       - user_facing_front_door
       - agent-review
-      - gateway: none
+      - "gateway: none"
       - headless_on_demand
     must_not_contain:
       - engineering-orchestrator is the active target
