@@ -195,19 +195,21 @@ Separate profile names alone do not establish independence. A limited review may
 
 ## Product-facing bot exceptions
 
-Product profiles such as `visualmate` may keep dedicated bots when they serve direct users. They remain outside the reusable `native-ai-engineering` agent-* fleet unless they own a distinct audience, personality, durable product memory, stakeholder relationship, or acceptance responsibility.
+A durable product or domain profile may keep a dedicated bot when it serves direct users, an independent audience, or a recurring product workflow. A product profile is optional and should be created only when persistent product context, stakeholder relationship, or acceptance responsibility is justified. Product profiles remain outside the reusable `native-ai-engineering` agent-* fleet.
 
-Example:
+Generic example:
 
 ```text
-@visualmate_bot
-→ customer-facing product agent
-→ submits a bounded engineering request
+@product_bot
+→ product-facing agent and product-context custodian
+→ prepares a bounded engineering request
 → agent-orchestrator coordinates the shared engineering fleet
 → product authority accepts or rejects the result
 ```
 
-Product-facing profiles should not automatically receive repository write, production access, or the full engineering skill suite.
+The example is product-neutral. A named product such as `visualmate`, an office portal, an internal finance system, or a client product is illustrative only and does not become part of reusable specialist identity.
+
+Product-facing profiles should not automatically receive repository write, production access, or the full engineering skill suite. Load `product-context-and-environments.md` before sharing a fleet across products or mixing personal, office, client, or tenant contexts.
 
 ## Prohibited distribution content
 
