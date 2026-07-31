@@ -35,8 +35,8 @@
         "delivery-work-breakdown",
         "skill-eval"
       ],
-      "soul": "souls/agent-orchestrator.md",
-      "config": "configs/agent-orchestrator.yaml"
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-orchestrator.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-orchestrator.yaml"
     },
     {
       "id": "agent-product",
@@ -54,8 +54,8 @@
         "acceptance-testing",
         "decision-provenance"
       ],
-      "soul": "souls/agent-product.md",
-      "config": "configs/agent-product.yaml"
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-product.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-product.yaml"
     },
     {
       "id": "agent-architecture",
@@ -84,8 +84,8 @@
         "architecture-review",
         "decision-provenance"
       ],
-      "soul": "souls/agent-architecture.md",
-      "config": "configs/agent-architecture.yaml"
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-architecture.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-architecture.yaml"
     },
     {
       "id": "agent-design",
@@ -109,8 +109,8 @@
         "content-strategy",
         "decision-provenance"
       ],
-      "soul": "souls/agent-design.md",
-      "config": "configs/agent-design.yaml"
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-design.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-design.yaml"
     },
     {
       "id": "agent-frontend",
@@ -136,8 +136,8 @@
         "web-performance",
         "git-workflow"
       ],
-      "soul": "souls/agent-frontend.md",
-      "config": "configs/agent-frontend.yaml"
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-frontend.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-frontend.yaml"
     },
     {
       "id": "agent-backend",
@@ -167,8 +167,8 @@
         "resilience-engineering",
         "git-workflow"
       ],
-      "soul": "souls/agent-backend.md",
-      "config": "configs/agent-backend.yaml"
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-backend.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-backend.yaml"
     },
     {
       "id": "agent-review",
@@ -188,8 +188,8 @@
         "decision-provenance",
         "skill-eval"
       ],
-      "soul": "souls/agent-review.md",
-      "config": "configs/agent-review.yaml"
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-review.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-review.yaml"
     }
   ]
 }
