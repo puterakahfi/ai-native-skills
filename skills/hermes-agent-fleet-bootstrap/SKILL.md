@@ -9,7 +9,7 @@ metadata:
   ai-native-skills.pattern: facade
   ai-native-skills.requires: "workflow-router role-switcher hermes-profile-bootstrap decision-provenance skill-eval"
   ai-native-skills.related_skills: '["hermes-profile-bootstrap","workflow-router","role-switcher","implementation-context-discovery","product-manager","master-engineer","architecture-review","security-review","skill-eval"]'
-  ai-native-skills.boundary.covers: '["fleet_request_normalization","multi_agent_justification","topology_selection","agent_identity_contracts","profile_responsibility_contracts","profile_skill_manifest_composition","gateway_and_bot_policy","collaboration_and_artifact_handoff_contracts","ownership_and_cycle_validation","versioned_preset_execution","non_destructive_profile_migration_planning","per_profile_bootstrap_handoffs","fleet_identity_state_audit","fleet_readiness_and_receipt"]'
+  ai-native-skills.boundary.covers: '["fleet_request_normalization","multi_agent_justification","topology_selection","profile_responsibility_contracts","profile_skill_manifest_composition","gateway_and_bot_policy","collaboration_and_artifact_handoff_contracts","ownership_and_cycle_validation","non_destructive_profile_migration_planning","per_profile_bootstrap_handoffs","deterministic_preset_execution","fleet_readiness_and_receipt"]'
   ai-native-skills.boundary.delegates: '["single_profile_materialization","task_time_primary_workflow_selection","task_time_role_assignment","product_or_repository_truth","kanban_dispatcher_execution","bot_token_or_secret_provisioning","operating_system_sandboxing","implementation_delivery","merge_release_deployment_or_product_acceptance_authorization"]'
 ---
 
