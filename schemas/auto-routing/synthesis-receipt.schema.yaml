@@ -1,0 +1,117 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: https://ai-native-skills/schemas/auto-routing/synthesis-receipt.schema.yaml
+title: SynthesisReceipt
+description: >
+  Orchestrator consolidation of worker + review receipts into promoted claims.
+  External claims require pointers. Enforces §7.4, §7.8, §7.9.
+type: object
+additionalProperties: false
+required:
+  - schema_version
+  - receipt_id
+  - plan_id
+  - synthesized_at
+  - worker_receipt_ids
+  - review_receipt_ids
+  - final_status
+  - promoted_claims
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  receipt_id:
+    type: string
+    pattern: "^synthesis-[A-Za-z0-9_-]+$"
+  plan_id:
+    type: string
+    pattern: "^plan-[A-Za-z0-9_-]+$"
+  synthesized_at:
+    type: string
+    format: date-time
+  worker_receipt_ids:
+    type: array
+    items:
+      type: string
+      pattern: "^worker-receipt-[A-Za-z0-9_-]+$"
+  review_receipt_ids:
+    type: array
+    items:
+      type: string
+      pattern: "^review-receipt-[A-Za-z0-9_-]+$"
+  final_status:
+    type: string
+    enum:
+      - executed
+      - reviewed
+      - approved
+      - delivered
+      - merged
+      - accepted
+      - blocked
+      - cancelled
+      - not_verified
+  promoted_claims:
+    type: object
+    additionalProperties: false
+    properties:
+      implemented: { $ref: "#/definitions/claim_internal" }
+      verified:    { $ref: "#/definitions/claim_internal" }
+      reviewed:    { $ref: "#/definitions/claim_internal" }
+      approved:    { $ref: "#/definitions/claim_internal" }
+      delivered:   { $ref: "#/definitions/claim_external" }
+      merged:      { $ref: "#/definitions/claim_external" }
+      accepted:    { $ref: "#/definitions/claim_external" }
+  unresolved_claims:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [claim, reason]
+      properties:
+        claim: { type: string }
+        reason: { type: string }
+definitions:
+  claim_internal:
+    type: object
+    additionalProperties: false
+    required: [asserted, supporting_receipt_ids]
+    properties:
+      asserted: { type: boolean }
+      supporting_receipt_ids:
+        type: array
+        minItems: 1
+        items: { type: string }
+      note: { type: string }
+  claim_external:
+    type: object
+    additionalProperties: false
+    required: [asserted, supporting_receipt_ids, external_pointer]
+    properties:
+      asserted: { type: boolean }
+      supporting_receipt_ids:
+        type: array
+        minItems: 1
+        items: { type: string }
+      external_pointer:
+        type: string
+        minLength: 1
+        description: Resolvable URI (repo URL, PR link, Jira transition, product-owner decision).
+      dispatch_mode_lineage:
+        type: string
+        enum: [durable_worker, temporary_delegation]
+        description: >
+          Auditor hint — external claims backed only by temporary_delegation
+          MUST NOT be asserted true (§5, §7.4).
+      note: { type: string }
+    allOf:
+      - description: >
+          §5 + §7.4 — asserted external claim requires durable_worker lineage.
+          temporary_delegation lineage with asserted=true is forbidden.
+        if:
+          properties:
+            dispatch_mode_lineage: { const: temporary_delegation }
+            asserted: { const: true }
+          required: [dispatch_mode_lineage, asserted]
+        then:
+          properties:
+            asserted: { const: false }

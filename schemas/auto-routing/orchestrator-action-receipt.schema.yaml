@@ -1,0 +1,51 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: https://ai-native-skills/schemas/auto-routing/orchestrator-action-receipt.schema.yaml
+title: OrchestratorActionReceipt
+description: >
+  Evidence for a self-handled orchestrator action. Produced only when
+  task_routing_plan.orchestrator_action.kind == self_handled. Enforces the
+  classification gate defined in §2.1 of the auto-routing contract.
+type: object
+additionalProperties: false
+required:
+  - schema_version
+  - receipt_id
+  - plan_id
+  - category
+  - rationale
+  - input_summary
+  - output_summary
+  - started_at
+  - completed_at
+  - status
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  receipt_id:
+    type: string
+    pattern: "^orchact-[A-Za-z0-9_-]+$"
+  plan_id:
+    type: string
+    pattern: "^plan-[A-Za-z0-9_-]+$"
+  category:
+    type: string
+    enum: [acknowledgment, clarification, routing_question, session_meta, read_only_lookup]
+  rationale:
+    type: string
+    minLength: 1
+  input_summary:
+    type: string
+    minLength: 1
+  output_summary:
+    type: string
+    minLength: 1
+  started_at:
+    type: string
+    format: date-time
+  completed_at:
+    type: string
+    format: date-time
+  status:
+    type: string
+    enum: [executed, blocked, cancelled, not_verified]

@@ -1,0 +1,147 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: https://ai-native-skills/schemas/auto-routing/task-routing-plan.schema.yaml
+title: TaskRoutingPlan
+description: >
+  Planner output for task-time auto-routing. Names the primary workflow, the
+  worker slots, the reviewers, and the review policy. Anchor for all downstream
+  receipts.
+type: object
+additionalProperties: false
+required:
+  - schema_version
+  - plan_id
+  - created_at
+  - origin
+  - orchestrator_action
+  - primary_workflow
+  - status
+properties:
+  schema_version:
+    type: string
+    const: "1.0"
+  plan_id:
+    type: string
+    pattern: "^plan-[A-Za-z0-9_-]+$"
+  created_at:
+    type: string
+    format: date-time
+  origin:
+    type: object
+    additionalProperties: false
+    required: [channel]
+    properties:
+      channel:
+        type: string
+        enum: [desktop, gateway_telegram, gateway_slack, cli, cron]
+      session_id: { type: string }
+      thread_id: { type: string }
+      user_ref: { type: string }
+  orchestrator_action:
+    description: >
+      Whether the orchestrator self-handled this request or delegated it. The
+      classification gate lives on the orchestrator_action_receipt; the plan
+      records the decision so downstream validators can enforce §7.7.
+    type: object
+    additionalProperties: false
+    required: [kind]
+    properties:
+      kind:
+        type: string
+        enum: [self_handled, delegated_to_specialist]
+      self_handled_category:
+        type: string
+        enum: [acknowledgment, clarification, routing_question, session_meta, read_only_lookup]
+    oneOf:
+      - properties:
+          kind: { const: self_handled }
+        required: [kind, self_handled_category]
+      - properties:
+          kind: { const: delegated_to_specialist }
+        not:
+          required: [self_handled_category]
+  primary_workflow:
+    description: Exactly-one-primary-workflow invariant (§7.1).
+    type: string
+    minLength: 1
+  workers:
+    description: Specialist worker slots. Required when orchestrator_action.kind == delegated_to_specialist.
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [worker_id, profile, responsibility]
+      properties:
+        worker_id:
+          type: string
+          pattern: "^worker-[A-Za-z0-9_-]+$"
+        profile:
+          type: string
+          pattern: "^agent-[a-z][a-z0-9-]*$"
+        responsibility: { type: string, minLength: 1 }
+        inputs:
+          type: array
+          items: { type: string }
+        expected_outputs:
+          type: array
+          items: { type: string }
+        depends_on:
+          type: array
+          items:
+            type: string
+            pattern: "^worker-[A-Za-z0-9_-]+$"
+  reviewers:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [reviewer_id, profile, scope, independence_target]
+      properties:
+        reviewer_id:
+          type: string
+          pattern: "^reviewer-[A-Za-z0-9_-]+$"
+        profile:
+          type: string
+          pattern: "^agent-[a-z][a-z0-9-]*$"
+        scope:
+          type: array
+          items: { type: string }
+          minItems: 1
+        independence_target:
+          type: string
+          enum: [VERIFIED, LIMITED, NOT_VERIFIED]
+        reviews_worker_ids:
+          type: array
+          items:
+            type: string
+            pattern: "^worker-[A-Za-z0-9_-]+$"
+  review_policy:
+    type: object
+    additionalProperties: false
+    properties:
+      allow_limited_independence: { type: boolean, default: false }
+      require_reviewer_per_worker: { type: boolean, default: true }
+  status:
+    type: string
+    enum:
+      - planned
+      - attempted
+      - dispatched
+      - executed
+      - reviewed
+      - approved
+      - delivered
+      - merged
+      - accepted
+      - blocked
+      - cancelled
+      - not_verified
+allOf:
+  - description: When delegated, at least one worker is required.
+    if:
+      properties:
+        orchestrator_action:
+          properties: { kind: { const: delegated_to_specialist } }
+    then:
+      required: [workers]
+      properties:
+        workers: { minItems: 1 }

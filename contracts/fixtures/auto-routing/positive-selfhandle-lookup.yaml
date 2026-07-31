@@ -1,0 +1,40 @@
+# Positive fixture — orchestrator self-handles a read-only lookup.
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-selfhandle-lookup-001
+  created_at: "2026-07-31T13:10:00Z"
+  origin:
+    channel: desktop
+    session_id: sess-desktop-78
+    user_ref: kahfi
+  orchestrator_action:
+    kind: self_handled
+    self_handled_category: read_only_lookup
+  primary_workflow: orchestrator-self-handled
+  status: delivered
+
+orchestrator_action_receipt:
+  schema_version: "1.0"
+  receipt_id: orchact-lookup-001
+  plan_id: plan-selfhandle-lookup-001
+  category: read_only_lookup
+  rationale: "User asked location of an already-known workspace file; no domain reasoning, direct filesystem read."
+  input_summary: "User: dimana file .env.local ATF?"
+  output_summary: "Orchestrator: /data/www/arbiter-test-fw/.env.local"
+  started_at: "2026-07-31T13:10:00Z"
+  completed_at: "2026-07-31T13:10:01Z"
+  status: executed
+
+origin_return_receipt:
+  schema_version: "1.0"
+  receipt_id: origin-return-lookup-001
+  plan_id: plan-selfhandle-lookup-001
+  origin:
+    channel: desktop
+    session_id: sess-desktop-78
+    user_ref: kahfi
+  delivery_channel: desktop
+  delivered_at: "2026-07-31T13:10:02Z"
+  artifact_uri: "desktop://sess-desktop-78/message/reply-001"
+  status: delivered

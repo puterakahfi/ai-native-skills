@@ -1,0 +1,66 @@
+# Negative fixture — temporary_delegation dispatch was promoted to 'merged' external claim.
+# Violates: §5 + §7.4 (temporary delegation cannot promote external claims).
+# Expected failure: synthesis_receipt.promoted_claims.merged.dispatch_mode_lineage
+# marked as temporary_delegation with asserted=true — auditor rule violation.
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-temp-delegate-claim-001
+  created_at: "2026-07-31T15:00:00Z"
+  origin:
+    channel: desktop
+    session_id: sess-td-1
+  orchestrator_action:
+    kind: delegated_to_specialist
+  primary_workflow: bugfix-workflow
+  workers:
+    - worker_id: worker-td-01
+      profile: agent-backend
+      responsibility: Patch NPE in orders API.
+  status: not_verified
+
+dispatch_receipts:
+  - schema_version: "1.0"
+    receipt_id: dispatch-td-01
+    plan_id: plan-temp-delegate-claim-001
+    worker_id: worker-td-01
+    dispatched_at: "2026-07-31T15:01:00Z"
+    status: dispatched
+    dispatch_mode:
+      kind: temporary_delegation
+      proof:
+        delegate_task_id: del-xyz-1
+        parent_session_id: sess-td-1
+        max_turns: 10
+
+worker_receipts:
+  - schema_version: "1.0"
+    receipt_id: worker-receipt-td-01
+    plan_id: plan-temp-delegate-claim-001
+    worker_id: worker-td-01
+    profile: agent-backend
+    status: executed
+    started_at: "2026-07-31T15:01:15Z"
+    completed_at: "2026-07-31T15:20:00Z"
+    evidence:
+      evidence_type: summary
+      receipt_inline: "Applied fix, did not push."
+
+synthesis_receipt:
+  schema_version: "1.0"
+  receipt_id: synthesis-td-01
+  plan_id: plan-temp-delegate-claim-001
+  synthesized_at: "2026-07-31T15:25:00Z"
+  worker_receipt_ids: ["worker-receipt-td-01"]
+  review_receipt_ids: []
+  final_status: merged
+  promoted_claims:
+    merged:
+      asserted: true
+      supporting_receipt_ids: ["worker-receipt-td-01"]
+      external_pointer: "https://github.com/example/repo/pull/9999"
+      dispatch_mode_lineage: temporary_delegation
+
+expected_failure:
+  invariant: "§5 + §7.4"
+  reason: "temporary_delegation dispatch_mode_lineage cannot back an asserted external claim (merged)."

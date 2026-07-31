@@ -1,0 +1,41 @@
+# Positive fixture — orchestrator self-handles an acknowledgment.
+# Enforces §2.1 classification gate: category=acknowledgment, no worker dispatched.
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-selfhandle-ack-001
+  created_at: "2026-07-31T13:00:00Z"
+  origin:
+    channel: desktop
+    session_id: sess-desktop-77
+    user_ref: kahfi
+  orchestrator_action:
+    kind: self_handled
+    self_handled_category: acknowledgment
+  primary_workflow: orchestrator-self-handled
+  status: delivered
+
+orchestrator_action_receipt:
+  schema_version: "1.0"
+  receipt_id: orchact-ack-001
+  plan_id: plan-selfhandle-ack-001
+  category: acknowledgment
+  rationale: "User said 'thanks' — pure social response, no domain reasoning needed."
+  input_summary: "User: thanks"
+  output_summary: "Orchestrator: You're welcome!"
+  started_at: "2026-07-31T13:00:00Z"
+  completed_at: "2026-07-31T13:00:01Z"
+  status: executed
+
+origin_return_receipt:
+  schema_version: "1.0"
+  receipt_id: origin-return-ack-001
+  plan_id: plan-selfhandle-ack-001
+  origin:
+    channel: desktop
+    session_id: sess-desktop-77
+    user_ref: kahfi
+  delivery_channel: desktop
+  delivered_at: "2026-07-31T13:00:02Z"
+  artifact_uri: "desktop://sess-desktop-77/message/reply-001"
+  status: delivered
