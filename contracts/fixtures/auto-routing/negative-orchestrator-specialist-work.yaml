@@ -1,0 +1,22 @@
+# Negative fixture — orchestrator attempting specialist work directly
+# Illustrates: orchestrator self-handling a request that requires domain judgement.
+# Violation: §2 "must-delegate" rule — implementation/design/review must be delegated.
+
+request_context:
+  user_request: "Implement the DarkModeToggle component in TypeScript"
+  orchestrator_action:
+    kind: self_handled
+    self_handled_category: read_only_lookup  # WRONG — implementation is not read_only_lookup
+
+violation:
+  rule: "§2 — orchestrator MUST delegate requests requiring domain judgement"
+  category_mismatch: "self_handled_category=read_only_lookup but request requires implementation"
+  correct_action: >
+    Classify as delegated_to_specialist. Emit task_routing_plan with
+    worker-1: agent-frontend (implementation), reviewer-1: agent-review.
+    Do NOT self-handle.
+
+expected_behavior:
+  verdict: blocked
+  reason: "orchestrator_action.category does not fit self_handled allow-list for this request"
+  honoured_invariant: "§7.7 — orchestrator_action_receipt.category must be from §2.1 allow-list"

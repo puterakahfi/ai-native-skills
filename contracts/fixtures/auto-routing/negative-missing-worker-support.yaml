@@ -1,0 +1,26 @@
+# Negative fixture — required specialist profile unavailable
+# Illustrates: dispatch blocked because target profile not installed or unreachable.
+
+plan_id: plan-darkmode-toggle-001
+
+dispatch_receipts:
+  - schema_version: "1.0"
+    receipt_id: dispatch-worker-design-01-unavail
+    plan_id: plan-darkmode-toggle-001
+    worker_id: worker-design-01
+    dispatched_at: "2026-07-31T10:01:00Z"
+    status: blocked
+    dispatch_mode:
+      kind: temporary_delegation
+      proof:
+        delegate_task_id: "delegate-20260731-unavail"
+        parent_session_id: "20260731_100000_orchestrator"
+
+dispatch_notes:
+  blocking_reason: >
+    hermes -p agent-design: profile not found. Check that agent-design profile
+    is installed at ~/.hermes/profiles/agent-design/. Run
+    hermes-fleet bootstrap native-ai-engineering --apply to install missing profiles.
+  actionable_error: "hermes -p agent-design returned exit 1: unknown profile 'agent-design'"
+  blocked_downstream: [worker-frontend-01, worker-review-01]
+  resume_action: "Install agent-design profile, then re-dispatch worker-design-01 only."
