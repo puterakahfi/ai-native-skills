@@ -1,0 +1,24 @@
+# Negative fixture — missing context
+# Illustrates: planner returns NOT_VERIFIED because required context
+# is absent and cannot be safely inferred.
+
+request_context:
+  user_request: "fix the bug in the login endpoint"
+  product_context: NOT_VERIFIED   # no repo, no stack provided
+  repository_context: NOT_VERIFIED
+
+planner_output:
+  status: not_verified
+  blocking_reason: >
+    Request identifies a bugfix target ("login endpoint") but required context
+    is NOT_VERIFIED: no repository, no stack, no branch policy provided.
+    workflow-router selects bugfix-workflow, but role-switcher cannot map roles
+    to profiles without knowing whether this is frontend (agent-frontend) or
+    backend (agent-backend). Cannot determine dependency ordering or reviewer scope
+    without stack context. Plan is NOT_VERIFIED until context is resolved.
+  missing_context:
+    - repository: which repo contains the login endpoint?
+    - stack: frontend (React/TS) or backend (Node/PHP/Python)?
+    - branch_policy: PR target for this fix?
+  plan: null
+  plan_only: true
