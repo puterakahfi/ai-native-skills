@@ -4,16 +4,17 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 122
+    executable_artifacts: 126
     official_types:
       meta-skill: 7
-      skill: 102
+      skill: 106
       workflow: 13
     patterns:
       domain-reviewer: 1
       facade: 4
     coverage:
       contract_backed_v2: 26
+      invalid: 4
       legacy_contract_backed: 73
       reviewed_exemption: 23
     compatibility_manifests: 0
@@ -1049,6 +1050,95 @@ contract_coverage_inventory:
     exemption_path: skills/hermes-agent-fleet-bootstrap/contract.exemption.yaml
     classification: reviewed_exemption
     errors: []
+  - id: hermes-auto-routing-dispatch
+    path: skills/hermes-auto-routing-dispatch/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.1.0
+    implements: contracts/schemas/auto-routing/dispatch-receipt.schema.yaml
+    contract_version: null
+    contract_path_exists: false
+    legacy_boundary:
+      covers:
+      - plan_consumption
+      - worker_slot_iteration
+      - dispatch_mode_selection
+      - bounded_context_delivery
+      - dispatch_receipt_emission
+      - depends_on_ordering
+      - resume_idempotency
+      - failure_evidence_preservation
+      delegates:
+      - plan_authoring
+      - review_loop
+      - synthesis
+      - origin_return
+      - skill_sync
+    conformance_path: null
+    exemption_path: null
+    classification: invalid
+    errors:
+    - contract_path_missing
+    - contract_version_missing
+  - id: hermes-auto-routing-planner
+    path: skills/hermes-auto-routing-planner/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: contracts/schemas/auto-routing/task-routing-plan.schema.yaml
+    contract_version: null
+    contract_path_exists: false
+    legacy_boundary:
+      covers:
+      - request_context_normalization
+      - workflow_classification
+      - role_to_profile_mapping
+      - smallest_justified_profile_selection
+      - dependency_ordering
+      - reviewer_independence_assignment
+      - plan_validation
+      - plan_only_output
+      delegates:
+      - worker_dispatch
+      - review_loop
+      - synthesis
+      - origin_return
+      - skill_sync
+      - catalog_resolution
+    conformance_path: null
+    exemption_path: null
+    classification: invalid
+    errors:
+    - contract_path_missing
+    - contract_version_missing
+  - id: hermes-auto-routing-review-synthesis
+    path: skills/hermes-auto-routing-review-synthesis/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: '[''review-receipt.schema.yaml'', ''synthesis-receipt.schema.yaml'',
+      ''origin-return-receipt.schema.yaml'']'
+    contract_version: null
+    contract_path_exists: false
+    legacy_boundary:
+      covers:
+      - reviewer_dispatch
+      - review_receipt_emission
+      - independence_determination
+      - synthesis
+      - promoted_claims
+      - origin_return
+      delegates:
+      - plan_authoring
+      - worker_dispatch
+      - skill_sync
+      - catalog_resolution
+    conformance_path: null
+    exemption_path: null
+    classification: invalid
+    errors:
+    - contract_path_missing
+    - contract_version_missing
   - id: hermes-profile-bootstrap
     path: skills/hermes-profile-bootstrap/SKILL.md
     type: skill
@@ -1403,6 +1493,34 @@ contract_coverage_inventory:
     exemption_path: null
     classification: legacy_contract_backed
     errors: []
+  - id: product-intake
+    path: skills/product-intake/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: contracts/skills/product/product-intake.contract.yaml
+    contract_version: ~1.0
+    contract_path_exists: false
+    legacy_boundary:
+      covers:
+      - intake_investigation
+      - prd_depth_determination
+      - task_structure_sizing
+      - multi_component_detection
+      - artifact_target_resolution
+      - intake_artifacts_emission
+      delegates:
+      - prd_authoring
+      - delivery_decomposition
+      - jira_execution
+      - kanban_execution
+      - engineering_routing
+      - implementation
+    conformance_path: null
+    exemption_path: null
+    classification: invalid
+    errors:
+    - contract_path_missing
   - id: product-manager
     path: skills/product-manager/SKILL.md
     type: skill
