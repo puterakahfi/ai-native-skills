@@ -1,31 +1,31 @@
 # One-command Hermes fleet execution
 
-Use this deterministic executor after the fleet topology and specialist contracts are approved.
+Use this deterministic executor after the fleet topology and agent responsibility contracts are approved.
 
 ## Primary user interface
 
 The installed Hermes skill slash command is the normal entrypoint. Users should not need to know where the skill package is stored.
 
 ```text
-# Preview without mutation
+# Preview a fresh target fleet without mutation
 /hermes-agent-fleet-bootstrap bootstrap native-ai-engineering
 
-# Create missing profiles, synchronize managed skills, and initialize Kanban
+# Create missing target profiles, synchronize managed skills, and initialize Kanban
 /hermes-agent-fleet-bootstrap bootstrap native-ai-engineering --apply
 
-# Read-only conformance audit
+# Read-only conformance and identity-state audit
 /hermes-agent-fleet-bootstrap audit native-ai-engineering
 
-# Preview reconciliation after skill catalog changes
+# Preview reconciliation of an existing target fleet
 /hermes-agent-fleet-bootstrap reconcile native-ai-engineering
 
-# Apply reconciliation
+# Apply target-fleet reconciliation
 /hermes-agent-fleet-bootstrap reconcile native-ai-engineering --apply
 
-# Preview model-policy synchronization from the orchestrator
+# Preview model-policy synchronization from the preset orchestrator
 /hermes-agent-fleet-bootstrap sync-models native-ai-engineering
 
-# Apply model-policy synchronization to the remaining preset profiles
+# Apply non-secret model-policy synchronization
 /hermes-agent-fleet-bootstrap sync-models native-ai-engineering --apply
 ```
 
@@ -49,13 +49,73 @@ bash "${HERMES_SKILL_DIR}/scripts/hermes-fleet-model-sync" \
   <preset> [--apply] [supported model-sync flags]
 ```
 
-The agent must use the terminal tool, preserve the executor exit code, and return the generated receipt. It must not manually reproduce the runner's profile, skill, Kanban, model-policy, audit, or receipt operations.
+The agent must use the terminal tool, preserve the executor exit code, and return the generated receipt. It must not manually reproduce profile, skill, Kanban, model-policy, audit, or receipt operations.
 
 Without `--apply`, `bootstrap`, `reconcile`, and `sync-models` are plan-only. `audit` is always read-only.
 
+## Target preset v2
+
+The `native-ai-engineering` preset is a breaking identity generation with version `2.0.0`:
+
+```text
+agent-orchestrator
+agent-product
+agent-architecture
+agent-design
+agent-frontend
+agent-backend
+agent-review
+```
+
+Only `agent-orchestrator` is gateway-eligible and user-facing by default. Every other default profile has:
+
+```yaml
+gateway: none
+worker_mode: headless_on_demand
+```
+
+The fleet remains product-neutral. Product and repository identity are task context, not reusable profile IDs.
+
+## Identity-state preflight
+
+Before planning profile or skill actions, the executor classifies the observed profile directories:
+
+```text
+EMPTY
+TARGET_ONLY_COMPLETE
+TARGET_ONLY_PARTIAL
+LEGACY_ONLY_COMPLETE
+LEGACY_ONLY_PARTIAL
+MIXED
+UNVERSIONED
+```
+
+Behavior:
+
+```text
+EMPTY
+→ fresh bootstrap or reconcile may proceed
+
+TARGET_ONLY_COMPLETE
+→ audit or idempotent reconcile may proceed
+
+TARGET_ONLY_PARTIAL
+→ audit reports NEEDS_WORK; reconcile may create missing target profiles
+
+LEGACY_ONLY_COMPLETE / LEGACY_ONLY_PARTIAL
+→ audit reports migration required
+→ bootstrap and reconcile fail closed
+
+MIXED
+→ audit reports an ambiguous migration state
+→ bootstrap and reconcile fail closed
+```
+
+Legacy or mixed fleets must use the approved non-destructive migration operation delivered separately. Ordinary bootstrap and reconcile never reinterpret legacy profiles as target profiles, rename directories, copy live state, or retire old identities.
+
 ## Low-level interface
 
-Direct repository-relative execution remains available for CI, debugging, recovery, and development before the skill has been installed:
+Direct repository-relative execution remains available for CI, debugging, recovery, and development before the skill is installed:
 
 ```bash
 bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet \
@@ -70,48 +130,40 @@ This is not the primary user-facing invocation because it requires knowledge of 
 ## Operations
 
 ```text
-bootstrap    create missing profiles, synchronize managed skills, initialize Kanban
-reconcile    compare and synchronize an approved preset idempotently
-audit        inspect conformance without runtime mutation
-sync-models  synchronize non-secret model policy from one preset profile to the others
+bootstrap    create missing target profiles, synchronize managed skills, initialize Kanban
+reconcile    compare and synchronize an approved target preset idempotently
+audit        classify identity state and inspect conformance without runtime mutation
+sync-models  synchronize non-secret model policy from the preset orchestrator to target profiles
 ```
 
-## Deterministic boundary
+## Deterministic and safety boundary
 
-The executors do not invent a topology through an LLM. They execute an approved preset. The `native-ai-engineering` preset creates or audits:
+The executors apply approved presets; they do not invent topology through an LLM. Custom preset, profile, and skill identifiers are restricted to lowercase letters, digits, dot, underscore, and hyphen. Unsafe identifiers, overlapping target and legacy IDs, duplicate skills, malformed semantic versions, invalid gateway ownership, invalid worker modes, path traversal, and symlinked managed paths fail closed.
 
-```text
-engineering-orchestrator
-product-development
-solution-architecture
-product-design
-frontend-engineering
-backend-platform
-quality-review
-```
+The executor does not:
 
-Only `engineering-orchestrator` is marked gateway-eligible. The executors do not start a gateway or provision bot tokens.
-
-Custom preset, profile, and skill identifiers are restricted to lowercase letters, digits, dot, underscore, and hyphen. Path traversal, symlinked profile roots, and symlinked managed skill or model-config paths fail closed before mutation.
+- start or stop a messaging gateway;
+- provision or copy bot/provider credentials;
+- copy `.env`, `auth.json`, API keys, OAuth tokens, passwords, sessions, memory, cron, Kanban databases, or runtime databases;
+- rename or delete legacy profiles;
+- claim Telegram or worker runtime readiness.
 
 ## Side effects
 
 With `--apply`, fleet bootstrap or reconcile may:
 
 - run `hermes --version`;
-- run `hermes profile create ... --no-skills --no-alias` for missing profiles;
+- run `hermes profile create ... --no-skills --no-alias` for missing target profiles;
 - copy approved skill packages into profile-local `skills/` directories;
 - run `hermes kanban init`;
-- write a fleet receipt under `$HERMES_HOME/fleet-bootstrap/<preset>/last-receipt.json`.
+- write a secret-free receipt under `$HERMES_HOME/fleet-bootstrap/<preset>/last-receipt.json`.
 
 With `--apply`, model-policy synchronization may:
 
 - read the selected preset and source profile `config.yaml`;
 - create timestamped backups of changed target `config.yaml` files;
 - atomically synchronize approved model-policy keys;
-- write a receipt under `$HERMES_HOME/fleet-bootstrap/<preset>/last-model-sync-receipt.json`.
-
-Neither executor deletes profiles or modifies profile memory, sessions, credentials, cron state, gateway tokens, or product truth. Model-policy synchronization never copies `.env`, `auth.json`, API keys, OAuth tokens, passwords, or secret-looking nested values.
+- write a secret-free receipt under `$HERMES_HOME/fleet-bootstrap/<preset>/last-model-sync-receipt.json`.
 
 Plan-only and audit receipts default to:
 
@@ -120,12 +172,19 @@ Plan-only and audit receipts default to:
 .evidence/hermes-fleet/<preset>/last-model-sync-receipt.json
 ```
 
+Fleet receipts expose preset version, identity generation, target profile IDs, orchestrator profile, observed identity state, non-secret actions, findings, and readiness. They record:
+
+```yaml
+credentials_copied: false
+live_state_copied: false
+```
+
 ## Exit codes
 
 ```text
 0  plan valid, apply succeeded, or audit passed
-2  audit found drift or missing fleet state
-3  preset/preflight failure, missing skill source, missing runner, missing profile/config, or missing Hermes
+2  audit found missing, drifted, legacy, partial, or mixed fleet state
+3  preset/preflight failure, unsafe identity state, missing skill, missing profile/config, or missing Hermes
 4  execution or receipt-write failure
 ```
 
@@ -138,7 +197,7 @@ Fleet executor:
 --hermes-home PATH      override HERMES_HOME
 --hermes-bin COMMAND    override Hermes binary
 --skills-root PATH      override local skill catalog root
---preset-file PATH      use an explicit preset for testing or controlled extension
+--preset-file PATH      use an explicit approved preset
 --receipt PATH          override receipt location
 --skip-kanban           do not initialize Kanban
 --json                  print the machine-readable receipt
@@ -155,17 +214,18 @@ Model-policy sync:
 --json                     print the machine-readable receipt
 ```
 
-Load `model-policy-sync.md` for the exact managed keys, credential boundary, receipts, and idempotency behavior.
+Load `model-policy-sync.md` for exact managed keys, credential boundaries, backups, receipts, and idempotency behavior.
 
 ## Idempotency
 
 Repeated fleet apply runs:
 
-- preserve existing profiles;
+- preserve existing target profiles;
 - skip skill packages whose content digest already matches;
-- update only managed skill directories with changed content;
+- update only changed managed skill directories;
 - skip Kanban initialization when an existing database is observed;
-- never create duplicate profiles.
+- never create duplicate profiles;
+- preserve unmanaged profile configuration and runtime-owned state.
 
 Repeated model-policy apply runs:
 
@@ -173,5 +233,3 @@ Repeated model-policy apply runs:
 - preserve target-side secret values without copying source secrets;
 - skip profiles whose sanitized model-policy digest already matches;
 - create no new backup when every target is already in sync.
-
-Existing profile descriptions and runtime state are preserved rather than silently rewritten.
