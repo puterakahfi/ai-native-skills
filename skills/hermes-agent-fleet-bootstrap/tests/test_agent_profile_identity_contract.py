@@ -99,7 +99,10 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
         self.assertEqual(self.mapping["fleet"], "native-ai-engineering")
         self.assertEqual(self.mapping["from_preset_major"], 1)
         self.assertEqual(self.mapping["to_preset_major"], 2)
-        self.assertEqual(self.mapping["status"], "CONTRACT_ONLY")
+        self.assertEqual(self.mapping["status"], "EXECUTABLE_NATIVE_RENAME")
+        self.assertEqual(
+            self.mapping["migration_strategy"], "NATIVE_IN_PLACE_RENAME"
+        )
 
     def test_legacy_mapping_is_complete_unique_and_one_to_one(self) -> None:
         legacy = [item["legacy_profile"] for item in self.mappings]
@@ -276,9 +279,15 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
         self.assertIn("repository: ~/projects/product-a", self.reference)
 
     def test_migration_contract_prohibits_secret_and_live_state_copy(self) -> None:
-        self.assertEqual(self.mapping["legacy_retirement"], "NOT_AUTHORIZED")
+        self.assertEqual(
+            self.mapping["legacy_retirement"],
+            "NOT_REQUIRED_AFTER_SUCCESSFUL_RENAME",
+        )
         self.assertEqual(
             self.mapping["automatic_live_state_copy"], "PROHIBITED"
+        )
+        self.assertEqual(
+            self.mapping["native_in_place_state_preservation"], "REQUIRED"
         )
         prohibited = set(self.mapping["prohibited_automatic_copy"])
         self.assertTrue(
@@ -302,7 +311,10 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
             for item in self.mappings
             if item["target_profile"] == "agent-orchestrator"
         )
-        self.assertEqual(orchestrator_mapping["gateway_transition"], "MANUAL_REBIND")
+        self.assertEqual(
+            orchestrator_mapping["gateway_transition"],
+            "PRESERVE_STOPPED_IN_PLACE",
+        )
 
 
 if __name__ == "__main__":
