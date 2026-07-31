@@ -12,6 +12,26 @@ REPOSITORY_ROOT = TEST_FILE.parents[3]
 PRESET_PATH = PACKAGE_ROOT / "assets" / "presets" / "native-ai-engineering.json"
 INVENTORY_PATH = REPOSITORY_ROOT / "docs" / "capability-inventory.json"
 
+TARGET_IDS = [
+    "agent-orchestrator",
+    "agent-product",
+    "agent-architecture",
+    "agent-design",
+    "agent-frontend",
+    "agent-backend",
+    "agent-review",
+]
+
+LEGACY_IDS = [
+    "engineering-orchestrator",
+    "product-development",
+    "solution-architecture",
+    "product-design",
+    "frontend-engineering",
+    "backend-platform",
+    "quality-review",
+]
+
 
 class NativePresetSkillMappingTests(unittest.TestCase):
     @classmethod
@@ -29,22 +49,39 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             item["name"] for item in cls.inventory["items"]
         }
 
-    def test_preset_version_and_topology_are_explicit(self) -> None:
-        self.assertEqual(self.preset["version"], "1.1.0")
+    def test_preset_v2_identity_and_order_are_explicit(self) -> None:
+        self.assertEqual(self.preset["version"], "2.0.0")
+        self.assertEqual(self.preset["identity_generation"], 2)
         self.assertEqual(self.preset["topology"], "orchestrator_with_specialists")
-        self.assertEqual(self.preset["orchestrator"], "engineering-orchestrator")
+        self.assertEqual(self.preset["orchestrator"], "agent-orchestrator")
         self.assertEqual(
-            set(self.profiles),
-            {
-                "engineering-orchestrator",
-                "product-development",
-                "solution-architecture",
-                "product-design",
-                "frontend-engineering",
-                "backend-platform",
-                "quality-review",
-            },
+            [profile["id"] for profile in self.preset["profiles"]],
+            TARGET_IDS,
         )
+        self.assertEqual(self.preset["legacy_profile_ids"], LEGACY_IDS)
+        self.assertEqual(
+            self.preset["mixed_identity_policy"],
+            "block_outside_migration",
+        )
+        self.assertTrue(set(TARGET_IDS).isdisjoint(LEGACY_IDS))
+
+    def test_only_orchestrator_is_gateway_eligible(self) -> None:
+        gateways = [
+            profile["id"]
+            for profile in self.preset["profiles"]
+            if profile["gateway"] == "eligible"
+        ]
+        self.assertEqual(gateways, ["agent-orchestrator"])
+        self.assertEqual(
+            self.profiles["agent-orchestrator"]["worker_mode"],
+            "user_facing_front_door",
+        )
+        for profile_id in TARGET_IDS[1:]:
+            self.assertEqual(self.profiles[profile_id]["gateway"], "none")
+            self.assertEqual(
+                self.profiles[profile_id]["worker_mode"],
+                "headless_on_demand",
+            )
 
     def test_every_mapped_capability_is_catalog_resolvable(self) -> None:
         mapped = set().union(*self.skill_sets.values())
@@ -70,7 +107,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 "task-continuity",
                 "delivery-work-breakdown",
                 "skill-eval",
-            }.issubset(self.skill_sets["engineering-orchestrator"])
+            }.issubset(self.skill_sets["agent-orchestrator"])
         )
 
     def test_product_profile_has_planning_and_acceptance_capabilities(self) -> None:
@@ -85,7 +122,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 "delivery-work-breakdown",
                 "acceptance-testing",
                 "decision-provenance",
-            }.issubset(self.skill_sets["product-development"])
+            }.issubset(self.skill_sets["agent-product"])
         )
 
     def test_architecture_profile_has_boundary_and_contract_capabilities(self) -> None:
@@ -111,10 +148,10 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 "observability-design",
                 "architecture-review",
                 "decision-provenance",
-            }.issubset(self.skill_sets["solution-architecture"])
+            }.issubset(self.skill_sets["agent-architecture"])
         )
 
-    def test_design_profile_has_experience_and_design_system_capabilities(self) -> None:
+    def test_design_profile_has_experience_capabilities(self) -> None:
         self.assertTrue(
             {
                 "master-design",
@@ -132,7 +169,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 "adaptive-component-design",
                 "content-strategy",
                 "decision-provenance",
-            }.issubset(self.skill_sets["product-design"])
+            }.issubset(self.skill_sets["agent-design"])
         )
 
     def test_implementation_profiles_have_delivery_and_quality_capabilities(self) -> None:
@@ -149,9 +186,8 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             "systematic-debugging",
             "git-workflow",
         }
-        self.assertTrue(shared.issubset(self.skill_sets["frontend-engineering"]))
-        self.assertTrue(shared.issubset(self.skill_sets["backend-platform"]))
-
+        self.assertTrue(shared.issubset(self.skill_sets["agent-frontend"]))
+        self.assertTrue(shared.issubset(self.skill_sets["agent-backend"]))
         self.assertTrue(
             {
                 "ui-components",
@@ -160,7 +196,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 "accessibility",
                 "responsiveness",
                 "web-performance",
-            }.issubset(self.skill_sets["frontend-engineering"])
+            }.issubset(self.skill_sets["agent-frontend"])
         )
         self.assertTrue(
             {
@@ -174,11 +210,11 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 "event-driven-design",
                 "observability-design",
                 "resilience-engineering",
-            }.issubset(self.skill_sets["backend-platform"])
+            }.issubset(self.skill_sets["agent-backend"])
         )
 
-    def test_quality_profile_has_independent_verification_capabilities(self) -> None:
-        quality = self.skill_sets["quality-review"]
+    def test_review_profile_has_verification_without_primary_implementation(self) -> None:
+        review = self.skill_sets["agent-review"]
         self.assertTrue(
             {
                 "acceptance-testing",
@@ -192,10 +228,10 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 "web-performance",
                 "decision-provenance",
                 "skill-eval",
-            }.issubset(quality)
+            }.issubset(review)
         )
         self.assertTrue(
-            quality.isdisjoint(
+            review.isdisjoint(
                 {
                     "new-feature-workflow",
                     "bugfix-workflow",
@@ -208,7 +244,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             )
         )
 
-    def test_profile_authority_boundaries_are_not_flattened(self) -> None:
+    def test_authority_boundaries_are_not_flattened(self) -> None:
         routing_capabilities = {
             "hermes-agent-fleet-bootstrap",
             "hermes-profile-bootstrap",
@@ -216,7 +252,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             "role-switcher",
         }
         for profile_id, skills in self.skill_sets.items():
-            if profile_id == "engineering-orchestrator":
+            if profile_id == "agent-orchestrator":
                 continue
             self.assertTrue(
                 skills.isdisjoint(routing_capabilities),
@@ -232,7 +268,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             "experiment-design",
         }
         for profile_id, skills in self.skill_sets.items():
-            if profile_id == "product-development":
+            if profile_id == "agent-product":
                 continue
             self.assertTrue(
                 skills.isdisjoint(product_authority),
@@ -241,6 +277,24 @@ class NativePresetSkillMappingTests(unittest.TestCase):
 
         all_mapped = set().union(*self.skill_sets.values())
         self.assertNotIn("deployment-workflow", all_mapped)
+
+    def test_profile_ids_are_product_and_framework_neutral(self) -> None:
+        forbidden_tokens = {
+            "visualmate",
+            "product-a",
+            "react",
+            "nextjs",
+            "tailwind",
+            "tdd",
+            "ddd",
+            "solid",
+        }
+        for profile_id in self.profiles:
+            self.assertTrue(profile_id.startswith("agent-"))
+            self.assertTrue(
+                all(token not in profile_id for token in forbidden_tokens),
+                profile_id,
+            )
 
     def test_skill_manifests_are_curated_not_full_catalog_copies(self) -> None:
         catalog_size = len(self.catalog_names)
