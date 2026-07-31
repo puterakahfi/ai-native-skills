@@ -11,6 +11,10 @@ case "${1:-}" in
     shift
     exec bash "$SCRIPT_DIR/hermes-fleet-migrate" "$@"
     ;;
+  validate-runtime)
+    shift
+    exec bash "$SCRIPT_DIR/hermes-fleet-runtime-acceptance" "$@"
+    ;;
 esac
 
 exec python3 "$SCRIPT_DIR/hermes_fleet.py" "$@"

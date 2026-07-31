@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.0.0",
+  "fleet_id": "native-ai-engineering",
+  "identity_state": "TARGET_ONLY_COMPLETE",
+  "profiles": [
+    {
+      "id": "agent-orchestrator",
+      "gateway": "eligible",
+      "worker_mode": "user_facing_front_door"
+    },
+    {
+      "id": "agent-product",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-architecture",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-design",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-frontend",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-backend",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-review",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    }
+  ],
+  "migration": {
+    "readiness": "READY",
+    "identity_state": "TARGET_ONLY_COMPLETE",
+    "credentials_copied": false,
+    "live_state_copied": false,
+    "gateway_started": false
+  },
+  "model_sync": {
+    "readiness": "READY",
+    "identity_state": "TARGET_ONLY_COMPLETE",
+    "source_profile": "agent-orchestrator",
+    "target_profiles": [
+      "agent-product",
+      "agent-architecture",
+      "agent-design",
+      "agent-frontend",
+      "agent-backend",
+      "agent-review"
+    ],
+    "credentials_copied": false
+  },
+  "scenarios": [
+    {
+      "id": "planning-only",
+      "kind": "planning",
+      "entrypoint": "sanitized_fixture",
+      "task_id": "task-plan-001",
+      "selected_profiles": [
+        "agent-product",
+        "agent-architecture"
+      ],
+      "dependencies": [
+        {
+          "from": "agent-product",
+          "to": "agent-architecture",
+          "condition": "bounded product intent"
+        }
+      ],
+      "handoffs": [
+        {
+          "from": "agent-product",
+          "to": "agent-architecture",
+          "artifact": "product requirements"
+        }
+      ],
+      "outputs": [
+        "bounded PRD",
+        "architecture options"
+      ],
+      "review": {
+        "required": false,
+        "verdict": "NOT_REQUIRED"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "backend-change",
+      "kind": "backend",
+      "entrypoint": "sanitized_fixture",
+      "task_id": "task-backend-001",
+      "selected_profiles": [
+        "agent-backend",
+        "agent-review"
+      ],
+      "dependencies": [
+        {
+          "from": "agent-backend",
+          "to": "agent-review",
+          "condition": "implementation evidence available"
+        }
+      ],
+      "handoffs": [
+        {
+          "from": "agent-backend",
+          "to": "agent-review",
+          "artifact": "implementation and test evidence"
+        }
+      ],
+      "outputs": [
+        "backend implementation receipt",
+        "review verdict"
+      ],
+      "review": {
+        "required": true,
+        "profile": "agent-review",
+        "verdict": "PASS_WITH_LIMITATIONS"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "ui-change",
+      "kind": "ui",
+      "entrypoint": "sanitized_fixture",
+      "task_id": "task-ui-001",
+      "selected_profiles": [
+        "agent-design",
+        "agent-frontend",
+        "agent-review"
+      ],
+      "dependencies": [
+        {
+          "from": "agent-design",
+          "to": "agent-frontend",
+          "condition": "design acceptance criteria available"
+        },
+        {
+          "from": "agent-frontend",
+          "to": "agent-review",
+          "condition": "rendered and test evidence available"
+        }
+      ],
+      "handoffs": [
+        {
+          "from": "agent-design",
+          "to": "agent-frontend",
+          "artifact": "experience contract"
+        },
+        {
+          "from": "agent-frontend",
+          "to": "agent-review",
+          "artifact": "rendered implementation evidence"
+        }
+      ],
+      "outputs": [
+        "design acceptance contract",
+        "frontend implementation receipt",
+        "review verdict"
+      ],
+      "review": {
+        "required": true,
+        "profile": "agent-review",
+        "verdict": "PASS_WITH_LIMITATIONS"
+      },
+      "result": "PASS"
+    }
+  ],
+  "review_independence": {
+    "status": "LIMITED_SHARED_RUNTIME",
+    "limitations": [
+      "separate Hermes profile but shared host and evidence harness"
+    ]
+  },
+  "telegram": {
+    "evidence_level": "NOT_RUN",
+    "configured_profile": "NOT_CONFIGURED",
+    "gateway_started": false,
+    "message_received": false,
+    "response_returned": false,
+    "credential_values_redacted": true,
+    "legacy_gateway_running": false
+  },
+  "model_driven_workers": {
+    "evidence_level": "NOT_RUN",
+    "specialist_execution_observed": false,
+    "reason": "no provider-backed runtime was supplied to repository acceptance"
+  }
+}

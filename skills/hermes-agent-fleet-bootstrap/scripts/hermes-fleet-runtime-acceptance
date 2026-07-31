@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+RUNNER="$SCRIPT_DIR/hermes_fleet_runtime_acceptance.py"
+
+if [[ ! -f "$RUNNER" ]]; then
+  echo "ERROR: runtime acceptance runner is missing: $RUNNER" >&2
+  exit 3
+fi
+
+exec python3 "$RUNNER" "$@"
