@@ -14,7 +14,8 @@ contract_coverage_inventory:
       facade: 4
     coverage:
       contract_backed_v2: 26
-      legacy_contract_backed: 73
+      invalid: 2
+      legacy_contract_backed: 71
       reviewed_exemption: 23
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
@@ -1764,7 +1765,7 @@ contract_coverage_inventory:
     version: 0.1.0
     implements: contracts/workflows/software-testing.contract.yaml
     contract_version: ^0.1.0
-    contract_path_exists: true
+    contract_path_exists: false
     legacy_boundary:
       covers:
       - testing_risk_discovery_and_strategy_composition
@@ -1780,8 +1781,9 @@ contract_coverage_inventory:
       - merge_release_or_production_authorization
     conformance_path: null
     exemption_path: null
-    classification: legacy_contract_backed
-    errors: []
+    classification: invalid
+    errors:
+    - contract_path_missing
   - id: solid-design
     path: skills/solid-design/SKILL.md
     type: skill
@@ -1879,7 +1881,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/skills/context/task-continuity.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: false
     legacy_boundary:
       covers:
       - source_backed_task_checkpoint_creation
@@ -1904,8 +1906,9 @@ contract_coverage_inventory:
       - product_specific_source_priority_policy
     conformance_path: null
     exemption_path: null
-    classification: legacy_contract_backed
-    errors: []
+    classification: invalid
+    errors:
+    - contract_path_missing
   - id: technical-debt-governance
     path: skills/technical-debt-governance/SKILL.md
     type: skill

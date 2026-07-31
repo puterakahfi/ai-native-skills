@@ -156,6 +156,7 @@ The executors do not invent topology, provision credentials, start gateways, del
 - Load `references/catalog-migration-and-idempotency.md` for capability resolution, existing-profile audit, migration planning, dry-run, and idempotency checks.
 - Load `references/one-command-cli.md` before deterministic bootstrap, reconcile, or audit execution.
 - Load `references/model-policy-sync.md` before model-policy synchronization.
+- Load `references/auto-routing-contract.md` before planning task-time auto-routing, dispatching durable specialist workers, or auditing routing/dispatch/review/synthesis evidence.
 - Load `assets/profile-identity-maps/native-ai-engineering-v1-to-v2.json` when planning legacy identity migration.
 - Load `assets/*.template.yaml` only when producing machine-readable manifests.
 - Load `assets/presets/native-ai-engineering.json` and other `assets/presets/*.json` only after the selected preset and mutation authority are explicit.
