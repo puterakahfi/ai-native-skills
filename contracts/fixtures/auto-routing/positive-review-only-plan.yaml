@@ -1,0 +1,37 @@
+# Positive fixture — review-only request
+# Illustrates: no implementation workers, agent-review as sole worker,
+# agent-orchestrator as reviewer for the review report itself.
+# Demonstrates: not every task invokes every specialist.
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-review-only-pr-001
+  created_at: "2026-07-31T10:00:00Z"
+  origin:
+    channel: desktop
+    session_id: sess-orchestrator-review-001
+    user_ref: kahfi
+  orchestrator_action:
+    kind: delegated_to_specialist
+  primary_workflow: code-review-workflow
+  workers:
+    - worker_id: worker-review-01
+      profile: agent-review
+      responsibility: >
+        Review the provided code/PR for correctness, accessibility, type safety,
+        and adherence to project conventions. Produce structured review findings.
+      expected_outputs:
+        - review-report.md
+  reviewers:
+    - reviewer_id: reviewer-report-01
+      profile: agent-orchestrator
+      scope:
+        - review-completeness
+        - findings-actionability
+      independence_target: VERIFIED
+      reviews_worker_ids:
+        - worker-review-01
+  review_policy:
+    allow_limited_independence: false
+    require_reviewer_per_worker: true
+  status: planned

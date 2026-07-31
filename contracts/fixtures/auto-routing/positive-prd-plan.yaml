@@ -1,0 +1,49 @@
+# Positive fixture — PRD / product planning request
+# Illustrates: product-only routing, agent-product as sole worker,
+# agent-architecture conditionally added, agent-review as independent reviewer.
+
+plan:
+  schema_version: "1.0"
+  plan_id: plan-prd-new-feature-001
+  created_at: "2026-07-31T10:00:00Z"
+  origin:
+    channel: desktop
+    session_id: sess-orchestrator-prd-001
+    user_ref: kahfi
+  orchestrator_action:
+    kind: delegated_to_specialist
+  primary_workflow: spec-workflow
+  workers:
+    - worker_id: worker-product-01
+      profile: agent-product
+      responsibility: >
+        Define product requirements, acceptance criteria, and success metrics
+        for the requested feature. Produce a PRD with user stories and scope.
+      expected_outputs:
+        - prd-draft.md
+    - worker_id: worker-architecture-01
+      profile: agent-architecture
+      responsibility: >
+        Review PRD for technical feasibility, identify architecture constraints,
+        and propose high-level solution approach.
+      depends_on:
+        - worker-product-01
+      inputs:
+        - prd-draft.md
+      expected_outputs:
+        - architecture-notes.md
+  reviewers:
+    - reviewer_id: reviewer-prd-01
+      profile: agent-review
+      scope:
+        - prd-completeness
+        - acceptance-criteria-clarity
+        - scope-boundaries
+      independence_target: VERIFIED
+      reviews_worker_ids:
+        - worker-product-01
+        - worker-architecture-01
+  review_policy:
+    allow_limited_independence: false
+    require_reviewer_per_worker: true
+  status: planned

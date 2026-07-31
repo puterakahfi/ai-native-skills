@@ -1,0 +1,23 @@
+# Negative fixture — ambiguous request
+# Illustrates: planner BLOCKED because request intent is unclear.
+# No plan is emitted. Orchestrator must ask for clarification first.
+
+request_context:
+  user_request: "improve the thing"
+  product_context: NOT_VERIFIED
+  repository_context: NOT_VERIFIED
+
+planner_output:
+  status: blocked
+  blocking_reason: >
+    Request "improve the thing" does not identify: (1) what artifact or system
+    to improve, (2) what dimension of improvement is desired (performance,
+    accessibility, design, architecture, etc.), (3) product or repository context.
+    workflow-router cannot resolve exactly one primary_workflow without at least
+    one of these. Ambiguity defaults to clarification, not delegation.
+  clarification_required:
+    - What artifact, feature, or system should be improved?
+    - What dimension: performance, accessibility, design, architecture, code quality?
+    - Is there a repository, PR, or file to scope this to?
+  plan: null
+  plan_only: true
