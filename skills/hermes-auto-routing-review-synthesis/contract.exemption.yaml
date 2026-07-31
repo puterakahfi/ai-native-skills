@@ -1,0 +1,31 @@
+contract_exemption:
+  schema_version: 1.0.0
+  artifact:
+    id: hermes-auto-routing-review-synthesis
+    path: skills/hermes-auto-routing-review-synthesis/SKILL.md
+    type: skill
+  classification: provider_specific
+  owner: puterakahfi
+  reason: >
+    Review dispatch, synthesis, and origin-return receipts reference Hermes-specific JSON schemas (review-receipt, synthesis-receipt, origin-return-receipt). No cross-runtime equivalents exist. Schema paths in implements are local validators, not cross-runtime contracts.
+  scope:
+    - provider_specific_execution
+    - runtime_schema_reference
+  review_date: "2027-01-31"
+  evidence_refs:
+    - kind: github_issue
+      ref: puterakahfi/ai-native-skills#309
+    - kind: executable_source
+      ref: skills/hermes-auto-routing-review-synthesis/SKILL.md
+  revisit:
+    blocking_issue: null
+    triggers:
+      - A second runtime adapter implements equivalent review+synthesis receipts.
+      - Receipt schemas promoted to ai-native-core with cross-runtime semantics.
+  prohibited_claims:
+    - core_contract_conformance
+    - behavioral_verification
+    - runtime_acceptance
+    - product_acceptance
+    - approval_or_authorization
+  status: active

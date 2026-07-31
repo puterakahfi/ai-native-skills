@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 106,
+    "skill": 107,
     "workflow": 13,
     "meta-skill": 7,
-    "total": 126
+    "total": 127
   },
   "items": [
     {
@@ -307,6 +307,11 @@
       "name": "hermes-auto-routing-review-synthesis",
       "type": "skill",
       "path": "skills/hermes-auto-routing-review-synthesis/SKILL.md"
+    },
+    {
+      "name": "hermes-product-intake",
+      "type": "skill",
+      "path": "skills/hermes-product-intake/SKILL.md"
     },
     {
       "name": "hermes-profile-bootstrap",

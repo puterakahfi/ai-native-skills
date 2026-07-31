@@ -4,10 +4,10 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 126
+    executable_artifacts: 127
     official_types:
       meta-skill: 7
-      skill: 106
+      skill: 107
       workflow: 13
     patterns:
       domain-reviewer: 1
@@ -17,6 +17,7 @@ contract_coverage_inventory:
       invalid: 4
       legacy_contract_backed: 73
       reviewed_exemption: 23
+      unowned: 1
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -1075,7 +1076,7 @@ contract_coverage_inventory:
       - origin_return
       - skill_sync
     conformance_path: null
-    exemption_path: null
+    exemption_path: skills/hermes-auto-routing-dispatch/contract.exemption.yaml
     classification: invalid
     errors:
     - contract_path_missing
@@ -1106,7 +1107,7 @@ contract_coverage_inventory:
       - skill_sync
       - catalog_resolution
     conformance_path: null
-    exemption_path: null
+    exemption_path: skills/hermes-auto-routing-planner/contract.exemption.yaml
     classification: invalid
     errors:
     - contract_path_missing
@@ -1134,11 +1135,38 @@ contract_coverage_inventory:
       - skill_sync
       - catalog_resolution
     conformance_path: null
-    exemption_path: null
+    exemption_path: skills/hermes-auto-routing-review-synthesis/contract.exemption.yaml
     classification: invalid
     errors:
     - contract_path_missing
     - contract_version_missing
+  - id: hermes-product-intake
+    path: skills/hermes-product-intake/SKILL.md
+    type: skill
+    patterns: []
+    version: 1.0.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers:
+      - jira_config_detection
+      - jira_epic_story_task_creation
+      - github_issue_creation
+      - hermes_kanban_fallback
+      - intake_gate_enforcement
+      - engineering_handoff_emission
+      delegates:
+      - investigation_logic
+      - prd_depth_determination
+      - task_sizing
+      - prd_authoring
+      - delivery_decomposition
+      - engineering_execution
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
   - id: hermes-profile-bootstrap
     path: skills/hermes-profile-bootstrap/SKILL.md
     type: skill
@@ -1517,7 +1545,7 @@ contract_coverage_inventory:
       - engineering_routing
       - implementation
     conformance_path: null
-    exemption_path: null
+    exemption_path: skills/product-intake/contract.exemption.yaml
     classification: invalid
     errors:
     - contract_path_missing
@@ -2208,7 +2236,7 @@ contract_coverage_inventory:
     path: skills/workflow-router/SKILL.md
     type: meta-skill
     patterns: []
-    version: 1.9.0
+    version: 2.0.0
     implements: contracts/skills/meta/workflow-router.contract.yaml
     contract_version: ~0.2
     contract_path_exists: true
