@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 107,
+    "skill": 108,
     "workflow": 13,
     "meta-skill": 7,
-    "total": 127
+    "total": 128
   },
   "items": [
     {
@@ -317,6 +317,11 @@
       "name": "hermes-profile-bootstrap",
       "type": "skill",
       "path": "skills/hermes-profile-bootstrap/SKILL.md"
+    },
+    {
+      "name": "hermes-task-management-workflow",
+      "type": "skill",
+      "path": "skills/hermes-task-management-workflow/SKILL.md"
     },
     {
       "name": "implementation-context-discovery",
