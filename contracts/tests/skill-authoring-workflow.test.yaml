@@ -1,7 +1,7 @@
 skill_test:
   skill: skill-authoring-workflow
-  version: "1.1.0"
-  description: Verify intentional skill package operations use the canonical policy-backed authoring lifecycle without taking over health, evolution, or behavioral evaluation ownership.
+  version: "1.2.0"
+  description: Verify intentional skill package operations use the canonical Skill Development Workflow, complete pre-write gates, and preserve health, evolution, and behavioral-evaluation ownership.
   cases:
     - id: create-new-skill-uses-authoring-lifecycle
       description: A new reusable capability is created through the authoring lifecycle and centralized behavioral contract.
@@ -74,3 +74,97 @@ skill_test:
         - package compliance proves applied behavior
       quality_gates_tested:
         - behavioral_evaluation_owner_is_preserved
+
+    - id: missing-requirements-packet-blocks-writing
+      description: Skill implementation cannot start until the complete requirements and testing packet is attributable.
+      trigger: Create a new reusable incident-summary skill now. The name and rough goal are known, but scope exclusions, related skills, anti-behaviors, acceptance criteria, rollout targets, and testing plan have not been decided.
+      must_contain:
+        - skill_development_packet
+        - INCOMPLETE
+        - "mutation_allowed: false"
+        - target_name
+        - references
+        - expected_behaviors
+        - anti_behaviors
+        - rollout_integration_targets
+        - testing_plan
+      must_not_contain:
+        - start writing SKILL.md
+        - fill the missing fields after implementation
+      sequence_required:
+        - pattern: skill_development_packet
+          must_come_before: first authored-file write
+      quality_gates_tested:
+        - complete_requirements_packet_precedes_implementation
+        - missing_packet_fails_closed
+
+    - id: missing-branch-gate-blocks-editing
+      description: Assignment and ready status do not replace a verified branch/worktree gate.
+      trigger: This Kanban card is assigned and already ready. Update the skill package in the current checkout, but no base branch, working branch, PR target, or worktree strategy has been recorded.
+      must_contain:
+        - hermes-task-management-workflow
+        - git-workflow
+        - BLOCKED
+        - "mutation_allowed: false"
+        - base_branch
+        - working_branch
+        - pr_target
+      must_not_contain:
+        - ready means editing is authorized
+        - infer main from the repository default
+      sequence_required:
+        - pattern: git topology evidence
+          must_come_before: edit the skill package
+      quality_gates_tested:
+        - assignment_is_not_execution_permission
+        - branch_worktree_evidence_precedes_mutation
+
+    - id: missing-tests-blocks-skill-completion
+      description: A pre-write test plan and applicable executable tests are mandatory when a package contains reusable scripts.
+      trigger: Add a reusable parser script to this skill and finish the package. Package validation passes, but no executable test plan, malformed-input cases, or package-local tests were prepared.
+      must_contain:
+        - testing_plan
+        - executable tests
+        - centralized behavioral contract
+        - FAIL
+        - approved exemption
+      must_not_contain:
+        - package validation is sufficient
+        - tests can be planned after completion
+      sequence_required:
+        - pattern: testing_plan
+          must_come_before: first authored-file write
+      quality_gates_tested:
+        - test_plan_precedes_writing
+        - scripts_require_executable_tests_or_exemption
+
+    - id: missing-rollout-plan-blocks-base-skill-completion
+      description: Base or fleet capabilities require explicit rollout targets and profile-level verification.
+      trigger: Update this shared base workflow and declare it released across the Hermes fleet. The repository package validates, but no profile, bundle, default-skill, distribution target, or runtime injection check is recorded.
+      must_contain:
+        - rollout_integration_targets
+        - profile_and_rollout_verification
+        - NOT_VERIFIED
+        - profile-level verification
+      must_not_contain:
+        - repository validation proves fleet rollout
+        - available in one profile means fleet complete
+      quality_gates_tested:
+        - base_fleet_rollout_targets_are_required
+        - package_validation_does_not_prove_runtime_distribution
+
+    - id: loaded-but-not-applied-is-non-pass
+      description: Loading the workflow without producing and sequencing its required artifacts is ghost application.
+      trigger: Review a saved implementation run. It says skill-authoring-workflow was loaded, then immediately edited SKILL.md; there is no requirements packet, source-discovery record, readiness receipt, git topology evidence, pre-write test plan, or first-mutation ordering evidence.
+      must_contain:
+        - workflow_application_evidence
+        - GHOST
+        - loaded is not applied
+        - first_mutation_after_gates_ref
+        - skill-eval
+      must_not_contain:
+        - "workflow_loaded: true proves APPLIED"
+        - green validation repairs missing sequence evidence
+      quality_gates_tested:
+        - workflow_load_receipt_is_not_application_evidence
+        - application_requires_pre_write_phase_artifacts
