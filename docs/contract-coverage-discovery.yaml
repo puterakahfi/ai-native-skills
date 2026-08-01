@@ -4,20 +4,20 @@ contract_coverage_inventory:
   issue: 26
   core_repository: puterakahfi/ai-native-core
   summary:
-    executable_artifacts: 127
+    executable_artifacts: 128
     official_types:
       meta-skill: 7
-      skill: 107
+      skill: 108
       workflow: 13
     patterns:
       domain-reviewer: 1
-      facade: 4
+      facade: 5
     coverage:
       contract_backed_v2: 26
       invalid: 4
       legacy_contract_backed: 73
       reviewed_exemption: 23
-      unowned: 1
+      unowned: 2
     compatibility_manifests: 0
     compatibility_manifests_with_errors: 0
     duplicate_compatibility_ids: 0
@@ -1182,6 +1182,48 @@ contract_coverage_inventory:
     exemption_path: null
     classification: legacy_contract_backed
     errors: []
+  - id: hermes-task-management-workflow
+    path: skills/hermes-task-management-workflow/SKILL.md
+    type: skill
+    patterns:
+    - facade
+    version: 1.5.0
+    implements: null
+    contract_version: null
+    contract_path_exists: null
+    legacy_boundary:
+      covers:
+      - project_board_selection
+      - parent_outcome_card_contract
+      - task_routing_record
+      - agent_assignment_decision
+      - assignment_readiness_separation
+      - repository_mutation_gate
+      - gateway_dispatch_readiness
+      - idempotent_dependency_pipeline
+      - duplicate_overlap_control
+      - scope_change_control
+      - cancel_supersede_followup
+      - agent_to_agent_progression
+      - external_approver_notification
+      - execution_observability
+      - failure_recovery
+      - board_lifecycle_gates
+      - evidence_backed_parent_completion
+      - external_tracker_sync_gate
+      delegates:
+      - hermes_runtime_mutation
+      - primary_lifecycle_execution
+      - product_scope_and_acceptance_definition
+      - delivery_decomposition
+      - implementation
+      - domain_review
+      - deployment
+      - external_tracker_mutation
+    conformance_path: null
+    exemption_path: null
+    classification: unowned
+    errors: []
   - id: implementation-context-discovery
     path: skills/implementation-context-discovery/SKILL.md
     type: skill
@@ -1833,7 +1875,7 @@ contract_coverage_inventory:
     path: skills/skill-authoring-workflow/SKILL.md
     type: workflow
     patterns: []
-    version: 1.1.0
+    version: 1.2.0
     implements: null
     contract_version: null
     contract_path_exists: null
