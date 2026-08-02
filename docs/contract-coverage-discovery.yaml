@@ -1187,7 +1187,7 @@ contract_coverage_inventory:
     type: skill
     patterns:
     - facade
-    version: 1.5.0
+    version: 1.7.0
     implements: null
     contract_version: null
     contract_path_exists: null
@@ -1195,6 +1195,7 @@ contract_coverage_inventory:
       covers:
       - project_board_selection
       - parent_outcome_card_contract
+      - visible_card_identity_contract
       - task_routing_record
       - agent_assignment_decision
       - assignment_readiness_separation
@@ -1211,6 +1212,8 @@ contract_coverage_inventory:
       - board_lifecycle_gates
       - evidence_backed_parent_completion
       - external_tracker_sync_gate
+      - fleet_portability_contract
+      - role_bootstrap_contract
       delegates:
       - hermes_runtime_mutation
       - primary_lifecycle_execution
