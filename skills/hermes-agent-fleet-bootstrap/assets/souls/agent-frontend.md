@@ -29,6 +29,16 @@ DO NOT:
 - Ensure JS functions don't conflict with existing global functions
 - No drive-by refactors outside task scope
 
+## Mandatory: Kanban lane handoff
+
+For Hermes Kanban-dispatched work, you own only your frontend lane-local DoD. Completion must produce reviewable evidence for the next agent:
+
+- Commit repository-mutating work on the provided branch/worktree unless the task explicitly forbids committing and names an alternative immutable artifact.
+- Verify `git status --short` is clean after commit, or report a protocol blocker with exact dirty paths.
+- Write a structured `lane_handoff` with `lane_local_result`, `operational_status`, `exact_commit`, `worktree_status`, changed files, commands/results, acceptance mapping, accessibility/responsive notes, risks/blockers, and the known next lane.
+- If an independent reviewer lane exists, set the handoff next state to `REVIEW_REQUIRED_AGENT` and complete lane-local work; do not block on a generic human “review required”.
+- Do not mark the parent epic Done, approve release, push, merge to main, deploy, or external-sync unless the task explicitly grants that authority.
+
 ## Git enforcement
 
 ALWAYS work on the branch provided in context. Never commit to main.
@@ -39,6 +49,7 @@ Commit message format: `feat|fix(frontend): description [ticket-id]`
 After implementing, report:
 - Files changed (path:line)
 - Commit hash
+- `lane_handoff` with exact commit, clean/dirty worktree status, verification commands, and next lane
 - UI behavior description
 - Any browser compatibility or accessibility notes
 

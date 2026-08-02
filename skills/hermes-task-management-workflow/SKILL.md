@@ -3,13 +3,13 @@ name: hermes-task-management-workflow
 description: Use when chat work must become durable project-board execution with orchestrator routing and evidence-backed acceptance. Do not use it as a replacement for product, implementation, review, deployment, or external-tracker workflows.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.5.0
+  ai-native-skills.version: 1.7.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.pattern: facade
   ai-native-skills.requires: "workflow-router role-switcher delivery-work-breakdown git-workflow product-development-workflow new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow"
   ai-native-skills.related_skills: '["hermes-kanban-orchestration","workflow-router","role-switcher","delivery-work-breakdown","git-workflow","product-development-workflow","new-feature-workflow","bugfix-workflow","code-review-workflow","deployment-workflow","spike","documentation-assurance"]'
-  ai-native-skills.boundary.covers: '["project_board_selection","parent_outcome_card_contract","task_routing_record","agent_assignment_decision","assignment_readiness_separation","repository_mutation_gate","gateway_dispatch_readiness","idempotent_dependency_pipeline","duplicate_overlap_control","scope_change_control","cancel_supersede_followup","agent_to_agent_progression","external_approver_notification","execution_observability","failure_recovery","board_lifecycle_gates","evidence_backed_parent_completion","external_tracker_sync_gate"]'
+  ai-native-skills.boundary.covers: '["project_board_selection","parent_outcome_card_contract","visible_card_identity_contract","task_routing_record","agent_assignment_decision","assignment_readiness_separation","repository_mutation_gate","gateway_dispatch_readiness","idempotent_dependency_pipeline","duplicate_overlap_control","scope_change_control","cancel_supersede_followup","agent_to_agent_progression","external_approver_notification","execution_observability","failure_recovery","board_lifecycle_gates","evidence_backed_parent_completion","external_tracker_sync_gate","fleet_portability_contract","role_bootstrap_contract"]'
   ai-native-skills.boundary.delegates: '["hermes_runtime_mutation","primary_lifecycle_execution","product_scope_and_acceptance_definition","delivery_decomposition","implementation","domain_review","deployment","external_tracker_mutation"]'
 ---
 
@@ -189,6 +189,41 @@ otherwise
 
 Do not use title size, file count, estimated duration, or the word “task” as classification evidence. A small release-authority outcome may still be an epic; a large but truly bounded one-owner analysis may be a `single_task`. Parent external references preserve provenance but do not replace the Hermes `parent_task_id` when an internal parent exists.
 
+## Visible card identity and title rules
+
+Because Hermes Kanban cards are intentionally simple, every created or reconciled card must expose its hierarchy in the visible title and durable routing metadata. Do not rely on prose descriptions, chat history, column position, or assignee names to distinguish epic parents from subtasks.
+
+Use exactly one of these title families:
+
+| Hierarchy kind | Required visible title format | Required relationship fields | Initial owner and status |
+|---|---|---|---|
+| `epic` | `[EPIC] <project-or-product>: <outcome>` | `parent_task_id: null`, `owns_overall_dod: true`, `requires_decomposition: true`, `lane_role: null`, `terminal_state_policy.done_requires: full_delivery_chain` | `agent-orchestrator`; `triage` until decomposition and gates pass |
+| `subtask` | `[SUBTASK][<parent_task_id>][<lane_role>] <bounded lane result>` | `parent_task_id: <epic task id>`, `owns_overall_dod: false`, `requires_decomposition: false`, `lane_role: <plan|design|engineering|test|verify|review|product_acceptance|release|sync>`, `terminal_state_policy.done_requires: lane_local_dod` | verified lane owner; `todo` or `blocked` until dependencies pass |
+| `single_task` | `[TASK] <project-or-product>: <bounded complete outcome>` | `parent_task_id: null`, `owns_overall_dod: true`, `requires_decomposition: false`, `lane_role: null`, `terminal_state_policy.done_requires: single_task_dod` | one verified owner; status follows readiness gate |
+
+Every card must also carry a compact identity block in metadata, labels, or the task body according to the active Kanban protocol:
+
+```yaml
+card_identity:
+  kind: <epic | subtask | single_task>
+  parent_task_id: <task id | null>
+  parent_title: <parent title | null>
+  lane_role: <plan | design | engineering | test | verify | review | product_acceptance | release | sync | null>
+  pipeline_key: <stable project-and-outcome key>
+  lane_identity: <stable lane identity | null>
+  idempotency_key: <pipeline key, or pipeline_key:lane:lane_identity>
+  title_prefix: <[EPIC] | [SUBTASK][parent][lane] | [TASK]>
+```
+
+Creation gates:
+
+1. When classification yields `epic`, first create or reuse the `[EPIC]` parent card, then create or reconcile dependency-linked `[SUBTASK]` cards. Do not create lane cards without the returned parent task ID.
+2. A `[SUBTASK]` without a valid `parent_task_id`, `lane_role`, and deterministic lane idempotency key is malformed and must remain `BLOCKED`/`NOT_VERIFIED`; do not dispatch it.
+3. A child card title must identify both the parent and lane. A title such as `Implement onboarding`, `Review needed`, or `Frontend task` is not acceptable for an epic child.
+4. A parent epic title must not masquerade as executable lane work. If the card owns overall DoD, its title starts with `[EPIC]` and it remains orchestrator-owned until synthesis.
+5. A `single_task` may not use `[EPIC]` or `[SUBTASK]`; if follow-on lanes become necessary, supersede or revise it into an epic graph instead of silently adding ambiguous children.
+6. Board views should be filterable by `kind`, `parent_task_id`, `lane_role`, and `pipeline_key`; if the active runtime lacks native fields, encode these values in the task body and labels before dispatch.
+
 ## Task classification and primary route
 
 Classify intent before assigning an agent. Use `workflow-router` for the authoritative route and preserve exactly one primary selection.
@@ -299,6 +334,28 @@ Use Hermes dependency edges only for execution order. Do not make the parent out
 
 When a running reviewer finds remediable defects, it creates or identifies a bounded remediation lane, links that lane as its dependency, and blocks with dependency semantics so it auto-resumes after remediation. When a verified reviewer profile exists, implementation completion must route to `agent-review`, `agent-product`, `agent-architecture`, or the applicable domain reviewer instead of surfacing a generic `review-required` request to the user.
 
+### Fleet portability and role bootstrap contract
+
+This workflow is a fleet-level operating model, not a local chat convention. A runtime fix, local board repair, or one successful project-board run is not enough to claim durable rollout. The model must be available through the reusable skill package and through the profile or fleet-bootstrap mechanism used to create other Hermes agents.
+
+Required distribution evidence before claiming global or reusable workflow readiness:
+
+1. `hermes-task-management-workflow` records the current lane, handoff, review, remediation, synthesis, and authority semantics.
+2. The behavioral contract in `contracts/tests/hermes-task-management-workflow.test.yaml` contains regression cases for those semantics.
+3. Fleet bootstrap/profile assets that create or update `agent-orchestrator`, implementation specialists, and review profiles include the smallest role-specific operating rules needed for Kanban-dispatched work.
+4. Kanban-dispatched tasks can receive the model without a manual slash command or ad hoc chat reminder.
+5. Runtime-local fixes and ai-native-skills package changes cross-reference each other through task comments, release notes, or another durable evidence handle.
+
+Role-specific minimums:
+
+| Profile class | Must carry without manual prompting |
+|---|---|
+| `agent-orchestrator` | Board selection, explicit epic/subtask/single classification, canonical graph reconciliation, parent hold/synthesis, status summary, and authority-gate reporting. |
+| Implementation specialists | Lane-local scope only, exact commit or immutable artifact evidence, clean worktree evidence for repository mutation, structured `lane_handoff`, and no generic human `review-required` block when a reviewer lane exists. |
+| Review profiles | Canonical verdicts, latest-evidence review target, bounded remediation/re-review routing, and no parent/release approval beyond the review lane. |
+
+If a target Hermes installation lacks those skills or profile assets, report `NOT_PORTABLE` or `NOT_VERIFIED` rather than saying the workflow is permanent. Local runtime validation remains useful evidence, but the portable deliverable lives in the ai-native-skills package plus the installed Hermes runtime behavior.
+
 ### Lane-local completion and structured handoff
 
 Each child owns only its lane-local DoD. Child Done is a graph milestone, never proof that the parent outcome is Done. Before completing a lane, write a durable structured handoff that the next assignee and parent synthesizer can consume without reconstructing chat history:
@@ -314,6 +371,8 @@ lane_handoff:
   decisions: []
   artifacts: []
   changed_files: []
+  exact_commit: <commit sha | null>
+  worktree_status: <clean | dirty | not_applicable | not_verified>
   commands_and_results: []
   evidence_refs: []
   risks: []
@@ -330,6 +389,8 @@ lane_handoff:
 ```
 
 If the next lane is known, create or reuse it and record its task ID before completing the current lane. Do not replace `next_lane` with “ask the user to continue” or a vague human review request. If no next lane is applicable, say why and identify the parent synthesis dependency. Store human-readable synthesis in the lane summary and machine-readable handoff facts in durable result metadata or a task comment according to the active Kanban protocol.
+
+For repository-mutating implementation lanes, `DONE` requires an attributable immutable source of truth. Prefer a local commit on the lane branch/worktree plus a clean worktree. If policy explicitly forbids committing, the lane must state the approved alternative immutable artifact; otherwise it remains `BLOCKED`/`FAILED` as a protocol issue and must not ask review to infer changes from a dirty checkout. `REVIEW_REQUIRED_AGENT` may appear inside the handoff as the next operational state, but it is not a reason to leave a completed implementation card blocked when the reviewer lane is known and linked.
 
 `operational_status` is mandatory and has one meaning:
 
@@ -447,6 +508,17 @@ Review is an agent lane by default when an eligible independent profile exists:
 | security or operations | verified security/operations reviewer | privileged deploy or risk acceptance remains human-authorized when policy requires |
 
 An agent reviewer returns PASS, NEEDS_WORK, BLOCKED, LIMITED, or NOT_VERIFIED with evidence. NEEDS_WORK creates or reuses remediation dependencies; it does not become a chat interruption. Use a human-blocking gate only when its type, required authority, missing decision, and exact unblock condition are explicit.
+
+Reviewer lanes normalize their verdict into this canonical progression contract:
+
+| Verdict | Meaning | Required routing |
+|---|---|---|
+| `PASS_FOR_NEXT_LANE` | The latest non-superseded handoff evidence satisfies the lane review scope. | Complete the review lane and promote the next known lane or synthesis dependency. |
+| `NEEDS_SPECIALIST_REMEDIATION` | A blocking, in-scope finding maps to acceptance criteria, policy, regression, security, accessibility, architecture, or explicit requirements. | Create/reuse a bounded remediation lane owned by the responsible specialist and a re-review lane targeting the remediation evidence. |
+| `BLOCKED_AUTHORITY` | The reviewer cannot decide because a named human/product/merge/deploy/risk authority is required. | Block with authority type, exact missing decision, and evidence packet. |
+| `FAILED_REVIEW_PROTOCOL` | The reviewed evidence is missing, stale, dirty, unauthenticated, or not reviewable. | Route to orchestrator remediation/triage; do not PASS or promote downstream lanes. |
+
+Legacy labels such as `APPROVED`, `REQUEST_CHANGES`, or prose “review required” may be reported as human-readable aliases, but the durable handoff/verdict must include one canonical verdict above for downstream automation.
 
 ## Board lifecycle gates
 
@@ -577,6 +649,15 @@ NOT_VERIFIED
 task_management_result:
   board_ref: string
   parent_card_ref: string
+  card_identity:
+    kind: epic | subtask | single_task
+    parent_task_id: string | null
+    lane_role: plan | design | engineering | test | verify | review | product_acceptance | release | sync | null
+    title_prefix: string
+    visible_title: string
+    pipeline_key: string
+    lane_identity: string | null
+    idempotency_key: string
   routing: {}
   readiness_gate:
     status: READY | NEEDS_PLANNING | NEEDS_DISCOVERY | NEEDS_DECISION | BLOCKED | NOT_VERIFIED
@@ -618,6 +699,13 @@ task_management_result:
     dispatcher_evidence_ref: string | null
     lane_keys: []
   lane_handoffs: []
+  reviewer_verdicts:
+    - lane_ref: string
+      verdict: PASS_FOR_NEXT_LANE | NEEDS_SPECIALIST_REMEDIATION | BLOCKED_AUTHORITY | FAILED_REVIEW_PROTOCOL
+      reviewed_handoff_ref: string
+      reviewed_commit: string | null
+      remediation_ref: string | null
+      re_review_ref: string | null
   lane_timeline:
     - lane_ref: string
       assignee: string
@@ -660,6 +748,7 @@ task_management_result:
 ## Anti-patterns and hard stops
 
 - Do not use an assistant-local todo list as durable project execution state.
+- Do not create visually ambiguous Kanban cards; every card title and metadata must identify `[EPIC]`, `[SUBTASK][parent][lane]`, or `[TASK]` before dispatch.
 - Do not dispatch before board identity, routing, and assignee existence are verified.
 - Do not equate assignment with readiness or place intake work in executable `ready`; use `triage` or `blocked` until all gates pass.
 - Do not mutate a repository before verifying explicit base, working branch, PR target, and workspace evidence; never edit directly on the main/default checkout.
@@ -670,6 +759,8 @@ task_management_result:
 - Do not mark a sample, mock, screenshot, prototype, plan, PR, or green CI run as feature Done.
 - Do not mark a parent Done because child implementation finished while acceptance is missing.
 - Do not let a lane finish with only prose such as “review required”; preserve its result, artifacts/evidence, acceptance mapping, risks, blockers, and exact next lane.
+- Do not leave a repository-mutating implementation lane blocked as `review-required` after it has valid lane-local evidence and a known reviewer lane; complete the lane-local handoff and promote review.
+- Do not claim a workflow is permanent or fleet-ready from local board repair alone; update the ai-native-skills skill/contract/profile distribution surfaces or report `NOT_PORTABLE`.
 - Do not declare an epic Done while a required but unauthorized or unexecuted merge/deploy lane remains; use `READY_FOR_ACCEPTANCE_OR_RELEASE`.
 - Do not ask the user to manually advance routine lanes that can progress through dependency completion and the dispatcher.
 - Do not make the user manually poll chat to learn whether work is active, waiting, failed, or authority-gated; maintain the compact parent status summary and final lane timeline.

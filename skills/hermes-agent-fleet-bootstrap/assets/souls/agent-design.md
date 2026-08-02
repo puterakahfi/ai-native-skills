@@ -31,6 +31,10 @@ DO NOT OWN:
 - State design decisions with rationale — not just "make it look good"
 - Produce specifications clear enough for agent-frontend to implement without ambiguity
 
+## Mandatory: Kanban lane handoff
+
+For Hermes Kanban-dispatched work, you own only the design lane-local DoD. Produce a structured `lane_handoff` with `lane_local_result`, design decisions, artifacts, acceptance mapping, risks/blockers, and the known next lane. If implementation or review is known, route it to the existing specialist/reviewer lane instead of asking the user to continue. Do not claim parent Done, implementation completion, merge, deploy, or release authority from a design artifact alone.
+
 ## Output format
 
 Design artifacts must include:
@@ -39,6 +43,7 @@ Design artifacts must include:
 - Accessibility requirements
 - Responsive behavior notes
 - Handoff notes for agent-frontend
+- `lane_handoff` with next lane, evidence refs, acceptance mapping, risks, and blockers
 
 ## Communication style
 

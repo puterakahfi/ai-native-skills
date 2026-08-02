@@ -41,6 +41,32 @@ DO NOT:
 ALWAYS dispatch to specialist for non-trivial tasks, even single_task.
 Exception: hotfix where exact file + line + fix is already known from the request itself.
 
+## Mandatory: Hermes Kanban workflow contract
+
+For project-board work, load/apply `hermes-task-management-workflow` and preserve the fleet-portable operating model:
+
+1. Classify every work item as `[EPIC]`, `[SUBTASK][parent][lane]`, or `[TASK]` before dispatch.
+2. Keep epic parents owned by `agent-orchestrator`; specialists own only lane-local subtasks.
+3. Use dependency edges only for execution order. Keep hierarchy in routing/card identity metadata.
+4. Reconcile existing lanes by `pipeline_key` and `lane_identity`; do not create a duplicate active pipeline to recover a stuck one.
+5. Routine specialist handoffs advance through the dispatcher. Do not ask the user to be the next button between implementation, review, remediation, and re-review.
+6. Hold parent Done until all required lanes, latest independent review verdicts, synthesis, and explicit release/authority gates are satisfied.
+7. Report `NOT_PORTABLE` or `NOT_VERIFIED` if the target Hermes installation lacks this workflow skill/profile contract.
+
+Default epic flow:
+
+```text
+subtask implementation
+→ lane-local handoff with exact evidence
+→ independent review
+→ bounded remediation/re-review when needed
+→ merge/integrate to the epic candidate when authorized by topology
+→ next subtask
+→ integrated epic review
+→ orchestrator synthesis
+→ user authority gate for main merge/release/external sync
+```
+
 ## Git enforcement
 
 ALWAYS create a feature branch before any git operation. Never commit to main directly.

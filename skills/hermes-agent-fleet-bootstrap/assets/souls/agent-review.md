@@ -34,6 +34,17 @@ DO NOT OWN:
 - Rate findings: CRITICAL | HIGH | MEDIUM | LOW | INFO
 - CRITICAL and HIGH findings = REQUEST_CHANGES, not approved
 
+## Mandatory: Kanban review verdict
+
+For Hermes Kanban-dispatched review lanes, return a canonical verdict that automation can route:
+
+- `PASS_FOR_NEXT_LANE` — latest non-superseded handoff evidence satisfies the review scope; complete the review lane and promote the next known lane.
+- `NEEDS_SPECIALIST_REMEDIATION` — blocking in-scope finding; create or identify a bounded remediation lane and a re-review target.
+- `BLOCKED_AUTHORITY` — a named human/product/merge/deploy/risk authority decision is required; state the exact authority and unblock condition.
+- `FAILED_REVIEW_PROTOCOL` — evidence is missing, stale, dirty, unauthenticated, or not reviewable; route to orchestrator remediation instead of passing.
+
+Review the exact handoff commit/artifact, not chat prose. Do not implement fixes yourself, self-approve release, or turn routine review into a user “continue” button.
+
 ## Independence enforcement
 
 You must NOT have been involved in designing or implementing what you review.
@@ -43,8 +54,12 @@ If context reveals you share implementation knowledge, declare LIMITED independe
 
 ```
 Verdict: APPROVED | APPROVED_WITH_NOTES | REQUEST_CHANGES | REJECTED
+Kanban verdict: PASS_FOR_NEXT_LANE | NEEDS_SPECIALIST_REMEDIATION | BLOCKED_AUTHORITY | FAILED_REVIEW_PROTOCOL
 Findings:
   - [SEVERITY] description — evidence: file:line
+Reviewed handoff: <task/run/comment/ref>
+Reviewed commit/artifact: <sha/path/ref>
+Remediation/re-review target: <task/ref if applicable>
 Next action: (if not APPROVED)
 ```
 

@@ -1,6 +1,6 @@
 skill_test:
   skill: hermes-task-management-workflow
-  version: 1.5.0
+  version: 1.7.0
   description: Verify project-board work defaults to orchestrator-owned parent cards, separates assignment from execution readiness, gates repository mutation on verified branch topology, progresses observably through an idempotent reviewed graph, controls lifecycle changes, treats the user as an external approver, and blocks premature Done or external sync.
   cases:
     - id: chat-request-becomes-routed-project-parent
@@ -284,6 +284,81 @@ skill_test:
         - known_next_lane_is_explicitly_routed
         - parent_remains_open_until_end_to_end_synthesis
 
+    - id: review-required-is-agent-review-not-human-block
+      description: A repository-mutating implementation lane with valid local evidence completes lane-local handoff and promotes the reviewer instead of blocking on a generic human review request.
+      trigger: The backend implementation lane has passed tests, has a known agent-review child, and reports review-required. The worktree is dirty and no immutable commit has been recorded yet. Decide the lane state and next action.
+      must_contain:
+        - lane_handoff
+        - exact_commit
+        - worktree_status
+        - clean
+        - REVIEW_REQUIRED_AGENT
+        - agent-review
+        - dependency promotion
+        - lane-local DONE
+        - local commit
+        - protocol issue
+      must_not_contain:
+        - generic human review block
+        - ask the user to review code
+        - leave implementation blocked after valid handoff
+        - review dirty worktree without immutable evidence
+        - parent Done
+      quality_gates_tested:
+        - review_required_routes_to_verified_agent_reviewer
+        - repository_mutating_lane_requires_immutable_commit_or_approved_artifact
+        - dirty_worktree_blocks_review_until_handoff_is_reviewable
+        - implementation_lane_local_done_promotes_review_without_user_continue
+
+    - id: reviewer-verdict-routes-remediation-rereview-or-next-lane
+      description: Independent review uses canonical verdicts so automation can route PASS, remediation, authority blocks, and protocol failures without manual chat interpretation.
+      trigger: Review the latest implementation handoff. One scenario passes, one has a blocking regression, one needs merge authority, and one lacks a commit/handoff reference.
+      must_contain:
+        - PASS_FOR_NEXT_LANE
+        - NEEDS_SPECIALIST_REMEDIATION
+        - BLOCKED_AUTHORITY
+        - FAILED_REVIEW_PROTOCOL
+        - latest non-superseded handoff
+        - remediation lane
+        - re-review lane
+        - authority type
+        - reviewed_commit
+      must_not_contain:
+        - APPROVED is enough for automation
+        - REQUEST_CHANGES without remediation owner
+        - promote downstream from stale review
+        - reviewer approves release authority
+      quality_gates_tested:
+        - reviewer_verdicts_are_canonical_and_machine_routable
+        - needs_work_creates_bounded_specialist_remediation_and_rereview
+        - pass_targets_latest_current_handoff_only
+        - authority_and_protocol_failures_do_not_promote_downstream
+
+    - id: workflow-portability-requires-ai-native-skills-and-profile-assets
+      description: A local Hermes runtime repair is not fleet-ready until the reusable skill, contract tests, and profile bootstrap assets carry the same workflow semantics.
+      trigger: The hermes-agent board test run is green after a local runtime fix. Claim that every future Hermes agent will now execute epic/subtask/review/remediation flows correctly without updating ai-native-skills or profile bootstrap assets.
+      must_contain:
+        - fleet-level operating model
+        - hermes-task-management-workflow
+        - contracts/tests/hermes-task-management-workflow.test.yaml
+        - hermes-agent-fleet-bootstrap
+        - agent-orchestrator
+        - implementation specialists
+        - agent-review
+        - no manual slash command
+        - NOT_PORTABLE
+        - NOT_VERIFIED
+      must_not_contain:
+        - local board repair proves global rollout
+        - no skill update needed
+        - specialist profiles infer the workflow from chat history
+        - permanent without distribution evidence
+      quality_gates_tested:
+        - fleet_portability_requires_reusable_skill_contract_and_profile_distribution
+        - kanban_dispatched_specialists_receive_role_specific_workflow_rules
+        - local_runtime_validation_is_not_global_acceptance
+        - missing_distribution_evidence_reports_not_portable
+
     - id: full-epic-dod-completes-only-after-authorized-release-and-sync
       description: A full project outcome reaches Done only after the complete ordered delivery chain, explicitly required release actions, approved downstream sync, and final synthesis have evidence.
       trigger: This epic explicitly requires product direction, implementation, test and runtime proof, independent technical and product review, product-owner acceptance, an authorized merge to main, production deployment, and approved GitHub sync. Define the automatic lane order and final Done gate.
@@ -383,6 +458,36 @@ skill_test:
         - parented_or_lane_scoped_work_is_a_subtask
         - subtask_owns_only_lane_local_dod
         - subtask_completion_routes_the_next_known_lane
+
+    - id: epic-and-subtask-cards-have-visible-identity
+      description: Epic parents, subtasks, and standalone tasks are distinguishable on the simple Hermes Kanban board by title prefix and durable identity metadata.
+      trigger: Create a complex onboarding epic with plan, design, frontend-build, verify, review, and acceptance subtasks. Make sure the board clearly shows which card is the epic and which cards are children of that epic before any dispatch.
+      must_contain:
+        - card_identity
+        - "[EPIC]"
+        - "[SUBTASK][<parent_task_id>][<lane_role>]"
+        - "[TASK]"
+        - parent_task_id
+        - parent_title
+        - lane_role
+        - pipeline_key
+        - lane_identity
+        - idempotency_key
+        - owns_overall_dod
+        - lane_local_dod
+        - agent-orchestrator
+        - BLOCKED
+        - NOT_VERIFIED
+      must_not_contain:
+        - ambiguous title is acceptable
+        - create lane cards without parent task ID
+        - rely on chat history to identify parent
+        - subtask without lane_role can dispatch
+      quality_gates_tested:
+        - visible_title_prefix_distinguishes_epic_subtask_and_single_task
+        - subtask_creation_requires_parent_task_id_and_lane_role
+        - card_identity_metadata_is_required_before_dispatch
+        - malformed_child_cards_fail_closed
 
     - id: bounded-one-owner-outcome-is-single-task
       description: A genuinely standalone request is a single task only when one verified owner can satisfy its complete DoD without decomposition.

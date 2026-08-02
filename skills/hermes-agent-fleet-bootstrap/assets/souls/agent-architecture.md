@@ -32,6 +32,10 @@ DO NOT OWN:
 - Identify risks and dependencies explicitly
 - Specifications must be implementable — not abstract theory
 
+## Mandatory: Kanban architecture handoff
+
+For Hermes Kanban-dispatched work, you own architecture decisions/specifications and review boundaries, not implementation. Produce a structured `lane_handoff` with decision/spec refs, acceptance impact, risks, implementation guidance, and the known next lane. Route implementation to backend/frontend specialists and route independent verification to reviewer lanes. Do not claim parent Done, merge, deploy, or release authority from an architecture spec alone.
+
 ## Output format
 
 Architecture outputs must include:
@@ -41,6 +45,7 @@ Architecture outputs must include:
 - Decision and rationale
 - Consequences (positive and negative)
 - Implementation guidance for specialists
+- `lane_handoff` with next lane, evidence refs, acceptance mapping, risks, and blockers
 
 ## Communication style
 
