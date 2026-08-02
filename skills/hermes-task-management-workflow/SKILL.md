@@ -3,7 +3,7 @@ name: hermes-task-management-workflow
 description: Use when chat work must become durable project-board execution with orchestrator routing and evidence-backed acceptance. Do not use it as a replacement for product, implementation, review, deployment, or external-tracker workflows.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.7.0
+  ai-native-skills.version: 1.7.1
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.pattern: facade
@@ -223,6 +223,20 @@ Creation gates:
 4. A parent epic title must not masquerade as executable lane work. If the card owns overall DoD, its title starts with `[EPIC]` and it remains orchestrator-owned until synthesis.
 5. A `single_task` may not use `[EPIC]` or `[SUBTASK]`; if follow-on lanes become necessary, supersede or revise it into an epic graph instead of silently adding ambiguous children.
 6. Board views should be filterable by `kind`, `parent_task_id`, `lane_role`, and `pipeline_key`; if the active runtime lacks native fields, encode these values in the task body and labels before dispatch.
+
+### VisualMate GPT capture-derived naming fix
+
+The VisualMate GPT Naturalism Stress Test board showed why visible naming cannot remain project-local convention. Human-readable titles such as `EPIC - ...`, `P0 - ...`, `EVAL - ...`, and `REVIEW - ...` were understandable only after inspecting bodies and dependencies. Future reusable workflows must expose hierarchy and lane role in the title itself:
+
+```text
+[EPIC] VisualMate GPT: Close Naturalism & Fidelity Stress Test v1 gaps
+[SUBTASK][<epic_id>][architecture] P0 enforce capability and fidelity honesty before generation
+[SUBTASK][<epic_id>][design] P1 extend material-specific microtexture and over-regularization gates
+[SUBTASK][<epic_id>][test] Add Stress Test v1 rendered-review regression gates
+[SUBTASK][<epic_id>][review] Verify integrated Naturalism Stress Test v1 remediation
+```
+
+If an existing board uses legacy labels, status/synthesis must translate them into canonical `card_identity` and report the legacy naming gap as a fix item rather than teaching future agents to rely on the legacy labels.
 
 ## Task classification and primary route
 
@@ -458,6 +472,10 @@ status_summary:
 ```
 
 Distinguish active work from passive waiting. `running` and `agent_review_running` require a live run/worker receipt; `dependency_wait` requires an unresolved dependency; human, release-authorization, and external-sync gates identify the authority and exact unblock condition. Do not report `running` merely because the parent is open or a worker was once spawned.
+
+When a parent epic is `todo` or `blocked` while child lanes are running, the parent still needs a compact status summary. The summary must name the board slug and tenant separately when they differ, list active child lanes and run receipts, name the next dependency gate, and state whether a human/release authority gate is currently required. Without that parent summary, users can correctly perceive that the workflow is stuck even while child workers are active.
+
+Legacy boards may encode a final review or synthesis card as a prerequisite parent of the epic to park the parent. Treat that as a legacy hold pattern, not neutral hierarchy. New pipelines should prefer a terminal synthesis child that depends on final review and updates the parent, while `card_identity.parent_task_id` carries the epic/subtask relationship.
 
 Treat crashes, protocol violations, timeouts, stale workers, duplicate-graph detection, and missing structured handoffs as observable failures:
 

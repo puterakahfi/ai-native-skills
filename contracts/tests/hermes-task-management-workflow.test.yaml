@@ -1,6 +1,6 @@
 skill_test:
   skill: hermes-task-management-workflow
-  version: 1.7.0
+  version: 1.7.1
   description: Verify project-board work defaults to orchestrator-owned parent cards, separates assignment from execution readiness, gates repository mutation on verified branch topology, progresses observably through an idempotent reviewed graph, controls lifecycle changes, treats the user as an external approver, and blocks premature Done or external sync.
   cases:
     - id: chat-request-becomes-routed-project-parent
@@ -488,6 +488,38 @@ skill_test:
         - subtask_creation_requires_parent_task_id_and_lane_role
         - card_identity_metadata_is_required_before_dispatch
         - malformed_child_cards_fail_closed
+
+    - id: visualmate-gpt-capture-requires-portable-naming-and-parent-status
+      description: A real VisualMate GPT board activity capture is converted into portable task-management rules instead of remaining a local board habit.
+      trigger: Capture a VisualMate GPT Naturalism Stress Test workflow where the parent epic is todo, P0/P1/P2 child lanes are running, eval/review lanes are waiting, task titles use EPIC/P0/P1/P2/EVAL/REVIEW labels, board slug is visualmate-gpt, tenant is visualmate, and a final review card appears as a parent/hold edge for the epic. Add what must be fixed so future Hermes agents can replicate the workflow.
+      must_contain:
+        - visualmate-gpt
+        - tenant
+        - board_ref
+        - status_summary
+        - current_lane
+        - running child lanes
+        - run receipts
+        - "[EPIC] VisualMate GPT:"
+        - "[SUBTASK][<epic_id>][architecture]"
+        - "[SUBTASK][<epic_id>][design]"
+        - "[SUBTASK][<epic_id>][test]"
+        - "[SUBTASK][<epic_id>][review]"
+        - legacy hold pattern
+        - synthesis child
+        - canonical review verdict
+      must_not_contain:
+        - P0 title alone is enough
+        - infer parent from chat history
+        - parent todo means nothing is running
+        - final review is neutral hierarchy metadata
+        - board slug and tenant can be conflated
+      quality_gates_tested:
+        - real_project_activity_is_captured_into_reusable_workflow_rules
+        - legacy_task_titles_are_translated_to_portable_card_identity
+        - parent_status_summary_explains_child_activity
+        - board_slug_and_tenant_are_reported_separately
+        - legacy_inverted_parent_hold_edges_are_not_copied_as_new_hierarchy_pattern
 
     - id: bounded-one-owner-outcome-is-single-task
       description: A genuinely standalone request is a single task only when one verified owner can satisfy its complete DoD without decomposition.
