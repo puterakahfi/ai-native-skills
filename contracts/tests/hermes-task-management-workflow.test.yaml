@@ -489,6 +489,49 @@ skill_test:
         - card_identity_metadata_is_required_before_dispatch
         - malformed_child_cards_fail_closed
 
+    - id: canonical-task-title-vocabulary-is-portable
+      description: New or reconciled Kanban cards use one portable title grammar and a bounded lane-role vocabulary instead of project-local labels.
+      trigger: Create or reconcile a Hermes Kanban epic with backend, review, remediation, re-review, integrated-review, synthesis, release-gate, and standalone board-switch tasks. Include a VisualMate P0 child as a priority example. Define which existing legacy titles may remain temporarily because workers are already claimed.
+      must_contain:
+        - "[EPIC] <Project>: <Outcome>"
+        - "[SUBTASK][<epic_task_id>][<lane_role>] <P0/P1/P2 optional> <bounded lane outcome>"
+        - "[TASK] <Project>: <bounded standalone outcome>"
+        - "[SUBTASK][t_b7f55675][backend] Implement canonical compiler and reconciler"
+        - "[SUBTASK][t_b7f55675][review] Verify regression fixtures and verdict routing"
+        - "[SUBTASK][t_b7f55675][synthesis] Synthesize epic evidence and authority gate"
+        - "[TASK] Hermes Agent: Fix Kanban board switch status display"
+        - "[SUBTASK][t_350617de][architecture] P0 enforce capability honesty"
+        - plan
+        - architecture
+        - product
+        - design
+        - frontend
+        - backend
+        - docs
+        - test
+        - review
+        - remediation
+        - re_review
+        - integration
+        - integrated_review
+        - synthesis
+        - release_gate
+        - sync
+        - priority after the lane-role prefix
+        - do not rename a task that already has a live claimed worker
+      must_not_contain:
+        - P0 alone is a lane identity
+        - REVIEW alone identifies the parent epic
+        - assignee name is enough to infer lane role
+        - rename running claimed worker tasks by default
+        - use project-local labels as the reusable contract
+      quality_gates_tested:
+        - canonical_title_grammar_is_machine_parseable_and_human_readable
+        - bounded_lane_role_vocabulary_prevents_board_specific_drift
+        - priority_labels_do_not_replace_hierarchy_identity
+        - running_task_rename_is_avoided_without_stability_proof
+        - standalone_tasks_are_not_misclassified_as_epics_or_subtasks
+
     - id: visualmate-gpt-capture-requires-portable-naming-and-parent-status
       description: A real VisualMate GPT board activity capture is converted into portable task-management rules instead of remaining a local board habit.
       trigger: Capture a VisualMate GPT Naturalism Stress Test workflow where the parent epic is todo, P0/P1/P2 child lanes are running, eval/review lanes are waiting, task titles use EPIC/P0/P1/P2/EVAL/REVIEW labels, board slug is visualmate-gpt, tenant is visualmate, and a final review card appears as a parent/hold edge for the epic. Add what must be fixed so future Hermes agents can replicate the workflow.

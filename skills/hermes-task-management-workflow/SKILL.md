@@ -191,14 +191,55 @@ Do not use title size, file count, estimated duration, or the word “task” as
 
 ## Visible card identity and title rules
 
-Because Hermes Kanban cards are intentionally simple, every created or reconciled card must expose its hierarchy in the visible title and durable routing metadata. Do not rely on prose descriptions, chat history, column position, or assignee names to distinguish epic parents from subtasks.
+The Kanban board is intentionally simple: status columns, titles, assignees, and task detail. Therefore the title must carry enough identity for humans while the body/metadata carries enough identity for automation.
 
-Use exactly one of these title families:
+Canonical title families:
 
-| Hierarchy kind | Required visible title format | Required relationship fields | Initial owner and status |
+```text
+[EPIC] <Project>: <Outcome>
+[SUBTASK][<epic_task_id>][<lane_role>] <P0/P1/P2 optional> <bounded lane outcome>
+[TASK] <Project>: <bounded standalone outcome>
+```
+
+Examples:
+
+```text
+[EPIC] Hermes Agent: Seamless Kanban epic/subtask/review workflow
+[SUBTASK][t_b7f55675][backend] Implement canonical compiler and reconciler
+[SUBTASK][t_b7f55675][review] Verify regression fixtures and verdict routing
+[SUBTASK][t_b7f55675][synthesis] Synthesize epic evidence and authority gate
+[TASK] Hermes Agent: Fix Kanban board switch status display
+```
+
+Use a bounded lane-role vocabulary so board filtering stays predictable:
+
+```text
+plan
+architecture
+product
+design
+frontend
+backend
+docs
+test
+review
+remediation
+re_review
+integration
+integrated_review
+synthesis
+release_gate
+sync
+```
+
+Priority (`P0`, `P1`, `P2`) is allowed after the lane-role prefix, never instead of the prefix. For example, `[SUBTASK][t_350617de][architecture] P0 enforce capability honesty` is valid; `P0 - enforce capability honesty` is a legacy/ambiguous title until translated into canonical identity.
+
+Do not rename a task that already has a live claimed worker unless the controller can prove the worker session and downstream handoff references will remain stable. For active legacy tasks, add a status/comment translation and use canonical names for newly created or reconciled lanes.
+
+| Classification | Visible title prefix | Required identity metadata | Default owner/status |
 |---|---|---|---|
-| `epic` | `[EPIC] <project-or-product>: <outcome>` | `parent_task_id: null`, `owns_overall_dod: true`, `requires_decomposition: true`, `lane_role: null`, `terminal_state_policy.done_requires: full_delivery_chain` | `agent-orchestrator`; `triage` until decomposition and gates pass |
-| `subtask` | `[SUBTASK][<parent_task_id>][<lane_role>] <bounded lane result>` | `parent_task_id: <epic task id>`, `owns_overall_dod: false`, `requires_decomposition: false`, `lane_role: <plan|design|engineering|test|verify|review|product_acceptance|release|sync>`, `terminal_state_policy.done_requires: lane_local_dod` | verified lane owner; `todo` or `blocked` until dependencies pass |
+| `epic` | `[EPIC] <Project>: <Outcome>` | `parent_task_id: null`, `owns_overall_dod: true`, `requires_decomposition: true`, `lane_role: null`, `terminal_state_policy.done_requires: full_delivery_chain` | `agent-orchestrator`; `triage` until decomposition and gates pass |
+| `subtask` | `[SUBTASK][<epic_task_id>][<lane_role>] <P0/P1/P2 optional> <bounded lane outcome>` | `parent_task_id: <epic task id>`, `owns_overall_dod: false`, `requires_decomposition: false`, `lane_role: one of the bounded vocabulary above`, `terminal_state_policy.done_requires: lane_local_dod` | verified lane owner; `todo` or `blocked` until dependencies pass |
 | `single_task` | `[TASK] <project-or-product>: <bounded complete outcome>` | `parent_task_id: null`, `owns_overall_dod: true`, `requires_decomposition: false`, `lane_role: null`, `terminal_state_policy.done_requires: single_task_dod` | one verified owner; status follows readiness gate |
 
 Every card must also carry a compact identity block in metadata, labels, or the task body according to the active Kanban protocol:
@@ -208,7 +249,7 @@ card_identity:
   kind: <epic | subtask | single_task>
   parent_task_id: <task id | null>
   parent_title: <parent title | null>
-  lane_role: <plan | design | engineering | test | verify | review | product_acceptance | release | sync | null>
+  lane_role: <plan | architecture | product | design | frontend | backend | docs | test | review | remediation | re_review | integration | integrated_review | synthesis | release_gate | sync | null>
   pipeline_key: <stable project-and-outcome key>
   lane_identity: <stable lane identity | null>
   idempotency_key: <pipeline key, or pipeline_key:lane:lane_identity>
