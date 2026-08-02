@@ -74,9 +74,30 @@ The parent epic remained `todo` while child lanes were running. That is acceptab
 
 ```yaml
 status_summary:
+  board_ref: visualmate-gpt
+  tenant: visualmate
   current_lane: parallel_implementation
-  current_assignee: [agent-architecture, agent-design]
+  current_assignee: null
   current_state: running
+  active_child_lanes:
+    - task_ref: t_6084f4ae
+      lane_ref: architecture
+      assignee: agent-architecture
+      current_state: running
+      run_receipts:
+        - t_6084f4ae run 87
+    - task_ref: t_71e12e2b
+      lane_ref: design-p1
+      assignee: agent-design
+      current_state: running
+      run_receipts:
+        - t_71e12e2b run 88
+    - task_ref: t_ca23b379
+      lane_ref: design-p2
+      assignee: agent-design
+      current_state: running
+      run_receipts:
+        - t_ca23b379 run 86
   last_completed_lane: null
   next_lane: rendered-review-regression-gates
   blocked_reason: null
@@ -85,6 +106,7 @@ status_summary:
     - t_6084f4ae run 87
     - t_71e12e2b run 88
     - t_ca23b379 run 86
+  updated_at_ref: visualmate-gpt board capture 2026-08-02 / parent status comment pending
 ```
 
 Without that summary, users see an open/todo parent and may think nothing is happening.

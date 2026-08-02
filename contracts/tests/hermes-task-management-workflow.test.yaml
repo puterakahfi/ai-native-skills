@@ -1,6 +1,6 @@
 skill_test:
   skill: hermes-task-management-workflow
-  version: 1.7.1
+  version: 1.7.2
   description: Verify project-board work defaults to orchestrator-owned parent cards, separates assignment from execution readiness, gates repository mutation on verified branch topology, progresses observably through an idempotent reviewed graph, controls lifecycle changes, treats the user as an external approver, and blocks premature Done or external sync.
   cases:
     - id: chat-request-becomes-routed-project-parent
@@ -498,8 +498,13 @@ skill_test:
         - board_ref
         - status_summary
         - current_lane
-        - running child lanes
-        - run receipts
+        - "current_assignee: null"
+        - active_child_lanes
+        - task_ref
+        - lane_ref
+        - assignee
+        - run_receipts
+        - updated_at_ref
         - "[EPIC] VisualMate GPT:"
         - "[SUBTASK][<epic_id>][architecture]"
         - "[SUBTASK][<epic_id>][design]"
@@ -514,11 +519,15 @@ skill_test:
         - parent todo means nothing is running
         - final review is neutral hierarchy metadata
         - board slug and tenant can be conflated
+        - "current_assignee: [agent-architecture, agent-design]"
+        - omit updated_at_ref
       quality_gates_tested:
         - real_project_activity_is_captured_into_reusable_workflow_rules
         - legacy_task_titles_are_translated_to_portable_card_identity
         - parent_status_summary_explains_child_activity
         - board_slug_and_tenant_are_reported_separately
+        - parallel_active_lanes_use_active_child_lanes_not_current_assignee_list
+        - parent_status_summary_carries_freshness_evidence
         - legacy_inverted_parent_hold_edges_are_not_copied_as_new_hierarchy_pattern
 
     - id: bounded-one-owner-outcome-is-single-task

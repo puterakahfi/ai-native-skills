@@ -3,7 +3,7 @@ name: hermes-task-management-workflow
 description: Use when chat work must become durable project-board execution with orchestrator routing and evidence-backed acceptance. Do not use it as a replacement for product, implementation, review, deployment, or external-tracker workflows.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.7.1
+  ai-native-skills.version: 1.7.2
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.pattern: facade
@@ -460,9 +460,18 @@ Automatic execution must be inspectable from the board without asking the user t
 
 ```yaml
 status_summary:
+  board_ref: <board slug>
+  tenant: <tenant slug | null>
   current_lane: <lane identity | null>
   current_assignee: <verified profile | null>
   current_state: <running | dependency_wait | agent_review_running | human_gate | release_authorization_gate | external_sync_gate | completed | failed | not_verified>
+  active_child_lanes:
+    - task_ref: <child task id>
+      lane_ref: <lane identity>
+      assignee: <verified profile>
+      current_state: <running | dependency_wait | agent_review_running | human_gate | release_authorization_gate | external_sync_gate | completed | failed | not_verified>
+      run_receipts:
+        - <run, event, heartbeat, or worker receipt reference>
   last_completed_lane: <lane identity | null>
   next_lane: <lane identity | null>
   blocked_reason: <exact reason | null>
@@ -471,7 +480,9 @@ status_summary:
   updated_at_ref: <board event, run, or comment reference>
 ```
 
-Distinguish active work from passive waiting. `running` and `agent_review_running` require a live run/worker receipt; `dependency_wait` requires an unresolved dependency; human, release-authorization, and external-sync gates identify the authority and exact unblock condition. Do not report `running` merely because the parent is open or a worker was once spawned.
+Use `current_assignee` only for the single active owner or primary coordinator. When multiple child lanes are active in parallel, keep `current_lane` as the aggregate lane identity, set `current_assignee` to the single coordinator or `null`, and enumerate each active child in `active_child_lanes` with its assignee and run receipts. Do not encode multiple assignees as a YAML list in `current_assignee`.
+
+Distinguish active work from passive waiting. `running` and `agent_review_running` require a live run/worker receipt recorded in `active_child_lanes[].run_receipts` or `verification_evidence_refs`; `dependency_wait` requires an unresolved dependency; human, release-authorization, and external-sync gates identify the authority and exact unblock condition. Do not report `running` merely because the parent is open or a worker was once spawned.
 
 When a parent epic is `todo` or `blocked` while child lanes are running, the parent still needs a compact status summary. The summary must name the board slug and tenant separately when they differ, list active child lanes and run receipts, name the next dependency gate, and state whether a human/release authority gate is currently required. Without that parent summary, users can correctly perceive that the workflow is stuck even while child workers are active.
 
@@ -666,6 +677,7 @@ NOT_VERIFIED
 ```yaml
 task_management_result:
   board_ref: string
+  tenant: string | null
   parent_card_ref: string
   card_identity:
     kind: epic | subtask | single_task
@@ -699,9 +711,17 @@ task_management_result:
     terminal_state_policy:
       done_requires: full_delivery_chain | lane_local_dod | single_task_dod
   status_summary:
+    board_ref: string
+    tenant: string | null
     current_lane: string | null
     current_assignee: string | null
     current_state: running | dependency_wait | agent_review_running | human_gate | release_authorization_gate | external_sync_gate | completed | failed | not_verified
+    active_child_lanes:
+      - task_ref: string
+        lane_ref: string
+        assignee: string
+        current_state: running | dependency_wait | agent_review_running | human_gate | release_authorization_gate | external_sync_gate | completed | failed | not_verified
+        run_receipts: []
     last_completed_lane: string | null
     next_lane: string | null
     blocked_reason: string | null
