@@ -1,6 +1,6 @@
 {
   "id": "native-ai-engineering",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "identity_generation": 2,
   "topology": "orchestrator_with_specialists",
   "orchestrator": "agent-orchestrator",
@@ -28,6 +28,7 @@
         "hermes-profile-bootstrap",
         "workflow-router",
         "role-switcher",
+        "hermes-task-management-workflow",
         "systems-reasoning",
         "decision-provenance",
         "context-manager",

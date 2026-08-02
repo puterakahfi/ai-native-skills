@@ -56,7 +56,7 @@ assets/profile-identity-maps/native-ai-engineering-v1-to-v2.json
 
 Without `--apply`, the executor:
 
-1. validates the v1-to-v2 mapping against preset `2.0.0`;
+1. validates the v1-to-v2 mapping against preset `2.1.1`;
 2. inventories only the presence of profile-local state categories without reading secret values;
 3. classifies each pair as `PLAN_NATIVE_RENAME`, `SKIP_ALREADY_MIGRATED`, `BLOCKED_BOTH_PRESENT`, or `BLOCKED_BOTH_MISSING`;
 4. accepts a resumable mixed state only when every mapping has exactly one side present;

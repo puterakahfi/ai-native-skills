@@ -50,7 +50,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
         }
 
     def test_preset_v2_identity_and_order_are_explicit(self) -> None:
-        self.assertEqual(self.preset["version"], "2.0.0")
+        self.assertEqual(self.preset["version"], "2.1.1")
         self.assertEqual(self.preset["identity_generation"], 2)
         self.assertEqual(self.preset["topology"], "orchestrator_with_specialists")
         self.assertEqual(self.preset["orchestrator"], "agent-orchestrator")
@@ -101,6 +101,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 "hermes-profile-bootstrap",
                 "workflow-router",
                 "role-switcher",
+                "hermes-task-management-workflow",
                 "systems-reasoning",
                 "decision-provenance",
                 "context-manager",

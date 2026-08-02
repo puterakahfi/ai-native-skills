@@ -34,6 +34,7 @@ class HermesFleetTests(unittest.TestCase):
                 "gateway": "eligible",
                 "worker_mode": "user_facing_front_door",
                 "skills": ["fleet-skill", "router-skill"],
+                "soul": "souls/agent-orchestrator.md",
             },
             {
                 "id": "agent-review",
@@ -41,6 +42,7 @@ class HermesFleetTests(unittest.TestCase):
                 "gateway": "none",
                 "worker_mode": "headless_on_demand",
                 "skills": ["review-skill"],
+                "soul": "souls/agent-review.md",
             },
         ]
         self.write_preset()
@@ -50,6 +52,10 @@ class HermesFleetTests(unittest.TestCase):
             (path / "SKILL.md").write_text(
                 f"---\nname: {skill}\n---\n", encoding="utf-8"
             )
+        for profile_spec in self.profile_specs:
+            soul = self.tmp / profile_spec["soul"]
+            soul.parent.mkdir(parents=True, exist_ok=True)
+            soul.write_text(f"# {profile_spec['id']} soul\n", encoding="utf-8")
         self.write_fake_hermes()
 
     def write_preset(self, *, include_transition: bool = False) -> None:
@@ -142,6 +148,10 @@ raise SystemExit(0)
                 self.assertTrue(projected.is_symlink())
                 self.assertEqual(projected.resolve(), (self.skills / skill).resolve())
                 self.assertTrue((projected / "SKILL.md").is_file())
+            self.assertEqual(
+                (profile / "SOUL.md").read_text(encoding="utf-8"),
+                (self.tmp / profile_spec["soul"]).read_text(encoding="utf-8"),
+            )
         self.assertTrue((self.home / "kanban.db").is_file())
 
     def test_default_skills_root_is_fixed_catalog_clone(self) -> None:
@@ -188,6 +198,48 @@ raise SystemExit(0)
         }
         self.assertEqual(statuses["agent-review:review-skill"], "UPDATED")
 
+    def test_reconcile_plans_and_applies_soul_drift(self) -> None:
+        profile_dir = self.home / "profiles" / "agent-orchestrator"
+        profile_dir.mkdir(parents=True)
+        soul = profile_dir / "SOUL.md"
+        soul.write_text("# stale soul\n", encoding="utf-8")
+
+        self.assertEqual(self.run_cli("reconcile"), module.EXIT_OK)
+        receipt = json.loads(self.receipt.read_text(encoding="utf-8"))
+        soul_actions = [
+            item for item in receipt["actions"]
+            if item["kind"] == "soul" and item["target"] == "agent-orchestrator"
+        ]
+        self.assertEqual(soul_actions[0]["status"], "PLAN_UPDATE")
+        self.assertIn("target_sha256", soul_actions[0]["detail"])
+        self.assertEqual(soul.read_text(encoding="utf-8"), "# stale soul\n")
+
+        self.assertEqual(self.run_cli("reconcile", "--apply"), module.EXIT_OK)
+        receipt = json.loads(self.receipt.read_text(encoding="utf-8"))
+        soul_actions = [
+            item for item in receipt["actions"]
+            if item["kind"] == "soul" and item["target"] == "agent-orchestrator"
+        ]
+        self.assertEqual(soul_actions[0]["status"], "UPDATED")
+        self.assertEqual(
+            soul.read_text(encoding="utf-8"),
+            (self.tmp / "souls" / "agent-orchestrator.md").read_text(encoding="utf-8"),
+        )
+
+    def test_audit_reports_soul_drift(self) -> None:
+        profile_dir = self.home / "profiles" / "agent-orchestrator"
+        profile_dir.mkdir(parents=True)
+        (profile_dir / "SOUL.md").write_text("# stale soul\n", encoding="utf-8")
+
+        self.assertEqual(self.run_cli("audit"), module.EXIT_NEEDS_WORK)
+        receipt = json.loads(self.receipt.read_text(encoding="utf-8"))
+        self.assertIn("soul_drift:agent-orchestrator", receipt["findings"])
+        soul_actions = [
+            item for item in receipt["actions"]
+            if item["kind"] == "soul" and item["target"] == "agent-orchestrator"
+        ]
+        self.assertEqual(soul_actions[0]["status"], "DRIFT")
+
     def test_missing_skill_fails_before_mutation(self) -> None:
         (self.skills / "review-skill").rename(self.skills / "removed-skill")
         self.assertEqual(self.run_cli("bootstrap", "--apply"), module.EXIT_PREFLIGHT)
@@ -208,7 +260,7 @@ raise SystemExit(0)
         )
         preset = json.loads(preset_path.read_text(encoding="utf-8"))
         module.validate_preset(preset)
-        self.assertEqual(preset["version"], "2.0.0")
+        self.assertEqual(preset["version"], "2.1.1")
         self.assertEqual(preset["identity_generation"], 2)
         self.assertEqual(preset["orchestrator"], "agent-orchestrator")
         gateways = [p["id"] for p in preset["profiles"] if p["gateway"] == "eligible"]

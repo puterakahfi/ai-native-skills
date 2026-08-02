@@ -55,7 +55,7 @@ Without `--apply`, `bootstrap`, `reconcile`, and `sync-models` are plan-only. `a
 
 ## Target preset v2
 
-The `native-ai-engineering` preset is a breaking identity generation with version `2.0.0`:
+The `native-ai-engineering` preset is a v2 identity generation with version `2.1.1`:
 
 ```text
 agent-orchestrator
@@ -130,9 +130,9 @@ This is not the primary user-facing invocation because it requires knowledge of 
 ## Operations
 
 ```text
-bootstrap    create missing target profiles, synchronize managed skills, initialize Kanban
-reconcile    compare and synchronize an approved target preset idempotently
-audit        classify identity state and inspect conformance without runtime mutation
+bootstrap    create missing target profiles, synchronize managed skills and SOUL files, initialize Kanban
+reconcile    compare and synchronize an approved target preset idempotently, including SOUL drift
+audit        classify identity state, managed skills, and SOUL drift without runtime mutation
 sync-models  synchronize non-secret model policy from the preset orchestrator to target profiles
 ```
 
@@ -172,6 +172,7 @@ With `--apply`, fleet bootstrap or reconcile may:
 - run `hermes --version`;
 - run `hermes profile create ... --no-skills --no-alias` for missing target profiles;
 - create or update approved skill symlinks in profile-local `skills/` directories;
+- copy missing approved `SOUL.md` files or replace drifted managed `SOUL.md` files with their preset source;
 - run `hermes kanban init`;
 - write a secret-free receipt under `$HERMES_HOME/fleet-bootstrap/<preset>/last-receipt.json`.
 
@@ -189,7 +190,7 @@ Plan-only and audit receipts default to:
 .evidence/hermes-fleet/<preset>/last-model-sync-receipt.json
 ```
 
-Fleet receipts expose preset version, identity generation, target profile IDs, orchestrator profile, observed identity state, non-secret actions, findings, and readiness. They record:
+Fleet receipts expose preset version, identity generation, target profile IDs, orchestrator profile, observed identity state, managed skill and SOUL actions, non-secret findings, and readiness. Managed SOUL action details include source and target SHA-256 digests so plan/audit can detect stale role rules without mutation. They record:
 
 ```yaml
 credentials_copied: false

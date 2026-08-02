@@ -136,6 +136,7 @@ skills_required:
   - hermes-profile-bootstrap
   - workflow-router
   - role-switcher
+  - hermes-task-management-workflow
   - systems-reasoning
   - decision-provenance
   - context-manager

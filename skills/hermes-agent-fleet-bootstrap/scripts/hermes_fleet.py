@@ -186,6 +186,43 @@ def directory_digest(path: Path) -> str:
     return digest.hexdigest()
 
 
+def file_digest(path: Path) -> str:
+    """Return a stable digest for a managed file target."""
+    if path.is_symlink():
+        raise FleetError(f"Symlinked managed file is not allowed: {path}")
+    if not path.exists():
+        return "MISSING"
+    if not path.is_file():
+        raise FleetError(f"Managed file path must be a file: {path}")
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def atomic_copy_file(source: Path, target: Path) -> None:
+    """Atomically replace a managed file without following target symlinks."""
+    if not source.is_file() or source.is_symlink():
+        raise FleetError(f"Managed file source is invalid: {source}")
+    if target.is_symlink():
+        raise FleetError(f"Symlinked managed file target is not allowed: {target}")
+    if target.exists() and not target.is_file():
+        raise FleetError(f"Managed file target must be a file: {target}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    staged = target.with_name(f".{target.name}.next")
+    backup = target.with_name(f".{target.name}.previous")
+    remove_path(staged)
+    remove_path(backup)
+    shutil.copy2(source, staged)
+    if target.exists():
+        target.rename(backup)
+    try:
+        staged.rename(target)
+    except Exception:
+        remove_path(target)
+        if backup.exists():
+            backup.rename(target)
+        raise
+    remove_path(backup)
+
+
 def resolve_hermes_binary(value: str) -> str | None:
     if os.path.sep in value:
         path = Path(value).expanduser()
@@ -240,6 +277,50 @@ def skill_target_state(source: Path, target: Path) -> str:
     # Existing copy-style managed skills are intentionally drift: apply converts
     # them to catalog symlinks so `git pull` updates all managed profiles.
     return "DRIFT"
+
+
+def managed_file_action(
+    *,
+    kind: str,
+    profile_id: str,
+    source: Path,
+    target: Path,
+    source_rel: str,
+    operation: str,
+) -> tuple[Action, str | None]:
+    """Plan a managed profile file sync with deterministic drift detection."""
+    if not source.exists():
+        return (
+            Action(kind, profile_id, "BLOCKED_SOURCE_MISSING", f"Source missing: {source_rel}"),
+            f"missing_{kind}_source:{profile_id}",
+        )
+    if source.is_symlink() or not source.is_file():
+        return (
+            Action(kind, profile_id, "BLOCKED_INVALID_SOURCE", f"Invalid source: {source_rel}"),
+            f"invalid_{kind}_source:{profile_id}",
+        )
+    if target.is_symlink() or (target.exists() and not target.is_file()):
+        return (
+            Action(kind, profile_id, "BLOCKED_UNSAFE_TARGET", f"Unsafe managed target: {target}"),
+            f"unsafe_{kind}_target:{profile_id}",
+        )
+
+    source_hash = file_digest(source)
+    target_hash = file_digest(target)
+    detail = json.dumps(
+        {"source": source_rel, "source_sha256": source_hash, "target_sha256": target_hash},
+        sort_keys=True,
+    )
+    if target_hash == "MISSING":
+        status = "PLAN_SYNC" if operation != "audit" else "MISSING"
+        finding = f"missing_{kind}:{profile_id}" if operation == "audit" else None
+    elif target_hash == source_hash:
+        status = "SKIP_IN_SYNC"
+        finding = None
+    else:
+        status = "PLAN_UPDATE" if operation != "audit" else "DRIFT"
+        finding = f"{kind}_drift:{profile_id}" if operation == "audit" else None
+    return Action(kind, profile_id, status, detail), finding
 
 
 def default_catalog_root() -> Path:
@@ -458,16 +539,17 @@ def plan_actions(
         if soul_rel:
             soul_source = skills_root.parent / soul_rel
             soul_target = profile_dir / "SOUL.md"
-            if not soul_source.exists():
-                actions.append(Action("soul", profile_id, "BLOCKED_SOURCE_MISSING", f"Soul source missing: {soul_rel}"))
-                findings.append(f"missing_soul_source:{profile_id}")
-            elif soul_target.exists():
-                actions.append(Action("soul", profile_id, "SKIP_EXISTS", "SOUL.md already present (use --force to overwrite)"))
-            else:
-                status = "PLAN_SYNC" if operation != "audit" else "MISSING"
-                actions.append(Action("soul", profile_id, status, f"Source: {soul_rel}"))
-                if operation == "audit":
-                    findings.append(f"missing_soul:{profile_id}")
+            action, finding = managed_file_action(
+                kind="soul",
+                profile_id=profile_id,
+                source=soul_source,
+                target=soul_target,
+                source_rel=soul_rel,
+                operation=operation,
+            )
+            actions.append(action)
+            if finding:
+                findings.append(finding)
 
         # Config sync planning
         config_rel = profile.get("config")
@@ -478,7 +560,7 @@ def plan_actions(
                 actions.append(Action("config", profile_id, "BLOCKED_SOURCE_MISSING", f"Config source missing: {config_rel}"))
                 findings.append(f"missing_config_source:{profile_id}")
             elif config_target.exists():
-                actions.append(Action("config", profile_id, "SKIP_EXISTS", "config.yaml already present (use --force to overwrite)"))
+                actions.append(Action("config", profile_id, "SKIP_EXISTS", "config.yaml already present; profile-local config preserved"))
             else:
                 status = "PLAN_SYNC" if operation != "audit" else "MISSING"
                 actions.append(Action("config", profile_id, status, f"Source: {config_rel}"))
@@ -599,15 +681,14 @@ def execute(
             return EXIT_EXECUTION
 
     for action in actions:
-        if action.kind == "soul" and action.status == "PLAN_SYNC":
+        if action.kind == "soul" and action.status in {"PLAN_SYNC", "PLAN_UPDATE"}:
             profile_id = action.target
             profile = profile_by_id[profile_id]
             soul_source = args.skills_root.parent / profile["soul"]
             soul_target = args.hermes_home / "profiles" / profile_id / "SOUL.md"
             try:
-                import shutil
-                shutil.copy2(soul_source, soul_target)
-                action.status = "SYNCED"
+                atomic_copy_file(soul_source, soul_target)
+                action.status = "SYNCED" if action.status == "PLAN_SYNC" else "UPDATED"
             except Exception as exc:
                 action.status = "FAILED"
                 action.detail = str(exc)
@@ -664,6 +745,7 @@ def render_human(receipt: dict[str, Any]) -> str:
         "CREATED",
         "INSTALLED",
         "UPDATED",
+        "SYNCED",
         "INITIALIZED",
         "SKIP_EXISTS",
         "SKIP_IN_SYNC",

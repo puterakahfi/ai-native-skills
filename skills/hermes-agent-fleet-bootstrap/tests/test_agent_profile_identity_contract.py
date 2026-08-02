@@ -243,6 +243,7 @@ class AgentProfileIdentityContractTests(unittest.TestCase):
             "hermes-profile-bootstrap",
             "workflow-router",
             "role-switcher",
+            "hermes-task-management-workflow",
         }
         orchestrator_skills = set(self.contracts["agent-orchestrator"]["skills_required"])
         self.assertTrue(routing.issubset(orchestrator_skills))

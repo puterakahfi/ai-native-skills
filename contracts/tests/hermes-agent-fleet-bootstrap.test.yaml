@@ -1,6 +1,6 @@
 skill_test:
   skill: hermes-agent-fleet-bootstrap
-  version: 0.2.0
+  version: 0.2.1
   description: Verify Hermes fleet bootstrap uses the versioned agent-* identity contract, one front door, bounded skills, plan-first execution, identity-state classification, and fail-closed migration boundaries.
   cases:
   - id: native-ai-engineering-v2-uses-seven-agent-identities
@@ -44,9 +44,9 @@ skill_test:
     - product_truth_stays_external_context
   - id: preset-v2-has-one-gateway-owner
     description: Only the orchestrator owns the default user-facing gateway.
-    trigger: Show the native-ai-engineering 2.0.0 profile and gateway policy.
+    trigger: Show the native-ai-engineering 2.1.1 profile and gateway policy.
     must_contain:
-    - 2.0.0
+    - 2.1.1
     - identity_generation
     - agent-orchestrator
     - user_facing_front_door
