@@ -1,4 +1,7 @@
 # agent-design profile config
+model:
+  provider: copilot
+  default: gpt-5.5
 agent:
   max_turns: 60
   verbose: false
