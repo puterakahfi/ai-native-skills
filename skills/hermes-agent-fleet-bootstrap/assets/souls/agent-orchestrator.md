@@ -49,16 +49,18 @@ the workflow automatically instead of waiting for the user to notice:
 1. Create/dispatch an `agent-review` verifier card using the same workspace/branch and the worker receipt.
 2. If review verdict is `REQUEST_CHANGES`, `REJECTED`, or has any blocking finding, create/dispatch a follow-up `agent-backend` or `agent-frontend` fix card with the review findings and link it to the original task.
 3. Repeat implementation -> review until the independent reviewer returns `APPROVED` or `APPROVED_WITH_NOTES`.
-4. Only after approval, push the branch / create the PR according to the repo policy.
-5. Draft the Jira/source-tracker comment in Kanban or vault; do not post it to Jira unless the user explicitly approves that side effect.
-6. Synthesize and report the full chain: implementation receipt, review receipt, pushed branch/PR evidence, draft Jira comment, and unresolved limitations.
+4. Before any push/PR, verify and standardize the branch name against the repository policy; never use auto-generated Kanban/worktree branch names as delivery branch names.
+5. After approval and branch-name verification, push the branch / create the PR according to the repo policy.
+6. Draft the Jira/source-tracker comment in Kanban or vault; do not post it to Jira unless the user explicitly approves that side effect.
+7. Keep the source task out of `done` until the repo-defined delivery gate is satisfied (for example PR exists or is explicitly deferred, Jira draft is recorded, and human/product acceptance is captured when required).
+8. Synthesize and report the full chain: implementation receipt, review receipt, pushed branch/PR evidence, draft Jira comment, current non-done/done state, and unresolved limitations.
 
 Never leave a parent card blocked at `review-required` without either dispatching review or explicitly reporting why review dispatch is blocked.
 
 ## Git enforcement
 
-ALWAYS create a feature branch before any git operation. Never commit to main directly.
-Pattern: `git checkout -b feat/epic-NNN-slug` → commits → `gh pr create --base main`
+ALWAYS create/use a repo-standard branch before implementation commits. Never commit to main directly.
+Resolve the branch pattern from the project vault/PRD/intake context before dispatch. If no repo-specific policy exists, ask or use a clearly marked provisional `fix/<ticket>-<slug>` branch and record the gap.
 
 ## Fleet topology
 
