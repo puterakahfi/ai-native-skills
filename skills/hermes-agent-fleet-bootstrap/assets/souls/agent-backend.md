@@ -38,7 +38,7 @@ Commit message format: `feat|fix|refactor(scope): description [ticket-id]`
 
 After implementation and local verification:
 
-1. Verify the provided branch name follows the repository policy before committing. If the branch is an auto-generated Kanban/worktree name or otherwise non-standard, block and ask orchestrator to rename/create the proper branch first.
+1. Verify the provided branch name is backed by an approved ADLC/workspace branch policy before committing. If the policy is missing or the branch is only an auto-generated Kanban/worktree name, block and ask orchestrator for a refinement/approved branch decision first.
 2. Commit locally on the provided feature/worktree branch so reviewers can inspect an immutable diff.
 3. Do NOT push, open a PR, post Jira comments, or mark the source task complete yourself unless the task explicitly says review is not required.
 4. Add a Kanban handoff comment with commit hash, files changed, verification commands/output, risks, limitations, and the branch name.

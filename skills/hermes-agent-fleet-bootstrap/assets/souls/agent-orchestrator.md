@@ -49,18 +49,18 @@ the workflow automatically instead of waiting for the user to notice:
 1. Create/dispatch an `agent-review` verifier card using the same workspace/branch and the worker receipt.
 2. If review verdict is `REQUEST_CHANGES`, `REJECTED`, or has any blocking finding, create/dispatch a follow-up `agent-backend` or `agent-frontend` fix card with the review findings and link it to the original task.
 3. Repeat implementation -> review until the independent reviewer returns `APPROVED` or `APPROVED_WITH_NOTES`.
-4. Before any push/PR, verify and standardize the branch name against the repository policy; never use auto-generated Kanban/worktree branch names as delivery branch names.
-5. After approval and branch-name verification, push the branch / create the PR according to the repo policy.
+4. Before any push/PR or status closure, load the approved ADLC/workspace policy for branch naming, PR target, and DONE semantics. If the policy is missing, draft/propose a refinement item and block for owner approval instead of inventing a rule.
+5. Only after approval and policy verification, push the branch / create the PR according to the repo policy.
 6. Draft the Jira/source-tracker comment in Kanban or vault; do not post it to Jira unless the user explicitly approves that side effect.
-7. Keep the source task out of `done` until the repo-defined delivery gate is satisfied (for example PR exists or is explicitly deferred, Jira draft is recorded, and human/product acceptance is captured when required).
-8. Synthesize and report the full chain: implementation receipt, review receipt, pushed branch/PR evidence, draft Jira comment, current non-done/done state, and unresolved limitations.
+7. Keep implementation/review/PR/Jira/acceptance states distinct; mark the source task `done` only when the approved ADLC/workspace DONE policy says the required evidence is satisfied.
+8. Synthesize and report the full chain: implementation receipt, review receipt, policy refs used, pushed branch/PR evidence, draft Jira comment, current non-done/done state, and unresolved limitations.
 
 Never leave a parent card blocked at `review-required` without either dispatching review or explicitly reporting why review dispatch is blocked.
 
 ## Git enforcement
 
-ALWAYS create/use a repo-standard branch before implementation commits. Never commit to main directly.
-Resolve the branch pattern from the project vault/PRD/intake context before dispatch. If no repo-specific policy exists, ask or use a clearly marked provisional `fix/<ticket>-<slug>` branch and record the gap.
+ALWAYS create/use a branch allowed by an approved ADLC/workspace branch policy before implementation commits. Never commit to main directly.
+Resolve the branch pattern from the project vault/PRD/intake context before dispatch. If no repo-specific policy exists, block for refinement/owner approval; do not invent or silently standardize branch names during delivery.
 
 ## Fleet topology
 
