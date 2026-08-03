@@ -14,8 +14,8 @@ contract_coverage_inventory:
       facade: 5
     coverage:
       contract_backed_v2: 26
-      invalid: 4
-      legacy_contract_backed: 73
+      invalid: 3
+      legacy_contract_backed: 74
       reviewed_exemption: 23
       unowned: 6
     compatibility_manifests: 0
@@ -44,7 +44,7 @@ contract_coverage_inventory:
     version: 1.1.1
     implements: contracts/skills/design/accessibility.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -59,7 +59,7 @@ contract_coverage_inventory:
     version: 1.2.4
     implements: contracts/skills/design/adaptive-component-design.contract.yaml
     contract_version: ~1.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - component_fitness_diagnosis
@@ -90,7 +90,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/adr.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -105,7 +105,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/ai-system-design.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -135,7 +135,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/api-contract.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -150,7 +150,7 @@ contract_coverage_inventory:
     version: 1.1.0
     implements: contracts/skills/quality/architecture-review.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -181,7 +181,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/skills/quality/brand-identity-review.contract.yaml
     contract_version: ^0.1.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -196,7 +196,7 @@ contract_coverage_inventory:
     version: 1.2.0
     implements: contracts/workflows/bugfix.contract.yaml
     contract_version: ~0.3
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -211,7 +211,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/product/business-value-alignment.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -271,7 +271,7 @@ contract_coverage_inventory:
     version: 2.3.0
     implements: contracts/workflows/code-review.contract.yaml
     contract_version: ~0.3
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -286,7 +286,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/skills/design/collection-discovery-design.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - collection_shape_and_discovery_pressure_diagnosis
@@ -324,7 +324,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/skills/design/component-family-design.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - atomic_design_hierarchy_classification
@@ -373,7 +373,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/content/content-strategy.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -388,7 +388,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/context/context-engineering.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -403,7 +403,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/context/context-manager.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -433,7 +433,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/content/copywriting.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -448,7 +448,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/content/cro.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -463,7 +463,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/dark-light-theming.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -478,7 +478,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/engineering/data-modeling.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -493,7 +493,7 @@ contract_coverage_inventory:
     version: 1.1.1
     implements: contracts/skills/product/decision-making.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -508,7 +508,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/quality/decision-provenance.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - material_decision_claim_verification
@@ -535,7 +535,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/product/delivery-work-breakdown.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - release_unit_classification
@@ -568,7 +568,7 @@ contract_coverage_inventory:
     version: 2.0.0
     implements: contracts/workflows/deployment.contract.yaml
     contract_version: ~0.2
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -598,7 +598,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/design-brand.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -613,7 +613,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/color-theory.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - hue_saturation_value_decisions
@@ -637,7 +637,7 @@ contract_coverage_inventory:
     version: 1.1.1
     implements: contracts/skills/design/design-depth.contract.yaml
     contract_version: ^2.1.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - depth_need_assessment
@@ -664,7 +664,7 @@ contract_coverage_inventory:
     version: 1.5.1
     implements: contracts/skills/design/design-foundation.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -679,7 +679,7 @@ contract_coverage_inventory:
     version: 1.3.1
     implements: contracts/skills/design/design-genre.contract.yaml
     contract_version: ^1.1.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -694,7 +694,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/iconography.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - icon_family_selection
@@ -717,7 +717,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/skills/design/design-interaction.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -732,7 +732,7 @@ contract_coverage_inventory:
     version: 1.2.0
     implements: contracts/skills/design/design-layout.contract.yaml
     contract_version: ^2.0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -747,7 +747,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/design-patterns.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -762,7 +762,7 @@ contract_coverage_inventory:
     version: 2.2.1
     implements: contracts/workflows/design-refinement.contract.yaml
     contract_version: ^1.2.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -778,7 +778,7 @@ contract_coverage_inventory:
     version: 3.4.0
     implements: contracts/skills/quality/design-review.contract.yaml
     contract_version: ~0.2
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -793,7 +793,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/spacing.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - visual_rhythm_decisions
@@ -815,7 +815,7 @@ contract_coverage_inventory:
     version: 1.1.0
     implements: contracts/skills/design/design-strategy.contract.yaml
     contract_version: ^1.1.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -830,7 +830,7 @@ contract_coverage_inventory:
     version: 1.1.0
     implements: contracts/skills/design/design-system.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -845,7 +845,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/typography.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - typeface_personality_and_selection
@@ -870,7 +870,7 @@ contract_coverage_inventory:
     version: 1.1.1
     implements: contracts/skills/design/design-visual.contract.yaml
     contract_version: ^1.1.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -885,7 +885,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/visual-thinking/diagram-architect.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -916,7 +916,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/domain-driven-design.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -946,7 +946,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/quality/ethics-responsible-ai.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -961,7 +961,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/event-driven-design.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -976,7 +976,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/product/experiment-design.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -991,7 +991,7 @@ contract_coverage_inventory:
     version: 1.1.0
     implements: contracts/skills/engineering/git-workflow.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1058,7 +1058,7 @@ contract_coverage_inventory:
     version: 1.1.0
     implements: contracts/schemas/auto-routing/dispatch-receipt.schema.yaml
     contract_version: null
-    contract_path_exists: false
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - plan_consumption
@@ -1079,7 +1079,6 @@ contract_coverage_inventory:
     exemption_path: skills/hermes-auto-routing-dispatch/contract.exemption.yaml
     classification: invalid
     errors:
-    - contract_path_missing
     - contract_version_missing
   - id: hermes-auto-routing-planner
     path: skills/hermes-auto-routing-planner/SKILL.md
@@ -1088,7 +1087,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/schemas/auto-routing/task-routing-plan.schema.yaml
     contract_version: null
-    contract_path_exists: false
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - request_context_normalization
@@ -1110,7 +1109,6 @@ contract_coverage_inventory:
     exemption_path: skills/hermes-auto-routing-planner/contract.exemption.yaml
     classification: invalid
     errors:
-    - contract_path_missing
     - contract_version_missing
   - id: hermes-auto-routing-review-synthesis
     path: skills/hermes-auto-routing-review-synthesis/SKILL.md
@@ -1120,7 +1118,7 @@ contract_coverage_inventory:
     implements: '[''review-receipt.schema.yaml'', ''synthesis-receipt.schema.yaml'',
       ''origin-return-receipt.schema.yaml'']'
     contract_version: null
-    contract_path_exists: false
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - reviewer_dispatch
@@ -1138,7 +1136,6 @@ contract_coverage_inventory:
     exemption_path: skills/hermes-auto-routing-review-synthesis/contract.exemption.yaml
     classification: invalid
     errors:
-    - contract_path_missing
     - contract_version_missing
   - id: hermes-auto-routing-skill-ops
     path: skills/hermes-auto-routing-skill-ops/SKILL.md
@@ -1204,7 +1201,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/runtime/profile-bootstrap.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1261,7 +1258,7 @@ contract_coverage_inventory:
     version: 1.2.0
     implements: contracts/skills/engineering/implementation-context-discovery.contract.yaml
     contract_version: ^1.1.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - repository_implementation_ecosystem_discovery
@@ -1299,7 +1296,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/runtime/incident-response.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1314,7 +1311,7 @@ contract_coverage_inventory:
     version: 1.1.1
     implements: contracts/skills/design/information-architecture.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1359,7 +1356,7 @@ contract_coverage_inventory:
     version: 1.1.1
     implements: contracts/skills/governance/language-standards.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1374,7 +1371,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/macrostructures.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1405,7 +1402,7 @@ contract_coverage_inventory:
     version: 1.3.0
     implements: contracts/skills/design/master-design.contract.yaml
     contract_version: ~0.2
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1420,7 +1417,7 @@ contract_coverage_inventory:
     version: 1.1.0
     implements: contracts/skills/engineering/master-engineer.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1435,7 +1432,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/micro-frontend.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1450,7 +1447,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/runtime/model-selection.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1465,7 +1462,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/motion-design.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1480,7 +1477,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/runtime/native-ai-engineer.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1495,7 +1492,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/runtime/native-ai-runtime-agent.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1510,7 +1507,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/runtime/native-ai-runtime-ops.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1525,7 +1522,7 @@ contract_coverage_inventory:
     version: 2.5.0
     implements: contracts/workflows/new-feature.contract.yaml
     contract_version: ~0.4
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1540,7 +1537,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/runtime/observability-design.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1555,7 +1552,7 @@ contract_coverage_inventory:
     version: 1.1.1
     implements: contracts/skills/runtime/onboarding.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1570,7 +1567,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/engineering/plan.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1585,7 +1582,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/ports-and-adapters.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1600,7 +1597,7 @@ contract_coverage_inventory:
     version: 3.1.0
     implements: contracts/workflows/product-development.contract.yaml
     contract_version: ~0.4
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1615,7 +1612,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/skills/product/product-intake.contract.yaml
     contract_version: ~1.0
-    contract_path_exists: false
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - intake_investigation
@@ -1633,9 +1630,8 @@ contract_coverage_inventory:
       - implementation
     conformance_path: null
     exemption_path: skills/product-intake/contract.exemption.yaml
-    classification: invalid
-    errors:
-    - contract_path_missing
+    classification: legacy_contract_backed
+    errors: []
   - id: product-manager
     path: skills/product-manager/SKILL.md
     type: skill
@@ -1643,7 +1639,7 @@ contract_coverage_inventory:
     version: 1.2.0
     implements: contracts/skills/product/product-manager.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1658,7 +1654,7 @@ contract_coverage_inventory:
     version: 1.2.0
     implements: contracts/skills/product/product-requirements.contract.yaml
     contract_version: ~0.2
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1733,7 +1729,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/context/prompt-optimizer.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1748,7 +1744,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/readability.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1763,7 +1759,7 @@ contract_coverage_inventory:
     version: 3.6.1
     implements: contracts/workflows/redesign-workflow.contract.yaml
     contract_version: ^2.2.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - existing_visual_surface_redesign
@@ -1803,7 +1799,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/engineering/refactoring.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1818,7 +1814,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/quality/resilience-engineering.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1833,7 +1829,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/context/response-contract.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1848,7 +1844,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/responsiveness.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1863,7 +1859,7 @@ contract_coverage_inventory:
     version: 1.5.0
     implements: contracts/skills/meta/role-switcher.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1878,7 +1874,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/governance/rule-manager.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1893,7 +1889,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/skills/security/security-engineer.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1908,7 +1904,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/security/security-review.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1923,7 +1919,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/service-design.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1968,7 +1964,7 @@ contract_coverage_inventory:
     version: 1.1.2
     implements: contracts/skills/quality/skill-eval.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -1983,7 +1979,7 @@ contract_coverage_inventory:
     version: 1.1.0
     implements: contracts/workflows/skill-evolution.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - post_fix_learning_review
@@ -2012,7 +2008,7 @@ contract_coverage_inventory:
     version: 0.1.0
     implements: contracts/workflows/software-testing.contract.yaml
     contract_version: ^0.1.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - testing_risk_discovery_and_strategy_composition
@@ -2052,7 +2048,7 @@ contract_coverage_inventory:
     version: 1.1.0
     implements: contracts/workflows/spec-driven.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2067,7 +2063,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/engineering/spike.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2082,7 +2078,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/quality/systematic-debugging.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2112,7 +2108,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/architecture/systems-thinking.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2127,7 +2123,7 @@ contract_coverage_inventory:
     version: 1.0.0
     implements: contracts/skills/context/task-continuity.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers:
       - source_backed_task_checkpoint_creation
@@ -2161,7 +2157,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/engineering/technical-debt-governance.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2176,7 +2172,7 @@ contract_coverage_inventory:
     version: 1.1.1
     implements: contracts/skills/engineering/test-driven-development.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2206,7 +2202,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/security/threat-modeling.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2221,7 +2217,7 @@ contract_coverage_inventory:
     version: 1.4.0
     implements: contracts/skills/design/ux-ui-patterns.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2251,7 +2247,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/product/user-research.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2281,7 +2277,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/ux-psychology.contract.yaml
     contract_version: ~0.1
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2296,7 +2292,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/design/ux-ui-patterns.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2326,7 +2322,7 @@ contract_coverage_inventory:
     version: 1.0.1
     implements: contracts/skills/quality/web-performance.contract.yaml
     contract_version: ^1.0.0
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
@@ -2341,7 +2337,7 @@ contract_coverage_inventory:
     version: 2.0.0
     implements: contracts/skills/meta/workflow-router.contract.yaml
     contract_version: ~0.2
-    contract_path_exists: true
+    contract_path_exists: null
     legacy_boundary:
       covers: []
       delegates: []
