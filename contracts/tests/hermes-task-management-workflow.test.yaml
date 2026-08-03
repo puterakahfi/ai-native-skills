@@ -1,0 +1,661 @@
+skill_test:
+  skill: hermes-task-management-workflow
+  version: 1.5.0
+  description: Verify project-board work defaults to orchestrator-owned parent cards, separates assignment from execution readiness, gates repository mutation on verified branch topology, progresses observably through an idempotent reviewed graph, controls lifecycle changes, treats the user as an external approver, and blocks premature Done or external sync.
+  cases:
+    - id: chat-request-becomes-routed-project-parent
+      description: A feature request becomes one durable parent outcome card on the verified project board before specialist dispatch.
+      trigger: Put this accepted multi-slice member-management feature on the VisualMate Hermes board and route it to the right agents for implementation and acceptance.
+      must_contain:
+        - agent-orchestrator
+        - routing
+        - board_ref
+        - task_type
+        - primary_workflow
+        - new-feature-workflow
+        - delivery-work-breakdown
+        - execution_owner
+        - specialists
+        - reviewers
+        - acceptance_criteria_refs
+        - required_evidence
+      must_not_contain:
+        - assign the whole parent to one specialist
+        - dispatch before routing
+        - GitHub issue created automatically
+      quality_gates_tested:
+        - project_board_is_verified_before_dispatch
+        - parent_outcome_card_defaults_to_agent_orchestrator
+        - routing_block_is_required_before_dispatch
+        - exactly_one_primary_workflow_is_selected
+        - multi_domain_work_uses_traceable_child_cards
+
+    - id: task-types-route-to-existing-workflows
+      description: Board management classifies intent but delegates execution to existing primary workflows.
+      trigger: Define the board routes for a product idea, PRD/spec, feature, bug, design finding, code review, deployment, sample spike, documentation correction, and unknown request.
+      must_contain:
+        - product_idea
+        - prd_spec
+        - feature
+        - bug
+        - design
+        - review
+        - deployment
+        - spike_sample
+        - documentation
+        - unknown
+        - product-development-workflow
+        - new-feature-workflow
+        - bugfix-workflow
+        - code-review-workflow
+        - deployment-workflow
+        - spike
+        - documentation-assurance
+        - orchestrator triage
+      must_not_contain:
+        - duplicate product workflow
+        - duplicate bugfix workflow
+        - unknown means dispatch
+      quality_gates_tested:
+        - task_type_is_classified_before_assignment
+        - lower_level_workflows_remain_authoritative
+        - unknown_route_fails_closed
+
+    - id: verified-profile-inventory-controls-assignment
+      description: Capability names do not become invented Hermes assignees.
+      trigger: Route product, design, frontend, general engineering, DevOps, security, architecture, review, and cross-domain work. The verified expanded ADLC OS fleet has agent-orchestrator, agent-product, agent-architecture, agent-design, agent-frontend, agent-backend, agent-review, agent-operations, agent-security, agent-quality, agent-knowledge, and agent-platform, but no agent-devops profile.
+      must_contain:
+        - profile_inventory_ref
+        - agent-product
+        - agent-design
+        - agent-frontend
+        - agent-backend
+        - agent-architecture
+        - agent-review
+        - agent-orchestrator
+        - agent-operations
+        - agent-security
+        - operations owner
+        - security specialist
+        - verified profile
+      must_not_contain:
+        - assign agent-devops without verification
+        - capability name proves profile exists
+      quality_gates_tested:
+        - assignee_must_exist_in_verified_profile_inventory
+        - owner_specialist_and_reviewer_remain_distinct
+        - missing_privileged_owner_fails_closed
+
+    - id: sample-does-not-become-feature-done
+      description: A prototype is bounded decision evidence and cannot skip Build, Verify, or Accept.
+      trigger: The sample UI looks convincing and the spike passed its narrow feasibility check. Mark the full feature Done now without production implementation or product acceptance.
+      must_contain:
+        - SAMPLE_EVIDENCE_READY
+        - hypothesis
+        - limitations
+        - Decision
+        - Build
+        - Verify
+        - Accept
+        - sample is never feature completion
+        - NEEDS_WORK
+      must_not_contain:
+        - DONE
+        - prototype proves production behavior
+        - skip acceptance
+      quality_gates_tested:
+        - sample_is_decision_evidence_not_feature_completion
+        - lifecycle_gates_cannot_be_skipped_by_status_change
+        - production_and_acceptance_evidence_remain_required
+
+    - id: parent-done-requires-evidence-and-acceptance
+      description: Completed child implementation and green CI do not complete the parent without traceability, review, and acceptance.
+      trigger: All implementation children say done and CI is green, but one parent acceptance criterion has no runtime evidence, independent review is missing, and the product owner has not accepted the outcome. Close the parent.
+      must_contain:
+        - acceptance matrix
+        - observable evidence
+        - independent review
+        - product/user acceptance
+        - NOT_VERIFIED
+        - BLOCKED
+        - orchestrator synthesis
+      must_not_contain:
+        - DONE
+        - green CI proves acceptance
+        - child completion is sufficient
+      quality_gates_tested:
+        - every_parent_criterion_maps_to_evidence
+        - required_review_blocks_done_when_missing
+        - product_acceptance_blocks_done_when_missing
+        - child_completion_does_not_imply_parent_done
+
+    - id: external-tracker-sync-needs-separate-approval
+      description: Internal Done does not authorize GitHub or another downstream tracker mutation.
+      trigger: The Hermes parent passed internal acceptance. Sync it to GitHub Project and create issues, but no explicit external target approval has been recorded.
+      must_contain:
+        - AWAITING_APPROVAL
+        - external sync
+        - separate explicit approval
+        - target
+        - do not sync
+      must_not_contain:
+        - GitHub issue created
+        - board Done authorizes sync
+        - sync executed
+      quality_gates_tested:
+        - external_tracker_sync_requires_explicit_request_and_approval
+        - internal_done_does_not_self_authorize_external_mutation
+
+    - id: gateway-dispatcher-is-the-automatic-operating-mode
+      description: Automatic board execution uses the gateway-embedded dispatcher rather than a per-board daemon or passive watcher.
+      trigger: Configure automatic execution for three active project boards so ready assigned tasks run without asking me to advance cards in chat. State the runtime command and how you will avoid two dispatch loops.
+      must_contain:
+        - hermes gateway start
+        - kanban.dispatch_in_gateway
+        - sweeps all active boards
+        - dispatcher_evidence_ref
+        - hermes kanban daemon --force
+        - deprecated fallback
+        - hermes kanban watch
+        - does not dispatch
+      must_not_contain:
+        - one daemon per board
+        - run gateway and standalone daemon together
+        - watch automatically executes tasks
+      quality_gates_tested:
+        - automatic_mode_uses_gateway_embedded_dispatcher
+        - dispatcher_mode_requires_runtime_evidence
+        - deprecated_daemon_is_not_run_beside_gateway
+        - event_watch_is_not_misclassified_as_dispatch
+
+    - id: design-completion-auto-promotes-frontend
+      description: Dependency completion promotes the next specialist lane without a user chat handoff.
+      trigger: A design lane has finished with approved evidence. The frontend lane already exists in todo and depends on design. Continue the pipeline automatically.
+      must_contain:
+        - dependency
+        - todo
+        - ready
+        - dispatcher
+        - agent-frontend
+        - no user chat message
+      must_not_contain:
+        - ask the user to start frontend
+        - create a duplicate frontend lane
+        - mark the parent Done
+      quality_gates_tested:
+        - completed_dependency_auto_promotes_next_lane
+        - routine_progression_does_not_require_user_chat
+        - parent_remains_open_during_child_progression
+
+    - id: implementation-review-routes-agent-to-agent
+      description: Implementation completion routes to an eligible reviewer and product acceptance lane instead of a generic human review block.
+      trigger: Frontend implementation and tests are complete. The verified fleet includes agent-review and agent-product. Route review, remediation if needed, and acceptance without asking me to inspect routine engineering evidence.
+      must_contain:
+        - agent-review
+        - agent-product
+        - independent review
+        - NEEDS_WORK
+        - remediation lane
+        - dependency
+        - auto-resumes
+      must_not_contain:
+        - generic review-required human block
+        - user must review the code
+        - implementation completion means parent Done
+      quality_gates_tested:
+        - verified_agent_reviewer_precedes_human_escalation
+        - reviewer_findings_route_to_dependency_remediation
+        - product_acceptance_remains_distinct_from_code_review
+
+    - id: human-gates-are-limited-and-explicit
+      description: Human blocking is reserved for policy-backed authority gates or genuinely ambiguous decisions.
+      trigger: Decide which points in an automatic feature pipeline can pause for a human. Routine design, implementation, and review agents are available, while final product-owner acceptance, merge, deploy, and external sync require explicit authority.
+      must_contain:
+        - product_owner_acceptance
+        - merge
+        - deploy
+        - external_sync
+        - ambiguous_decision
+        - authority_ref
+        - exact unblock condition
+      must_not_contain:
+        - human approval after every lane
+        - generic review-required
+        - manual chat handoff
+      quality_gates_tested:
+        - human_gates_are_policy_backed_and_enumerated
+        - routine_agent_handoffs_are_automatic
+        - blocking_reason_identifies_authority_and_unblock_condition
+
+    - id: decomposition-retries-reconcile-one-pipeline
+      description: Repeated orchestration reuses and repairs the canonical graph instead of duplicating active cards or edges.
+      trigger: Retry decomposition after a dispatcher restart. Some expected lanes and links already exist under the same outcome, and one dependency edge is missing.
+      must_contain:
+        - pipeline_key
+        - lane_identity
+        - idempotency_key
+        - <pipeline_key>:lane:<lane_identity>
+        - kanban_create
+        - returned task ID
+        - graph_revision
+        - inspect existing
+        - REUSED
+        - REPAIRED
+        - missing edge
+        - cycle
+        - no duplicate active pipeline
+      must_not_contain:
+        - recreate the full pipeline
+        - duplicate every child
+        - parallel canonical owner
+      quality_gates_tested:
+        - decomposition_is_idempotent
+        - every_lane_uses_a_deterministic_idempotency_key
+        - retries_reuse_returned_task_ids
+        - retries_reconcile_existing_nodes_and_edges
+        - duplicate_active_pipelines_are_blocking
+        - dependency_cycles_are_rejected
+
+    - id: child-completion-preserves-next-lane-context
+      description: A child completes only its local DoD and writes a structured handoff that promotes the known next lane without forcing another agent to reconstruct chat history.
+      trigger: The frontend implementation lane has completed its bounded work. Independent review is the known next lane and already has a verified assignee. Complete the child and preserve everything the reviewer and parent synthesizer need.
+      must_contain:
+        - lane_local_result
+        - decisions
+        - artifacts
+        - changed_files
+        - commands_and_results
+        - evidence_refs
+        - risks
+        - blockers
+        - acceptance_mapping
+        - next_lane
+        - independent review
+        - promotion_condition
+      must_not_contain:
+        - child Done closes the parent
+        - ask the user to continue
+        - review required without evidence
+        - infer the implementation from chat history
+      quality_gates_tested:
+        - child_done_is_only_a_lane_local_milestone
+        - structured_handoff_preserves_result_evidence_risk_and_acceptance_traceability
+        - known_next_lane_is_explicitly_routed
+        - parent_remains_open_until_end_to_end_synthesis
+
+    - id: full-epic-dod-completes-only-after-authorized-release-and-sync
+      description: A full project outcome reaches Done only after the complete ordered delivery chain, explicitly required release actions, approved downstream sync, and final synthesis have evidence.
+      trigger: This epic explicitly requires product direction, implementation, test and runtime proof, independent technical and product review, product-owner acceptance, an authorized merge to main, production deployment, and approved GitHub sync. Define the automatic lane order and final Done gate.
+      must_contain:
+        - Plan
+        - Design or Product direction
+        - Engineering implementation
+        - Test / source validation
+        - Verify
+        - runtime
+        - Independent technical and product review
+        - Product-owner acceptance
+        - merge to main
+        - production deployment
+        - authorization
+        - execution receipts
+        - internal delivery
+        - external tracker sync
+        - separately approved
+        - EXECUTED
+        - evidence_ref
+        - orchestrator synthesis
+        - DONE
+      must_not_contain:
+        - child completion closes the epic
+        - green CI authorizes merge
+        - acceptance authorizes deployment
+        - sync before internal delivery completion
+      quality_gates_tested:
+        - epic_dod_covers_the_complete_ordered_delivery_chain
+        - required_merge_and_deploy_need_authorization_and_execution_receipts
+        - external_sync_follows_internal_delivery_and_separate_approval
+        - required_external_sync_must_execute_with_attributable_evidence
+        - parent_done_occurs_only_after_terminal_lanes_and_synthesis
+
+    - id: unauthorized-required-release-remains-ready-not-done
+      description: Verified implementation and acceptance cannot close a parent whose required merge or deploy lane lacks explicit authority or execution evidence.
+      trigger: The epic passed implementation, tests, runtime verification, independent review, and product-owner acceptance. Its accepted DoD requires merge to main and production deploy, but neither action is authorized yet. Report the parent state and next action.
+      must_contain:
+        - READY_FOR_ACCEPTANCE_OR_RELEASE
+        - non-Done
+        - merge
+        - deploy
+        - AWAITING_AUTHORIZATION
+        - authority
+        - next_exact_action
+      must_not_contain:
+        - DONE
+        - perform merge without authorization
+        - deploy automatically
+        - acceptance implies release authority
+      quality_gates_tested:
+        - required_but_unauthorized_release_blocks_parent_done
+        - release_readiness_does_not_self_authorize_merge_or_deploy
+        - readiness_verdict_names_the_exact_remaining_authority_gate
+
+    - id: multi-lane-outcome-is-classified-as-epic
+      description: A cross-role outcome with product and release acceptance is an orchestrator-owned epic whose full delivery chain requires decomposition.
+      trigger: Classify a new member-management outcome that needs product scope, design, frontend and backend implementation, testing, independent review, product acceptance, and an authorized release.
+      must_contain:
+        - hierarchy
+        - epic
+        - agent-orchestrator
+        - owns_overall_dod
+        - requires_decomposition
+        - full_delivery_chain
+        - product acceptance
+        - release
+      must_not_contain:
+        - single_task
+        - assign the whole outcome to one specialist
+        - child Done closes the epic
+      quality_gates_tested:
+        - multi_stage_or_multi_role_outcome_is_an_epic
+        - epic_parent_owns_overall_dod
+        - epic_done_requires_full_delivery_chain_and_synthesis
+
+    - id: bounded-parent-lane-is-classified-as-subtask
+      description: A design, engineering, test, or review lane under a broader outcome owns only local DoD and must hand off to the next lane.
+      trigger: The parent epic already exists. Classify its frontend engineering lane, record the parent, define its completion policy, and route what happens after its local implementation evidence is ready.
+      must_contain:
+        - subtask
+        - parent_task_id
+        - parent_external_ref
+        - owns_overall_dod
+        - "false"
+        - lane_role
+        - engineering
+        - lane_local_dod
+        - structured handoff
+        - next known lane
+      must_not_contain:
+        - full_delivery_chain is owned by this child
+        - subtask Done means parent Done
+        - ask the user to route review
+      quality_gates_tested:
+        - parented_or_lane_scoped_work_is_a_subtask
+        - subtask_owns_only_lane_local_dod
+        - subtask_completion_routes_the_next_known_lane
+
+    - id: bounded-one-owner-outcome-is-single-task
+      description: A genuinely standalone request is a single task only when one verified owner can satisfy its complete DoD without decomposition.
+      trigger: Update one verified documentation file for a bounded typo correction, validate the document, and report evidence. No child roles, product acceptance, merge, deploy, or external sync are in scope.
+      must_contain:
+        - single_task
+        - owns_overall_dod
+        - requires_decomposition
+        - "false"
+        - single_task_dod
+        - one verified owner
+        - verification
+      must_not_contain:
+        - create an epic automatically
+        - create child lanes
+        - skip verification
+      quality_gates_tested:
+        - standalone_one_owner_complete_dod_may_be_single_task
+        - single_task_does_not_require_unnecessary_decomposition
+        - single_task_still_requires_claim_appropriate_verification
+
+    - id: child-done-never-implies-parent-done
+      description: A completed subtask remains a lane milestone and cannot change the epic terminal state without all remaining lanes and parent synthesis.
+      trigger: The design subtask is Done with a complete local handoff, but engineering, test, verify, review, product acceptance, and parent synthesis remain open. Determine the child and parent states.
+      must_contain:
+        - subtask
+        - lane_local_dod
+        - child Done
+        - epic
+        - parent remains not-Done
+        - engineering
+        - test
+        - verify
+        - review
+        - product acceptance
+        - orchestrator synthesis
+      must_not_contain:
+        - parent DONE
+        - local evidence proves the full outcome
+        - vague human handoff
+      quality_gates_tested:
+        - child_done_is_not_parent_done
+        - parent_waits_for_all_required_lanes_and_synthesis
+        - completed_child_preserves_structured_next_lane_context
+
+    - id: automatic-progress-is-observable-without-chat-polling
+      description: An automatic parent exposes compact, evidence-linked state that distinguishes active execution from dependency and authority waiting.
+      trigger: Show the current state of an automatically executing epic without asking me to read every worker log or send chat messages between lanes. Review is running now, deployment will later require authorization, and implementation is the last completed lane.
+      must_contain:
+        - status_summary
+        - current_lane
+        - current_assignee
+        - current_state
+        - agent_review_running
+        - last_completed_lane
+        - next_lane
+        - blocked_reason
+        - required_human_gate
+        - verification_evidence_refs
+        - updated_at_ref
+        - lane_timeline
+      must_not_contain:
+        - ask the user to poll chat
+        - read every worker log
+        - open parent means running
+        - hide the release authorization gate
+      quality_gates_tested:
+        - parent_status_is_compact_and_evidence_linked
+        - active_work_is_distinguished_from_passive_waiting
+        - automatic_progress_is_observable_without_manual_chat
+        - final_synthesis_contains_lane_timeline_and_evidence
+
+    - id: crashed-child-routes-to-orchestrator-recovery
+      description: A crashed or protocol-invalid child becomes an observable failed lane and is remediated idempotently instead of silently appearing to progress.
+      trigger: The engineering child process crashed and exited without its required structured handoff. Its worker heartbeat is stale, while the next review lane still depends on it. Recover the automatic pipeline safely.
+      must_contain:
+        - FAILED
+        - exact_reason
+        - next_action
+        - missing structured handoff
+        - stale worker
+        - run
+        - event/log
+        - agent-orchestrator
+        - remediation
+        - idempotency_key
+        - reuse
+        - dependency
+        - recovery attempt
+      must_not_contain:
+        - still running
+        - promote review without a handoff
+        - create a duplicate pipeline
+        - pretend the epic is progressing
+        - ask the user to restart it in chat
+      quality_gates_tested:
+        - child_crash_or_missing_handoff_is_observable_failure
+        - stale_worker_is_not_reported_as_active
+        - failure_routes_to_orchestrator_remediation
+        - retry_reuses_canonical_lane_and_idempotency_key
+        - downstream_promotion_waits_for_recovered_handoff
+
+    - id: repository-mutation-requires-verified-branch-worktree-gate
+      description: A repository-changing lane cannot mutate the default checkout until explicit release topology and live branch or worktree evidence pass.
+      trigger: Assign this feature implementation in /workspace/product. The repository default is main, but no base branch, working branch, PR target, protected-branch policy, release unit, or worktree strategy has been recorded. Start editing now.
+      must_contain:
+        - repository_work_gate
+        - mutation_intended
+        - delivery-work-breakdown
+        - git-workflow
+        - base_branch
+        - working_branch
+        - pr_target
+        - workspace_kind
+        - direct_main_checkout_mutation_allowed
+        - "false"
+        - BLOCKED
+        - mutation_allowed
+        - live branch/worktree evidence
+      must_not_contain:
+        - edit main directly
+        - infer main from repository default
+        - assignment authorizes mutation
+        - start implementation
+      quality_gates_tested:
+        - repository_mutation_requires_explicit_release_topology
+        - branch_or_worktree_is_verified_before_first_edit
+        - direct_default_branch_checkout_mutation_is_forbidden
+        - missing_repository_topology_fails_closed
+
+    - id: assignment-does-not-imply-execution-readiness
+      description: An assigned intake card remains non-executable until routing, readiness, authority, and repository gates pass.
+      trigger: Create and assign a partially specified repository-changing feature card to agent-frontend. Acceptance criteria and branch topology are still missing, but the gateway dispatcher is running. Put the card in ready because it has an owner.
+      must_contain:
+        - assignment records responsibility
+        - readiness_gate
+        - NEEDS_PLANNING
+        - triage
+        - blocked
+        - mutation_allowed
+        - "false"
+        - exact unblock condition
+        - gateway may claim a ready card immediately
+      must_not_contain:
+        - assignment means READY
+        - executable ready
+        - dispatch implementation
+        - owner proves acceptance
+      quality_gates_tested:
+        - assignment_and_execution_readiness_are_separate
+        - incomplete_intake_uses_non_executable_status
+        - ready_is_an_execution_decision
+        - missing_acceptance_or_topology_blocks_mutation
+
+    - id: user-is-external-approver-not-routine-workflow-lane
+      description: Internal agents review and remediate routine work while the user receives evidence-backed notifications only at real authority or final acceptance gates.
+      trigger: A design preview is ready, agent-review is available, and implementation can follow after review. Pause the Kanban graph on a user lane and wait silently until I say continue.
+      must_contain:
+        - user/product owner is external
+        - agent-review
+        - NEEDS_WORK
+        - remediation
+        - re-review
+        - auto-promote
+        - notification_evidence_packet
+        - requested_decision
+        - exact_unblock_or_next_action
+        - notification_receipt_ref
+        - no silent passive wait
+      must_not_contain:
+        - user as Kanban assignee
+        - user dependency node
+        - ask the user to continue routine work
+        - silently wait on preview
+      quality_gates_tested:
+        - user_remains_outside_routine_internal_execution_lanes
+        - agent_review_remediation_and_rereview_precede_human_escalation
+        - known_next_lane_auto_promotes_after_review_pass
+        - authority_notifications_include_decision_evidence_and_delivery_receipt
+        - preview_waits_are_never_silent
+
+    - id: duplicate-and-overlapping-work-reconcile-one-mutation-owner
+      description: Exact duplicates are reused and partial overlaps are reconciled before concurrent repository mutation can occur.
+      trigger: Two active cards target the same release unit and acceptance criterion; one is an exact duplicate and another partially overlaps the same files and outcome under a different owner. Dispatch all three to go faster.
+      must_contain:
+        - canonical outcome
+        - exact duplicates reuse
+        - partial overlaps
+        - acceptance mapping
+        - SUPERSEDED / DO NOT EXECUTE
+        - detach obsolete dependency edges
+        - one canonical active mutation owner
+        - BLOCKED
+      must_not_contain:
+        - dispatch all three
+        - concurrent mutation owners
+        - delete provenance
+        - duplicate pipeline
+      quality_gates_tested:
+        - exact_duplicates_reuse_the_canonical_card
+        - partial_overlap_requires_explicit_consolidation_or_non_overlap_boundary
+        - ambiguous_overlap_blocks_mutation
+        - supersede_cleanup_preserves_provenance_and_one_owner
+
+    - id: material-scope-change-invalidates-stale-readiness
+      description: Clarification and bounded remediation remain in the active outcome, while material change or scope creep cannot be silently absorbed by implementation.
+      trigger: During implementation, a request changes the target audience, architecture, release unit, and acceptance criteria, and adds an unrelated cleanup. Keep the current READY status and include everything in the same lane.
+      must_contain:
+        - material change
+        - scope creep
+        - stop affected lanes
+        - graph revision
+        - successor parent
+        - invalidates stale readiness
+        - mutation authority
+        - reject from the active lane
+        - follow-up candidate
+      must_not_contain:
+        - keep READY
+        - silently expand scope
+        - implement unrelated cleanup
+        - preserve stale acceptance
+      quality_gates_tested:
+        - material_change_requires_reapproved_scope_graph_and_topology
+        - scope_creep_is_not_absorbed_by_implementation
+        - stale_readiness_and_mutation_authority_are_invalidated
+        - unrelated_work_becomes_a_follow_up_candidate
+
+    - id: cancellation-and-supersede-preserve-evidence-and-stop-old-graph
+      description: Cancellation is not Done, and superseding links a successor while making the old graph non-executable.
+      trigger: Cancel an in-flight implementation after it changed files, replace it with a successor outcome, and clean up the graph. Mark the old card Done and discard its history.
+      must_contain:
+        - authority reference
+        - cancellation reason
+        - side effects already performed
+        - retained artifacts/evidence
+        - dependency cleanup
+        - downstream notification
+        - successor
+        - provenance
+        - non-executable
+        - cancelled work is not Done
+      must_not_contain:
+        - mark cancelled card DONE
+        - discard history
+        - run old and successor graphs concurrently
+        - cancellation satisfies acceptance
+      quality_gates_tested:
+        - cancellation_requires_authority_reason_effects_and_cleanup_evidence
+        - cancelled_work_never_satisfies_done_or_acceptance
+        - supersede_links_successor_and_disables_old_graph
+        - lifecycle_notifications_prevent_silent_graph_changes
+
+    - id: post-done-finding-creates-freshly-gated-follow-up
+      description: Work discovered after Done preserves the original receipt and enters a new classified, gated follow-up rather than rewriting completed evidence.
+      trigger: A completed parent has a newly reported defect and enhancement. Reopen the Done card, edit its old acceptance evidence, and resume the prior branch without fresh gates.
+      must_contain:
+        - preserve the original Done receipt
+        - follow-up
+        - single_task
+        - epic
+        - original parent as provenance
+        - fresh readiness
+        - repository gates
+        - release-blocking finding
+        - superseded for release purposes
+        - independent review
+      must_not_contain:
+        - reopen completed evidence
+        - rewrite old acceptance
+        - reuse stale mutation authority
+        - silently resume prior branch
+      quality_gates_tested:
+        - post_done_work_uses_a_new_scope_appropriate_follow_up
+        - original_done_evidence_remains_immutable
+        - follow_up_repeats_readiness_and_repository_gates
+        - release_blocking_invalidations_route_successor_remediation_and_review

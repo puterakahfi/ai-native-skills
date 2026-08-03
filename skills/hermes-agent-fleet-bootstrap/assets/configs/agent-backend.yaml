@@ -1,0 +1,11 @@
+# agent-backend profile config
+agent:
+  max_turns: 80
+  verbose: false
+  reasoning_effort: high
+terminal:
+  timeout: 300
+compression:
+  enabled: true
+  threshold: 0.5
+  target_ratio: 0.2

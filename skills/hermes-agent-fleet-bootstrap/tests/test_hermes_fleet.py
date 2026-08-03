@@ -138,8 +138,25 @@ raise SystemExit(0)
             profile = self.home / "profiles" / profile_spec["id"]
             self.assertTrue(profile.is_dir())
             for skill in profile_spec["skills"]:
-                self.assertTrue((profile / "skills" / skill / "SKILL.md").is_file())
+                projected = profile / "skills" / skill
+                self.assertTrue(projected.is_symlink())
+                self.assertEqual(projected.resolve(), (self.skills / skill).resolve())
+                self.assertTrue((projected / "SKILL.md").is_file())
         self.assertTrue((self.home / "kanban.db").is_file())
+
+    def test_default_skills_root_is_fixed_catalog_clone(self) -> None:
+        previous = os.environ.get("HERMES_SKILL_CATALOG_ROOT")
+        os.environ["HERMES_SKILL_CATALOG_ROOT"] = str(self.tmp / "catalog")
+        try:
+            self.assertEqual(
+                module.default_skills_root(),
+                self.tmp / "catalog" / "skills",
+            )
+        finally:
+            if previous is None:
+                os.environ.pop("HERMES_SKILL_CATALOG_ROOT", None)
+            else:
+                os.environ["HERMES_SKILL_CATALOG_ROOT"] = previous
 
     def test_apply_is_idempotent(self) -> None:
         self.assertEqual(self.run_cli("bootstrap", "--apply"), module.EXIT_OK)
@@ -155,6 +172,21 @@ raise SystemExit(0)
         }
         self.assertIn("SKIP_EXISTS", statuses)
         self.assertIn("SKIP_IN_SYNC", statuses)
+
+    def test_apply_converts_existing_copied_skill_to_symlink(self) -> None:
+        copied = self.home / "profiles" / "agent-review" / "skills" / "review-skill"
+        copied.mkdir(parents=True)
+        (copied / "SKILL.md").write_text(
+            "---\nname: stale-review-skill\n---\n", encoding="utf-8"
+        )
+        self.assertEqual(self.run_cli("reconcile", "--apply"), module.EXIT_OK)
+        self.assertTrue(copied.is_symlink())
+        self.assertEqual(copied.resolve(), (self.skills / "review-skill").resolve())
+        statuses = {
+            item["target"]: item["status"]
+            for item in json.loads(self.receipt.read_text(encoding="utf-8"))["actions"]
+        }
+        self.assertEqual(statuses["agent-review:review-skill"], "UPDATED")
 
     def test_missing_skill_fails_before_mutation(self) -> None:
         (self.skills / "review-skill").rename(self.skills / "removed-skill")

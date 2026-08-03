@@ -10,7 +10,7 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
+
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -155,10 +155,18 @@ def validate_preset(data: dict[str, Any]) -> None:
         )
 
 
+def remove_path(path: Path) -> None:
+    """Remove a filesystem node without following directory symlinks."""
+    if path.is_symlink() or path.is_file():
+        path.unlink()
+    elif path.exists():
+        shutil.rmtree(path)
+
+
 def directory_digest(path: Path) -> str:
     digest = hashlib.sha256()
     if path.is_symlink():
-        raise FleetError(f"Symlinked managed path is not allowed: {path}")
+        raise FleetError(f"Symlinked managed source path is not allowed: {path}")
     if not path.exists():
         return "MISSING"
     if not path.is_dir():
@@ -195,30 +203,62 @@ def run_command(command: list[str], env: dict[str, str]) -> subprocess.Completed
     )
 
 
-def atomic_copytree(source: Path, target: Path) -> None:
+def atomic_symlink(source: Path, target: Path) -> None:
+    """Atomically replace a managed skill path with a symlink to source."""
+    source = source.resolve()
+    if not source.is_dir() or not (source / "SKILL.md").is_file():
+        raise FleetError(f"Skill source is missing SKILL.md: {source}")
     target.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix=f".{target.name}.", dir=str(target.parent)) as tmp:
-        staged = Path(tmp) / target.name
-        shutil.copytree(source, staged)
-        backup = target.with_name(f".{target.name}.previous")
-        if backup.exists():
-            shutil.rmtree(backup)
-        if target.exists():
-            target.rename(backup)
+    staged = target.with_name(f".{target.name}.next-link")
+    backup = target.with_name(f".{target.name}.previous")
+    remove_path(staged)
+    remove_path(backup)
+    staged.symlink_to(source, target_is_directory=True)
+    if target.is_symlink() or target.exists():
+        target.rename(backup)
+    try:
+        staged.rename(target)
+    except Exception:
+        remove_path(target)
+        if backup.exists() or backup.is_symlink():
+            backup.rename(target)
+        raise
+    remove_path(backup)
+
+
+def skill_target_state(source: Path, target: Path) -> str:
+    """Classify a projected profile skill relative to its canonical source."""
+    if not target.exists() and not target.is_symlink():
+        return "MISSING"
+    if target.is_symlink():
         try:
-            staged.rename(target)
-        except Exception:
-            if target.exists():
-                shutil.rmtree(target)
-            if backup.exists():
-                backup.rename(target)
-            raise
-        if backup.exists():
-            shutil.rmtree(backup)
+            return "IN_SYNC" if target.resolve(strict=True) == source.resolve(strict=True) else "DRIFT"
+        except FileNotFoundError:
+            return "DRIFT"
+    if not target.is_dir():
+        return "DRIFT"
+    # Existing copy-style managed skills are intentionally drift: apply converts
+    # them to catalog symlinks so `git pull` updates all managed profiles.
+    return "DRIFT"
+
+
+def default_catalog_root() -> Path:
+    """Return the canonical ai-native-skills checkout used for fleet projection.
+
+    The durable fleet update model is intentionally simple: profiles symlink their
+    managed skills into a fixed catalog clone and `git pull` updates all profiles.
+    `HERMES_SKILL_CATALOG_ROOT` exists for tests and non-standard installs, but
+    the default must be machine-independent and not a developer checkout like
+    /data/www/ai-native-skills.
+    """
+    configured = os.environ.get("HERMES_SKILL_CATALOG_ROOT")
+    if configured:
+        return Path(configured).expanduser()
+    return _resolve_hermes_home() / "ai-native-skills"
 
 
 def default_skills_root() -> Path:
-    return Path(__file__).resolve().parents[2]
+    return default_catalog_root() / "skills"
 
 
 def default_preset_path(name: str) -> Path:
@@ -413,6 +453,38 @@ def plan_actions(
             if operation == "audit":
                 findings.append(f"missing_profile:{profile_id}")
 
+        # Soul sync planning
+        soul_rel = profile.get("soul")
+        if soul_rel:
+            soul_source = skills_root.parent / soul_rel
+            soul_target = profile_dir / "SOUL.md"
+            if not soul_source.exists():
+                actions.append(Action("soul", profile_id, "BLOCKED_SOURCE_MISSING", f"Soul source missing: {soul_rel}"))
+                findings.append(f"missing_soul_source:{profile_id}")
+            elif soul_target.exists():
+                actions.append(Action("soul", profile_id, "SKIP_EXISTS", "SOUL.md already present (use --force to overwrite)"))
+            else:
+                status = "PLAN_SYNC" if operation != "audit" else "MISSING"
+                actions.append(Action("soul", profile_id, status, f"Source: {soul_rel}"))
+                if operation == "audit":
+                    findings.append(f"missing_soul:{profile_id}")
+
+        # Config sync planning
+        config_rel = profile.get("config")
+        if config_rel:
+            config_source = skills_root.parent / config_rel
+            config_target = profile_dir / "config.yaml"
+            if not config_source.exists():
+                actions.append(Action("config", profile_id, "BLOCKED_SOURCE_MISSING", f"Config source missing: {config_rel}"))
+                findings.append(f"missing_config_source:{profile_id}")
+            elif config_target.exists():
+                actions.append(Action("config", profile_id, "SKIP_EXISTS", "config.yaml already present (use --force to overwrite)"))
+            else:
+                status = "PLAN_SYNC" if operation != "audit" else "MISSING"
+                actions.append(Action("config", profile_id, status, f"Source: {config_rel}"))
+                if operation == "audit":
+                    findings.append(f"missing_config:{profile_id}")
+
         for skill in profile["skills"]:
             source = skills_root / skill
             target = profile_skills_dir / skill
@@ -428,13 +500,13 @@ def plan_actions(
                 findings.append(f"invalid_skill_source:{skill}")
                 continue
             source_hash = directory_digest(source)
-            target_hash = directory_digest(target)
+            target_state = skill_target_state(source, target)
             if source_hash == "MISSING":
                 actions.append(Action("skill", f"{profile_id}:{skill}", "BLOCKED_SOURCE_MISSING"))
                 findings.append(f"missing_skill_source:{skill}")
-            elif source_hash == target_hash:
+            elif target_state == "IN_SYNC":
                 actions.append(Action("skill", f"{profile_id}:{skill}", "SKIP_IN_SYNC"))
-            elif target_hash == "MISSING":
+            elif target_state == "MISSING":
                 status = "PLAN_INSTALL" if operation != "audit" else "MISSING"
                 actions.append(Action("skill", f"{profile_id}:{skill}", status))
                 if operation == "audit":
@@ -512,19 +584,53 @@ def execute(
         source = args.skills_root / skill
         target = args.hermes_home / "profiles" / profile_id / "skills" / skill
         try:
-            atomic_copytree(source, target)
+            atomic_symlink(source, target)
         except Exception as exc:
             action.status = "FAILED"
             action.detail = str(exc)
             receipt["readiness"] = "BLOCKED"
-            receipt["findings"].append(f"skill_copy_failed:{profile_id}:{skill}")
+            receipt["findings"].append(f"skill_symlink_failed:{profile_id}:{skill}")
             return EXIT_EXECUTION
         action.status = "INSTALLED" if action.status == "PLAN_INSTALL" else "UPDATED"
-        if directory_digest(source) != directory_digest(target):
+        if skill_target_state(source, target) != "IN_SYNC":
             action.status = "FAILED_VERIFY"
             receipt["readiness"] = "BLOCKED"
-            receipt["findings"].append(f"skill_digest_mismatch:{profile_id}:{skill}")
+            receipt["findings"].append(f"skill_symlink_mismatch:{profile_id}:{skill}")
             return EXIT_EXECUTION
+
+    for action in actions:
+        if action.kind == "soul" and action.status == "PLAN_SYNC":
+            profile_id = action.target
+            profile = profile_by_id[profile_id]
+            soul_source = args.skills_root.parent / profile["soul"]
+            soul_target = args.hermes_home / "profiles" / profile_id / "SOUL.md"
+            try:
+                import shutil
+                shutil.copy2(soul_source, soul_target)
+                action.status = "SYNCED"
+            except Exception as exc:
+                action.status = "FAILED"
+                action.detail = str(exc)
+                receipt["readiness"] = "BLOCKED"
+                receipt["findings"].append(f"soul_sync_failed:{profile_id}")
+                return EXIT_EXECUTION
+
+    for action in actions:
+        if action.kind == "config" and action.status == "PLAN_SYNC":
+            profile_id = action.target
+            profile = profile_by_id[profile_id]
+            config_source = args.skills_root.parent / profile["config"]
+            config_target = args.hermes_home / "profiles" / profile_id / "config.yaml"
+            try:
+                import shutil
+                shutil.copy2(config_source, config_target)
+                action.status = "SYNCED"
+            except Exception as exc:
+                action.status = "FAILED"
+                action.detail = str(exc)
+                receipt["readiness"] = "BLOCKED"
+                receipt["findings"].append(f"config_sync_failed:{profile_id}")
+                return EXIT_EXECUTION
 
     if not args.skip_kanban:
         for action in actions:

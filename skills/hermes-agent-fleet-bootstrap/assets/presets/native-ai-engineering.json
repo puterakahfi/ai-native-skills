@@ -34,7 +34,9 @@
         "task-continuity",
         "delivery-work-breakdown",
         "skill-eval"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-orchestrator.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-orchestrator.yaml"
     },
     {
       "id": "agent-product",
@@ -51,7 +53,9 @@
         "delivery-work-breakdown",
         "acceptance-testing",
         "decision-provenance"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-product.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-product.yaml"
     },
     {
       "id": "agent-architecture",
@@ -79,7 +83,9 @@
         "observability-design",
         "architecture-review",
         "decision-provenance"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-architecture.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-architecture.yaml"
     },
     {
       "id": "agent-design",
@@ -102,7 +108,9 @@
         "adaptive-component-design",
         "content-strategy",
         "decision-provenance"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-design.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-design.yaml"
     },
     {
       "id": "agent-frontend",
@@ -127,7 +135,9 @@
         "responsiveness",
         "web-performance",
         "git-workflow"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-frontend.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-frontend.yaml"
     },
     {
       "id": "agent-backend",
@@ -156,7 +166,9 @@
         "observability-design",
         "resilience-engineering",
         "git-workflow"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-backend.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-backend.yaml"
     },
     {
       "id": "agent-review",
@@ -175,7 +187,9 @@
         "web-performance",
         "decision-provenance",
         "skill-eval"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-review.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-review.yaml"
     },
     {
       "id": "agent-operations",
@@ -191,7 +205,9 @@
         "decision-provenance",
         "task-continuity",
         "git-workflow"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-operations.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-operations.yaml"
     },
     {
       "id": "agent-security",
@@ -207,7 +223,9 @@
         "api-contract",
         "incident-response",
         "ethics-responsible-ai"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-security.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-security.yaml"
     },
     {
       "id": "agent-quality",
@@ -225,8 +243,11 @@
         "behavior-driven-development",
         "production-code-quality-baseline",
         "skill-eval",
+        "skill-doctor",
         "decision-provenance"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-quality.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-quality.yaml"
     },
     {
       "id": "agent-knowledge",
@@ -243,7 +264,9 @@
         "skill-evolution",
         "skill-authoring-workflow",
         "jira-issue-query"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-knowledge.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-knowledge.yaml"
     },
     {
       "id": "agent-platform",
@@ -258,13 +281,17 @@
         "hermes-auto-routing-dispatch",
         "hermes-auto-routing-review-synthesis",
         "hermes-auto-routing-skill-ops",
+        "skill-authoring-workflow",
+        "skill-doctor",
         "native-ai-runtime-ops",
         "native-ai-runtime-agent",
         "model-selection",
         "rule-manager",
         "project-onboarding",
         "git-workflow"
-      ]
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-platform.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-platform.yaml"
     }
   ]
 }

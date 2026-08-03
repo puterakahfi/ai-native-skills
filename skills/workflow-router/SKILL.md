@@ -3,9 +3,9 @@ name: workflow-router
 description: Detect task intent and route to the correct primary lifecycle or standalone capability, including product, feature, bugfix, design, review, deployment, maintenance signals, continuity, and skill creation or maintenance. Route before execution.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.9.0
+  ai-native-skills.version: 2.0.0
   ai-native-skills.author: puterakahfi
-  ai-native-skills.requires: "redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-authoring-workflow skill-evolution skill-eval git-workflow skill-doctor spec-workflow task-continuity production-code-quality-baseline maintenance-case documentation-assurance incident-response technical-debt-governance"
+  ai-native-skills.requires: "product-intake redesign-workflow design-audit design-refinement design-review brand-identity-review new-feature-workflow bugfix-workflow code-review-workflow deployment-workflow product-development-workflow delivery-work-breakdown chatgpt-app-development skill-authoring-workflow skill-evolution skill-eval git-workflow skill-doctor spec-workflow task-continuity production-code-quality-baseline maintenance-case documentation-assurance incident-response technical-debt-governance"
   ai-native-skills.type: meta-skill
   ai-native-skills.implements: ai-native-core/contracts/skills/meta/workflow-router.contract.yaml
   ai-native-skills.contract-version: "~0.2"
@@ -40,6 +40,8 @@ quality_gates:
 - explicit_verified_case_learning_requests_must_route_to_skill_evolution
 - parent_workflows_with_verified_fixes_must_route_to_skill_evolution_before_final_delivery
 - post_fix_learning_route_must_not_bypass_repository_write_or_approval_policy
+- intake_artifacts_required_before_engineering_routing
+- engineering_routing_blocked_when_intake_engineering_routing_allowed_is_false
 ```
 
 Exact declarations make ownership reviewable; they do not replace repository, runtime, review, approval, or product evidence.
@@ -62,6 +64,7 @@ The artifact noun does not choose the lifecycle. A skill, dashboard, logo, API, 
 
 | Intent | Primary route | Supporting capabilities |
 |---|---|---|
+| Investigate and plan work (feature, bug, change) | `product-intake` | product-requirements, delivery-work-breakdown |
 | Build a product from zero | `product-development-workflow` | research, requirements, design, engineering |
 | Add capability to existing product | `new-feature-workflow` | delivery topology, quality overlay, specialists |
 | Fix broken implementation | `bugfix-workflow` | debugging, quality overlay, reviewers |

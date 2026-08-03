@@ -564,15 +564,15 @@ Use when security design, threat modeling, review, autonomous permission boundar
 
 ### `agent-quality`
 
-Use when test strategy, regression planning, acceptance evidence, quality gates, and quality trend reporting need recurring ownership beyond implementation and independent review.
+Use when test strategy, regression planning, acceptance evidence, quality gates, and quality trend reporting need recurring ownership beyond implementation and independent review. Include `skill-doctor` and `skill-eval` when quality owns reusable skill-package validation gates; package-policy health remains `skill-doctor` and behavioral evaluation remains `skill-eval`.
 
 ### `agent-knowledge`
 
-Use when documentation, SOPs, vault hygiene, evidence ledgers, reporting, retrieval quality, and stale-doc detection become recurring ADLC OS responsibilities.
+Use when documentation, SOPs, vault hygiene, evidence ledgers, reporting, retrieval quality, and stale-doc detection become recurring ADLC OS responsibilities. It may keep `skill-authoring-workflow` for docs/SOP skill-package authoring only; do not add `skill-doctor` unless knowledge explicitly owns package-health repair gates.
 
 ### `agent-platform`
 
-Use when Hermes profiles, skill distribution, MCP/OpenViking/Kanban wiring, auto-routing, model policy, native runtime configuration, and fleet reproducibility need recurring platform ownership.
+Use when Hermes profiles, skill distribution, MCP/OpenViking/Kanban wiring, auto-routing, model policy, native runtime configuration, and fleet reproducibility need recurring platform ownership. Include `skill-authoring-workflow` and `skill-doctor` for Hermes skill, preset, bootstrap, and profile package work so package-policy authoring and health gates are available at the platform boundary.
 
 ### `agent-ai-runtime`
 

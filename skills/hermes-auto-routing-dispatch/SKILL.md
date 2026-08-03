@@ -3,7 +3,7 @@ name: hermes-auto-routing-dispatch
 description: Use when agent-orchestrator needs to execute a verified task_routing_plan by dispatching each worker slot to a Hermes specialist profile. Supports durable_worker (Kanban) and temporary_delegation (subprocess) modes. Records dispatch_receipt per worker. Respects depends_on ordering and skips already-completed workers on resume.
 license: MIT
 metadata:
-  ai-native-skills.version: 1.0.0
+  ai-native-skills.version: 1.1.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
   ai-native-skills.runtime: hermes
@@ -34,12 +34,27 @@ task_routing_plan (from hermes-auto-routing-planner)
 ### durable_worker
 Dispatches to a persistent Hermes specialist profile via Kanban task queue.
 
+**Verified working as of 2026-07-31** — `agent-frontend` completed a dispatched task in 32s with summary preserved.
+
 ```bash
-hermes kanban create-task --profile <agent-xxx> --title "<task>" --context "<bounded context>"
-# profile picks up task from queue, produces worker_receipt
+# 1. Create task assigned to specialist profile
+hermes kanban create "<task title>" \
+  --assignee <agent-xxx> \
+  --body "<bounded context prompt with output contract>" \
+  --json
+# returns task_id e.g. t_24850f5d
+
+# 2. Dispatch (spawns the profile process)
+hermes kanban dispatch --json
+# returns spawned: [{task_id, assignee, workspace}]
+
+# 3. Poll until done
+hermes kanban show <task_id> --json
+# check status: done | failed | blocked
+# session_id and result preserved in task record
 ```
 
-Proof required: `profile_id` + `worker_session_id` (+ optional `kanban_card_uri`).
+Proof required: `task_id` + `session_id` (populated after spawn) + `status: done`.
 Can be promoted to `merged`/`accepted` at synthesis.
 
 ### temporary_delegation
@@ -172,18 +187,18 @@ On interruption:
 4. Workers with `attempted` or no receipt → re-dispatch
 5. Preserve all previous receipts for audit
 
-## Hermes runtime limitations
+## Hermes runtime status
 
-> **Current state (as of 2026-07-31):** Hermes Kanban-based `durable_worker` dispatch
-> is not yet fully wired for automated task pickup by specialist profiles.
-> `temporary_delegation` via `hermes -p <profile> chat -q "..."` subprocess is the
-> verified working mode (confirmed in Epic #304 dogfood run).
+> **Verified working as of 2026-07-31:**
+> - `durable_worker` via `hermes kanban create --assignee` + `hermes kanban dispatch` is **VERIFIED**
+> - Smoke test: `agent-frontend` completed task `t_24850f5d` in 32s, summary preserved in Kanban record
+> - `temporary_delegation` via `hermes -p <profile> chat -q` also remains a valid fallback
 >
-> Until #285 (catalog-backed capability resolution) and Kanban auto-pickup are complete,
-> `durable_worker` receipts that lack a real `worker_session_id` from an actual profile
-> run MUST be marked `READY_WITH_LIMITATIONS`, not `READY`.
+> **Workspace note:** default workspace is `scratch` (ephemeral, deleted on complete).
+> Use `--workspace worktree:<path>` or `--workspace dir:<path>` to preserve worker output artifacts.
 >
-> Do not claim durable routing from simulations only.
+> **Dispatch board:** ensure correct board is active (`hermes kanban boards switch <slug>`)
+> before creating tasks. Tasks on wrong board will not be picked up by the right daemon.
 
 ## Quality gates
 

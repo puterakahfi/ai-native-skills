@@ -187,6 +187,29 @@ dry_run:
 
 A dry-run has no mutation evidence and must report runtime execution as `NOT_RUN`.
 
+## Catalog clone and managed skill projection
+
+For Hermes fleet profiles, the canonical catalog checkout is:
+
+```text
+~/.hermes/ai-native-skills
+```
+
+Managed profile skills are symlinks into that checkout, not copied directories:
+
+```text
+~/.hermes/profiles/<profile-id>/skills/<skill-id>
+  -> ~/.hermes/ai-native-skills/skills/<skill-id>
+```
+
+This avoids stale per-profile copies. Updating managed fleet capabilities is a normal Git operation:
+
+```bash
+cd ~/.hermes/ai-native-skills && git pull
+```
+
+The bootstrap/reconcile executor may convert old copy-style managed skills into symlinks. It must preserve unmanaged profile-local skills that are not declared by the selected preset.
+
 ## Idempotency comparison
 
 Normalize and compare:
@@ -220,7 +243,7 @@ idempotency_comparison:
   blockers: []
 ```
 
-Re-running an equivalent request must not create duplicate profiles or rewrite stable files unnecessarily.
+Re-running an equivalent request must not create duplicate profiles or rewrite stable files unnecessarily. For managed skills, an equivalent state means the profile skill path is a symlink resolving to the selected catalog skill source.
 
 ## Safe update behavior
 

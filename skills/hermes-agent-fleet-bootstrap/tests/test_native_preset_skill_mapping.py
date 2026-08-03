@@ -4,6 +4,8 @@ import json
 import unittest
 from pathlib import Path
 
+import yaml
+
 
 TEST_FILE = Path(__file__).resolve()
 PACKAGE_ROOT = TEST_FILE.parents[1]
@@ -11,6 +13,7 @@ SKILLS_ROOT = TEST_FILE.parents[2]
 REPOSITORY_ROOT = TEST_FILE.parents[3]
 PRESET_PATH = PACKAGE_ROOT / "assets" / "presets" / "native-ai-engineering.json"
 INVENTORY_PATH = REPOSITORY_ROOT / "docs" / "capability-inventory.json"
+POLICY_PATH = REPOSITORY_ROOT / "contracts" / "skill-package-policy.yaml"
 
 TARGET_IDS = [
     "agent-orchestrator",
@@ -43,6 +46,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.preset = json.loads(PRESET_PATH.read_text(encoding="utf-8"))
         cls.inventory = json.loads(INVENTORY_PATH.read_text(encoding="utf-8"))
+        cls.package_policy = yaml.safe_load(POLICY_PATH.read_text(encoding="utf-8"))["skill_package_policy"]
         cls.profiles = {
             profile["id"]: profile for profile in cls.preset["profiles"]
         }
@@ -274,6 +278,8 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             "end-to-end-testing",
             "contract-testing",
             "production-code-quality-baseline",
+            "skill-doctor",
+            "skill-eval",
         }.issubset(self.skill_sets["agent-quality"]))
         self.assertTrue({
             "documentation-assurance",
@@ -293,7 +299,32 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             "native-ai-runtime-ops",
             "native-ai-runtime-agent",
             "model-selection",
+            "skill-authoring-workflow",
+            "skill-doctor",
         }.issubset(self.skill_sets["agent-platform"]))
+
+    def test_skill_lifecycle_gates_follow_package_policy_owners(self) -> None:
+        owners = self.package_policy["lifecycle_owners"]
+        self.assertEqual(owners["authoring"], "skill-authoring-workflow")
+        self.assertEqual(owners["health"], "skill-doctor")
+        self.assertEqual(owners["evolution"], "skill-evolution")
+        self.assertEqual(owners["behavioral_evaluation"], "skill-eval")
+        self.assertEqual(owners["routing"], "workflow-router")
+
+        for owner_skill in owners.values():
+            self.assertIn(owner_skill, self.catalog_names)
+            self.assertTrue((SKILLS_ROOT / owner_skill / "SKILL.md").is_file())
+
+        self.assertTrue({
+            owners["authoring"],
+            owners["health"],
+        }.issubset(self.skill_sets["agent-platform"]))
+        self.assertTrue({
+            owners["health"],
+            owners["behavioral_evaluation"],
+        }.issubset(self.skill_sets["agent-quality"]))
+        self.assertIn(owners["authoring"], self.skill_sets["agent-knowledge"])
+        self.assertNotIn(owners["health"], self.skill_sets["agent-knowledge"])
 
     def test_authority_boundaries_are_not_flattened(self) -> None:
         routing_capabilities = {
