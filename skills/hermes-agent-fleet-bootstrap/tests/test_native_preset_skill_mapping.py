@@ -20,6 +20,11 @@ TARGET_IDS = [
     "agent-frontend",
     "agent-backend",
     "agent-review",
+    "agent-operations",
+    "agent-security",
+    "agent-quality",
+    "agent-knowledge",
+    "agent-platform",
 ]
 
 LEGACY_IDS = [
@@ -50,7 +55,7 @@ class NativePresetSkillMappingTests(unittest.TestCase):
         }
 
     def test_preset_v2_identity_and_order_are_explicit(self) -> None:
-        self.assertEqual(self.preset["version"], "2.0.0")
+        self.assertEqual(self.preset["version"], "2.1.0")
         self.assertEqual(self.preset["identity_generation"], 2)
         self.assertEqual(self.preset["topology"], "orchestrator_with_specialists")
         self.assertEqual(self.preset["orchestrator"], "agent-orchestrator")
@@ -244,6 +249,52 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             )
         )
 
+    def test_expanded_adlc_profiles_have_bounded_capabilities(self) -> None:
+        self.assertTrue({
+            "deployment-workflow",
+            "incident-response",
+            "observability-design",
+            "resilience-engineering",
+            "technical-debt-governance",
+            "decision-provenance",
+        }.issubset(self.skill_sets["agent-operations"]))
+        self.assertTrue({
+            "security-engineer",
+            "security-review",
+            "threat-modeling",
+            "decision-provenance",
+            "ethics-responsible-ai",
+        }.issubset(self.skill_sets["agent-security"]))
+        self.assertTrue({
+            "test-strategy",
+            "software-testing-workflow",
+            "acceptance-testing",
+            "unit-testing",
+            "integration-testing",
+            "end-to-end-testing",
+            "contract-testing",
+            "production-code-quality-baseline",
+        }.issubset(self.skill_sets["agent-quality"]))
+        self.assertTrue({
+            "documentation-assurance",
+            "context-manager",
+            "context-engineering",
+            "task-continuity",
+            "response-contract",
+            "skill-evolution",
+            "skill-authoring-workflow",
+        }.issubset(self.skill_sets["agent-knowledge"]))
+        self.assertTrue({
+            "hermes-agent-fleet-bootstrap",
+            "hermes-profile-bootstrap",
+            "hermes-fleet-auto-routing",
+            "hermes-auto-routing-planner",
+            "hermes-auto-routing-dispatch",
+            "native-ai-runtime-ops",
+            "native-ai-runtime-agent",
+            "model-selection",
+        }.issubset(self.skill_sets["agent-platform"]))
+
     def test_authority_boundaries_are_not_flattened(self) -> None:
         routing_capabilities = {
             "hermes-agent-fleet-bootstrap",
@@ -252,11 +303,11 @@ class NativePresetSkillMappingTests(unittest.TestCase):
             "role-switcher",
         }
         for profile_id, skills in self.skill_sets.items():
-            if profile_id == "agent-orchestrator":
+            if profile_id in {"agent-orchestrator", "agent-platform"}:
                 continue
             self.assertTrue(
                 skills.isdisjoint(routing_capabilities),
-                f"{profile_id} must not receive orchestrator-only capabilities",
+                f"{profile_id} must not receive orchestrator/platform capabilities",
             )
 
         product_authority = {
@@ -275,8 +326,14 @@ class NativePresetSkillMappingTests(unittest.TestCase):
                 f"{profile_id} must not absorb product authority",
             )
 
-        all_mapped = set().union(*self.skill_sets.values())
-        self.assertNotIn("deployment-workflow", all_mapped)
+        for profile_id, skills in self.skill_sets.items():
+            if profile_id == "agent-operations":
+                continue
+            self.assertNotIn(
+                "deployment-workflow",
+                skills,
+                f"{profile_id} must not absorb operations deployment authority",
+            )
 
     def test_profile_ids_are_product_and_framework_neutral(self) -> None:
         forbidden_tokens = {

@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 102,
+    "skill": 110,
     "workflow": 13,
     "meta-skill": 7,
-    "total": 122
+    "total": 130
   },
   "items": [
     {
@@ -294,6 +294,31 @@
       "path": "skills/hermes-agent-fleet-bootstrap/SKILL.md"
     },
     {
+      "name": "hermes-auto-routing-dispatch",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-dispatch/SKILL.md"
+    },
+    {
+      "name": "hermes-auto-routing-planner",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-planner/SKILL.md"
+    },
+    {
+      "name": "hermes-auto-routing-review-synthesis",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-review-synthesis/SKILL.md"
+    },
+    {
+      "name": "hermes-auto-routing-skill-ops",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-skill-ops/SKILL.md"
+    },
+    {
+      "name": "hermes-fleet-auto-routing",
+      "type": "skill",
+      "path": "skills/hermes-fleet-auto-routing/SKILL.md"
+    },
+    {
       "name": "hermes-profile-bootstrap",
       "type": "skill",
       "path": "skills/hermes-profile-bootstrap/SKILL.md"
@@ -317,6 +342,11 @@
       "name": "integration-testing",
       "type": "skill",
       "path": "skills/integration-testing/SKILL.md"
+    },
+    {
+      "name": "jira-issue-query",
+      "type": "skill",
+      "path": "skills/jira-issue-query/SKILL.md"
     },
     {
       "name": "language-standards",
@@ -394,6 +424,11 @@
       "path": "skills/ports-and-adapters/SKILL.md"
     },
     {
+      "name": "product-intake",
+      "type": "skill",
+      "path": "skills/product-intake/SKILL.md"
+    },
+    {
       "name": "product-manager",
       "type": "skill",
       "path": "skills/product-manager/SKILL.md"
@@ -407,6 +442,11 @@
       "name": "project-instruction-generator",
       "type": "skill",
       "path": "skills/project-instruction-generator/SKILL.md"
+    },
+    {
+      "name": "project-onboarding",
+      "type": "skill",
+      "path": "skills/project-onboarding/SKILL.md"
     },
     {
       "name": "prompt-engineer",
