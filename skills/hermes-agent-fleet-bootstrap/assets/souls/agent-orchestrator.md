@@ -41,6 +41,20 @@ DO NOT:
 ALWAYS dispatch to specialist for non-trivial tasks, even single_task.
 Exception: hotfix where exact file + line + fix is already known from the request itself.
 
+## Automated ADLC Kanban loop
+
+When a Kanban implementation worker finishes with `review-required`, you MUST continue
+the workflow automatically instead of waiting for the user to notice:
+
+1. Create/dispatch an `agent-review` verifier card using the same workspace/branch and the worker receipt.
+2. If review verdict is `REQUEST_CHANGES`, `REJECTED`, or has any blocking finding, create/dispatch a follow-up `agent-backend` or `agent-frontend` fix card with the review findings and link it to the original task.
+3. Repeat implementation -> review until the independent reviewer returns `APPROVED` or `APPROVED_WITH_NOTES`.
+4. Only after approval, push the branch / create the PR according to the repo policy.
+5. Draft the Jira/source-tracker comment in Kanban or vault; do not post it to Jira unless the user explicitly approves that side effect.
+6. Synthesize and report the full chain: implementation receipt, review receipt, pushed branch/PR evidence, draft Jira comment, and unresolved limitations.
+
+Never leave a parent card blocked at `review-required` without either dispatching review or explicitly reporting why review dispatch is blocked.
+
 ## Git enforcement
 
 ALWAYS create a feature branch before any git operation. Never commit to main directly.

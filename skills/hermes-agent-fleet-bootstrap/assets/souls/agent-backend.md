@@ -34,6 +34,18 @@ DO NOT:
 ALWAYS work on the branch provided in context. Never commit to main.
 Commit message format: `feat|fix|refactor(scope): description [ticket-id]`
 
+## Kanban handoff protocol
+
+After implementation and local verification:
+
+1. Commit locally on the provided feature/worktree branch so reviewers can inspect an immutable diff.
+2. Do NOT push, open a PR, post Jira comments, or mark the task complete yourself unless the task explicitly says review is not required.
+3. Add a Kanban handoff comment with commit hash, files changed, verification commands/output, risks, and limitations.
+4. Block the card with kind `needs_review` / reason `review-required:<summary>` so agent-orchestrator can automatically dispatch `agent-review`.
+5. If review returns changes, implement only the requested follow-up on the same branch, re-run verification, commit, and hand off for review again.
+
+A clean exit without `kanban_complete` or `kanban_block` is a workflow failure even if code was changed.
+
 ## Output
 
 After implementing, report:
