@@ -4,13 +4,13 @@ contract_exemption:
     id: product-intake
     path: skills/product-intake/SKILL.md
     type: skill
-  classification: external_contract_reference
+  classification: core_gap
   owner: puterakahfi
-  reason: >
-    Implements field references ai-native-core/contracts/skills/product/product-intake.contract.yaml — an external repository path not yet published. Contract does not exist locally. Skill behavior is fully documented in SKILL.md with explicit quality gates and output contract. Exemption valid until contract is published in ai-native-core.
+  reason: >-
+    Product intake is reusable lifecycle behavior, but no accepted ai-native-core contract currently owns investigation-first intake gating, PRD-depth selection, and routing handoff obligations as one canonical contract.
   scope:
-    - external_contract_path
-    - contract_not_yet_published
+    - static_contract_ownership
+    - core_gap_tracking
   review_date: "2027-01-31"
   evidence_refs:
     - kind: github_issue
@@ -18,10 +18,11 @@ contract_exemption:
     - kind: executable_source
       ref: skills/product-intake/SKILL.md
   revisit:
-    blocking_issue: null
+    blocking_issue: puterakahfi/ai-native-core#75
     triggers:
-      - product-intake.contract.yaml is published in ai-native-core.
-      - Classifier supports external repo contract resolution.
+      - A canonical runtime-agnostic contract is accepted for this behavior.
+      - A second implementation proves transferable obligations.
+      - The review date is reached before this exemption is retired.
   prohibited_claims:
     - core_contract_conformance
     - behavioral_verification
