@@ -227,13 +227,13 @@ Then assign only to a verified available profile:
 | design direction or UX evidence | `agent-design` | `agent-orchestrator` with design capability; record limitation |
 | frontend implementation | `agent-frontend` | verified engineering profile with frontend scope, otherwise `BLOCKED` |
 | backend/general engineering | `agent-backend` or another verified engineering profile | `agent-orchestrator` only for triage; implementation remains `BLOCKED` without capability evidence |
-| deployment/operations | verified profile whose contract owns DevOps/operations | `agent-orchestrator` for coordination only; privileged execution requires a verified operations owner |
-| security analysis | verified profile whose contract owns security work | use security specialist/reviewer capability under an eligible owner; do not invent `agent-security` |
+| deployment/operations | `agent-operations` when present, otherwise verified profile whose contract owns DevOps/operations | `agent-orchestrator` for coordination only; privileged execution requires a verified operations owner |
+| security analysis | `agent-security` when present, otherwise verified profile whose contract owns security work | use security specialist/reviewer capability under an eligible owner; do not invent unverified security assignees |
 | architecture decision or review | `agent-architecture` | eligible engineering owner plus architecture reviewer, with independence limitation recorded |
 | independent review | `agent-review` | verified domain reviewer; otherwise acceptance is `LIMITED` or `BLOCKED` |
 | unknown or cross-domain coordination | `agent-orchestrator` | remain in triage until routing evidence resolves |
 
-Do not infer that `agent-devops`, `agent-security`, or any other profile exists from a capability name. Unknown assignees can leave cards undispatched and are a blocking routing defect.
+Do not infer that `agent-devops` or any other unverified profile exists from a capability name. Use `agent-security` only when the active verified profile inventory includes it. Unknown assignees can leave cards undispatched and are a blocking routing defect.
 
 For multi-domain work, keep the parent with `agent-orchestrator` and create dependency-linked child cards. Load `delivery-work-breakdown` before broad decomposition or repository topology decisions.
 

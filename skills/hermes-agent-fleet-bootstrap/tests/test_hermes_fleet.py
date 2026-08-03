@@ -208,7 +208,7 @@ raise SystemExit(0)
         )
         preset = json.loads(preset_path.read_text(encoding="utf-8"))
         module.validate_preset(preset)
-        self.assertEqual(preset["version"], "2.0.0")
+        self.assertEqual(preset["version"], "2.1.0")
         self.assertEqual(preset["identity_generation"], 2)
         self.assertEqual(preset["orchestrator"], "agent-orchestrator")
         gateways = [p["id"] for p in preset["profiles"] if p["gateway"] == "eligible"]

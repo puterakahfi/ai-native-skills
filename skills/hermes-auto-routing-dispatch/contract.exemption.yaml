@@ -6,11 +6,11 @@ contract_exemption:
     type: skill
   classification: provider_specific
   owner: puterakahfi
-  reason: >
-    Hermes Kanban-based durable worker dispatch and temporary delegation subprocess are Hermes-runtime-specific primitives. The implements field references JSON schema validators (not cross-runtime contracts). No transferable runtime-agnostic contract exists yet.
+  reason: >-
+    Hermes Kanban durable worker dispatch and temporary delegation are Hermes-runtime-specific execution primitives. No runtime-agnostic contract exists yet for this provider-bound dispatch behavior.
   scope:
+    - static_contract_ownership
     - provider_specific_execution
-    - runtime_schema_reference
   review_date: "2027-01-31"
   evidence_refs:
     - kind: github_issue
@@ -20,8 +20,9 @@ contract_exemption:
   revisit:
     blocking_issue: null
     triggers:
-      - A second runtime adapter implements equivalent durable dispatch semantics.
-      - Kanban-independent dispatch contract is defined in ai-native-core.
+      - A canonical runtime-agnostic contract is accepted for this behavior.
+      - A second implementation proves transferable obligations.
+      - The review date is reached before this exemption is retired.
   prohibited_claims:
     - core_contract_conformance
     - behavioral_verification

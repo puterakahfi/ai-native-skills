@@ -6,22 +6,23 @@ contract_exemption:
     type: skill
   classification: provider_specific
   owner: puterakahfi
-  reason: >
-    Auto-routing plan schema (task-routing-plan.schema.yaml) is a Hermes-specific JSON schema, not a cross-runtime skill contract. The planner produces Hermes-native plan artifacts with no verified cross-runtime semantics yet.
+  reason: >-
+    Hermes native-ai-engineering routing plans bind workflow classification to Hermes profile IDs and runtime dispatch constraints. No runtime-agnostic contract exists yet for this provider-bound planning behavior.
   scope:
+    - static_contract_ownership
     - provider_specific_execution
-    - runtime_schema_reference
   review_date: "2027-01-31"
   evidence_refs:
     - kind: github_issue
-      ref: puterakahfi/ai-native-skills#304
+      ref: puterakahfi/ai-native-skills#308
     - kind: executable_source
       ref: skills/hermes-auto-routing-planner/SKILL.md
   revisit:
     blocking_issue: null
     triggers:
-      - A second runtime adapter implements equivalent plan-based routing.
-      - task-routing-plan contract is promoted to ai-native-core.
+      - A canonical runtime-agnostic contract is accepted for this behavior.
+      - A second implementation proves transferable obligations.
+      - The review date is reached before this exemption is retired.
   prohibited_claims:
     - core_contract_conformance
     - behavioral_verification

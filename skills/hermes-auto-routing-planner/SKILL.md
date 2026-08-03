@@ -10,7 +10,6 @@ metadata:
   ai-native-skills.fleet: native-ai-engineering
   ai-native-skills.requires: "workflow-router role-switcher"
   ai-native-skills.related_skills: '["hermes-agent-fleet-bootstrap","workflow-router","role-switcher","delivery-work-breakdown","task-continuity"]'
-  ai-native-skills.implements: "contracts/schemas/auto-routing/task-routing-plan.schema.yaml"
   ai-native-skills.boundary.covers: '["request_context_normalization","workflow_classification","role_to_profile_mapping","smallest_justified_profile_selection","dependency_ordering","reviewer_independence_assignment","plan_validation","plan_only_output"]'
   ai-native-skills.boundary.delegates: '["worker_dispatch","review_loop","synthesis","origin_return","skill_sync","catalog_resolution"]'
 ---

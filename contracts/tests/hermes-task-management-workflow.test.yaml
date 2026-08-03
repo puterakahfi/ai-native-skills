@@ -63,7 +63,7 @@ skill_test:
 
     - id: verified-profile-inventory-controls-assignment
       description: Capability names do not become invented Hermes assignees.
-      trigger: Route product, design, frontend, general engineering, DevOps, security, architecture, review, and cross-domain work. The verified fleet has agent-orchestrator, agent-product, agent-architecture, agent-design, agent-frontend, agent-backend, and agent-review, but no agent-devops or agent-security profile.
+      trigger: Route product, design, frontend, general engineering, DevOps, security, architecture, review, and cross-domain work. The verified expanded ADLC OS fleet has agent-orchestrator, agent-product, agent-architecture, agent-design, agent-frontend, agent-backend, agent-review, agent-operations, agent-security, agent-quality, agent-knowledge, and agent-platform, but no agent-devops profile.
       must_contain:
         - profile_inventory_ref
         - agent-product
@@ -73,14 +73,13 @@ skill_test:
         - agent-architecture
         - agent-review
         - agent-orchestrator
-        - verified profile
-        - do not invent agent-security
+        - agent-operations
+        - agent-security
         - operations owner
         - security specialist
-        - BLOCKED
+        - verified profile
       must_not_contain:
         - assign agent-devops without verification
-        - assign agent-security without verification
         - capability name proves profile exists
       quality_gates_tested:
         - assignee_must_exist_in_verified_profile_inventory
