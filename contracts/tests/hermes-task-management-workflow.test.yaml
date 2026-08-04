@@ -323,7 +323,7 @@ skill_test:
       trigger: The epic passed implementation, tests, runtime verification, independent review, and product-owner acceptance. Its accepted DoD requires merge to main and production deploy, but neither action is authorized yet. Report the parent state and next action.
       must_contain:
         - READY_FOR_ACCEPTANCE_OR_RELEASE
-        - non-Done
+        - non-terminal parent state
         - merge
         - deploy
         - AWAITING_AUTHORIZATION
