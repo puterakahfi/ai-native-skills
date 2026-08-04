@@ -546,27 +546,37 @@ Optional persistent profiles use the same naming rule only when recurring respon
 
 ```text
 agent-operations
-agent-documentation
 agent-security
-agent-ai
+agent-quality
+agent-knowledge
+agent-platform
 agent-data
+agent-ai-runtime
 ```
 
 ### `agent-operations`
 
 Use only for explicitly authorized release, deployment, observability, rollback, and incident execution with separate credentials, environment scope, rollback controls, human authorization, and sandbox evidence.
 
-### `agent-documentation`
-
-Use when documentation is a recurring product surface with durable ownership across repositories, APIs, SDKs, release notes, or public docs. Otherwise keep documentation as a cross-cutting capability and completion gate owned by the artifact producer and reviewer.
-
 ### `agent-security`
 
-Use when security design, threat modeling, review, or operational risk has recurring dedicated ownership and distinct permissions.
+Use when security design, threat modeling, review, autonomous permission boundaries, or operational risk has recurring dedicated ownership and distinct permissions.
 
-### `agent-ai`
+### `agent-quality`
 
-Use when agent behavior, tools, memory, model selection, evals, runtime binding, and orchestration are a recurring product capability rather than incidental use of AI.
+Use when test strategy, regression planning, acceptance evidence, quality gates, and quality trend reporting need recurring ownership beyond implementation and independent review. Include `skill-doctor` and `skill-eval` when quality owns reusable skill-package validation gates; package-policy health remains `skill-doctor` and behavioral evaluation remains `skill-eval`.
+
+### `agent-knowledge`
+
+Use when documentation, SOPs, vault hygiene, evidence ledgers, reporting, retrieval quality, and stale-doc detection become recurring ADLC OS responsibilities. It may keep `skill-authoring-workflow` for docs/SOP skill-package authoring only; do not add `skill-doctor` unless knowledge explicitly owns package-health repair gates.
+
+### `agent-platform`
+
+Use when Hermes profiles, skill distribution, MCP/OpenViking/Kanban wiring, auto-routing, model policy, native runtime configuration, and fleet reproducibility need recurring platform ownership. Include `skill-authoring-workflow` and `skill-doctor` for Hermes skill, preset, bootstrap, and profile package work so package-policy authoring and health gates are available at the platform boundary.
+
+### `agent-ai-runtime`
+
+Use when agent behavior, tools, memory, model selection, evals, runtime binding, and autonomous orchestration are a recurring product/platform capability rather than incidental use of AI.
 
 ### `agent-data`
 

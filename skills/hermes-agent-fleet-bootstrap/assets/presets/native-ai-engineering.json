@@ -190,6 +190,108 @@
       ],
       "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-review.md",
       "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-review.yaml"
+    },
+    {
+      "id": "agent-operations",
+      "description": "Owns release readiness, deployment planning, rollback, runbooks, incident workflow, monitoring requirements, operational cost/risk, and post-deploy evidence without approving product scope, security risk, or production deployment without explicit authority.",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand",
+      "skills": [
+        "deployment-workflow",
+        "incident-response",
+        "observability-design",
+        "resilience-engineering",
+        "technical-debt-governance",
+        "decision-provenance",
+        "task-continuity",
+        "git-workflow"
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-operations.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-operations.yaml"
+    },
+    {
+      "id": "agent-security",
+      "description": "Owns security design and review, threat modeling, auth/secrets/access-control risk, dependency/integration risk, and autonomous permission boundaries without becoming the routine implementer or unilateral release approver.",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand",
+      "skills": [
+        "security-engineer",
+        "security-review",
+        "threat-modeling",
+        "decision-provenance",
+        "architecture-review",
+        "api-contract",
+        "incident-response",
+        "ethics-responsible-ai"
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-security.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-security.yaml"
+    },
+    {
+      "id": "agent-quality",
+      "description": "Owns test strategy, regression planning, acceptance evidence standards, QA matrices, quality gate receipts, and quality trend reporting without serving as primary implementer, product accepter, or release authority.",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand",
+      "skills": [
+        "test-strategy",
+        "software-testing-workflow",
+        "acceptance-testing",
+        "unit-testing",
+        "integration-testing",
+        "end-to-end-testing",
+        "contract-testing",
+        "behavior-driven-development",
+        "production-code-quality-baseline",
+        "skill-eval",
+        "skill-doctor",
+        "decision-provenance"
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-quality.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-quality.yaml"
+    },
+    {
+      "id": "agent-knowledge",
+      "description": "Owns documentation and SOP lifecycle, vault hygiene, evidence ledgers, reporting/accountability packets, retrieval quality, stale-doc detection, and knowledge capture without treating retrieved context as approval or source truth.",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand",
+      "skills": [
+        "documentation-assurance",
+        "context-manager",
+        "context-engineering",
+        "task-continuity",
+        "response-contract",
+        "decision-provenance",
+        "skill-evolution",
+        "skill-authoring-workflow",
+        "jira-issue-query"
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-knowledge.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-knowledge.yaml"
+    },
+    {
+      "id": "agent-platform",
+      "description": "Owns ADLC OS runtime and platform health: Hermes profile bootstrap/reconcile, skill distribution, MCP/OpenViking/Kanban wiring, auto-routing runtime, model policy, and fleet reproducibility without bypassing product, security, or operations gates.",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand",
+      "skills": [
+        "hermes-agent-fleet-bootstrap",
+        "hermes-profile-bootstrap",
+        "hermes-fleet-auto-routing",
+        "hermes-auto-routing-planner",
+        "hermes-auto-routing-dispatch",
+        "hermes-auto-routing-review-synthesis",
+        "hermes-auto-routing-skill-ops",
+        "skill-authoring-workflow",
+        "skill-doctor",
+        "native-ai-runtime-ops",
+        "native-ai-runtime-agent",
+        "model-selection",
+        "rule-manager",
+        "project-onboarding",
+        "git-workflow"
+      ],
+      "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-platform.md",
+      "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-platform.yaml"
     }
   ]
 }

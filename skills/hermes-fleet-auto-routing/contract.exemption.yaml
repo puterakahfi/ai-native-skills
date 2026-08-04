@@ -1,22 +1,22 @@
 contract_exemption:
   schema_version: 1.0.0
   artifact:
-    id: hermes-auto-routing-review-synthesis
-    path: skills/hermes-auto-routing-review-synthesis/SKILL.md
+    id: hermes-fleet-auto-routing
+    path: skills/hermes-fleet-auto-routing/SKILL.md
     type: skill
   classification: provider_specific
   owner: puterakahfi
   reason: >-
-    Hermes review synthesis consumes Hermes dispatch receipts and profile execution evidence. No runtime-agnostic contract exists yet for this provider-bound review and origin return behavior.
+    Hermes fleet auto-routing is an umbrella workflow over Hermes profiles, Kanban/delegation modes, and native-ai-engineering runtime conventions. No runtime-agnostic contract exists yet.
   scope:
     - static_contract_ownership
     - provider_specific_execution
   review_date: "2027-01-31"
   evidence_refs:
     - kind: github_issue
-      ref: puterakahfi/ai-native-skills#309
+      ref: puterakahfi/ai-native-skills#308
     - kind: executable_source
-      ref: skills/hermes-auto-routing-review-synthesis/SKILL.md
+      ref: skills/hermes-fleet-auto-routing/SKILL.md
   revisit:
     blocking_issue: null
     triggers:

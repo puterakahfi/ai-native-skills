@@ -2,10 +2,10 @@
   "schema_version": 1,
   "source": "skills/*/SKILL.md frontmatter",
   "counts": {
-    "skill": 108,
+    "skill": 112,
     "workflow": 13,
     "meta-skill": 7,
-    "total": 128
+    "total": 132
   },
   "items": [
     {
@@ -309,6 +309,16 @@
       "path": "skills/hermes-auto-routing-review-synthesis/SKILL.md"
     },
     {
+      "name": "hermes-auto-routing-skill-ops",
+      "type": "skill",
+      "path": "skills/hermes-auto-routing-skill-ops/SKILL.md"
+    },
+    {
+      "name": "hermes-fleet-auto-routing",
+      "type": "skill",
+      "path": "skills/hermes-fleet-auto-routing/SKILL.md"
+    },
+    {
       "name": "hermes-product-intake",
       "type": "skill",
       "path": "skills/hermes-product-intake/SKILL.md"
@@ -342,6 +352,11 @@
       "name": "integration-testing",
       "type": "skill",
       "path": "skills/integration-testing/SKILL.md"
+    },
+    {
+      "name": "jira-issue-query",
+      "type": "skill",
+      "path": "skills/jira-issue-query/SKILL.md"
     },
     {
       "name": "language-standards",
@@ -437,6 +452,11 @@
       "name": "project-instruction-generator",
       "type": "skill",
       "path": "skills/project-instruction-generator/SKILL.md"
+    },
+    {
+      "name": "project-onboarding",
+      "type": "skill",
+      "path": "skills/project-onboarding/SKILL.md"
     },
     {
       "name": "prompt-engineer",

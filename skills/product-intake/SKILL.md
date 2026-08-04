@@ -6,8 +6,6 @@ metadata:
   ai-native-skills.version: 1.0.0
   ai-native-skills.author: puterakahfi
   ai-native-skills.type: skill
-  ai-native-skills.implements: ai-native-core/contracts/skills/product/product-intake.contract.yaml
-  ai-native-skills.contract-version: "~1.0"
   ai-native-skills.requires: "product-requirements delivery-work-breakdown decision-provenance"
   ai-native-skills.related_skills: '["workflow-router","role-switcher","product-requirements","delivery-work-breakdown","decision-provenance","task-continuity"]'
   ai-native-skills.boundary.covers: '["intake_investigation","prd_depth_determination","task_structure_sizing","multi_component_detection","artifact_target_resolution","intake_artifacts_emission"]'

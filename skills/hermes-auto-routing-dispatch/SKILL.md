@@ -10,7 +10,6 @@ metadata:
   ai-native-skills.fleet: native-ai-engineering
   ai-native-skills.requires: "hermes-auto-routing-planner"
   ai-native-skills.related_skills: '["hermes-auto-routing-planner","hermes-agent-fleet-bootstrap","task-continuity"]'
-  ai-native-skills.implements: "contracts/schemas/auto-routing/dispatch-receipt.schema.yaml"
   ai-native-skills.boundary.covers: '["plan_consumption","worker_slot_iteration","dispatch_mode_selection","bounded_context_delivery","dispatch_receipt_emission","depends_on_ordering","resume_idempotency","failure_evidence_preservation"]'
   ai-native-skills.boundary.delegates: '["plan_authoring","review_loop","synthesis","origin_return","skill_sync"]'
 ---

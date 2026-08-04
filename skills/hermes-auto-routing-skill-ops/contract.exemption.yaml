@@ -1,22 +1,22 @@
 contract_exemption:
   schema_version: 1.0.0
   artifact:
-    id: hermes-auto-routing-review-synthesis
-    path: skills/hermes-auto-routing-review-synthesis/SKILL.md
+    id: hermes-auto-routing-skill-ops
+    path: skills/hermes-auto-routing-skill-ops/SKILL.md
     type: skill
   classification: provider_specific
   owner: puterakahfi
   reason: >-
-    Hermes review synthesis consumes Hermes dispatch receipts and profile execution evidence. No runtime-agnostic contract exists yet for this provider-bound review and origin return behavior.
+    Hermes skill installation and profile sync operations depend on Hermes profile filesystem layout and npx skills runtime behavior. No runtime-agnostic contract exists for this provider-specific operational playbook.
   scope:
     - static_contract_ownership
     - provider_specific_execution
   review_date: "2027-01-31"
   evidence_refs:
     - kind: github_issue
-      ref: puterakahfi/ai-native-skills#309
+      ref: puterakahfi/ai-native-skills#308
     - kind: executable_source
-      ref: skills/hermes-auto-routing-review-synthesis/SKILL.md
+      ref: skills/hermes-auto-routing-skill-ops/SKILL.md
   revisit:
     blocking_issue: null
     triggers:
