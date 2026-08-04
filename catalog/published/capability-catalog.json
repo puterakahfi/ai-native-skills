@@ -964,11 +964,22 @@
             "context-engineering",
             "context-manager",
             "hermes-agent-fleet-bootstrap",
+            "hermes-auto-routing-dispatch",
+            "hermes-auto-routing-planner",
+            "hermes-auto-routing-review-synthesis",
+            "hermes-auto-routing-skill-ops",
+            "hermes-fleet-auto-routing",
+            "hermes-product-intake",
             "hermes-profile-bootstrap",
+            "hermes-profile-tooling",
+            "hermes-task-management-workflow",
+            "jira-issue-query",
             "model-selection",
             "native-ai-engineer",
             "native-ai-runtime-agent",
+            "product-intake",
             "project-instruction-generator",
+            "project-onboarding",
             "prompt-engineer",
             "prompt-optimizer",
             "response-contract",
@@ -1056,6 +1067,120 @@
                 "verify"
               ]
             },
+            "hermes-auto-routing-dispatch": {
+              "concerns": [
+                "ai-systems",
+                "workflow-routing",
+                "delivery"
+              ],
+              "domains": [
+                "engineering",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify"
+              ]
+            },
+            "hermes-auto-routing-planner": {
+              "concerns": [
+                "ai-systems",
+                "workflow-routing",
+                "delivery"
+              ],
+              "domains": [
+                "engineering",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify"
+              ]
+            },
+            "hermes-auto-routing-review-synthesis": {
+              "concerns": [
+                "ai-systems",
+                "workflow-routing",
+                "delivery"
+              ],
+              "domains": [
+                "engineering",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify"
+              ]
+            },
+            "hermes-auto-routing-skill-ops": {
+              "concerns": [
+                "ai-systems",
+                "workflow-routing",
+                "delivery"
+              ],
+              "domains": [
+                "engineering",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify"
+              ]
+            },
+            "hermes-fleet-auto-routing": {
+              "concerns": [
+                "ai-systems",
+                "workflow-routing",
+                "delivery"
+              ],
+              "domains": [
+                "engineering",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify"
+              ]
+            },
+            "hermes-product-intake": {
+              "concerns": [
+                "ai-systems",
+                "workflow-routing",
+                "delivery"
+              ],
+              "domains": [
+                "engineering",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify"
+              ]
+            },
             "hermes-profile-bootstrap": {
               "concerns": [
                 "implementation",
@@ -1072,6 +1197,61 @@
               "lifecycle_stages": [
                 "plan",
                 "build",
+                "verify"
+              ]
+            },
+            "hermes-profile-tooling": {
+              "concerns": [
+                "developer-experience",
+                "debugging",
+                "reliability"
+              ],
+              "domains": [
+                "ai-systems",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "operate",
+                "verify"
+              ]
+            },
+            "hermes-task-management-workflow": {
+              "concerns": [
+                "workflow-routing",
+                "delivery",
+                "governance"
+              ],
+              "domains": [
+                "governance",
+                "ai-systems"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "plan",
+                "build",
+                "verify",
+                "release"
+              ]
+            },
+            "jira-issue-query": {
+              "concerns": [
+                "developer-experience",
+                "planning"
+              ],
+              "domains": [
+                "engineering",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "discover",
                 "verify"
               ]
             },
@@ -1102,6 +1282,25 @@
                 "ai-agent-runtime"
               ]
             },
+            "product-intake": {
+              "concerns": [
+                "product-strategy",
+                "requirements",
+                "workflow-routing"
+              ],
+              "domains": [
+                "product",
+                "governance"
+              ],
+              "ecosystems": [
+                "technology-agnostic"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "define",
+                "plan"
+              ]
+            },
             "project-instruction-generator": {
               "concerns": [
                 "context",
@@ -1120,6 +1319,25 @@
                 "define",
                 "plan",
                 "verify"
+              ]
+            },
+            "project-onboarding": {
+              "concerns": [
+                "context",
+                "developer-experience",
+                "documentation"
+              ],
+              "domains": [
+                "engineering",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "technology-agnostic"
+              ],
+              "lifecycle_stages": [
+                "discover",
+                "define",
+                "plan"
               ]
             },
             "prompt-engineer": {
@@ -2362,6 +2580,7 @@
             "chatgpt-app-development",
             "project-instruction-generator",
             "hermes-profile-bootstrap",
+            "hermes-profile-tooling",
             "hermes-agent-fleet-bootstrap"
           ],
           "description": "Design models, prompts, context, continuity, runtime boundaries, and AI-native product integrations.",
@@ -2399,6 +2618,7 @@
             "git-workflow",
             "project-instruction-generator",
             "hermes-profile-bootstrap",
+            "hermes-profile-tooling",
             "plan",
             "spike",
             "diagram-architect",
@@ -2725,8 +2945,48 @@
         "type": "skill"
       },
       {
+        "name": "hermes-auto-routing-dispatch",
+        "path": "skills/hermes-auto-routing-dispatch/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-auto-routing-planner",
+        "path": "skills/hermes-auto-routing-planner/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-auto-routing-review-synthesis",
+        "path": "skills/hermes-auto-routing-review-synthesis/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-auto-routing-skill-ops",
+        "path": "skills/hermes-auto-routing-skill-ops/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-fleet-auto-routing",
+        "path": "skills/hermes-fleet-auto-routing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-product-intake",
+        "path": "skills/hermes-product-intake/SKILL.md",
+        "type": "skill"
+      },
+      {
         "name": "hermes-profile-bootstrap",
         "path": "skills/hermes-profile-bootstrap/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-profile-tooling",
+        "path": "skills/hermes-profile-tooling/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-task-management-workflow",
+        "path": "skills/hermes-task-management-workflow/SKILL.md",
         "type": "skill"
       },
       {
@@ -2747,6 +3007,11 @@
       {
         "name": "integration-testing",
         "path": "skills/integration-testing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "jira-issue-query",
+        "path": "skills/jira-issue-query/SKILL.md",
         "type": "skill"
       },
       {
@@ -2825,6 +3090,11 @@
         "type": "skill"
       },
       {
+        "name": "product-intake",
+        "path": "skills/product-intake/SKILL.md",
+        "type": "skill"
+      },
+      {
         "name": "product-manager",
         "path": "skills/product-manager/SKILL.md",
         "type": "skill"
@@ -2837,6 +3107,11 @@
       {
         "name": "project-instruction-generator",
         "path": "skills/project-instruction-generator/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "project-onboarding",
+        "path": "skills/project-onboarding/SKILL.md",
         "type": "skill"
       },
       {
@@ -3052,8 +3327,8 @@
     ],
     "counts": {
       "meta-skill": 7,
-      "skill": 102,
-      "total": 122,
+      "skill": 113,
+      "total": 133,
       "workflow": 13
     }
   },
@@ -3069,6 +3344,6 @@
     },
     "inventory_schema_version": 1,
     "repository": "puterakahfi/ai-native-skills",
-    "revision": "b5d897c6ddeb2e1533f9753089654579a23ac9cf"
+    "revision": "556308406400c0735ab2aa79c76fa203cc8a3540"
   }
 }

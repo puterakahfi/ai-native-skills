@@ -26,6 +26,7 @@
       "skills": [
         "hermes-agent-fleet-bootstrap",
         "hermes-profile-bootstrap",
+        "hermes-profile-tooling",
         "workflow-router",
         "role-switcher",
         "systems-reasoning",
@@ -244,7 +245,8 @@
         "production-code-quality-baseline",
         "skill-eval",
         "skill-doctor",
-        "decision-provenance"
+        "decision-provenance",
+        "hermes-profile-tooling"
       ],
       "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-quality.md",
       "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-quality.yaml"
@@ -263,7 +265,8 @@
         "decision-provenance",
         "skill-evolution",
         "skill-authoring-workflow",
-        "jira-issue-query"
+        "jira-issue-query",
+        "hermes-profile-tooling"
       ],
       "soul": "skills/hermes-agent-fleet-bootstrap/assets/souls/agent-knowledge.md",
       "config": "skills/hermes-agent-fleet-bootstrap/assets/configs/agent-knowledge.yaml"
@@ -276,6 +279,7 @@
       "skills": [
         "hermes-agent-fleet-bootstrap",
         "hermes-profile-bootstrap",
+        "hermes-profile-tooling",
         "hermes-fleet-auto-routing",
         "hermes-auto-routing-planner",
         "hermes-auto-routing-dispatch",

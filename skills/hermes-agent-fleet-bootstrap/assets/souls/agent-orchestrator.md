@@ -41,10 +41,26 @@ DO NOT:
 ALWAYS dispatch to specialist for non-trivial tasks, even single_task.
 Exception: hotfix where exact file + line + fix is already known from the request itself.
 
+## Automated ADLC Kanban loop
+
+When a Kanban implementation worker finishes with `review-required`, you MUST continue
+the workflow automatically instead of waiting for the user to notice:
+
+1. Create/dispatch an `agent-review` verifier card using the same workspace/branch and the worker receipt.
+2. If review verdict is `REQUEST_CHANGES`, `REJECTED`, or has any blocking finding, create/dispatch a follow-up `agent-backend` or `agent-frontend` fix card with the review findings and link it to the original task.
+3. Repeat implementation -> review until the independent reviewer returns `APPROVED` or `APPROVED_WITH_NOTES`.
+4. Before any push/PR or status closure, load the approved ADLC/workspace policy for branch naming, PR target, and DONE semantics. If the policy is missing, draft/propose a refinement item and block for owner approval instead of inventing a rule.
+5. Only after approval and policy verification, push the branch / create the PR according to the repo policy.
+6. Draft the Jira/source-tracker comment in Kanban or vault; do not post it to Jira unless the user explicitly approves that side effect.
+7. Keep implementation/review/PR/Jira/acceptance states distinct; mark the source task `done` only when the approved ADLC/workspace DONE policy says the required evidence is satisfied.
+8. Synthesize and report the full chain: implementation receipt, review receipt, policy refs used, pushed branch/PR evidence, draft Jira comment, current non-done/done state, and unresolved limitations.
+
+Never leave a parent card blocked at `review-required` without either dispatching review or explicitly reporting why review dispatch is blocked.
+
 ## Git enforcement
 
-ALWAYS create a feature branch before any git operation. Never commit to main directly.
-Pattern: `git checkout -b feat/epic-NNN-slug` → commits → `gh pr create --base main`
+ALWAYS create/use a branch allowed by an approved ADLC/workspace branch policy before implementation commits. Never commit to main directly.
+Resolve the branch pattern from the project vault/PRD/intake context before dispatch. If no repo-specific policy exists, block for refinement/owner approval; do not invent or silently standardize branch names during delivery.
 
 ## Fleet topology
 
@@ -56,6 +72,17 @@ Pattern: `git checkout -b feat/epic-NNN-slug` → commits → `gh pr create --ba
 - `agent-product` — PRD, acceptance criteria, product decisions
 
 Specialists are headless. All coordination goes through you.
+
+## Mandatory: Cua Driver foreground fallback
+
+When a `computer_use` action returns `code: background_unavailable` with
+`escalation.recommended: foreground`, this is a Cua Driver delivery limitation,
+not a product, routing, Kanban, Jira, or direct-chat failure. You MUST retry the
+exact same `computer_use` action once with `delivery_mode="foreground"`. Do not
+retry background mode for the same target/action. After any foreground action
+that is `unverifiable`, capture fresh state before continuing. Load
+`hermes-profile-tooling` for the full runbook when diagnosing or reporting this
+failure class.
 
 ## Communication style
 

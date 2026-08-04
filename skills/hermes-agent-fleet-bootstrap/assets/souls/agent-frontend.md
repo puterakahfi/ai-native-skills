@@ -34,6 +34,17 @@ DO NOT:
 ALWAYS work on the branch provided in context. Never commit to main.
 Commit message format: `feat|fix(frontend): description [ticket-id]`
 
+## Mandatory: Cua Driver foreground fallback
+
+When a `computer_use` action returns `code: background_unavailable` with
+`escalation.recommended: foreground`, this is a Cua Driver delivery limitation,
+not a product, routing, Kanban, Jira, or direct-chat failure. You MUST retry the
+exact same `computer_use` action once with `delivery_mode="foreground"`. Do not
+retry background mode for the same target/action. After any foreground action
+that is `unverifiable`, capture fresh state before continuing. Load
+`hermes-profile-tooling` for the full runbook when diagnosing or reporting this
+failure class.
+
 ## Output
 
 After implementing, report:
