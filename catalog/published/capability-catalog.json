@@ -965,6 +965,7 @@
             "context-manager",
             "hermes-agent-fleet-bootstrap",
             "hermes-profile-bootstrap",
+            "hermes-profile-tooling",
             "model-selection",
             "native-ai-engineer",
             "native-ai-runtime-agent",
@@ -1072,6 +1073,25 @@
               "lifecycle_stages": [
                 "plan",
                 "build",
+                "verify"
+              ]
+            },
+            "hermes-profile-tooling": {
+              "concerns": [
+                "developer-experience",
+                "runtime-operations",
+                "tooling"
+              ],
+              "domains": [
+                "ai-systems",
+                "developer-experience"
+              ],
+              "ecosystems": [
+                "ai-agent-runtime"
+              ],
+              "lifecycle_stages": [
+                "debug",
+                "operate",
                 "verify"
               ]
             },
@@ -2362,6 +2382,7 @@
             "chatgpt-app-development",
             "project-instruction-generator",
             "hermes-profile-bootstrap",
+            "hermes-profile-tooling",
             "hermes-agent-fleet-bootstrap"
           ],
           "description": "Design models, prompts, context, continuity, runtime boundaries, and AI-native product integrations.",
@@ -2399,6 +2420,7 @@
             "git-workflow",
             "project-instruction-generator",
             "hermes-profile-bootstrap",
+            "hermes-profile-tooling",
             "plan",
             "spike",
             "diagram-architect",
@@ -2725,8 +2747,48 @@
         "type": "skill"
       },
       {
+        "name": "hermes-auto-routing-dispatch",
+        "path": "skills/hermes-auto-routing-dispatch/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-auto-routing-planner",
+        "path": "skills/hermes-auto-routing-planner/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-auto-routing-review-synthesis",
+        "path": "skills/hermes-auto-routing-review-synthesis/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-auto-routing-skill-ops",
+        "path": "skills/hermes-auto-routing-skill-ops/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-fleet-auto-routing",
+        "path": "skills/hermes-fleet-auto-routing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-product-intake",
+        "path": "skills/hermes-product-intake/SKILL.md",
+        "type": "skill"
+      },
+      {
         "name": "hermes-profile-bootstrap",
         "path": "skills/hermes-profile-bootstrap/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-profile-tooling",
+        "path": "skills/hermes-profile-tooling/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "hermes-task-management-workflow",
+        "path": "skills/hermes-task-management-workflow/SKILL.md",
         "type": "skill"
       },
       {
@@ -2747,6 +2809,11 @@
       {
         "name": "integration-testing",
         "path": "skills/integration-testing/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "jira-issue-query",
+        "path": "skills/jira-issue-query/SKILL.md",
         "type": "skill"
       },
       {
@@ -2825,6 +2892,11 @@
         "type": "skill"
       },
       {
+        "name": "product-intake",
+        "path": "skills/product-intake/SKILL.md",
+        "type": "skill"
+      },
+      {
         "name": "product-manager",
         "path": "skills/product-manager/SKILL.md",
         "type": "skill"
@@ -2837,6 +2909,11 @@
       {
         "name": "project-instruction-generator",
         "path": "skills/project-instruction-generator/SKILL.md",
+        "type": "skill"
+      },
+      {
+        "name": "project-onboarding",
+        "path": "skills/project-onboarding/SKILL.md",
         "type": "skill"
       },
       {
@@ -3052,8 +3129,8 @@
     ],
     "counts": {
       "meta-skill": 7,
-      "skill": 102,
-      "total": 122,
+      "skill": 113,
+      "total": 133,
       "workflow": 13
     }
   },
@@ -3069,6 +3146,6 @@
     },
     "inventory_schema_version": 1,
     "repository": "puterakahfi/ai-native-skills",
-    "revision": "b5d897c6ddeb2e1533f9753089654579a23ac9cf"
+    "revision": "a5f57830a5e500ea8dfd2956d484a21dc3054e31"
   }
 }
