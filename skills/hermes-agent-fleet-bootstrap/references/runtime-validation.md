@@ -34,7 +34,7 @@ bash skills/hermes-agent-fleet-bootstrap/scripts/hermes-fleet-runtime-acceptance
 3. configure model/runtime on agent-orchestrator
 4. synchronize approved non-secret model policy
 5. verify only agent-orchestrator owns a gateway
-6. capture bounded planning, backend, and UI scenarios
+6. capture bounded planning, backend, UI, and security scenarios
 7. capture Telegram round-trip evidence when a local bot credential is available
 8. sanitize evidence
 9. run validate-runtime
@@ -69,6 +69,11 @@ agent-design
 agent-frontend
 agent-backend
 agent-review
+agent-operations
+agent-security
+agent-quality
+agent-knowledge
+agent-platform
 ```
 
 `agent-orchestrator` must be the only `gateway: eligible` profile. Every specialist must declare:
@@ -113,6 +118,17 @@ agent-review
 ```
 
 `agent-backend` must not be selected for a bounded UI-only scenario.
+
+### Security work
+
+Required workers:
+
+```text
+agent-security
+agent-review
+```
+
+The evidence must contain a unique task ID, observable dependency/handoff data, security findings or threat-model outputs, and an independent review verdict. `agent-security` remains headless and must not become the routine implementer or release approver.
 
 No scenario may count `agent-orchestrator` as the specialist implementer. No bounded scenario may invoke every specialist by default.
 

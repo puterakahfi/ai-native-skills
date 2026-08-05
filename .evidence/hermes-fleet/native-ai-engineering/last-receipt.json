@@ -2,7 +2,7 @@
   "actions": [
     {
       "command": [],
-      "detail": "{\"legacy_present\": [], \"target_missing\": [\"agent-orchestrator\", \"agent-product\", \"agent-architecture\", \"agent-design\", \"agent-frontend\", \"agent-backend\", \"agent-review\"], \"target_present\": []}",
+      "detail": "{\"legacy_present\": [], \"target_missing\": [\"agent-orchestrator\", \"agent-product\", \"agent-architecture\", \"agent-design\", \"agent-frontend\", \"agent-backend\", \"agent-review\", \"agent-operations\", \"agent-security\", \"agent-quality\", \"agent-knowledge\", \"agent-platform\"], \"target_present\": []}",
       "kind": "identity",
       "status": "READY_FRESH_BOOTSTRAP",
       "target": "native-ai-engineering"
@@ -12,6 +12,20 @@
       "detail": "Profile directory absent",
       "kind": "profile",
       "status": "PLAN_CREATE",
+      "target": "agent-orchestrator"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-orchestrator.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-orchestrator"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-orchestrator.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
       "target": "agent-orchestrator"
     },
     {
@@ -27,6 +41,13 @@
       "kind": "skill",
       "status": "PLAN_INSTALL",
       "target": "agent-orchestrator:hermes-profile-bootstrap"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-orchestrator:hermes-profile-tooling"
     },
     {
       "command": [],
@@ -89,6 +110,20 @@
       "detail": "Profile directory absent",
       "kind": "profile",
       "status": "PLAN_CREATE",
+      "target": "agent-product"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-product.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-product"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-product.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
       "target": "agent-product"
     },
     {
@@ -159,6 +194,20 @@
       "detail": "Profile directory absent",
       "kind": "profile",
       "status": "PLAN_CREATE",
+      "target": "agent-architecture"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-architecture.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-architecture"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-architecture.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
       "target": "agent-architecture"
     },
     {
@@ -310,6 +359,20 @@
     },
     {
       "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-design.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-design"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-design.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
+      "target": "agent-design"
+    },
+    {
+      "command": [],
       "detail": "",
       "kind": "skill",
       "status": "PLAN_INSTALL",
@@ -418,6 +481,20 @@
       "detail": "Profile directory absent",
       "kind": "profile",
       "status": "PLAN_CREATE",
+      "target": "agent-frontend"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-frontend.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-frontend"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-frontend.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
       "target": "agent-frontend"
     },
     {
@@ -544,6 +621,20 @@
       "detail": "Profile directory absent",
       "kind": "profile",
       "status": "PLAN_CREATE",
+      "target": "agent-backend"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-backend.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-backend"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-backend.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
       "target": "agent-backend"
     },
     {
@@ -702,6 +793,20 @@
     },
     {
       "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-review.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-review"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-review.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
+      "target": "agent-review"
+    },
+    {
+      "command": [],
       "detail": "",
       "kind": "skill",
       "status": "PLAN_INSTALL",
@@ -779,6 +884,496 @@
     },
     {
       "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-operations"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-operations.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-operations"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-operations.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
+      "target": "agent-operations"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-operations:deployment-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-operations:incident-response"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-operations:observability-design"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-operations:resilience-engineering"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-operations:technical-debt-governance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-operations:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-operations:task-continuity"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-operations:git-workflow"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-security"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-security.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-security"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-security.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
+      "target": "agent-security"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-security:security-engineer"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-security:security-review"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-security:threat-modeling"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-security:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-security:architecture-review"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-security:api-contract"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-security:incident-response"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-security:ethics-responsible-ai"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-quality"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-quality.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-quality"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-quality.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
+      "target": "agent-quality"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:test-strategy"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:software-testing-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:acceptance-testing"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:unit-testing"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:integration-testing"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:end-to-end-testing"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:contract-testing"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:behavior-driven-development"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:production-code-quality-baseline"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:skill-eval"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:skill-doctor"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-quality:hermes-profile-tooling"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-knowledge"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-knowledge.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-knowledge"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-knowledge.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
+      "target": "agent-knowledge"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:documentation-assurance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:context-manager"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:context-engineering"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:task-continuity"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:response-contract"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:decision-provenance"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:skill-evolution"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:skill-authoring-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:jira-issue-query"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-knowledge:hermes-profile-tooling"
+    },
+    {
+      "command": [],
+      "detail": "Profile directory absent",
+      "kind": "profile",
+      "status": "PLAN_CREATE",
+      "target": "agent-platform"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/souls/agent-platform.md",
+      "kind": "soul",
+      "status": "PLAN_SYNC",
+      "target": "agent-platform"
+    },
+    {
+      "command": [],
+      "detail": "Source: skills/hermes-agent-fleet-bootstrap/assets/configs/agent-platform.yaml",
+      "kind": "config",
+      "status": "PLAN_SYNC",
+      "target": "agent-platform"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:hermes-agent-fleet-bootstrap"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:hermes-profile-bootstrap"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:hermes-profile-tooling"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:hermes-fleet-auto-routing"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:hermes-auto-routing-planner"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:hermes-auto-routing-dispatch"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:hermes-auto-routing-review-synthesis"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:hermes-auto-routing-skill-ops"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:skill-authoring-workflow"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:skill-doctor"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:native-ai-runtime-ops"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:native-ai-runtime-agent"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:model-selection"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:rule-manager"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:project-onboarding"
+    },
+    {
+      "command": [],
+      "detail": "",
+      "kind": "skill",
+      "status": "PLAN_INSTALL",
+      "target": "agent-platform:git-workflow"
+    },
+    {
+      "command": [],
       "detail": "",
       "kind": "kanban",
       "status": "PLAN_INIT",
@@ -790,8 +1385,8 @@
   "fleet_id": "native-ai-engineering",
   "fleet_identity_state": "EMPTY",
   "gateway_policy": "ORCHESTRATOR_ELIGIBLE_SPECIALISTS_NONE",
-  "generated_at": "2026-07-31T12:46:52.573038+00:00",
-  "hermes_home": "/home/puterakahfi",
+  "generated_at": "2026-08-05T05:27:32.477121+00:00",
+  "hermes_home": "/tmp/hermes-fleet-agent-security-evidence",
   "hermes_version": "NOT_VERIFIED",
   "identity_generation": 2,
   "legacy_profiles_present": [],
@@ -799,13 +1394,13 @@
   "mode": "PLAN_ONLY",
   "operation": "reconcile",
   "orchestrator_profile": "agent-orchestrator",
-  "preset_path": "/home/puterakahfi/.hermes/ai-native-skills/skills/hermes-agent-fleet-bootstrap/assets/presets/native-ai-engineering.json",
-  "preset_version": "2.0.0",
+  "preset_path": "skills/hermes-agent-fleet-bootstrap/assets/presets/native-ai-engineering.json",
+  "preset_version": "2.1.0",
   "readiness": "READY_TO_APPLY",
-  "receipt_path": "/data/www/ai-native-skills/.evidence/hermes-fleet/native-ai-engineering/last-receipt.json",
+  "receipt_path": ".evidence/hermes-fleet/native-ai-engineering/last-receipt.json",
   "runtime_execution": "NOT_RUN",
   "schema_version": "2.0.0",
-  "skills_root": "/home/puterakahfi/.hermes/ai-native-skills/skills",
+  "skills_root": "/data/www/ai-native-skills/skills",
   "target_profile_ids": [
     "agent-orchestrator",
     "agent-product",
@@ -813,6 +1408,11 @@
     "agent-design",
     "agent-frontend",
     "agent-backend",
-    "agent-review"
+    "agent-review",
+    "agent-operations",
+    "agent-security",
+    "agent-quality",
+    "agent-knowledge",
+    "agent-platform"
   ]
 }

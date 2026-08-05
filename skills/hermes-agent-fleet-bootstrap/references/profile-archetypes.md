@@ -22,6 +22,11 @@ agent-design
 agent-frontend
 agent-backend
 agent-review
+agent-operations
+agent-security
+agent-quality
+agent-knowledge
+agent-platform
 ```
 
 The `agent-` prefix identifies a persistent runtime agent. The suffix names one stable responsibility family. It must not name a product, repository, framework, library, delivery method, or quality practice.

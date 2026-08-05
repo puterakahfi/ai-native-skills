@@ -3,9 +3,9 @@ skill_test:
   version: 0.2.0
   description: Verify Hermes fleet bootstrap uses the versioned agent-* identity contract, one front door, bounded skills, plan-first execution, identity-state classification, and fail-closed migration boundaries.
   cases:
-  - id: native-ai-engineering-v2-uses-seven-agent-identities
+  - id: native-ai-engineering-v2-uses-expanded-agent-identities
     description: The complete reusable fleet uses the approved runtime agent IDs.
-    trigger: Design the native-ai-engineering Hermes fleet for product, architecture, design, frontend, backend, and independent review through one front door.
+    trigger: Design the native-ai-engineering Hermes fleet for product, architecture, design, frontend, backend, operations, security, quality, knowledge, platform, and independent review through one front door.
     must_contain:
     - JUSTIFIED
     - orchestrator_with_specialists
@@ -16,6 +16,11 @@ skill_test:
     - agent-frontend
     - agent-backend
     - agent-review
+    - agent-operations
+    - agent-security
+    - agent-quality
+    - agent-knowledge
+    - agent-platform
     - orchestrator_only
     - headless_on_demand
     must_not_contain:
