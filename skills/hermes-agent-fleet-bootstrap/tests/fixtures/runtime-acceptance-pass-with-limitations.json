@@ -37,6 +37,31 @@
       "id": "agent-review",
       "gateway": "none",
       "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-operations",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-security",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-quality",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-knowledge",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
+    },
+    {
+      "id": "agent-platform",
+      "gateway": "none",
+      "worker_mode": "headless_on_demand"
     }
   ],
   "migration": {
@@ -56,7 +81,12 @@
       "agent-design",
       "agent-frontend",
       "agent-backend",
-      "agent-review"
+      "agent-review",
+      "agent-operations",
+      "agent-security",
+      "agent-quality",
+      "agent-knowledge",
+      "agent-platform"
     ],
     "credentials_copied": false
   },
@@ -165,6 +195,40 @@
       "outputs": [
         "design acceptance contract",
         "frontend implementation receipt",
+        "review verdict"
+      ],
+      "review": {
+        "required": true,
+        "profile": "agent-review",
+        "verdict": "PASS_WITH_LIMITATIONS"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "security-review",
+      "kind": "security",
+      "entrypoint": "sanitized_fixture",
+      "task_id": "task-security-001",
+      "selected_profiles": [
+        "agent-security",
+        "agent-review"
+      ],
+      "dependencies": [
+        {
+          "from": "agent-security",
+          "to": "agent-review",
+          "condition": "security findings and threat model evidence available"
+        }
+      ],
+      "handoffs": [
+        {
+          "from": "agent-security",
+          "to": "agent-review",
+          "artifact": "security review and threat model evidence"
+        }
+      ],
+      "outputs": [
+        "security specialist receipt",
         "review verdict"
       ],
       "review": {

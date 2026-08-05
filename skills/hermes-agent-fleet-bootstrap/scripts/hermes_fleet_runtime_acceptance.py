@@ -14,17 +14,48 @@ EXIT_OK = 0
 EXIT_NEEDS_WORK = 2
 EXIT_PREFLIGHT = 3
 EXIT_EXECUTION = 4
+PRESET_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "assets"
+    / "presets"
+    / "native-ai-engineering.json"
+)
 
-TARGET_PROFILES = [
-    "agent-orchestrator",
+
+def load_target_profiles(preset_path: Path = PRESET_PATH) -> list[str]:
+    try:
+        preset = json.loads(preset_path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise RuntimeError(f"Preset file not found: {preset_path}") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Invalid preset JSON {preset_path}: {exc}") from exc
+    profiles = preset.get("profiles")
+    if not isinstance(profiles, list):
+        raise RuntimeError("preset profiles must be a list")
+    profile_ids: list[str] = []
+    for profile in profiles:
+        if not isinstance(profile, dict):
+            raise RuntimeError("each preset profile must be an object")
+        profile_id = profile.get("id")
+        if not isinstance(profile_id, str) or not profile_id.strip():
+            raise RuntimeError("preset profile id must be a non-empty string")
+        profile_ids.append(profile_id.strip())
+    return profile_ids
+
+
+TARGET_PROFILES = load_target_profiles()
+SPECIALISTS = TARGET_PROFILES[1:]
+ROUTING_GENERALISTS = {
     "agent-product",
     "agent-architecture",
     "agent-design",
     "agent-frontend",
     "agent-backend",
     "agent-review",
-]
-SPECIALISTS = TARGET_PROFILES[1:]
+}
+ROUTING_SUPPORT_PROFILES = (
+    set(TARGET_PROFILES) - {"agent-orchestrator"} - ROUTING_GENERALISTS
+)
 PROHIBITED_SECRET_KEYS = {
     "token",
     "telegram_token",
@@ -284,13 +315,13 @@ def validate_scenarios(evidence: dict[str, Any], checks: list[dict[str, Any]], f
 
         if kind == "planning":
             required = {"agent-product", "agent-architecture"}
-            forbidden = {"agent-design", "agent-frontend", "agent-backend"}
+            forbidden = {"agent-design", "agent-frontend", "agent-backend"} | ROUTING_SUPPORT_PROFILES
             ok = required.issubset(selected_set) and selected_set.isdisjoint(forbidden) and ok
             if review.get("required") is True and review.get("verdict") in {None, "NOT_RUN"}:
                 ok = False
         elif kind == "backend":
             required = {"agent-backend", "agent-review"}
-            forbidden = {"agent-design", "agent-frontend"}
+            forbidden = {"agent-design", "agent-frontend"} | ROUTING_SUPPORT_PROFILES
             ok = required.issubset(selected_set) and selected_set.isdisjoint(forbidden) and ok
             ok = (
                 review.get("required") is True
@@ -300,7 +331,17 @@ def validate_scenarios(evidence: dict[str, Any], checks: list[dict[str, Any]], f
             )
         elif kind == "ui":
             required = {"agent-design", "agent-frontend", "agent-review"}
-            forbidden = {"agent-backend"}
+            forbidden = {"agent-backend"} | ROUTING_SUPPORT_PROFILES
+            ok = required.issubset(selected_set) and selected_set.isdisjoint(forbidden) and ok
+            ok = (
+                review.get("required") is True
+                and review.get("profile") == "agent-review"
+                and review.get("verdict") in {"PASS", "PASS_WITH_LIMITATIONS"}
+                and ok
+            )
+        elif kind == "security":
+            required = {"agent-security", "agent-review"}
+            forbidden = set(TARGET_PROFILES) - required - {"agent-orchestrator"}
             ok = required.issubset(selected_set) and selected_set.isdisjoint(forbidden) and ok
             ok = (
                 review.get("required") is True
@@ -314,7 +355,7 @@ def validate_scenarios(evidence: dict[str, Any], checks: list[dict[str, Any]], f
         if not ok:
             scenario_failures.append(f"routing_contract_failed:{scenario_id}")
 
-    required_kinds = {"planning", "backend", "ui"}
+    required_kinds = {"planning", "backend", "ui", "security"}
     missing = sorted(required_kinds - by_kind.keys())
     if missing:
         scenario_failures.append("missing_scenarios:" + ",".join(missing))

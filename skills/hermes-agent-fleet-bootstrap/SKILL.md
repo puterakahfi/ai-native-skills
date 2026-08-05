@@ -75,9 +75,14 @@ agent-design
 agent-frontend
 agent-backend
 agent-review
+agent-operations
+agent-security
+agent-quality
+agent-knowledge
+agent-platform
 ```
 
-Only `agent-orchestrator` is gateway-eligible by default. All six specialists use:
+Only `agent-orchestrator` is gateway-eligible by default. All specialists use:
 
 ```yaml
 gateway: none

@@ -220,6 +220,64 @@ raise SystemExit(0)
                 self.assertEqual(profile["gateway"], "none")
                 self.assertEqual(profile["worker_mode"], "headless_on_demand")
 
+    def test_native_reconcile_apply_creates_agent_security_without_live_state(self) -> None:
+        preset_path = (
+            Path(__file__).resolve().parents[1]
+            / "assets"
+            / "presets"
+            / "native-ai-engineering.json"
+        )
+        skills_root = Path(__file__).resolve().parents[2]
+        previous = os.environ.get("FAKE_HERMES_LOG")
+        os.environ["FAKE_HERMES_LOG"] = str(self.log)
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = module.main(
+                    [
+                        "reconcile",
+                        "native-ai-engineering",
+                        "--apply",
+                        "--preset-file",
+                        str(preset_path),
+                        "--skills-root",
+                        str(skills_root),
+                        "--hermes-home",
+                        str(self.home),
+                        "--hermes-bin",
+                        str(self.hermes),
+                        "--receipt",
+                        str(self.receipt),
+                        "--skip-kanban",
+                        "--json",
+                    ]
+                )
+        finally:
+            if previous is None:
+                os.environ.pop("FAKE_HERMES_LOG", None)
+            else:
+                os.environ["FAKE_HERMES_LOG"] = previous
+
+        self.assertEqual(code, module.EXIT_OK)
+        receipt = json.loads(self.receipt.read_text(encoding="utf-8"))
+        self.assertIn("agent-security", receipt["target_profile_ids"])
+        self.assertFalse(receipt["credentials_copied"])
+        self.assertFalse(receipt["live_state_copied"])
+        agent_security = self.home / "profiles" / "agent-security"
+        self.assertTrue(agent_security.is_dir())
+        self.assertTrue((agent_security / "SOUL.md").is_file())
+        self.assertTrue((agent_security / "config.yaml").is_file())
+        for skill in ["security-engineer", "security-review", "threat-modeling"]:
+            installed = agent_security / "skills" / skill
+            self.assertTrue(installed.is_symlink())
+            self.assertEqual(installed.resolve(), (skills_root / skill).resolve())
+        statuses = {
+            (action["kind"], action["target"]): action["status"]
+            for action in receipt["actions"]
+        }
+        self.assertEqual(statuses[("profile", "agent-security")], "CREATED")
+        self.assertEqual(statuses[("soul", "agent-security")], "SYNCED")
+        self.assertEqual(statuses[("config", "agent-security")], "SYNCED")
+
     def test_legacy_only_bootstrap_is_blocked_outside_migration(self) -> None:
         self.write_preset(include_transition=True)
         for profile_id in ["engineering-orchestrator", "quality-review"]:

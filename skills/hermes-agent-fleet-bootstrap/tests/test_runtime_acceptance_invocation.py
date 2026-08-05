@@ -33,6 +33,7 @@ class RuntimeAcceptanceInvocationTests(unittest.TestCase):
             text,
         )
         self.assertIn("PASS_WITH_LIMITATIONS", text)
+        self.assertIn("agent-security", text)
         self.assertIn("live Telegram round trip", text)
         self.assertIn("provider_backed_specialist_execution_not_verified", text)
         self.assertIn("It must not be called a live gateway PASS", text)

@@ -37,6 +37,33 @@ class RuntimeAcceptanceTests(unittest.TestCase):
         )
         self.assertFalse(receipt["credentials_exposed"])
 
+    def test_runtime_acceptance_requires_expanded_agent_security_profile(self) -> None:
+        code, receipt = self.evaluate()
+        self.assertEqual(code, MODULE.EXIT_OK)
+        target_profiles_check = next(
+            check for check in receipt["checks"] if check["id"] == "exact_target_profiles"
+        )
+        self.assertIn("agent-security", target_profiles_check["detail"])
+        model_sync_check = next(
+            check for check in receipt["checks"] if check["id"] == "model_sync_acceptance"
+        )
+        self.assertIn("agent-security", model_sync_check["detail"]["target_profiles"])
+
+    def test_missing_agent_security_profile_fails_runtime_acceptance(self) -> None:
+        evidence = copy.deepcopy(self.evidence)
+        evidence["profiles"] = [
+            profile for profile in evidence["profiles"] if profile["id"] != "agent-security"
+        ]
+        evidence["model_sync"]["target_profiles"] = [
+            profile
+            for profile in evidence["model_sync"]["target_profiles"]
+            if profile != "agent-security"
+        ]
+        code, receipt = self.evaluate(evidence)
+        self.assertEqual(code, MODULE.EXIT_NEEDS_WORK)
+        self.assertIn("target_profile_set_or_order_mismatch", receipt["findings"])
+        self.assertIn("model_sync_evidence_failed", receipt["findings"])
+
     def test_full_live_evidence_can_reach_pass(self) -> None:
         evidence = copy.deepcopy(self.evidence)
         evidence["review_independence"] = {
@@ -111,6 +138,16 @@ class RuntimeAcceptanceTests(unittest.TestCase):
         code, receipt = self.evaluate(evidence)
         self.assertEqual(code, MODULE.EXIT_NEEDS_WORK)
         self.assertIn("routing_contract_failed:ui-change", receipt["findings"])
+
+    def test_security_scenario_requires_agent_security_and_review(self) -> None:
+        evidence = copy.deepcopy(self.evidence)
+        security = next(
+            scenario for scenario in evidence["scenarios"] if scenario["kind"] == "security"
+        )
+        security["selected_profiles"] = ["agent-review"]
+        code, receipt = self.evaluate(evidence)
+        self.assertEqual(code, MODULE.EXIT_NEEDS_WORK)
+        self.assertIn("routing_contract_failed:security-review", receipt["findings"])
 
     def test_orchestrator_cannot_be_counted_as_specialist_worker(self) -> None:
         evidence = copy.deepcopy(self.evidence)
